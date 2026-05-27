@@ -265,12 +265,13 @@ Consumers can override via the item snippet.
 	});
 
 	const chunkSize = $derived(pageSize > 0 ? pageSize : 20);
-	let visibleCount = $state(pageSize > 0 ? pageSize : 20);
+	let visibleCount = $state(20);
 	let sentinel = $state<HTMLElement | null>(null);
 
 	$effect(() => {
 		void collection;
 		void effectiveWhere;
+		void pageSize;
 		untrack(() => { visibleCount = chunkSize; });
 	});
 

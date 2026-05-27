@@ -7,13 +7,15 @@
  * optional behavior hints (upsertOn / bump / touch / code template).
  *
  * Auto-injected on every call:
- *   - `id`     : crypto.randomUUID() when not provided
- *   - `userId` : machine.rights.currentUser.id (no-op if no current user)
+ *   - `id`     : crypto.randomUUID() when not provided (with non-crypto fallback)
+ *   - `userId` : host.rights.currentUser.id (no-op if no current user)
  *
  * The dispatcher is the only abstraction. It does not know — and must not
  * know — what `appuser_prefs` / `appuser_history` / `appuser_activity` mean.
+ *
+ * Dependency is injected (no import of the `machine` singleton) to keep the
+ * module free of circular references with `machine.ts`.
  */
-import { machine } from '$lib/main/machine.js';
 
 export interface ActionOptions {
 	/** Field names that form a natural key. When all match an existing doc, update instead of insert. */
@@ -25,27 +27,55 @@ export interface ActionOptions {
 	/** Template applied to compute `code`. Tokens: `{userId}` + any field name in `vars`.
 	 *  Result is written to `vars.code` (and used as the natural key when `upsertOn` is undefined). */
 	code?:     string;
-	/** Override the userId injected. Defaults to machine.rights.currentUser.id. */
+	/** Override the userId injected. Defaults to host.rights.currentUser.id. */
 	userId?:   string;
 }
 
 type AnyDoc = Record<string, unknown>;
 
+export interface ActionCollection {
+	getAll: () => AnyDoc[] | Promise<AnyDoc[]>;
+	where:  (q: Record<string, unknown>) => AnyDoc[] | Promise<AnyDoc[]>;
+	create: (doc: AnyDoc) => Promise<unknown>;
+	update: (id: string, data: AnyDoc) => Promise<unknown>;
+}
+
+export interface ActionHost {
+	currentUserId():            string | null;
+	collection(name: string):   ActionCollection | null;
+}
+
+function genId(): string {
+	const g = (globalThis as { crypto?: { randomUUID?: () => string } }).crypto;
+	if (g?.randomUUID) return g.randomUUID();
+	return Math.random().toString(36).slice(2) + Date.now().toString(36);
+}
+
 export class MachineAction {
+	#host: ActionHost | null = null;
+
+	/** Inject the host providing `currentUserId()` and `collection(name)`. Called once at machine boot. */
+	setHost(host: ActionHost): void {
+		this.#host = host;
+	}
+
 	/**
 	 * Write `vars` to `collection`, applying optional upsert / bump / touch / code rules.
-	 * Returns the persisted document (or null when no user is authenticated and the action is skipped).
+	 * Returns the persisted document (or null when no user is authenticated, no host wired, or the collection is missing).
 	 */
 	async act(collection: string, vars: AnyDoc, opts: ActionOptions = {}): Promise<AnyDoc | null> {
-		const uid = opts.userId ?? (machine.rights.currentUser ? String(machine.rights.currentUser.id) : null);
+		const host = this.#host;
+		if (!host) return null;
+
+		const uid = opts.userId ?? host.currentUserId();
 		if (!uid) return null;
 
-		const col = this._collection(collection);
+		const col = host.collection(collection);
 		if (!col) return null;
 
 		const payload: AnyDoc = { ...vars, userId: uid };
 		if (opts.code !== undefined) {
-			payload.code = this._renderTemplate(opts.code, { userId: uid, ...vars });
+			payload.code = this.#renderTemplate(opts.code, { userId: uid, ...vars });
 		}
 		if (opts.touch) {
 			payload[opts.touch] = new Date().toISOString();
@@ -56,7 +86,7 @@ export class MachineAction {
 			: (payload.code !== undefined ? ['code'] : undefined);
 
 		if (naturalKey) {
-			const existing = await this._findByKey(col, naturalKey, payload);
+			const existing = await this.#findByKey(col, naturalKey, payload);
 			if (existing) {
 				const patch: AnyDoc = { ...payload };
 				delete patch.id;
@@ -69,38 +99,21 @@ export class MachineAction {
 			}
 		}
 
-		if (payload.id === undefined) payload.id = crypto.randomUUID();
+		if (payload.id === undefined) payload.id = genId();
 		if (opts.bump && payload[opts.bump] === undefined) payload[opts.bump] = 1;
 		await col.create(payload);
 		return payload;
 	}
 
-	private _collection(name: string): {
-		getAll: () => AnyDoc[] | Promise<AnyDoc[]>;
-		where:  (q: Record<string, unknown>) => AnyDoc[] | Promise<AnyDoc[]>;
-		create: (doc: AnyDoc) => Promise<unknown>;
-		update: (id: string, data: AnyDoc) => Promise<unknown>;
-	} | null {
-		try {
-			return machine.collection(name) as unknown as ReturnType<MachineAction['_collection']>;
-		} catch {
-			return null;
-		}
-	}
-
-	private _renderTemplate(tpl: string, ctx: AnyDoc): string {
+	#renderTemplate(tpl: string, ctx: AnyDoc): string {
 		return tpl.replace(/\{(\w+)\}/g, (_, k) => {
 			const v = ctx[k];
 			return v == null ? '' : String(v);
 		});
 	}
 
-	private async _findByKey(
-		col: NonNullable<ReturnType<MachineAction['_collection']>>,
-		keys: string[],
-		payload: AnyDoc
-	): Promise<AnyDoc | null> {
-		// Try a direct where() when a single key field is in play — cheapest path.
+	async #findByKey(col: ActionCollection, keys: string[], payload: AnyDoc): Promise<AnyDoc | null> {
+		// Direct where() when a single key field is in play — cheapest path.
 		if (keys.length === 1 && payload[keys[0]] !== undefined) {
 			const docs = await Promise.resolve(col.where({ [keys[0]]: payload[keys[0]] }));
 			return docs[0] ?? null;
@@ -127,4 +140,3 @@ export type MachineActionCallable = ((
 const _call = machineAction.act.bind(machineAction);
 Object.defineProperty(_call, 'instance', { value: machineAction, enumerable: false });
 export const machineActionCallable: MachineActionCallable = _call as MachineActionCallable;
-

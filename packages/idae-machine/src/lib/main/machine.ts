@@ -5,7 +5,7 @@ import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import { machineActionCallable } from '$lib/main/machine/MachineAction.js';
+import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
@@ -594,4 +594,15 @@ export { buildLoadInUrl } from '$lib/main/frame/frameUrl.js';
 
 const _g = globalThis as unknown as { __idae_machine?: Machine };
 export const machine: Machine = _g.__idae_machine ?? (_g.__idae_machine = new Machine());
+
+// Wire MachineAction with a host that resolves the current user + collections lazily.
+// Avoids importing `machine` from inside MachineAction.ts (which would create a cycle).
+machineAction.setHost({
+	currentUserId: () => (machine.rights.currentUser ? String(machine.rights.currentUser.id) : null),
+	collection:    (name) => {
+		try { return machine.collection(name) as unknown as ActionCollection; }
+		catch { return null; }
+	}
+});
+
 if (import.meta.hot) import.meta.hot.accept();
