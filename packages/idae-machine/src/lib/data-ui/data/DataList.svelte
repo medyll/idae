@@ -105,11 +105,59 @@ Consumers can override via the item snippet.
 	const currentMode = $derived(userMode ?? modeProp);
 
 	// Toolbar-owned state. Consumer props (`where`, `sortBy`, `groupBy`) act as defaults;
-	// these override / extend at runtime.
-	// TODO: hydrate from MachinePrefs (per collection) once MachinePrefs is ready.
+	// these override / extend at runtime. Persisted per (user, collection) via machine.prefs.
 	let userSortBy   = $state<SortBy[]>([]);
 	let userGroupBy  = $state<string | undefined>(undefined);
 	let userFindWhere = $state<Record<string, unknown> | undefined>(undefined);
+
+	const prefsScope = $derived(`datalist.${collection}`);
+	let hydrated = $state(false);
+
+	// Hydrate from machine.prefs whenever the collection changes. `hydrated` gates the
+	// persistence effect to avoid an immediate write-back of the initial empty state.
+	$effect(() => {
+		const scopeKey = prefsScope;
+		hydrated = false;
+		untrack(() => {
+			machine.prefs.scope(scopeKey).then((vals) => {
+				const stripped = Object.fromEntries(
+					Object.entries(vals).map(([k, v]) => [k.slice(scopeKey.length + 1), v])
+				);
+				if (stripped.mode === 'list' || stripped.mode === 'table' || stripped.mode === 'grid') {
+					userMode = stripped.mode;
+				} else {
+					userMode = null;
+				}
+				userSortBy    = Array.isArray(stripped.sortBy) ? (stripped.sortBy as SortBy[]) : [];
+				userGroupBy   = typeof stripped.groupBy === 'string' ? stripped.groupBy : undefined;
+				userFindWhere = stripped.find && typeof stripped.find === 'object'
+					? (stripped.find as Record<string, unknown>)
+					: undefined;
+				hydrated = true;
+			}).catch(() => { hydrated = true; });
+		});
+	});
+
+	$effect(() => {
+		const m = userMode;
+		if (!hydrated) return;
+		untrack(() => { void machine.prefs.set(`${prefsScope}.mode`, m); });
+	});
+	$effect(() => {
+		const s = userSortBy;
+		if (!hydrated) return;
+		untrack(() => { void machine.prefs.set(`${prefsScope}.sortBy`, s); });
+	});
+	$effect(() => {
+		const g = userGroupBy;
+		if (!hydrated) return;
+		untrack(() => { void machine.prefs.set(`${prefsScope}.groupBy`, g ?? null); });
+	});
+	$effect(() => {
+		const w = userFindWhere;
+		if (!hydrated) return;
+		untrack(() => { void machine.prefs.set(`${prefsScope}.find`, w ?? null); });
+	});
 
 	// AND-merge consumer where with finder where. Same field in both → finder wins.
 	const effectiveWhere = $derived.by(() => {

@@ -92,11 +92,19 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		}
 
 		try {
+			let writtenId: unknown = dataId;
 			if (mode === 'create' && !dataId) {
-				await store?.create({ ...snapshot, ...withData });
+				const created = await store?.create({ ...snapshot, ...withData }) as Record<string, unknown> | undefined;
+				writtenId = created?.id ?? (snapshot as Record<string, unknown>).id;
 			} else if (mode === 'update' && dataId) {
 				await store?.update(dataId, snapshot);
 			}
+
+			void machine.activity.log(mode === 'create' ? 'CREATE' : 'UPDATE', {
+				collection,
+				value: writtenId ?? '',
+				vars:  { fields: Object.keys(snapshot) }
+			});
 
 			onsubmit_callback?.({ mode, data: snapshot });
 		} catch (e) {

@@ -5,6 +5,9 @@ import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
+import { machinePrefs } from '$lib/main/machine/MachinePrefs.js';
+import { machineHistory } from '$lib/main/machine/MachineHistory.js';
+import { machineActivity } from '$lib/main/machine/MachineActivity.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
@@ -389,6 +392,15 @@ export class Machine {
 	/** Access rights manager — checkAccess, setCurrentUser, setPolicies, etc. */
 	get rights() { return machineRights; }
 
+	/** User-scoped key/value preferences (appuser_prefs). */
+	get prefs() { return machinePrefs; }
+
+	/** Aggregated navigation history per user (appuser_history). */
+	get history() { return machineHistory; }
+
+	/** Insert-only activity log per user (appuser_activity). */
+	get activity() { return machineActivity; }
+
 	/**
 	 * Sync controller — pause/resume/status/flush/dlq.
 	 * Only available when sync is enabled in init() options.
@@ -462,7 +474,39 @@ export class Machine {
 		const r = new MachineRouter(config);
 		r.init();
 		this._frameManager.setRouter((url) => r.push(url));
+		this._frameManager.setNavigationHook(({ collection, collectionId, vars }) => {
+			void machineActivity.log('VIEW', { collection, value: collectionId ?? '', vars });
+			if (collectionId !== undefined && collectionId !== '') {
+				void this._pushHistory(collection, collectionId);
+			}
+		});
 		return r;
+	}
+
+	/** Compute a label from `template.presentation` then push to history. */
+	private async _pushHistory(collection: string, collectionId: string): Promise<void> {
+		try {
+			const scheme = this._machineDb?.collection(collection);
+			const presentation = (scheme as { template?: { presentation?: string } } | null | undefined)
+				?.template?.presentation;
+			const id = isNaN(Number(collectionId)) ? collectionId : Number(collectionId);
+			const rec = await this.collection(collection).get(id) as Record<string, unknown> | undefined;
+			const label = presentation && rec
+				? presentation.split(/\s+/).filter(Boolean)
+					.map((tok) => {
+						let cur: unknown = rec;
+						for (const seg of tok.split('.')) {
+							if (cur == null) return '';
+							cur = (cur as Record<string, unknown>)[seg];
+						}
+						return cur == null ? '' : String(cur);
+					})
+					.filter(Boolean).join(' ')
+				: undefined;
+			await machineHistory.push(collection, collectionId, label || undefined);
+		} catch (err) {
+			console.warn('[machine] history push failed:', err);
+		}
 	}
 
 	/** @deprecated Use machine.framer.loadFrame() */

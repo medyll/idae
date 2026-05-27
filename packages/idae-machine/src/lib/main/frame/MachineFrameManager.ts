@@ -17,13 +17,27 @@ export interface FrameRegisterOptions {
 	replace?: boolean;
 }
 
+export interface NavigationEvent {
+	modulePath:    string;
+	collection:    string;
+	collectionId?: string;
+	vars?:         Record<string, string>;
+	zone:          string;
+}
+
 export class MachineFrameManager {
 	private registry = new SvelteMap<string, FrameControls>();
 	private _pushFn?: (url: string) => void;
+	private _onNavigate?: (e: NavigationEvent) => void;
 
 	/** Injected by machine at init — enables URL-based navigation from framer. */
 	setRouter(pushFn: (url: string) => void): void {
 		this._pushFn = pushFn;
+	}
+
+	/** Injected by machine at init — fires after each loadFrame navigation. */
+	setNavigationHook(fn: (e: NavigationEvent) => void): void {
+		this._onNavigate = fn;
 	}
 
 	/**
@@ -40,6 +54,11 @@ export class MachineFrameManager {
 		if (!this._pushFn) throw new Error('[FrameManager] router not set — call machine.init() first');
 		const varsStr = vars && Object.keys(vars).length > 0 ? new URLSearchParams(vars).toString() : undefined;
 		this._pushFn(buildLoadInUrl(modulePath, zone, collection, collectionId, varsStr));
+		try {
+			this._onNavigate?.({ modulePath, collection, collectionId, vars, zone });
+		} catch (err) {
+			console.warn('[FrameManager] navigation hook failed:', err);
+		}
 	}
 
 	/**
