@@ -3,24 +3,19 @@ DataFk.svelte
 Forward FK relation viewer — shows collections this record points to.
 @role data-relations
 @prop {string} collection - Collection name
-@prop {string|number} [collectionId] - Optional record id
-@prop {Record<string,unknown>} [where] - Optional filter
 @prop {SortBy | SortBy[]} [sortBy] - Sort FK entries
 @prop {string} [groupBy] - Group FK entries by property
 @slot children (let:item) - Custom FK rendering
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { TplCollectionName } from '$lib/types/machine-model.js';
-	import type { Where } from '@medyll/qoolie';
-	import type { SortBy } from '$lib/types/machine-model.js';
+	import type { TplCollectionName } from '$lib/types/index.js';
+	import type { SortBy } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 
-	let { collection, collectionId, where, sortBy, groupBy, children } = $props<{
+	let { collection, sortBy, groupBy, children } = $props<{
 		collection: TplCollectionName;
-		collectionId?: string | number;
-		where?: Where;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		children?: Snippet<[[string, Record<string, unknown>]]>;

@@ -1,5 +1,5 @@
-import type { TplCollectionName, TplFields, IDbForge, TplFieldRules } from '$lib/types/machine-model.js';
-import type { MachineModel, MachineCollectionModel } from '$lib/types/machine-model.js';
+import type { TplCollectionName, TplFields, IDbForge, TplFieldRules } from '$lib/types/index.js';
+import type { MachineModel, MachineCollectionModel } from '$lib/types/index.js';
 import type { MachineDb } from '../machineDb.js';
 import { MachineParserForge } from '../machineParserForge.js';
 import { MachineError } from './MachineError.js';

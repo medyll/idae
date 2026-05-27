@@ -1,18 +1,61 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-05-26T00:29
+# last_updated: 2026-05-27T18:25
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-26T00:29"
+last_updated: "2026-05-27T18:25"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 38 complete — DataList infiniteScroll. 479/479. Ready for next sprint."
+next_action: "Sprint 40 ready — Solidification audit fixes applied. Deprecated symbol removal backlog below."
 next_command: "bmad sprint"
 next_role: "scrum"
 active_role: "reviewer"
+
+# ── Deprecated removal backlog ────────────────────────────────────────────────
+# Source: SOLIDIFICATION.md — I6. Schedule removal after Sprint 40.
+deprecated_removal_backlog:
+  - symbol: "Machine.prototype.adaptIdbToSchema"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 41
+    note: "Legacy adapter — replaced by detectSchemaDrift + performIdbUpgrade in machineIdbAdapter.ts"
+
+  - symbol: "Machine.prototype.start"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 41
+    note: "Alias for boot(). Remove after confirming all external callers migrated."
+
+  - symbol: "Machine.prototype.fetchSchema"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 41
+    note: "No-op shim. Now emits console.warn. Safe to remove once external callers migrated."
+
+  - symbol: "Machine.prototype.collections (getter)"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 41
+    note: "Use machine.logic instead."
+
+  - symbol: "Machine.prototype.idbql / indexedb / idbqModel (getters)"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 41
+    note: "All return undefined. Stubs kept for external compat only."
+
+  - symbol: "Machine.prototype.loadFrame"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 41
+    note: "Use machine.framer.loadFrame() instead. @deprecated since S39."
+
+  - symbol: "Machine.prototype.frameManager (getter)"
+    file: "src/lib/main/machine.ts"
+    target_sprint: 42
+    note: "Use machine.framer instead. Keep until machineLoadFrame.test.ts compat tests removed."
+
+  - symbol: "seedIfEmpty"
+    file: "src/lib/main/machineSeed.ts"
+    target_sprint: 42
+    note: "Use seed(data, { onlyIfEmpty: true }) instead."
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
@@ -58,23 +101,46 @@ architecture:
 
     - id: ADR-04
       title: "DataList link parser — CollectionNav supprimé"
-      status: decided
+      status: implemented
       decision: >
-        DataList acquiert deux props : `link` (string) et `linkVars` (Record<string,any>, optionnel).
+        DataList props: `link` (string), `linkVars` (Record<string,any>, optionnel), `linkCollectionField` (string, optionnel).
         Format link : "action:module" ou "action:module@zone" — zone optionnelle, défaut 'main'.
         action = 'loadFrame' | 'loadIn'. module = modulePath (ex: 'explorer'). zone = data-target-zone.
-        Champ record utilisé = indexField déjà calculé dans DataList (template.index ?? 'id'). Pas de prop linkField.
-        Prop linkTarget supprimé — remplacé par @zone dans la string link.
-        Quand `link` fourni SANS snippet item → le <li> existant du rendu par défaut est wrappé dans
-        un <button> qui appelle machine.loadFrame(module, String(record[indexField]), undefined, linkVars, zone).
-        Quand snippet item fourni → link ignoré, le snippet gère tout.
-        CollectionNav.svelte supprimé. Explorer.svelte ligne 72 :
-        `<DataList collection="appscheme" {sortBy} link="loadFrame:explorer" />`.
-        Nouveau fichier : src/lib/data-ui/utils/linkParser.ts — parseLink(str) pur, sans I/O.
+        indexField = constante 'id' (chaque collection a obligatoirement id + code).
+        Deux modes navigate():
+          - linkCollectionField fourni → navCollection = record[linkCollectionField] (ex: appscheme sidebar avec linkCollectionField="code"), navId = undefined.
+          - Sans linkCollectionField → navCollection = collection prop, navId = String(record.id).
+        Navigation via machine.framer.loadFrame() / machine.framer.loadIn() (machine.loadFrame @deprecated).
+        CollectionNav.svelte supprimé. Explorer.svelte :
+        `<DataList collection="appscheme" {sortBy} link="loadFrame:explorer" linkCollectionField="code" />`.
+        Fichier : src/lib/main/frame/linkParser.ts — parseLink(str) pur, sans I/O.
         Signature : parseLink(link: string) => { action: string; module: string; zone: string } | null.
+        Tests : linkParser.test.ts (7 tests) + dataListNavigate.test.ts (6 tests).
+        frameUrl.ts extrait de machine.ts pour éviter import circulaire avec MachineFrameManager.
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 39
+    goal: "DataList navigation + MachineFrameManager migration"
+    status: completed
+    stories:
+      - id: S39-01
+        title: "parseLink + navigate() — DataList link props + framer migration"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "linkParser.test.ts: 7/7. dataListNavigate.test.ts: 6/6. machineLoadIn.test.ts: 5/5. svelte-check: 0 errors."
+        test_result: pass
+        detail: >
+          DataList: prop linkCollectionField ajouté. navigate() deux modes: collection-ref (linkCollectionField)
+          vs data-record (default, navId=record.id). indexField='id' constant (supprime template?.index qui n'existe pas).
+          Tout passe par machine.framer.loadFrame/loadIn — machine.loadFrame @deprecated.
+          MachineFrameManager: loadFrame() + loadIn() ajoutés, setRouter() injecté via machine._buildRouter().
+          frameUrl.ts extrait pour éviter import circulaire.
+          Explorer.svelte: linkCollectionField="code" sur sidebar appscheme.
+          TaskBar.svelte + Explorer.openCard: migrés vers machine.framer.loadFrame.
+          CSS DataList: @layer components { :global(.data-list-link) } — fix justify-content + Svelte tree-shaking.
+
   - id: 38
     goal: "DataList infiniteScroll — IntersectionObserver-based progressive reveal"
     status: completed
@@ -477,6 +543,21 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-27"
+    summary: >
+      Navigation refactor — DataList link props + MachineFrameManager migration.
+      (1) DataList: prop linkCollectionField ajouté. navigate() deux modes: collection-ref (record[linkCollectionField]
+      comme navCollection) vs data-record (collection prop + record.id). indexField constant 'id'.
+      (2) MachineFrameManager: loadFrame() + loadIn() ajoutés. setRouter() injecté depuis machine._buildRouter().
+      machine.loadFrame() marqué @deprecated, délègue vers framer.
+      (3) frameUrl.ts extrait pour briser l'import circulaire MachineFrameManager→machine.ts.
+      (4) Explorer.svelte: linkCollectionField="code" sur sidebar appscheme. TaskBar + Explorer.openCard
+      migrés vers machine.framer.loadFrame — zéro appel deprecated restant en UI production.
+      (5) CSS DataList: @layer components { :global(.data-list-link) } corrige justify-content + tree-shaking Svelte 5.
+      Tests: 7+6+5 nouveaux tests. svelte-check 0 erreurs. Suite complète: 479/479.
+    tests_server: 479
+    tests_client: 0
+
   - date: "2026-05-25"
     summary: >
       Bug fix session — three root-cause bugs repaired across qoolie + idae-api + idae-machine.

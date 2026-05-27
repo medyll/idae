@@ -1,4 +1,4 @@
-import type { TplCollectionName, IDbForge } from '$lib/types/machine-model.js';
+import type { TplCollectionName, IDbForge } from '$lib/types/index.js';
 import { MachineSchemeValues } from './MachineSchemeValues.js';
 import { machine } from '../machine.js';
 

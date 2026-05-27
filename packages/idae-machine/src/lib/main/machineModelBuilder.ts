@@ -9,7 +9,7 @@
  * and BACK-07).
  */
 
-import type { MachineModel } from '$lib/types/machine-model.js';
+import type { MachineModel } from '$lib/types/index.js';
 
 /**
  * Merge an optional core MachineModel with an optional business MachineModel.

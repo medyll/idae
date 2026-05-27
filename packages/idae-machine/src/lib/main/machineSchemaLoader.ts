@@ -5,7 +5,7 @@
  */
 
 import { readSchemaCache, writeSchemaCache } from '$lib/main/machineSchemaCache.js';
-import type { MachineModel } from '$lib/types/machine-model.js';
+import type { MachineModel } from '$lib/types/index.js';
 
 export interface SchemaLoaderCallbacks {
 	onModel:  (model: MachineModel) => void;
@@ -40,6 +40,7 @@ export async function loadSchema(url: string, callbacks: SchemaLoaderCallbacks):
 			.catch(() => { /* network failure during bg refresh — ignore */ });
 	} else {
 		const res   = await fetch(url);
+		if (!res.ok) throw new Error(`[idae-machine] Schema fetch failed: ${res.status} ${res.statusText}`);
 		const model = await res.json() as MachineModel;
 		await writeSchemaCache(url, model);
 		callbacks.onModel(model);

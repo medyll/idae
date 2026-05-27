@@ -7,7 +7,7 @@
 import 'fake-indexeddb/auto';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Machine } from '../machine.js';
-import type { MachineModel } from '$lib/types/machine-model.js';
+import type { MachineModel } from '$lib/types/index.js';
 
 const model: MachineModel = {
 	vehicle: {

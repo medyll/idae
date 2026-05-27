@@ -6,7 +6,7 @@
  * IDB = cache/replica that auto-adapts when server schema changes.
  */
 
-import type { MachineModel } from '$lib/types/machine-model.js';
+import type { MachineModel } from '$lib/types/index.js';
 
 const INTERNAL_STORES = new Set(['__outbox__', '__schema_meta__', '__migrations__']);
 
@@ -38,20 +38,21 @@ export async function detectSchemaDrift(
 
 	let storedHash: string | null;
 	try { storedHash = await getStoredSchemaHash(dbName); }
-	catch { storedHash = null; }
+	catch (err) { console.warn('[idae-machine] Could not read stored schema hash:', err); storedHash = null; }
 
 	if (storedHash === expectedHash) return null;
 
 	let actualStores: Set<string>;
 	try { actualStores = await getCurrentIdbStores(dbName); }
-	catch { return null; }
+	catch (err) { console.warn('[idae-machine] Could not read IDB stores for drift detection:', err); return null; }
 
 	const toCreate = expectedStores.filter((s) => !actualStores.has(s));
 	const toDelete = [...actualStores].filter((s) => !expectedStores.includes(s));
 
 	if (toCreate.length === 0 && toDelete.length === 0) {
 		// Stores match but hash differs — just persist hash, no version bump needed
-		try { await storeSchemaHash(dbName, expectedHash); } catch { /* retry on next start */ }
+		try { await storeSchemaHash(dbName, expectedHash); }
+	catch (err) { console.warn('[idae-machine] Could not persist schema hash (will retry on next start):', err); }
 		return null;
 	}
 
@@ -145,7 +146,7 @@ export async function performIdbUpgrade(
 	});
 
 	try { await storeSchemaHash(dbName, upgrade.expectedHash); }
-	catch { /* non-critical — retry on next start */ }
+	catch (err) { console.warn('[idae-machine] Could not persist schema hash after upgrade (will retry on next start):', err); }
 }
 
 /**

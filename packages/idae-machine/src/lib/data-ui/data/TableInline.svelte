@@ -1,20 +1,23 @@
 <!--
-ExplorerTableInline.svelte
-Table mode for Explorer — sortable columns, click row to open card.
-Internal component, not exported.
+TableInline.svelte
+Sortable table renderer for data collections.
+@role data-table
+@prop {string} collection - Collection name
+@prop {Where<COL>} [where] - Filter
+@prop {(record: COL) => void} [onItemClick] - Row click handler
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { machine } from '$lib/main/machine.js';
-	import type { Where } from '$lib/types/machine-model.js';
+	import type { Where } from '$lib/types/index.js';
 
 	let {
 		collection,
 		where,
-		openCard,
+		onItemClick,
 	}: {
 		collection: string;
 		where?: Where<COL>;
-		openCard: (record: COL) => void;
+		onItemClick?: (record: COL) => void;
 	} = $props();
 
 	let sortColumn = $state<string | null>(null);
@@ -80,7 +83,7 @@ Internal component, not exported.
 	</thead>
 	<tbody>
 		{#each sortedItems as item, i ((item as Record<string, unknown>).id ?? i)}
-			<tr onclick={() => openCard(item)}>
+			<tr onclick={() => onItemClick?.(item)} class:clickable={!!onItemClick}>
 				{#each columns as col}
 					<td>{(item as Record<string, unknown>)[col] ?? ''}</td>
 				{/each}
@@ -131,7 +134,7 @@ Internal component, not exported.
 	}
 
 	/* ── Body rows ── */
-	table.sortable tbody tr {
+	table.sortable tbody tr.clickable {
 		cursor: pointer;
 	}
 	table.sortable tbody td {

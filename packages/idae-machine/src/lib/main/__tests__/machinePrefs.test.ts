@@ -5,25 +5,17 @@
  * Key convention: code = `${userId}:${key}` (e.g. 'user1:pane.menu.client')
  */
 import { describe, it, expect, beforeEach } from 'vitest';
+import { createMockCollection } from './helpers/mockCollection.js';
 
 type PrefDoc = { id: string; code: string; name?: string; value?: unknown };
 
 function mockCollection() {
-	const docs: PrefDoc[] = [];
+	const base = createMockCollection<PrefDoc>();
 	return {
-		getAll: () => [...docs],
+		...base,
 		where: (q: Record<string, { eq: unknown }>) => {
 			const [field, { eq }] = Object.entries(q)[0];
-			return docs.filter((d) => (d as any)[field] === eq);
-		},
-		create: async (doc: PrefDoc) => { docs.push(doc); return doc; },
-		update: async (id: string, data: Partial<PrefDoc>) => {
-			const i = docs.findIndex((d) => d.id === id);
-			if (i !== -1) Object.assign(docs[i], data);
-		},
-		delete: async (id: string) => {
-			const i = docs.findIndex((d) => d.id === id);
-			if (i !== -1) docs.splice(i, 1);
+			return base.docs.filter((d) => (d as any)[field] === eq);
 		},
 	};
 }

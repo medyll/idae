@@ -5,9 +5,8 @@ import type {
 	TplFieldArgs,
 	TplFields,
 	IDbForge
-} from '$lib/types/machine-model.js';
+} from '$lib/types/index.js';
 type TplFieldRulesObject = TplFieldRules;
-import type { MachineDb } from './machineDb.js';
 import { MachineError } from './machine/MachineError.js';
 
 /**
@@ -16,15 +15,11 @@ import { MachineError } from './machine/MachineError.js';
  */
 
 export class MachineParserForge {
-	#machineForge: MachineDb['machineForge'] | undefined;
 
 	/**
 	 * Create a new MachineParserForge instance.
 	 */
-	constructor() {
-		// Correction : ne pas initialiser #machineForge récursivement
-		this.#machineForge = undefined;
-	}
+	constructor() {}
 
 	/**
 	 * Test if a field rule matches a specific type (array, object, fk, primitive).

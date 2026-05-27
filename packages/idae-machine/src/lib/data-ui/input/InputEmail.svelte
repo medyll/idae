@@ -8,6 +8,7 @@ Email input with format validation.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
+	import { untrack } from 'svelte';
 	let {
 		value = '',
 		error = null as string | null,
@@ -31,7 +32,7 @@ Email input with format validation.
 	let email = $state<string | undefined>(undefined);
 
 	$effect(() => {
-		email = value;
+		untrack(() => { email = value; });
 	});
 
 	function validateEmail(email: string): boolean {

@@ -1,13 +1,13 @@
 import { MachineError } from './MachineError.js';
-import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy } from '$lib/types/machine-model.js';
+import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy } from '$lib/types/index.js';
 import type {
 	MachineModel,
 	MachineCollectionModel,
 	MachineDisplayTemplate,
 	MachineFkDef,
-} from '$lib/types/machine-model.js';
-import type { EntityViews } from '$lib/types/schema-types.js';
-import { indexFromKeyPath } from '$lib/types/machine-model.js';
+} from '$lib/types/index.js';
+import type { FieldViews } from '$lib/types/schema-types.js';
+import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
@@ -43,7 +43,7 @@ export class MachineScheme {
 		return this.#collectionModel;
 	}
 
-	/** Display template (presentation, future: sections, listColumns, fkLabelTpl, indexes…). */
+	/** Display template (presentation only). */
 	get template(): MachineDisplayTemplate {
 		return this.#collectionModel.template ?? {};
 	}
@@ -63,10 +63,10 @@ export class MachineScheme {
 		return indexFromKeyPath(this.#collectionModel.keyPath);
 	}
 
-	/** Default sort inferred from template.sort or field naming/type conventions. */
+	/** Default sort inferred from defaultSort or field naming/type conventions. */
 	get defaultSort(): SortBy[] {
-		const tplSort = this.template?.sort;
-		if (tplSort?.length) return tplSort;
+		const explicitSort = this.#collectionModel.defaultSort;
+		if (explicitSort?.length) return explicitSort;
 
 		const fields = this.fields;
 		const fieldNames = Object.keys(fields);
@@ -93,8 +93,8 @@ export class MachineScheme {
 		return [{ field: this.index, direction: 'asc' }];
 	}
 
-	/** Entity views from appscheme_view (listView, miniView, formView, fkLabelView). */
-	get views(): Partial<EntityViews> | undefined {
+	/** Field views from appscheme_view (fullView, miniView, fkView). */
+	get fieldViews(): Partial<FieldViews> | undefined {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return (this.#collectionModel as any)?._views ?? undefined;
 	}

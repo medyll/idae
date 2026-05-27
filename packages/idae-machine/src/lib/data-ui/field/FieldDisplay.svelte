@@ -10,7 +10,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 @prop {boolean|string} [showLabel] - Label visibility/position
 -->
 <script lang="ts" generics="COL extends Record<string,unknown>">
-    import type { TplCollectionName } from '$lib/types/machine-model.js';
+    import type { TplCollectionName } from '$lib/types/index.js';
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
     import InputEmail    from '$lib/data-ui/input/InputEmail.svelte';
@@ -28,11 +28,10 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         showLabel = true
     }:{
         collection?: TplCollectionName;
-        collectionId?: unknown;
         fieldName: keyof COL;
         data: COL;
         mode?: 'show' | 'create' | 'update';
-        editInPlace?: boolean;
+        // TODO: editInPlace — legacy app_field_update feature, planned for reimplementation
         inputForm?: string;
         showLabel?: boolean | string
     } = $props();
@@ -77,7 +76,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             ? (() => { try { return machine.logic.collection(fkCollection); } catch { return null; } })()
             : null
     );
-    const fkIndexField        = $derived((fkScheme?.template?.index ?? 'id') as string);
+    const fkIndexField        = $derived(fkScheme?.index ?? 'id');
     const fkPresentationFields = $derived(
         (fkScheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
     );

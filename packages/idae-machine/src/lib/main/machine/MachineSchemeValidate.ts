@@ -1,4 +1,4 @@
-import type { TplCollectionName, TplFields } from '$lib/types/machine-model.js';
+import type { TplCollectionName, TplFields } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineErrorValidation } from './MachineErrorValidation.js';
 import { MachineError } from './MachineError.js';

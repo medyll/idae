@@ -15,11 +15,11 @@ export interface MachineSocketOptions {
 export function createSocketClient(opts: MachineSocketOptions): EventDataClientInstance {
 	const client = new EventDataClientInstance();
 	client.config.host           = opts.url;
-	client.config.port           = 0;
+	client.config.port           = 0; // port is embedded in host URL
 	client.config.authentication = {
 		auth:     opts.token ? `Bearer ${opts.token}` : 'Bearer ',
 		authMode: opts.authMode ?? 'Bearer',
 	};
-	client.connect();
+	if (opts.autoConnect !== false) client.connect();
 	return client;
 }

@@ -5,6 +5,7 @@
  * Shape: { id, code, collection, collection_value, collection_vars?, timestamp }
  */
 import { describe, it, expect, beforeEach } from 'vitest';
+import { createMockCollection } from './helpers/mockCollection.js';
 
 type ActivityDoc = {
 	id: string; code: string; collection: string;
@@ -13,11 +14,10 @@ type ActivityDoc = {
 };
 
 function mockCollection() {
-	const docs: ActivityDoc[] = [];
-	return {
-		getAll: () => [...docs],
-		create: async (doc: ActivityDoc) => { docs.push(doc); return doc; },
-	};
+	const base = createMockCollection<ActivityDoc>();
+	// Activity is insert-only — no update or delete
+	const { update: _u, delete: _d, ...insertOnly } = base;
+	return insertOnly;
 }
 
 // ── inline patterns ──────────────────────────────────────────────────────────

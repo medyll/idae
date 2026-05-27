@@ -1,5 +1,5 @@
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
-import type { MachineModel, MachineRightsPolicy } from '$lib/types/machine-model.js';
+import type { MachineModel, MachineRightsPolicy } from '$lib/types/index.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
 
@@ -24,7 +24,7 @@ class MachineRights {
 		for (const [name, col] of Object.entries(model)) {
 			if ('rights' in col && col.rights) policies[name] = col.rights;
 		}
-		this.#policies = policies;
+		this.setPolicies(policies);
 	}
 
 	/**

@@ -9,7 +9,7 @@ vi.mock('@medyll/qoolie/svelte', () => ({
 
 import { Machine } from '../machine.js';
 import { demoScheme } from '../../demo/demoScheme.js';
-import type { MachineModel } from '../../types/machine-model.js';
+import type { MachineModel } from '\$lib/types/index.js';
 
 function createTestMachine() {
 	return new Machine('test-db', 1, demoScheme);
@@ -214,7 +214,7 @@ describe('Machine', () => {
 			const vehicleCol = m.collection('vehicle');
 			expect(vehicleCol).toBeDefined();
 			const allVehicles = vehicleCol.getAll();
-			expect(allVehicles.length).toBeGreaterThanOrEqual(0); // IDB may not be available in test env
+			expect(Array.isArray(allVehicles)).toBe(true); // getAll returns an array (IDB may be empty in test env)
 
 			vi.unstubAllGlobals();
 		});

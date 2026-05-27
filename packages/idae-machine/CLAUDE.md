@@ -1,7 +1,7 @@
 # CLAUDE.md — idae-machine AI Reference
 
 > Master reference for AI agents. Read this before touching any code.
-> Last updated: 2026-05-22
+> Last updated: 2026-05-27
 
 ---
 
@@ -68,10 +68,19 @@ machine.componentRegistry → ComponentRegistry
 // Helpers
 machine.collection(name)  → raw QoolieCollection (imperative CRUD)
 machine.moduleDbName(base)
-machine.loadFrame(modulePath, collection, collectionId?, vars?, zone?)  // push URL hash → idae-router → framer
+machine.loadFrame(...)    // @deprecated — utiliser machine.framer.loadFrame()
 ```
 
 **Règle absolue:** Jamais `import { machineFrameManager }` ou `import { componentRegistry }` dans les composants UI. Toujours `machine.framer` / `machine.componentRegistry`.
+
+### machine.framer — navigation frames
+
+```ts
+// Navigation (ADR-04)
+machine.framer.loadFrame(modulePath, collection, collectionId?, vars?, zone?)
+machine.framer.loadIn(zone, modulePath, collection, collectionId?, vars?)
+// → construit URL hash → idae-router → MachineFrameManager monte la Frame dans la zone
+```
 
 ### machine.init — paramètres
 
@@ -118,7 +127,7 @@ export const myModel: MachineModel = {
 
 ---
 
-## 6. Structure UI — ÉTAT ACTUEL (2026-05-22)
+## 6. Structure UI — ÉTAT ACTUEL (2026-05-27)
 
 ```
 src/lib/
@@ -147,6 +156,8 @@ src/lib/
 - `shell/explorer/` → maintenant `shell/frame/explorer/`
 - `shell/frame/Frame.svelte` → maintenant `shell/Frame.svelte`
 - `AppShell.svelte` → maintenant `TemplateShell.svelte`
+- `CollectionNav.svelte` — supprimé. Remplacé par `<DataList collection="appscheme" linkCollectionField="code" />`
+- `machine.loadFrame()` — @deprecated. Utiliser `machine.framer.loadFrame()`
 
 ### Zones frame (data-target-zone)
 
@@ -158,7 +169,26 @@ data-target-zone="main.panel"  → (à créer) panel latéral droit
 ```
 
 Frame chargée dynamiquement — le dev place JUSTE `data-target-zone="main"` dans le DOM.
-`machine.loadFrame('explorer', 'vehicle')` monte `<Frame>` dans la zone automatiquement.
+`machine.framer.loadFrame('explorer', 'vehicle')` monte `<Frame>` dans la zone automatiquement.
+
+### DataList — props navigation (ADR-04)
+
+```svelte
+<!-- Mode data-record (défaut) : navigue vers collection + record.id -->
+<DataList collection="vehicle" link="loadFrame:explorer" />
+<DataList collection="vehicle" link="loadIn:card.form@main.panel" />
+
+<!-- Mode collection-ref : record[linkCollectionField] = nom de la collection cible -->
+<DataList collection="appscheme" link="loadFrame:explorer" linkCollectionField="code" />
+```
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `link` | `string` | `"action:module"` ou `"action:module@zone"`. action = `loadFrame\|loadIn` |
+| `linkCollectionField` | `string?` | Field du record utilisé comme collection cible (ex: `"code"` pour appscheme) |
+| `linkVars` | `Record<string,any>?` | Vars passées à framer |
+
+Invariant: chaque collection a `id` (PK auto-increment) ET `code` (string sémantique). `indexField` = `'id'` constant.
 
 ### componentRegistry — entrées actuelles
 

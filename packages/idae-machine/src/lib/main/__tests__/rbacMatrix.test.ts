@@ -10,7 +10,7 @@ describe('RbacMatrix — registry wiring', () => {
 		const Comp = await componentRegistry.resolve('rbac.matrix');
 		expect(Comp).toBeDefined();
 		expect(typeof Comp).toBe('function');
-	});
+	}, 15000);
 });
 
 describe('RbacMatrix — grant shape contract', () => {

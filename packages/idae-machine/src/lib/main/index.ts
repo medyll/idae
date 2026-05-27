@@ -13,7 +13,6 @@ export { machineRights } from './machine/MachineRights.js';
 
 // Types
 export * from '../types/index.js';
-export type { MachineModel, MachineCollectionModel, MachineDisplayTemplate, MachineFieldDef, MachineFkDef, MachineRightsPolicy } from '../types/machine-model.js';
 
 // API (v2 features)
 export { MachineApi, createMachineApi } from './api/MachineApi.js';

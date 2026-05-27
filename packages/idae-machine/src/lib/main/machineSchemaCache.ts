@@ -29,7 +29,8 @@ export async function readSchemaCache(url: string): Promise<unknown | null> {
 			req.onsuccess = () => resolve(req.result?.data ?? null);
 			req.onerror   = () => reject(req.error);
 		});
-	} catch {
+	} catch (err) {
+		console.warn('[idae-machine] Schema cache read failed — will fetch fresh:', err);
 		return null;
 	}
 }
@@ -53,7 +54,8 @@ export async function writeSchemaCache(url: string, data: unknown): Promise<void
 			req.onsuccess = () => resolve();
 			req.onerror   = () => reject(req.error);
 		});
-	} catch {
-		// Cache write failure is non-fatal
+	} catch (err) {
+		// Cache write failure is non-fatal — schema will be re-fetched on next boot
+		console.warn('[idae-machine] Schema cache write failed:', err);
 	}
 }

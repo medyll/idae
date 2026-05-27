@@ -8,7 +8,7 @@ import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
 const TEST_ORG = 'vitest';
 const META_DB  = `${TEST_ORG}_machine_app`;
 
-const miniModel: any = {
+const testModel: any = {
 	product: {
 		keyPath: '++id',
 		base:    'machine_base',
@@ -42,7 +42,7 @@ describe('GET /api/scheme', () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(miniModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 	});
 
 	afterAll(async () => {

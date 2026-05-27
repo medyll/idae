@@ -18,13 +18,13 @@ import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap
 import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
-import type { EntityViews, ViewFieldDef } from '../../src/lib/types/schema-types.js';
+import type { FieldViews, ViewFieldDef } from '../../src/lib/types/schema-types.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
 
-const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_type', 'appscheme_field_group', 'appscheme_view_type']);
+const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_group', 'appscheme_view_type']);
 
 class MachineServerClass {
 	static #instance: MachineServerClass | null = null;
@@ -48,15 +48,13 @@ class MachineServerClass {
 
 	// ── getModel — reads appscheme_* → MachineModel ───────────────────────────
 
-	/** Map appscheme_view_type.code to EntityViews key name. */
+	/** Map appscheme_view_type.code to FieldViews key name. */
 	private _viewTypeToKey(code: string): string | null {
 		switch (code) {
-			case 'list':     return 'listView';
+			case 'list':     return 'fullView';
 			case 'mini':     return 'miniView';
-			case 'form':     return 'formView';
-			case 'custom':   return 'customView';
-			case 'fk_label': return 'fkLabelView';
-			default:         return code; // passthrough for custom types
+			case 'fk_label': return 'fkView';
+			default:         return null; // form, custom ignored for now
 		}
 	}
 
@@ -91,7 +89,7 @@ class MachineServerClass {
 			const code      = scheme.code as string;
 			const hasFields = hasFieldByScheme[code] ?? [];
 
-			const fields: MachineModel[string]['template']['fields'] = {};
+			const fields: MachineModel[string]['fields'] = {};
 			for (const hf of hasFields) {
 				const fieldCode = hf.gridFks?.appscheme_field?.code as string;
 				if (!fieldCode) continue;
@@ -113,7 +111,7 @@ class MachineServerClass {
 				};
 			}
 
-			const fks: MachineModel[string]['template']['fks'] = {};
+			const fks: MachineModel[string]['fks'] = {};
 			const gridFks = (scheme.gridFks ?? {}) as Record<string, any>;
 			for (const [key, fkItem] of Object.entries(gridFks)) {
 				if (META_FK_KEYS.has(key)) continue;
@@ -125,7 +123,7 @@ class MachineServerClass {
 			}
 
 			// Build _views from appscheme_view rows
-			const _views: Partial<EntityViews> = {};
+			const _views: Partial<FieldViews> = {};
 			const schemeViews = viewDocs.filter((v: any) =>
 				v.gridFks?.appscheme?.code === code
 			);
@@ -134,7 +132,7 @@ class MachineServerClass {
 				const fieldCode = v.gridFks?.appscheme_field?.code as string;
 				if (!viewTypeCode || !fieldCode) continue;
 
-				// Map view_type.code to EntityViews key
+				// Map view_type.code to FieldViews key
 				const viewKey = this._viewTypeToKey(viewTypeCode);
 				if (!viewKey) continue;
 
@@ -167,7 +165,7 @@ class MachineServerClass {
 		return model;
 	}
 
-	// ── deployModel — writes MachineModel into appscheme_* (destructive, voluntary) ──
+	// ── deployModel ─ writes MachineModel into appscheme_* (destructive, voluntary) ──
 
 	async deployModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
 		const org      = opts?.org ?? config.org;

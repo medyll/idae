@@ -956,9 +956,9 @@ export interface AppScheme<T = Record<string, any>> extends Extendable, WithEsse
 	/**
 	 * Dynamic views registry - populated at runtime from appscheme_view.
 	 * Keys are appscheme_view_type.code values ('list', 'mini', 'form', 'custom', 'fk_label', etc.)
-	 * @see EntityViews for standard view type definitions
+	 * @see FieldViews for standard view type definitions
 	 */
-	_views?:     Partial<EntityViews>;
+	_views?:     Partial<FieldViews>;
 	gridFks?:    {
 		[key: string]: gridFksItem;
 	};
@@ -1385,24 +1385,25 @@ export interface ViewFieldDef extends Extendable {
 	code: string;   // Field code
 	group: string;  // Group code (from appscheme_field_group.code)
 	title: string;             // Display title (from appscheme_field.name)
-	type?: string;             // Field type code (only in entityModel)
+	type?: string;             // Field type code (only in fullView)
 	icon?: string;             // Field icon
 	order?: number;            // Position in view (from appscheme_view.order)
 	options?: ViewOptions;     // View-specific options
 }
 
 /**
- * Collection of all named views for an entity.
- * Keys correspond to appscheme_view_type.code values.
+ * Named field selections for different display contexts.
+ * Populated at runtime from appscheme_view data.
+ *
+ * - fullView : all fields + fks (view_type 'list')
+ * - miniView : all primitive fields, no fks (view_type 'mini')
+ * - fkView   : fk fields only (view_type 'fk')
  */
-export interface EntityViews extends Extendable {
-	entityModel: ViewFieldDef[];   // Canonical field list - NOT a view, sourced from appscheme_has_field
-	listView: ViewFieldDef[];      // Grid columns (view_type 'list')
-	miniView: ViewFieldDef[];      // Card/mini-fiche (view_type 'mini')
-	formView: ViewFieldDef[];      // Form layout (view_type 'form')
-	customView: ViewFieldDef[];    // Admin-configured (view_type 'custom')
-	fkLabelView: ViewFieldDef[];   // FK selector labels (view_type 'fk_label')
-	[key: string]: ViewFieldDef[]; // Extensible for custom view types
+export interface FieldViews extends Extendable {
+	fullView?: ViewFieldDef[];     // All fields + fks (view_type 'list')
+	miniView?: ViewFieldDef[];     // Card/mini-fiche, no fks (view_type 'mini')
+	fkView?:   ViewFieldDef[];     // FK fields only
+	[key: string]: ViewFieldDef[] | undefined; // Extensible for custom view types
 }
 
 /**
@@ -1427,9 +1428,9 @@ export interface AppSchemeView extends Extendable, WithEssentials {
 }
 
 /**
- * Enhanced AppScheme with the _views registry.
+ * Enhanced AppScheme with the fieldViews registry.
  * The _views property is populated at runtime from appscheme_view data.
  */
-export interface AppSchemeWithViews<T = Record<string, any>> extends AppScheme<T> {
-	_views?: Partial<EntityViews>;
+export interface AppSchemeWithProfiles<T = Record<string, any>> extends AppScheme<T> {
+	_views?: Partial<FieldViews>;
 }

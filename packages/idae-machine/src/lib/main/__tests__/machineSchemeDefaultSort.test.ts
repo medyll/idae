@@ -8,18 +8,16 @@ function makeDb(model: Record<string, any>): MachineDb {
 }
 
 describe('MachineScheme.defaultSort', () => {
-	it('priority 1: returns template.sort when set', () => {
+	it('priority 1: returns defaultSort when set', () => {
 		const db = makeDb({
 			vehicles: {
 				keyPath: '++id',
 				fields: { id: { type: 'text' }, name: { type: 'text' } },
 				fks: {},
-				template: {
-					sort: [
-						{ field: 'status', direction: 'asc' },
-						{ field: 'name', direction: 'asc' },
-					],
-				},
+				defaultSort: [
+					{ field: 'status', direction: 'asc' },
+					{ field: 'name', direction: 'asc' },
+				],
 			},
 		});
 		const scheme = db.collection('vehicles');

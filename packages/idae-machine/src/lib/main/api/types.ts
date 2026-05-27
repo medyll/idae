@@ -1,34 +1,6 @@
-/**
- * View field definition
- */
-export interface ViewFieldDef {
-	name: string;
-	code?: string;
-	group?: string;
-	title: string;
-	type?: string;
-	icon?: string;
-	order?: number;
-	options?: {
-		width?: number;
-		sortable?: boolean;
-		visible?: boolean;
-		editable?: boolean;
-	};
-}
-
-/**
- * Views registry
- */
-export interface EntityViews {
-	entityModel: ViewFieldDef[];
-	listView: ViewFieldDef[];
-	miniView: ViewFieldDef[];
-	formView?: ViewFieldDef[];
-	customView?: ViewFieldDef[];
-	fkLabelView?: ViewFieldDef[];
-	[key: string]: ViewFieldDef[] | undefined;
-}
+// Re-export from canonical source — machine-model.ts is the single source of truth
+export type { ViewFieldDef, FieldViews } from '$lib/types/machine-model.js';
+import type { FieldViews } from '$lib/types/machine-model.js';
 
 /**
  * AppScheme type
@@ -37,7 +9,7 @@ export interface AppScheme {
 	id: string;
 	code: string;
 	name: string;
-	_views?: EntityViews;
+	_views?: FieldViews;
 	fields?: unknown[];
 	createdAt?: string;
 	updatedAt?: string;

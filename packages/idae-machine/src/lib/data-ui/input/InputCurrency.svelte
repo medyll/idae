@@ -9,6 +9,7 @@ Currency input with formatting.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
+	import { untrack } from 'svelte';
 	let {
 		value = '' as number | string,
 		error = null as string | null,
@@ -27,9 +28,9 @@ Currency input with formatting.
 
 	$effect(() => {
 		if (typeof value === 'number') {
-			inputValue = value.toFixed(decimalPlaces);
+			untrack(() => { inputValue = value.toFixed(decimalPlaces); });
 		} else {
-			inputValue = String(value ?? '');
+			untrack(() => { inputValue = String(value ?? ''); });
 		}
 	});
 

@@ -11,7 +11,7 @@ export { MachineApiError, NetworkError } from './errors.js';
 // Export types
 export type {
 	AppScheme,
-	EntityViews,
+	FieldViews,
 	ViewFieldDef,
 	HealthResponse,
 	SchemesResponse

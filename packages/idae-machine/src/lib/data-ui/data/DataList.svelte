@@ -8,6 +8,9 @@ Consumers can override via the item snippet.
 @prop {Where<COL>} [where]
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
+@prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
+@prop {string[]} [showFields] - Fields to display (overrides fieldViews.fullView)
+@prop {(record: COL) => void} [onItemClick] - Click handler for items/rows
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
 @prop {number} [page] - 1-based (only used when infiniteScroll=false)
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
@@ -20,10 +23,12 @@ Consumers can override via the item snippet.
 -->
 <script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { Snippet } from 'svelte';
-	import type { SortBy, Where } from '$lib/types/machine-model.js';
+	import { untrack } from 'svelte';
+	import type { SortBy, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
+	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import { parseLink } from '$lib/main/frame/linkParser.js';
 
 	interface PaginationInfo {
@@ -38,6 +43,9 @@ Consumers can override via the item snippet.
 		where,
 		sortBy,
 		groupBy,
+		mode: modeProp = 'list',
+		showFields,
+		onItemClick,
 		pageSize = 0,
 		page = 1,
 		infiniteScroll = true,
@@ -55,6 +63,9 @@ Consumers can override via the item snippet.
 		where?: Where<COL>;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
+		mode?: 'list' | 'table' | 'grid';
+		showFields?: string[];
+		onItemClick?: (record: COL) => void;
 		pageSize?: number;
 		page?: number;
 		infiniteScroll?: boolean;
@@ -70,6 +81,8 @@ Consumers can override via the item snippet.
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
 	} = $props();
 
+	let userMode = $state<'list' | 'table' | 'grid' | null>(null);
+	const currentMode = $derived(userMode ?? modeProp);
 
 	const store = $derived(collection ? machine.store(collection) : { items: [] as COL[] });
 	const collLogic = $derived(collection ? safeCollection(collection) : null);
@@ -83,6 +96,15 @@ Consumers can override via the item snippet.
 		collLogic?.template?.presentation
 			? (collLogic.template.presentation as string).split(/\s+/).filter(Boolean)
 			: undefined
+	);
+
+	const fieldViews = $derived(collLogic?.fieldViews ?? {});
+	const fullFields = $derived(
+		showFields?.length
+			? showFields
+			: (fieldViews.fullView ?? []).map((f: { name: string }) => f.name).length
+				? (fieldViews.fullView ?? []).map((f: { name: string }) => f.name)
+				: presentationFields
 	);
 
 	function getByPath(obj: unknown, path: string): unknown {
@@ -119,6 +141,10 @@ Consumers can override via the item snippet.
 		} else if (action === 'loadIn') {
 			machine.framer.loadIn(zone, module, navCollection, navId, linkVars);
 		}
+	}
+
+	function handleItemClick(record: COL): void {
+		onItemClick?.(record);
 	}
 
 	function renderPresentation(record: Record<string, unknown>): string {
@@ -164,7 +190,7 @@ Consumers can override via the item snippet.
 	$effect(() => {
 		void collection;
 		void where;
-		visibleCount = chunkSize;
+		untrack(() => { visibleCount = chunkSize; });
 	});
 
 	$effect(() => {
@@ -209,18 +235,45 @@ Consumers can override via the item snippet.
 	});
 </script>
 
-<!-- <div class="data-toolbar">
+<div class="data-toolbar">
 	<div class="mode-switcher">
-		<button type="button" class="mode-btn" class:active={currentMode === 'list'}    onclick={() => setMode('list')}>List</button>
-		<button type="button" class="mode-btn" class:active={currentMode === 'table'}   onclick={() => setMode('table')}>Table</button>
-		<button type="button" class="mode-btn" class:active={currentMode === 'actions'} onclick={() => setMode('actions')}>Actions</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'list'}  onclick={() => userMode = 'list'}>List</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'table'} onclick={() => userMode = 'table'}>Table</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'grid'}  onclick={() => userMode = 'grid'}>Grid</button>
 	</div>
-</div> -->
+</div>
+
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
+{:else if currentMode === 'table'}
+	<TableInline {collection} {where} onItemClick={handleItemClick} />
+{:else if currentMode === 'grid'}
+	<ul class="grid-list" role="list">
+		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+			<li class="grid-item panel panel-bordered">
+				<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
+					<div class="grid-item-content">
+						<DataFields
+							{collection}
+							data={record as Record<string, any>}
+							mode="show"
+							showFields={fullFields?.length ? fullFields : undefined}
+						/>
+					</div>
+				</button>
+			</li>
+		{/each}
+		{#if !paginatedItems.length}
+			{#if emptySnippet}
+				{@render emptySnippet()}
+			{:else}
+				<li class="data-list-empty">—</li>
+			{/if}
+		{/if}
+	</ul>
 {:else if groups}
-	{#each Array.from(groups) as [key, groupItems] (key)} 
-		<div class={groupClass ?? 'data-list-group'}> 
+	{#each Array.from(groups) as [key, groupItems] (key)}
+		<div class={groupClass ?? 'data-list-group'}>
 			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{/if}
 			<ul class={listClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
@@ -268,6 +321,41 @@ Consumers can override via the item snippet.
 
 <style>
 	@layer components {
+		.data-toolbar {
+			display: flex;
+			gap: 0.5rem;
+			margin-bottom: var(--gutter-sm);
+		}
+		.mode-switcher {
+			display: flex;
+			gap: 0.25rem;
+		}
+		.mode-btn {
+			padding: 0.25rem 0.75rem;
+			border: 1px solid var(--color-border);
+			background: var(--color-surface);
+			cursor: pointer;
+			border-radius: var(--radius-sm);
+		}
+		.mode-btn.active {
+			background: var(--color-primary);
+			color: var(--color-on-primary);
+			border-color: var(--color-primary);
+		}
+		.grid-list {
+			display: grid;
+			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+			gap: var(--gutter-md);
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		.grid-item-button {
+			all: unset;
+			display: block;
+			width: 100%;
+			cursor: pointer;
+		}
 		:global(.data-list-sentinel) {
 			height: 1px;
 			list-style: none;

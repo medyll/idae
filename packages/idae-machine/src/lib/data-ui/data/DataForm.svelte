@@ -14,7 +14,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-	import type { SortBy } from '$lib/types/machine-model.js';
+	import type { SortBy } from '$lib/types/index.js';
 	import DataFields from './DataFields.svelte';
 
 	let {

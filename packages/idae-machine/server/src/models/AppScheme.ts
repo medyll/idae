@@ -14,13 +14,10 @@ export interface ViewFieldDef {
 	};
 }
 
-export interface EntityViews {
-	entityModel: ViewFieldDef[];
-	listView: ViewFieldDef[];
-	miniView: ViewFieldDef[];
-	formView?: ViewFieldDef[];
-	customView?: ViewFieldDef[];
-	fkLabelView?: ViewFieldDef[];
+export interface FieldViews {
+	fullView?: ViewFieldDef[];
+	miniView?: ViewFieldDef[];
+	fkView?:   ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 
@@ -28,7 +25,7 @@ export interface IAppScheme {
 	id: string;
 	code: string;
 	name: string;
-	_views?: EntityViews;
+	_views?: FieldViews;
 	fields?: unknown[];
 	createdAt?: Date;
 	updatedAt?: Date;

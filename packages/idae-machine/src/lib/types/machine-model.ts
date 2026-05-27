@@ -4,7 +4,7 @@
  * 3-sibling structure per collection:
  *   - fields    : data definitions
  *   - fks       : relations
- *   - template? : display hints (templates only — presentation, future: sections, listColumns, fkLabelTpl, indexes…)
+ *   - template? : display hints (presentation only)
  *
  * `keyPath` stays at the root (used by IndexedDB + Mongo). Index field name is derived from keyPath
  * by stripping the '++' autoincrement prefix.
@@ -54,7 +54,7 @@ export interface MachineFkDef {
 
 // ── Display template ──────────────────────────────────────────────────────────
 /**
- * Display templates for a collection — UI/runtime hints only, no data structure.
+ * Display template for a collection — UI/runtime hint only, no data structure.
  *
  * `presentation` is a space-separated list of field accessors. Accessors support
  * dot notation to reach nested data and joined fk records, e.g.:
@@ -64,13 +64,38 @@ export interface MachineFkDef {
  */
 export interface MachineDisplayTemplate {
 	presentation?: string;
-	listColumns?:  string[];
-	sections?:     Record<string, string[]>;
-	fkLabelTpl?:   string;
-	indexes?:      Array<string | { fields: string[]; unique?: boolean; sparse?: boolean }>;
-	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */
-	sort?:         SortBy[];
-	[key: string]: unknown;
+}
+
+// ── Field views ───────────────────────────────────────────────────────────────
+/**
+ * Named field selections for different display contexts.
+ * Populated at runtime from appscheme_view data.
+ *
+ * - fullView : all fields + fks (default = all schema fields)
+ * - miniView : all primitive fields, no fks (default = schema fields minus fk keys)
+ * - fkView   : fk fields only (default = fk key fields)
+ */
+export interface FieldViews {
+	fullView?: ViewFieldDef[];
+	miniView?: ViewFieldDef[];
+	fkView?:   ViewFieldDef[];
+	[key: string]: ViewFieldDef[] | undefined;
+}
+
+export interface ViewFieldDef {
+	name:  string;
+	code?: string;
+	group?: string;
+	title: string;
+	type?: string;
+	icon?: string;
+	order?: number;
+	options?: {
+		width?: number;
+		sortable?: boolean;
+		visible?: boolean;
+		editable?: boolean;
+	};
 }
 
 // ── Rights policy ─────────────────────────────────────────────────────────────
@@ -94,25 +119,27 @@ export interface MachineRightsPolicy {
 // ── Collection model ──────────────────────────────────────────────────────────
 export interface MachineCollectionModel<T = any> {
 	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. */
-	keyPath:   string;
+	keyPath:     string;
 	/** MongoDB database module name (without org prefix). e.g. 'machine_user' → '{org}_machine_user'. */
-	base?:     string;
+	base?:       string;
 	/** TypeScript type hint for record shape (never stored at runtime). */
-	ts?:       T;
+	ts?:         T;
 	/** Data field definitions. */
-	fields:    Record<string, MachineFieldDef>;
+	fields:      Record<string, MachineFieldDef>;
 	/** Foreign key relationships. */
-	fks:       Record<string, MachineFkDef>;
-	/** Display template hints (presentation, future: sections, listColumns, indexes…). Optional. */
-	template?: MachineDisplayTemplate;
+	fks:         Record<string, MachineFkDef>;
+	/** Display template hint (presentation only). Optional. */
+	template?:   MachineDisplayTemplate;
+	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */
+	defaultSort?: SortBy[];
 	/** Structural rights policy — declared in schema, seeded as default grants by deployModel. */
-	rights?:   MachineRightsPolicy;
+	rights?:     MachineRightsPolicy;
 	/** Semantic role flags — written to appscheme doc by deployModel. Drive UI/validation/routing. */
-	isType?:   boolean;
-	isGroup?:  boolean;
-	isStatus?: boolean;
+	isType?:     boolean;
+	isGroup?:    boolean;
+	isStatus?:   boolean;
 	/** @deprecated kept for internal idae-idbql compat — not used by machine. */
-	model?:    unknown;
+	model?:      unknown;
 }
 
 // ── Model ─────────────────────────────────────────────────────────────────────

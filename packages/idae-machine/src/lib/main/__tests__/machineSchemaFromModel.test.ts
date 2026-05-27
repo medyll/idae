@@ -9,7 +9,7 @@
  */
 import { describe, it, expect } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import type { MachineModel } from '$lib/types/machine-model.js';
+import type { MachineModel } from '$lib/types/index.js';
 
 // Simulates what machineServer.getModel() returns for demoScheme
 const modelFromServer: MachineModel = {

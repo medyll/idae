@@ -6,6 +6,7 @@
  * Upsert: match on (collection + collection_value), increment count.
  */
 import { describe, it, expect, beforeEach } from 'vitest';
+import { createMockCollection } from './helpers/mockCollection.js';
 
 type HistoryDoc = {
 	id: string; collection: string; collection_value: unknown;
@@ -13,15 +14,7 @@ type HistoryDoc = {
 };
 
 function mockCollection() {
-	const docs: HistoryDoc[] = [];
-	return {
-		getAll: () => [...docs],
-		create: async (doc: HistoryDoc) => { docs.push(doc); return doc; },
-		update: async (id: string, data: Partial<HistoryDoc>) => {
-			const i = docs.findIndex((d) => d.id === id);
-			if (i !== -1) Object.assign(docs[i], data);
-		},
-	};
+	return createMockCollection<HistoryDoc>();
 }
 
 // ── inline patterns ──────────────────────────────────────────────────────────

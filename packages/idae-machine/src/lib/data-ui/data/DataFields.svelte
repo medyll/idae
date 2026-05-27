@@ -14,7 +14,7 @@ Iterates a record's fields and renders FieldDisplay for each.
 	import FieldDisplay from '$lib/data-ui/field/FieldDisplay.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
-	import type { SortBy } from '$lib/types/machine-model.js';
+	import type { SortBy } from '$lib/types/index.js';
 	import { getContext } from 'svelte';
 
 	let {

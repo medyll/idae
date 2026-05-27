@@ -11,6 +11,7 @@ import type {
 	MachineFieldDef,
 	MachineFkDef,
 	MachineDisplayTemplate,
+	MachineRightsPolicy,
 } from './machine-model.js';
 
 export const ENGINE_BASE = 'machine_app';
@@ -57,8 +58,7 @@ function buildCollection(decl: Record<string, unknown>): MachineCollectionModel 
 	return {
 		keyPath:  '++id',
 		base:     (decl.base as string | undefined) ?? ENGINE_BASE,
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		rights:   decl.rights as any ?? undefined,
+		rights:   decl.rights as MachineRightsPolicy | undefined ?? undefined,
 		isType:   decl.isType as boolean | undefined,
 		isGroup:  decl.isGroup as boolean | undefined,
 		isStatus: decl.isStatus as boolean | undefined,

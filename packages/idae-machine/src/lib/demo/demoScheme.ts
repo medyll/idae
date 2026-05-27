@@ -1,4 +1,4 @@
-import type { MachineModel } from '$lib/types/machine-model.js';
+import type { MachineModel } from '$lib/types/index.js';
 import { field } from '$lib/main/machine/fieldBuilder.js';
 
 export const demoScheme: MachineModel = {
