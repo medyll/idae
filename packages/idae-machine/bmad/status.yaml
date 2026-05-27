@@ -6,13 +6,13 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-27T21:10"
+last_updated: "2026-05-27T23:57"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 40 solidification runtime + cleanup batches landed; doc sync and final validation in progress."
-next_command: "bmad sprint"
-next_role: "scrum"
-active_role: "developer"
+next_action: "bmad-audit complete. Health score 8.5/10. 547/547 tests pass. Lint: 270 files drift + 2 parse errors fixed during audit. Action items: run pnpm format, fix DataList pageSize reactivity, break machine.ts↔MachineAction.ts circular dep."
+next_command: "bmad-dev-fix"
+next_role: "developer"
+active_role: "reviewer"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. Schedule removal after Sprint 40.
@@ -556,6 +556,19 @@ sessions:
       (5) CSS DataList: @layer components { :global(.data-list-link) } corrige justify-content + tree-shaking Svelte 5.
       Tests: 7+6+5 nouveaux tests. svelte-check 0 erreurs. Suite complète: 479/479.
     tests_server: 479
+    tests_client: 0
+
+  - date: "2026-05-27"
+    summary: >
+      bmad-audit (Reviewer): Full codebase audit. Health score 8.5/10.
+      Tests: 547/547 pass. check: 0 errors, 2 warnings (pre-existing DataList state_referenced_locally).
+      Lint: FAILED — 270 files drift + 2 Prettier parse errors (status.yaml + S25-04.md).
+      Fix applied: status.yaml added to .prettierignore; S25-04.md code block lang changed to text.
+      Security: no eval/innerHTML in source. Dependencies: 184 vulns (all transitive/upstream).
+      Issues flagged: (I1) Prettier parse errors, (I2) machine.ts↔MachineAction.ts circular dep,
+      (I3) format drift, (I4) DataList pageSize reactivity gap. Minor: shell/ directory debt, i18n leak in DataForm.
+      Artifact: bmad/artifacts/audit-2026-05-27.md. No blockers for release.
+    tests_server: 547
     tests_client: 0
 
   - date: "2026-05-25"

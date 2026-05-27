@@ -9,3 +9,6 @@ yarn.lock
 **/*.svelte.ts
 node_modules/
 dist/
+
+# BMAD status YAML contains folded scalars that Prettier's YAML parser cannot handle
+bmad/status.yaml
