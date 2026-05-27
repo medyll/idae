@@ -100,11 +100,12 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 				await store?.update(dataId, snapshot);
 			}
 
-			void machine.activity.log(mode === 'create' ? 'CREATE' : 'UPDATE', {
+			void machine.action('appuser_activity', {
+				code:             mode === 'create' ? 'CREATE' : 'UPDATE',
 				collection,
-				value: writtenId ?? '',
-				vars:  { fields: Object.keys(snapshot) }
-			});
+				collection_value: writtenId ?? '',
+				collection_vars:  { fields: Object.keys(snapshot) }
+			}, { touch: 'timestamp' });
 
 			onsubmit_callback?.({ mode, data: snapshot });
 		} catch (e) {
