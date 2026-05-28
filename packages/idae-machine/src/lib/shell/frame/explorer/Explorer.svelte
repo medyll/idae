@@ -32,7 +32,7 @@ Unified collection browser — thin wrapper around DataList with TemplateShell l
 
 	function openCard(record: COL): void {
 		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
-		machine.framer.loadFrame('card.form', collection, String(id));
+		void machine.framer.loadInDialog('card.form', collection, String(id));
 	}
 </script>
 

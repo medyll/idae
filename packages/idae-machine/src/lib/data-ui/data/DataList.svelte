@@ -229,6 +229,8 @@ Consumers can override via the item snippet.
 			machine.framer.loadFrame(module, navCollection, navId, linkVars, zone);
 		} else if (action === 'loadIn') {
 			machine.framer.loadIn(zone, module, navCollection, navId, linkVars);
+		} else if (action === 'loadInDialog') {
+			void machine.framer.loadInDialog(module, navCollection, navId, linkVars);
 		}
 	}
 

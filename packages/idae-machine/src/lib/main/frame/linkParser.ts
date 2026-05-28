@@ -1,5 +1,5 @@
 export interface ParsedLink {
-	action: 'loadFrame' | 'loadIn';
+	action: 'loadFrame' | 'loadIn' | 'loadInDialog';
 	module: string;
 	zone: string;
 }
@@ -11,7 +11,7 @@ export function parseLink(link: string): ParsedLink | null {
 	const colonIdx = base.indexOf(':');
 	if (colonIdx === -1) return null;
 	const action = base.slice(0, colonIdx);
-	if (action !== 'loadFrame' && action !== 'loadIn') return null;
+	if (action !== 'loadFrame' && action !== 'loadIn' && action !== 'loadInDialog') return null;
 	const module = base.slice(colonIdx + 1);
 	if (!module) return null;
 	return { action, module, zone };
