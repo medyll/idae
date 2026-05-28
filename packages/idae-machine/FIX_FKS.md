@@ -2,6 +2,9 @@
 
 > Author: Claude Opus 4.7 (Anthropic), 2026-05-29
 > Status: Investigation complete — no code written yet.
+>
+> Editor note: preserved and annotated by **GitHub Copilot CLI** (powered by **GPT-5.4**), 2026-05-29.
+> The original analysis remains below. A verification appendix was added in **Section 8** to separate confirmed facts from architectural choices and incorrect claims.
 
 ---
 
@@ -182,3 +185,128 @@ Audit and update all test files listed in §5. Fix `fk-X.id` assertions → `fk-
 | Tests | Assertions updated to match new types/values |
 
 Engine core: **no breaking changes**. All fix surface is UI components + demo data.
+
+---
+
+## 8. GitHub Copilot CLI verification appendix (2026-05-29)
+
+This appendix verifies the document against the current repository state. It does **not**
+restate every argument below; it only marks what is confirmed, what is incomplete, and
+what is still a decision rather than an established convention.
+
+### 8.1 Confirmed claims
+
+1. **Both demoScheme copies currently encode FK values as `.id` + numeric seed values.**
+   Verified in:
+   - `server/src/models/demo/demoScheme.ts`
+   - `src/lib/demo/demoScheme.ts`
+
+   Both files declare fields such as `categoryId: field('fk-category.id')` /
+   `locationOfficeId: field('fk-location_office.id')`, and both `demoSeed` blocks store
+   numeric FK values (`categoryId: 1`, `locationOfficeId: 1`, `vehicleId: 2`, etc.).
+
+2. **`MachineParserForge` preserves the FK suffix verbatim.**
+   Verified in `src/lib/main/machineParserForge.ts`: FK detection only checks the `fk-`
+   prefix and preserves the remainder of the type string as `fieldType`.
+
+3. **`MachineScheme.findFkField()` is schema-driven and extracts `targetIndex` from the
+   FK type string.**
+   Verified in `src/lib/main/machine/MachineScheme.ts`: it scans fields for
+   `fk-{collection}.` and returns both `{ fieldName, targetIndex }`.
+
+4. **`buildRelationWhere()` and `resolveForwardRelations()` are already target-index aware.**
+   Verified in `src/lib/data-ui/utils/dataRelationUtils.ts`: forward relations build
+   `{ [targetIndex]: value }`, so this path is compatible with both `.id` and `.code`.
+
+5. **`InputSelect.svelte` currently writes the target collection primary key, not the
+   declared FK target field.**
+   Verified in `src/lib/data-ui/input/InputSelect.svelte`: option values are keyed on
+   `scheme?.index ?? 'id'`.
+
+6. **`DataList.svelte` group-by FK labels are currently keyed on the target collection
+   primary key.**
+   Verified in `src/lib/data-ui/data/DataList.svelte`: the FK label map uses
+   `fkScheme?.index ?? 'id'`.
+
+### 8.2 Corrections and missing bug surface
+
+1. **`FieldDisplay.svelte` has two FK issues, not one.**
+
+   The document correctly identifies the edit-path issue (it drops `.id` / `.code` and
+   forwards only the collection to `InputSelect`), but it misses a second read-path issue:
+   the show-mode label resolution also keys on `fkScheme?.index ?? 'id'`.
+
+   Consequence: if a field becomes `fk-category.code`, read-only display will fall back to
+   the raw stored value unless `FieldDisplay` also uses the declared `targetIndex`.
+
+2. **`resolveReverseRelations()` is *not* agnostic to `.id` vs `.code`.**
+
+   The original Section 2 overstates this part. In
+   `src/lib/data-ui/utils/dataRelationUtils.ts`, reverse relations currently do:
+
+   - `const sourceId = record[scheme.index]`
+   - `where: buildRelationWhere(fkDef.fieldName, sourceId)`
+
+   That works for `.id`-based FKs, but after a migration to `fk-X.code`, reverse queries
+   would need the source record's **target field value** (for example `record.code`), not
+   always `record.id`.
+
+   This affects reverse-relation consumers such as `DataListRfk.svelte`.
+
+3. **“No changes needed there” is only true for forward relation resolution.**
+
+   The claim can be kept for:
+   - `MachineParserForge`
+   - `MachineScheme.findFkField`
+   - `buildRelationWhere`
+   - `resolveForwardRelations`
+
+   It should **not** be extended to reverse relation helpers or all FK display surfaces.
+
+### 8.3 Architectural choice, not verified repository convention
+
+The sentence below is a design direction, not a verified repository fact:
+
+> “The canonical ShapeFK model wants `code` (semantic, stable, sync-safe, human-readable in seed data).”
+
+I did **not** find repository evidence establishing `.code` as the current FK convention.
+What the code proves today is:
+
+- the engine can represent any `fk-X.Y` shape
+- the current demos and tests still use `.id`
+
+So moving to `.code` remains a valid architectural proposal, but it is still a **decision
+to confirm**, not a claim already enforced by the codebase.
+
+### 8.4 Audit results for Section 5
+
+| File | Verification result |
+|---|---|
+| `DataGroup.svelte` | Checked. No FK value/label resolution there; low risk for this migration. |
+| `engineModel.ts` | Checked. No hardcoded `fk-X.id` assumption found. |
+| `machineParserForge.test.ts` | Checked. Uses `.id` examples, but these are generic parser tests; they do **not** inherently need changing unless the accepted syntax itself changes. |
+| `machineSchemaFromModel.test.ts` | Partially checked. It references demoScheme FK fields; updates are only needed if field names or exact demo types change. |
+| `machineClient.test.ts` | Checked. Uses its own inline model with `fk-category.id`; not directly coupled to demoScheme migration. |
+| `fieldBuilder.test.ts` | Checked. Generic builder coverage only; no mandatory migration work. |
+| `RbacMatrix.svelte` | Checked. No FK type-string handling in this component; unrelated to this bug surface. |
+
+### 8.5 Revised conclusion
+
+The document correctly identifies a **real `.id` hardcoding problem** in current UI code,
+but the verified scope is slightly different from the original write-up:
+
+1. **Definitely affected now**
+   - `FieldDisplay.svelte` (edit path + show path)
+   - `InputSelect.svelte`
+   - `DataList.svelte` group-by FK branch
+   - `resolveReverseRelations()` if the repository migrates to `.code`
+
+2. **Already schema-agnostic**
+   - `MachineParserForge`
+   - `MachineScheme.findFkField`
+   - `buildRelationWhere`
+   - `resolveForwardRelations`
+
+3. **Still an open architectural decision**
+   - whether the repository should keep supporting `.id` as the dominant demo convention
+     or migrate the demos and seeds to `.code`
