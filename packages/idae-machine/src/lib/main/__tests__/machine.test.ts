@@ -36,57 +36,46 @@ describe('Machine', () => {
 
 	it('should initialize with demoScheme', () => {
 		expect(machine).toBeDefined();
-		expect(machine._model).toBe(demoScheme);
+		expect(machine._business).toBe(demoScheme);
 	});
 
-	it('should set dbName, version, and model via init', () => {
-		machine.init({ dbName: 'foo', version: 2, model: demoScheme });
+	it('should set dbName, version, and business model via init', () => {
+		machine.init({ dbName: 'foo', version: 2, business: demoScheme });
 		expect(machine._dbName).toBe('foo');
 		expect(machine._version).toBe(2);
-		expect(machine._model).toBe(demoScheme);
+		expect(machine._business).toBe(demoScheme);
 	});
 
-	it('keeps deprecated _model as a live alias of _business', () => {
+	it('should throw if boot is called without dbName', async () => {
 		const m = new Machine();
-		m._model = demoScheme;
-		expect(m._business).toBe(demoScheme);
-		expect(m._model).toBe(demoScheme);
-	});
-
-	it('should throw if start is called without dbName', async () => {
-		const m = new Machine();
-		await expect(m.start()).rejects.toThrow('dbName is required');
+		await expect(m.boot()).rejects.toThrow('dbName is required');
 	});
 
 	describe('moduleDbName()', () => {
 		it('returns org_base when org is set', () => {
 			const m = new Machine();
-			m.init({ model: demoScheme, org: 'test' });
+			m.init({ business: demoScheme, org: 'test' });
 			expect(m.moduleDbName('machine_base')).toBe('test_machine_base');
 			expect(m.moduleDbName('machine_app')).toBe('test_machine_app');
 		});
 
 		it('returns bare base when org is not set', () => {
 			const m = new Machine();
-			m.init({ model: demoScheme });
+			m.init({ business: demoScheme });
 			expect(m.moduleDbName('machine_base')).toBe('machine_base');
 		});
 	});
 
-	it('should create collections and store on start', async () => {
-		await machine.start();
+	it('should create collections and store on boot', async () => {
+		await machine.boot();
 		expect(machine.logic).toBeDefined();
 		expect(machine.store).toBeDefined();
 	});
 
 	it('should expose accessors for logic and store (qoolie-backed)', async () => {
-		await machine.start();
+		await machine.boot();
 		expect(machine.logic).toBe(machine._machineDb);
 		expect(typeof machine.store).toBe('function');
-		// idbql / indexedb / idbqModel are removed — managed internally by qoolie
-		expect(machine.idbql).toBeUndefined();
-		expect(machine.indexedb).toBeUndefined();
-		expect(machine.idbqModel).toBeUndefined();
 	});
 
 	it('exposes a constrained componentRegistry surface', () => {
@@ -101,7 +90,7 @@ describe('Machine', () => {
 	// --- S35-00: ADR-02 closure — machine.store() return shape ---
 	describe('machine.store() (S35-00)', () => {
 		it('returns an object with an items property', async () => {
-			await machine.start();
+			await machine.boot();
 			const result = machine.store('vehicle');
 			expect(result).toBeDefined();
 			expect(result).toHaveProperty('items');
@@ -114,9 +103,8 @@ describe('Machine', () => {
 		});
 	});
 
-	// --- fetchSchema ---
-	describe('fetchSchema()', () => {
-		it('fetches schema, sets model, and starts machine', async () => {
+	describe('boot() remote schema loading', () => {
+		it('fetches schema, sets business model, and starts machine', async () => {
 			const fakeModel = {
 				vehicle: {
 					keyPath: '++id', base: 'machine_user', model: {}, ts: {} as any,
@@ -129,28 +117,26 @@ describe('Machine', () => {
 			// indexedDB not available in test env — readSchemaCache returns null (cache miss)
 			const m = new Machine();
 			m.init({ dbName: 'fetch-test-db', version: 1, sync: { databaseHost: 'http://localhost' } });
-			// Override business to undefined to test fetchSchema sets it
+			// Override business to undefined to test boot() sets it
 			m._business = undefined;
-			m._model = undefined;
-			await m.fetchSchema('http://localhost/api/scheme');
-			expect(m._model).toEqual(fakeModel);
+			await m.boot();
+			expect(m._business).toEqual(fakeModel);
 			expect(m.logic).toBeDefined();
 			vi.unstubAllGlobals();
 		});
 	});
 
-	// --- S34-01: start() auto-fetchSchema when databaseHost is set ---
-	describe('start() auto-fetchSchema (S34-01)', () => {
+	describe('boot() auto-loads remote schema (S34-01)', () => {
 		it('starts immediately with local model when databaseHost is set', async () => {
 			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => demoScheme }));
 			const m = new Machine();
 			m.init({
 				dbName: 'auto-fetch-local',
 				version: 1,
-				model: demoScheme,
+				business: demoScheme,
 				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
 			});
-			await m.start();
+			await m.boot();
 			// Should have started immediately with local model
 			expect(m.logic).toBeDefined();
 			expect(m._effectiveModel).toBeDefined();
@@ -165,8 +151,7 @@ describe('Machine', () => {
 				version: 1,
 				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
 			});
-			// boot() tries fetch, no cache, no local model → fetch rejection propagates
-			await expect(m.start()).rejects.toThrow('Network error');
+			await expect(m.boot()).rejects.toThrow('Network error');
 			vi.unstubAllGlobals();
 		});
 
@@ -175,9 +160,9 @@ describe('Machine', () => {
 			m.init({
 				dbName: 'no-database-host',
 				version: 1,
-				model: demoScheme,
+				business: demoScheme,
 			});
-			await m.start();
+			await m.boot();
 			expect(m.logic).toBeDefined();
 			expect(m._effectiveModel).toBeDefined();
 		});
@@ -187,10 +172,10 @@ describe('Machine', () => {
 			m.init({
 				dbName: 'sync-false',
 				version: 1,
-				model: demoScheme,
+				business: demoScheme,
 				sync: false,
 			});
-			await m.start();
+			await m.boot();
 			expect(m.logic).toBeDefined();
 		});
 
@@ -224,7 +209,7 @@ describe('Machine', () => {
 				version: 1,
 				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
 			});
-			await m.start();
+			await m.boot();
 
 			// Verify data was pulled into collection
 			const vehicleCol = m.collection('vehicle');
@@ -239,7 +224,7 @@ describe('Machine', () => {
 	// --- Intégration MachineDb/MachineScheme ---
 	describe('integration: MachineDb/MachineScheme', () => {
 		beforeEach(async () => {
-			await machine.start();
+			await machine.boot();
 		});
 
 		it('should access a collection and its template', () => {

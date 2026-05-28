@@ -32,7 +32,7 @@ Consumers can override via the item snippet.
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
 	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
 	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
-	import DataToolbar from '$lib/shell/layout/DataToolbar.svelte';
+	import DataToolbar from '$lib/data-ui/controls/DataToolbar.svelte';
 	import { parseLink } from '$lib/main/frame/linkParser.js';
 
 	interface PaginationInfo {

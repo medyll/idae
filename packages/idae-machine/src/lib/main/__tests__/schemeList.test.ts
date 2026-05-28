@@ -17,7 +17,7 @@ function uniqueDbName(base: string) {
 
 async function createStartedMachine(dbName: string) {
 	const m = new Machine(dbName, 1, demoScheme);
-	await m.start();
+	await m.boot();
 	return m;
 }
 

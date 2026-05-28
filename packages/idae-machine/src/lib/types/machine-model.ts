@@ -138,7 +138,7 @@ export interface MachineCollectionModel<T = any> {
 	isType?:     boolean;
 	isGroup?:    boolean;
 	isStatus?:   boolean;
-	/** @deprecated kept for internal idae-idbql compat — not used by machine. */
+	/** Legacy compat slot kept for schema literals that still include `model: {}`. */
 	model?:      unknown;
 }
 
@@ -157,7 +157,7 @@ export function indexFromKeyPath(keyPath: string): string {
 /** Field type string — primitive or FK shorthand. */
 export type TplFieldType = string;
 
-/** Legacy string field rule format e.g. 'text-long (required)'. @deprecated prefer MachineFieldDef */
+/** Legacy string field rule format e.g. 'text-long (required)'. */
 export type TplFieldArgs = string;
 
 /** Object-form field rule — identical shape to MachineFieldDef. */

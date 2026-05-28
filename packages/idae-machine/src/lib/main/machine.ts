@@ -66,14 +66,14 @@ export class Machine {
 	 */
 	_version = 1;
 
-	/** System/framework collections (appscheme, appuser_*, …). Usually omitted — schema is fetched from the server via fetchSchema. */
+	/** System/framework collections (appscheme, appuser_*, …). Usually omitted — schema is fetched during boot(). */
 	_core?:                   MachineModel;
 
 	/** Application business collections (vehicle, reservation, …). */
 	_business?:               MachineModel;
 
 	/**
-	 * Effective model = system collections + user model. Built once at start().
+	 * Effective model = system collections + business model. Built once at boot().
 	 */
 	_effectiveModel!:         MachineModel;
 
@@ -106,7 +106,7 @@ export class Machine {
 	/** Socket client instance — created at start() if socketOptions provided */
 	_socketClient?: EventDataClientInstance;
 
-	/** Seed data for mobile-first mode — auto-called seedIfEmpty on boot if mode === 'mobile-first' */
+	/** Seed data for mobile-first mode — auto-called with onlyIfEmpty on boot if mode === 'mobile-first' */
 	_seed?: Record<string, unknown[]>;
 
 	/** Frame manager — handles dynamic frame registration and content loading */
@@ -123,18 +123,10 @@ export class Machine {
 	 * @role Constructor
 	 * @param {string=} dbName The name of the database.
 	 * @param {number=} version The schema version number.
-	 * @param {IdbqModel=} model The IDBQL data model.
+	 * @param {MachineModel=} business The business data model.
 	 */
-	constructor(dbName?: string, version?: number, model?: MachineModel) {
-		this.init({ dbName, version, business: model });
-	}
-
-	get _model(): MachineModel | undefined {
-		return this._business;
-	}
-
-	set _model(model: MachineModel | undefined) {
-		this._business = model;
+	constructor(dbName?: string, version?: number, business?: MachineModel) {
+		this.init({ dbName, version, business });
 	}
 
 	/**
@@ -145,12 +137,10 @@ export class Machine {
 	init(options?: {
 		dbName?:      string;
 		version?:     number;
-		/** System/framework collections. Usually omitted — schema is fetched from the server via fetchSchema. */
+		/** System/framework collections. Usually omitted — schema is fetched from the server during boot(). */
 		core?:        MachineModel;
 		/** Application business collections (vehicle, reservation, …). */
 		business?:    MachineModel;
-		/** @deprecated Use business instead. */
-		model?:       MachineModel;
 		org?:         string;
 		domain?:      string;
 		sync?:        SyncConfig | false;
@@ -160,7 +150,7 @@ export class Machine {
 			onError?:     (error: Error, context: SyncErrorContext) => void;
 		};
 		socket?:      MachineSocketOptions;
-		/** Seed data for mobile-first mode. When sync.mode === 'mobile-first', boot() auto-calls seedIfEmpty(seed). */
+		/** Seed data for mobile-first mode. When sync.mode === 'mobile-first', boot() auto-calls seed(seed, { onlyIfEmpty: true }). */
 		seed?:        Record<string, unknown[]>;
 	}) {
 		if (options?.org)    this._org    = options.org;
@@ -170,7 +160,7 @@ export class Machine {
 		this._dbName     = options?.dbName    ?? derived ?? this._dbName;
 		this._version    = options?.version   ?? this._version;
 		this._core       = options?.core      ?? this._core;
-		this._business   = options?.business  ?? options?.model ?? this._business;
+		this._business   = options?.business  ?? this._business;
 		this._syncOptions   = options?.sync        !== undefined ? options.sync : this._syncOptions;
 		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
 		this._hooks         = options?.hooks       ?? this._hooks;
@@ -218,7 +208,7 @@ export class Machine {
 	}
 
 	/**
-	 * @framework-bootstrap — called automatically by fetchSchema() and start().
+	 * @framework-bootstrap — called automatically during boot().
 	 * Not for application code. Detects IDB drift and upgrades stores immediately.
 	 */
 	async upgradeIdb(): Promise<void> {
@@ -230,11 +220,6 @@ export class Machine {
 			this._version = drift.newVersion;
 			await performIdbUpgrade(this._dbName, this._version, drift, this._effectiveModel);
 		}
-	}
-
-	/** @deprecated Use upgradeIdb(). */
-	async adaptIdbToSchema(): Promise<void> {
-		return this.upgradeIdb();
 	}
 
 	/**
@@ -311,35 +296,6 @@ export class Machine {
 	}
 
 
-	/** @deprecated Use boot() — single async entry point. */
-	async start(): Promise<void> {
-		return this.boot();
-	}
-
-	/**
-	 * @deprecated Schema fetch is internal to boot(). Use machine.boot({ sync: { databaseHost } }).
-	 * This method is a no-op shim kept for backward compatibility only.
-	 * Passing a URL here has no effect — schema loading happens automatically inside boot().
-	 */
-	async fetchSchema(_url: string): Promise<EventTarget> {
-		console.warn('[idae-machine] fetchSchema() is deprecated and the URL argument is ignored. Schema loading is handled automatically by boot(). Use machine.boot({ sync: { databaseHost } }) instead.');
-		if (this._machineDb && this._qoolie) {
-			return new EventTarget();
-		}
-		await this.boot();
-		return new EventTarget();
-	}
-
-	/**
-	 * Get the MachineDb (schema logic) instance.
-	 * @role Accessor
-	 * @deprecated Use logic instead.
-	 * @return {MachineDb} The schema and collection logic instance.
-	 */
-	get collections(): MachineDb {
-		return this._machineDb;
-	}
-
 	/**
 	 * Get the IDbBase (schema logic) instance.
 	 * Recommended accessor for schema and collection logic.
@@ -378,15 +334,6 @@ export class Machine {
 		return col;
 	}
 
-	/** @deprecated Qoolie manages the IDB instance internally. */
-	get idbql(): undefined { return undefined; }
-
-	/** @deprecated Qoolie manages the IDB instance internally. */
-	get indexedb(): undefined { return undefined; }
-
-	/** @deprecated Qoolie manages the IDB instance internally. */
-	get idbqModel(): undefined { return undefined; }
-
 	/** Access rights manager — checkAccess, setCurrentUser, setPolicies, etc. */
 	get rights() { return machineRights; }
 
@@ -408,7 +355,7 @@ export class Machine {
 
 	/**
 	 * Socket client — EventDataClientInstance from idae-socket.
-	 * Available after start() when socket options are provided.
+	 * Available after boot() when socket options are provided.
 	 * Call machine.socket.connect() manually unless autoConnect: true.
 	 */
 	get socket(): EventDataClientInstance | undefined {
@@ -522,24 +469,8 @@ export class Machine {
 		}
 	}
 
-	/** @deprecated Use machine.framer.loadFrame() */
-	loadFrame(
-		modulePath: string,
-		collection: string,
-		collectionId?: string,
-		vars?: Record<string, string>,
-		zone = 'main'
-	): void {
-		this._frameManager.loadFrame(modulePath, collection, collectionId, vars, zone);
-	}
-
 	/** Access to the frame manager singleton. */
 	get framer() {
-		return this._frameManager;
-	}
-
-	/** @deprecated Use machine.framer */
-	get frameManager() {
 		return this._frameManager;
 	}
 
@@ -560,17 +491,17 @@ export class Machine {
 	 * @param {string} [instanceName] Optional name to register the instance under.
 	 * @param {string} [dbName] Database name for the new instance.
 	 * @param {number} [version] Schema version for the new instance.
-	 * @param {IdbqModel} [model] IDBQL data model for the new instance.
+	 * @param {MachineModel} [business] Business data model for the new instance.
 	 * @returns {Machine} The newly created and started Machine instance.
 	 */
 	createInstance(
 		instanceName?: string,
 		dbName?: string,
 		version?: number,
-		model?: MachineModel
+		business?: MachineModel
 	): Machine {
 		const instance = new Machine();
-		instance.init({ dbName, version, business: model });
+		instance.init({ dbName, version, business });
 		if (instanceName) {
 			instance.instanceName = instanceName;
 			Machine.instanceRegistry[instanceName] = instance;

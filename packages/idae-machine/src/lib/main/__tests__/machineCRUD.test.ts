@@ -24,7 +24,7 @@ function uniqueDbName(base: string) {
 
 async function createStartedMachine(dbName: string) {
 	const m = new Machine(dbName, 1, demoScheme);
-	await m.start();
+	await m.boot();
 	return m;
 }
 
@@ -37,7 +37,7 @@ describe('S11-01: machine.collection() IDB CRUD round-trip', () => {
 		_dbCounter = 0;
 	});
 
-	describe('machine.start() with demoScheme — zero errors', () => {
+	describe('machine.boot() with demoScheme — zero errors', () => {
 		it('starts without throwing', async () => {
 			await expect(createStartedMachine(uniqueDbName('s11-start-test'))).resolves.toBeDefined();
 		});

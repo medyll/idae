@@ -1,7 +1,7 @@
 <!--
 DataToolbar.svelte
 Pure layout wrapper for data list controls (sort, group, find, mode switch, etc.).
-No data logic — composition only. Slots accept any controls from data-ui/controls.
+No data logic — composition only. Lives in data-ui so data-ui/data stays layer-pure.
 
 @snippet sort
 @snippet group

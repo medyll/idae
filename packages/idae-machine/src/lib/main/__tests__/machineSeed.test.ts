@@ -1,6 +1,6 @@
 /**
  * machineSeed.test.ts
- * Unit tests for seed() and seedIfEmpty() (backward-compat shim).
+ * Unit tests for seed().
  * The machine.collection() is mocked so no real IndexedDB is needed.
  */
 
@@ -30,7 +30,7 @@ vi.mock('$lib/main/machine.js', () => {
 });
 
 import { machine } from '$lib/main/machine.js';
-import { seed, seedIfEmpty } from '$lib/main/machineSeed.js';
+import { seed } from '$lib/main/machineSeed.js';
 
 function getStore(name: string) {
 	return (machine as unknown as { collection(n: string): ReturnType<typeof makeMockStore> }).collection(name);
@@ -129,33 +129,6 @@ describe('seed() — onlyIfEmpty option', () => {
 
 		expect(vehicleStore.create).not.toHaveBeenCalled();  // already had data
 		expect(categoryStore.create).toHaveBeenCalledOnce(); // was empty
-	});
-});
-
-describe('seedIfEmpty() — @deprecated shim', () => {
-	it('delegates to seed() with onlyIfEmpty:true', async () => {
-		const mockStore = {
-			create: vi.fn(),
-			getAll: vi.fn(async () => []),
-		};
-		(machine.collection as ReturnType<typeof vi.fn>).mockReturnValue(mockStore);
-
-		await seedIfEmpty({ vehicle: [{ brand: 'Renault' }] });
-
-		expect(mockStore.getAll).toHaveBeenCalledOnce();
-		expect(mockStore.create).toHaveBeenCalledOnce();
-	});
-
-	it('skips if data exists (same as seed with onlyIfEmpty)', async () => {
-		const mockStore = {
-			create: vi.fn(),
-			getAll: vi.fn(async () => [{ brand: 'Existing' }]),
-		};
-		(machine.collection as ReturnType<typeof vi.fn>).mockReturnValue(mockStore);
-
-		await seedIfEmpty({ vehicle: [{ brand: 'New' }] });
-
-		expect(mockStore.create).not.toHaveBeenCalled();
 	});
 });
 

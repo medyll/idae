@@ -1,6 +1,6 @@
 /**
  * machineIdbUpgrade.test.ts
- * Tests for S28-02 to S28-05: upgradeIdb(), adaptIdbToSchema(), fetchSchema integration, edge cases
+ * Tests for S28-02 to S28-05: upgradeIdb() integration and edge cases.
  */
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
@@ -29,8 +29,8 @@ describe('S28-02: upgradeIdb()', () => {
 
 	it('handles fresh install without error', async () => {
 		const m = new Machine();
-		m.init({ dbName: uniqueDbName('upgrade-fresh'), version: 1, model: minimalModel });
-		await m.start();
+		m.init({ dbName: uniqueDbName('upgrade-fresh'), version: 1, business: minimalModel });
+		await m.boot();
 		await expect(m.upgradeIdb()).resolves.not.toThrow();
 	});
 
@@ -40,37 +40,19 @@ describe('S28-02: upgradeIdb()', () => {
 	});
 });
 
-describe('S28-03: adaptIdbToSchema()', () => {
-	beforeEach(() => { uniqueId = 0; });
-	afterEach(() => { indexedDB = new IDBFactory(); });
-
-	it('adaptIdbToSchema is alias for upgradeIdb', () => {
-		const m = new Machine();
-		expect(typeof m.adaptIdbToSchema).toBe('function');
-		expect(m.adaptIdbToSchema).not.toBe(m.upgradeIdb); // different function, same behavior
-	});
-
-	it('adaptIdbToSchema throws before init', async () => {
-		const m = new Machine();
-		await expect(m.adaptIdbToSchema()).rejects.toThrow(/not initialized/);
-	});
-});
-
-describe('S28-04: fetchSchema() drift integration', () => {
+describe('S28-03: upgradeIdb() public surface', () => {
 	beforeEach(() => { uniqueId = 0; });
 	afterEach(() => {
 		indexedDB = new IDBFactory();
 		vi.unstubAllGlobals();
 	});
 
-	it('fetchSchema exposes adapter methods', async () => {
+	it('exposes upgradeIdb on the public API', async () => {
 		const m = new Machine();
-		m.init({ dbName: uniqueDbName('fetch-integration'), version: 1, model: minimalModel });
-		await m.start();
+		m.init({ dbName: uniqueDbName('fetch-integration'), version: 1, business: minimalModel });
+		await m.boot();
 
-		// Public API must exist — internals moved to machineIdbAdapter
 		expect(typeof m.upgradeIdb).toBe('function');
-		expect(typeof m.adaptIdbToSchema).toBe('function');
 	});
 });
 

@@ -35,11 +35,3 @@ export async function seed(
 		}
 	}
 }
-
-/**
- * Seed only if the collection is empty (idempotent).
- * @deprecated Use `seed(data, { onlyIfEmpty: true })` instead.
- */
-export async function seedIfEmpty(data: Record<string, unknown[]>): Promise<void> {
-	return seed(data, { onlyIfEmpty: true });
-}

@@ -1172,7 +1172,7 @@ export interface AppUserType extends Extendable, WithEssentials {
 	typeLevel?: number;
 }
 
-/** @deprecated Use AppUserType */
+/** Backward-compatible alias of AppUserType. */
 export type AppUserRole = AppUserType;
 
 /**

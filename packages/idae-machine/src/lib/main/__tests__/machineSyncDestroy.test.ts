@@ -35,14 +35,14 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 	describe('machine.init({sync:false})', () => {
 		it('starts without error', async () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-sync-false'), version: 1, model: demoScheme, sync: false });
-			await expect(m.start()).resolves.not.toThrow();
+			m.init({ dbName: uniqueDbName('s11-sync-false'), version: 1, business: demoScheme, sync: false });
+			await expect(m.boot()).resolves.not.toThrow();
 		});
 
 		it('machine.sync throws "not enabled"', async () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-sync-disabled'), version: 1, model: demoScheme, sync: false });
-			await m.start();
+			m.init({ dbName: uniqueDbName('s11-sync-disabled'), version: 1, business: demoScheme, sync: false });
+			await m.boot();
 			expect(() => m.sync).toThrow(/not enabled/);
 		});
 	});
@@ -56,11 +56,11 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 			m.init({
 				dbName:  uniqueDbName('s11-sync-config'),
 				version: 1,
-				model:   demoScheme,
+				business: demoScheme,
 				sync:    { databaseHost: 'http://localhost', mode: 'mobile-first' as any },
 			});
 			expect(m._syncOptions).toEqual({ databaseHost: 'http://localhost', mode: 'mobile-first' });
-			await expect(m.start()).resolves.not.toThrow();
+			await expect(m.boot()).resolves.not.toThrow();
 			vi.unstubAllGlobals();
 		});
 	});
@@ -71,54 +71,54 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 			m.init({
 				dbName:     uniqueDbName('s11-state-engine'),
 				version:    1,
-				model:      demoScheme,
+				business:   demoScheme,
 				stateEngine: 'stator',
 			});
-			await expect(m.start()).resolves.not.toThrow();
+			await expect(m.boot()).resolves.not.toThrow();
 		});
 	});
 
 	describe('machine.destroy()', () => {
-		it('after start() → machine._qoolie === undefined', async () => {
+		it('after boot() → machine._qoolie === undefined', async () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-destroy-after'), version: 1, model: demoScheme });
-			await m.start();
+			m.init({ dbName: uniqueDbName('s11-destroy-after'), version: 1, business: demoScheme });
+			await m.boot();
 			expect(m._qoolie).toBeDefined();
 			m.destroy();
 			expect(m._qoolie).toBeUndefined();
 		});
 
-		it('before start() → no-op, no throw', () => {
+		it('before boot() → no-op, no throw', () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-destroy-before'), version: 1, model: demoScheme });
+			m.init({ dbName: uniqueDbName('s11-destroy-before'), version: 1, business: demoScheme });
 			expect(() => m.destroy()).not.toThrow();
 			expect(m._qoolie).toBeUndefined();
 		});
 	});
 
-	// ── machine.sync before start ────────────────────────────────────────────
+	// ── machine.sync before boot ─────────────────────────────────────────────
 
-	describe('machine.sync before start()', () => {
+	describe('machine.sync before boot()', () => {
 		it('throws "Machine not started"', () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-sync-before-start'), version: 1, model: demoScheme });
+			m.init({ dbName: uniqueDbName('s11-sync-before-start'), version: 1, business: demoScheme });
 			expect(() => m.sync).toThrow(/Machine not started/);
 		});
 	});
 
-	// ── machine.collection() before/after start ──────────────────────────────
+	// ── machine.collection() before/after boot ───────────────────────────────
 
 	describe('machine.collection(name)', () => {
-		it('before start() throws', () => {
+		it('before boot() throws', () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-col-before'), version: 1, model: demoScheme });
+			m.init({ dbName: uniqueDbName('s11-col-before'), version: 1, business: demoScheme });
 			expect(() => m.collection('vehicle')).toThrow();
 		});
 
-		it('after start() returns QoolieCollection with CRUD verbs', async () => {
+		it('after boot() returns QoolieCollection with CRUD verbs', async () => {
 			const m = new Machine();
-			m.init({ dbName: uniqueDbName('s11-col-after'), version: 1, model: demoScheme });
-			await m.start();
+			m.init({ dbName: uniqueDbName('s11-col-after'), version: 1, business: demoScheme });
+			await m.boot();
 
 			const col = m.collection('category');
 			expect(col).toBeDefined();
@@ -139,13 +139,13 @@ describe('S11-04: machine.sync + machine.destroy()', () => {
 			m.init({
 				dbName:  uniqueDbName('s11-hooks'),
 				version: 1,
-				model:   demoScheme,
+				business: demoScheme,
 				hooks:   {
 					onSyncEvent: vi.fn(),
 					onError:     vi.fn(),
 				},
 			});
-			await expect(m.start()).resolves.not.toThrow();
+			await expect(m.boot()).resolves.not.toThrow();
 		});
 	});
 });

@@ -15,7 +15,7 @@ vi.mock('$lib/utils/logger.js', () => ({
 	logger: { info: vi.fn(), warn: vi.fn() }
 }));
 
-describe('Machine.loadFrame — URL-driven', () => {
+describe('machine.framer.loadFrame — URL-driven', () => {
 	let machine: Machine;
 
 	beforeEach(() => {
@@ -26,7 +26,7 @@ describe('Machine.loadFrame — URL-driven', () => {
 	});
 
 	it('pushes hash URL with /+zone/modulePath/collection', () => {
-		machine.loadFrame('explorer', 'vehicle');
+		machine.framer.loadFrame('explorer', 'vehicle');
 
 		expect(mockPush).toHaveBeenCalledTimes(1);
 		const url = mockPush.mock.calls[0][0] as string;
@@ -34,28 +34,28 @@ describe('Machine.loadFrame — URL-driven', () => {
 	});
 
 	it('includes collectionId in URL', () => {
-		machine.loadFrame('explorer', 'vehicle', '42');
+		machine.framer.loadFrame('explorer', 'vehicle', '42');
 
 		const url = mockPush.mock.calls[0][0] as string;
 		expect(url).toBe('/+main/explorer/vehicle/42');
 	});
 
 	it('serializes vars as query string', () => {
-		machine.loadFrame('explorer', 'vehicle', '42', { mode: 'card' });
+		machine.framer.loadFrame('explorer', 'vehicle', '42', { mode: 'card' });
 
 		const url = mockPush.mock.calls[0][0] as string;
 		expect(url).toBe('/+main/explorer/vehicle/42?mode=card');
 	});
 
 	it('uses explicit zone when provided', () => {
-		machine.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
+		machine.framer.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
 
 		const url = mockPush.mock.calls[0][0] as string;
 		expect(url).toBe('/+main.modal/explorer/vehicle');
 	});
 
 	it('omits vars query when empty', () => {
-		machine.loadFrame('explorer', 'vehicle', '42', {});
+		machine.framer.loadFrame('explorer', 'vehicle', '42', {});
 
 		const url = mockPush.mock.calls[0][0] as string;
 		expect(url).toBe('/+main/explorer/vehicle/42');
@@ -63,11 +63,5 @@ describe('Machine.loadFrame — URL-driven', () => {
 
 	it('exposes frameManager via framer getter', () => {
 		expect(machine.framer).toBe(machineFrameManager);
-	});
-
-	describe('@deprecated compat', () => {
-		it('exposes frameManager via deprecated frameManager getter', () => {
-			expect(machine.frameManager).toBe(machineFrameManager);
-		});
 	});
 });

@@ -19,6 +19,9 @@ export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 export { default as FieldDisplay } from '$lib/data-ui/field/FieldDisplay.svelte';
 export { default as FieldEditor }  from '$lib/data-ui/field/FieldEditor.svelte';
 
+// UI — data controls
+export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';
+
 // UI — input atoms
 export { default as InputBoolean }  from '$lib/data-ui/input/InputBoolean.svelte';
 export { default as InputCurrency } from '$lib/data-ui/input/InputCurrency.svelte';
