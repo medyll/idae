@@ -220,26 +220,27 @@ export class MachineFrameManager {
 			return;
 		}
 
-		// Frame not registered — check if a DOM zone exists
 		const zone = typeof document !== 'undefined'
 			? document.querySelector(`[data-target-zone="${frameId}"]`)
 			: null;
+
+		if (mountFn) {
+			await mountFn(frameId);
+			const fresh = this.registry.get(frameId);
+			if (fresh) {
+				fresh.load(modulePath, collection, collectionId, vars);
+				return;
+			}
+			if (zone) {
+				throw new Error(`[FrameManager] frame "${frameId}" failed to register after mount`);
+			}
+		}
 
 		if (!zone) {
 			throw new Error(`[FrameManager] frame "${frameId}" not found and no DOM zone [data-target-zone="${frameId}"] exists`);
 		}
 
-		if (!mountFn) {
-			throw new Error(`[FrameManager] frame "${frameId}" not registered — mountFn required to mount <Frame> in zone`);
-		}
-
-		// Mount the Frame (auto-registers on mount), then load
-		await mountFn(frameId);
-		const fresh = this.registry.get(frameId);
-		if (!fresh) {
-			throw new Error(`[FrameManager] frame "${frameId}" failed to register after mount`);
-		}
-		fresh.load(modulePath, collection, collectionId, vars);
+		throw new Error(`[FrameManager] frame "${frameId}" not registered — mountFn required to mount <Frame> in zone`);
 	}
 
 	/** Show a frame by calling controls.show(). Throws if not found. */

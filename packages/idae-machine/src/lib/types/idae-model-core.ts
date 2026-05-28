@@ -6,15 +6,30 @@
  * the runtime source of truth client-side and **must not** be read directly by UI
  * components, stores, or routing code.
  *
- * Runtime schema must come from the server, which reads MongoDB and exposes it via
- * `GET /api/scheme`. Client consumers should use:
- *   - `machine.boot({ sync: { databaseHost } })` — fetch + cache (SWR) into machine.logic
- *   - `machine.logic.collection(name)`           — read-only access after boot()
- *   - server-side: `MachineServer.getModel()` (reads appscheme_* from Mongo)
+ * ── Verified runtime flow (2026-05-29) ──────────────────────────────────────
  *
- * This area is still unstable — `machineModelBuilder` currently merges this file in
- * as a system baseline, which is a transitional shim that will be removed once
- * `fetchSchema` is required at app boot. Do not add new imports of this file.
+ *   Client:
+ *     machine.boot({ sync: { databaseHost } })
+ *       → loadSchema('<host>/api/scheme')      machineSchemaLoader.ts
+ *                                              SWR: IDB cache-first, refresh in background
+ *       → onModel  → machine._business = model
+ *       → buildEffectiveModel(_core, _business) machineModelBuilder.ts
+ *                                              merge, priority business > core
+ *       → machine.logic.collection(name)       read-only access after boot()
+ *
+ *   Server:
+ *     GET /api/scheme → MachineServer.getModel()   reads appscheme_* from MongoDB
+ *     MongoDB appscheme_* rows deployed at bootstrap from THIS file via
+ *     buildEngineModel() (engineModel.ts) + deployModel().
+ *
+ * So this file's ONLY job is the server seed. It is NOT read on the client and is
+ * NOT the runtime source of truth — the server-delivered schema is.
+ *
+ * Transitional shim: buildEffectiveModel still merges `_core` (this file) as a
+ * system baseline when no server schema is present. To be removed once the
+ * server schema is mandatory at boot. (Note: there is no `machine.fetchSchema()`
+ * method today — the runtime path is `boot()` → `loadSchema()`.) Do not add new
+ * imports of this file.
  *
  * ──────────────────────────────────────────────────────────────────────────────
  *
@@ -482,11 +497,13 @@ export const appModelDeclaration = {
 			base:   'machine_user',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {
-				id:    { required: true,  readonly: true  },
-				code:  { required: true,  readonly: false },
-				name:  { required: false, readonly: false },
-				order: { required: false, readonly: false },
-				value: { required: false, readonly: false },
+				id:               { required: true,  readonly: true  },
+				code:             { required: true,  readonly: false },
+				name:             { required: false, readonly: false },
+				order:            { required: false, readonly: false },
+				value:            { required: false, readonly: false },
+				collection:       { required: false, readonly: false },
+				collection_value: { required: false, readonly: false },
 			},
 			fks: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },

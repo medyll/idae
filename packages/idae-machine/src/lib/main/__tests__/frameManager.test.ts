@@ -142,6 +142,24 @@ describe('MachineFrameManager', () => {
 			delete (globalThis as any).document;
 		});
 
+		it('allows floating hosts to register without a DOM zone', async () => {
+			const querySelector = vi.fn().mockReturnValue(null);
+			(globalThis as any).document = { querySelector, body: { appendChild: vi.fn(), removeChild: vi.fn() } };
+
+			const controls = makeControls();
+
+			const mountFn = vi.fn().mockImplementation(async (frameId: string) => {
+				manager.register(frameId, controls);
+			});
+
+			await manager.load('dialog:card.form:vehicle:99', 'card.form', 'vehicle', '99', undefined, mountFn);
+
+			expect(mountFn).toHaveBeenCalledWith('dialog:card.form:vehicle:99');
+			expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '99', undefined);
+
+			delete (globalThis as any).document;
+		});
+
 		it('throws if mountFn succeeds but frame did not register', async () => {
 			const zone = { setAttribute: vi.fn() };
 			const querySelector = vi.fn().mockReturnValue(zone);

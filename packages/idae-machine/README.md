@@ -251,6 +251,30 @@ await machine.action(
 // opts: { upsertOn?, bump?, touch?, code?, userId? }
 ```
 
+#### Favorites (via `appuser_prefs`)
+
+`appuser_prefs` carries optional `collection` + `collection_value` fields, so favorites
+are just user-scoped prefs — no dedicated collection.
+
+```ts
+// Record-level favorite — fixed code 'fav' + collection/collection_value
+await machine.action(
+	'appuser_prefs',
+	{ code: 'fav', collection: 'vehicle', collection_value: '42', name: 'BMW X5', value: true },
+	{ upsertOn: ['collection', 'collection_value'] }
+);
+
+// Collection-level favorite (pinned to a zone) — leave collection/collection_value empty
+await machine.action(
+	'appuser_prefs',
+	{ code: 'menu_start_vehicle', name: 'Vehicles', value: true, order: 0 },
+	{ upsertOn: ['code'] }
+);
+
+// Read favorites
+machine.store('appuser_prefs').items.filter((p) => p.code === 'fav' && p.value === true);
+```
+
 ### Socket (real-time)
 
 ```ts

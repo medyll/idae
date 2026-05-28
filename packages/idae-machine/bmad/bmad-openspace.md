@@ -65,6 +65,15 @@ Passing explicit dbName to machine.init() = forbidden in app code.
 
 ---
 
+## 2026-05-28 — DataList control prop naming
+
+- Naming decision recorded for upcoming DataList toolbar refactor.
+- Use `showControlX` for UI control visibility props.
+- Canonical examples: `showControlSort`, `showControlGroup`, `showControlFind`, `showControlMode`.
+- Keep state props separate: `sortBy`, `groupBy`, `where`, `mode`.
+
+---
+
 ## 2026-04-24 — Reset to v2 planning (archived)
 
 v1 → maintenance mode. v2 = full-stack with server, auth, sync.  

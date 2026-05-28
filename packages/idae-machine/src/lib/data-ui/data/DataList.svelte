@@ -26,7 +26,7 @@ Consumers can override via the item snippet.
 	import { untrack } from 'svelte';
 	import type { SortBy, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
+	import { sortItems, groupItems, groupItemsResolved } from '$lib/data-ui/utils/explorerUtils.js';
 	import DataFields from '$lib/data-ui/data/DataFields.svelte';
 	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
@@ -318,6 +318,43 @@ Consumers can override via the item snippet.
 
 	const groups = $derived.by(() => {
 		if (!effectiveGroupBy || !paginatedItems.length) return undefined;
+
+		// Resolve FK labels when grouping by a foreign-key field
+		const fieldForge = collLogic?.fieldForge(effectiveGroupBy, {} as Record<string, unknown>);
+		const fkType = fieldForge?.fieldType;
+		let fkCollection: string | null = null;
+		if (typeof fkType === 'string' && fkType.startsWith('fk-')) {
+			fkCollection = fkType.replace('fk-', '').split('.')[0];
+		}
+
+		if (fkCollection) {
+			const fkScheme = (() => {
+				try {
+					return machine.logic.collection(fkCollection);
+				} catch {
+					return null;
+				}
+			})();
+			const fkIndexField = fkScheme?.index ?? 'id';
+			const fkPresentationFields = (fkScheme?.template?.presentation ?? 'name')
+				.split(' ')
+				.filter(Boolean);
+			const fkItems = machine.store(fkCollection).items as Record<string, unknown>[];
+			const labelMap = new Map<unknown, string>();
+			for (const item of fkItems) {
+				const id = item[fkIndexField];
+				const label = fkPresentationFields
+					.map((f: string) => item[f])
+					.filter((v: unknown) => v !== undefined && v !== null && v !== '')
+					.join(' ');
+				labelMap.set(id, label || String(id ?? '\u2014'));
+			}
+			return groupItemsResolved(paginatedItems, effectiveGroupBy, (item, field) => {
+				const raw = (item as Record<string, unknown>)[field];
+				return labelMap.get(raw) ?? String(raw ?? '\u2014');
+			});
+		}
+
 		return groupItems(paginatedItems, effectiveGroupBy);
 	});
 

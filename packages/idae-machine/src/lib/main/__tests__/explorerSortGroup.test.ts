@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { sortItems, groupItems } from '../../data-ui/utils/explorerUtils.js';
+import { sortItems, groupItems, groupItemsResolved } from '../../data-ui/utils/explorerUtils.js';
 
 describe('sortItems', () => {
 	const data = [
@@ -93,6 +93,37 @@ describe('groupItems', () => {
 
 	it('empty array returns empty Map', () => {
 		const result = groupItems([], 'status');
+		expect(result.size).toBe(0);
+	});
+});
+
+describe('groupItemsResolved', () => {
+	const data = [
+		{ id: '1', name: 'Zara', status: 'active' },
+		{ id: '2', name: 'Alice', status: 'inactive' },
+		{ id: '3', name: 'Bob', status: 'active' },
+		{ id: '4', name: 'Eve', status: null },
+	];
+
+	it('groups by resolved key', () => {
+		const result = groupItemsResolved(data, 'status', (item, field) => {
+			const raw = item[field as keyof typeof item];
+			return raw === 'active' ? 'A' : raw === 'inactive' ? 'I' : '\u2014';
+		});
+		expect(result.size).toBe(3);
+		expect(result.get('A')?.map((r) => r.id)).toEqual(['1', '3']);
+		expect(result.get('I')?.map((r) => r.id)).toEqual(['2']);
+		expect(result.get('\u2014')?.map((r) => r.id)).toEqual(['4']);
+	});
+
+	it('preserves insertion order', () => {
+		const result = groupItemsResolved(data, 'status', (item, field) => String(item[field as keyof typeof item] ?? '\u2014'));
+		const keys = Array.from(result.keys());
+		expect(keys).toEqual(['active', 'inactive', '\u2014']);
+	});
+
+	it('empty array returns empty Map', () => {
+		const result = groupItemsResolved([], 'status', (item, field) => String(item[field as keyof typeof item] ?? '\u2014'));
 		expect(result.size).toBe(0);
 	});
 });

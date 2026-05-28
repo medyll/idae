@@ -83,6 +83,27 @@ machine.action(collection, vars, opts?)
 await machine.action('appuser_history', { code: 'vehicle/42' }, { upsertOn: ['code'], bump: 'count', touch: 'lastSeen' });
 ```
 
+#### Favoris — via `appuser_prefs` (pas de collection dédiée)
+
+`appuser_prefs` porte `collection` + `collection_value` optionnels (alignés sur `appuser_activity`/`appuser_history`). Favoris = prefs user-scoped.
+
+```ts
+// Record-level: code fixe 'fav' + collection/collection_value (upsert dessus, pas de doublon)
+await machine.action('appuser_prefs',
+    { code: 'fav', collection: 'vehicle', collection_value: '42', name: 'BMW X5', value: true },
+    { upsertOn: ['collection', 'collection_value'] });
+
+// Collection-level (épinglé à une zone, façon legacy app_menu_start_*): laisser collection/collection_value vides
+await machine.action('appuser_prefs',
+    { code: 'menu_start_vehicle', name: 'Véhicules', value: true, order: 0 },
+    { upsertOn: ['code'] });
+
+// Lecture favoris record-level
+machine.store('appuser_prefs').items.filter((p) => p.code === 'fav' && p.value === true);
+```
+
+Granularité legacy = collection only (`agent_pref` booléens). Record-level = extension idae-machine.
+
 **Règle absolue:** Jamais `import { machineFrameManager }` ou `import { componentRegistry }` dans les composants UI. Toujours `machine.framer` / `machine.componentRegistry`.
 
 ### machine.framer — navigation frames
@@ -331,6 +352,17 @@ tsx server/src/bootstrap/bootstrap-demo.ts   # seed MongoDB
 | Refactor schema logic | → Refactoring rules ci-dessous + §8 invariants |
 | Tests rouges | `pnpm run test`, voir `src/lib/main/__tests__/` |
 | Write user-scoped (prefs/history/activity) | `machine.action(...)` — §4 |
+
+### Skills LLM — usage obligatoire
+
+Lorsque la tâche touche au HTML, au CSS, à la structure de composants UI ou au naming de fichiers/composants, les skills suivantes **doivent être activées** :
+
+| Skill | Quand l'utiliser |
+|-------|------------------|
+| `pseudo-html` | **AVANT** toute décision de structure HTML, de nom de composant, de tag custom, d'organisation de dossiers UI, ou de suffixe display-hint. Prend le pas sur toute convention HTML/CSS générique. |
+| `css-base` | Dès qu'il s'agit d'écrire du CSS, styler un composant, utiliser des tokens, des layouts, du dark mode, ou refactorer des styles. Guide la migration vers `@medyll/css-base`. |
+
+> **Règle:** `pseudo-html` détermine le *nom et la structure* ; `css-base` détermine le *style et les tokens*. Toujours consulter `pseudo-html` avant `css-base`.
 
 ### Workflow: nouveau field type
 

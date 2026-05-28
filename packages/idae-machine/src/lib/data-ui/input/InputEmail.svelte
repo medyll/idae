@@ -9,7 +9,7 @@ Email input with format validation.
 -->
 <script lang="ts">
 	let {
-		value = $bindable(''),
+		value = $bindable(),
 		error = null as string | null,
 		required = false,
 		disabled = false,

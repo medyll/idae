@@ -37,6 +37,10 @@
 - Files: camelCase for logic, PascalCase for components
 - Components: prefix = level (`Explorer*`, `Card*`, `Field*`, `Input*`)
 - Tests: `.test.ts` for logic, `.svelte.spec.ts` for components
+- Props UI de visibilité de contrôle: ordre sémantique `showControlX` (`showControlSort`,
+  `showControlGroup`, `showControlFind`, `showControlMode`)
+- Props métier / état séparées des props UI (`sortBy`, `groupBy`, `where`, `mode` ne doivent
+  pas être confondues avec les props `showControlX`)
 
 ## Schema field declaration
 

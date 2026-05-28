@@ -6,7 +6,7 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-28T20:14"
+last_updated: "2026-05-28T22:24"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
 next_action: "Sprint 40 closed. Scrum to groom release backlog: BACK-05 Playwright closure vs Sprint 41 deprecated API cleanup."
@@ -117,6 +117,18 @@ architecture:
         Signature : parseLink(link: string) => { action: string; module: string; zone: string } | null.
         Tests : linkParser.test.ts (7 tests) + dataListNavigate.test.ts (6 tests).
         frameUrl.ts extrait de machine.ts pour éviter import circulaire avec MachineFrameManager.
+
+    - id: ADR-05
+      title: "DataList control props — ordre sémantique showControlX"
+      status: decided
+      decision: >
+        Pour les props d'affichage des contrôles UI de DataList, adopter l'ordre sémantique
+        `showControlX` au lieu de `showXControl` ou `enableX`.
+        Exemples cibles : `showControlSort`, `showControlGroup`, `showControlFind`,
+        `showControlMode`. Cette famille nomme uniquement la visibilité des widgets UI.
+        Les props métier / état restent séparées : `sortBy`, `groupBy`, `where`, `mode`.
+        But : éviter l'ambiguïté entre état appliqué à la liste et affichage des contrôles,
+        tout en gardant un naming stable et lisible pour humains et LLMs.
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:

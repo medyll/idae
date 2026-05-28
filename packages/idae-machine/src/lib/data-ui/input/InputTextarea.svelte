@@ -10,7 +10,7 @@ Textarea input atom.
 @prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
-	let { value = $bindable(''), rows = 3, id, name, form, disabled = false } = $props<{
+	let { value = $bindable(), rows = 3, id, name, form, disabled = false } = $props<{
 		value?:    string;
 		rows?:     number;
 		id?:       string;

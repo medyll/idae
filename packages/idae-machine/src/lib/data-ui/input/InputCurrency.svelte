@@ -11,7 +11,7 @@ Currency input with formatting.
 <script lang="ts">
 	import { untrack } from 'svelte';
 	let {
-		value = $bindable('' as number | string),
+		value = $bindable(),
 		error = null as string | null,
 		currencySymbol = '$',
 		decimalPlaces = 2,
