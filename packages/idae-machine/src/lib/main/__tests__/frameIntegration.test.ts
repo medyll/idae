@@ -7,8 +7,8 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 		machineFrameManager.clear();
 	});
 
-	describe('frameManager direct dispatch', () => {
-		it('frameManager.load dispatches to registered controls', async () => {
+	describe('MachineFrameManager direct dispatch', () => {
+		it('MachineFrameManager.load dispatches to registered controls', async () => {
 			const controls: FrameControls = {
 				load: vi.fn(),
 				show: vi.fn(),
@@ -23,7 +23,7 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 			expect(controls.load).toHaveBeenCalledWith('explorer.list', 'vehicle', undefined, undefined);
 		});
 
-		it('frameManager.load passes collectionId + vars through', async () => {
+		it('MachineFrameManager.load passes collectionId + vars through', async () => {
 			const controls: FrameControls = {
 				load: vi.fn(),
 				show: vi.fn(),

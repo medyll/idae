@@ -8,8 +8,8 @@
  *
  * Runtime schema must come from the server, which reads MongoDB and exposes it via
  * `GET /api/scheme`. Client consumers should use:
- *   - `machine.fetchSchema(url)`         — fetch + cache (SWR) into machine.logic
- *   - `machine.logic.collection(name)`   — read-only access after start()
+ *   - `machine.boot({ sync: { databaseHost } })` — fetch + cache (SWR) into machine.logic
+ *   - `machine.logic.collection(name)`           — read-only access after boot()
  *   - server-side: `MachineServer.getModel()` (reads appscheme_* from Mongo)
  *
  * This area is still unstable — `machineModelBuilder` currently merges this file in

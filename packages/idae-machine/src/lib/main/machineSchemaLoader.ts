@@ -1,6 +1,6 @@
 /**
  * machineSchemaLoader.ts
- * Stale-while-revalidate schema fetching for machine.fetchSchema().
+ * Stale-while-revalidate schema fetching for machine.boot().
  * Reads from IDB cache, starts machine immediately, refreshes in background.
  */
 

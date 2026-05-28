@@ -1,5 +1,5 @@
 /**
- * IDB-backed schema cache for machine.fetchSchema().
+ * IDB-backed schema cache for remote schema loading during machine.boot().
  * Stores raw IdbqModel JSON keyed by URL in a dedicated _schema store.
  * Uses stale-while-revalidate: serve cache immediately, refresh in background.
  */

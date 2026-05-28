@@ -11,7 +11,7 @@ class MachineRights {
 
 	/**
 	 * Load structural rights policies from the MachineModel.
-	 * Call once at Machine.start() — after model is resolved.
+	 * Call once at Machine.boot() — after model is resolved.
 	 */
 	setPolicies(policies: Record<string, MachineRightsPolicy>): void {
 		this.#policies = policies;

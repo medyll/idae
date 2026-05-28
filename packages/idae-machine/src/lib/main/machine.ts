@@ -283,7 +283,7 @@ export class Machine {
 		if (actualVersion > this._version) this._version = actualVersion;
 		await this.createStore();
 
-		// Mobile-first auto-seed: run seedIfEmpty if mode='mobile-first' and seed data provided
+		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
 		const syncMode = (this._syncOptions && typeof this._syncOptions === 'object')
 			? (this._syncOptions as SyncConfig).mode
 			: undefined;

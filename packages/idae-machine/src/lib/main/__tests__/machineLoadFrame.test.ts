@@ -61,7 +61,7 @@ describe('machine.framer.loadFrame — URL-driven', () => {
 		expect(url).toBe('/+main/explorer/vehicle/42');
 	});
 
-	it('exposes frameManager via framer getter', () => {
+	it('exposes machineFrameManager via framer getter', () => {
 		expect(machine.framer).toBe(machineFrameManager);
 	});
 });

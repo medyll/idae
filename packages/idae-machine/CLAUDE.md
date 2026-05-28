@@ -1,7 +1,7 @@
 # CLAUDE.md — idae-machine AI Reference
 
 > Master reference for AI agents. Read this before touching any code.
-> Last updated: 2026-05-27
+> Last updated: 2026-05-28
 
 ---
 
@@ -52,8 +52,6 @@ Legacy source: `D:/development/idae-legacy/idae/web/mdl/app/`
 // Lifecycle
 machine.init({ core?, business?, org, domain, version, sync? })
 machine.boot()            // async entry point recommandé
-machine.start()           // @deprecated alias de boot()
-machine.fetchSchema(url)  // @deprecated no-op shim de compat
 machine.destroy()
 
 // Getters
@@ -63,13 +61,26 @@ machine.rights            → MachineRights (RBAC)
 machine.sync              → qoolie sync controller
 machine.socket            → EventDataClientInstance
 machine.router            → MachineRouter (URL dispatcher hash, auth guard)
-machine.framer            → MachineFrameManager  ← PAS frameManager (deprecated)
+machine.framer            → MachineFrameManager
 machine.componentRegistry → safe facade { register, registerMany, unregister, resolve, has, keys }
+machine.action            → write dispatcher, appelable: machine.action(collection, vars, opts?)
+machine.be                → builder helpers (query/field)
 
 // Helpers
 machine.collection(name)  → raw QoolieCollection (imperative CRUD)
 machine.moduleDbName(base)
-machine.loadFrame(...)    // @deprecated — utiliser machine.framer.loadFrame()
+```
+
+### machine.action — write dispatcher générique
+
+```ts
+// Point d'entrée unique pour tout write user-scoped (prefs/history/activity).
+// Remplace les wrappers par collection. Injecte id + userId automatiquement.
+machine.action(collection, vars, opts?)
+// opts: { upsertOn?: string[]; bump?: string; touch?: string; code?: string; userId?: string }
+
+// upsert sur clé naturelle, incrément count
+await machine.action('appuser_history', { code: 'vehicle/42' }, { upsertOn: ['code'], bump: 'count', touch: 'lastSeen' });
 ```
 
 **Règle absolue:** Jamais `import { machineFrameManager }` ou `import { componentRegistry }` dans les composants UI. Toujours `machine.framer` / `machine.componentRegistry`.
@@ -80,6 +91,7 @@ machine.loadFrame(...)    // @deprecated — utiliser machine.framer.loadFrame()
 // Navigation (ADR-04)
 machine.framer.loadFrame(modulePath, collection, collectionId?, vars?, zone?)
 machine.framer.loadIn(zone, modulePath, collection, collectionId?, vars?)
+machine.framer.loadInDialog(modulePath, collection, collectionId?, vars?)  // dialog flottant draggable, content-keyed
 // → construit URL hash → idae-router → MachineFrameManager monte la Frame dans la zone
 ```
 
@@ -96,7 +108,6 @@ machine.init({
 
 - `core` = collections système (appscheme_*, appuser_*) — surcharge le baseline
 - `business` = collections métier (vehicle, reservation...)
-- `model` = @deprecated, alias de `business`
 
 ---
 
@@ -133,10 +144,11 @@ export const myModel: MachineModel = {
 ```
 src/lib/
 ├── data-ui/              ← composants bas niveau, machine-aware
-│   ├── data/             → DataList, DataForm, DataFields, DataFk, DataRfk
+│   ├── data/             → DataList, DataForm, DataFields, DataFk, DataRfk, TableInline
+│   ├── controls/         → DataToolbar (export public), DataFind, DataGroup, DataSort
 │   ├── field/            → FieldDisplay, FieldEditor
 │   ├── input/            → InputBoolean, InputSelect, InputEmail, InputCurrency, InputTextarea
-│   └── fragments/        → Confirm, Skeleton, InfoLine...
+│   └── fragments/        → Confirm, Skeleton, InfoLine, Selector, dialog/ (Dialog + openDialog)...
 │
 └── shell/
     ├── Frame.svelte       ← mécanique frame dynamique (RACINE de shell, pas dans un sous-dossier)
@@ -160,7 +172,6 @@ src/lib/
 - `AppShell.svelte` → maintenant `TemplateShell.svelte`
 - `ExplorerTableInline.svelte` — remplacé par `data-ui/data/TableInline.svelte`
 - `CollectionNav.svelte` — supprimé. Remplacé par `<DataList collection="appscheme" linkCollectionField="code" />`
-- `machine.loadFrame()` — @deprecated. Utiliser `machine.framer.loadFrame()`
 
 ### Zones frame (data-target-zone)
 
@@ -244,7 +255,7 @@ SyncMode: `'server-first'` (MongoDB = source de vérité) | `'mobile-first'` (ID
 
 ## 8. Invariants (ne pas casser)
 
-1. `machine.init(opts)` puis `machine.start()` avant tout accès store/logic
+1. `machine.init(opts)` puis `machine.boot()` avant tout accès store/logic
 2. Tout passe par `machine.*` — pas d'imports directs des singletons internes
 3. `$state` dans `$effect` → utiliser `untrack()` autour des appels qui écrivent dans SvelteMap
 4. Svelte 5 runes uniquement (`$state`, `$derived`, `$effect`) — pas de `$:`, `onMount`, `export let`
@@ -277,8 +288,11 @@ tsx server/src/bootstrap/bootstrap-demo.ts   # seed MongoDB
 | `src/lib/main/machineModelBuilder.ts` | `buildEffectiveModel(core?, business?)` |
 | `src/lib/main/machineSchemaLoader.ts` | SWR schema fetch interne à `boot()` |
 | `src/lib/main/machineIdbAdapter.ts` | IDB drift detection + upgrade |
-| `src/lib/main/machineSeed.ts` | `seed()` + `seedIfEmpty()` |
+| `src/lib/main/machineSeed.ts` | `seed()` |
 | `src/lib/main/machine/MachineRights.ts` | RBAC — `loadPoliciesFromModel()` |
+| `src/lib/main/machine/MachineAction.ts` | Write dispatcher générique (`machine.action`) — upsert/bump/touch/code |
+| `src/lib/data-ui/fragments/dialog/dialog.svelte.ts` | `openDialog()` — mount Dialog flottant (préférer `framer.loadInDialog`) |
+| `src/lib/data-ui/controls/DataToolbar.svelte` | Toolbar find/group/sort au-dessus d'une DataList |
 | `src/lib/main/machine/MachineSocket.ts` | Socket client factory |
 | `src/lib/main/frame/MachineFrameManager.ts` | Registry frames (SvelteMap réactif) |
 | `src/lib/main/router/componentRegistry.ts` | registry des frame types (`explorer`, `card.form`, `rbac.matrix`, `fullinfo`) |
@@ -298,5 +312,51 @@ tsx server/src/bootstrap/bootstrap-demo.ts   # seed MongoDB
 - `shell/Frame.svelte` (mécanique) ≠ `shell/frame/` (types de frames)
 - `shell/Frame.svelte` (frame dynamique montée par router/framer) ≠ `data-ui/fragments/Frame.svelte` (layout exporté publiquement)
 - `TemplateShell` (shell complet avec sidebar) ≠ `App.svelte` (shell minimal sans sidebar)
-- `machine.framer` (correct) ≠ `machine.frameManager` (@deprecated)
+- `machine.framer` (surface publique) ≠ `machineFrameManager` (singleton interne)
 - `core` (collections système) ≠ `business` (collections métier)
+
+---
+
+## 11. Workflows agents
+
+> `AGENTS.md` est un symlink vers ce fichier — source unique.
+
+### Decision tree
+
+| Besoin | Aller à |
+|--------|---------|
+| Ajouter un field type | → Workflow field type ci-dessous |
+| Ajouter un composant UI | → §6 hiérarchie + checklist ci-dessous |
+| Fixer erreur de validation | `src/lib/main/machine/MachineSchemeValidate.ts` |
+| Refactor schema logic | → Refactoring rules ci-dessous + §8 invariants |
+| Tests rouges | `pnpm run test`, voir `src/lib/main/__tests__/` |
+| Write user-scoped (prefs/history/activity) | `machine.action(...)` — §4 |
+
+### Workflow: nouveau field type
+
+1. **Schema** — `field('rating', { required: true })` (import `$lib/main/machine/fieldBuilder.js`)
+2. **Input atom** — créer `src/lib/data-ui/input/InputRating.svelte`, props `$bindable`. Exporter dans `src/lib/index.ts`
+3. **Dispatch** — ajouter case dans `FieldDisplay` snippet `fieldInput`: `{:else if fieldForge.fieldType === 'rating'}`
+4. **MachineFieldType** (option) — `MachineSchemeFieldType.registerFieldType({ id, formatter, validator })`
+5. **Test** — `src/lib/main/__tests__/machineParserForge.test.ts`
+
+### Refactoring rules (avant modif `src/lib/main/`)
+
+1. `MachineDb` cache `MachineScheme` — invalider si changement parse logic
+2. `MachineParserForge` reste pur (no I/O, déterministe)
+3. Changements data layer = backward-compat (qoolie partagé monorepo)
+4. Deprecated = JSDoc `@deprecated` + chemin de migration
+
+### Checklist composant (Svelte 5)
+
+- Runes uniquement: `$state` `$derived` `$effect` `$props()` `$bindable()`. Pas de `$:` / `onMount` / `export let`
+- `{#each items as item (item.id)}` toujours keyé
+- Export ajouté au `index.ts` pertinent
+
+### Avant commit
+
+- [ ] `pnpm run check` — 0 erreur type
+- [ ] `pnpm run test` — vert
+- [ ] Runes Svelte 5 only
+- [ ] Nouveaux fields via `field()`, pas string rules
+- [ ] Exports ajoutés aux `index.ts`

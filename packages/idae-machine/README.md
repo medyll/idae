@@ -15,7 +15,7 @@
 
 - **`machine.boot()`** — Single async entry point: resolves schema (server cache-first SWR or local), detects IDB drift, creates stores, and hydrates. No partial render, no reactivity races.
 - **Unified Explorer** — Single `Explorer` component with four modes: `list`, `table`, `card`, `actions`. Driven by `_views` registry from MongoDB.
-- **Frame-based navigation** — Multi-window, tab-like UI with `machine.loadFrame()`, URL-driven state, and a reactive `TaskBar`.
+- **Frame-based navigation** — Multi-window, tab-like UI with `machine.framer.loadFrame()`, URL-driven state, and a reactive `TaskBar`.
 - **RBAC Matrix UI** — Visual grant editor to assign CRUDL permissions by group and collection.
 - **Image presets** — Dynamic image sizing (`thumb`, `banner`, `avatar`, ...) from schema definitions. Free notation (`free-800x600`) auto-creates on first request.
 - **DataList snippet API** — Composable list rendering with `item`, `groupHeader`, `empty`, and `footer` snippets.
@@ -119,7 +119,7 @@ await machine.boot({ org: 'myapp', domain: 'machine', version: 1, business: myMo
 </TemplateShell>
 
 <!-- Or open a record in a frame -->
-<button onclick={() => machine.loadFrame('card', 'users', userId)}>
+<button onclick={() => machine.framer.loadFrame('card.form', 'users', userId)}>
 	Edit user
 </button>
 ```
@@ -206,8 +206,11 @@ await scheme.validator.validateField('email', value);
 
 ```ts
 // Open a collection or record in a frame (tab-like window)
-machine.loadFrame('explorer', 'users');       // collection explorer
-machine.loadFrame('card', 'users', userId);   // edit record
+machine.framer.loadFrame('explorer', 'users');         // collection explorer
+machine.framer.loadFrame('card.form', 'users', userId); // edit record
+
+// Open in a floating draggable dialog (content-keyed, focuses if already open)
+machine.framer.loadInDialog('card.form', 'users', userId);
 
 // Frame controls via machine.framer singleton
 machine.framer.show(frameId);
@@ -230,6 +233,22 @@ machine.initRouter({ guard: (route) => machine.rights.canAccess(route.collection
 machine.rights.setCurrentUser(userId, groupId);
 machine.rights.checkAccess(collection, 'create');
 machine.rights.loadPoliciesFromModel(model);
+```
+
+### Actions — user-scoped write dispatcher
+
+```ts
+// Single entry point for any user-scoped write (prefs, history, activity).
+// Auto-injects `id` and `userId` from the current user.
+await machine.action('users_prefs', { theme: 'dark' }, { upsertOn: ['userId'] });
+
+// upsert on natural key + increment a counter + stamp a timestamp
+await machine.action(
+	'users_history',
+	{ code: 'users/42' },
+	{ upsertOn: ['code'], bump: 'count', touch: 'lastSeen' }
+);
+// opts: { upsertOn?, bump?, touch?, code?, userId? }
 ```
 
 ### Socket (real-time)
@@ -315,6 +334,7 @@ fields: {
 |-----------|-------------|
 | `Explorer` | Unified component — modes: `list`, `table`, `card`, `actions`. Props: `collection`, `mode`, `where`, `sortBy`, `groupBy`, `pageSize` |
 | `DataList` | Data provider + renderer. Snippets: `item`, `groupHeader`, `empty`, `footer` |
+| `DataToolbar` | Find / group / sort controls bar above a `DataList` |
 
 ### Card (record level)
 
@@ -385,7 +405,7 @@ Machine
   │           ├── parseReverseFks()      → reverse FK map
   │           └── validator              → MachineSchemeValidate
   │
-  └── machine.loadFrame(modulePath, collection, id?, vars?, zone?)  → MachineFrameManager
+  └── machine.framer.loadFrame(modulePath, collection, id?, vars?, zone?)  → MachineFrameManager
 ```
 
 **Data layer:** Qoolie → `@medyll/idae-idbql` (IndexedDB) + optional `@medyll/idae-sync` (outbox, retry, conflict resolution)  
@@ -424,8 +444,8 @@ import { MachineMultiBase } from '@medyll/idae-machine';
 ### Seed helpers
 
 ```ts
-import { seed, seedIfEmpty } from '@medyll/idae-machine';
-await seedIfEmpty({ users: [{ name: 'Admin' }] });
+import { seed } from '@medyll/idae-machine';
+await seed({ users: [{ name: 'Admin' }] }, { onlyIfEmpty: true });
 ```
 
 ---

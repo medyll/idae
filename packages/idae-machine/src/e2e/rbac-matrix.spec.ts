@@ -7,7 +7,7 @@ import { test, expect } from '@playwright/test';
  * - App.svelte: TaskBar + main content zone (no sidebar)
  * - TaskBar: "⊞ Explorer" button + open frames + dev/settings/user icons
  * - RbacMatrix registered as 'rbac.matrix' in componentRegistry
- * - Hash router: machine.loadFrame(componentKey, collection, collectionId?, vars?)
+ * - Hash router: machine.framer.loadFrame(componentKey, collection, collectionId?, vars?)
  *
  * Requires:
  * - MongoDB running (:27017)
