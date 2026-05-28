@@ -147,6 +147,20 @@ export class MachineScheme {
 		return out;
 	}
 
+	findFkField(targetCollection: string): { fieldName: string; targetIndex: string } | null {
+		for (const fieldName of Object.keys(this.fields)) {
+			const parsed = this.field(fieldName).parse();
+			const fieldType = parsed?.fieldType;
+			const prefix = `fk-${targetCollection}.`;
+			if (!fieldType?.startsWith(prefix)) continue;
+			return {
+				fieldName,
+				targetIndex: fieldType.slice(prefix.length)
+			};
+		}
+		return null;
+	}
+
 	parseReverseFks(): Record<string, Record<string, unknown>> {
 		const result: Record<string, Record<string, unknown>> = {};
 		Object.entries(this.#model).forEach(([collectionName, collectionModel]) => {
@@ -158,6 +172,37 @@ export class MachineScheme {
 				}
 			});
 		});
+		return result;
+	}
+
+	parseReverseFkFields(): Record<string, Record<string, MachineFkDef & {
+		fieldName?: string;
+		targetIndex?: string;
+	}>> {
+		const reverseFks = this.parseReverseFks();
+		const result: Record<string, Record<string, MachineFkDef & {
+			fieldName?: string;
+			targetIndex?: string;
+		}>> = {};
+
+		for (const [sourceCollection, relations] of Object.entries(reverseFks)) {
+			const sourceScheme = new MachineScheme(
+				sourceCollection as TplCollectionName,
+				this.#machineDb,
+				this.#model
+			);
+			result[sourceCollection] = {};
+			for (const [relationKey, relationDef] of Object.entries(relations)) {
+				const fkDef = relationDef as MachineFkDef;
+				const fieldInfo = sourceScheme.findFkField(this.collection);
+				result[sourceCollection][relationKey] = {
+					...fkDef,
+					fieldName: fieldInfo?.fieldName,
+					targetIndex: fieldInfo?.targetIndex
+				};
+			}
+		}
+
 		return result;
 	}
 }

@@ -8,6 +8,8 @@ export { default as Explorer }            from '$lib/shell/frame/explorer/Explor
 
 // data-ui — data providers (smart, machine-aware)
 export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
+export { default as DataListFk } from '$lib/data-ui/data/DataListFk.svelte';
+export { default as DataListRfk } from '$lib/data-ui/data/DataListRfk.svelte';
 export { default as DataForm }   from '$lib/data-ui/data/DataForm.svelte';
 export { default as DataFields } from '$lib/data-ui/data/DataFields.svelte';
 export { default as DataFk }     from '$lib/data-ui/data/DataFk.svelte';

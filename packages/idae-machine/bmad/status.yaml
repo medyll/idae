@@ -6,13 +6,13 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-28T15:30"
+last_updated: "2026-05-28T20:14"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "bmad-audit complete. Health score 8.5/10. 541/541 tests pass. svelte-check: 0 errors, 0 warnings. Lint: 272 files drift. New: flaky test in machineClient.test.ts (subsequent-boot timeout in full suite). Action items: fix flaky test, run pnpm format, DataList pageSize reactivity, machine.ts↔MachineAction.ts circular dep."
-next_command: "bmad-dev-fix"
-next_role: "developer"
-active_role: "reviewer"
+next_action: "Sprint 40 closed. Scrum to groom release backlog: BACK-05 Playwright closure vs Sprint 41 deprecated API cleanup."
+next_command: "bmad-backlog"
+next_role: "scrum"
+active_role: "tester"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. Schedule removal after Sprint 40.
@@ -120,6 +120,102 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 40
+    goal: "DataListFk & DataListRfk — schema-driven FK/RFK data viewers"
+    status: completed
+    stories:
+      - id: S40-01
+        title: "DataList opt-out prefs — prop usePrefs/prefsScope to disable user-prefs hydration"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "DataRelations.svelte.test.ts proves usePrefs=false bypasses persisted finder prefs and prefsScope isolates lookup scope."
+        test_result: pass
+        detail: >
+          Prerequisite for DataListFk/Rfk correctness. DataList AND-merges consumer `where` with
+          persisted user finder prefs (`appuser_prefs`, scope `datalist.{collection}`). This causes
+          FK-filtered records to disappear if the user has an active finder on the target collection.
+          Add `usePrefs?: boolean` (default true) or `prefsScope?: string` override to DataList.
+          When `usePrefs={false}`, skip hydration of userSortBy/userGroupBy/userFindWhere from
+          appuser_prefs and do not persist runtime changes. Implemented with proxy-safe pref
+          normalization before IndexedDB persistence so Svelte $state arrays/objects no longer
+          trigger DataCloneError in client tests.
+      - id: S40-02
+        title: "MachineScheme.findFkField + parseReverseFkFields — schema helpers"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "machineRelationHelpers.test.ts: findFkField + parseReverseFkFields covered."
+        test_result: pass
+        detail: >
+          Add `findFkField(targetCollection: string)` to MachineScheme.ts: scans `fields`, parses
+          each field via `field(name).parse()`, returns `{ fieldName, targetIndex }` where
+          `fieldType` matches `fk-{targetCollection}.{targetIndex}`. O(n) per call, negligible.
+          Add `parseReverseFkFields()`: wraps existing `parseReverseFks()` and enriches each entry
+          with the source-side `fieldName` via `findFkField(sourceCollection, this.collection)`.
+          Both methods are pure (no I/O). Update MachineScheme tests.
+      - id: S40-03
+        title: "DataListFk.svelte — forward FK data viewer"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "DataRelations.svelte.test.ts: forward relation render + fk filter + prefs isolation pass."
+        test_result: pass
+        detail: >
+          Wrapper around DataList. Props: `collection`, `recordId?`, `data?`, `fk?`, `showTitle?`,
+          forward DataList props. Resolves FK definitions from schema, maps each FK to the
+          corresponding data field via `findFkField`, builds `where` filter, renders one DataList
+          per FK target with `showToolbar={false}` and `usePrefs={false}`. Handles `multiple:true`
+          via `$in` operator. Three states: loading / found / absent (avoids false-negative
+          "Record non found" during live-query hydration). Implemented via shared relation
+          resolver utility and explicit unresolved-relation messages instead of silent skips.
+      - id: S40-04
+        title: "DataListRfk.svelte — reverse FK data viewer"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "DataRelations.svelte.test.ts: reverse relation render + fk filter + prefs isolation pass."
+        test_result: pass
+        detail: >
+          Wrapper around DataList. Props: `collection`, `recordId?`, `data?`, `fk?`, `showTitle?`,
+          forward DataList props. Consumes `parseReverseFkFields()` to discover all collections
+          pointing to the source record. Renders one DataList per source collection with
+          `where={ { fieldName: record.id } }`, `showToolbar={false}`, `usePrefs={false}`.
+          Three states: loading / found / absent.
+      - id: S40-05
+        title: "Tests unitaires — dataListFk.test.ts + dataListRfk.test.ts"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "machineRelationHelpers.test.ts: 5/5. DataRelations.svelte.test.ts: 9/9."
+        test_result: pass
+        detail: >
+          New test files in src/lib/main/__tests__/ or src/lib/data-ui/__tests__/. Mock schema
+          with vehicle/category/rental/demoScheme. Cases:
+            - findFkField resolves categoryId from vehicle fks.
+            - parseReverseFkFields resolves vehicleId from rental reverse fks.
+            - DataListFk renders DataList with correct `where` for each FK.
+            - DataListRfk renders DataList with correct `where` for each reverse FK.
+            - Loading state before store hydration.
+            - Absent state when record not found after hydration.
+            - `fk` prop filters to single relation.
+            - `multiple:true` builds `$in` where clause.
+      - id: S40-06
+        title: "Exports + svelte-check + full suite verification"
+        status: complete
+        effort: XS
+        tests_executed: true
+        test_output: >
+          svelte-check: 0 errors, 0 warnings. Full vitest suite: 555/555 passed.
+          Runtime build passes through Vite/SvelteKit packaging stage; prepack/publint still fail
+          on pre-existing package issues unrelated to Sprint 40
+          (@medyll/css-base link: dependency, missing dist/cli/add-skill.js bin target).
+        test_result: pass
+        detail: >
+          Export DataListFk + DataListRfk from src/lib/data-ui/data/index.ts and
+          src/lib/index.ts. Run pnpm run check (svelte-check: 0 errors). Run pnpm run test
+          (full suite green). Run pnpm run format if drift.
+
   - id: 39
     goal: "DataList navigation + MachineFrameManager migration"
     status: completed

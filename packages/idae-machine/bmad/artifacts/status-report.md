@@ -1,145 +1,127 @@
 # idae-machine — Status Report
 
-> v2.0: A full-stack, schema-driven application framework with real-time sync, offline-first data, and enterprise RBAC — delivering zero-config CRUD, visual navigation, and multi-tenant support for developers building data-intensive apps.
+> idae-machine is a schema-driven full-stack framework for building data-heavy apps with offline-first storage, real-time sync, and generated CRUD UI. The platform is already broadly functional; the current release sprint is hardening relational data views so linked records are easier to navigate and trust in production.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ## Product Overview
 
-  Progress   [██████████] 100%   Phase: release
+  Progress   [░░░░░░░░░░] 0%   Phase: release
 
 ### Features & Capabilities
 
   | Feature | Status | What it means for users |
   |---------|--------|------------------------|
-  | Schema-driven CRUD | ✅ Shipped | Define data models once — get API, UI, and validation automatically |
-  | Offline-first sync | ✅ Shipped | Work without internet, data syncs when connection returns |
-  | RBAC permissions | ✅ Shipped | Fine-grained access control with users, groups, roles, and grants |
-  | Real-time WebSocket | ✅ Shipped | Live data updates across all connected clients |
-  | Frame-based navigation | ✅ Shipped | Multi-window, tab-like UI with URL-driven state |
-  | Unified Explorer | ✅ Shipped | Single component for list, table, card, and action views |
-  | Image presets | ✅ Shipped | Dynamic image sizing and optimization from schema definitions |
-  | File & mail services | ✅ Shipped | Upload/download files and send templated emails out of the box |
-  | Schema validation | ✅ Shipped | Server-side data validation from schema rules, shared client/server |
-  | IDB drift detection | ✅ Shipped | IndexedDB auto-adapts to server schema changes — no manual migrations |
-  | DataList snippet API | ✅ Shipped | Composable list rendering with custom item, group, empty, and footer slots |
-  | RBAC Matrix UI | ✅ Shipped | Visual grant editor — assign CRUDL permissions by group and collection |
-  | Multi-database routing | ✅ Shipped | Data routed to correct MongoDB database per organization |
-  | Server seed pipeline | ✅ Shipped | Bootstrap demo data and business entities on first run |
-  | CORS & route ordering | ✅ Shipped | Express middleware correctly ordered before route handlers |
-  | SCHEMA-FROM-SERVER | ✅ Shipped | Auto-fetch schema on start — eliminates manual schema declarations |
-  | Client store hydration | ✅ Shipped | QOOLIE-SWR implemented in qoolie — transparent lazy SWR on cold IDB reads |
+  | Schema-driven CRUD platform | ✅ Shipped | Teams define collections once and immediately get consistent data screens, validation, and persistence behavior |
+  | Offline-first data sync | ✅ Shipped | Users can keep working locally and let the system reconcile with the server when connectivity returns |
+  | RBAC and admin controls | ✅ Shipped | Organizations can manage who sees and edits what through groups, roles, grants, and a visual matrix |
+  | Frame-based navigation | ✅ Shipped | Complex back-office flows can open records, views, and tools in a multi-pane UI instead of a flat page flow |
+  | Server-sourced schema delivery | ✅ Shipped | The app can boot from live schema definitions rather than hard-coded client declarations |
+  | Reusable DataList rendering | ✅ Shipped | Product screens can show lists, tables, grouping, sorting, and navigation from one composable primitive |
+  | FK/RFK related-record viewers | 🔨 Building | Users will be able to see linked records directly from a record context without wiring manual relation screens |
 
 ### What's Ready Now
 
-- Zero-config CRUD from schema definitions with server-side validation
-- Offline-first IndexedDB with automatic schema drift detection and upgrade
-- RBAC system with users, groups, roles, grants, and visual matrix editor
-- Real-time sync via WebSocket with conflict resolution
-- Frame-based multi-window navigation with URL state and task bar
-- Unified Explorer with list, table, card, and action modes
-- File upload/download with image presets and optimization
-- Email service with Markdown templates
-- Multi-tenant data routing (org-scoped MongoDB databases)
-- Bootstrap CLI and HTTP endpoints for demo data seeding
-- DataList composable API with snippet-based customization
-- Auto-fetch schema from server on `machine.start()` when `databaseHost` is set
-- ADR-02 — `machine.store(name)` wraps `useQoolieCollection`; `reactiveStore.svelte.ts` deleted
-- QOOLIE-SWR shipped — HydrationController, bulkUpsertSilent, revalidate, autoHydrate opt-out, lifecycle hooks
-- BACK-03 closed — cold IDB hydrates transparently from server on first read; machine.ts has zero pull logic
+- End-to-end schema-driven CRUD is already in place across client, server, and storage layers.
+- Offline-first IndexedDB plus SWR-style hydration is already shipping, so cold local reads can recover transparently from the server.
+- RBAC, Explorer navigation, frame management, and schema-from-server boot are already implemented.
+- DataList already supports filtering, grouping, sorting, toolbar controls, and navigation hooks as a reusable UI foundation.
 
 ### What's Coming Next
 
-- **Sprint 36:** Playwright RBAC suite (3 remaining tests), Svelte 5 warning fixes, mobile-first auto-seed
-- **Visual schema builder:** Drag-and-drop entity designers (far vision)
-- **Plugin marketplace:** Custom field types and components (far vision)
+- Deterministic FK-driven list views that ignore persisted user filters when they would hide related data incorrectly.
+- Schema helpers that resolve the real FK field name behind relation metadata, enabling safer relation introspection.
+- Forward and reverse linked-record viewers (`DataListFk`, `DataListRfk`) to surface related entities without custom screens.
+- Sprint verification work: exports, `svelte-check`, and full test coverage for the new relation viewers.
 
 ### Risks & Blockers
 
-- None identified for current development
+- Persisted `DataList` user preferences can currently hide FK-filtered results; Sprint 40 starts by neutralizing that for relation viewers.
+- Playwright RBAC backlog item `BACK-05` remains open, so release hardening is not fully closed yet.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ## Development Details
 
-  Sprint     S36 planned
+  Sprint     40
   Role       scrum → next: developer
-  Next cmd   `bmad-dev-story` (S36-01)
-  Last update 2026-05-25 00:00
+  Next cmd   `bmad-dev-story S40-01`
 
 ### Current Sprint
 
-  ✅ Done     Sprint 35: QOOLIE-SWR — HydrationController, bulkUpsertSilent, revalidate, autoHydrate. qoolie 206/206, idae-machine 472/472. BACK-03 closed.
-  🔨 Planned  Sprint 36: Playwright RBAC (3 tests), I1 Svelte 5 warnings, BL-01 mobile-first auto-seed
-  💡 Next     S36-01 — Playwright RBAC: group picker reveals matrix rows
-  ⚠️ Blockers None
+  ✅ Done     Sprint 39 completed the DataList navigation and `machine.framer` migration with passing targeted tests and `svelte-check`.
+  🔨 Doing    Sprint 40 is in progress: FK/RFK data viewers, prerequisite DataList prefs isolation, schema helpers, wrapper components, then verification.
+  💡 Next     S40-01 — add `usePrefs` / `prefsScope` control so relation viewers are not polluted by persisted `appuser_prefs`.
+  ⚠️ Blockers None beyond the known FK-viewer correctness issue already scoped into S40-01.
 
-### Stories (Sprint 36 — Planned)
+### Stories
 
   | ID | Title | Status | Effort |
   |----|-------|--------|--------|
-  | S36-01 | Playwright RBAC: group picker reveals matrix rows | ⬚ planned | M |
-  | S36-02 | Playwright RBAC: cell toggle persists across reload | ⬚ planned | M |
-  | S36-03 | Playwright RBAC: column bulk-toggle flips all cells | ⬚ planned | M |
-  | S36-04 | Fix I1: ExplorerTableInline state_referenced_locally warnings | ⬚ planned | S |
-  | S36-05 | BL-01: machine.init sync.seed — auto seedIfEmpty mobile-first | ⬚ planned | M |
-  | S36-06 | Tests + check — full suite verification | ⬚ planned | S |
+  | S40-01 | DataList opt-out prefs — prop usePrefs/prefsScope to disable user-prefs hydration | ⬚ todo | S |
+  | S40-02 | MachineScheme.findFkField + parseReverseFkFields — schema helpers | ⬚ todo | S |
+  | S40-03 | DataListFk.svelte — forward FK data viewer | ⬚ todo | M |
+  | S40-04 | DataListRfk.svelte — reverse FK data viewer | ⬚ todo | M |
+  | S40-05 | Tests unitaires — dataListFk.test.ts + dataListRfk.test.ts | ⬚ todo | M |
+  | S40-06 | Exports + svelte-check + full suite verification | ⬚ todo | XS |
 
-  Progress: 0/6 stories complete
-
-### Recent Sprint History
-
-  | Sprint | Goal | Status | Tests |
-  |--------|------|--------|-------|
-  | S35 | QOOLIE-SWR — transparent IDB hydration from server | ✅ done | qoolie 206/206 · machine 472/472 |
-  | S34 | SCHEMA-FROM-SERVER + store hydration | ✅ done | 470/470 |
-  | S33 | RBAC Matrix UI | ✅ done | 464/464 |
-  | S32 | DataList snippet API refactor | ✅ done | 456/456 |
-  | S31 | Server seed + qoolie sync server-first | ✅ done | pass |
-  | S30 | machine.init(core+business) | ✅ done | pass |
+  Progress: 0/6 stories
 
 ### Roadmap to Release
 
   #### Planning ✅
   - PRD: done
-  - Architecture: done
-  - Tech Spec: done
+  - Architecture/Spec: done
 
-  #### Development ✅
-  - Sprint 1-5: Foundation, data layer, real-time, router, polish ✅
-  - Sprint 6-12: Bootstrap, server API, validation, sync fixes ✅
-  - Sprint 15-16: Release prep, actions layer, soft delete, audit ✅
-  - Sprint 17-21: Schema validation, Explorer UX, hooks, files, mail, images ✅
-  - Sprint 22-25: Navigation layer, structural refactor, Frame Manager, Unified Explorer ✅
-  - Sprint 26-28: System rename, _views wiring, IDB drift detection ✅
-  - Sprint 29-33: Explorer vars, DataList refactor, RBAC Matrix, CORS/dbn fixes ✅
-  - Sprint 34: SCHEMA-FROM-SERVER + store hydration ✅
-  - ADR-02: machine.store(name) function — implemented ✅
-  - Sprint 35: QOOLIE-SWR — transparent IDB hydration ✅
-  - Sprint 36: Polish & Playwright RBAC — planned 🔨
+  #### Development 🔨
+  - Sprint 34: SCHEMA-FROM-SERVER + startup hydration ✅
+  - Sprint 35: QOOLIE-SWR and transparent cold-read hydration ✅
+  - Sprint 36: Playwright RBAC polish + mobile-first seed ✅
+  - Sprint 37: `machine.be` + input size support ✅
+  - Sprint 38: DataList infinite scroll ✅
+  - Sprint 39: DataList navigation + `machine.framer` migration ✅
+  - Sprint 40: FK/RFK data viewers 0/6 stories 🔨
 
-  #### Testing ✅
-  - Unit tests: 472/472 passing (39 files)
-  - E2E tests: Playwright golden path verified (6/9 RBAC), 3 remaining in S36
+  #### Testing 🔨
+  - Unit tests: previously green on completed stories; Sprint 40 verification pending
+  - E2E tests: backlog item `BACK-05` still open
 
-  #### Release ✅
-  - Docs/README: ✅ updated for v2 features
-  - CHANGELOG: ✅ updated for S29-S35
-  - Publish: ready — all blockers cleared
+  #### Release 🔨
+  - Docs/README: baseline docs present, release refresh pending Sprint 40 outcome
+  - CHANGELOG: pending current release-hardening sprint
+  - Publish: pending Sprint 40 verification and remaining release backlog
 
 ### Artifacts
 
   | Artifact | Status |
   |----------|--------|
-  | PRD | ✅ done |
-  | Architecture | ✅ done |
-  | Tech Spec | ✅ done |
-  | Sprint artifacts (S1-S36) | ✅ done |
-  | Test results (S35) | ✅ done — 472/472 |
-  | Conventions | ✅ maintained |
-  | INTENT.md | ✅ done |
-  | README (v2) | ✅ updated |
-  | CHANGELOG (v2) | ✅ updated |
+  | `bmad/artifacts/docs/PRD.md` | ✅ done |
+  | `bmad/artifacts/docs/ARCHITECTURE.md` | ✅ done |
+  | `bmad/artifacts/docs/TECH-SPEC-S1.md` | ✅ done |
+  | Historical sprint artifacts | ✅ done |
+  | `bmad/artifacts/status-report.md` | ✅ done |
+  | Sprint 40 story files | ⬚ pending |
+  | Sprint 40 test results | ⬚ pending |
+
+### Backlog
+
+  | ID | Priority | Title |
+  |----|----------|-------|
+  | BACK-05 | high | Playwright RBAC golden-path — 3 tests encore à passer |
+  | BL-02 | medium | explorerUtils.ts → data-ui/ — upward dependency to fix |
+  | BL-06 | medium | Système état sélection via data-collection / data-collection-id |
+  | BL-04 | low | shell/frame/index.ts — barrel to refresh |
+  | BL-05 | low | MachineDb reactive from IDB:appscheme — long-term vision |
+  | BACK-06 | low | FullInfo.svelte — implémenter le contenu (stub enregistré) |
+
+### Architecture Decisions
+
+  | ID | Status | Decision |
+  |----|--------|----------|
+  | ADR-01 | ✅ done | Pas de classes wrapper par collection système |
+  | ADR-02 | ✅ implemented | `machine.store(name)` = reactive, `machine.collection(name)` = imperative |
+  | ADR-03 | 🔲 decided | `DataList` autonome par défaut, `children` optionnel |
+  | ADR-04 | ✅ implemented | Link parser DataList + navigation via `machine.framer`; `CollectionNav` supprimé |
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   bmad continue   — execute next step

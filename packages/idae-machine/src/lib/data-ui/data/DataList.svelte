@@ -59,6 +59,8 @@ Consumers can override via the item snippet.
 		linkVars,
 		linkCollectionField,
 		showToolbar = true,
+		usePrefs = true,
+		prefsScope: prefsScopeProp,
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
@@ -83,6 +85,10 @@ Consumers can override via the item snippet.
 		linkCollectionField?: string;
 		/** Render the default toolbar (sort/group/find + mode switcher). */
 		showToolbar?: boolean;
+		/** Hydrate/persist appuser_prefs for this DataList instance. */
+		usePrefs?: boolean;
+		/** Override appuser_prefs scope key. Defaults to `datalist.{collection}`. */
+		prefsScope?: string;
 		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
@@ -111,14 +117,20 @@ Consumers can override via the item snippet.
 	let userGroupBy  = $state<string | undefined>(undefined);
 	let userFindWhere = $state<Record<string, unknown> | undefined>(undefined);
 
-	const prefsScope = $derived(`datalist.${collection}`);
+	const prefsScope = $derived(prefsScopeProp ?? `datalist.${collection}`);
 	let hydrated = $state(false);
 
+	function normalizePrefValue(value: unknown): unknown {
+		if (value == null || typeof value !== 'object') return value;
+		return JSON.parse(JSON.stringify(value));
+	}
+
 	function persistSlot(slot: string, value: unknown): void {
+		if (!usePrefs) return;
 		const scopeKey = `${prefsScope}.${slot}`;
 		void machine.action(
 			'appuser_prefs',
-			{ scopeKey, name: scopeKey, value },
+			{ scopeKey, name: scopeKey, value: normalizePrefValue(value) },
 			{ code: '{userId}:{scopeKey}', upsertOn: ['code'] }
 		);
 	}
@@ -127,7 +139,16 @@ Consumers can override via the item snippet.
 	// persistence effects below to avoid an immediate write-back of the initial empty state.
 	$effect(() => {
 		const scopeKey = prefsScope;
+		const prefsEnabled = usePrefs;
 		hydrated = false;
+		if (!prefsEnabled) {
+			userMode = null;
+			userSortBy = [];
+			userGroupBy = undefined;
+			userFindWhere = undefined;
+			hydrated = true;
+			return;
+		}
 		const user = machine.rights.currentUser;
 		if (!user) { hydrated = true; return; }
 		const prefix = `${String(user.id)}:${scopeKey}.`;
@@ -153,10 +174,10 @@ Consumers can override via the item snippet.
 		});
 	});
 
-	$effect(() => { const m = userMode;      if (hydrated) untrack(() => persistSlot('mode',    m)); });
-	$effect(() => { const s = userSortBy;    if (hydrated) untrack(() => persistSlot('sortBy',  s)); });
-	$effect(() => { const g = userGroupBy;   if (hydrated) untrack(() => persistSlot('groupBy', g ?? null)); });
-	$effect(() => { const w = userFindWhere; if (hydrated) untrack(() => persistSlot('find',    w ?? null)); });
+	$effect(() => { const m = userMode;      if (usePrefs && hydrated) untrack(() => persistSlot('mode',    m)); });
+	$effect(() => { const s = userSortBy;    if (usePrefs && hydrated) untrack(() => persistSlot('sortBy',  s)); });
+	$effect(() => { const g = userGroupBy;   if (usePrefs && hydrated) untrack(() => persistSlot('groupBy', g ?? null)); });
+	$effect(() => { const w = userFindWhere; if (usePrefs && hydrated) untrack(() => persistSlot('find',    w ?? null)); });
 
 	// AND-merge consumer where with finder where. Same field in both → finder wins.
 	const effectiveWhere = $derived.by(() => {
