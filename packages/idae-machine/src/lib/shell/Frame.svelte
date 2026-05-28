@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mount, unmount, untrack, type Component } from 'svelte';
+	import { untrack } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
 
@@ -19,42 +19,15 @@
 
 	let bodyEl: HTMLDivElement;
 	let visible = $state(true);
-	let currentApp: Record<string, unknown> | null = null;
-	let mountSeq = 0;
-
-	function doLoad(mp: string, col: string, colId?: string, v?: Record<string, string>) {
-		const seq = ++mountSeq;
-
-		machine.componentRegistry.resolve(mp).then((Comp) => {
-			if (seq !== mountSeq) return;
-			if (currentApp) {
-				unmount(currentApp);
-				currentApp = null;
-			}
-			const props: Record<string, unknown> = {
-				collection: col,
-				collectionId: colId,
-				dataId: colId,
-				vars: v,
-			};
-
-			currentApp = mount(Comp as Component<Record<string, unknown>>, { target: bodyEl, props });
-
-		}).catch((err) => {
-			console.error(`Error when loading component for modulePath "${mp}":`, err);
-		});
-	}
+	const host = machine.framer.createHost(() => bodyEl);
 
 	const controls: FrameControls = {
-		load: (mp, col, colId, v) => doLoad(mp, col, colId, v),
+		load: (mp, col, colId, v) => host.load(mp, col, colId, v),
 		show: () => { visible = true; },
 		hide: () => { visible = false; },
 		toggle: () => { visible = !visible; },
 		close: () => {
-			if (currentApp) {
-				unmount(currentApp);
-				currentApp = null;
-			}
+			host.destroy();
 			untrack(() => machine.framer.unregister(id));
 		},
 	};
@@ -63,14 +36,11 @@
 		// untrack: register/unregister write to SvelteMap — must not create read-dependency
 		untrack(() => machine.framer.register(id, controls, { replace: true }));
 		if (modulePath && collection) {
-			doLoad(modulePath, collection, collectionId, vars);
+			host.load(modulePath, collection, collectionId, vars);
 		}
 		return () => {
 			untrack(() => machine.framer.unregister(id));
-			if (currentApp) {
-				unmount(currentApp);
-				currentApp = null;
-			}
+			host.destroy();
 		};
 	});
 </script>

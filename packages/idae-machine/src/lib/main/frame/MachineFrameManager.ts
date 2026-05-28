@@ -2,8 +2,10 @@
  * MachineFrameManager — singleton registry for dynamic frame controls.
  * DOM-first: frames auto-register on mount, unregister on unmount.
  */
+import { mount, unmount, type Component } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { buildLoadInUrl } from './frameUrl.js';
+import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 
 export interface FrameControls {
 	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
@@ -11,7 +13,22 @@ export interface FrameControls {
 	hide: () => void;
 	toggle: () => void;
 	close: () => void;
+	/** Bring the frame to front + focus it. Optional — only floating frames (dialogs) implement it. */
+	focus?: () => void;
 }
+
+/**
+ * Mount engine shared by Frame.svelte and Dialog.svelte.
+ * Resolves a modulePath via componentRegistry and mounts it into the target element,
+ * guarding against out-of-order async resolution and unmounting the previous instance.
+ */
+export interface FrameHost {
+	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
+	destroy: () => void;
+}
+
+/** Resolves a human label for (collection, id) — injected by machine. */
+export type LabelResolver = (collection: string, collectionId?: string) => Promise<string | undefined>;
 
 export interface FrameRegisterOptions {
 	replace?: boolean;
@@ -29,6 +46,7 @@ export class MachineFrameManager {
 	private registry = new SvelteMap<string, FrameControls>();
 	private _pushFn?: (url: string) => void;
 	private _onNavigate?: (e: NavigationEvent) => void;
+	private _labelResolver?: LabelResolver;
 
 	/** Injected by machine at init — enables URL-based navigation from framer. */
 	setRouter(pushFn: (url: string) => void): void {
@@ -38,6 +56,61 @@ export class MachineFrameManager {
 	/** Injected by machine at init — fires after each loadFrame navigation. */
 	setNavigationHook(fn: (e: NavigationEvent) => void): void {
 		this._onNavigate = fn;
+	}
+
+	/** Injected by machine — resolves a record label (presentation) for dialog titles. */
+	setLabelResolver(fn: LabelResolver): void {
+		this._labelResolver = fn;
+	}
+
+	/** Resolve a human label for (collection, id). Falls back to undefined if no resolver set. */
+	async resolveLabel(collection: string, collectionId?: string): Promise<string | undefined> {
+		if (!this._labelResolver) return undefined;
+		try {
+			return await this._labelResolver(collection, collectionId);
+		} catch {
+			return undefined;
+		}
+	}
+
+	/**
+	 * Create a mount host bound to a target element (resolved lazily via getTarget).
+	 * Shared engine for Frame.svelte and Dialog.svelte — see FrameHost.
+	 */
+	createHost(getTarget: () => HTMLElement | undefined): FrameHost {
+		let seq = 0;
+		let current: Record<string, unknown> | null = null;
+
+		const destroy = () => {
+			if (current) {
+				unmount(current);
+				current = null;
+			}
+		};
+
+		return {
+			load: (modulePath, collection, collectionId, vars) => {
+				const s = ++seq;
+				componentRegistry.resolve(modulePath).then((Comp) => {
+					if (s !== seq) return;
+					const target = getTarget();
+					if (!target) return;
+					destroy();
+					current = mount(Comp as Component<Record<string, unknown>>, {
+						target,
+						props: {
+							collection,
+							collectionId,
+							dataId: collectionId,
+							vars
+						}
+					});
+				}).catch((err) => {
+					console.error(`[FrameManager] Error loading component for modulePath "${modulePath}":`, err);
+				});
+			},
+			destroy
+		};
 	}
 
 	/**
@@ -73,6 +146,31 @@ export class MachineFrameManager {
 		vars?: Record<string, string>
 	): void {
 		this.loadFrame(modulePath, collection, collectionId, vars, zone);
+	}
+
+	/**
+	 * Open the content in a floating draggable dialog (off-router).
+	 * frameId is content-keyed: reopening the same (modulePath, collection, id) focuses the
+	 * existing dialog instead of duplicating; different content stacks new dialogs.
+	 */
+	async loadInDialog(
+		modulePath: string,
+		collection: string,
+		collectionId?: string,
+		vars?: Record<string, string>
+	): Promise<void> {
+		const frameId = `dialog:${modulePath}:${collection}:${collectionId ?? ''}`;
+		// Already open → focus the existing dialog, don't reload/duplicate.
+		const existing = this.registry.get(frameId);
+		if (existing) {
+			existing.show();
+			existing.focus?.();
+			return;
+		}
+		await this.load(frameId, modulePath, collection, collectionId, vars, async (id) => {
+			const { openDialog } = await import('$lib/data-ui/fragments/dialog/dialog.svelte.js');
+			openDialog({ id });
+		});
 	}
 
 	/**

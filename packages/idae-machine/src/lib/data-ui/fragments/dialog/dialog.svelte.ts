@@ -1,13 +1,11 @@
-import { mount, unmount, type Snippet } from 'svelte';
+import { mount, unmount } from 'svelte';
 import Dialog from './Dialog.svelte';
 
 export interface OpenDialogOptions {
+	/** Frame id — content-keyed by framer.loadInDialog. */
+	id: string;
 	iconClose?: string;
 	center?: boolean;
-	/** Body content. */
-	children?: Snippet;
-	header?: Snippet;
-	footer?: Snippet;
 	/** Mount target. Defaults to document.body. */
 	target?: HTMLElement;
 	onClose?: () => void;
@@ -18,10 +16,12 @@ export interface DialogHandle {
 }
 
 /**
- * Imperatively open a floating draggable dialog.
- * Returns a handle with `.close()`. The dialog removes itself from the DOM on close.
+ * Mount a floating draggable Dialog frame on `target` (default body).
+ * Content is driven by framer: the Dialog auto-registers under `id`, then framer.load()
+ * calls controls.load() to mount the resolved component. Returns a handle with `.close()`.
+ * Prefer `machine.framer.loadInDialog(...)` over calling this directly.
  */
-export function openDialog(options: OpenDialogOptions = {}): DialogHandle {
+export function openDialog(options: OpenDialogOptions): DialogHandle {
 	const { target = document.body, onClose, ...props } = options;
 
 	let instance: Record<string, unknown> | undefined;
