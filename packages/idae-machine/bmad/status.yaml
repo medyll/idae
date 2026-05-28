@@ -6,10 +6,10 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-27T23:57"
+last_updated: "2026-05-28T15:30"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "bmad-audit complete. Health score 8.5/10. 547/547 tests pass. Lint: 270 files drift + 2 parse errors fixed during audit. Action items: run pnpm format, fix DataList pageSize reactivity, break machine.ts↔MachineAction.ts circular dep."
+next_action: "bmad-audit complete. Health score 8.5/10. 541/541 tests pass. svelte-check: 0 errors, 0 warnings. Lint: 272 files drift. New: flaky test in machineClient.test.ts (subsequent-boot timeout in full suite). Action items: fix flaky test, run pnpm format, DataList pageSize reactivity, machine.ts↔MachineAction.ts circular dep."
 next_command: "bmad-dev-fix"
 next_role: "developer"
 active_role: "reviewer"
@@ -543,6 +543,19 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-05-28"
+    summary: >
+      bmad-audit (Reviewer): Full codebase audit. Health score 8.5/10.
+      Tests: 541/541 pass. svelte-check: 0 errors, 0 warnings (improved from 2 warnings).
+      Lint: 272 files drift (+2 since last audit). No parse errors.
+      Critical finding: flaky test in machineClient.test.ts — "boot resolves without error on subsequent calls"
+      intermittently times out at 5000ms in full suite, passes in isolation. Likely test pollution.
+      Security: no eval/innerHTML. Changes reviewed: machineClient.test.ts, frameIntegration.test.ts,
+      machine.ts comments, schema cache comments. All trivial except flaky test exposure.
+      Artifact: bmad/artifacts/audit-2026-05-28.md.
+    tests_server: 541
+    tests_client: 0
+
   - date: "2026-05-27"
     summary: >
       Navigation refactor — DataList link props + MachineFrameManager migration.
@@ -639,6 +652,23 @@ backlog:
     title: "MachineDb reactive from IDB:appscheme — long-term vision"
     priority: low
     description: "machine.logic built from TS model at start(). Vision: read appscheme rows from IDB → collections emerge from sync."
+
+  - id: BL-06
+    title: "Système état sélection via data-collection / data-collection-id"
+    priority: medium
+    description: >
+      Vision: afficher l'état des éléments sélectionnés à partir de la présence des attributs
+      data-collection + data-collectionId dans le DOM. Convention déjà en place et centralisée
+      (MachineSchemeValues.getInputDataSet → src/lib/main/machine/MachineSchemeValues.ts:155),
+      émise par FieldDisplay via {...inputDataset}. Compatible mais 3 manques :
+      (1) Attributs émis au niveau CHAMP uniquement — pas sur le conteneur de ligne/carte.
+      Ajouter data-collection + data-collection-id sur les rows DataList (li/button :398,412),
+      grid-item (:367), TableInline tr — réutiliser le sous-ensemble collection+id de getInputDataSet.
+      (2) Gotcha nommage : data-collectionId est en camelCase → HTML le minuscule en data-collectionid
+      → el.dataset.collectionId NE fonctionne PAS. Renommer en data-collection-id (kebab) dans
+      getInputDataSet (MachineSchemeValues.ts:170 + type retour :159) + fallback FieldDisplay (:53).
+      (3) Aucun lecteur : construire le handler délégué / store de sélection qui lit
+      closest('[data-collection]') → { collection, collectionId }. Grep confirme zéro lecture actuelle.
 
   - id: BACK-05
     title: "Playwright RBAC golden-path — 3 tests encore à passer"

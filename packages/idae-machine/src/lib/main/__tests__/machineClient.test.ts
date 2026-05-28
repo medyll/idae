@@ -95,6 +95,7 @@ describe('Machine — boot with remote schema (mocked fetch)', () => {
 
 	beforeEach(() => {
 		fetchSpy = vi.fn().mockResolvedValue({
+			ok: true,
 			json: () => Promise.resolve(model),
 		});
 		vi.stubGlobal('fetch', fetchSpy);
@@ -139,12 +140,14 @@ describe('Machine — boot with remote schema (mocked fetch)', () => {
 
 		// First call: cache miss → stores model
 		fetchSpy.mockResolvedValueOnce({ ok: true, json: () => Promise.resolve(model) });
-		const m = new Machine();
-		m.init({ org: 'test', domain: 'fetchschema4', version: 1, sync: { databaseHost: 'http://localhost:3000' } });
-		await m.boot();
+		const first = new Machine();
+		first.init({ org: 'test', domain: 'fetchschema4', version: 1, sync: { databaseHost: 'http://localhost:3000' } });
+		await first.boot();
 
-		// Second boot: uses cached model, boot succeeds
+		// Second boot: new instance, same cache + same derived dbName
 		fetchSpy.mockResolvedValue({ ok: true, json: () => Promise.resolve(updatedModel) });
-		await expect(m.boot()).resolves.toBeUndefined();
+		const second = new Machine();
+		second.init({ org: 'test', domain: 'fetchschema4', version: 1, sync: { databaseHost: 'http://localhost:3000' } });
+		await expect(second.boot()).resolves.toBeUndefined();
 	});
 });
