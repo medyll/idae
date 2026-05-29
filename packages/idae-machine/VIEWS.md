@@ -101,14 +101,16 @@ end-to-end. Proposal H from the old doc is obsolete and has been dropped.
 
 These are real mismatches found while verifying. Listed as planning inputs.
 
-### 6.1 `form` is not a view type — remove it (misconception)
+### 6.1 `form` and `custom` are not view types — remove them (misconception)
 - `deployModel.ts:405` seeds `form` rows for every collection.
 - `MachineServer._viewTypeToKey` returns `null` for `form` → those rows are
   written to Mongo then discarded at build. Dead data.
-- `ViewTypeCode` union (`schema-types.ts`) lists `'form'` and `'custom'`.
+- `ViewTypeCode` union (`schema-types.ts`) lists both `'form'` and `'custom'`.
 - **Fix direction:** drop `form` from `deployModel` `viewDefs`; remove `'form'`
-  from `ViewTypeCode`. Form field composition is `DataForm`'s concern, not a view
-  type. (`custom` — see open question Q2.)
+  **and** `'custom'` from `ViewTypeCode`. Form field composition is `DataForm`'s
+  concern, not a view type. Custom views are not a named member — the only
+  extension path is the `[key: string]: ViewFieldDef[]` index signature on
+  `ViewFields`. Keep that signature; drop the named `'custom'` literal.
 
 ### 6.2 `fkView` comment / code mismatch
 - `schema-types.ts:~1400` comments `fkView = view_type 'fk'`.
@@ -185,7 +187,6 @@ State the contract so the two stop overlapping silently.
 
 ### Phase 3 — Richer metadata (only if consumers need it)
 - 6.3 fill `group`/`icon`/`options` in builder.
-- Decide `custom` semantics (Q2).
 
 ---
 
@@ -193,14 +194,12 @@ State the contract so the two stop overlapping silently.
 
 1. **Reactivity** — `_views` is built once at model load. If `appscheme_view`
    changes at runtime, should `viewFields` refresh? (Needs reactive wrap.)
-2. **`custom` view type** — keep it in `ViewTypeCode`? Namespaced
-   (`custom.<name>`) or free-form via the `[key: string]` index signature?
-3. **`ViewOptions` reach** — `width`/`sortable`/`visible`/`editable` exist in the
+2. **`ViewOptions` reach** — `width`/`sortable`/`visible`/`editable` exist in the
    type but are never built or read. Wire them, extend (`component`,
    `conditional`, `transform`), or trim the type to what's real?
-4. **Deprecate `template.presentation`?** Once `viewFields` is the source, is
+3. **Deprecate `template.presentation`?** Once `viewFields` is the source, is
    `presentation` a permanent lightweight fallback or a migration target?
-5. **User-configurable views?** Per-user field order/visibility persisted in
+4. **User-configurable views?** Per-user field order/visibility persisted in
    `appuser_prefs` — in scope or out?
 
 ---
