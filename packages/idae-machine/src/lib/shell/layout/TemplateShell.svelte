@@ -33,7 +33,7 @@
 
 	<!-- Main content zone -->
 	<main class="shell-main" data-collection={collection} data-collection-id={collectionId}>
-		<div class="shell-frame-zone" data-target-zone={zoneId}>
+		<div class="shell-frame-zone" data-target-zone={zoneId} data-taskbar="false">
 			{@render children?.()}
 		</div>
 	</main>

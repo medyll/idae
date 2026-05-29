@@ -59,7 +59,7 @@
 		position: fixed;
 		top: 36px;
 		right: 8px;
-		z-index: 9999;
+		z-index: var(--z-dropdown);
 		min-width: 280px;
 		box-shadow: 0 4px 16px rgba(0,0,0,.2);
 		border-radius: 6px;

@@ -20,6 +20,7 @@ Iterates a record's fields and renders DataField for each.
 	let {
 		collection = getContext('collection'),
 		data = $bindable(),
+		collectionId,
 		mode = 'show',
 		showFields,
 		sortBy,
@@ -28,7 +29,8 @@ Iterates a record's fields and renders DataField for each.
 		inputForm
 	}: {
 		collection: string;
-		data: Record<string, any>;
+		data?: Record<string, any>;
+		collectionId?: string | number;
 		mode?: 'show' | 'create' | 'update';
 		showFields?: string[];
 		sortBy?: SortBy | SortBy[];
@@ -36,6 +38,19 @@ Iterates a record's fields and renders DataField for each.
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
 	} = $props();
+
+	let fetchedData = $state<Record<string, any> | undefined>(undefined);
+
+	$effect(() => {
+		if (data !== undefined || !collection || !collectionId) return;
+		const id = isNaN(Number(collectionId)) ? collectionId : Number(collectionId);
+		(async () => {
+			const store = machine.collection(collection);
+			fetchedData = (await store.get(id as any)) ?? undefined;
+		})();
+	});
+
+	const effectiveData = $derived(data ?? fetchedData);
 
 	function safeScheme(name: string) {
 		try { return machine.logic.collection(name); } catch { return null; }
@@ -71,12 +86,12 @@ Iterates a record's fields and renders DataField for each.
 			<fieldset class="field-group">
 				<legend>{key}</legend>
 				{#each groupFields as { key: fieldName } (fieldName)}
-					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
+					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || !effectiveData || fieldName in effectiveData)}
 						<div class="field">
 							{#if mode === 'show'}
-								<DataField {collection} {fieldName} {mode} {data} {inputForm} />
+								<DataField {collection} {fieldName} {mode} data={effectiveData ?? {}} {inputForm} />
 							{:else}
-								<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />
+								{#if data !== undefined}<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />{/if}
 							{/if}
 						</div>
 					{/if}
@@ -88,12 +103,12 @@ Iterates a record's fields and renders DataField for each.
 	<div class="form">
 		{#if scheme && fieldNames.length}
 			{#each fieldNames as fieldName (fieldName)}
-				{#if scheme.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
+				{#if scheme.fields?.[fieldName] && (mode !== 'show' || !effectiveData || fieldName in effectiveData)}
 					<div class="field">
 						{#if mode === 'show'}
-							<DataField {collection} {fieldName} {mode} {data} {inputForm} />
+							<DataField {collection} {fieldName} {mode} data={effectiveData ?? {}} {inputForm} />
 						{:else}
-							<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />
+							{#if data !== undefined}<DataField {collection} {fieldName} {mode} bind:data={data as Record<string,unknown>} {inputForm} />{/if}
 						{/if}
 					</div>
 				{/if}

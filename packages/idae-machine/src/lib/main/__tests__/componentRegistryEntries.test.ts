@@ -39,15 +39,20 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('fullinfo')).toBe(true);
 	});
 
-	it('has exactly 5 entries', () => {
+	it('has "synthesis" registered (semantic alias for Synthesis.svelte)', () => {
+		expect(componentRegistry.has('synthesis')).toBe(true);
+	});
+
+	it('has exactly 6 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(5);
+		expect(keys).toHaveLength(6);
 		expect(keys.sort()).toEqual([
 			'card.form',
 			'explorer',
 			'explorer.content',
 			'fullinfo',
 			'rbac.matrix',
+			'synthesis',
 		]);
 	});
 });

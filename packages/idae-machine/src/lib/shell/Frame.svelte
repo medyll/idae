@@ -9,12 +9,14 @@
 		collection,
 		collectionId,
 		vars,
+		taskbar = true,
 	}: {
 		id: string;
 		modulePath?: string;
 		collection?: string;
 		collectionId?: string;
 		vars?: Record<string, string>;
+		taskbar?: boolean;
 	} = $props();
 
 	let bodyEl: HTMLDivElement;
@@ -30,6 +32,7 @@
 			host.destroy();
 			untrack(() => machine.framer.unregister(id));
 		},
+		taskbar: untrack(() => taskbar),
 	};
 
 	$effect(() => {

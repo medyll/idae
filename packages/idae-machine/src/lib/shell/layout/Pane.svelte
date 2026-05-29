@@ -49,7 +49,7 @@
 		position: fixed;
 		inset: 0;
 		background: rgba(0, 0, 0, 0.4);
-		z-index: 999;
+		z-index: var(--z-overlay);
 	}
 
 	.pane {
@@ -62,7 +62,7 @@
 		background: var(--color-surface);
 		border-radius: 12px;
 		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-		z-index: 1000;
+		z-index: var(--z-overlay);
 		display: flex;
 		flex-direction: column;
 		overflow: hidden;

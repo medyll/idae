@@ -4,7 +4,9 @@
 
 	let { devSlot }: { devSlot?: Snippet } = $props();
 
-	let openFrames = $derived(machine.framer.openFrames);
+	let openFrames = $derived(
+		[...machine.framer.openFrames].filter(([, c]) => c.taskbar !== false)
+	);
 
 	function openExplorer() {
 		machine.framer.loadFrame('explorer', 'vehicle');
@@ -21,7 +23,7 @@
 
 	<!-- Center: open frames -->
 	<div class="taskbar-frames">
-		{#each [...openFrames] as [frameId, controls]}
+		{#each openFrames as [frameId, controls]}
 			<div class="taskbar-item">
 				<button type="button" class="taskbar-btn" onclick={() => controls.toggle()}>
 					{frameId}

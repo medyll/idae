@@ -59,4 +59,5 @@ componentRegistry.registerMany({
 	'card.form':            () => import('$lib/data-ui/data/DataForm.svelte'),
 	'rbac.matrix':          () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
 	'fullinfo':             () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
+	'synthesis':            () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
 });

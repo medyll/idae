@@ -199,9 +199,19 @@ class MachineServerClass {
 		registerSchemeRoutes();
 		registerAuthRoutes();
 
+		const allowedOrigins = config.corsOrigin.split(',').map((s) => s.trim()).filter(Boolean);
+		const corsOrigin = (origin: string | undefined, cb: (err: Error | null, allow?: boolean) => void) => {
+			// No origin = same-origin request, curl, server-to-server — allow.
+			if (!origin) return cb(null, true);
+			if (allowedOrigins.includes(origin)) return cb(null, true);
+			// Dev: any localhost port (Vite may pick 5174+ when 5173 is taken).
+			if (config.nodeEnv !== 'production' && /^https?:\/\/localhost:\d+$/.test(origin)) return cb(null, true);
+			cb(new Error(`CORS: origin not allowed: ${origin}`));
+		};
+
 		idaeApi.setOptions({
 			port: config.port,
-			cors: { origin: config.corsOrigin, credentials: true },
+			cors: { origin: corsOrigin, credentials: true },
 			enableCompression: true,
 			payloadLimit: '1mb',
 			idaeDbOptions: {

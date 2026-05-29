@@ -81,10 +81,12 @@ export class MachineRouter {
 			if (typeof document === 'undefined') return;
 			const target = document.querySelector(`[data-target-zone="${frameId}"]`);
 			if (!target) return;
+			// Zones can opt out of the taskbar via data-taskbar="false" (inner content zones).
+			const taskbar = (target as HTMLElement).dataset.taskbar !== 'false';
 			const { mount } = await import('svelte');
 			const { default: Frame } = await import('$lib/shell/Frame.svelte');
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			mount(Frame as any, { target, props: { id: frameId } });
+			mount(Frame as any, { target, props: { id: frameId, taskbar } });
 		};
 
 		for (const seg of segments) {

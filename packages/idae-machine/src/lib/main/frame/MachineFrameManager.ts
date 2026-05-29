@@ -16,6 +16,8 @@ export interface FrameControls {
 	close: () => void;
 	/** Bring the frame to front + focus it. Optional — only floating frames (dialogs) implement it. */
 	focus?: () => void;
+	/** Whether this frame appears as a window in the taskbar. Inner content zones (loadIn) set false. */
+	taskbar?: boolean;
 }
 
 /**
