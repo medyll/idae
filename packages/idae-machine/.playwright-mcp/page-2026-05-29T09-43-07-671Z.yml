@@ -1,0 +1,9 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - button "⊞ Explorer" [ref=e6] [cursor=pointer]
+    - generic [ref=e8]: No open frames
+    - generic [ref=e9]:
+      - button "⚠ DEV" [ref=e11] [cursor=pointer]
+      - button "⚙" [ref=e12] [cursor=pointer]
+      - button "👤" [ref=e13] [cursor=pointer]
+  - main [ref=e14]

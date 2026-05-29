@@ -90,8 +90,14 @@ export class CollectionState<T = any> {
 	private async feed(): Promise<void> {
 		try {
 			const data = await this.collection.getAll();
-			this.eventBus.dataState[this.collectionName] = getResultSet(data);
-			this.eventBus.emit(this.collectionName, 'load', data);
+			const current = this.eventBus.dataState[this.collectionName];
+			// Cold-start race guard: this async read may resolve AFTER background
+			// hydration (bulkUpsertSilent) has already populated dataState. An empty
+			// IDB snapshot must never clobber freshly hydrated rows.
+			if ((data && data.length) || !current || current.length === 0) {
+				this.eventBus.dataState[this.collectionName] = getResultSet(data);
+				this.eventBus.emit(this.collectionName, 'load', data);
+			}
 		} catch {
 			// Collection may not be initialized yet
 		}

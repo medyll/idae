@@ -19,17 +19,19 @@ export function useQoolieCollection<T, C extends CollectionConfigMap>(
 	$effect(() => {
 		const col = qoolie.collection[collection];
 
-		// Subscribe FIRST so we catch hydration events triggered by getAll()
+		// Subscribe FIRST so we catch hydration events triggered by getAll().
+		// Spread into a new array: dataState is mutated in place by the event bus,
+		// so reassigning the same reference would not trigger Svelte 5 reactivity.
 		const handler = (e: Event) => {
 			const detail = (e as CustomEvent).detail;
 			if (detail?.collection === collection) {
-				items = (col.getAll() ?? []) as T[];
+				items = [...((col.getAll() ?? []) as T[])];
 			}
 		};
 		idbEventBus.addEventListener('change', handler as EventListener);
 
 		// Then initial load (may trigger hydration → event → handler above)
-		items = (col.getAll() ?? []) as T[];
+		items = [...((col.getAll() ?? []) as T[])];
 
 		return () => idbEventBus.removeEventListener('change', handler as EventListener);
 	});

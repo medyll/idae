@@ -6,56 +6,29 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-28T22:24"
+last_updated: "2026-05-29T00:00"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 40 closed. Scrum to groom release backlog: BACK-05 Playwright closure vs Sprint 41 deprecated API cleanup."
+next_action: "Deprecated cleanup verified DONE (all 8 symbols absent from src, zero @deprecated). Next: BACK-05 Playwright RBAC golden-path (3 tests)."
 next_command: "bmad-backlog"
 next_role: "scrum"
 active_role: "tester"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
-# Source: SOLIDIFICATION.md — I6. Schedule removal after Sprint 40.
-deprecated_removal_backlog:
-  - symbol: "Machine.prototype.adaptIdbToSchema"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 41
-    note: "Legacy adapter — replaced by detectSchemaDrift + performIdbUpgrade in machineIdbAdapter.ts"
-
-  - symbol: "Machine.prototype.start"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 41
-    note: "Alias for boot(). Remove after confirming all external callers migrated."
-
-  - symbol: "Machine.prototype.fetchSchema"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 41
-    note: "No-op shim. Now emits console.warn. Safe to remove once external callers migrated."
-
-  - symbol: "Machine.prototype.collections (getter)"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 41
-    note: "Use machine.logic instead."
-
-  - symbol: "Machine.prototype.idbql / indexedb / idbqModel (getters)"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 41
-    note: "All return undefined. Stubs kept for external compat only."
-
-  - symbol: "Machine.prototype.loadFrame"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 41
-    note: "Use machine.framer.loadFrame() instead. @deprecated since S39."
-
-  - symbol: "Machine.prototype.frameManager (getter)"
-    file: "src/lib/main/machine.ts"
-    target_sprint: 42
-    note: "Use machine.framer instead. Keep until machineLoadFrame.test.ts compat tests removed."
-
-  - symbol: "seedIfEmpty"
-    file: "src/lib/main/machineSeed.ts"
-    target_sprint: 42
-    note: "Use seed(data, { onlyIfEmpty: true }) instead."
+# Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
+# already removed from src code (machine.ts has zero @deprecated; seedIfEmpty gone
+# from machineSeed.ts; UI uses machine.framer.loadFrame; tests reference current API only).
+# Kept here as historical record — no Sprint 41/42 removal work required.
+deprecated_removal_backlog_status: removed
+deprecated_removal_backlog_removed:
+  - { symbol: "Machine.prototype.adaptIdbToSchema",  file: "src/lib/main/machine.ts",     verified_absent: true }
+  - { symbol: "Machine.prototype.start",             file: "src/lib/main/machine.ts",     verified_absent: true }
+  - { symbol: "Machine.prototype.fetchSchema",       file: "src/lib/main/machine.ts",     verified_absent: true }
+  - { symbol: "Machine.prototype.collections",       file: "src/lib/main/machine.ts",     verified_absent: true }
+  - { symbol: "Machine.prototype.idbql/indexedb/idbqModel", file: "src/lib/main/machine.ts", verified_absent: true }
+  - { symbol: "Machine.prototype.loadFrame",         file: "src/lib/main/machine.ts",     verified_absent: true }
+  - { symbol: "Machine.prototype.frameManager",      file: "src/lib/main/machine.ts",     verified_absent: true }
+  - { symbol: "seedIfEmpty",                         file: "src/lib/main/machineSeed.ts", verified_absent: true }
 
 # ── Dependencies ───────────────────────────────────────────────────────────────
 dependencies:
