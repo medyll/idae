@@ -1,71 +1,30 @@
 <!--
 Explorer.svelte
-Unified collection browser — thin wrapper around DataList with TemplateShell layout.
+Unified collection browser — TemplateShell layout: collection nav sidebar + content zone.
+Content zone starts empty; sidebar clicks loadIn ExplorerContent into this Explorer's
+zone (toggle, state preserved across collection switches).
 @role explorer
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
-	import { machine } from '$lib/main/machine.js';
-	import type { SortBy, Where } from '$lib/types/index.js';
+	import { untrack } from 'svelte';
+	import { generateFrameId } from '$lib/main/frame/frameUtils.js';
+	import type { SortBy } from '$lib/types/index.js';
 
 	let {
 		collection,
-		mode: modeProp = 'list',
-		where,
-		sortBy,
-		groupBy,
-		pageSize = 20
+		sortBy
 	}: {
 		collection: string;
-		mode?: 'list' | 'table' | 'grid';
-		where?: Where<COL>;
 		sortBy?: SortBy;
-		groupBy?: string;
-		pageSize?: number;
 	} = $props();
 
-	function openCard(record: COL): void {
-		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
-		void machine.framer.loadInDialog('card.form', collection, String(id));
-	}
+	const frameId = untrack(() => generateFrameId(collection));
 </script>
 
-<TemplateShell>
+<TemplateShell zoneId={frameId} collection={collection}>
 	{#snippet leftbar()}
-		<DataList collection="appscheme" {sortBy} link="loadFrame:explorer" linkCollectionField="code" />
-	{/snippet}
-	{#snippet children()}
-		<DataList
-			{collection}
-			{where}
-			{sortBy}
-			{groupBy}
-			{pageSize}
-			mode={modeProp}
-			onItemClick={(record) => openCard(record as COL)}
-			listClass="list list-grid"
-			groupClass="explorer-group"
-		>
-			{#snippet groupHeader({ key })}
-				<header class="section-header section-header-bordered">
-					<h3>{key}</h3>
-				</header>
-			{/snippet}
-
-			{#snippet empty()}
-				<div class="empty-state">
-					<div class="empty-state-icon">📭</div>
-					<p class="empty-state-title">No records</p>
-					<p class="empty-state-text">This collection is empty.</p>
-				</div>
-			{/snippet}
-		</DataList>
+		<DataList collection="appscheme" {sortBy} link="loadIn:explorer.content@{frameId}" linkCollectionField="code" />
 	{/snippet}
 </TemplateShell>
-
-<style>
-	:global(.explorer-group) {
-		margin-bottom: var(--gutter-md);
-	}
-</style>

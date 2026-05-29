@@ -6,6 +6,10 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('explorer')).toBe(true);
 	});
 
+	it('has "explorer.content" registered (bare DataList loaded into Explorer zone)', () => {
+		expect(componentRegistry.has('explorer.content')).toBe(true);
+	});
+
 	it('does NOT have "explorer.collections" (removed — CollectionNav handles sidebar nav)', () => {
 		expect(componentRegistry.has('explorer.collections')).toBe(false);
 	});
@@ -35,12 +39,13 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('fullinfo')).toBe(true);
 	});
 
-	it('has exactly 4 entries', () => {
+	it('has exactly 5 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(4);
+		expect(keys).toHaveLength(5);
 		expect(keys.sort()).toEqual([
 			'card.form',
 			'explorer',
+			'explorer.content',
 			'fullinfo',
 			'rbac.matrix',
 		]);

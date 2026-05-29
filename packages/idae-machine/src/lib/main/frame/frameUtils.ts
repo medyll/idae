@@ -1,4 +1,12 @@
 /**
+ * generateFrameId — unique human-readable frame instance ID.
+ * Format: "{prefix}_{8-char hex}" e.g. "vehicle_a1b2c3d4"
+ */
+export function generateFrameId(prefix: string): string {
+	return `${prefix}_${crypto.randomUUID().slice(0, 8)}`;
+}
+
+/**
  * computeFrameId — deterministic frame ID from (collection, collectionId?, vars?).
  *
  * Examples:

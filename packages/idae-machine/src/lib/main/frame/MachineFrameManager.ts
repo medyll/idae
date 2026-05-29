@@ -5,6 +5,7 @@
 import { mount, unmount, type Component } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { buildLoadInUrl } from './frameUrl.js';
+import { computeFrameId } from './frameUtils.js';
 import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 
 export interface FrameControls {
@@ -44,6 +45,9 @@ export interface NavigationEvent {
 
 export class MachineFrameManager {
 	private registry = new SvelteMap<string, FrameControls>();
+	/** Zones with a Frame mount in flight — closes the race where the same URL fires twice
+	 * before the first Frame's $effect registers, causing a duplicate Frame mount. */
+	private mountingZones = new Set<string>();
 	private _pushFn?: (url: string) => void;
 	private _onNavigate?: (e: NavigationEvent) => void;
 	private _labelResolver?: LabelResolver;
@@ -76,28 +80,61 @@ export class MachineFrameManager {
 	/**
 	 * Create a mount host bound to a target element (resolved lazily via getTarget).
 	 * Shared engine for Frame.svelte and Dialog.svelte — see FrameHost.
+	 *
+	 * Toggle semantics (not swap): each distinct (modulePath, collection, collectionId, vars)
+	 * mounts once into its own wrapper div and is kept alive. Re-loading the same content
+	 * hides every sibling and shows the existing instance — no unmount, no re-render.
+	 * Loading new content hides siblings and mounts the new instance. State is preserved
+	 * across toggles. `destroy()` unmounts everything (frame teardown).
 	 */
 	createHost(getTarget: () => HTMLElement | undefined): FrameHost {
+		const instances = new Map<string, { app: Record<string, unknown>; el: HTMLElement }>();
 		let seq = 0;
-		let current: Record<string, unknown> | null = null;
+
+		const contentKey = (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>): string =>
+			`${modulePath}::${computeFrameId(collection, collectionId, vars)}`;
+
+		const hideAll = () => {
+			for (const { el } of instances.values()) el.style.display = 'none';
+		};
 
 		const destroy = () => {
-			if (current) {
-				unmount(current);
-				current = null;
-			}
+			for (const { app } of instances.values()) unmount(app);
+			instances.clear();
 		};
 
 		return {
 			load: (modulePath, collection, collectionId, vars) => {
+				const key = contentKey(modulePath, collection, collectionId, vars);
+
+				// Already mounted → toggle to it without re-rendering.
+				const existing = instances.get(key);
+				if (existing) {
+					hideAll();
+					existing.el.style.display = 'block';
+					return;
+				}
+
 				const s = ++seq;
 				componentRegistry.resolve(modulePath).then((Comp) => {
-					if (s !== seq) return;
 					const target = getTarget();
 					if (!target) return;
-					destroy();
-					current = mount(Comp as Component<Record<string, unknown>>, {
-						target,
+					// Guard re-entrancy: another instance for this key may have mounted while resolving.
+					if (instances.has(key)) {
+						if (s === seq) {
+							hideAll();
+							instances.get(key)!.el.style.display = 'block';
+						}
+						return;
+					}
+					hideAll();
+					const el = document.createElement('div');
+					el.className = 'frame-content';
+					el.dataset.contentKey = key;
+					el.style.cssText = 'position:absolute;inset:0;overflow:hidden;';
+					target.appendChild(el);
+					const app = mount(Comp as Component<Record<string, unknown>>, {
+						target: el,
 						props: {
 							collection,
 							collectionId,
@@ -105,6 +142,7 @@ export class MachineFrameManager {
 							vars
 						}
 					});
+					instances.set(key, { app, el });
 				}).catch((err) => {
 					console.error(`[FrameManager] Error loading component for modulePath "${modulePath}":`, err);
 				});
@@ -220,12 +258,21 @@ export class MachineFrameManager {
 			return;
 		}
 
+		// A concurrent load is already mounting a Frame for this zone (same URL fired twice).
+		// Skip the duplicate mount — the in-flight one will mount + load the same content.
+		if (this.mountingZones.has(frameId)) return;
+
 		const zone = typeof document !== 'undefined'
 			? document.querySelector(`[data-target-zone="${frameId}"]`)
 			: null;
 
 		if (mountFn) {
-			await mountFn(frameId);
+			this.mountingZones.add(frameId);
+			try {
+				await mountFn(frameId);
+			} finally {
+				this.mountingZones.delete(frameId);
+			}
 			const fresh = this.registry.get(frameId);
 			if (fresh) {
 				fresh.load(modulePath, collection, collectionId, vars);

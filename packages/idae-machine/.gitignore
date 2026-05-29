@@ -33,3 +33,5 @@ __*.png
 *.jpg
 *.png
 *.jpeg
+
+/.playwright-mcp

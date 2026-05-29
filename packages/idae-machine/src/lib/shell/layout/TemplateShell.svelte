@@ -6,10 +6,16 @@
 	import type { Snippet } from 'svelte';
 
 	let {
+		collection,
+		collectionId,
+		zoneId,
 		leftbar,
 		children,
 		rightBar
 	}: {
+		collection?: string;
+		collectionId?: unknown;
+		zoneId?: string;
 		leftbar?:      Snippet;
 		children?:     Snippet;
 		rightBar?:        Snippet
@@ -18,7 +24,7 @@
 
 </script>
 
-<div class="template-shell">
+<div class="template-shell" data-collection={collection} data-collection-id={collectionId}>
 
 	<!-- Left sidebar (optional) -->
 	<aside class="shell-sidebar">
@@ -26,12 +32,14 @@
 	</aside>
 
 	<!-- Main content zone -->
-	<main class="shell-main" >
+	<main class="shell-main" data-collection={collection} data-collection-id={collectionId}>
+		<div class="shell-frame-zone" data-target-zone={zoneId}>
 			{@render children?.()}
+		</div>
 	</main>
 
 	<!-- Right bar  -->
-	<aside class="shell-right" aria-hidden="true">
+	<aside class="shell-right" aria-hidden="true"  data-collection={collection} data-collection-id={collectionId}>
 			{@render rightBar?.()}
 	</aside>
 
@@ -64,6 +72,12 @@
 			overflow-y: auto;
 			background: var(--color-bg);
 			position: relative;
+		}
+
+		:global(.shell-frame-zone) {
+			position: relative;
+			width: 100%;
+			height: 100%;
 		}
 
 		:global(.shell-right) {

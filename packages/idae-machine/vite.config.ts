@@ -13,6 +13,7 @@ export default defineConfig({
 			'@medyll/skiller':            path.resolve('./src/lib/__stubs__/skiller-stub.ts'),
 			'jsonwebtoken':               path.resolve('./src/lib/__stubs__/jwt-stub.ts'),
 			'@medyll/qoolie/svelte':      path.resolve('../qoolie/src/adapters/svelte/index.ts'),
+			'@medyll/qoolie':             path.resolve('../qoolie/src/index.ts'),
 		}
 	},
 	optimizeDeps: {
