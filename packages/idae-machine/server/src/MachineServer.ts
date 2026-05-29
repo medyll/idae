@@ -18,7 +18,7 @@ import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap
 import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
-import type { FieldViews, ViewFieldDef } from '../../src/lib/types/schema-types.js';
+import type { ViewFields, ViewFieldDef } from '../../src/lib/types/schema-types.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
@@ -48,7 +48,7 @@ class MachineServerClass {
 
 	// ── getModel — reads appscheme_* → MachineModel ───────────────────────────
 
-	/** Map appscheme_view_type.code to FieldViews key name. */
+	/** Map appscheme_view_type.code to ViewFields key name. */
 	private _viewTypeToKey(code: string): string | null {
 		switch (code) {
 			case 'list':     return 'fullView';
@@ -123,7 +123,7 @@ class MachineServerClass {
 			}
 
 			// Build _views from appscheme_view rows
-			const _views: Partial<FieldViews> = {};
+			const _views: Partial<ViewFields> = {};
 			const schemeViews = viewDocs.filter((v: any) =>
 				v.gridFks?.appscheme?.code === code
 			);
@@ -132,7 +132,7 @@ class MachineServerClass {
 				const fieldCode = v.gridFks?.appscheme_field?.code as string;
 				if (!viewTypeCode || !fieldCode) continue;
 
-				// Map view_type.code to FieldViews key
+				// Map view_type.code to ViewFields key
 				const viewKey = this._viewTypeToKey(viewTypeCode);
 				if (!viewKey) continue;
 

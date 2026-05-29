@@ -14,7 +14,7 @@ export interface ViewFieldDef {
 	};
 }
 
-export interface FieldViews {
+export interface ViewFields {
 	fullView?: ViewFieldDef[];
 	miniView?: ViewFieldDef[];
 	fkView?:   ViewFieldDef[];
@@ -25,7 +25,7 @@ export interface IAppScheme {
 	id: string;
 	code: string;
 	name: string;
-	_views?: FieldViews;
+	_views?: ViewFields;
 	fields?: unknown[];
 	createdAt?: Date;
 	updatedAt?: Date;
