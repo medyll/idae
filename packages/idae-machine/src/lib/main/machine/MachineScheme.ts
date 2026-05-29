@@ -6,7 +6,7 @@ import type {
 	MachineDisplayTemplate,
 	MachineFkDef,
 } from '$lib/types/index.js';
-import type { FieldViews } from '$lib/types/schema-types.js';
+import type { ViewFields } from '$lib/types/schema-types.js';
 import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
@@ -93,8 +93,8 @@ export class MachineScheme {
 		return [{ field: this.index, direction: 'asc' }];
 	}
 
-	/** Field views from appscheme_view (fullView, miniView, fkView). */
-	get fieldViews(): Partial<FieldViews> | undefined {
+	/** Fields per view context from appscheme_view (fullView, miniView, fkView). */
+	get viewFields(): Partial<ViewFields> | undefined {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return (this.#collectionModel as any)?._views ?? undefined;
 	}

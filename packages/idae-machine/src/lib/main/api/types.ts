@@ -1,6 +1,6 @@
 // Re-export from canonical source — machine-model.ts is the single source of truth
-export type { ViewFieldDef, FieldViews } from '$lib/types/machine-model.js';
-import type { FieldViews } from '$lib/types/machine-model.js';
+export type { ViewFieldDef, ViewFields } from '$lib/types/machine-model.js';
+import type { ViewFields } from '$lib/types/machine-model.js';
 
 /**
  * AppScheme type
@@ -9,7 +9,7 @@ export interface AppScheme {
 	id: string;
 	code: string;
 	name: string;
-	_views?: FieldViews;
+	_views?: ViewFields;
 	fields?: unknown[];
 	createdAt?: string;
 	updatedAt?: string;

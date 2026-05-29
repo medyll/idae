@@ -956,9 +956,9 @@ export interface AppScheme<T = Record<string, any>> extends Extendable, WithEsse
 	/**
 	 * Dynamic views registry - populated at runtime from appscheme_view.
 	 * Keys are appscheme_view_type.code values ('list', 'mini', 'form', 'custom', 'fk_label', etc.)
-	 * @see FieldViews for standard view type definitions
+	 * @see ViewFields for standard view type definitions
 	 */
-	_views?:     Partial<FieldViews>;
+	_views?:     Partial<ViewFields>;
 	gridFks?:    {
 		[key: string]: gridFksItem;
 	};
@@ -1399,7 +1399,7 @@ export interface ViewFieldDef extends Extendable {
  * - miniView : all primitive fields, no fks (view_type 'mini')
  * - fkView   : fk fields only (view_type 'fk')
  */
-export interface FieldViews extends Extendable {
+export interface ViewFields extends Extendable {
 	fullView?: ViewFieldDef[];     // All fields + fks (view_type 'list')
 	miniView?: ViewFieldDef[];     // Card/mini-fiche, no fks (view_type 'mini')
 	fkView?:   ViewFieldDef[];     // FK fields only
@@ -1428,9 +1428,9 @@ export interface AppSchemeView extends Extendable, WithEssentials {
 }
 
 /**
- * Enhanced AppScheme with the fieldViews registry.
+ * Enhanced AppScheme with the viewFields registry.
  * The _views property is populated at runtime from appscheme_view data.
  */
 export interface AppSchemeWithProfiles<T = Record<string, any>> extends AppScheme<T> {
-	_views?: Partial<FieldViews>;
+	_views?: Partial<ViewFields>;
 }

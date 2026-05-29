@@ -9,14 +9,12 @@
 	} = $props();
 </script>
 
-
-
 <fiche-component>
     <fiche-header></fiche-header>
     <fiche-zone>
-        <div></div>
+        <sidebar-info></sidebar-info>
         <zone-main>
-            <DataRecord {collection} collectionId={collectionId} />
+            <DataRecord {collection} {collectionId} />
         </zone-main>
     </fiche-zone>
 </fiche-component>

@@ -2,7 +2,7 @@
 export * from './schema-types.js';
 export * from './idae-model-core.js';
 
-// machine-model: all types except FieldViews/ViewFieldDef which conflict
+// machine-model: all types except ViewFields/ViewFieldDef which conflict
 // with the DB-resolved versions in schema-types.ts.
 // If you need the static-definition versions, import from '$lib/types/index.js' directly.
 export type {

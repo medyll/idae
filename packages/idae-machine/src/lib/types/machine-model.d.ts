@@ -64,7 +64,7 @@ export interface MachineDisplayTemplate {
  * - miniView : all primitive fields, no fks (default = schema fields minus fk keys)
  * - fkView   : fk fields only (default = fk key fields)
  */
-export interface FieldViews {
+export interface ViewFields {
     fullView?: ViewFieldDef[];
     miniView?: ViewFieldDef[];
     fkView?: ViewFieldDef[];
