@@ -53,7 +53,7 @@ const FIELD_GROUPS = [
 ] as const;
 
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
-const VIEW_TYPES   = ['full', 'mini', 'fk'] as const;
+const VIEW_TYPES   = ['full', 'flat', 'fk', 'mini'] as const;
 
 const ICON_BY_GROUP: Record<string, string> = {
 	audit:          'history',
@@ -77,8 +77,12 @@ const ICON_BY_GROUP: Record<string, string> = {
 
 const DEFAULT_BASE = 'machine_user';
 
-function inferFieldGroup(_name: string, type: string): string {
-	if (type.startsWith('fk') || type === 'id')           return 'identification';
+function inferFieldGroup(name: string, type: string): string {
+	const n = name.toLowerCase();
+	// Identity/label fields drive the mini-fiche.
+	if (['code', 'name', 'label', 'title', 'nom', 'libelle'].includes(n)) return 'identification';
+	if (n === 'id' || type === 'id')                      return 'system';
+	if (type.startsWith('fk'))                            return 'classification';
 	if (['date', 'datetime', 'time'].includes(type))      return 'date';
 	if (['email', 'phone', 'url'].includes(type))         return 'contact';
 	if (type === 'boolean')                               return 'status';
@@ -395,16 +399,25 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			);
 		}
 
-		// ── appscheme_view (partitioned by fk-ness: mini ∪ fk = full) ─────────
+		// ── appscheme_view ────────────────────────────────────────────────────
+		// Partition by fk-ness (full = flat ∪ fk). Plus a curated `mini` subset =
+		// 'identification' group fields, falling back to [code, name] when none.
 		const allFieldNames = Object.keys(fields);
 		const fkSet = new Set(
 			allFieldNames.filter((n) => ((fields[n] as any)?.type ?? '').startsWith('fk-')),
 		);
+		const identFields = allFieldNames.filter(
+			(n) => inferFieldGroup(n, (fields[n] as any)?.type ?? 'text') === 'identification',
+		);
+		const miniFields = identFields.length
+			? identFields
+			: ['code', 'name'].filter((n) => n in fields);
 
 		const viewDefs: Record<string, string[]> = {
 			full: allFieldNames,
-			mini: allFieldNames.filter((n) => !fkSet.has(n)),
+			flat: allFieldNames.filter((n) => !fkSet.has(n)),
 			fk:   allFieldNames.filter((n) => fkSet.has(n)),
+			mini: miniFields,
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {

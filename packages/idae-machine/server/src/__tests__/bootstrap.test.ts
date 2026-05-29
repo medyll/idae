@@ -68,7 +68,7 @@ describe('seedSchemeFromModel', () => {
 		expect(ftCount).toBeGreaterThan(5);
 		expect(fgCount).toBeGreaterThan(5);
 		expect(stCount).toBeGreaterThan(0);
-		expect(vtCount).toBe(3);
+		expect(vtCount).toBe(4);
 
 		const bases   = await idaeDb.collection('appscheme_base').find({ query: {} });
 		const schemes = await idaeDb.collection('appscheme').find({ query: {} });

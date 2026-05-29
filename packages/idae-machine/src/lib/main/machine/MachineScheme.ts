@@ -100,20 +100,33 @@ export class MachineScheme {
 	}
 
 	/**
-	 * Resolve the ordered field list for a canonical view.
-	 * Prefers seeded `_views`; otherwise derives by fk-ness
-	 * (full = all, mini = non-fk, fk = fk-only). mini ∪ fk = full.
+	 * Resolve the ordered field list for a view.
+	 * Prefers seeded `_views`; otherwise derives:
+	 * - partition by fk-ness: full = all, flat = non-fk, fk = fk-only (full = flat ∪ fk)
+	 * - mini = curated identity subset: 'identification' group fields,
+	 *   falling back to [code, name] (at least [code]). Never empty.
 	 */
-	getFieldsForView(view: 'full' | 'mini' | 'fk'): ViewFieldDef[] {
+	getFieldsForView(view: 'full' | 'flat' | 'fk' | 'mini'): ViewFieldDef[] {
 		const seeded = this.viewFields?.[view];
 		if (seeded?.length) return seeded;
 
-		const names = Object.keys(this.fields);
+		const fields = this.fields as Record<string, { group?: string } | undefined>;
+		const names = Object.keys(fields);
 		const isFk = (name: string) => (this.field(name).parse()?.fieldType ?? '').startsWith('fk-');
-		const picked =
-			view === 'full' ? names :
-			view === 'mini' ? names.filter((n) => !isFk(n)) :
-			                  names.filter((n) => isFk(n));
+
+		let picked: string[];
+		if (view === 'full') {
+			picked = names;
+		} else if (view === 'flat') {
+			picked = names.filter((n) => !isFk(n));
+		} else if (view === 'fk') {
+			picked = names.filter((n) => isFk(n));
+		} else {
+			// mini: identification group, else [code, name], else [code]
+			const ident = names.filter((n) => fields[n]?.group === 'identification');
+			picked = ident.length ? ident : ['code', 'name'].filter((n) => n in fields);
+			if (!picked.length && 'code' in fields) picked = ['code'];
+		}
 		return picked.map((name, i) => ({ name, code: name, order: i }));
 	}
 

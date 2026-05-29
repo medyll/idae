@@ -6,8 +6,9 @@ export interface ViewFieldDef {
 
 export interface ViewFields {
 	full?: ViewFieldDef[];
-	mini?: ViewFieldDef[];
+	flat?: ViewFieldDef[];
 	fk?:   ViewFieldDef[];
+	mini?: ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 

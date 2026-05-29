@@ -25,6 +25,8 @@ interface BaseFieldDef {
 	readonly?:   boolean;
 	private?:    boolean;
 	inputSize?:  InputSize;
+	/** Semantic field group (from appscheme_field_group.code), e.g. 'identification'. */
+	group?:      string;
 }
 
 export interface ImageFieldDef extends BaseFieldDef {
@@ -72,13 +74,15 @@ export interface MachineDisplayTemplate {
  * Populated at runtime from appscheme_view data.
  *
  * - full : all fields, incl. fks (default = all schema fields)
- * - mini : non-fk fields only     (default = schema fields minus fk keys)
+ * - flat : non-fk fields only     (default = schema fields minus fk keys)
  * - fk   : fk fields only          (default = fk key fields)
+ * - mini : curated identity subset (group 'identification', fallback [code, name])
  */
 export interface ViewFields {
 	full?: ViewFieldDef[];
-	mini?: ViewFieldDef[];
+	flat?: ViewFieldDef[];
 	fk?:   ViewFieldDef[];
+	mini?: ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 

@@ -955,7 +955,7 @@ export interface AppScheme<T = Record<string, any>> extends Extendable, WithEsse
 	schemeType?: SchemeType;
 	/**
 	 * Dynamic views registry - populated at runtime from appscheme_view.
-	 * Keys are appscheme_view_type.code values ('full', 'mini', 'fk', etc.)
+	 * Keys are appscheme_view_type.code values ('full', 'flat', 'fk', 'mini', etc.)
 	 * @see ViewFields for standard view type definitions
 	 */
 	_views?:     Partial<ViewFields>;
@@ -1358,8 +1358,9 @@ export interface PermissionCheckResult {
  */
 export type ViewTypeCode =
 	| 'full'  // All fields, incl. fks
-	| 'mini'  // Non-fk fields only
+	| 'flat'  // Non-fk fields only
 	| 'fk'    // Fk fields only
+	| 'mini'  // Curated identity subset (group 'identification', fallback [code, name])
 	| (string & {}); // Allow extension for custom view types
 
 /**
@@ -1373,17 +1374,21 @@ export interface ViewFieldDef extends Extendable {
 }
 
 /**
- * Named field selections, partitioned by fk-ness. mini ∪ fk = full.
+ * Named field selections.
  * Populated at runtime from appscheme_view data.
  *
- * - full : all fields, incl. fks  (view_type 'full')
- * - mini : non-fk fields only      (view_type 'mini')
- * - fk   : fk fields only          (view_type 'fk')
+ * Partition (disjoint, full = flat ∪ fk):
+ * - full : all fields, incl. fks   (view_type 'full')
+ * - flat : non-fk fields only       (view_type 'flat')
+ * - fk   : fk fields only           (view_type 'fk')
+ * Curated subset (orthogonal, NOT part of the partition):
+ * - mini : group 'identification' fields, fallback [code, name] (view_type 'mini')
  */
 export interface ViewFields extends Extendable {
 	full?: ViewFieldDef[];  // All fields, incl. fks
-	mini?: ViewFieldDef[];  // Non-fk fields only
+	flat?: ViewFieldDef[];  // Non-fk fields only
 	fk?:   ViewFieldDef[];  // Fk fields only
+	mini?: ViewFieldDef[];  // Curated identity subset
 	[key: string]: ViewFieldDef[] | undefined; // Extensible for custom view types
 }
 

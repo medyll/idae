@@ -13,19 +13,36 @@ legacy display string, **not** a view; it remains a fallback only.
 
 ---
 
-## 1. The three canonical views
+## 1. The views
 
-Partitioned purely by FK-ness (`mini ∪ fk = full`):
+**Partition** by FK-ness — disjoint, `full = flat ∪ fk`:
 
 | View | Membership |
 |------|------------|
 | `full` | all fields, incl. FKs |
-| `mini` | non-FK fields only |
+| `flat` | non-FK fields only |
 | `fk`   | FK fields only |
 
-Because they are functions of the field set, they are **derivable** — no
-`appscheme_view` rows are strictly required for the defaults. Rows that do exist
-act as explicit overrides (custom views / explicit ordering).
+**Curated subset** — orthogonal, NOT part of the partition:
+
+| View | Membership |
+|------|------------|
+| `mini` | group `identification` fields; fallback `[code, name]` (≥ `[code]`) |
+
+> `mini` will be renamed `focus` later (semantic: focused identity card). Keeping
+> `mini` for now.
+
+Partition views are functions of the field set → **derivable**, no
+`appscheme_view` rows strictly required. `mini` derives from the field `group`
+(plumbed through `getModel`); when no identification field exists it degrades to
+`[code, name]`. Seeded rows act as explicit overrides.
+
+### Code/name solidification (upstream invariant)
+
+Every collection exposes **both** `code` and `name`. `getModel()` coalesces: if
+only `code` exists → `name := code`; if only `name` → `code := name`. So `mini`'s
+fallback and FK labels can always rely on both. `code` is guaranteed by the global
+invariant; `name` is not — the coalescing closes that gap.
 
 ---
 
@@ -35,24 +52,26 @@ act as explicit overrides (custom views / explicit ordering).
 appscheme_view + appscheme_view_type   (MongoDB, seeded by deployModel.ts)
         ↓
 server/src/MachineServer.ts  getModel()
-        ↓  _viewTypeToKey(view_type.code) → 'full' | 'mini' | 'fk' (null = dropped)
+        ↓  _viewTypeToKey(view_type.code) → 'full'|'flat'|'fk'|'mini' (null = dropped)
+        ↓  field defs carry `group`; code/name coalesced
         ↓  sort each view by `order`
         ↓
 collectionModel._views : Partial<ViewFields>
         ↓
 src/lib/main/machine/MachineScheme.ts  getFieldsForView(view)
-        ↓  seeded _views[view]  →  else derive by fk-ness
+        ↓  seeded _views[view] → else derive (fk-ness for full/flat/fk, group for mini)
         ↓
 src/lib/data-ui/data/DataList.svelte   getFieldsForView('full')
 ```
 
-| Step | File | Lines |
-|------|------|-------|
-| view-type→key map | `server/src/MachineServer.ts` | 52-58 |
-| `_views` build + sort | `server/src/MachineServer.ts` | 125-160 |
-| getter + resolver | `src/lib/main/machine/MachineScheme.ts` | 96-118 |
-| consumer | `src/lib/data-ui/data/DataList.svelte` | 211-215 |
-| seeding (partition by `fk-`) | `server/src/bootstrap/deployModel.ts` | 56, 398-407 |
+| Step | File |
+|------|------|
+| view-type→key map | `server/src/MachineServer.ts` `_viewTypeToKey` |
+| field def + group + code/name coalesce | `server/src/MachineServer.ts` `getModel` |
+| `_views` build + sort | `server/src/MachineServer.ts` |
+| getter + resolver | `src/lib/main/machine/MachineScheme.ts` `getFieldsForView` |
+| consumers | `DataList.svelte`, `DataRecord.svelte` |
+| seeding + `inferFieldGroup` | `server/src/bootstrap/deployModel.ts` |
 
 ---
 
@@ -61,14 +80,15 @@ src/lib/data-ui/data/DataList.svelte   getFieldsForView('full')
 `ViewFieldDef` is minimal — field identity + order, nothing presentational:
 
 ```ts
-type ViewTypeCode = 'full' | 'mini' | 'fk' | (string & {});
+type ViewTypeCode = 'full' | 'flat' | 'fk' | 'mini' | (string & {});
 
 interface ViewFieldDef { name: string; code: string; order?: number }
 
 interface ViewFields {
   full?: ViewFieldDef[];
-  mini?: ViewFieldDef[];
+  flat?: ViewFieldDef[];
   fk?:   ViewFieldDef[];
+  mini?: ViewFieldDef[];
   [key: string]: ViewFieldDef[] | undefined; // custom views
 }
 ```
@@ -85,11 +105,13 @@ Defined in `src/lib/types/schema-types.ts` (canonical), mirrored in
 | View | Built | Consumer |
 |------|-------|----------|
 | `full` | yes | `DataList.svelte` (default), `DataRecord.svelte` |
-| `mini` | yes | `DataRecord.svelte` / `DataList view="mini"` |
+| `flat` | yes | `DataRecord.svelte` / `DataList view="flat"` |
 | `fk`   | yes | `DataRecord.svelte` / `DataList view="fk"` |
+| `mini` | yes | `DataRecord.svelte` / `DataList view="mini"` |
 
-Both `DataList` and `DataRecord` accept a `view` prop (`'full'|'mini'|'fk'`,
-default `full`) plus an explicit `showFields` override.
+Both `DataList` and `DataRecord` accept a `view` prop
+(`'full'|'flat'|'fk'|'mini'`, default `full`) plus an explicit `showFields`
+override.
 
 - `DataRecord`: `showFields` → `getFieldsForView(view)` (ordered) → all fields.
 - `DataList`: `showFields` → `getFieldsForView(view)` → `presentationFields`
@@ -104,12 +126,16 @@ to `fk`).
 
 - `form` / `custom` removed — they are not view types. Custom views reachable
   only via the `[key: string]` index signature.
-- Codes renamed: `list`→`full`, `fk_label`→`fk` (`mini` unchanged). No back-compat
-  — a fresh `deployModel` run rewrites the registry.
-- Seeder now partitions by `fk-` field-type prefix instead of arbitrary slices.
+- Codes: partition `full` / `flat` / `fk` + curated `mini`. No back-compat — a
+  fresh `deployModel` run rewrites the registry.
+- The old non-fk view `mini` was renamed `flat`; `mini` now means the identity
+  subset (group `identification`, fallback `[code, name]`).
+- Field defs carry `group` at runtime (`getModel`); `inferFieldGroup` reworked so
+  identity fields (`code`/`name`/`label`/`title`…) land in `identification`.
+- code/name coalesced upstream so both always exist.
 - `ViewFieldDef` stripped to `{name, code, order}`; `ViewOptions` deleted.
-- Central resolver `MachineScheme.getFieldsForView('full'|'mini'|'fk')` owns the
-  lookup + fk-ness derivation; consumers no longer re-implement fallback.
+- Central resolver `MachineScheme.getFieldsForView('full'|'flat'|'fk'|'mini')`
+  owns lookup + derivation; consumers no longer re-implement fallback.
 
 ---
 

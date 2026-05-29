@@ -18,14 +18,14 @@ function scheme(model: any) {
 	return new MachineScheme('product' as any, {} as any, model);
 }
 
-describe('MachineScheme.getFieldsForView — derived partition', () => {
+describe('MachineScheme.getFieldsForView — partition (full / flat / fk)', () => {
 	it('full = all fields (incl. fk)', () => {
 		const names = scheme(baseModel).getFieldsForView('full').map((f) => f.name);
 		expect(names).toEqual(['id', 'name', 'categoryId']);
 	});
 
-	it('mini = non-fk fields only', () => {
-		const names = scheme(baseModel).getFieldsForView('mini').map((f) => f.name);
+	it('flat = non-fk fields only', () => {
+		const names = scheme(baseModel).getFieldsForView('flat').map((f) => f.name);
 		expect(names).toEqual(['id', 'name']);
 	});
 
@@ -34,14 +34,48 @@ describe('MachineScheme.getFieldsForView — derived partition', () => {
 		expect(names).toEqual(['categoryId']);
 	});
 
-	it('mini ∪ fk = full', () => {
+	it('flat ∪ fk = full', () => {
 		const s = scheme(baseModel);
 		const full = s.getFieldsForView('full').map((f) => f.name).sort();
 		const union = [
-			...s.getFieldsForView('mini').map((f) => f.name),
+			...s.getFieldsForView('flat').map((f) => f.name),
 			...s.getFieldsForView('fk').map((f) => f.name),
 		].sort();
 		expect(union).toEqual(full);
+	});
+});
+
+describe('MachineScheme.getFieldsForView — mini (curated identity subset)', () => {
+	it('uses identification-group fields when present', () => {
+		const model: any = {
+			product: {
+				keyPath: '++id',
+				fields: {
+					id:    { type: 'number' },
+					code:  { type: 'text', group: 'identification' },
+					name:  { type: 'text', group: 'identification' },
+					price: { type: 'currency', group: 'finance' },
+				},
+			},
+		};
+		const names = scheme(model).getFieldsForView('mini').map((f) => f.name);
+		expect(names).toEqual(['code', 'name']);
+	});
+
+	it('falls back to [code, name] when no identification group', () => {
+		const model: any = {
+			product: { keyPath: '++id', fields: { id: { type: 'number' }, code: { type: 'text' }, name: { type: 'text' } } },
+		};
+		const names = scheme(model).getFieldsForView('mini').map((f) => f.name);
+		expect(names).toEqual(['code', 'name']);
+	});
+
+	it('falls back to [code] only when no name field', () => {
+		const model: any = {
+			product: { keyPath: '++id', fields: { id: { type: 'number' }, code: { type: 'text' } } },
+		};
+		const names = scheme(model).getFieldsForView('mini').map((f) => f.name);
+		expect(names).toEqual(['code']);
 	});
 });
 

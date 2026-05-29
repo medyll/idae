@@ -52,8 +52,9 @@ class MachineServerClass {
 	private _viewTypeToKey(code: string): string | null {
 		switch (code) {
 			case 'full': return 'full';
-			case 'mini': return 'mini';
+			case 'flat': return 'flat';
 			case 'fk':   return 'fk';
+			case 'mini': return 'mini';
 			default:     return null; // unknown view types ignored
 		}
 	}
@@ -108,8 +109,15 @@ class MachineServerClass {
 					required: !!(fieldDoc?.required),
 					readonly: !!(fieldDoc?.readonly),
 					private:  !!(fieldDoc?.private),
+					group:    (fieldDoc?.gridFks?.appscheme_field_group?.code as string) ?? undefined,
 				};
 			}
+
+			// Solidify code/name: every collection exposes both. Mirror the present
+			// one onto the missing one so downstream (mini fallback, fk labels) can
+			// always rely on code AND name.
+			if (fields.code && !fields.name) fields.name = { ...fields.code };
+			else if (fields.name && !fields.code) fields.code = { ...fields.name };
 
 			const fks: MachineModel[string]['fks'] = {};
 			const gridFks = (scheme.gridFks ?? {}) as Record<string, any>;
