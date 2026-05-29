@@ -84,12 +84,19 @@ Defined in `src/lib/types/schema-types.ts` (canonical), mirrored in
 
 | View | Built | Consumer |
 |------|-------|----------|
-| `full` | yes | `DataList.svelte` (active) |
-| `mini` | yes | none yet |
-| `fk`   | yes | none yet (FK labels still use `template.presentation`) |
+| `full` | yes | `DataList.svelte` (default), `DataRecord.svelte` |
+| `mini` | yes | `DataRecord.svelte` / `DataList view="mini"` |
+| `fk`   | yes | `DataRecord.svelte` / `DataList view="fk"` |
 
-`DataList` order: `showFields` prop → `getFieldsForView('full')` →
-`presentationFields` (parsed from `template.presentation`).
+Both `DataList` and `DataRecord` accept a `view` prop (`'full'|'mini'|'fk'`,
+default `full`) plus an explicit `showFields` override.
+
+- `DataRecord`: `showFields` → `getFieldsForView(view)` (ordered) → all fields.
+- `DataList`: `showFields` → `getFieldsForView(view)` → `presentationFields`
+  (parsed from `template.presentation`).
+
+FK labels in `InputSelect` still use `template.presentation` (not yet migrated
+to `fk`).
 
 ---
 
@@ -108,14 +115,13 @@ Defined in `src/lib/types/schema-types.ts` (canonical), mirrored in
 
 ## 6. Open / next
 
-1. **`mini` consumer** — compact list/card rendering reads `mini`.
-2. **`fk` consumer** — `InputSelect` FK labels read `fk` before
-   `template.presentation`.
-3. **Reactivity** — `_views` built once at model load; derivation covers most
+1. **`InputSelect` FK labels** — migrate from `template.presentation` to the `fk`
+   view (the remaining unmigrated consumer).
+2. **Reactivity** — `_views` built once at model load; derivation covers most
    cases statelessly. Decide if runtime `appscheme_view` edits must refresh.
-4. **`template.presentation` future** — permanent fallback, or retire once `fk`/
-   `mini` consumers land?
-5. **User-configurable views** — per-user order/visibility in `appuser_prefs` —
+3. **`template.presentation` future** — permanent fallback, or retire once
+   `InputSelect` migrates?
+4. **User-configurable views** — per-user order/visibility in `appuser_prefs` —
    in scope? (Would be the main reason to keep `appscheme_view` rows.)
 
 ---

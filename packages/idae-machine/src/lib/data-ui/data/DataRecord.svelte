@@ -5,7 +5,8 @@ Iterates a record's fields and renders DataField for each.
 @prop {string} collection - Collection name
 @prop {Record<string,any>} data - Record data (bindable)
 @prop {'show'|'create'|'update'} [mode] - Display mode
-@prop {string[]} [showFields] - Filter to specific fields
+@prop {string[]} [showFields] - Filter to specific fields (overrides view)
+@prop {'full'|'mini'|'fk'|string} [view] - Named view to resolve field list (full|mini|fk)
 @prop {SortBy | SortBy[]} [sortBy] - Sort field order (by field def properties e.g. order, label)
 @prop {string} [groupBy] - Group fields by field def property (e.g. 'group')
 -->
@@ -23,6 +24,7 @@ Iterates a record's fields and renders DataField for each.
 		collectionId,
 		mode = 'show',
 		showFields,
+		view,
 		sortBy,
 		groupBy,
 		groupChildren,
@@ -33,6 +35,7 @@ Iterates a record's fields and renders DataField for each.
 		collectionId?: string | number;
 		mode?: 'show' | 'create' | 'update';
 		showFields?: string[];
+		view?: 'full' | 'mini' | 'fk' | string;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
@@ -62,8 +65,17 @@ Iterates a record's fields and renders DataField for each.
 	const fieldObjects = $derived.by(() => {
 		const fields = scheme?.fields;
 		if (!fields) return [];
-		let keys = Object.keys(fields);
-		if (showFields?.length) keys = keys.filter(k => showFields!.includes(k));
+		let keys: string[];
+		if (showFields?.length) {
+			keys = showFields.filter(k => k in fields);
+		} else if (view) {
+			// Named view returns an ordered field list; keep only existing fields.
+			keys = (scheme?.getFieldsForView(view as 'full' | 'mini' | 'fk') ?? [])
+				.map(f => f.name)
+				.filter(k => k in fields);
+		} else {
+			keys = Object.keys(fields);
+		}
 		return keys.map(key => ({ key, ...(fields[key] as unknown as Record<string, unknown>) }));
 	});
 
