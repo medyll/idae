@@ -45,7 +45,7 @@ describe('MachineScheme.getFieldsForView — partition (full / flat / fk)', () =
 	});
 });
 
-describe('MachineScheme.getFieldsForView — mini (curated identity subset)', () => {
+describe('MachineScheme.getFieldsForView — focus (curated identity subset)', () => {
 	it('uses identification-group fields when present', () => {
 		const model: any = {
 			product: {
@@ -58,7 +58,7 @@ describe('MachineScheme.getFieldsForView — mini (curated identity subset)', ()
 				},
 			},
 		};
-		const names = scheme(model).getFieldsForView('mini').map((f) => f.name);
+		const names = scheme(model).getFieldsForView('focus').map((f) => f.name);
 		expect(names).toEqual(['code', 'name']);
 	});
 
@@ -66,7 +66,7 @@ describe('MachineScheme.getFieldsForView — mini (curated identity subset)', ()
 		const model: any = {
 			product: { keyPath: '++id', fields: { id: { type: 'number' }, code: { type: 'text' }, name: { type: 'text' } } },
 		};
-		const names = scheme(model).getFieldsForView('mini').map((f) => f.name);
+		const names = scheme(model).getFieldsForView('focus').map((f) => f.name);
 		expect(names).toEqual(['code', 'name']);
 	});
 
@@ -74,7 +74,7 @@ describe('MachineScheme.getFieldsForView — mini (curated identity subset)', ()
 		const model: any = {
 			product: { keyPath: '++id', fields: { id: { type: 'number' }, code: { type: 'text' } } },
 		};
-		const names = scheme(model).getFieldsForView('mini').map((f) => f.name);
+		const names = scheme(model).getFieldsForView('focus').map((f) => f.name);
 		expect(names).toEqual(['code']);
 	});
 });

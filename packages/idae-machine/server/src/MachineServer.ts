@@ -54,7 +54,7 @@ class MachineServerClass {
 			case 'full': return 'full';
 			case 'flat': return 'flat';
 			case 'fk':   return 'fk';
-			case 'mini': return 'mini';
+			case 'focus': return 'focus';
 			default:     return null; // unknown view types ignored
 		}
 	}
@@ -114,7 +114,7 @@ class MachineServerClass {
 			}
 
 			// Solidify code/name: every collection exposes both. Mirror the present
-			// one onto the missing one so downstream (mini fallback, fk labels) can
+			// one onto the missing one so downstream (focus fallback, fk labels) can
 			// always rely on code AND name.
 			if (fields.code && !fields.name) fields.name = { ...fields.code };
 			else if (fields.name && !fields.code) fields.code = { ...fields.name };

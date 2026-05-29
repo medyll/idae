@@ -10,7 +10,7 @@ Consumers can override via the item snippet.
 @prop {string} [groupBy]
 @prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
 @prop {string[]} [showFields] - Fields to display (overrides view)
-@prop {'full'|'flat'|'fk'|'mini'|string} [view='full'] - Named view driving the field list (full=all, flat=non-fk, fk=fk-only, mini=identity subset)
+@prop {'full'|'flat'|'fk'|'focus'|string} [view='full'] - Named view driving the field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
 @prop {(record: COL) => void} [onItemClick] - Click handler for items/rows
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
 @prop {number} [page] - 1-based (only used when infiniteScroll=false)
@@ -75,7 +75,7 @@ Consumers can override via the item snippet.
 		groupBy?: string;
 		mode?: 'list' | 'table' | 'grid';
 		showFields?: string[];
-		view?: 'full' | 'flat' | 'fk' | 'mini' | string;
+		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
 		onItemClick?: (record: COL) => void;
 		pageSize?: number;
 		page?: number;
@@ -213,7 +213,7 @@ Consumers can override via the item snippet.
 
 	const fullFields = $derived.by(() => {
 		if (showFields?.length) return showFields;
-		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'mini') ?? []).map((f) => f.name);
+		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? []).map((f) => f.name);
 		return viewNames.length ? viewNames : presentationFields;
 	});
 

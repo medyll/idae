@@ -93,7 +93,7 @@ export class MachineScheme {
 		return [{ field: this.index, direction: 'asc' }];
 	}
 
-	/** Fields per view context from appscheme_view (full, mini, fk). */
+	/** Fields per view context from appscheme_view (full, flat, fk, focus). */
 	get viewFields(): Partial<ViewFields> | undefined {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return (this.#collectionModel as any)?._views ?? undefined;
@@ -103,10 +103,10 @@ export class MachineScheme {
 	 * Resolve the ordered field list for a view.
 	 * Prefers seeded `_views`; otherwise derives:
 	 * - partition by fk-ness: full = all, flat = non-fk, fk = fk-only (full = flat ∪ fk)
-	 * - mini = curated identity subset: 'identification' group fields,
+	 * - focus = curated identity subset: 'identification' group fields,
 	 *   falling back to [code, name] (at least [code]). Never empty.
 	 */
-	getFieldsForView(view: 'full' | 'flat' | 'fk' | 'mini'): ViewFieldDef[] {
+	getFieldsForView(view: 'full' | 'flat' | 'fk' | 'focus'): ViewFieldDef[] {
 		const seeded = this.viewFields?.[view];
 		if (seeded?.length) return seeded;
 
@@ -122,7 +122,7 @@ export class MachineScheme {
 		} else if (view === 'fk') {
 			picked = names.filter((n) => isFk(n));
 		} else {
-			// mini: identification group, else [code, name], else [code]
+			// focus: identification group, else [code, name], else [code]
 			const ident = names.filter((n) => fields[n]?.group === 'identification');
 			picked = ident.length ? ident : ['code', 'name'].filter((n) => n in fields);
 			if (!picked.length && 'code' in fields) picked = ['code'];

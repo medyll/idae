@@ -76,13 +76,13 @@ export interface MachineDisplayTemplate {
  * - full : all fields, incl. fks (default = all schema fields)
  * - flat : non-fk fields only     (default = schema fields minus fk keys)
  * - fk   : fk fields only          (default = fk key fields)
- * - mini : curated identity subset (group 'identification', fallback [code, name])
+ * - focus : curated identity subset (group 'identification', fallback [code, name])
  */
 export interface ViewFields {
-	full?: ViewFieldDef[];
-	flat?: ViewFieldDef[];
-	fk?:   ViewFieldDef[];
-	mini?: ViewFieldDef[];
+	full?:  ViewFieldDef[];
+	flat?:  ViewFieldDef[];
+	fk?:    ViewFieldDef[];
+	focus?: ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 

@@ -27,20 +27,17 @@ legacy display string, **not** a view; it remains a fallback only.
 
 | View | Membership |
 |------|------------|
-| `mini` | group `identification` fields; fallback `[code, name]` (≥ `[code]`) |
-
-> `mini` will be renamed `focus` later (semantic: focused identity card). Keeping
-> `mini` for now.
+| `focus` | group `identification` fields; fallback `[code, name]` (≥ `[code]`) |
 
 Partition views are functions of the field set → **derivable**, no
-`appscheme_view` rows strictly required. `mini` derives from the field `group`
+`appscheme_view` rows strictly required. `focus` derives from the field `group`
 (plumbed through `getModel`); when no identification field exists it degrades to
 `[code, name]`. Seeded rows act as explicit overrides.
 
 ### Code/name solidification (upstream invariant)
 
 Every collection exposes **both** `code` and `name`. `getModel()` coalesces: if
-only `code` exists → `name := code`; if only `name` → `code := name`. So `mini`'s
+only `code` exists → `name := code`; if only `name` → `code := name`. So `focus`'s
 fallback and FK labels can always rely on both. `code` is guaranteed by the global
 invariant; `name` is not — the coalescing closes that gap.
 
@@ -52,14 +49,14 @@ invariant; `name` is not — the coalescing closes that gap.
 appscheme_view + appscheme_view_type   (MongoDB, seeded by deployModel.ts)
         ↓
 server/src/MachineServer.ts  getModel()
-        ↓  _viewTypeToKey(view_type.code) → 'full'|'flat'|'fk'|'mini' (null = dropped)
+        ↓  _viewTypeToKey(view_type.code) → 'full'|'flat'|'fk'|'focus' (null = dropped)
         ↓  field defs carry `group`; code/name coalesced
         ↓  sort each view by `order`
         ↓
 collectionModel._views : Partial<ViewFields>
         ↓
 src/lib/main/machine/MachineScheme.ts  getFieldsForView(view)
-        ↓  seeded _views[view] → else derive (fk-ness for full/flat/fk, group for mini)
+        ↓  seeded _views[view] → else derive (fk-ness for full/flat/fk, group for focus)
         ↓
 src/lib/data-ui/data/DataList.svelte   getFieldsForView('full')
 ```
@@ -80,7 +77,7 @@ src/lib/data-ui/data/DataList.svelte   getFieldsForView('full')
 `ViewFieldDef` is minimal — field identity + order, nothing presentational:
 
 ```ts
-type ViewTypeCode = 'full' | 'flat' | 'fk' | 'mini' | (string & {});
+type ViewTypeCode = 'full' | 'flat' | 'fk' | 'focus' | (string & {});
 
 interface ViewFieldDef { name: string; code: string; order?: number }
 
@@ -88,7 +85,7 @@ interface ViewFields {
   full?: ViewFieldDef[];
   flat?: ViewFieldDef[];
   fk?:   ViewFieldDef[];
-  mini?: ViewFieldDef[];
+  focus?: ViewFieldDef[];
   [key: string]: ViewFieldDef[] | undefined; // custom views
 }
 ```
@@ -107,10 +104,10 @@ Defined in `src/lib/types/schema-types.ts` (canonical), mirrored in
 | `full` | yes | `DataList.svelte` (default), `DataRecord.svelte` |
 | `flat` | yes | `DataRecord.svelte` / `DataList view="flat"` |
 | `fk`   | yes | `DataRecord.svelte` / `DataList view="fk"` |
-| `mini` | yes | `DataRecord.svelte` / `DataList view="mini"` |
+| `focus` | yes | `DataRecord.svelte` / `DataList view="focus"` |
 
 Both `DataList` and `DataRecord` accept a `view` prop
-(`'full'|'flat'|'fk'|'mini'`, default `full`) plus an explicit `showFields`
+(`'full'|'flat'|'fk'|'focus'`, default `full`) plus an explicit `showFields`
 override.
 
 - `DataRecord`: `showFields` → `getFieldsForView(view)` (ordered) → all fields.
@@ -126,15 +123,15 @@ to `fk`).
 
 - `form` / `custom` removed — they are not view types. Custom views reachable
   only via the `[key: string]` index signature.
-- Codes: partition `full` / `flat` / `fk` + curated `mini`. No back-compat — a
+- Codes: partition `full` / `flat` / `fk` + curated `focus`. No back-compat — a
   fresh `deployModel` run rewrites the registry.
-- The old non-fk view `mini` was renamed `flat`; `mini` now means the identity
-  subset (group `identification`, fallback `[code, name]`).
+- The old non-fk view (once called `mini`) is now `flat`; the curated identity
+  subset is `focus` (group `identification`, fallback `[code, name]`).
 - Field defs carry `group` at runtime (`getModel`); `inferFieldGroup` reworked so
   identity fields (`code`/`name`/`label`/`title`…) land in `identification`.
 - code/name coalesced upstream so both always exist.
 - `ViewFieldDef` stripped to `{name, code, order}`; `ViewOptions` deleted.
-- Central resolver `MachineScheme.getFieldsForView('full'|'flat'|'fk'|'mini')`
+- Central resolver `MachineScheme.getFieldsForView('full'|'flat'|'fk'|'focus')`
   owns lookup + derivation; consumers no longer re-implement fallback.
 
 ---
@@ -154,7 +151,7 @@ to `fk`).
 
 ## 7. Tests
 
-- `src/lib/main/machine/__tests__/viewFields.test.ts` — partition (`full`/`mini`/
-  `fk`, `mini ∪ fk = full`) + seeded-override-wins.
+- `src/lib/main/machine/__tests__/viewFields.test.ts` — partition (`full`/`flat`/
+  `fk`, `flat ∪ fk = full`) + `focus` subset + seeded-override-wins.
 - `src/lib/main/api/__tests__/MachineApi.spec.ts` — scheme mock uses `full`.
 - `server/src/__tests__/bootstrap.test.ts` — `appscheme_view_type` count = 3.

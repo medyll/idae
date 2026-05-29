@@ -5,10 +5,10 @@ export interface ViewFieldDef {
 }
 
 export interface ViewFields {
-	full?: ViewFieldDef[];
-	flat?: ViewFieldDef[];
-	fk?:   ViewFieldDef[];
-	mini?: ViewFieldDef[];
+	full?:  ViewFieldDef[];
+	flat?:  ViewFieldDef[];
+	fk?:    ViewFieldDef[];
+	focus?: ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 

@@ -6,7 +6,7 @@ Iterates a record's fields and renders DataField for each.
 @prop {Record<string,any>} data - Record data (bindable)
 @prop {'show'|'create'|'update'} [mode] - Display mode
 @prop {string[]} [showFields] - Filter to specific fields (overrides view)
-@prop {'full'|'flat'|'fk'|'mini'|string} [view] - Named view to resolve field list (full=all, flat=non-fk, fk=fk-only, mini=identity subset)
+@prop {'full'|'flat'|'fk'|'focus'|string} [view] - Named view to resolve field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
 @prop {SortBy | SortBy[]} [sortBy] - Sort field order (by field def properties e.g. order, label)
 @prop {string} [groupBy] - Group fields by field def property (e.g. 'group')
 -->
@@ -35,7 +35,7 @@ Iterates a record's fields and renders DataField for each.
 		collectionId?: string | number;
 		mode?: 'show' | 'create' | 'update';
 		showFields?: string[];
-		view?: 'full' | 'flat' | 'fk' | 'mini' | string;
+		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
@@ -70,7 +70,7 @@ Iterates a record's fields and renders DataField for each.
 			keys = showFields.filter(k => k in fields);
 		} else if (view) {
 			// Named view returns an ordered field list; keep only existing fields.
-			keys = (scheme?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'mini') ?? [])
+			keys = (scheme?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? [])
 				.map(f => f.name)
 				.filter(k => k in fields);
 		} else {

@@ -53,7 +53,7 @@ const FIELD_GROUPS = [
 ] as const;
 
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
-const VIEW_TYPES   = ['full', 'flat', 'fk', 'mini'] as const;
+const VIEW_TYPES   = ['full', 'flat', 'fk', 'focus'] as const;
 
 const ICON_BY_GROUP: Record<string, string> = {
 	audit:          'history',
@@ -79,7 +79,7 @@ const DEFAULT_BASE = 'machine_user';
 
 function inferFieldGroup(name: string, type: string): string {
 	const n = name.toLowerCase();
-	// Identity/label fields drive the mini-fiche.
+	// Identity/label fields drive the focus view (mini-fiche).
 	if (['code', 'name', 'label', 'title', 'nom', 'libelle'].includes(n)) return 'identification';
 	if (n === 'id' || type === 'id')                      return 'system';
 	if (type.startsWith('fk'))                            return 'classification';
@@ -400,7 +400,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		}
 
 		// ── appscheme_view ────────────────────────────────────────────────────
-		// Partition by fk-ness (full = flat ∪ fk). Plus a curated `mini` subset =
+		// Partition by fk-ness (full = flat ∪ fk). Plus a curated `focus` subset =
 		// 'identification' group fields, falling back to [code, name] when none.
 		const allFieldNames = Object.keys(fields);
 		const fkSet = new Set(
@@ -409,15 +409,15 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const identFields = allFieldNames.filter(
 			(n) => inferFieldGroup(n, (fields[n] as any)?.type ?? 'text') === 'identification',
 		);
-		const miniFields = identFields.length
+		const focusFields = identFields.length
 			? identFields
 			: ['code', 'name'].filter((n) => n in fields);
 
 		const viewDefs: Record<string, string[]> = {
-			full: allFieldNames,
-			flat: allFieldNames.filter((n) => !fkSet.has(n)),
-			fk:   allFieldNames.filter((n) => fkSet.has(n)),
-			mini: miniFields,
+			full:  allFieldNames,
+			flat:  allFieldNames.filter((n) => !fkSet.has(n)),
+			fk:    allFieldNames.filter((n) => fkSet.has(n)),
+			focus: focusFields,
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {
