@@ -29,10 +29,6 @@ describe('DataList data operations', () => {
 		m = await createStartedMachine(uniqueDbName('datalist'));
 	});
 
-	afterEach(() => {
-		_dbCounter = 0;
-	});
-
 	describe('getAll', () => {
 		it('returns all records for a valid collection', async () => {
 			await m.collection('vehicle').create({ license_plate: 'A1', model: 'Civic', brand: 'Honda', status: 'available' });
@@ -76,7 +72,7 @@ describe('DataList data operations', () => {
 			const items = m.collection('vehicle').getAll();
 			const sorted = sortItems(items, { field: 'model', direction: 'desc' });
 			expect(sorted[0].model).toBe('Zebra');
-			expect(sorted[1].model).toBe('Alpha');
+			expect(sorted[sorted.length - 1].model).toBe('Alpha');
 		});
 
 		it('supports multi-sort chain', async () => {
