@@ -955,7 +955,7 @@ export interface AppScheme<T = Record<string, any>> extends Extendable, WithEsse
 	schemeType?: SchemeType;
 	/**
 	 * Dynamic views registry - populated at runtime from appscheme_view.
-	 * Keys are appscheme_view_type.code values ('list', 'mini', 'form', 'custom', 'fk_label', etc.)
+	 * Keys are appscheme_view_type.code values ('full', 'mini', 'fk', etc.)
 	 * @see ViewFields for standard view type definitions
 	 */
 	_views?:     Partial<ViewFields>;
@@ -1357,52 +1357,33 @@ export interface PermissionCheckResult {
  * Extensible - new view types can be added without schema migration.
  */
 export type ViewTypeCode =
-	| 'list'     // Default grid columns
-	| 'mini'     // Card / tooltip / quick preview
-	| 'form'     // All editable fields - create/edit screens
-	| 'custom'   // Admin-configurable column set
-	| 'fk_label' // Fields displayed inside a FK selector
+	| 'full'  // All fields, incl. fks
+	| 'mini'  // Non-fk fields only
+	| 'fk'    // Fk fields only
 	| (string & {}); // Allow extension for custom view types
 
 /**
- * Display options for a field within a view.
- * Stored in appscheme_view.options JSON blob.
- */
-export interface ViewOptions extends Extendable {
-	width?: number;      // Column width in pixels (for lists/grids)
-	sortable?: boolean;  // Whether the column can be sorted
-	className?: string;  // CSS class for styling
-	visible?: boolean;   // Override visibility
-	editable?: boolean;  // Override editability in this view
-}
-
-/**
  * Field definition as resolved for a specific view.
- * Combines field metadata from appscheme_field with view-specific options.
+ * A view is only a list of fields — no formatting/layout metadata.
  */
 export interface ViewFieldDef extends Extendable {
-	name: string;   // Field name (from appscheme_field.code)
-	code: string;   // Field code
-	group: string;  // Group code (from appscheme_field_group.code)
-	title: string;             // Display title (from appscheme_field.name)
-	type?: string;             // Field type code (only in fullView)
-	icon?: string;             // Field icon
-	order?: number;            // Position in view (from appscheme_view.order)
-	options?: ViewOptions;     // View-specific options
+	name: string;    // Field name (from appscheme_field.code)
+	code: string;    // Field code
+	order?: number;  // Position in view (from appscheme_view.order)
 }
 
 /**
- * Named field selections for different display contexts.
+ * Named field selections, partitioned by fk-ness. mini ∪ fk = full.
  * Populated at runtime from appscheme_view data.
  *
- * - fullView : all fields + fks (view_type 'list')
- * - miniView : all primitive fields, no fks (view_type 'mini')
- * - fkView   : fk fields only (view_type 'fk')
+ * - full : all fields, incl. fks  (view_type 'full')
+ * - mini : non-fk fields only      (view_type 'mini')
+ * - fk   : fk fields only          (view_type 'fk')
  */
 export interface ViewFields extends Extendable {
-	fullView?: ViewFieldDef[];     // All fields + fks (view_type 'list')
-	miniView?: ViewFieldDef[];     // Card/mini-fiche, no fks (view_type 'mini')
-	fkView?:   ViewFieldDef[];     // FK fields only
+	full?: ViewFieldDef[];  // All fields, incl. fks
+	mini?: ViewFieldDef[];  // Non-fk fields only
+	fk?:   ViewFieldDef[];  // Fk fields only
 	[key: string]: ViewFieldDef[] | undefined; // Extensible for custom view types
 }
 
@@ -1419,7 +1400,6 @@ export interface AppSchemeViewType extends Extendable, WithEssentials {
  * Pivot table: appscheme_view
  */
 export interface AppSchemeView extends Extendable, WithEssentials {
-	options?: ViewOptions;
 	gridFks: {
 		appscheme: gridFksItem<AppScheme>;
 		appscheme_view_type: gridFksItem<AppSchemeViewType>;

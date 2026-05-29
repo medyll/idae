@@ -9,7 +9,7 @@ Consumers can override via the item snippet.
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
 @prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
-@prop {string[]} [showFields] - Fields to display (overrides viewFields.fullView)
+@prop {string[]} [showFields] - Fields to display (overrides the 'full' view)
 @prop {(record: COL) => void} [onItemClick] - Click handler for items/rows
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
 @prop {number} [page] - 1-based (only used when infiniteScroll=false)
@@ -208,14 +208,11 @@ Consumers can override via the item snippet.
 			: undefined
 	);
 
-	const viewFields = $derived(collLogic?.viewFields ?? {});
-	const fullFields = $derived(
-		showFields?.length
-			? showFields
-			: (viewFields.fullView ?? []).map((f: { name: string }) => f.name).length
-				? (viewFields.fullView ?? []).map((f: { name: string }) => f.name)
-				: presentationFields
-	);
+	const fullFields = $derived.by(() => {
+		if (showFields?.length) return showFields;
+		const viewNames = (collLogic?.getFieldsForView('full') ?? []).map((f) => f.name);
+		return viewNames.length ? viewNames : presentationFields;
+	});
 
 	function getByPath(obj: unknown, path: string): unknown {
 		if (obj == null) return undefined;

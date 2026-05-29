@@ -53,7 +53,7 @@ const FIELD_GROUPS = [
 ] as const;
 
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
-const VIEW_TYPES   = ['list', 'mini', 'form', 'custom', 'fk_label'] as const;
+const VIEW_TYPES   = ['full', 'mini', 'fk'] as const;
 
 const ICON_BY_GROUP: Record<string, string> = {
 	audit:          'history',
@@ -395,15 +395,16 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			);
 		}
 
-		// ── appscheme_view ───────────────────────────────────────────────────
-		const presentationFields = ((template as any).presentation ?? '').split(' ').filter(Boolean);
-		const allFieldNames      = Object.keys(fields);
+		// ── appscheme_view (partitioned by fk-ness: mini ∪ fk = full) ─────────
+		const allFieldNames = Object.keys(fields);
+		const fkSet = new Set(
+			allFieldNames.filter((n) => ((fields[n] as any)?.type ?? '').startsWith('fk-')),
+		);
 
 		const viewDefs: Record<string, string[]> = {
-			list:     presentationFields.length ? presentationFields : allFieldNames.slice(0, 5),
-			mini:     presentationFields.slice(0, 2).length ? presentationFields.slice(0, 2) : allFieldNames.slice(0, 2),
-			form:     allFieldNames,
-			fk_label: presentationFields.length ? presentationFields : allFieldNames.slice(0, 2),
+			full: allFieldNames,
+			mini: allFieldNames.filter((n) => !fkSet.has(n)),
+			fk:   allFieldNames.filter((n) => fkSet.has(n)),
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {

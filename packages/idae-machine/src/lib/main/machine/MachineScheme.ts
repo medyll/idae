@@ -6,7 +6,7 @@ import type {
 	MachineDisplayTemplate,
 	MachineFkDef,
 } from '$lib/types/index.js';
-import type { ViewFields } from '$lib/types/schema-types.js';
+import type { ViewFields, ViewFieldDef } from '$lib/types/schema-types.js';
 import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
@@ -93,10 +93,28 @@ export class MachineScheme {
 		return [{ field: this.index, direction: 'asc' }];
 	}
 
-	/** Fields per view context from appscheme_view (fullView, miniView, fkView). */
+	/** Fields per view context from appscheme_view (full, mini, fk). */
 	get viewFields(): Partial<ViewFields> | undefined {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		return (this.#collectionModel as any)?._views ?? undefined;
+	}
+
+	/**
+	 * Resolve the ordered field list for a canonical view.
+	 * Prefers seeded `_views`; otherwise derives by fk-ness
+	 * (full = all, mini = non-fk, fk = fk-only). mini ∪ fk = full.
+	 */
+	getFieldsForView(view: 'full' | 'mini' | 'fk'): ViewFieldDef[] {
+		const seeded = this.viewFields?.[view];
+		if (seeded?.length) return seeded;
+
+		const names = Object.keys(this.fields);
+		const isFk = (name: string) => (this.field(name).parse()?.fieldType ?? '').startsWith('fk-');
+		const picked =
+			view === 'full' ? names :
+			view === 'mini' ? names.filter((n) => !isFk(n)) :
+			                  names.filter((n) => isFk(n));
+		return picked.map((name, i) => ({ name, code: name, order: i }));
 	}
 
 	get validator(): MachineSchemeValidate {

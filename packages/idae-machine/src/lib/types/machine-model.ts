@@ -71,31 +71,21 @@ export interface MachineDisplayTemplate {
  * Named field selections for different display contexts.
  * Populated at runtime from appscheme_view data.
  *
- * - fullView : all fields + fks (default = all schema fields)
- * - miniView : all primitive fields, no fks (default = schema fields minus fk keys)
- * - fkView   : fk fields only (default = fk key fields)
+ * - full : all fields, incl. fks (default = all schema fields)
+ * - mini : non-fk fields only     (default = schema fields minus fk keys)
+ * - fk   : fk fields only          (default = fk key fields)
  */
 export interface ViewFields {
-	fullView?: ViewFieldDef[];
-	miniView?: ViewFieldDef[];
-	fkView?:   ViewFieldDef[];
+	full?: ViewFieldDef[];
+	mini?: ViewFieldDef[];
+	fk?:   ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 
 export interface ViewFieldDef {
 	name:  string;
 	code?: string;
-	group?: string;
-	title: string;
-	type?: string;
-	icon?: string;
 	order?: number;
-	options?: {
-		width?: number;
-		sortable?: boolean;
-		visible?: boolean;
-		editable?: boolean;
-	};
 }
 
 // ── Rights policy ─────────────────────────────────────────────────────────────

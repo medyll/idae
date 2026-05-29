@@ -108,7 +108,7 @@ describe('MachineApi', () => {
 				code: 'produit',
 				name: 'Produits',
 				_views: {
-					fullView: [{ name: 'nomProduit', title: 'Nom' }]
+					full: [{ name: 'nomProduit', code: 'nomProduit', order: 1 }]
 				}
 			};
 

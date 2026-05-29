@@ -1,220 +1,128 @@
-# View System — Verified State & Plan
+# View System
 
-> Rewritten 2026-05-30 against live code (claude-opus-4-8).
-> Supersedes the prior 4-author accretion (Sonnet / Copilot / qwen ×2).
-> Stale claims removed; every assertion below cross-checked against source.
-
----
-
-## 1. What the view system is
-
-`appscheme_view` rows bind a **field** to a **view type** for a **scheme**. At model
-build the server groups those rows by view type and emits a `_views` object per
-collection. The client reads it through `MachineScheme.viewFields`. UI consumers
-pick fields from a named view (`fullView`, `miniView`, `fkView`).
-
-`view -> fields` (not field -> views). The `ViewFields` naming reflects that.
+> Implemented 2026-05-30 (claude-opus-4-8). Reflects shipped code.
+> History: this file began as a 4-author analysis; that accretion is superseded.
 
 ---
 
-## 2. Verified runtime chain
+## 0. Principle
+
+A **view is only a list of fields** — no layout, formatting, component, or screen.
+Views are decoupled from templates/screens. `template.presentation` is a SEPARATE
+legacy display string, **not** a view; it remains a fallback only.
+
+---
+
+## 1. The three canonical views
+
+Partitioned purely by FK-ness (`mini ∪ fk = full`):
+
+| View | Membership |
+|------|------------|
+| `full` | all fields, incl. FKs |
+| `mini` | non-FK fields only |
+| `fk`   | FK fields only |
+
+Because they are functions of the field set, they are **derivable** — no
+`appscheme_view` rows are strictly required for the defaults. Rows that do exist
+act as explicit overrides (custom views / explicit ordering).
+
+---
+
+## 2. Runtime chain
 
 ```
 appscheme_view + appscheme_view_type   (MongoDB, seeded by deployModel.ts)
         ↓
 server/src/MachineServer.ts  getModel()
-        ↓  filter rows by scheme code
-        ↓  _viewTypeToKey(view_type.code) → ViewFields key (null = dropped)
+        ↓  _viewTypeToKey(view_type.code) → 'full' | 'mini' | 'fk' (null = dropped)
         ↓  sort each view by `order`
         ↓
 collectionModel._views : Partial<ViewFields>
         ↓
-src/lib/main/machine/MachineScheme.ts  get viewFields()
+src/lib/main/machine/MachineScheme.ts  getFieldsForView(view)
+        ↓  seeded _views[view]  →  else derive by fk-ness
         ↓
-src/lib/data-ui/data/DataList.svelte   (only active consumer)
+src/lib/data-ui/data/DataList.svelte   getFieldsForView('full')
 ```
-
-**Evidence (line-checked):**
 
 | Step | File | Lines |
 |------|------|-------|
 | view-type→key map | `server/src/MachineServer.ts` | 52-58 |
-| `_views` build + sort | `server/src/MachineServer.ts` | 125-162 |
-| getter | `src/lib/main/machine/MachineScheme.ts` | 97-100 |
-| consumer fallback chain | `src/lib/data-ui/data/DataList.svelte` | 211-218 |
-| seeding | `server/src/bootstrap/deployModel.ts` | 197-205, 398-448 |
+| `_views` build + sort | `server/src/MachineServer.ts` | 125-160 |
+| getter + resolver | `src/lib/main/machine/MachineScheme.ts` | 96-118 |
+| consumer | `src/lib/data-ui/data/DataList.svelte` | 211-215 |
+| seeding (partition by `fk-`) | `server/src/bootstrap/deployModel.ts` | 56, 398-407 |
 
 ---
 
-## 3. Mapping contract (as shipped)
+## 3. Types (single shape, three locations)
 
-`_viewTypeToKey` (`MachineServer.ts:52`):
-
-| `view_type.code` | runtime key | result |
-|------------------|-------------|--------|
-| `list`     | `fullView` | built |
-| `mini`     | `miniView` | built |
-| `fk_label` | `fkView`   | built |
-| anything else | — | **dropped (returns null)** |
-
-The builder fills each `ViewFieldDef` as:
+`ViewFieldDef` is minimal — field identity + order, nothing presentational:
 
 ```ts
-{ name: fieldCode, code: fieldCode, group: '', title: fieldCode.replace(/_/g,' '), order: row.order ?? 0 }
-```
+type ViewTypeCode = 'full' | 'mini' | 'fk' | (string & {});
 
-So `group` is always empty, `title` is derived from the code, and `icon` /
-`options` are **not** populated — regardless of what the prior proposals claimed.
+interface ViewFieldDef { name: string; code: string; order?: number }
 
----
-
-## 4. Consumer coverage (verified)
-
-| View key | Built by server | Consumer | Status |
-|----------|-----------------|----------|--------|
-| `fullView` | yes | `DataList.svelte` | **Active** |
-| `miniView` | yes | none | built, unused |
-| `fkView`   | yes | none (FK labels use `template.presentation`) | built, unused |
-
-`DataList` resolution order (`:211-218`): `showFields` prop → `viewFields.fullView`
-names → `presentationFields` (parsed from `template.presentation`).
-
----
-
-## 5. Seeding — DONE (was wrongly flagged "Critical / missing")
-
-Prior doc claimed no seed data and pointed at `bootstrap-demo.ts`. **False.**
-`deployModel.ts` already seeds:
-
-- `appscheme_view_type` from `VIEW_TYPES` (`:197-205`).
-- `appscheme_view` rows for **every** collection (`:398-448`), derived from
-  `template.presentation` (fallback: first N field names).
-
-`viewDefs` currently emitted (`:402-407`): `list`, `mini`, `form`, `fk_label`.
-
-No seeding work is required to exercise `fullView` / `miniView` / `fkView`
-end-to-end. Proposal H from the old doc is obsolete and has been dropped.
-
----
-
-## 6. Code drift to fix (flagged, not yet changed)
-
-These are real mismatches found while verifying. Listed as planning inputs.
-
-### 6.1 `form` and `custom` are not view types — remove them (misconception)
-- `deployModel.ts:405` seeds `form` rows for every collection.
-- `MachineServer._viewTypeToKey` returns `null` for `form` → those rows are
-  written to Mongo then discarded at build. Dead data.
-- `ViewTypeCode` union (`schema-types.ts`) lists both `'form'` and `'custom'`.
-- **Fix direction:** drop `form` from `deployModel` `viewDefs`; remove `'form'`
-  **and** `'custom'` from `ViewTypeCode`. Form field composition is `DataForm`'s
-  concern, not a view type. Custom views are not a named member — the only
-  extension path is the `[key: string]: ViewFieldDef[]` index signature on
-  `ViewFields`. Keep that signature; drop the named `'custom'` literal.
-
-### 6.2 `fkView` comment / code mismatch
-- `schema-types.ts:~1400` comments `fkView = view_type 'fk'`.
-- Real mapping key is `fk_label`; `'fk'` maps to nothing.
-- **Fix:** correct comment to `fk_label` (or decide `'fk'` is the intended code
-  and align the seeder + map).
-
-### 6.3 `ViewFieldDef` fields under-filled
-- Builder hardcodes `group: ''` and never sets `icon` / `options`.
-- `appscheme_field` carries real group + icon; `appscheme_view.options` exists in
-  the schema but is ignored by the builder.
-- **Fix direction:** join `appscheme_field` group/icon and pass through
-  `row.options` when building `_views` (only if a consumer will read them).
-
-### 6.4 Type duplication
-- `ViewFields` / `ViewFieldDef` defined in `schema-types.ts` **and**
-  `machine-model.ts`, plus a server copy in `server/src/models/AppScheme.ts`.
-- `index.ts` barrel deliberately excludes the `machine-model.ts` versions to
-  avoid a name clash — duplication is contained but remains a maintenance trap.
-- **Fix direction:** single canonical source (`schema-types.ts`), re-export
-  everywhere.
-
----
-
-## 7. Proposals (the surviving ones)
-
-Old Proposals A/B/C are moot — B effectively shipped server-side. Proposal H
-(seed) is obsolete. What remains worth doing:
-
-### P1 — Central resolver `getFieldsForView` on `MachineScheme`
-Move DataList's fallback chain into one method so future consumers don't
-re-implement it.
-
-```ts
-getFieldsForView(viewKey: keyof ViewFields): ViewFieldDef[] {
-  const v = this.viewFields?.[viewKey];
-  if (v?.length) return v;
-  const pres = this.template?.presentation;
-  if (!pres) return [];
-  return pres.split(/\s+/).filter(Boolean)
-    .map((name, i) => ({ name, code: name, group: '', title: name.replace(/_/g,' '), order: i }));
+interface ViewFields {
+  full?: ViewFieldDef[];
+  mini?: ViewFieldDef[];
+  fk?:   ViewFieldDef[];
+  [key: string]: ViewFieldDef[] | undefined; // custom views
 }
 ```
 
-### P2 — Activate `miniView` consumer
-Compact card / grid mode in `DataRecord` (or a `DataCard`). View is already built;
-only a reader is missing.
-
-### P3 — Activate `fkView` consumer
-`InputSelect` FK labels read `fkView` before falling back to
-`template.presentation`. Enables per-collection FK label composition.
-
-### P4 — `viewFields` = official field-selection layer; `template.presentation` = fallback only
-State the contract so the two stop overlapping silently.
+Defined in `src/lib/types/schema-types.ts` (canonical), mirrored in
+`src/lib/types/machine-model.ts` and `server/src/models/AppScheme.ts`. The barrel
+`src/lib/types/index.ts` excludes the `machine-model.ts` copies to avoid a clash.
+`ViewOptions` was removed — formatting belongs to the template/screen layer.
 
 ---
 
-## 8. Roadmap (re-ranked on verified state)
+## 4. Consumer coverage
 
-### Phase 0 — Fix drift (small)
-- 6.1 drop `form` (seeder + `ViewTypeCode`).
-- 6.2 fix `fkView` comment.
-- 6.4 dedup types to single source.
+| View | Built | Consumer |
+|------|-------|----------|
+| `full` | yes | `DataList.svelte` (active) |
+| `mini` | yes | none yet |
+| `fk`   | yes | none yet (FK labels still use `template.presentation`) |
 
-### Phase 1 — Resolver + tests
-- P1 `getFieldsForView`.
-- Point `DataList` at it.
-- Unit tests: `list`/`mini`/`fk_label` mapping, ordering, fallback with/without `_views`.
-
-### Phase 2 — Activate the built-but-unused views
-- P2 `miniView` consumer.
-- P3 `fkView` consumer.
-- Integration tests for view-based rendering.
-
-### Phase 3 — Richer metadata (only if consumers need it)
-- 6.3 fill `group`/`icon`/`options` in builder.
+`DataList` order: `showFields` prop → `getFieldsForView('full')` →
+`presentationFields` (parsed from `template.presentation`).
 
 ---
 
-## 9. Open questions
+## 5. What changed from the prior design
 
-1. **Reactivity** — `_views` is built once at model load. If `appscheme_view`
-   changes at runtime, should `viewFields` refresh? (Needs reactive wrap.)
-2. **`ViewOptions` reach** — `width`/`sortable`/`visible`/`editable` exist in the
-   type but are never built or read. Wire them, extend (`component`,
-   `conditional`, `transform`), or trim the type to what's real?
-3. **Deprecate `template.presentation`?** Once `viewFields` is the source, is
-   `presentation` a permanent lightweight fallback or a migration target?
-4. **User-configurable views?** Per-user field order/visibility persisted in
-   `appuser_prefs` — in scope or out?
+- `form` / `custom` removed — they are not view types. Custom views reachable
+  only via the `[key: string]` index signature.
+- Codes renamed: `list`→`full`, `fk_label`→`fk` (`mini` unchanged). No back-compat
+  — a fresh `deployModel` run rewrites the registry.
+- Seeder now partitions by `fk-` field-type prefix instead of arbitrary slices.
+- `ViewFieldDef` stripped to `{name, code, order}`; `ViewOptions` deleted.
+- Central resolver `MachineScheme.getFieldsForView('full'|'mini'|'fk')` owns the
+  lookup + fk-ness derivation; consumers no longer re-implement fallback.
 
 ---
 
-## 10. Summary
+## 6. Open / next
 
-- ✅ Types defined, consistently named (`ViewFields`).
-- ✅ Server builder works; `_views` populated at model load.
-- ✅ Seeding done in `deployModel.ts` (prior "missing seed" claim was false).
-- ✅ `fullView` consumed by `DataList`.
-- ⚠️ `miniView` / `fkView` built but unconsumed.
-- ⚠️ `form` seeded but dropped — it is **not** a view type; remove it.
-- ⚠️ Builder under-fills `ViewFieldDef` (empty `group`, no `icon`/`options`).
-- ⚠️ Types duplicated across 3 files.
-- ⚠️ Fallback logic lives in `DataList`, not centralized.
+1. **`mini` consumer** — compact list/card rendering reads `mini`.
+2. **`fk` consumer** — `InputSelect` FK labels read `fk` before
+   `template.presentation`.
+3. **Reactivity** — `_views` built once at model load; derivation covers most
+   cases statelessly. Decide if runtime `appscheme_view` edits must refresh.
+4. **`template.presentation` future** — permanent fallback, or retire once `fk`/
+   `mini` consumers land?
+5. **User-configurable views** — per-user order/visibility in `appuser_prefs` —
+   in scope? (Would be the main reason to keep `appscheme_view` rows.)
 
-Foundation is real and operational for lists. Remaining work = drift cleanup +
-two consumers + a resolver, not a rebuild.
+---
+
+## 7. Tests
+
+- `src/lib/main/machine/__tests__/viewFields.test.ts` — partition (`full`/`mini`/
+  `fk`, `mini ∪ fk = full`) + seeded-override-wins.
+- `src/lib/main/api/__tests__/MachineApi.spec.ts` — scheme mock uses `full`.
+- `server/src/__tests__/bootstrap.test.ts` — `appscheme_view_type` count = 3.

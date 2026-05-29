@@ -1,23 +1,13 @@
 export interface ViewFieldDef {
 	name: string;
 	code?: string;
-	group?: string;
-	title: string;
-	type?: string;
-	icon?: string;
 	order?: number;
-	options?: {
-		width?: number;
-		sortable?: boolean;
-		visible?: boolean;
-		editable?: boolean;
-	};
 }
 
 export interface ViewFields {
-	fullView?: ViewFieldDef[];
-	miniView?: ViewFieldDef[];
-	fkView?:   ViewFieldDef[];
+	full?: ViewFieldDef[];
+	mini?: ViewFieldDef[];
+	fk?:   ViewFieldDef[];
 	[key: string]: ViewFieldDef[] | undefined;
 }
 

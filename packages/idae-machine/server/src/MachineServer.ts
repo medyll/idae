@@ -51,10 +51,10 @@ class MachineServerClass {
 	/** Map appscheme_view_type.code to ViewFields key name. */
 	private _viewTypeToKey(code: string): string | null {
 		switch (code) {
-			case 'list':     return 'fullView';
-			case 'mini':     return 'miniView';
-			case 'fk_label': return 'fkView';
-			default:         return null; // form, custom ignored for now
+			case 'full': return 'full';
+			case 'mini': return 'mini';
+			case 'fk':   return 'fk';
+			default:     return null; // unknown view types ignored
 		}
 	}
 
@@ -140,8 +140,6 @@ class MachineServerClass {
 				(_views[viewKey] as ViewFieldDef[]).push({
 					name:  fieldCode,
 					code:  fieldCode,
-					group: '',
-					title: fieldCode.replace(/_/g, ' '),
 					order: v.order ?? 0,
 				});
 			}
