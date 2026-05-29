@@ -13,12 +13,12 @@ describe('Machine relation helpers', () => {
 	it('findFkField resolves the data field for a target collection', () => {
 		const vehicle = db.collection('vehicle');
 		expect(vehicle.findFkField('category')).toEqual({
-			fieldName: 'categoryId',
-			targetIndex: 'id'
+			fieldName: 'category',
+			targetIndex: 'code'
 		});
 		expect(vehicle.findFkField('location_office')).toEqual({
-			fieldName: 'locationOfficeId',
-			targetIndex: 'id'
+			fieldName: 'location_office',
+			targetIndex: 'code'
 		});
 	});
 
@@ -28,15 +28,15 @@ describe('Machine relation helpers', () => {
 			rental: {
 				vehicle: {
 					code: 'vehicle',
-					fieldName: 'vehicleId',
-					targetIndex: 'id'
+					fieldName: 'vehicle',
+					targetIndex: 'code'
 				}
 			},
 			maintenance: {
 				vehicle: {
 					code: 'vehicle',
-					fieldName: 'vehicleId',
-					targetIndex: 'id'
+					fieldName: 'vehicle',
+					targetIndex: 'code'
 				}
 			}
 		});
@@ -52,23 +52,23 @@ describe('Machine relation helpers', () => {
 		const vehicle = db.collection('vehicle');
 		const relations = resolveForwardRelations(vehicle, {
 			id: 1,
-			categoryId: 2,
-			locationOfficeId: 3
+			category: 'suv',
+			location_office: 'LYO-01'
 		});
 		expect(relations.resolved).toMatchObject([
 			{
 				key: 'category',
 				collection: 'category',
-				fieldName: 'categoryId',
-				targetIndex: 'id',
-				where: { id: 2 }
+				fieldName: 'category',
+				targetIndex: 'code',
+				where: { code: 'suv' }
 			},
 			{
 				key: 'location_office',
 				collection: 'location_office',
-				fieldName: 'locationOfficeId',
-				targetIndex: 'id',
-				where: { id: 3 }
+				fieldName: 'location_office',
+				targetIndex: 'code',
+				where: { code: 'LYO-01' }
 			}
 		]);
 		expect(relations.unresolved).toEqual([]);
@@ -76,14 +76,14 @@ describe('Machine relation helpers', () => {
 
 	it('resolveReverseRelations builds reverse where clauses from schema helpers', () => {
 		const category = db.collection('category');
-		const relations = resolveReverseRelations(category, { id: 1, name: 'Compact' });
+		const relations = resolveReverseRelations(category, { id: 1, code: 'compact', name: 'Compact' });
 		expect(relations.resolved).toMatchObject([
 			{
 				key: 'category',
 				collection: 'vehicle',
-				fieldName: 'categoryId',
-				targetIndex: 'id',
-				where: { categoryId: 1 }
+				fieldName: 'category',
+				targetIndex: 'code',
+				where: { category: 'compact' }
 			}
 		]);
 		expect(relations.unresolved).toEqual([]);

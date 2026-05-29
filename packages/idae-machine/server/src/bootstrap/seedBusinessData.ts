@@ -50,7 +50,12 @@ export async function seedBusinessData(opts: SeedBusinessOpts): Promise<void> {
 			continue;
 		}
 
-		await col.insertMany(rows as any[]);
+		const withCodes = (rows as any[]).map((r) =>
+			r && typeof r === 'object' && (r.code === undefined || r.code === null || r.code === '') && r.id != null
+				? { ...r, code: String(r.id) }
+				: r
+		);
+		await col.insertMany(withCodes);
 		console.log(`  [business] ${collectionName} → ${org}_${base} — inserted ${rows.length} docs`);
 	}
 }

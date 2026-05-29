@@ -47,7 +47,13 @@ async function bootMachine(dbName: string): Promise<void> {
 
 async function seedCollection(name: keyof typeof demoSeed): Promise<void> {
 	for (const record of demoSeed[name]) {
-		await machine.collection(name).create(record as Record<string, unknown>);
+		const r = record as Record<string, unknown>;
+		// Mirror the seed path: auto-construct code = String(id) when absent.
+		const withCode =
+			(r.code === undefined || r.code === null || r.code === '') && r.id != null
+				? { ...r, code: String(r.id) }
+				: r;
+		await machine.collection(name).create(withCode);
 	}
 }
 

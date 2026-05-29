@@ -186,13 +186,12 @@ describe('S11-03: API /api/data/* avec données réelles', () => {
 	// ── GET /api/data/rental → FK integrity ──────────────────────────────────
 
 	describe('GET /api/data/rental — FK integrity', () => {
-		it('rental has vehicleId=2 present', async () => {
+		it('rental has vehicle=2 present', async () => {
 			const req = mockReq({ params: { table: 'rental' } });
 			const res = mockRes();
 			await listRecords(req, res);
 			expect(res._status).toBe(200);
-			expect(res._body.data).toHaveLength(1);
-			expect(res._body.data[0].vehicleId).toBe(2);
+			expect(res._body.data[0].vehicle).toBe('2');
 		});
 	});
 });

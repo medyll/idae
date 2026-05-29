@@ -82,8 +82,6 @@ export function resolveReverseRelations(
 	const resolved: ResolvedRelation[] = [];
 	const unresolved: UnresolvedRelation[] = [];
 	const reverseFkFields = scheme.parseReverseFkFields();
-	const sourceId = record[scheme.index];
-	if (sourceId == null) return { resolved, unresolved };
 
 	const relationCountByCollection = Object.fromEntries(
 		Object.entries(reverseFkFields).map(([collection, relations]) => [collection, Object.keys(relations).length])
@@ -108,13 +106,17 @@ export function resolveReverseRelations(
 				continue;
 			}
 
+			// Source value = this record's value at the FK's declared target index (id or code)
+			const sourceValue = record[fkDef.targetIndex];
+			if (sourceValue == null) continue;
+
 			resolved.push({
 				key:         relationKey,
 				title,
 				collection:  sourceCollection,
 				fieldName:   fkDef.fieldName,
 				targetIndex: fkDef.targetIndex,
-				where:       buildRelationWhere(fkDef.fieldName, sourceId),
+				where:       buildRelationWhere(fkDef.fieldName, sourceValue),
 				fkDef
 			});
 		}

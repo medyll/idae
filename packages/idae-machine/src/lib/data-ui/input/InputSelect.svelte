@@ -2,8 +2,9 @@
 InputSelect.svelte
 FK-aware select input atom. Queries machine store for related collection records.
 @role input-atom
-@prop {unknown} value - Current FK id value (bindable)
+@prop {unknown} value - Current FK value (bindable)
 @prop {string} collection - Target collection name (from fk-collection.field)
+@prop {string} [targetField] - Target field written as option value (from fk-X.field). Defaults to scheme index.
 @prop {string} [id] - Input id
 @prop {string} [name] - Input name
 @prop {string} [form] - Form id
@@ -16,19 +17,21 @@ FK-aware select input atom. Queries machine store for related collection records
 	let {
 		value    = $bindable(undefined),
 		collection,
+		targetField,
 		id,
 		name,
 		form,
 		disabled  = false,
 		multiple  = false
 	} = $props<{
-		value?:      unknown;
-		collection:  string;
-		id?:         string;
-		name?:       string;
-		form?:       string;
-		disabled?:   boolean;
-		multiple?:   boolean;
+		value?:       unknown;
+		collection:   string;
+		targetField?: string;
+		id?:          string;
+		name?:        string;
+		form?:        string;
+		disabled?:    boolean;
+		multiple?:    boolean;
 	}>();
 
 	function safeScheme() {
@@ -36,7 +39,7 @@ FK-aware select input atom. Queries machine store for related collection records
 	}
 
 	const scheme     = $derived(safeScheme());
-	const indexField = $derived(scheme?.index ?? 'id');
+	const indexField = $derived(targetField ?? scheme?.index ?? 'id');
 	const presentationFields = $derived(
 		(scheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
 	);

@@ -6,6 +6,17 @@
 
 import { machine } from '$lib/main/machine.js';
 
+/** Auto-construct `code = String(id)` when a row has an id but no code (honors the code invariant). */
+function withCode(row: unknown): unknown {
+	if (row && typeof row === 'object') {
+		const r = row as Record<string, unknown>;
+		if ((r.code === undefined || r.code === null || r.code === '') && r.id != null) {
+			return { ...r, code: String(r.id) };
+		}
+	}
+	return row;
+}
+
 /**
  * Seed collections with initial data.
  * Works for any collection — core (appscheme, appuser…) or business (vehicle, reservation…).
@@ -31,7 +42,7 @@ export async function seed(
 			if (existing.length > 0) continue;
 		}
 		for (const row of rows) {
-			await store.create(row);
+			await store.create(withCode(row));
 		}
 	}
 }

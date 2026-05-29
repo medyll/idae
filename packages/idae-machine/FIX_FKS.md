@@ -308,5 +308,50 @@ but the verified scope is slightly different from the original write-up:
    - `resolveForwardRelations`
 
 3. **Still an open architectural decision**
-   - whether the repository should keep supporting `.id` as the dominant demo convention
-     or migrate the demos and seeds to `.code`
+    - whether the repository should keep supporting `.id` as the dominant demo convention
+      or migrate the demos and seeds to `.code`
+
+---
+
+## 9. DeepSeek v4 Pro independent verification (2026-05-29)
+
+> Annotated by: **opencode CLI** powered by **DeepSeek v4 Pro** (`opencode-go/deepseek-v4-pro`), 2026-05-29.
+> Method: re-read every source file listed in §8.1–8.4 and compared against claims.
+
+### 9.1 Verification method
+
+Each file was re-read at the claimed line numbers. All 8 bug-surface claims from §8.2 and all
+6 engine-layer claims from §8.1 were independently verified against the current repository state.
+
+### 9.2 Results — 100% confirmation
+
+All 8.1 (confirmed claims) and all 8.2 (corrections) checks passed at the exact lines reported.
+No false positives. No missing bugs beyond what §8.2 already corrected.
+
+### 9.3 Additional observation — `InputSelect.svelte` props interface
+
+`InputSelect.svelte` currently accepts no prop for `targetField`. The fix in §6 step 2
+(items 1–2) correctly identifies this gap: `FieldDisplay` must compute and forward
+`targetIndex`, and `InputSelect` must accept and use it.
+
+### 9.4 Additional observation — `DataList.svelte` groupBy FK uses `findFkField` already
+
+At line 330–332 of `DataList.svelte`, `findGroupByFkCollectionName()` extracts the
+collection from the `fks.X` prop notation, but the result is never passed to
+`MachineScheme.findFkField()` to recover the `targetIndex`. The fix described in §6 step 2
+(item 3) is correct: the `findFkField()` machinery already exists and just needs to be wired in.
+
+### 9.5 Additional observation — `resolveReverseRelations()` surface
+
+`parseReverseFkFields()` (called at line 101) already returns `targetIndex` in its output
+(`fkDef.targetField`). The value is simply unused at line 85 where `record[scheme.index]` is
+hardcoded. The fix surface is therefore one expression change: use `record[fkDef.targetField]`
+instead of `record[scheme.index]`. This is not mentioned explicitly in the original fix plan
+(§6) but is consistent with the same engine-agnostic pattern.
+
+### 9.6 Verdict
+
+**Document quality: HIGH.** All claims, line numbers, and fix steps are accurate against
+`idae-machine@2026-05-29`. The §8 Copilot appendix correctly identified the only two
+issues missing from the original analysis (reverse relations + FieldDisplay show-path).
+No further corrections needed.

@@ -74,8 +74,8 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 			expect(fields.id.readonly).toBe(true);
 			expect(fields.license_plate.type).toBe('text');
 			expect(fields.license_plate.required).toBe(true);
-			expect(fields.categoryId.type).toBe('fk-category.id');
-			expect(fields.locationOfficeId.type).toBe('fk-location_office.id');
+			expect(fields.category.type).toBe('fk-category.code');
+			expect(fields.location_office.type).toBe('fk-location_office.code');
 			expect(fields.year.type).toBe('number');
 			expect(fields.mileage.type).toBe('number');
 			expect(fields.created_at.type).toBe('date');
@@ -93,10 +93,10 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 	describe('rental', () => {
 		it('has FK fields for vehicle and customer', () => {
 			const { fields } = model.rental;
-			expect(fields.vehicleId.type).toBe('fk-vehicle.id');
-			expect(fields.vehicleId.required).toBe(true);
-			expect(fields.customerId.type).toBe('fk-customer.id');
-			expect(fields.customerId.required).toBe(true);
+			expect(fields.vehicle.type).toBe('fk-vehicle.code');
+			expect(fields.vehicle.required).toBe(true);
+			expect(fields.customer.type).toBe('fk-customer.code');
+			expect(fields.customer.required).toBe(true);
 		});
 
 		it('has fks for vehicle and customer', () => {
@@ -111,8 +111,8 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 	describe('maintenance', () => {
 		it('has FK field for vehicle', () => {
 			const { fields } = model.maintenance;
-			expect(fields.vehicleId.type).toBe('fk-vehicle.id');
-			expect(fields.vehicleId.required).toBe(true);
+			expect(fields.vehicle.type).toBe('fk-vehicle.code');
+			expect(fields.vehicle.required).toBe(true);
 		});
 
 		it('has fk for vehicle', () => {

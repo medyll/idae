@@ -63,20 +63,25 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         typeof showLabel === 'string' ? showLabel : (showLabel === true ? 'above' : '')
     );
 
-    // Extract FK collection name from fieldType like 'fk-category.id' → 'category'
+    // Extract FK collection + target index from fieldType like 'fk-category.code' → ('category','code')
     const fkCollection = $derived(
         fieldForge?.fieldType?.startsWith('fk-')
             ? (fieldForge.fieldType as string).replace('fk-', '').split('.')[0]
             : null
     );
+    const fkTargetIndex = $derived(
+        fieldForge?.fieldType?.startsWith('fk-')
+            ? (fieldForge.fieldType as string).split('.')[1] ?? 'id'
+            : 'id'
+    );
 
-    // FK presentation label — resolves raw id to human-readable label
+    // FK presentation label — resolves declared target index to human-readable label
     const fkScheme = $derived(
         fkCollection
             ? (() => { try { return machine.logic.collection(fkCollection); } catch { return null; } })()
             : null
     );
-    const fkIndexField        = $derived(fkScheme?.index ?? 'id');
+    const fkIndexField        = $derived(fkTargetIndex);
     const fkPresentationFields = $derived(
         (fkScheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
     );
@@ -153,6 +158,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <InputSelect
             bind:value={internalValue}
             collection={fkCollection}
+            targetField={fkTargetIndex}
             id={String(fieldName)}
             name={String(fieldName)}
             form={inputForm}

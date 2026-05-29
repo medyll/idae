@@ -21,6 +21,23 @@ interface MachineModel { [collection: string]: MachineCollection; }
 
 interface DeployOpts { org: string; mongoUri: string; }
 
+/** Ensure every collection declares a `code` field (semantic key). Pure. */
+function ensureCodeField(model: MachineModel): MachineModel {
+	const out: MachineModel = {};
+	for (const [name, col] of Object.entries(model)) {
+		const fields = col.fields ?? {};
+		if ('code' in fields) { out[name] = col; continue; }
+		const rebuilt: Record<string, MachineFieldDef> = {};
+		for (const [fn, fd] of Object.entries(fields)) {
+			rebuilt[fn] = fd;
+			if (fn === 'id') rebuilt.code = { type: 'text' };
+		}
+		if (!('code' in rebuilt)) rebuilt.code = { type: 'text' };
+		out[name] = { ...col, fields: rebuilt };
+	}
+	return out;
+}
+
 // ── Static registry data ─────────────────────────────────────────────────────
 const FIELD_TYPES = [
 	'id', 'text', 'text-xs', 'text-sm', 'text-md', 'text-lg', 'text-xl', 'text-full', 'text-area',
@@ -191,7 +208,8 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 // ── deployModel ──────────────────────────────────────────────────────────────
 // Writes schemes / fields / has_field / views for the given MachineModel.
 // Each collection's `base` is registered in appscheme_base (default: 'machine_user').
-export async function deployModel(model: MachineModel, opts: DeployOpts): Promise<void> {
+export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
+	const model = ensureCodeField(rawModel);
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
 

@@ -7,28 +7,28 @@ export const demoScheme: MachineModel = {
 		base:    'machine_user',
 		model:   {},
 		ts:      {} as {
-			id:                string;
-			license_plate:     string;
-			model:             string;
-			brand:             string;
-			year:              number;
-			categoryId?:       string;
-			locationOfficeId?: string;
-			status:            'available' | 'rented' | 'maintenance' | 'retired';
-			mileage?:          number;
-			created_at?:       Date;
+			id:               string;
+			license_plate:    string;
+			model:            string;
+			brand:            string;
+			year:             number;
+			category?:        string;
+			location_office?: string;
+			status:           'available' | 'rented' | 'maintenance' | 'retired';
+			mileage?:         number;
+			created_at?:      Date;
 		},
 		fields: {
-			id:               field('id',                    { readonly: true }),
-			license_plate:    field('text',                  { required: true }),
-			model:            field('text',                  { required: true }),
-			brand:            field('text'),
-			year:             field('number'),
-			categoryId:       field('fk-category.id'),
-			locationOfficeId: field('fk-location_office.id'),
-			status:           field('text'),
-			mileage:          field('number'),
-			created_at:       field('date'),
+			id:              field('id',                      { readonly: true }),
+			license_plate:   field('text',                    { required: true }),
+			model:           field('text',                    { required: true }),
+			brand:           field('text'),
+			year:            field('number'),
+			category:        field('fk-category.code'),
+			location_office: field('fk-location_office.code'),
+			status:          field('text'),
+			mileage:         field('number'),
+			created_at:      field('date'),
 		},
 		fks: {
 			category:        { code: 'category',        multiple: false, required: false },
@@ -90,8 +90,8 @@ export const demoScheme: MachineModel = {
 		model:   {},
 		ts:      {} as {
 			id:            string;
-			vehicleId:     string;
-			customerId:    string;
+			vehicle:       string;
+			customer:      string;
 			start_date:    Date;
 			end_date?:     Date;
 			price_per_day: number;
@@ -99,12 +99,12 @@ export const demoScheme: MachineModel = {
 			status:        'booked' | 'active' | 'completed' | 'cancelled';
 		},
 		fields: {
-			id:            field('id',             { readonly: true }),
-			vehicleId:     field('fk-vehicle.id',  { required: true }),
-			customerId:    field('fk-customer.id', { required: true }),
-			start_date:    field('date',           { required: true }),
+			id:            field('id',               { readonly: true }),
+			vehicle:       field('fk-vehicle.code',  { required: true }),
+			customer:      field('fk-customer.code', { required: true }),
+			start_date:    field('date',             { required: true }),
 			end_date:      field('date'),
-			price_per_day: field('number',         { required: true }),
+			price_per_day: field('number',           { required: true }),
 			total_price:   field('number'),
 			status:        field('text'),
 		},
@@ -148,20 +148,20 @@ export const demoScheme: MachineModel = {
 		base:    'machine_user',
 		model:   {},
 		ts:      {} as {
-			id:        string;
-			vehicleId: string;
-			date:      Date;
-			type:      string;
-			cost?:     number;
-			notes?:    string;
+			id:       string;
+			vehicle:  string;
+			date:     Date;
+			type:     string;
+			cost?:    number;
+			notes?:   string;
 		},
 		fields: {
-			id:        field('id',            { readonly: true }),
-			vehicleId: field('fk-vehicle.id', { required: true }),
-			date:      field('date'),
-			type:      field('text'),
-			cost:      field('number'),
-			notes:     field('text-lg'),
+			id:      field('id',              { readonly: true }),
+			vehicle: field('fk-vehicle.code', { required: true }),
+			date:    field('date'),
+			type:    field('text'),
+			cost:    field('number'),
+			notes:   field('text-lg'),
 		},
 		fks: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },
@@ -183,19 +183,19 @@ export const demoSeed = {
 		{ id: 2, code: 'LYO-01', address: '5 Rue de Lyon',   city: 'Lyon',  country: 'France' },
 	],
 	vehicle: [
-		{ id: 1, license_plate: 'AA-111-BB', model: 'Clio',   brand: 'Renault', year: 2018, categoryId: 1, locationOfficeId: 1, status: 'available', mileage: 45000 },
-		{ id: 2, license_plate: 'CC-222-DD', model: '208',    brand: 'Peugeot', year: 2019, categoryId: 1, locationOfficeId: 1, status: 'rented',    mileage: 32000 },
-		{ id: 3, license_plate: 'EE-333-FF', model: 'Captur', brand: 'Renault', year: 2020, categoryId: 2, locationOfficeId: 2, status: 'available', mileage: 15000 },
+		{ id: 1, license_plate: 'AA-111-BB', model: 'Clio',   brand: 'Renault', year: 2018, category: 'compact', location_office: 'PAR-01', status: 'available', mileage: 45000 },
+		{ id: 2, license_plate: 'CC-222-DD', model: '208',    brand: 'Peugeot', year: 2019, category: 'compact', location_office: 'PAR-01', status: 'rented',    mileage: 32000 },
+		{ id: 3, license_plate: 'EE-333-FF', model: 'Captur', brand: 'Renault', year: 2020, category: 'suv',     location_office: 'LYO-01', status: 'available', mileage: 15000 },
 	],
 	customer: [
 		{ id: 1, first_name: 'Alice', last_name: 'Durand', email: 'alice@example.com', phone: '+33611223344' },
 		{ id: 2, first_name: 'Bob',   last_name: 'Martin', email: 'bob@example.com' },
 	],
 	rental: [
-		{ id: 1, vehicleId: 2, customerId: 1, start_date: new Date('2026-03-01'), end_date: new Date('2026-03-05'), price_per_day: 45, total_price: 180, status: 'completed' },
+		{ id: 1, vehicle: '2', customer: '1', start_date: new Date('2026-03-01'), end_date: new Date('2026-03-05'), price_per_day: 45, total_price: 180, status: 'completed' },
 	],
 	maintenance: [
-		{ id: 1, vehicleId: 1, date: new Date('2026-02-20'), type: 'oil change', cost: 120, notes: 'Standard maintenance' },
+		{ id: 1, vehicle: '1', date: new Date('2026-02-20'), type: 'oil change', cost: 120, notes: 'Standard maintenance' },
 	],
 };
 

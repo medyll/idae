@@ -335,7 +335,7 @@ Consumers can override via the item snippet.
 					return null;
 				}
 			})();
-			const fkIndexField = fkScheme?.index ?? 'id';
+			const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
 			const fkPresentationFields = (fkScheme?.template?.presentation ?? 'name')
 				.split(' ')
 				.filter(Boolean);
