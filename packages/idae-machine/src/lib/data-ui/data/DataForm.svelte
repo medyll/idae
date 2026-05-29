@@ -15,7 +15,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 	import type { SortBy } from '$lib/types/index.js';
-	import DataFields from './DataFields.svelte';
+	import DataRecord from './DataRecord.svelte';
 
 	let {
 		onsubmit: onsubmit_callback,
@@ -148,7 +148,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 
 	<div class="flex">
 		<div class="crud {mode}">
-			<DataFields
+			<DataRecord
 				bind:data={formData}
 				{collection}
 				{mode}

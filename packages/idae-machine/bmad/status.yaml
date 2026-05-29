@@ -752,9 +752,18 @@ backlog:
       closest('[data-collection]') → { collection, collectionId }. Grep confirme zéro lecture actuelle.
 
   - id: BACK-05
-    title: "Playwright RBAC golden-path — 3 tests encore à passer"
-    priority: high
-    description: "group picker reveals matrix rows / cell toggle persists / column bulk-toggle. Services requis: MongoDB + server + SvelteKit."
+    title: "Playwright RBAC golden-path — 3 tests encore rouges"
+    priority: deferred
+    description: >
+      2026-05-29: investigation. 2 bugs qoolie réels trouvés+corrigés (qoolie 207/207 toujours vert):
+      (1) useQoolieCollection.svelte.ts — adapter réassignait la MÊME ref de dataState (muté in-place
+      par l'event bus) → Svelte 5 ne détecte pas → pas de re-render. Fix: spread `[...getAll()]`.
+      (2) IdbState.feed() — read IDB cold async clobberait dataState déjà hydraté (race cold-start)
+      → wipe des lignes + emit 'load' vide. Fix: guard, ne pas écraser un dataState peuplé avec snapshot vide.
+      Aussi corrigé: server/.env CORS_ORIGIN 5174→5173 (boot "Failed to fetch").
+      RESTE rouge: bug duplicate-hydration — records serveur ont `_id` mais pas `id`, keyPath `++id`
+      réassigne un id neuf à chaque pull → doublons (3→6→9). Lié à la convention FK code.
+      Tests RBAC NON requis à 100% — refonte prévue couvrira ce point. Déprioritisé.
 
   - id: BACK-06
     title: "FullInfo.svelte — implémenter le contenu (stub enregistré)"

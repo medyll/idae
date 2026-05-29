@@ -1,7 +1,7 @@
 <!--
-FieldEditor.svelte
+DataFieldEdit.svelte
 Svelte 5 in-place field edit/confirm
-@role form-field
+@role data-field-edit
 @prop {string} collection - Collection name
 @prop {string} field - Field name
 @prop {Function} validate - Validation callback

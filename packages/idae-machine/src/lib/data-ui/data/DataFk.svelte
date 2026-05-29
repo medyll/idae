@@ -12,7 +12,7 @@ Forward FK relation viewer — shows collections this record points to.
 	import type { TplCollectionName } from '$lib/types/index.js';
 	import type { SortBy } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
 
 	let { collection, sortBy, groupBy, children } = $props<{
 		collection: TplCollectionName;

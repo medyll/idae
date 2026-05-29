@@ -16,7 +16,7 @@ Reverse FK relation viewer — shows collections that point to this record.
 	import type { SortBy } from '$lib/types/index.js';
 	import type { SvelteComponent } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
 
 	let { collection, showTitle = false, component, componentProps = {}, sortBy, groupBy, children } = $props<{
 		collection: TplCollectionName;

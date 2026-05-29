@@ -11,15 +11,15 @@ export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
 export { default as DataListFk } from '$lib/data-ui/data/DataListFk.svelte';
 export { default as DataListRfk } from '$lib/data-ui/data/DataListRfk.svelte';
 export { default as DataForm }   from '$lib/data-ui/data/DataForm.svelte';
-export { default as DataFields } from '$lib/data-ui/data/DataFields.svelte';
+export { default as DataRecord } from '$lib/data-ui/data/DataRecord.svelte';
 export { default as DataFk }     from '$lib/data-ui/data/DataFk.svelte';
 export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 
 // UI — frame content: card (record level)
 
 // UI — field (atomic display/edit)
-export { default as FieldDisplay } from '$lib/data-ui/field/FieldDisplay.svelte';
-export { default as FieldEditor }  from '$lib/data-ui/field/FieldEditor.svelte';
+export { default as DataField }     from '$lib/data-ui/field/DataField.svelte';
+export { default as DataFieldEdit } from '$lib/data-ui/field/DataFieldEdit.svelte';
 
 // UI — data controls
 export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';

@@ -1,7 +1,7 @@
 <!--
-FieldDisplay.svelte
+DataField.svelte
 Svelte 5 field renderer — dispatches to type-specific input atoms.
-@role form-field
+@role data-field
 @prop {string} collection - Collection name
 @prop {string} fieldName - Field name
 @prop {object} data - Data object (bindable)

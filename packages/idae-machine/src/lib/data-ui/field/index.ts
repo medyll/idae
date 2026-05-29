@@ -1,3 +1,3 @@
 // Field components barrel export
-export { default as FieldDisplay } from './FieldDisplay.svelte';
-export { default as FieldEditor } from './FieldEditor.svelte';
+export { default as DataField } from './DataField.svelte';
+export { default as DataFieldEdit } from './DataFieldEdit.svelte';

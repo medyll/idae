@@ -1,7 +1,7 @@
 <!--
 DataList.svelte
 Data provider + renderer — fetches, sorts, groups, paginates, iterates.
-Autonomous by default: renders DataFields (template.presentation fields) when no snippet provided.
+Autonomous by default: renders DataRecord (template.presentation fields) when no snippet provided.
 Consumers can override via the item snippet.
 
 @prop {string} collection
@@ -16,7 +16,7 @@ Consumers can override via the item snippet.
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
-@snippet item({ record, idx, fieldValues }) - override record rendering (optional — DataFields used by default)
+@snippet item({ record, idx, fieldValues }) - override record rendering (optional — DataRecord used by default)
 @snippet groupHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
@@ -26,8 +26,8 @@ Consumers can override via the item snippet.
 	import { untrack } from 'svelte';
 	import type { SortBy, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems, groupItemsResolved } from '$lib/data-ui/utils/explorerUtils.js';
-	import DataFields from '$lib/data-ui/data/DataFields.svelte';
+	import { sortItems, groupItems, groupItemsResolved } from '$lib/data-ui/utils/data-utils.js';
+	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
 	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
 	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
@@ -428,7 +428,7 @@ Consumers can override via the item snippet.
 			<li class="grid-item panel panel-bordered">
 				<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
 					<div class="grid-item-content">
-						<DataFields
+						<DataRecord
 							{collection}
 							data={record as Record<string, any>}
 							mode="show"
@@ -455,9 +455,9 @@ Consumers can override via the item snippet.
 					{#if itemSnippet}
 						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
 					{:else if parsedLink}
-						<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
+						<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 					{:else}
-						<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
+						<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 					{/if}
 				{/each}
 			</ul>
@@ -469,9 +469,9 @@ Consumers can override via the item snippet.
 			{#if itemSnippet}
 				{@render itemSnippet({ record: record as COL, idx, fieldValues })}
 			{:else if parsedLink}
-				<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
+				<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 			{:else}
-				<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataFields collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
+				<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
 			{/if}
 		{/each}
 		{#if !paginatedItems.length}

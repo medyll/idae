@@ -1,7 +1,7 @@
 <!--
-DataFields.svelte
-Iterates a record's fields and renders FieldDisplay for each.
-@role data-fields
+DataRecord.svelte
+Iterates a record's fields and renders DataField for each.
+@role data-record
 @prop {string} collection - Collection name
 @prop {Record<string,any>} data - Record data (bindable)
 @prop {'show'|'create'|'update'} [mode] - Display mode
@@ -11,9 +11,9 @@ Iterates a record's fields and renders FieldDisplay for each.
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import FieldDisplay from '$lib/data-ui/field/FieldDisplay.svelte';
+	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/explorerUtils.js';
+	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
 	import type { SortBy } from '$lib/types/index.js';
 	import { getContext } from 'svelte';
 
@@ -74,9 +74,9 @@ Iterates a record's fields and renders FieldDisplay for each.
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
 						<div class="field">
 							{#if mode === 'show'}
-								<FieldDisplay {collection} {fieldName} {mode} {data} {inputForm} />
+								<DataField {collection} {fieldName} {mode} {data} {inputForm} />
 							{:else}
-								<FieldDisplay {collection} {fieldName} {mode} bind:data={data} {inputForm} />
+								<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />
 							{/if}
 						</div>
 					{/if}
@@ -91,9 +91,9 @@ Iterates a record's fields and renders FieldDisplay for each.
 				{#if scheme.fields?.[fieldName] && (mode !== 'show' || !data || fieldName in data)}
 					<div class="field">
 						{#if mode === 'show'}
-							<FieldDisplay {collection} {fieldName} {mode} {data} {inputForm} />
+							<DataField {collection} {fieldName} {mode} {data} {inputForm} />
 						{:else}
-							<FieldDisplay {collection} {fieldName} {mode} bind:data={data} {inputForm} />
+							<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />
 						{/if}
 					</div>
 				{/if}

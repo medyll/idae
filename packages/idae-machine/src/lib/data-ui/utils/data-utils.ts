@@ -1,5 +1,5 @@
-export type { SortBy } from '\$lib/types/index.js';
-import type { SortBy } from '\$lib/types/index.js';
+export type { SortBy } from '$lib/types/index.js';
+import type { SortBy } from '$lib/types/index.js';
 
 export function sortItems<T extends Record<string, unknown>>(
 	items: T[],
