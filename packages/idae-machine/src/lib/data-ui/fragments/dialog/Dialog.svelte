@@ -48,7 +48,9 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 	let visible = $state(true);
 	let title = $state('');
 
-	const host = machine.framer.createHost(() => bodyEl);
+	// fill:false — a floating dialog is content-driven, so the mounted frame must
+	// sit in normal flow (not absolute inset:0) for the dialog to grow to fit it.
+	const host = machine.framer.createHost(() => bodyEl, { fill: false });
 
 	function setTitle(col?: string, colId?: string) {
 		if (!col) return;
@@ -139,7 +141,11 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 			</button>
 		</header>
 
-		<div class="idae-dialog__body" bind:this={bodyEl}>
+		<div
+			class="idae-dialog__body"
+			class:idae-dialog__body--framed={!!modulePath}
+			bind:this={bodyEl}
+		>
 			{#if !modulePath && children}{@render children()}{/if}
 		</div>
 
@@ -150,6 +156,11 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 {/if}
 
 <style lang="postcss">
+	:global(dialog.idae-dialog) {
+		z-index: var(--z-modal);
+		isolation: isolate;
+	}
+
 	@layer components {
 		:global(dialog.idae-dialog) {
 			position: fixed;
@@ -167,7 +178,6 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 			border: var(--border-width) solid var(--color-border);
 			border-radius: var(--radius-md);
 			box-shadow: var(--shadow-lg);
-			z-index: var(--z-modal);
 		}
 
 		:global(dialog.idae-dialog .idae-dialog__bar) {
@@ -175,6 +185,8 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 			align-items: center;
 			gap: var(--gutter-sm);
 			padding: var(--pad-xs) var(--pad-sm);
+			position: relative;
+			z-index: var(--z-dropdown);
 			cursor: grab;
 			background: var(--color-surface-alt);
 			border-bottom: var(--border-width) solid var(--color-border);
@@ -194,9 +206,17 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		}
 
 		:global(dialog.idae-dialog .idae-dialog__body) {
-			flex: 1;
+			/* basis auto (not 0): dialog has no fixed height, so the body must
+			   take its content size and let the dialog grow up to max-height. */
+			flex: 1 1 auto;
+			position: relative;
+			min-height: 0;
 			overflow: auto;
 			padding: var(--pad-md);
+		}
+
+		:global(dialog.idae-dialog .idae-dialog__body--framed) {
+			padding: 0;
 		}
 
 		:global(dialog.idae-dialog .idae-dialog__footer) {

@@ -113,6 +113,17 @@ describe('DataList relation components', () => {
 				expect(screen.queryByText(/AA-111-BB/)).toBeNull();
 			});
 		});
+
+		it('forces stack layout in list mode even when a grid listClass is provided', async () => {
+			render(DataList, {
+				collection: 'vehicle',
+				listClass: 'list list-grid'
+			});
+			const list = await screen.findByRole('list');
+			expect(list.classList.contains('list')).toBe(true);
+			expect(list.classList.contains('list-stack')).toBe(true);
+			expect(list.classList.contains('list-grid')).toBe(false);
+		});
 	});
 
 	describe('DataListFk', () => {

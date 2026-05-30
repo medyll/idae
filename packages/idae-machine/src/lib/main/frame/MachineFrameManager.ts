@@ -88,8 +88,14 @@ export class MachineFrameManager {
 	 * hides every sibling and shows the existing instance — no unmount, no re-render.
 	 * Loading new content hides siblings and mounts the new instance. State is preserved
 	 * across toggles. `destroy()` unmounts everything (frame teardown).
+	 *
+	 * `fill` (default true): the mounted content fills its zone via absolute
+	 * inset:0 — correct for sized zones (main, panel). Set false for hosts whose
+	 * own size is content-driven (floating dialog): content then sits in normal
+	 * flow so the host can grow to fit it.
 	 */
-	createHost(getTarget: () => HTMLElement | undefined): FrameHost {
+	createHost(getTarget: () => HTMLElement | undefined, opts: { fill?: boolean } = {}): FrameHost {
+		const fill = opts.fill ?? true;
 		const instances = new Map<string, { app: Record<string, unknown>; el: HTMLElement }>();
 		let seq = 0;
 
@@ -133,7 +139,9 @@ export class MachineFrameManager {
 					const el = document.createElement('div');
 					el.className = 'frame-content';
 					el.dataset.contentKey = key;
-					el.style.cssText = 'position:absolute;inset:0;overflow:hidden;';
+					el.style.cssText = fill
+						? 'position:absolute;inset:0;overflow:hidden;'
+						: 'position:relative;width:100%;';
 					target.appendChild(el);
 					const app = mount(Comp as Component<Record<string, unknown>>, {
 						target: el,

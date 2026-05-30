@@ -27,7 +27,7 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 
 	function openCard(record: COL): void {
 		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
-		void machine.framer.loadInDialog('card.form', collection, String(id));
+		void machine.framer.loadInDialog('fiche', collection, String(id));
 	}
 </script>
 

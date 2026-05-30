@@ -42,24 +42,30 @@ Iterates a record's fields and renders DataField for each.
 		inputForm?: string;
 	} = $props();
 
-	let fetchedData = $state<Record<string, any> | undefined>(undefined);
-
-	$effect(() => {
-		if (data !== undefined || !collection || !collectionId) return;
-		const id = isNaN(Number(collectionId)) ? collectionId : Number(collectionId);
-		(async () => {
-			const store = machine.collection(collection);
-			fetchedData = (await store.get(id as any)) ?? undefined;
-		})();
-	});
-
-	const effectiveData = $derived(data ?? fetchedData);
-
 	function safeScheme(name: string) {
 		try { return machine.logic.collection(name); } catch { return null; }
 	}
 
 	const scheme = $derived(collection ? safeScheme(collection) : null);
+
+	// Data source contract:
+	//  - `data` prop provided  → controlled (e.g. DataList store items). Use as-is.
+	//  - else `collectionId`   → reactive read via machine.store (NOT machine.collection;
+	//    store is the reactive read layer, collection is imperative CRUD). Same path
+	//    DataList uses, so it resolves the correct qoolie instance.
+	const queryId = $derived(
+		collectionId == null
+			? undefined
+			: isNaN(Number(collectionId)) ? collectionId : Number(collectionId)
+	);
+	const recordStore = $derived(
+		data === undefined && collection && queryId !== undefined
+			? machine.store(collection, { [scheme?.index ?? 'id']: queryId } as any)
+			: null
+	);
+	const fetchedData = $derived(recordStore?.items?.[0] as Record<string, any> | undefined);
+
+	const effectiveData = $derived(data ?? fetchedData);
 
 	/** Fields as sortable/groupable objects — key + field definition properties */
 	const fieldObjects = $derived.by(() => {
@@ -98,10 +104,10 @@ Iterates a record's fields and renders DataField for each.
 			<fieldset class="field-group">
 				<legend>{key}</legend>
 				{#each groupFields as { key: fieldName } (fieldName)}
-					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || !effectiveData || fieldName in effectiveData)}
+					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && fieldName in effectiveData))}
 						<div class="field">
 							{#if mode === 'show'}
-								<DataField {collection} {fieldName} {mode} data={effectiveData ?? {}} {inputForm} />
+								<DataField {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
 							{:else}
 								{#if data !== undefined}<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />{/if}
 							{/if}
@@ -115,10 +121,10 @@ Iterates a record's fields and renders DataField for each.
 	<div class="form">
 		{#if scheme && fieldNames.length}
 			{#each fieldNames as fieldName (fieldName)}
-				{#if scheme.fields?.[fieldName] && (mode !== 'show' || !effectiveData || fieldName in effectiveData)}
+				{#if scheme.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && fieldName in effectiveData))}
 					<div class="field">
 						{#if mode === 'show'}
-							<DataField {collection} {fieldName} {mode} data={effectiveData ?? {}} {inputForm} />
+							<DataField {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
 						{:else}
 							{#if data !== undefined}<DataField {collection} {fieldName} {mode} bind:data={data as Record<string,unknown>} {inputForm} />{/if}
 						{/if}

@@ -19,3 +19,43 @@
         </zone-main>
     </fiche-zone>
 </fiche-component>
+
+<style lang="postcss">
+    /* Custom tags default to display:inline — without explicit block/flex the
+       fiche collapses and its content is clipped by the host (dialog) body.
+       :global required: Svelte scopes element selectors, but these tags are
+       mounted dynamically by the framer host. */
+    @layer components {
+        :global(fiche-component) {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            gap: var(--gutter-sm);
+            padding: var(--pad-md);
+        }
+
+        :global(fiche-header) {
+            display: block;
+        }
+
+        :global(fiche-zone) {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            gap: var(--gutter-md);
+        }
+
+        :global(sidebar-info) {
+            display: block;
+            flex: 0 0 auto;
+        }
+
+        :global(zone-main) {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            gap: var(--gutter-md);
+        }
+    }
+</style>

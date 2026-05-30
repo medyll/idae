@@ -57,6 +57,7 @@ componentRegistry.registerMany({
 	'explorer':             () => import('$lib/shell/frame/explorer/Explorer.svelte'),
 	'explorer.content':     () => import('$lib/shell/frame/explorer/ExplorerContent.svelte'),
 	'card.form':            () => import('$lib/data-ui/data/DataForm.svelte'),
+	'fiche':                () => import('$lib/shell/layout/Fiche.svelte'),
 	'rbac.matrix':          () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
 	'fullinfo':             () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
 	'synthesis':            () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),

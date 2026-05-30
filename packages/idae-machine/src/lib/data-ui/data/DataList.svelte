@@ -229,6 +229,18 @@ Consumers can override via the item snippet.
 
 	const parsedLink = $derived(link ? parseLink(link) : null);
 
+	function normalizeListClass(currentMode: 'list' | 'table' | 'grid', customClass?: string): string | undefined {
+		if (currentMode !== 'list') return customClass;
+		if (!customClass) return 'list list-stack';
+		const classes = customClass.split(/\s+/).filter(Boolean);
+		const normalized = classes.filter((name) => name !== 'list-grid');
+		if (!normalized.includes('list')) normalized.unshift('list');
+		if (!normalized.includes('list-stack')) normalized.push('list-stack');
+		return normalized.join(' ');
+	}
+
+	const resolvedListClass = $derived(normalizeListClass(currentMode, listClass));
+
 	function navigate(record: Record<string, unknown>): void {
 		if (!parsedLink) return;
 		const { action, module, zone } = parsedLink;
@@ -448,7 +460,7 @@ Consumers can override via the item snippet.
 	{#each Array.from(groups) as [key, groupItems] (key)}
 		<div class={groupClass ?? 'data-list-group'}>
 			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{:else}<div class="data-list-group-header">{key}<span class="data-list-group-count">{groupItems.length}</span></div>{/if}
-			<ul class={listClass} role="list">
+			<ul class={resolvedListClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
 					{#if itemSnippet}
 						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
@@ -462,7 +474,7 @@ Consumers can override via the item snippet.
 		</div>
 	{/each}
 {:else}
-	<ul class={listClass} role="list">
+	<ul class={resolvedListClass} role="list">
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
 			{#if itemSnippet}
 				{@render itemSnippet({ record: record as COL, idx, fieldValues })}

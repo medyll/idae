@@ -18,6 +18,10 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('card.form')).toBe(true);
 	});
 
+	it('has "fiche" registered pointing to Fiche.svelte', () => {
+		expect(componentRegistry.has('fiche')).toBe(true);
+	});
+
 	it('does NOT have removed aliases', () => {
 		expect(componentRegistry.has('card.create')).toBe(false);
 		expect(componentRegistry.has('card.edit')).toBe(false);
@@ -43,13 +47,14 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('synthesis')).toBe(true);
 	});
 
-	it('has exactly 6 entries', () => {
+	it('has exactly 7 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(6);
+		expect(keys).toHaveLength(7);
 		expect(keys.sort()).toEqual([
 			'card.form',
 			'explorer',
 			'explorer.content',
+			'fiche',
 			'fullinfo',
 			'rbac.matrix',
 			'synthesis',
