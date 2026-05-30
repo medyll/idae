@@ -19,18 +19,26 @@ Click sets/clears groupBy.
 
 	let open = $state(false);
 
+	// Any field or FK relation can be a grouping axis. Plain fields group on
+	// their raw value; FK fields resolve their label via DataList (parseFkGroupKey).
 	const groupableFields = $derived.by(() => {
 		const collLogic = safeCollection(collection);
 		if (!collLogic) return [] as { field: string; label: string }[];
-		const fks = collLogic.fks ?? {};
-		const model = machine.logic.model;
+		const fields = (collLogic.fields ?? {}) as Record<string, { type?: string }>;
+		const fks    = (collLogic.fks ?? {}) as Record<string, unknown>;
 		const out: { field: string; label: string }[] = [];
-		for (const [fkName, fkDef] of Object.entries(fks)) {
-			const target = model[fkDef.code];
-			if (!target) continue;
-			if (target.isGroup || target.isType) {
-				out.push({ field: fkName, label: fkName });
-			}
+		const seen = new Set<string>();
+		const SKIP_TYPES = new Set(['id', 'json', 'password']);
+		for (const [name, def] of Object.entries(fields)) {
+			if (name.startsWith('_')) continue;
+			if (SKIP_TYPES.has(def?.type ?? '')) continue;
+			out.push({ field: name, label: name });
+			seen.add(name);
+		}
+		// FK relations not already declared as a flat field (e.g. engine meta fks).
+		for (const fkName of Object.keys(fks)) {
+			if (seen.has(fkName)) continue;
+			out.push({ field: `fks.${fkName}`, label: fkName });
 		}
 		return out;
 	});

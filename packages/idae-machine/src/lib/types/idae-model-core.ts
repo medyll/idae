@@ -83,7 +83,9 @@ export const appModelDeclaration = {
 				isType:   { required: false, readonly: true  },
 				isGroup:  { required: false, readonly: true  },
 				isStatus: { required: false, readonly: true  },
-				_views:   { required: false, readonly: false },
+				// _views intentionally absent: stored directly on the appscheme document
+				// (injected by deployModel, read by MachineServer.getModel → ViewFields),
+				// never a user-facing schema field.
 			},
 			fks: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true  },

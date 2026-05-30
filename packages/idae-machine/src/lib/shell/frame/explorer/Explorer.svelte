@@ -25,6 +25,6 @@ zone (toggle, state preserved across collection switches).
 
 <TemplateShell zoneId={frameId} collection={collection}>
 	{#snippet leftbar()}
-		<DataList collection="appscheme" {sortBy} link="loadIn:explorer.content@{frameId}" linkCollectionField="code" groupBy="fks.appscheme_type" />
+		<DataList collection="appscheme" {sortBy} link="loadIn:explorer.content@{frameId}" linkCollectionField="code" groupBy="fks.appscheme_base" />
 	{/snippet}
 </TemplateShell>
