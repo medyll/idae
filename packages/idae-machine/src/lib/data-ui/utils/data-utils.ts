@@ -46,3 +46,35 @@ export function groupItemsResolved<T extends Record<string, unknown>>(
 	}
 	return map;
 }
+
+/**
+ * Resolve the FK relation key targeted by a `groupBy` expression.
+ * Accepts the `fks.<key>` convention (e.g. `fks.appscheme_type`) used in
+ * `template.presentation`, or a bare key when it matches a declared FK.
+ * Returns null when `groupBy` does not reference an FK relation.
+ */
+export function parseFkGroupKey(
+	groupBy: string,
+	fks: Record<string, unknown> = {}
+): string | null {
+	if (groupBy.startsWith('fks.')) return groupBy.slice(4).split('.')[0] || null;
+	return fks[groupBy] ? groupBy : null;
+}
+
+/**
+ * Label for an FK relation stored as a nested object on the record under
+ * `gridFks.<key>` (engine collections) — `{ id, code, name, … }`.
+ * `fks` is accepted as an alias. Returns undefined when the relation is not
+ * stored as a nested object (e.g. flat code values that need a store lookup).
+ */
+export function fkObjectLabel(item: Record<string, unknown>, fkKey: string): string | undefined {
+	const bag = (item.gridFks ?? (item as Record<string, unknown>).fks) as
+		| Record<string, unknown>
+		| undefined;
+	const fk = bag?.[fkKey];
+	if (fk && typeof fk === 'object') {
+		const o = fk as Record<string, unknown>;
+		return String(o.name ?? o.code ?? o.id ?? '—');
+	}
+	return undefined;
+}

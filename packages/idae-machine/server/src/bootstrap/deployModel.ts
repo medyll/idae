@@ -255,7 +255,14 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const fields   = colDef.fields   ?? {};
 		const baseCode = colDef.base     ?? DEFAULT_BASE;
 		const baseId   = baseById.get(baseCode)!;
-		const stId     = stById.get('standard') ?? 1;
+
+		// Scheme type reflects the collection's role so DataList can group by it.
+		const typeCode =
+			((colDef as any).isType   ?? collectionName.endsWith('_type'))   ? 'type'   :
+			((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  ? 'group'  :
+			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
+			'standard';
+		const stId = stById.get(typeCode) ?? stById.get('standard') ?? 1;
 
 		const gridFks: Record<string, any> = {
 			appscheme_base: {
@@ -264,7 +271,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 				order: 0, multiple: false, required: true,
 			},
 			appscheme_type: {
-				id: stId, code: 'standard', name: 'Standard',
+				id: stId, code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1),
 				icon: 'layers', color: '#555',
 				order: 0, multiple: false, required: false,
 			},

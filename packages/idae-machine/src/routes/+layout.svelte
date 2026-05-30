@@ -3,8 +3,9 @@
 	import { machine } from '$lib/main/machine.js';
 	import { App } from '$lib/shell/layout/index.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import { API_URL } from '$lib/config.js';
 
-	const apiUrl = (import.meta.env.PUBLIC_API_URL as string | undefined) ?? 'http://localhost:7842';
+	const apiUrl = API_URL;
 	// Always refresh token on boot — prevents stale JWT causing 401 on hydration.
 	// Falls back to cached token if server is offline.
 	let bootPromise: Promise<void>;

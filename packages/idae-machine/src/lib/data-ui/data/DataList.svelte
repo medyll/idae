@@ -27,7 +27,7 @@ Consumers can override via the item snippet.
 	import { untrack } from 'svelte';
 	import type { SortBy, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems, groupItemsResolved } from '$lib/data-ui/utils/data-utils.js';
+	import { sortItems, groupItems, groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
 	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
@@ -319,38 +319,36 @@ Consumers can override via the item snippet.
 	const groups = $derived.by(() => {
 		if (!effectiveGroupBy || !paginatedItems.length) return undefined;
 
-		// Resolve FK labels when grouping by a foreign-key field
-		const fieldForge = collLogic?.fieldForge(effectiveGroupBy, {} as Record<string, unknown>);
-		const fkType = fieldForge?.fieldType;
-		let fkCollection: string | null = null;
-		if (typeof fkType === 'string' && fkType.startsWith('fk-')) {
-			fkCollection = fkType.replace('fk-', '').split('.')[0];
-		}
-
-		if (fkCollection) {
-			const fkScheme = (() => {
-				try {
-					return machine.logic.collection(fkCollection);
-				} catch {
-					return null;
-				}
-			})();
-			const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
-			const fkPresentationFields = (fkScheme?.template?.presentation ?? 'name')
-				.split(' ')
-				.filter(Boolean);
-			const fkItems = machine.store(fkCollection).items as Record<string, unknown>[];
+		// FK grouping. Accepts the `fks.<key>` convention or a bare FK key.
+		const fkKey = parseFkGroupKey(effectiveGroupBy, collLogic?.fks ?? {});
+		if (fkKey) {
+			// labelMap covers flat-stored FK values (record holds the target's
+			// code/id); engine collections instead embed the relation as a nested
+			// object under gridFks.<key>, resolved first via fkObjectLabel.
+			const fkCollection = collLogic?.fks?.[fkKey]?.code ?? null;
 			const labelMap = new Map<unknown, string>();
-			for (const item of fkItems) {
-				const id = item[fkIndexField];
-				const label = fkPresentationFields
-					.map((f: string) => item[f])
-					.filter((v: unknown) => v !== undefined && v !== null && v !== '')
-					.join(' ');
-				labelMap.set(id, label || String(id ?? '\u2014'));
+			if (fkCollection) {
+				const fkScheme = safeCollection(fkCollection);
+				const fkIndexField =
+					collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
+				const fkPresentationFields = (fkScheme?.template?.presentation ?? 'name')
+					.split(' ')
+					.filter(Boolean);
+				const fkItems = machine.store(fkCollection).items as Record<string, unknown>[];
+				for (const item of fkItems) {
+					const id = item[fkIndexField];
+					const label = fkPresentationFields
+						.map((f: string) => item[f])
+						.filter((v: unknown) => v !== undefined && v !== null && v !== '')
+						.join(' ');
+					labelMap.set(id, label || String(id ?? '\u2014'));
+				}
 			}
-			return groupItemsResolved(paginatedItems, effectiveGroupBy, (item, field) => {
-				const raw = (item as Record<string, unknown>)[field];
+			return groupItemsResolved(paginatedItems, fkKey, (item) => {
+				const rec = item as Record<string, unknown>;
+				const nested = fkObjectLabel(rec, fkKey);
+				if (nested !== undefined) return nested;
+				const raw = rec[fkKey];
 				return labelMap.get(raw) ?? String(raw ?? '\u2014');
 			});
 		}
@@ -449,7 +447,7 @@ Consumers can override via the item snippet.
 {:else if groups}
 	{#each Array.from(groups) as [key, groupItems] (key)}
 		<div class={groupClass ?? 'data-list-group'}>
-			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{/if}
+			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{:else}<div class="data-list-group-header">{key}<span class="data-list-group-count">{groupItems.length}</span></div>{/if}
 			<ul class={listClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
 					{#if itemSnippet}
@@ -529,6 +527,22 @@ Consumers can override via the item snippet.
 		}
 		:global(.data-list-group) {
 			margin-bottom: var(--gutter-md);
+		}
+		:global(.data-list-group-header) {
+			display: flex;
+			align-items: center;
+			gap: var(--gutter-sm, 0.5rem);
+			padding: var(--gutter-sm, 0.5rem) var(--gutter-sm, 0.5rem) 0.25rem;
+			font-weight: 600;
+			font-size: 0.8125rem;
+			text-transform: uppercase;
+			letter-spacing: 0.03em;
+			color: var(--color-text-muted, #888);
+			border-bottom: 1px solid var(--color-border);
+		}
+		:global(.data-list-group-count) {
+			font-weight: 400;
+			color: var(--color-text-muted, #888);
 		}
 		:global(.data-list-empty) {
 			color: var(--color-text-muted, #888);

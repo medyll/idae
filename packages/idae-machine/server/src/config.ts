@@ -9,7 +9,8 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: join(__dirname, '../.env') });
 
 export const config = {
-	port:       parseInt(process.env.PORT || '3000', 10),
+	// Default MUST match the client default in src/lib/config.ts (DEFAULT_API_PORT).
+	port:       parseInt(process.env.PORT || '7842', 10),
 	mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017',
 	nodeEnv:    process.env.NODE_ENV || 'development',
 	corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',

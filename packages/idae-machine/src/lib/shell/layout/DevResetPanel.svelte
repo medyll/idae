@@ -2,14 +2,15 @@
 DevResetPanel.svelte
 Dev-only panel to reset server data and/or client IDB.
 @role dev-tool
-@prop {string} [serverUrl] - Base server URL (default: http://localhost:7842)
+@prop {string} [serverUrl] - Base server URL (default: API_URL from $lib/config)
 @prop {string} [org] - Org name for server reset (default: 'demo')
 -->
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
+	import { API_URL } from '$lib/config.js';
 
 	let {
-		serverUrl = 'http://localhost:7842',
+		serverUrl = API_URL,
 		org = 'demo'
 	}: {
 		serverUrl?: string;

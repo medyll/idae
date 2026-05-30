@@ -15,6 +15,7 @@
         <sidebar-info></sidebar-info>
         <zone-main>
             <DataRecord {collection} {collectionId} />
+            <DataRecord {collection} {collectionId} view="fk" />
         </zone-main>
     </fiche-zone>
 </fiche-component>
