@@ -924,8 +924,6 @@ export interface AppSchemeField extends Extendable, WithEssentials {
     required?: boolean | 0 | 1;
     readonly?: boolean | 0 | 1;
     private?: boolean | 0 | 1;
-    fkTargetCol?: string | null;
-    fkTargetField?: string | null;
     gridFks?: {
         appscheme_field_type?: gridFksItem<AppSchemeFieldType>;
         appscheme_field_group?: gridFksItem<AppSchemeFieldGroup>;

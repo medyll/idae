@@ -109,8 +109,6 @@ export const appModelDeclaration = {
 				required:      { required: false, readonly: false },
 				readonly:      { required: false, readonly: false },
 				private:       { required: false, readonly: false },
-				fkTargetCol:   { required: false, readonly: false },
-				fkTargetField: { required: false, readonly: false },
 			},
 			fks: {
 				appscheme_field_type:  { code: 'appscheme_field_type',  order: 0, multiple: false, required: true  },

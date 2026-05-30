@@ -97,10 +97,13 @@ async function upsertGetId(
 	adapter:    any,
 	matchQuery: Record<string, any>,
 	data:       Record<string, any>,
+	unsetData?: Record<string, ''>,
 ): Promise<number> {
 	const existing = await adapter.findOne({ query: matchQuery });
 	if (existing) {
-		await adapter.updateWhere({ query: matchQuery }, { $set: data });
+		const updateDoc: Record<string, unknown> = { $set: data };
+		if (unsetData && Object.keys(unsetData).length > 0) updateDoc.$unset = unsetData;
+		await adapter.updateWhere({ query: matchQuery }, updateDoc);
 		return existing.id as number;
 	}
 	const created = await adapter.create(data);
@@ -328,13 +331,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			const fgId      = fgById.get(group)    ?? fgById.get('presentation') ?? 1;
 			const fieldIcon = ICON_BY_GROUP[group] ?? 'circle';
 
-			let fkTargetCol:   string | null = null;
-			let fkTargetField: string | null = null;
-			if (rawType.startsWith('fk-')) {
-				const [tc, tf] = rawType.replace('fk-', '').split('.');
-				fkTargetCol   = tc ?? null;
-				fkTargetField = tf ?? 'id';
-			}
+			const fieldType = rawType;
 
 			if (!fieldReg.has(fieldName)) {
 				const fieldGridFks = {
@@ -364,13 +361,13 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 						icon:     fieldIcon,
 						color:    '#666',
 						order:    0,
+						fieldType,
 						required: fd.required ? 1 : 0,
 						readonly: fd.readonly ? 1 : 0,
 						private:  fd.private  ? 1 : 0,
-						fkTargetCol,
-						fkTargetField,
 						gridFks: fieldGridFks,
 					},
+					{ fkTargetCol: '', fkTargetField: '' },
 				);
 				fieldReg.set(fieldName, fieldId);
 			}

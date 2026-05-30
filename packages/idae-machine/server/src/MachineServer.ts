@@ -98,11 +98,7 @@ class MachineServerClass {
 				const fieldDoc = fieldByCode.get(fieldCode);
 				const rawType  = (fieldDoc?.gridFks?.appscheme_field_type?.code as string) ?? 'text';
 
-				let finalType = rawType;
-				if (rawType === 'fk' && fieldDoc?.fkTargetCol) {
-					const tf = (fieldDoc.fkTargetField as string) ?? 'id';
-					finalType = `fk-${fieldDoc.fkTargetCol}.${tf}`;
-				}
+				const finalType = (fieldDoc?.fieldType as string) ?? rawType;
 
 				fields[fieldCode] = {
 					type:     finalType,

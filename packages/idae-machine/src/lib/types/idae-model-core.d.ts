@@ -205,14 +205,6 @@ export declare const appModelDeclaration: {
                     readonly required: false;
                     readonly readonly: false;
                 };
-                readonly fkTargetCol: {
-                    readonly required: false;
-                    readonly readonly: false;
-                };
-                readonly fkTargetField: {
-                    readonly required: false;
-                    readonly readonly: false;
-                };
             };
             readonly fks: {
                 readonly appscheme_field_type: {

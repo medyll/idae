@@ -82,7 +82,7 @@ describe('seedSchemeFromModel', () => {
 		expect(fields.some((f: any) =>
 			f.code === 'categoryId'
 			&& f.gridFks?.appscheme_field_type?.code === 'fk'
-			&& f.fkTargetCol === 'category'
+			&& f.fieldType === 'fk-category.id'
 		)).toBe(true);
 		expect(hasF.some((h: any) => h.gridFks?.appscheme?.code === 'product' && h.gridFks?.appscheme_field?.code === 'id')).toBe(true);
 		expect(views.length).toBeGreaterThan(0);
