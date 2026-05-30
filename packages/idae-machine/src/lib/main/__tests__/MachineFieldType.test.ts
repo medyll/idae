@@ -22,6 +22,14 @@ describe('MachineSchemeFieldType (singleton)', () => {
 		expect(MachineSchemeFieldType.getFieldType('number')?.formatter(2.7)).toBe(3);
 	});
 
+	it('formats null/undefined as empty string, never the literal "null"', () => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+		expect(MachineSchemeFieldType.format(null, 'text')).toBe('');
+		expect(MachineSchemeFieldType.format(undefined, 'text')).toBe('');
+		expect(MachineSchemeFieldType.format(null, 'number')).toBe('');
+		expect(MachineSchemeFieldType.format('abc', 'text')).toBe('abc');
+	});
+
 	it('should register and retrieve a custom field type', () => {
 		MachineSchemeFieldType.init({});
 		const custom: FieldTypeDef = {

@@ -19,7 +19,9 @@
 4. Svelte 5 runes **only** (`$state`, `$derived`, `$effect`, `$props()`, `$bindable()`). No `$:`, `onMount`, `export let`.
 5. `MachineParserForge` must stay pure — no I/O, deterministic.
 6. `shell/Frame.svelte` is mounted **dynamically** by the router/framer. Never place it manually in HTML.
-7. Every custom tag needs an explicit `display` CSS rule. Missing = inline default = broken layout.
+7. Every custom tag needs an explicit `display` CSS rule. Missing = inline default = broken layout. Frame-type components (loaded into a host) must declare display for **their own** custom tags — they have no `<style>` by default (e.g. `Fiche.svelte`'s `fiche-component`/`fiche-zone`/`zone-main`).
+8. **Reads go through `machine.store` (reactive); `machine.collection` is imperative CRUD only.** Mixing them can hit different qoolie instances → stale/empty reads.
+9. A frame host that is **content-driven** (auto-sized, e.g. floating `Dialog`) must call `createHost(target, { fill: false })`. Default `fill:true` (absolute inset:0) only works inside a **sized** zone.
 
 ---
 
@@ -106,14 +108,25 @@ main.window → floating window
 main.panel  → right-side panel
 ```
 
+### Frame host sizing — `createHost(getTarget, { fill })`
+
+`MachineFrameManager.createHost` mounts content into a `div.frame-content`. Sizing model depends on the **host**:
+
+- `fill: true` (default) → `position:absolute; inset:0`. Correct for **sized zones** (`main`, `panel`) — frame fills the zone. Used by `shell/Frame.svelte`.
+- `fill: false` → `position:relative` (normal flow). Required for **content-driven hosts** (floating `Dialog`) — the host has no intrinsic height, so an absolute frame would collapse and clip its content. `Dialog.svelte` passes `{ fill: false }`.
+
+**Trap:** a dialog that hosts a frame with the default `fill:true` shows only the first line (host collapses to padding height, content overflows invisibly). If a floating/auto-sized host renders truncated content, check this first.
+
 ### componentRegistry entries
 
 ```ts
 'explorer'        → shell/frame/explorer/Explorer.svelte
 'explorer.content'→ shell/frame/explorer/ExplorerContent.svelte
 'card.form'       → data-ui/data/DataForm.svelte
+'fiche'           → shell/layout/Fiche.svelte           (record detail; opened via loadInDialog)
 'rbac.matrix'     → shell/frame/rbac/RbacMatrix.svelte
 'fullinfo'        → shell/frame/synthesis/Synthesis.svelte
+'synthesis'       → shell/frame/synthesis/Synthesis.svelte
 ```
 
 ### DataList navigation props
@@ -125,6 +138,19 @@ main.panel  → right-side panel
 | `linkVars` | Extra vars passed to framer |
 
 **Invariant:** every collection has `id` (auto-increment PK) AND `code` (semantic string). `indexField` is always `'id'`.
+
+### DataRecord data source contract
+
+`DataRecord` resolves its record from **one of two sources**, never `machine.collection().get()`:
+
+| Source | When | How |
+|--------|------|-----|
+| `data` prop | controlled (e.g. `DataList` passes a store item) | used as-is |
+| `collectionId` prop | uncontrolled (e.g. `Fiche`) | reactive `machine.store(collection, { id })` → `items[0]` |
+
+Rules:
+- **Reads use `machine.store` (reactive), never `machine.collection` (imperative CRUD).** The raw collection can resolve a different qoolie/IdbEventBus instance — see [Qoolie dual-bus](#) note in project memory.
+- Show mode renders only fields **present in the record** (`fieldName in effectiveData`). `MachineSchemeValues.format` throws `FIELD_NOT_FOUND` for any field absent from the data object — do not render scheme fields the record lacks.
 
 ---
 

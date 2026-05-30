@@ -330,6 +330,8 @@ class MachineFieldType {
 	 * Falls back to String(value) if type not found.
 	 */
 	format(value: unknown, typeId: FieldTypeId): string {
+		// Empty values render as empty, never the literal strings "null"/"undefined".
+		if (value === null || value === undefined) return '';
 		const formatted = this.getFieldType(typeId)?.formatter(value);
 		return formatted !== undefined ? String(formatted) : String(value);
 	}
