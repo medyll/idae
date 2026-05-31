@@ -217,15 +217,6 @@ Consumers can override via the item snippet.
 		return viewNames.length ? viewNames : presentationFields;
 	});
 
-	function getByPath(obj: unknown, path: string): unknown {
-		if (obj == null) return undefined;
-		let cur: any = obj;
-		for (const seg of path.split('.')) {
-			if (cur == null) return undefined;
-			cur = cur[seg];
-		}
-		return cur;
-	}
 
 	const parsedLink = $derived(link ? parseLink(link) : null);
 
@@ -364,6 +355,21 @@ Consumers can override via the item snippet.
 	});
 </script>
 
+{#snippet renderItem(record: COL, idx: number)}
+	{#if itemSnippet}
+		{@render itemSnippet({ record, idx, fieldValues })}
+	{:else}
+		{@const rec = record as Record<string, unknown>}
+		{@const label = renderPresentation(rec)}
+		<li>
+			<button type="button" class="data-list-link"
+				onclick={() => parsedLink ? navigate(rec) : handleItemClick(record)}>
+				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode="show" />{/if}
+			</button>
+		</li>
+	{/if}
+{/snippet}
+
 {#snippet modeSwitcher()}
 	<div class="mode-switcher">
 		<button type="button" class="mode-btn" class:active={currentMode === 'list'}  onclick={() => userMode = 'list'}>List</button>
@@ -439,13 +445,7 @@ Consumers can override via the item snippet.
 			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{:else}<div class="data-list-group-header">{key}<span class="data-list-group-count">{groupItems.length}</span></div>{/if}
 			<ul class={resolvedListClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
-					{#if itemSnippet}
-						{@render itemSnippet({ record: record as COL, idx, fieldValues })}
-					{:else if parsedLink}
-						<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
-					{:else}
-						<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
-					{/if}
+					{@render renderItem(record as COL, idx)}
 				{/each}
 			</ul>
 		</div>
@@ -453,13 +453,7 @@ Consumers can override via the item snippet.
 {:else}
 	<ul class={resolvedListClass} role="list">
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
-			{#if itemSnippet}
-				{@render itemSnippet({ record: record as COL, idx, fieldValues })}
-			{:else if parsedLink}
-				<li><button type="button" class="data-list-link" onclick={() => navigate(record as Record<string, unknown>)}>{presentationFields?.length ? renderPresentation(record as Record<string, unknown>) : ''}{#if !presentationFields?.length}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
-			{:else}
-				<li><button type="button" class="data-list-link" onclick={() => handleItemClick(record)}>{#if presentationFields?.length}{renderPresentation(record as Record<string, unknown>)}{:else}<DataRecord collection={collection} data={record as Record<string, unknown>} mode="show" />{/if}</button></li>
-			{/if}
+			{@render renderItem(record as COL, idx)}
 		{/each}
 		{#if !paginatedItems.length}
 			{#if emptySnippet}
