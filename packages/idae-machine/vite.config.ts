@@ -36,9 +36,12 @@ export default defineConfig({
 			},
 			{
 				extends: './vite.config.ts',
+				plugins: [],
 				test: {
 					name:        'server',
 					environment: 'node',
+					pool:        'forks',
+					isolate:     true,
 					include:     ['src/**/*.{test,spec}.{js,ts}'],
 					exclude:     ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/e2e/**']
 				}
