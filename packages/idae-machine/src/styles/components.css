@@ -1,0 +1,17 @@
+@layer components {
+    taskbar {
+		gap: var(--gutter-xs);
+		padding: var(--pad-xs) var(--pad-sm);
+		background: var(--color-surface);
+		border-bottom: var(--border-width) solid var(--color-border);
+		overflow-x: auto;
+	}
+
+    toolbar {
+        display: flex;
+        gap: var(--pad-sm);
+        padding: var(--pad-sm);
+        background: var(--color-surface);
+        border-bottom: var(--border-width) solid var(--color-border);
+    }
+}

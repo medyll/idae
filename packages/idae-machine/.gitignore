@@ -23,6 +23,11 @@ Thumbs.db
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
+# Stray tsc emit inside src (sources are .ts/.svelte; build emits to dist/)
+src/lib/**/*.js
+src/lib/**/*.js.map
+src/lib/**/*.d.ts.map
+
 idae-screen-legacy/
 nul
 

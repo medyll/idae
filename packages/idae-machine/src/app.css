@@ -1,5 +1,6 @@
 @import '@medyll/css-base';
-@import './shell.css';
+@import './styles/shell.css';
+@import './styles/components.css';
 
 :root {
   /* layout dimensions — not in css-base */
