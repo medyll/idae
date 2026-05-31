@@ -45,7 +45,6 @@ export { default as PaneRecents }      from '$lib/shell/layout/PaneRecents.svelt
 export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.svelte';
 
 // UI — fragments
-export { default as Confirm }  from '$lib/data-ui/fragments/Confirm.svelte';
 export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
 export { default as Frame }         from '$lib/shell/Frame.svelte';
 export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
