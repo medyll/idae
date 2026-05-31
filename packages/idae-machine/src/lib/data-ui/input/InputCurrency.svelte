@@ -85,11 +85,11 @@ Currency input with formatting.
 
 <style>
 	.field-currency { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }
-	.input-wrapper { display: flex; align-items: center; border: 1px solid #ced4da; border-radius: 4px; padding: 0.5rem; background: #fff; }
-	.input-wrapper:focus-within { border-color: #007bff; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
-	.field-currency.has-error .input-wrapper { border-color: #dc3545; }
-	.currency-symbol { color: #6c757d; margin-right: 0.5rem; font-weight: 500; }
+	.input-wrapper { display: flex; align-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: 0.5rem; background: var(--color-surface); }
+	.input-wrapper:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 0.2rem var(--color-primary-muted); }
+	.field-currency.has-error .input-wrapper { border-color: var(--color-critical); }
+	.currency-symbol { color: var(--color-text-muted); margin-right: 0.5rem; font-weight: 500; }
 	.currency-input { border: none; outline: none; flex: 1; font-size: 1rem; text-align: right; }
-	.error-message { color: #dc3545; font-size: 0.875rem; }
-	input:disabled { background: #e9ecef; cursor: not-allowed; }
+	.error-message { color: var(--color-critical); font-size: 0.875rem; }
+	input:disabled { background: var(--color-surface-alt); cursor: not-allowed; }
 </style>

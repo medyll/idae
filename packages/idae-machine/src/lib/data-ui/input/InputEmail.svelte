@@ -63,9 +63,9 @@ Email input with format validation.
 
 <style>
 	.field-email { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }
-	.email-input { width: 100%; padding: 0.5rem; border: 1px solid #ced4da; border-radius: 4px; font-size: 1rem; }
-	.email-input:focus { border-color: #007bff; outline: none; box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); }
-	.field-email.has-error .email-input { border-color: #dc3545; }
-	.error-message { color: #dc3545; font-size: 0.875rem; }
-	input:disabled { background: #e9ecef; cursor: not-allowed; }
+	.email-input { width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 1rem; }
+	.email-input:focus { border-color: var(--color-primary); outline: none; box-shadow: 0 0 0 0.2rem var(--color-primary-muted); }
+	.field-email.has-error .email-input { border-color: var(--color-critical); }
+	.error-message { color: var(--color-critical); font-size: 0.875rem; }
+	input:disabled { background: var(--color-surface-alt); cursor: not-allowed; }
 </style>

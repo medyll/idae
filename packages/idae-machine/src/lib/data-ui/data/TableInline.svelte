@@ -122,10 +122,10 @@ Sortable table renderer for data collections.
 		position: relative;
 	}
 	table.sortable tr.entete th:hover {
-		background-color: #D1E8FF;
+		background-color: var(--color-surface-hover);
 	}
 	table.sortable .sortheaderSorted {
-		background-color: #D1E8FF !important;
+		background-color: var(--color-surface-active) !important;
 	}
 	.sortarrow {
 		font-size: 0.7em;
@@ -149,8 +149,8 @@ Sortable table renderer for data collections.
 		color: var(--color-text);
 	}
 	table.sortable tbody tr:hover td {
-		background-color: #E4F0FB !important;
-		box-shadow: 0 1px 0 0 #ccc inset, 0 -1px 0 0 #ccc inset;
+		background-color: var(--color-surface-hover) !important;
+		box-shadow: 0 1px 0 0 var(--color-border) inset, 0 -1px 0 0 var(--color-border) inset;
 	}
 
 	/* Zebra — groupes de 5 */
@@ -158,6 +158,6 @@ Sortable table renderer for data collections.
 		background-color: var(--color-surface, #f5f5f5);
 	}
 	table.sortable tbody tr:nth-child(5n+5) td {
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid var(--color-border);
 	}
 </style>
