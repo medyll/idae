@@ -52,6 +52,18 @@ export class MachineDb {
 	}
 
 	/**
+	 * Non-throwing variant of `collection()`. Returns null when the collection is not in the model.
+	 * Use in components/UI layers that must not throw on unknown collection names.
+	 */
+	collectionOr<F>(collection: string, fallback: F): MachineScheme | F {
+		try {
+			return this.collection(collection as TplCollectionName);
+		} catch {
+			return fallback;
+		}
+	}
+
+	/**
 	 * Return all unique `base` module names declared in the model.
 	 * Used by the server to know which MongoDB databases to create.
 	 * e.g. ['machine_base', 'machine_app']

@@ -13,6 +13,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     import type { TplCollectionName } from '$lib/types/index.js';
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
+    import { MachineRecordIdentity } from '$lib/main/index.js';
     import InputEmail    from '$lib/data-ui/input/InputEmail.svelte';
     import InputCurrency from '$lib/data-ui/input/InputCurrency.svelte';
     import InputBoolean  from '$lib/data-ui/input/InputBoolean.svelte';
@@ -36,17 +37,13 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         showLabel?: boolean | string
     } = $props();
 
-    function safeScheme() {
-        try { return collection ? machine.logic.collection(collection) : null; } catch { return null; }
-    }
-    const scheme             = $derived(safeScheme());
-    const fieldForge         = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
-    const schemeFieldValues  = $derived(scheme?.collectionValues ?? null);
-    const inputDataset       = $derived.by(() => {
+    const scheme            = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+    const fieldForge        = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
+    const schemeFieldValues = $derived(scheme?.collectionValues ?? null);
+    const inputDataset      = $derived.by(() => {
         if (schemeFieldValues) {
             return schemeFieldValues.getInputDataSet(String(fieldName), data ?? {} as Record<string, unknown>);
         }
-        // fallback when scheme is unavailable
         const idx = (data as Record<string, unknown> | undefined)?.id;
         return {
             'data-collection':   String(collection ?? ''),
@@ -63,45 +60,26 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         typeof showLabel === 'string' ? showLabel : (showLabel === true ? 'above' : '')
     );
 
-    // Extract FK collection + target index from fieldType like 'fk-category.code' → ('category','code')
-    const fkCollection = $derived(
-        fieldForge?.fieldType?.startsWith('fk-')
-            ? (fieldForge.fieldType as string).replace('fk-', '').split('.')[0]
-            : null
-    );
-    const fkTargetIndex = $derived(
-        fieldForge?.fieldType?.startsWith('fk-')
-            ? (fieldForge.fieldType as string).split('.')[1] ?? 'id'
-            : 'id'
-    );
+    // FK: derive from descriptor — single source of truth, no re-parsing fk- strings
+    const descriptor   = $derived(scheme?.collectionValues?.descriptor(String(fieldName)) ?? null);
+    const fkCollection = $derived(descriptor?.kind === 'fk' ? descriptor.fkCollection! : null);
+    const fkIndexField = $derived(descriptor?.fkIndexField ?? 'id');
 
-    // FK presentation label — resolves declared target index to human-readable label
-    const fkScheme = $derived(
-        fkCollection
-            ? (() => { try { return machine.logic.collection(fkCollection); } catch { return null; } })()
-            : null
-    );
-    const fkIndexField        = $derived(fkTargetIndex);
-    const fkPresentationFields = $derived(
-        (fkScheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
-    );
-    // Internal value — bidirectional sync (declared before fkLabel which uses it)
-    let internalValue = $state<unknown>(undefined);
-    let error = $state<string | null>(null);
+    // Internal value — bidirectional sync
+    let internalValue  = $state<unknown>(undefined);
+    let error          = $state<string | null>(null);
     let hasParentValue = $state(false);
 
-    const fkStore = $derived(machine.store(fkCollection ?? ''));
-    const fkItems  = $derived(fkCollection ? fkStore.items : []);
-    const fkLabel  = $derived((() => {
-        if (!fkCollection || internalValue === undefined || internalValue === null) return '—';
-        const item = (fkItems as Record<string, unknown>[]).find(i => i[fkIndexField] === internalValue);
+    // FK store — guard prevents machine.store('') phantom subscription on non-FK fields
+    const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { items: [] as Record<string, unknown>[] });
+    const fkItems  = $derived(fkStore.items as Record<string, unknown>[]);
+    const fkScheme = $derived(fkCollection ? machine.logic.collectionOr(fkCollection, null) : null);
+    const fkLabel  = $derived.by(() => {
+        if (!fkCollection || internalValue == null) return '—';
+        const item = fkItems.find(i => MachineRecordIdentity.recordMatchesIndex(i, fkIndexField, internalValue));
         if (!item) return String(internalValue);
-        const label = fkPresentationFields
-            .map((f: string) => item[f])
-            .filter((v: unknown) => v !== undefined && v !== null && v !== '')
-            .join(' ');
-        return label || String(item[fkIndexField] ?? '—');
-    })());
+        return fkScheme?.collectionValues.presentation(item) || String(internalValue);
+    });
 
     // parent → child (tracked read, untracked write to avoid loop)
     $effect(() => {
@@ -158,7 +136,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <InputSelect
             bind:value={internalValue}
             collection={fkCollection}
-            targetField={fkTargetIndex}
+            targetField={fkIndexField}
             id={String(fieldName)}
             name={String(fieldName)}
             form={inputForm}

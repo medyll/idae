@@ -34,23 +34,13 @@ FK-aware select input atom. Queries machine store for related collection records
 		multiple?:    boolean;
 	}>();
 
-	function safeScheme() {
-		try { return machine.logic.collection(collection); } catch { return null; }
-	}
-
-	const scheme     = $derived(safeScheme());
+	const scheme     = $derived(machine.logic.collectionOr(collection, null));
 	const indexField = $derived(targetField ?? scheme?.index ?? 'id');
-	const presentationFields = $derived(
-		(scheme?.template?.presentation ?? 'name').split(' ').filter(Boolean)
-	);
-	const store = $derived(machine.store(collection));
-	const items = $derived(store.items ?? []);
+	const store      = $derived(machine.store(collection));
+	const items      = $derived(store.items ?? []);
 
 	function getLabel(item: Record<string, unknown>): string {
-		return presentationFields
-			.map((f) => item[f])
-			.filter((v) => v !== undefined && v !== null && v !== '')
-			.join(' ') || String(item[indexField] ?? '—');
+		return scheme?.collectionValues.presentation(item) || String(item[indexField] ?? '—');
 	}
 </script>
 

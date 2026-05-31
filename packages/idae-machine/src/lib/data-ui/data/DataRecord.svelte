@@ -15,25 +15,25 @@ Iterates a record's fields and renders DataField for each.
 	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import DataFkValue from '$lib/data-ui/field/DataFkValue.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems, parseFkType } from '$lib/data-ui/utils/data-utils.js';
+	import { MachineRecordIdentity } from '$lib/main/index.js';
 	import type { SortBy } from '$lib/types/index.js';
 	import { getContext } from 'svelte';
 
 	let {
 		collection = getContext('collection'),
-		data = $bindable(),
 		collectionId,
+		data = $bindable(),
 		mode = 'show',
 		showFields,
-		view,
+		view='full',
 		sortBy,
 		groupBy,
 		groupChildren,
 		inputForm
 	}: {
 		collection: string;
-		data?: Record<string, any>;
 		collectionId?: string | number;
+		data?: Record<string, any>;
 		mode?: 'show' | 'create' | 'update';
 		showFields?: string[];
 		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
@@ -43,63 +43,31 @@ Iterates a record's fields and renders DataField for each.
 		inputForm?: string;
 	} = $props();
 
-	function safeScheme(name: string) {
-		try { return machine.logic.collection(name); } catch { return null; }
-	}
-
-	const scheme = $derived(collection ? safeScheme(collection) : null);
+	const scheme = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 
 	// Data source contract:
 	//  - `data` prop provided  → controlled (e.g. DataList store items). Use as-is.
 	//  - else `collectionId`   → reactive read via machine.store (NOT machine.collection;
 	//    store is the reactive read layer, collection is imperative CRUD). Same path
 	//    DataList uses, so it resolves the correct qoolie instance.
-	const queryId = $derived(
-		collectionId == null
-			? undefined
-			: isNaN(Number(collectionId)) ? collectionId : Number(collectionId)
-	);
+	const queryId = $derived(MachineRecordIdentity.normalizeKey(collectionId));
 	const recordStore = $derived(
 		data === undefined && collection && queryId !== undefined
-			? machine.store(collection, { [scheme?.index ?? 'id']: queryId } as any)
+			? machine.store(collection, MachineRecordIdentity.buildWhere(scheme?.index ?? 'id', queryId) as any)
 			: null
 	);
 	const fetchedData = $derived(recordStore?.items?.[0] as Record<string, any> | undefined);
 
 	const effectiveData = $derived(data ?? fetchedData);
 
-	/** Fields as sortable/groupable objects — key + field definition properties */
-	const fieldObjects = $derived.by(() => {
-		const fields = scheme?.fields;
-		if (!fields) return [];
-		let keys: string[];
-		if (showFields?.length) {
-			keys = showFields.filter(k => k in fields);
-		} else if (view) {
-			// Named view returns an ordered field list; keep only existing fields.
-			keys = (scheme?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? [])
-				.map(f => f.name)
-				.filter(k => k in fields);
-		} else {
-			keys = Object.keys(fields);
-		}
-		return keys.map(key => ({ key, ...(fields[key] as unknown as Record<string, unknown>) }));
-	});
-
-	const sortedFields = $derived(
-		sortBy ? sortItems(fieldObjects, sortBy) : fieldObjects
-	);
-
-	const groups = $derived(
-		groupBy ? groupItems(sortedFields, groupBy) as Map<string, typeof sortedFields> : undefined
-	);
-
-	const fieldNames = $derived(sortedFields.map(f => f.key));
+	const resolved   = $derived(scheme?.resolveFieldList({ view, showFields, sortBy, groupBy }) ?? null);
+	const fieldNames = $derived(resolved?.fieldNames ?? []);
+	const groups     = $derived(resolved?.groups ?? undefined);
 
 	// view='fk': fieldNames are already FK-only (getFieldsForView('fk')).
-	// Label per field = target collection's appscheme.name, read reactively from the store.
-	// Guard: only read when appscheme is part of the effective model (else fall back to collection key).
-	const hasAppscheme = $derived('appscheme' in (machine.logic?.model ?? {}));
+	// Title per FK field = target collection's appscheme.name (if appscheme in model),
+	// else fall back to the collection key from the descriptor.
+	const hasAppscheme   = $derived('appscheme' in (machine.logic?.model ?? {}));
 	const appschemeItems = $derived(
 		view === 'fk' && hasAppscheme
 			? (machine.store('appscheme').items as Record<string, unknown>[])
@@ -109,14 +77,19 @@ Iterates a record's fields and renders DataField for each.
 		const map = new Map<string, string>();
 		if (view !== 'fk' || !scheme) return map;
 		for (const fieldName of fieldNames) {
-			const fk = parseFkType(scheme.field(fieldName).parse()?.fieldType as string | undefined);
-			if (!fk) continue;
-			const meta = appschemeItems.find(i => i.code === fk.collection);
-			map.set(fieldName, String(meta?.name ?? fk.collection));
+			const d = scheme.collectionValues.descriptor(fieldName);
+			if (d?.kind !== 'fk') continue;
+			const meta = appschemeItems.find(i => i.code === d.fkCollection);
+			map.set(fieldName, String(meta?.name ?? d.fkCollection));
 		}
 		return map;
 	});
 	const fkFieldNames = $derived(fieldNames.filter(f => fkLabels.has(f)));
+
+	$inspect('fieldNames', fieldNames);
+	$inspect('scheme', scheme);
+	$inspect('fkLabels', fkLabels);
+	$inspect('appschemeItems', appschemeItems);
 </script>
 
 {#if groups}

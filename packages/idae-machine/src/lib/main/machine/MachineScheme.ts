@@ -1,5 +1,6 @@
 import { MachineError } from './MachineError.js';
-import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy } from '$lib/types/index.js';
+import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy, } from '$lib/types/index.js';
+export type FieldObject = { key: string } & Record<string, unknown>;
 import type {
 	MachineModel,
 	MachineCollectionModel,
@@ -157,6 +158,65 @@ export class MachineScheme {
 			this.collectionValues,
 			this.#machineDb,
 		);
+	}
+
+	/**
+	 * Resolve the ordered field list for display, with optional sort + group.
+	 * Moves the view/showFields selection + sort + group out of components.
+	 */
+	resolveFieldList(opts: {
+		view?:       string;
+		showFields?: string[];
+		sortBy?:     SortBy | SortBy[];
+		groupBy?:    string;
+	} = {}): {
+		fieldObjects: FieldObject[];
+		fieldNames:   string[];
+		groups:       Map<string, FieldObject[]> | undefined;
+	} {
+		const { view, showFields, sortBy, groupBy } = opts;
+		const fields = this.fields as unknown as Record<string, Record<string, unknown> | undefined>;
+
+		let keys: string[];
+		if (showFields?.length) {
+			keys = showFields.filter(k => k in fields);
+		} else if (view) {
+			keys = (this.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? [])
+				.map(f => f.name)
+				.filter(k => k in fields);
+		} else {
+			keys = Object.keys(fields);
+		}
+
+		let fieldObjects: FieldObject[] = keys.map(key => ({ key, ...(fields[key] ?? {}) }));
+
+		if (sortBy) {
+			const chain = Array.isArray(sortBy) ? sortBy : [sortBy];
+			fieldObjects = [...fieldObjects].sort((a, b) => {
+				for (const { field, direction } of chain) {
+					const av = a[field] ?? null;
+					const bv = b[field] ?? null;
+					if (av === null && bv === null) continue;
+					if (av === null) return 1;
+					if (bv === null) return -1;
+					const cmp = av < bv ? -1 : av > bv ? 1 : 0;
+					if (cmp !== 0) return direction === 'asc' ? cmp : -cmp;
+				}
+				return 0;
+			});
+		}
+
+		let groups: Map<string, FieldObject[]> | undefined;
+		if (groupBy) {
+			groups = new Map<string, FieldObject[]>();
+			for (const item of fieldObjects) {
+				const key = String(item[groupBy] ?? '—');
+				if (!groups.has(key)) groups.set(key, []);
+				groups.get(key)!.push(item);
+			}
+		}
+
+		return { fieldObjects, fieldNames: fieldObjects.map(f => f.key), groups };
 	}
 
 	parse(): Record<string, IDbForge | undefined> | undefined {

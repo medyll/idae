@@ -13,6 +13,9 @@ export { field } from './machine/fieldBuilder.js';
 // Rights / RBAC
 export { machineRights } from './machine/MachineRights.js';
 
+// Record identity normalization
+export { MachineRecordIdentity } from './machine/MachineRecordIdentity.js';
+
 // Types
 export * from '../types/index.js';
 

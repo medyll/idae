@@ -197,7 +197,7 @@ Consumers can override via the item snippet.
 				: machine.store(collection)
 			: { items: [] as COL[] }
 	);
-	const collLogic = $derived(collection ? safeCollection(collection) : null);
+	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 	const indexField = 'id';
 	const fieldValues = $derived(collLogic?.collectionValues ?? {});
 	const defaultSort = $derived(
@@ -213,7 +213,7 @@ Consumers can override via the item snippet.
 
 	const fullFields = $derived.by(() => {
 		if (showFields?.length) return showFields;
-		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? []).map((f) => f.name);
+		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? []).map((f: { name: string }) => f.name);
 		return viewNames.length ? viewNames : presentationFields;
 	});
 
@@ -275,14 +275,7 @@ Consumers can override via the item snippet.
 	}
 
 	function renderPresentation(record: Record<string, unknown>): string {
-		if (!presentationFields?.length) return '';
-		return presentationFields
-			.map(tok => {
-				const v = getByPath(record, tok);
-				return v == null ? '' : String(v);
-			})
-			.filter(Boolean)
-			.join(' ');
+		return collLogic?.collectionValues.presentation(record) ?? '';
 	}
 
 	const rawItems = $derived(store?.items ? (store.items as COL[]) : ([] as COL[]));
@@ -340,20 +333,12 @@ Consumers can override via the item snippet.
 			const fkCollection = collLogic?.fks?.[fkKey]?.code ?? null;
 			const labelMap = new Map<unknown, string>();
 			if (fkCollection) {
-				const fkScheme = safeCollection(fkCollection);
-				const fkIndexField =
-					collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
-				const fkPresentationFields = (fkScheme?.template?.presentation ?? 'name')
-					.split(' ')
-					.filter(Boolean);
-				const fkItems = machine.store(fkCollection).items as Record<string, unknown>[];
+				const fkScheme     = machine.logic.collectionOr(fkCollection, null);
+				const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
+				const fkItems      = machine.store(fkCollection).items as Record<string, unknown>[];
 				for (const item of fkItems) {
 					const id = item[fkIndexField];
-					const label = fkPresentationFields
-						.map((f: string) => item[f])
-						.filter((v: unknown) => v !== undefined && v !== null && v !== '')
-						.join(' ');
-					labelMap.set(id, label || String(id ?? '\u2014'));
+					labelMap.set(id, fkScheme?.collectionValues.presentation(item) || String(id ?? '\u2014'));
 				}
 			}
 			return groupItemsResolved(paginatedItems, fkKey, (item) => {
@@ -368,18 +353,10 @@ Consumers can override via the item snippet.
 		return groupItems(paginatedItems, effectiveGroupBy);
 	});
 
-	function safeCollection(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
-	}
-
 	let errorMessage = $state<string | null>(null);
 
 	$effect(() => {
-		if (!safeCollection(collection)) {
+		if (!machine.logic.collectionOr(collection, null)) {
 			errorMessage = `Collection '${collection}' not found in schema.`;
 		} else {
 			errorMessage = null;

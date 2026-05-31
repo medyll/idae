@@ -41,7 +41,6 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	presentation(data: Record<string, unknown>): string {
 		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			const scheme       = this.machine.collection(this.collectionName);
 			const presentation = scheme.template?.presentation;
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
@@ -268,6 +267,67 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			MachineError.throwError(message, code);
 		}
 	}
+	/**
+	 * Resolved descriptor for a single field — the machine-native equivalent of the legacy
+	 * `columnModel[]` entry. Scalar-vs-FK divergence is decided HERE, never in a component.
+	 */
+	descriptor(fieldName: string): {
+		kind:           'scalar' | 'fk';
+		fieldName:      string;
+		fieldType:      string;
+		title:          string;
+		fkCollection?:  string;
+		fkIndexField?:  string;
+	} | null {
+		try {
+			const info = this.machine.collection(this.collectionName).field(fieldName).parse();
+			if (!info) return null;
+			const type  = (info.fieldType ?? '') as string;
+			const title = (info as Record<string, unknown>).title as string ?? fieldName;
+			if (type.startsWith('fk-')) {
+				const [fkCollection, fkIndexField = 'code'] = type.slice(3).split('.');
+				if (!fkCollection) return { kind: 'scalar', fieldName, fieldType: type, title };
+				return { kind: 'fk', fieldName, fieldType: type, title, fkCollection, fkIndexField };
+			}
+			return { kind: 'scalar', fieldName, fieldType: type, title };
+		} catch {
+			return null;
+		}
+	}
+
+	/**
+	 * Human-readable display value for a field.
+	 * Scalar → MachineSchemeFieldType.format(). FK → presentation(targetRecord).
+	 * `resolveTarget` is injected by the caller (keeps this class pure/testable).
+	 */
+	displayValue(
+		fieldName: keyof T,
+		data: T,
+		resolveTarget?: (fkCollection: string, fkIndexField: string, value: unknown) => Record<string, unknown> | undefined
+	): string {
+		const d = this.descriptor(String(fieldName));
+		if (!d) return String(data[fieldName] ?? '');
+
+		if (d.kind === 'scalar') {
+			return MachineSchemeFieldType.format(data[fieldName], d.fieldType);
+		}
+
+		// FK path — resolve target record, then use its presentation template
+		const raw = data[fieldName];
+		if (raw == null) return '—';
+		const target = resolveTarget?.(d.fkCollection!, d.fkIndexField!, raw);
+		if (!target) return String(raw);
+		try {
+			const fkValues = new MachineSchemeValues<Record<string, unknown>>(
+				d.fkCollection! as TplCollectionName,
+				this.machine
+			);
+			return fkValues.presentation(target) || String(raw);
+		} catch {
+			return String(raw);
+		}
+	}
+
 	/**
 	 * Get default values for the collection, using global and collection-specific factories.
 	 * @role Default values
