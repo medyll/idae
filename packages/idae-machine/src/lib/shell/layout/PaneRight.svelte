@@ -26,13 +26,3 @@
 	<PaneQuickCreate collections={creatableCollections} {onSelect} />
 	<PaneRecents {onSelect} />
 </div>
-
-<style>
-	.pane-right {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		overflow-y: auto;
-		padding: 1rem;
-	}
-</style>

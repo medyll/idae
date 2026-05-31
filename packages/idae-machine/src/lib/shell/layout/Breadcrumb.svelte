@@ -65,20 +65,3 @@
 		{/if}
 	{/each}
 </nav>
-
-<style>
-	.breadcrumb {
-		background: var(--color-bg);
-		border-bottom: var(--border-width) solid var(--color-border);
-		font-size: var(--text-sm);
-	}
-
-	.separator { color: var(--color-text-muted); }
-
-	.crumb {
-		color: var(--color-primary);
-		text-decoration: none;
-		&:hover { text-decoration: underline; }
-		&.is-active { color: var(--color-text-muted); }
-	}
-</style>

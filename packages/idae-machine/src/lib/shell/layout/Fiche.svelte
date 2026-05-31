@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DataRecord } from "$lib/index.js";
+	import { DataRecord, machine } from "$lib/index.js";
 	let {
 		collection,
 		collectionId
@@ -10,12 +10,14 @@
 </script>
 
 <fiche-component>
-    <fiche-header></fiche-header>
+    <fiche-header>
+        <toolbar-component><button onclick={()=> machine.framer.loadFrame('synthesis', collection, collectionId)}>synthese</button></toolbar-component>
+    </fiche-header>
     <fiche-zone>
         <sidebar-info></sidebar-info>
         <zone-main>
             <DataRecord {collection} {collectionId} />
-            <DataRecord {collection} {collectionId} view="focus" />
+            <DataRecord {collection} {collectionId} view="fk" />
         </zone-main>
     </fiche-zone>
 </fiche-component>
@@ -52,7 +54,7 @@
 
         :global(zone-main) {
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             flex: 1;
             min-width: 0;
             gap: var(--gutter-md);

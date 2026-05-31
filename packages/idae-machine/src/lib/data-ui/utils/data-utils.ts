@@ -62,6 +62,20 @@ export function parseFkGroupKey(
 }
 
 /**
+ * Parse an FK field type string into its target collection and index field.
+ * `fk-category.id` → `{ collection: 'category', targetIndex: 'id' }`.
+ * Returns null for non-FK types. Pure, deterministic — no I/O.
+ */
+export function parseFkType(
+	fieldType?: string
+): { collection: string; targetIndex: string } | null {
+	if (!fieldType?.startsWith('fk-')) return null;
+	const [collection, targetIndex] = fieldType.slice(3).split('.');
+	if (!collection) return null;
+	return { collection, targetIndex: targetIndex || 'id' };
+}
+
+/**
  * Label for an FK relation stored as a nested object on the record under
  * `gridFks.<key>` (engine collections) — `{ id, code, name, … }`.
  * `fks` is accepted as an alias. Returns undefined when the relation is not

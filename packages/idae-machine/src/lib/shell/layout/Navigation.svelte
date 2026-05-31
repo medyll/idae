@@ -53,13 +53,3 @@
 		{/each}
 	</ul>
 </nav>
-
-<style>
-	.navigation {
-		width: 250px;
-		height: 100vh;
-		padding: var(--pad-md);
-		background: var(--color-bg);
-		overflow-y: auto;
-	}
-</style>

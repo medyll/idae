@@ -13,8 +13,9 @@ Iterates a record's fields and renders DataField for each.
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import DataField from '$lib/data-ui/field/DataField.svelte';
+	import DataFkValue from '$lib/data-ui/field/DataFkValue.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
+	import { sortItems, groupItems, parseFkType } from '$lib/data-ui/utils/data-utils.js';
 	import type { SortBy } from '$lib/types/index.js';
 	import { getContext } from 'svelte';
 
@@ -94,6 +95,28 @@ Iterates a record's fields and renders DataField for each.
 	);
 
 	const fieldNames = $derived(sortedFields.map(f => f.key));
+
+	// view='fk': fieldNames are already FK-only (getFieldsForView('fk')).
+	// Label per field = target collection's appscheme.name, read reactively from the store.
+	// Guard: only read when appscheme is part of the effective model (else fall back to collection key).
+	const hasAppscheme = $derived('appscheme' in (machine.logic?.model ?? {}));
+	const appschemeItems = $derived(
+		view === 'fk' && hasAppscheme
+			? (machine.store('appscheme').items as Record<string, unknown>[])
+			: []
+	);
+	const fkLabels = $derived.by(() => {
+		const map = new Map<string, string>();
+		if (view !== 'fk' || !scheme) return map;
+		for (const fieldName of fieldNames) {
+			const fk = parseFkType(scheme.field(fieldName).parse()?.fieldType as string | undefined);
+			if (!fk) continue;
+			const meta = appschemeItems.find(i => i.code === fk.collection);
+			map.set(fieldName, String(meta?.name ?? fk.collection));
+		}
+		return map;
+	});
+	const fkFieldNames = $derived(fieldNames.filter(f => fkLabels.has(f)));
 </script>
 
 {#if groups}
@@ -117,6 +140,15 @@ Iterates a record's fields and renders DataField for each.
 			</fieldset>
 		{/if}
 	{/each}
+{:else if view === 'fk'}
+	<div class="form">
+		{#each fkFieldNames as fieldName (fieldName)}
+			<div class="field">
+				<span>{fkLabels.get(fieldName)}</span>
+				<span><DataFkValue {collection} {fieldName} data={effectiveData ?? {}} /></span>
+			</div>
+		{/each}
+	</div>
 {:else}
 	<div class="form">
 		{#if scheme && fieldNames.length}

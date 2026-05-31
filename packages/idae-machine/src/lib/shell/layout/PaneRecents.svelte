@@ -65,17 +65,3 @@
 		{/snippet}
 	</DataList>
 </div>
-
-<style>
-	:global(.pane-recent-group) { margin-bottom: var(--gutter-md); }
-	.list-item.btn-ghost {
-		width: 100%;
-		justify-content: space-between;
-		border: none;
-		background: transparent;
-	}
-	.list-item-trail {
-		display: flex;
-		gap: var(--gutter-sm);
-	}
-</style>
