@@ -28,6 +28,7 @@ Consumers can override via the item snippet.
 	import type { SortBy, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
 	import { sortItems, groupItems, groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { useMachinePrefs } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
 	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
@@ -110,77 +111,20 @@ Consumers can override via the item snippet.
 		}]>;
 	} = $props();
 
-	let userMode = $state<'list' | 'table' | 'grid' | null>(null);
-	const currentMode = $derived(userMode ?? modeProp);
-
-	// Toolbar-owned state. Consumer props (`where`, `sortBy`, `groupBy`) act as defaults;
-	// these override / extend at runtime. Persisted per (user, collection) via machine.action
-	// on `appuser_prefs` (code = `{userId}:datalist.{collection}.{slot}`).
-	let userSortBy   = $state<SortBy[]>([]);
-	let userGroupBy  = $state<string | undefined>(undefined);
-	let userFindWhere = $state<Record<string, unknown> | undefined>(undefined);
-
 	const prefsScope = $derived(prefsScopeProp ?? `datalist.${collection}`);
-	let hydrated = $state(false);
 
-	function normalizePrefValue(value: unknown): unknown {
-		if (value == null || typeof value !== 'object') return value;
-		return JSON.parse(JSON.stringify(value));
-	}
+	const prefs = useMachinePrefs(
+		() => prefsScope,
+		{ mode: null as 'list' | 'table' | 'grid' | null, sortBy: [] as SortBy[], groupBy: undefined as string | undefined, find: undefined as Record<string, unknown> | undefined },
+		() => usePrefs
+	);
 
-	function persistSlot(slot: string, value: unknown): void {
-		if (!usePrefs) return;
-		const scopeKey = `${prefsScope}.${slot}`;
-		void machine.action(
-			'appuser_prefs',
-			{ scopeKey, name: scopeKey, value: normalizePrefValue(value) },
-			{ code: '{userId}:{scopeKey}', upsertOn: ['code'] }
-		);
-	}
+	let userMode      = $derived(prefs.slots.mode);
+	let userSortBy    = $derived(prefs.slots.sortBy);
+	let userGroupBy   = $derived(prefs.slots.groupBy);
+	let userFindWhere = $derived(prefs.slots.find);
 
-	// Hydrate from appuser_prefs whenever the collection changes. `hydrated` gates the
-	// persistence effects below to avoid an immediate write-back of the initial empty state.
-	$effect(() => {
-		const scopeKey = prefsScope;
-		const prefsEnabled = usePrefs;
-		hydrated = false;
-		if (!prefsEnabled) {
-			userMode = null;
-			userSortBy = [];
-			userGroupBy = undefined;
-			userFindWhere = undefined;
-			hydrated = true;
-			return;
-		}
-		const user = machine.rights.currentUser;
-		if (!user) { hydrated = true; return; }
-		const prefix = `${String(user.id)}:${scopeKey}.`;
-		untrack(() => {
-			Promise.resolve(machine.collection('appuser_prefs').getAll())
-				.then((rows: Array<{ code?: string; value?: unknown }>) => {
-					const vals: Record<string, unknown> = {};
-					for (const r of rows) {
-						if (typeof r.code === 'string' && r.code.startsWith(prefix)) {
-							vals[r.code.slice(prefix.length)] = r.value;
-						}
-					}
-					userMode      = vals.mode === 'list' || vals.mode === 'table' || vals.mode === 'grid'
-						? vals.mode : null;
-					userSortBy    = Array.isArray(vals.sortBy) ? (vals.sortBy as SortBy[]) : [];
-					userGroupBy   = typeof vals.groupBy === 'string' ? vals.groupBy : undefined;
-					userFindWhere = vals.find && typeof vals.find === 'object'
-						? (vals.find as Record<string, unknown>)
-						: undefined;
-				})
-				.catch(() => {})
-				.finally(() => { hydrated = true; });
-		});
-	});
-
-	$effect(() => { const m = userMode;      if (usePrefs && hydrated) untrack(() => persistSlot('mode',    m)); });
-	$effect(() => { const s = userSortBy;    if (usePrefs && hydrated) untrack(() => persistSlot('sortBy',  s)); });
-	$effect(() => { const g = userGroupBy;   if (usePrefs && hydrated) untrack(() => persistSlot('groupBy', g ?? null)); });
-	$effect(() => { const w = userFindWhere; if (usePrefs && hydrated) untrack(() => persistSlot('find',    w ?? null)); });
+	const currentMode = $derived(userMode ?? modeProp);
 
 	// AND-merge consumer where with finder where. Same field in both → finder wins.
 	const effectiveWhere = $derived.by(() => {
@@ -372,9 +316,9 @@ Consumers can override via the item snippet.
 
 {#snippet modeSwitcher()}
 	<div class="mode-switcher">
-		<button type="button" class="mode-btn" class:active={currentMode === 'list'}  onclick={() => userMode = 'list'}>List</button>
-		<button type="button" class="mode-btn" class:active={currentMode === 'table'} onclick={() => userMode = 'table'}>Table</button>
-		<button type="button" class="mode-btn" class:active={currentMode === 'grid'}  onclick={() => userMode = 'grid'}>Grid</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'list'}  onclick={() => prefs.set('mode', 'list')}>List</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'table'} onclick={() => prefs.set('mode', 'table')}>Table</button>
+		<button type="button" class="mode-btn" class:active={currentMode === 'grid'}  onclick={() => prefs.set('mode', 'grid')}>Grid</button>
 	</div>
 {/snippet}
 
@@ -382,28 +326,28 @@ Consumers can override via the item snippet.
 	{@render toolbarSnippet({
 		collection,
 		sortBy: userSortBy,
-		setSortBy: (v) => (userSortBy = v),
+		setSortBy: (v) => prefs.set('sortBy', v),
 		groupBy: userGroupBy,
-		setGroupBy: (v) => (userGroupBy = v),
+		setGroupBy: (v) => prefs.set('groupBy', v),
 		findWhere: userFindWhere,
-		setFindWhere: (v) => (userFindWhere = v),
+		setFindWhere: (v) => prefs.set('find', v),
 		mode: currentMode,
-		setMode: (v) => (userMode = v)
+		setMode: (v) => prefs.set('mode', v)
 	})}
 {:else if showToolbar}
 	<DataToolbar>
 		{#snippet find()}
-			<DataFind {collection} bind:where={userFindWhere} />
+			<DataFind {collection} bind:where={prefs.slots.find} />
 		{/snippet}
 		{#snippet sort()}
 			{#if presentationFields?.length}
 				{#each presentationFields as f (f)}
-					<DataSort field={f} bind:sortBy={userSortBy} />
+					<DataSort field={f} bind:sortBy={prefs.slots.sortBy} />
 				{/each}
 			{/if}
 		{/snippet}
 		{#snippet group()}
-			<DataGroup {collection} bind:groupBy={userGroupBy} />
+			<DataGroup {collection} bind:groupBy={prefs.slots.groupBy} />
 		{/snippet}
 		{#snippet extras()}
 			{@render modeSwitcher()}
