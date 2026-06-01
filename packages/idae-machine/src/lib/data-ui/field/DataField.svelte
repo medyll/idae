@@ -81,6 +81,17 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         return fkScheme?.collectionValues.presentation(item) || String(internalValue);
     });
 
+    // FK field label = target collection's appscheme.name (e.g. "Catégorie"),
+    // resolved upstream-style from the appscheme store. Falls back to fieldName.
+    const hasAppscheme  = $derived('appscheme' in (machine.logic?.model ?? {}));
+    const fkTargetName  = $derived.by(() => {
+        if (!fkCollection || !hasAppscheme) return null;
+        const meta = (machine.store('appscheme').items as Record<string, unknown>[])
+            .find(i => i.code === fkCollection);
+        return (meta?.name as string) ?? fkCollection;
+    });
+    const fieldLabel    = $derived(fkTargetName ?? String(fieldName));
+
     // parent → child (tracked read, untracked write to avoid loop)
     $effect(() => {
         const incoming = data?.[fieldName];
@@ -195,7 +206,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 {#if fieldForge}
     {#if !isPrivate}
         <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
-            <span class="field-label">{fieldName}</span>
+            <span class="field-label">{fieldLabel}</span>
             <div class="field-input" {...inputDataset}>
                 {#if mode === 'show'}
                     {@render fieldShow()}

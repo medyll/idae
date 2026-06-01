@@ -20,7 +20,6 @@ export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 // UI — field (atomic display/edit)
 export { default as DataField }     from '$lib/data-ui/field/DataField.svelte';
 export { default as DataFieldEdit } from '$lib/data-ui/field/DataFieldEdit.svelte';
-export { default as DataFkValue }   from '$lib/data-ui/field/DataFkValue.svelte';
 
 // UI — data controls
 export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';
