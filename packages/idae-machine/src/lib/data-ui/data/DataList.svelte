@@ -17,7 +17,8 @@ Consumers can override via the item snippet.
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
-@snippet item({ record, idx, fieldValues }) - override record rendering (optional — DataRecord used by default)
+@snippet item({ record, idx, fieldValues }) - Custom record rendering (list + grid only).
+  Ignored in table mode — table delegates to DataRecord mode="row" (structural layout).
 @snippet groupHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
@@ -30,7 +31,6 @@ Consumers can override via the item snippet.
 	import { sortItems, groupItems, groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
 	import { useMachinePrefs } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
-	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
 	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
 	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
@@ -159,6 +159,15 @@ Consumers can override via the item snippet.
 		if (showFields?.length) return showFields;
 		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? []).map((f: { name: string }) => f.name);
 		return viewNames.length ? viewNames : presentationFields;
+	});
+
+	const tableColumns = $derived.by(() => {
+		if (currentMode !== 'table' || !collLogic) return [] as { name: string; label: string }[];
+		const viewKey = (view as 'full' | 'flat' | 'fk' | 'focus') ?? 'flat';
+		return collLogic.getFieldsForView(viewKey).map(f => ({
+			name: f.name,
+			label: String(f.name),
+		}));
 	});
 
 
@@ -300,18 +309,25 @@ Consumers can override via the item snippet.
 </script>
 
 {#snippet renderItem(record: COL, idx: number)}
-	{#if itemSnippet}
-		{@render itemSnippet({ record, idx, fieldValues })}
-	{:else}
-		{@const rec = record as Record<string, unknown>}
-		{@const label = renderPresentation(rec)}
-		<li>
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<svelte:element
+		this={currentMode === 'table' ? 'tr' : 'li'}
+		class:clickable={currentMode === 'table' && (!!onItemClick || !!parsedLink)}
+		onclick={currentMode === 'table' ? () => handleItemClick(record) : undefined}
+	>
+		{#if currentMode === 'table'}
+			<DataRecord {collection} data={record as Record<string, any>} mode="row" {view} />
+		{:else if itemSnippet}
+			{@render itemSnippet({ record, idx, fieldValues })}
+		{:else}
+			{@const rec = record as Record<string, unknown>}
+			{@const label = renderPresentation(rec)}
 			<button type="button" class="data-list-link"
 				onclick={() => parsedLink ? navigate(rec) : handleItemClick(record)}>
 				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode="show" />{/if}
 			</button>
-		</li>
-	{/if}
+		{/if}
+	</svelte:element>
 {/snippet}
 
 {#snippet modeSwitcher()}
@@ -358,7 +374,42 @@ Consumers can override via the item snippet.
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if currentMode === 'table'}
-	<TableInline {collection} {where} onItemClick={handleItemClick} />
+	<table class="data-table">
+		<thead>
+			<tr>
+				{#each tableColumns as col (col.name)}
+					<th
+						class:sorted={userSortBy.some(s => s.field === col.name)}
+						onclick={() => {
+							const existing = userSortBy.find(s => s.field === col.name);
+							if (existing) {
+								prefs.set('sortBy', [{ field: col.name, direction: existing.direction === 'asc' ? 'desc' : 'asc' }]);
+							} else {
+								prefs.set('sortBy', [{ field: col.name, direction: 'asc' }]);
+							}
+						}}
+					>
+						{col.label}
+						<span class="sort-arrow">
+							{#if userSortBy.some(s => s.field === col.name)}
+								{userSortBy.find(s => s.field === col.name)?.direction === 'asc' ? '↑' : '↓'}
+							{:else}↕{/if}
+						</span>
+					</th>
+				{/each}
+			</tr>
+		</thead>
+		<tbody>
+			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+				{@render renderItem(record as COL, idx)}
+			{/each}
+			{#if !paginatedItems.length}
+				<tr><td colspan={tableColumns.length}>
+					{#if emptySnippet}{@render emptySnippet()}{:else}—{/if}
+				</td></tr>
+			{/if}
+		</tbody>
+	</table>
 {:else if currentMode === 'grid'}
 	<ul class="grid-list" role="list">
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}

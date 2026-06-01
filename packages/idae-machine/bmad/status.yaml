@@ -1,18 +1,18 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-05-27T21:10
+# last_updated: 2026-06-01T20:25
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-01T18:00"
+last_updated: "2026-06-01T20:25"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 41 done (188 server + 586 client tests green). No pending sprint planned."
-next_command: "bmad-status"
+next_action: "Sprint 43 complete. S43-01 livré : DataRecord mode='row' + svelte:element renderItem. ADR-06 conforme. 586/586 verts. 0 erreurs svelte-check. Prêt pour prochain sprint ou tag release."
+next_command: "bmad-continue"
 next_role: "scrum"
-active_role: "scrum"
+active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -103,8 +103,74 @@ architecture:
         But : éviter l'ambiguïté entre état appliqué à la liste et affichage des contrôles,
         tout en gardant un naming stable et lisible pour humains et LLMs.
 
+    - id: ADR-06
+      title: "DataList mode unification — svelte:element + DataRecord mode='row'"
+      status: implemented
+      decision: >
+        Unifier les 3 modes de DataList (list/table/grid) sur un pipeline DataRecord unique.
+        Supprimer TableInline.svelte (scheme-aveugle, colonnes Object.keys, FK brutes).
+        Architecture cible (rectifiée S43-01) :
+          - DataList ne boucle JAMAIS sur les fields directement.
+          - DataRecord est le seul composant autorisé à itérer les champs d'un record.
+          - DataRecord mode='row' : émet <td><DataField/></td> par field, sans wrapper.
+          - renderItem snippet utilise <svelte:element this={currentMode==='table'?'tr':'li'}>.
+          - table tbody : <DataRecord mode="row"> — pas de loop DataField dans DataList.
+          - tableColumns $derived conservé pour <thead> uniquement (labels colonnes).
+          - container <table> vs <ul> : {#if mode==='table'} — svelte:element non adapté
+            (structure thead/tbody trop différente de ul/li).
+          - grid mode reste séparé (panel + button wrapper, structure incompatible).
+          - <thead> statique conditionnel {#if mode === 'table'}, labels depuis tableColumns.
+          - Snippet item non supporté en table mode. Documenter explicitement.
+          - Styles dans src/styles/components.css @layer components (déjà fait S42-01).
+        S42-01 : TableInline supprimé ✅, styles migrés ✅, mais DataField loop direct ❌.
+        S43-01 : fix architectural — DataRecord mode='row' + svelte:element renderItem.
+        Ref stories: S42-01 (partiel), S43-01 (fix).
+
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 43
+    goal: "DataRecord mode='row' + svelte:element — conformité ADR-06"
+    status: completed
+    artifact: "bmad/artifacts/stories/S43-01.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-43.md"
+    stories:
+      - id: S43-01
+        title: "DataRecord mode='row' + svelte:element renderItem — fix architectural ADR-06"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "svelte-check: 0 errors, 0 warnings. client: 52 files, 586/586. DataField import removed from DataList. renderItem uses svelte:element. tbody delegates to renderItem."
+        test_result: pass
+        detail: >
+          DataRecord: mode='row' added to type union + template branch emitting <td><DataField/></td>
+          per field present in effectiveData. DataList: import DataField removed; renderItem refactored
+          to use <svelte:element this={tr|li}> with conditional DataRecord mode="row" for table,
+          itemSnippet for custom, or default button+DataRecord for list. tbody now uses
+          {@render renderItem(...)} — no more {#each tableColumns} in tbody. tableColumns kept
+          for <thead> only. svelte-ignore a11y_no_static_element_interactions on svelte:element
+          (tr/li are implicit roles). 586/586 green.
+
+  - id: 42
+    goal: "DataList unification — supprimer TableInline, svelte:element + pipeline DataField unique"
+    status: completed-partial
+    artifact: "bmad/artifacts/stories/S42-01.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-42.md"
+    stories:
+      - id: S42-01
+        title: "DataList mode unification — supprimer TableInline, svelte:element + DataField"
+        status: complete
+        effort: M
+        tests_executed: true
+        test_output: "client: 52 files, 586/586. server: 18 passed, 1 failed (pre-existing imagePresetRegistry dup key). svelte-check: 0 errors, 0 warnings."
+        test_result: pass
+        detail: >
+          TableInline.svelte deleted. DataList.svelte: added tableColumns derived from
+          collLogic.getFieldsForView(viewKey), replaced TableInline delegation with inline
+          <table class="data-table"> + DataField mode='show' per cell. Sort via
+          prefs.set('sortBy', ...) — no local state. Styles migrated to components.css
+          under @layer components. JSDoc updated: snippet item ignored in table mode.
+          grep TableInline src/ = 0. Full client suite 586/586 green.
+
   - id: 41
     goal: "Server suite reliability + structural debt (upward dep + data-attribute kebab)"
     status: completed
@@ -145,20 +211,6 @@ sprints:
         test_result: pass
         detail: >
           BL-02 already resolved — data-ui/utils/ already owns sortItems/groupItems. No action needed.
-      - id: S41-02
-        title: "data-collectionId → data-collection-id kebab + dataset readers"
-        status: todo
-        effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
-      - id: S41-03
-        title: "Move sortItems/groupItems shell/frame/ → data-ui/utils/"
-        status: todo
-        effort: S
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
   - id: 40
     goal: "DataListFk & DataListRfk — schema-driven FK/RFK data viewers"
@@ -681,6 +733,19 @@ qa:
 sessions:
   - date: "2026-06-01"
     summary: >
+      Sprint 42 complete. S42-01: DataList mode unification. TableInline.svelte deleted
+      (scheme-aveugle: Object.keys, 8 col max, FK brutes). Replaced with inline <table>
+      using collLogic.getFieldsForView('flat') for columns + DataField mode='show' per cell.
+      Sort via prefs.set('sortBy') — no local state. Styles migrated to components.css.
+      Changes: DataList.svelte (+tableColumns derived, -TableInline import, +inline table),
+      TableInline.svelte (deleted), components.css (+table.data-table styles).
+      Results: client 586/586, svelte-check 0 errors/0 warnings. Server 179/188 (1 pre-existing
+      imagePresetRegistry dup key failure).
+    tests_server: 179
+    tests_client: 586
+
+  - date: "2026-06-01"
+    summary: >
       Sprint 41 complete. 23 server test failures → 0. Fixes across 7 files:
       (1) dbRouter.ts: baseCache key now includes org → cross-test pollution fixed.
       (2) demo-seed.test.ts: row counts corrected to full demoSeed, FK field names
@@ -823,6 +888,8 @@ backlog:
       machine.logic built from TS model at start(). Vision: read appscheme rows from IDB
       → collections emerge from sync.
       > Needs ADR: architectural choice, defines runtime model ownership.
+
+  - { id: BL-07,     priority: done, title: "DataList mode unification — implémenté S42" }
 
   - id: BACK-05
     title: "Playwright RBAC golden-path — 3 tests encore rouges"

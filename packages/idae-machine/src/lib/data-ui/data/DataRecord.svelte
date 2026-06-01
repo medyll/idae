@@ -4,7 +4,7 @@ Iterates a record's fields and renders DataField for each.
 @role data-record
 @prop {string} collection - Collection name
 @prop {Record<string,any>} data - Record data (bindable)
-@prop {'show'|'create'|'update'} [mode] - Display mode
+@prop {'show'|'create'|'update'|'row'} [mode] - Display mode. 'row' emits <td> per field for use inside <tr> (no groupBy support in this mode).
 @prop {string[]} [showFields] - Filter to specific fields (overrides view)
 @prop {'full'|'flat'|'fk'|'focus'|string} [view] - Named view to resolve field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
 @prop {SortBy | SortBy[]} [sortBy] - Sort field order (by field def properties e.g. order, label)
@@ -33,7 +33,7 @@ Iterates a record's fields and renders DataField for each.
 		collection: string;
 		collectionId?: string | number;
 		data?: Record<string, any>;
-		mode?: 'show' | 'create' | 'update';
+		mode?: 'show' | 'create' | 'update' | 'row';
 		showFields?: string[];
 		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
 		sortBy?: SortBy | SortBy[];
@@ -64,7 +64,17 @@ Iterates a record's fields and renders DataField for each.
 	const groups     = $derived(resolved?.groups ?? undefined);
 </script>
 
-{#if groups}
+{#if mode === 'row'}
+	{#if scheme && fieldNames.length && effectiveData != null}
+		{#each fieldNames as fieldName (fieldName)}
+			{#if scheme.fields?.[fieldName] && fieldName in effectiveData}
+				<td>
+					<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
+				</td>
+			{/if}
+		{/each}
+	{/if}
+{:else if groups}
 	{#each Array.from(groups) as [key, groupFields] (key)}
 		{#if groupChildren}
 			{@render groupChildren({ key, fieldNames: groupFields.map(f => f.key) })}
