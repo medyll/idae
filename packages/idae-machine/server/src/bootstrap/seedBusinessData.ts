@@ -17,6 +17,12 @@ export interface SeedBusinessOpts {
 	mongoUri:  string;
 	model:     MachineModel;
 	data:      Record<string, unknown[]>;
+	/**
+	 * When true, wipe each seed collection before inserting. Without it the seed
+	 * is idempotent (skips populated collections) — which silently preserves
+	 * stale data from an earlier seed convention. Use for a clean re-seed.
+	 */
+	clearFirst?: boolean;
 }
 
 /**
@@ -24,7 +30,7 @@ export interface SeedBusinessOpts {
  * model-declared base database.
  */
 export async function seedBusinessData(opts: SeedBusinessOpts): Promise<void> {
-	const { org, mongoUri, model, data } = opts;
+	const { org, mongoUri, model, data, clearFirst = false } = opts;
 	const connCache = new Map<string, Connection>();
 
 	async function getConn(base: string): Promise<Connection> {
@@ -43,11 +49,18 @@ export async function seedBusinessData(opts: SeedBusinessOpts): Promise<void> {
 		const base = model[collectionName]?.base ?? DEFAULT_BASE;
 		const conn = await getConn(base);
 		const col  = conn.collection(collectionName);
-		const count = await col.countDocuments();
 
-		if (count > 0) {
-			console.log(`  [business] ${collectionName} → ${org}_${base} — already seeded (${count} docs), skipped`);
-			continue;
+		if (clearFirst) {
+			const removed = await col.deleteMany({});
+			if (removed.deletedCount) {
+				console.log(`  [business] ${collectionName} → ${org}_${base} — cleared ${removed.deletedCount} stale docs`);
+			}
+		} else {
+			const count = await col.countDocuments();
+			if (count > 0) {
+				console.log(`  [business] ${collectionName} → ${org}_${base} — already seeded (${count} docs), skipped`);
+				continue;
+			}
 		}
 
 		const withCodes = (rows as any[]).map((r) =>
