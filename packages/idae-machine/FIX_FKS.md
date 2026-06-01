@@ -1,3 +1,5 @@
+> **HISTORIQUE — SUPERSEDED 2026-06-01.** Plan d'audit pré-refonte. La convention décrite (fk-X.code, double déclaration fields+fks) est remplacée : fks{} = source unique, join data=id, fold dynamique. Ne pas appliquer.
+
 # FIX_FKS.md — FK Convention Audit & Fix Plan
 
 > Author: Claude Opus 4.7 (Anthropic), 2026-05-29

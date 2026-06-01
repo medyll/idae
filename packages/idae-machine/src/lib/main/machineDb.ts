@@ -2,6 +2,7 @@ import type { TplCollectionName } from '$lib/types/index.js';
 import type { MachineModel } from '$lib/types/index.js';
 import { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import { MachineParserForge } from '$lib/main/machineParserForge.js';
+import { foldFksIntoFields } from '$lib/main/machineModelBuilder.js';
 
 /**
  * @class MachineDb
@@ -21,7 +22,7 @@ export class MachineDb {
 	 * @param {IdbqModel} model Custom model to use.
 	 */
 	constructor(model: MachineModel) {
-		this.model = model;
+		this.model = foldFksIntoFields(model);
 		this.machineForge = new MachineParserForge();
 	}
 

@@ -1,3 +1,5 @@
+> **HISTORIQUE — RÉFÉRENCE LEGACY UNIQUEMENT 2026-06-01.** Reverse-eng du legacy PHP. Utile pour comprendre l'origine du mécanisme. Le "mode switch" legacy est porté en Svelte via MachineSchemeValues.descriptor(). Ne pas utiliser pour décider d'implémentation — voir memory project_fk_code_convention.
+
 # Legacy "mode switch" — affichage unifié field / fk.field
 
 > Reverse-eng de `D:/development/idae-legacy`. Objet : comprendre comment le legacy

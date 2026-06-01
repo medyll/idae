@@ -35,8 +35,6 @@ export const demoScheme: MachineModel = {
 			model:           field('text',                    { required: true }),
 			brand:           field('text'),
 			year:            field('number'),
-			category:        field('fk-category.code'),
-			location_office: field('fk-location_office.code'),
 			status:          field('text'),
 			mileage:         field('number'),
 			created_at:      field('date'),
@@ -111,8 +109,6 @@ export const demoScheme: MachineModel = {
 		},
 		fields: {
 			id:            field('id',               { readonly: true }),
-			vehicle:       field('fk-vehicle.code',  { required: true }),
-			customer:      field('fk-customer.code', { required: true }),
 			start_date:    field('date',             { required: true }),
 			end_date:      field('date'),
 			price_per_day: field('number',           { required: true }),
@@ -168,7 +164,6 @@ export const demoScheme: MachineModel = {
 		},
 		fields: {
 			id:      field('id',              { readonly: true }),
-			vehicle: field('fk-vehicle.code', { required: true }),
 			date:    field('date'),
 			type:    field('text'),
 			cost:    field('number'),
@@ -194,19 +189,19 @@ export const demoSeed = {
 		{ id: 2, code: 'LYO-01', address: '5 Rue de Lyon',   city: 'Lyon',  country: 'France' },
 	],
 	vehicle: [
-		{ id: 1, license_plate: 'AA-111-BB', model: 'Clio',   brand: 'Renault', year: 2018, category: 'compact', location_office: 'PAR-01', status: 'available', mileage: 45000 },
-		{ id: 2, license_plate: 'CC-222-DD', model: '208',    brand: 'Peugeot', year: 2019, category: 'compact', location_office: 'PAR-01', status: 'rented',    mileage: 32000 },
-		{ id: 3, license_plate: 'EE-333-FF', model: 'Captur', brand: 'Renault', year: 2020, category: 'suv',     location_office: 'LYO-01', status: 'available', mileage: 15000 },
+		{ id: 1, license_plate: 'AA-111-BB', model: 'Clio',   brand: 'Renault', year: 2018, category: 1, location_office: 1, status: 'available', mileage: 45000 },
+		{ id: 2, license_plate: 'CC-222-DD', model: '208',    brand: 'Peugeot', year: 2019, category: 1, location_office: 1, status: 'rented',    mileage: 32000 },
+		{ id: 3, license_plate: 'EE-333-FF', model: 'Captur', brand: 'Renault', year: 2020, category: 2, location_office: 2, status: 'available', mileage: 15000 },
 	],
 	customer: [
 		{ id: 1, first_name: 'Alice', last_name: 'Durand', email: 'alice@example.com', phone: '+33611223344' },
 		{ id: 2, first_name: 'Bob',   last_name: 'Martin', email: 'bob@example.com' },
 	],
 	rental: [
-		{ id: 1, vehicle: '2', customer: '1', start_date: new Date('2026-03-01'), end_date: new Date('2026-03-05'), price_per_day: 45, total_price: 180, status: 'completed' },
+		{ id: 1, vehicle: 2, customer: 1, start_date: new Date('2026-03-01'), end_date: new Date('2026-03-05'), price_per_day: 45, total_price: 180, status: 'completed' },
 	],
 	maintenance: [
-		{ id: 1, vehicle: '1', date: new Date('2026-02-20'), type: 'oil change', cost: 120, notes: 'Standard maintenance' },
+		{ id: 1, vehicle: 1, date: new Date('2026-02-20'), type: 'oil change', cost: 120, notes: 'Standard maintenance' },
 	],
 };
 

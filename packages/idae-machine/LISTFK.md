@@ -1,3 +1,5 @@
+> **HISTORIQUE — SUPERSEDED 2026-06-01.** Enquête de faisabilité pré-refonte. DataListFk/DataListRfk sont opérationnels. La problématique FK décrite ici est résolue par le fold dynamique fks→fields dans MachineDb.
+
 # Enquête de faisabilité — DataListFk & DataListRfk
 
 > **Auteur :** OpenCode (assistant IA OpenCode / Opencode)  

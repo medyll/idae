@@ -64,8 +64,6 @@ export const crfrScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			ordre: field('text'),
-			agent_groupe: field('fk-agent_groupe.id'),
-			appscheme: field('fk-appscheme.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			init: field('text'),
 			D: field('text'),
@@ -239,8 +237,6 @@ export const crfrScheme: MachineModel = {
 			icon: field('text'),
 			estSite: field('url'),
 			ordre: field('text'),
-			appscheme_base: field('fk-appscheme_base.id'),
-			appscheme_type: field('fk-appscheme_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			collection: field('text'),
 			base: field('text'),
@@ -283,8 +279,6 @@ export const crfrScheme: MachineModel = {
 			name: field('text', { required: true }),
 			icon: field('text'),
 			ordre: field('text'),
-			appscheme_field_group: field('fk-appscheme_field_group.id'),
-			appscheme_field_type: field('fk-appscheme_field_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_title: field('text'),
 			field_raw: field('text'),
@@ -342,8 +336,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_raw: field('text'),
 			collection: field('text'),
@@ -365,8 +357,6 @@ export const crfrScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			ordre: field('text'),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			idappscheme_link: field('text'),
 			field_raw: field('text'),
@@ -405,7 +395,6 @@ export const crfrScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			icon: field('text'),
-			appscheme: field('fk-appscheme.id'),
 		},
 		fks: {
 				appscheme: { code: 'appscheme', multiple: false },
@@ -512,8 +501,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			categorie: field('fk-categorie.id'),
-			site: field('fk-site.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			categorie_idcategorie: field('text'),
 			contenu: field('text'),
@@ -549,7 +536,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			asavoir_type: field('fk-asavoir_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			petitNom: field('text'),
 			atout: field('text'),
@@ -587,7 +573,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			site: field('fk-site.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			description: field('text'),
 			ordre: field('text'),
@@ -735,9 +720,6 @@ export const crfrScheme: MachineModel = {
 			ref: field('text'),
 			information: field('text'),
 			description: field('text-long'),
-			continent: field('fk-continent.id'),
-			pays: field('fk-pays.id'),
-			ville: field('fk-ville.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			adjectifContinent: field('text'),
 			adjectif: field('text'),
@@ -777,16 +759,6 @@ export const crfrScheme: MachineModel = {
 			heureCreation: field('text'),
 			dateDebut: field('date'),
 			telephone: field('phone'),
-			client: field('fk-client.id'),
-			fournisseur: field('fk-fournisseur.id'),
-			hotel_gamme: field('fk-hotel_gamme.id'),
-			produit: field('fk-produit.id'),
-			produit_tarif: field('fk-produit_tarif.id'),
-			produit_tarif_gamme: field('fk-produit_tarif_gamme.id'),
-			transport: field('fk-transport.id'),
-			devis_type: field('fk-devis_type.id'),
-			produit_type: field('fk-produit_type.id'),
-			devis_statut: field('fk-devis_statut.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			archive: field('text'),
 			devisCommentaire: field('text'),
@@ -1024,7 +996,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			devis: field('fk-devis.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			numeroDossierDevis: field('text'),
 			numero: field('text'),
@@ -1045,10 +1016,6 @@ export const crfrScheme: MachineModel = {
 			name: field('text', { required: true }),
 			date: field('date'),
 			total: field('text'),
-			client: field('fk-client.id'),
-			devis: field('fk-devis.id'),
-			dossier_devis: field('fk-dossier_devis.id'),
-			facture_type: field('fk-facture_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			grille: field('text'),
 			numeroDossierDevis: field('text'),
@@ -1121,7 +1088,6 @@ export const crfrScheme: MachineModel = {
 			name: field('text', { required: true }),
 			image: field('text'),
 			description: field('text-long'),
-			pays: field('fk-pays.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			fleuve_id: field('text'),
 			idfleuve_trad: field('text'),
@@ -1227,7 +1193,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			transport_type: field('fk-transport_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			adjectif: field('text'),
 			pluriel: field('text'),
@@ -1249,7 +1214,6 @@ export const crfrScheme: MachineModel = {
 			image: field('text'),
 			ordre: field('text'),
 			description: field('text-long'),
-			produit_type: field('fk-produit_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			idgamme_trad: field('text'),
 			idlang: field('text'),
@@ -1286,7 +1250,6 @@ export const crfrScheme: MachineModel = {
 			codePostal: field('text'),
 			adresse: field('text'),
 			ville: field('text'),
-			ville: field('fk-ville.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			description: field('text'),
 			etoile: field('text'),
@@ -1318,9 +1281,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			gamme: field('fk-gamme.id'),
-			hotel: field('fk-hotel.id'),
-			produit_type: field('fk-produit_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			ordreGamme: field('text'),
 		},
@@ -1359,7 +1319,6 @@ export const crfrScheme: MachineModel = {
 			image: field('text'),
 			petitNom: field('text'),
 			description: field('text-long'),
-			mer_type: field('fk-mer_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			nombreVue: field('text'),
 		},
@@ -1488,8 +1447,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			devis: field('fk-devis.id'),
-			client: field('fk-client.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			montant: field('text'),
 			type: field('text'),
@@ -1513,8 +1470,6 @@ export const crfrScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			image: field('text'),
-			continent: field('fk-continent.id'),
-			destination: field('fk-destination.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			aVisa: field('text'),
 			adjectifContinent: field('text'),
@@ -1576,16 +1531,6 @@ export const crfrScheme: MachineModel = {
 			estTop: field('text'),
 			estVisible: field('text'),
 			estActif: field('text'),
-			continent: field('fk-continent.id'),
-			destination: field('fk-destination.id'),
-			fournisseur: field('fk-fournisseur.id'),
-			fournisseur_type: field('fk-fournisseur_type.id'),
-			prestataire: field('fk-prestataire.id'),
-			produit_type: field('fk-produit_type.id'),
-			transport: field('fk-transport.id'),
-			transport_type: field('fk-transport_type.id'),
-			ville: field('fk-ville.id'),
-			pays: field('fk-pays.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			autreNom_Transport: field('text'),
 			description: field('text'),
@@ -1655,8 +1600,6 @@ export const crfrScheme: MachineModel = {
 			description: field('text-long'),
 			heureDebut: field('date'),
 			heureFin: field('date'),
-			produit: field('fk-produit.id'),
-			ville: field('fk-ville.id'),
 		},
 		fks: {
 				produit: { code: 'produit', multiple: false },
@@ -1692,7 +1635,6 @@ export const crfrScheme: MachineModel = {
 			name: field('text', { required: true }),
 			prix: field('currency'),
 			date: field('date'),
-			produit: field('fk-produit.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			mongodate: field('text'),
 			annee: field('text'),
@@ -1715,9 +1657,6 @@ export const crfrScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			prix: field('currency'),
-			gamme: field('fk-gamme.id'),
-			produit: field('fk-produit.id'),
-			produit_tarif: field('fk-produit_tarif.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			prixPromo: field('text'),
 		},
@@ -1828,8 +1767,6 @@ export const crfrScheme: MachineModel = {
 			description: field('text-long'),
 			heureDebut: field('date'),
 			heureFin: field('date'),
-			client: field('fk-client.id'),
-			tache_type: field('fk-tache_type.id'),
 		},
 		fks: {
 				client: { code: 'client', multiple: false },
@@ -1878,7 +1815,6 @@ export const crfrScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			theme_type: field('fk-theme_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			actifProduit_: field('text'),
 			actifProduit_theme_type: field('text'),
@@ -1937,9 +1873,6 @@ export const crfrScheme: MachineModel = {
 			name: field('text', { required: true }),
 			color: field('text'),
 			description: field('text-long'),
-			fournisseur: field('fk-fournisseur.id'),
-			produit_type: field('fk-produit_type.id'),
-			transport_type: field('fk-transport_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			autreNom_: field('text'),
 			countProduit: field('text'),
@@ -1971,9 +1904,6 @@ export const crfrScheme: MachineModel = {
 			name: field('text', { required: true }),
 			ordre: field('text'),
 			description: field('text-long'),
-			transport: field('fk-transport.id'),
-			gamme: field('fk-gamme.id'),
-			produit_type: field('fk-produit_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			ordreGamme: field('text'),
 			descriptionExtTransport_gamme: field('text'),
@@ -2105,9 +2035,6 @@ export const crfrScheme: MachineModel = {
 			latitude: field('text'),
 			longitude: field('text'),
 			estTop: field('text'),
-			continent: field('fk-continent.id'),
-			destination: field('fk-destination.id'),
-			pays: field('fk-pays.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			adjectifContinent: field('text'),
 			adjectifDestination: field('text'),

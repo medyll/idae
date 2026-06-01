@@ -12,7 +12,6 @@ export const idaenextScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			marque: field('fk-marque.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 		},
@@ -34,7 +33,6 @@ export const idaenextScheme: MachineModel = {
 			montantHt: field('currency'),
 			totalTtc: field('currency'),
 			totalTva: field('currency'),
-			client: field('fk-client.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			description: field('text'),
 			identite: field('text'),
@@ -119,8 +117,6 @@ export const idaenextScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			agent_groupe: field('fk-agent_groupe.id'),
-			appscheme: field('fk-appscheme.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			init: field('text'),
 			C: field('text'),
@@ -345,8 +341,6 @@ export const idaenextScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			color: field('text'),
-			appscheme_base: field('fk-appscheme_base.id'),
-			appscheme_type: field('fk-appscheme_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			base: field('text'),
 			collection: field('text'),
@@ -393,8 +387,6 @@ export const idaenextScheme: MachineModel = {
 			petitNom: field('text'),
 			icon: field('text'),
 			ordre: field('text'),
-			appscheme_field_group: field('fk-appscheme_field_group.id'),
-			appscheme_field_type: field('fk-appscheme_field_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_title: field('text'),
 			field_raw: field('text'),
@@ -453,8 +445,6 @@ export const idaenextScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			ordre: field('text'),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_raw: field('text'),
 			collection: field('text'),
@@ -478,8 +468,6 @@ export const idaenextScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			ordre: field('text'),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_raw: field('text'),
 			field_name: field('text'),
@@ -565,9 +553,6 @@ export const idaenextScheme: MachineModel = {
 			mobile2: field('phone'),
 			mobile: field('phone'),
 			ville: field('text'),
-			agence: field('fk-agence.id'),
-			client_type: field('fk-client_type.id'),
-			client_categorie: field('fk-client_categorie.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			cp: field('text'),
 			adresse2: field('text'),
@@ -641,7 +626,6 @@ export const idaenextScheme: MachineModel = {
 			dateDebut: field('date'),
 			description: field('text-long'),
 			totalHt: field('currency'),
-			client: field('fk-client.id'),
 		},
 		fks: {
 				client: { code: 'client', multiple: false },
@@ -661,7 +645,6 @@ export const idaenextScheme: MachineModel = {
 			prix: field('currency'),
 			quantite: field('number'),
 			total: field('text'),
-			commande: field('fk-commande.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 		},
@@ -699,7 +682,6 @@ export const idaenextScheme: MachineModel = {
 			dateFin: field('date'),
 			description: field('text-long'),
 			duree: field('text'),
-			conge_type: field('fk-conge_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			idagent_writer: field('text'),
 			estActif: field('text'),
@@ -793,9 +775,6 @@ export const idaenextScheme: MachineModel = {
 			dateFin: field('date'),
 			description: field('text-long'),
 			duree: field('text'),
-			client: field('fk-client.id'),
-			contrat_statut: field('fk-contrat_statut.id'),
-			contrat_type: field('fk-contrat_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			commentaire: field('text'),
 			aa_partie_n_id: field('text'),
@@ -820,7 +799,6 @@ export const idaenextScheme: MachineModel = {
 			name: field('text', { required: true }),
 			ordre: field('text'),
 			valeur: field('number'),
-			contrat: field('fk-contrat.id'),
 		},
 		fks: {
 				contrat: { code: 'contrat', multiple: false },
@@ -913,9 +891,6 @@ export const idaenextScheme: MachineModel = {
 			name: field('text', { required: true }),
 			dateCreation: field('date'),
 			heureCreation: field('text'),
-			client: field('fk-client.id'),
-			document_type: field('fk-document_type.id'),
-			document_extension: field('fk-document_extension.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			table: field('text'),
 			table_value: field('text'),
@@ -1019,8 +994,6 @@ export const idaenextScheme: MachineModel = {
 			totalHt: field('currency'),
 			totalTva: field('currency'),
 			totalTtc: field('currency'),
-			client: field('fk-client.id'),
-			contrat: field('fk-contrat.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			description: field('text'),
 		},
@@ -1045,7 +1018,6 @@ export const idaenextScheme: MachineModel = {
 			totalTtc: field('currency'),
 			totalTva: field('currency'),
 			quantite: field('number'),
-			facture: field('fk-facture.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			description: field('text'),
 		},
@@ -1069,10 +1041,6 @@ export const idaenextScheme: MachineModel = {
 			montant: field('currency'),
 			ref: field('text'),
 			dateFin: field('date'),
-			client: field('fk-client.id'),
-			affaire: field('fk-affaire.id'),
-			leaser: field('fk-leaser.id'),
-			financement_type: field('fk-financement_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			identite: field('text'),
 			reference: field('text'),
@@ -1100,8 +1068,6 @@ export const idaenextScheme: MachineModel = {
 			montant: field('currency'),
 			quantite: field('number'),
 			total: field('text'),
-			financement: field('fk-financement.id'),
-			commande_ligne: field('fk-commande_ligne.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 			prix: field('text'),
@@ -1208,9 +1174,6 @@ export const idaenextScheme: MachineModel = {
 			compteurCouleur: field('text'),
 			vmmCouleur: field('number'),
 			vmmNB: field('number'),
-			produit: field('fk-produit.id'),
-			client: field('fk-client.id'),
-			contrat: field('fk-contrat.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			reference: field('text'),
 			N_ID: field('text'),
@@ -1238,7 +1201,6 @@ export const idaenextScheme: MachineModel = {
 			name: field('text', { required: true }),
 			valeur: field('number'),
 			date: field('date'),
-			materiel: field('fk-materiel.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 			commentaire: field('text'),
@@ -1260,7 +1222,6 @@ export const idaenextScheme: MachineModel = {
 			name: field('text', { required: true }),
 			dateCreation: field('date'),
 			quantite: field('number'),
-			materiel: field('fk-materiel.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 			valeur: field('text'),
@@ -1290,8 +1251,6 @@ export const idaenextScheme: MachineModel = {
 			description: field('text-long'),
 			montantRachat: field('text'),
 			marge: field('text'),
-			client: field('fk-client.id'),
-			opportunite_statut: field('fk-opportunite_statut.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			commentaire: field('text'),
 			petitNomAgent: field('text'),
@@ -1314,8 +1273,6 @@ export const idaenextScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			quantite: field('number'),
-			opportunite: field('fk-opportunite.id'),
-			produit: field('fk-produit.id'),
 		},
 		fks: {
 				opportunite: { code: 'opportunite', multiple: false },
@@ -1375,7 +1332,6 @@ export const idaenextScheme: MachineModel = {
 			description: field('text-long'),
 			prix: field('currency'),
 			ref: field('text'),
-			marque: field('fk-marque.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 		},
@@ -1431,8 +1387,6 @@ export const idaenextScheme: MachineModel = {
 			dateCreation: field('date'),
 			description: field('text-long'),
 			total: field('text'),
-			client: field('fk-client.id'),
-			affaire: field('fk-affaire.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			commentaire: field('text'),
 		},
@@ -1451,7 +1405,6 @@ export const idaenextScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			rachat: field('fk-rachat.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: field('text'),
 			commentaire: field('text'),
@@ -1475,7 +1428,6 @@ export const idaenextScheme: MachineModel = {
 			dateFin: field('date'),
 			quantite: field('number'),
 			dateInstallation: field('text'),
-			prospect: field('fk-prospect.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			duree: field('text'),
 		},
@@ -1528,9 +1480,6 @@ export const idaenextScheme: MachineModel = {
 			description: field('text-long'),
 			heureDebut: field('date'),
 			heureFin: field('date'),
-			prospect: field('fk-prospect.id'),
-			tache_statut: field('fk-tache_statut.id'),
-			tache_type: field('fk-tache_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			resultat: field('text'),
 		},

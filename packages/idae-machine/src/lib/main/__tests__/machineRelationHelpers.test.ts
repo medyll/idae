@@ -14,11 +14,11 @@ describe('Machine relation helpers', () => {
 		const vehicle = db.collection('vehicle');
 		expect(vehicle.findFkField('category')).toEqual({
 			fieldName: 'category',
-			targetIndex: 'code'
+			targetIndex: 'id'
 		});
 		expect(vehicle.findFkField('location_office')).toEqual({
 			fieldName: 'location_office',
-			targetIndex: 'code'
+			targetIndex: 'id'
 		});
 	});
 
@@ -29,14 +29,14 @@ describe('Machine relation helpers', () => {
 				vehicle: {
 					code: 'vehicle',
 					fieldName: 'vehicle',
-					targetIndex: 'code'
+					targetIndex: 'id'
 				}
 			},
 			maintenance: {
 				vehicle: {
 					code: 'vehicle',
 					fieldName: 'vehicle',
-					targetIndex: 'code'
+					targetIndex: 'id'
 				}
 			}
 		});
@@ -52,23 +52,23 @@ describe('Machine relation helpers', () => {
 		const vehicle = db.collection('vehicle');
 		const relations = resolveForwardRelations(vehicle, {
 			id: 1,
-			category: 'suv',
-			location_office: 'LYO-01'
+			category: '2',
+			location_office: '3'
 		});
 		expect(relations.resolved).toMatchObject([
 			{
 				key: 'category',
 				collection: 'category',
 				fieldName: 'category',
-				targetIndex: 'code',
-				where: { code: 'suv' }
+				targetIndex: 'id',
+				where: { id: '2' }
 			},
 			{
 				key: 'location_office',
 				collection: 'location_office',
 				fieldName: 'location_office',
-				targetIndex: 'code',
-				where: { code: 'LYO-01' }
+				targetIndex: 'id',
+				where: { id: '3' }
 			}
 		]);
 		expect(relations.unresolved).toEqual([]);
@@ -82,8 +82,8 @@ describe('Machine relation helpers', () => {
 				key: 'category',
 				collection: 'vehicle',
 				fieldName: 'category',
-				targetIndex: 'code',
-				where: { category: 'compact' }
+				targetIndex: 'id',
+				where: { category: 1 }
 			}
 		]);
 		expect(relations.unresolved).toEqual([]);

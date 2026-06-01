@@ -285,7 +285,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			const type  = (info.fieldType ?? '') as string;
 			const title = (info as Record<string, unknown>).title as string ?? fieldName;
 			if (type.startsWith('fk-')) {
-				const [fkCollection, fkIndexField = 'code'] = type.slice(3).split('.');
+				const [fkCollection, fkIndexField = 'id'] = type.slice(3).split('.');
 				if (!fkCollection) return { kind: 'scalar', fieldName, fieldType: type, title };
 				return { kind: 'fk', fieldName, fieldType: type, title, fkCollection, fkIndexField };
 			}

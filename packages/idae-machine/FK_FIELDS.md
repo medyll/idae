@@ -1,3 +1,5 @@
+> **HISTORIQUE — SUPERSEDED 2026-06-01.** Analyse LLM pré-refonte. Le double-encodage décrit ici est résolu : fks{} = source unique, fold dynamique dans MachineDb. Ne pas appliquer les recommandations de ce doc au code actuel.
+
 # Investigation: `fkTargetCol` / `fkTargetField` as Flat Fields on `appscheme_field`
 
 > **Author**: opencode (qwen3.7-max)

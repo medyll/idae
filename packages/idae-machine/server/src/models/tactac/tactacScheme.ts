@@ -47,7 +47,6 @@ export const tactacScheme: MachineModel = {
 			telephone2: field('phone'),
 			password: field('text'),
 			image_small: field('text'),
-			agent_groupe: field('fk-agent_groupe.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			estActif: field('text'),
 			etatCivil: field('text'),
@@ -91,7 +90,6 @@ export const tactacScheme: MachineModel = {
 			name: field('text', { required: true }),
 			description: field('text-long'),
 			ordre: field('text'),
-			agent_groupe_droit: field('fk-agent_groupe_droit.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: field('text'),
 		},
@@ -109,8 +107,6 @@ export const tactacScheme: MachineModel = {
 			id:   field('id', { readonly: true }),
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
-			agent_groupe: field('fk-agent_groupe.id'),
-			appscheme: field('fk-appscheme.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			init: field('text'),
 			C: field('text'),
@@ -330,8 +326,6 @@ export const tactacScheme: MachineModel = {
 			name: field('text', { required: true }),
 			icon: field('text'),
 			color: field('text'),
-			appscheme_base: field('fk-appscheme_base.id'),
-			appscheme_type: field('fk-appscheme_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			base: field('text'),
 			collection: field('text'),
@@ -378,8 +372,6 @@ export const tactacScheme: MachineModel = {
 			petitNom: field('text'),
 			icon: field('text'),
 			ordre: field('text'),
-			appscheme_field_group: field('fk-appscheme_field_group.id'),
-			appscheme_field_type: field('fk-appscheme_field_type.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_title: field('text'),
 			field_raw: field('text'),
@@ -463,8 +455,6 @@ export const tactacScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			ordre: field('text'),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_raw: field('text'),
 			collection: field('text'),
@@ -488,8 +478,6 @@ export const tactacScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			ordre: field('text'),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			field_raw: field('text'),
 			field_name: field('text'),
@@ -552,8 +540,6 @@ export const tactacScheme: MachineModel = {
 			code: field('text', { required: true }),
 			name: field('text', { required: true }),
 			totalTtc: field('currency'),
-			secteur: field('fk-secteur.id'),
-			shop: field('fk-shop.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			cart_id: field('text'),
 			init_time: field('text'),
@@ -674,12 +660,6 @@ export const tactacScheme: MachineModel = {
 			heureFinPreparation: field('text'),
 			heureLivraison: field('text'),
 			ref: field('text'),
-			client: field('fk-client.id'),
-			shop: field('fk-shop.id'),
-			secteur: field('fk-secteur.id'),
-			shop_jours_shift: field('fk-shop_jours_shift.id'),
-			commande_statut: field('fk-commande_statut.id'),
-			shop_jours_shift_run: field('fk-shop_jours_shift_run.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			adresse2: field('text'),
 			volume: field('text'),
@@ -724,8 +704,6 @@ export const tactacScheme: MachineModel = {
 			heure: field('text'),
 			partLivreur: field('text'),
 			partShop: field('text'),
-			shop: field('fk-shop.id'),
-			commande: field('fk-commande.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			total_commande_client: field('text'),
 			total_livraison_commande: field('text'),
@@ -754,10 +732,6 @@ export const tactacScheme: MachineModel = {
 			quantite: field('number'),
 			total: field('text'),
 			description: field('text-long'),
-			commande: field('fk-commande.id'),
-			shop: field('fk-shop.id'),
-			client: field('fk-client.id'),
-			produit: field('fk-produit.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			actifProduit: field('text'),
 			ordreCommande: field('text'),
@@ -786,10 +760,6 @@ export const tactacScheme: MachineModel = {
 			heure: field('text'),
 			date: field('date'),
 			ref: field('text'),
-			commande: field('fk-commande.id'),
-			secteur: field('fk-secteur.id'),
-			shop: field('fk-shop.id'),
-			livreur: field('fk-livreur.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			reference: field('text'),
 			actifLivreur: field('text'),
@@ -857,7 +827,6 @@ export const tactacScheme: MachineModel = {
 			gpsData: field('text'),
 			codePostal: field('text'),
 			ref: field('text'),
-			ville: field('fk-ville.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			Libelle_acheminement: field('text'),
 			gps: field('text'),
@@ -1023,7 +992,6 @@ export const tactacScheme: MachineModel = {
 			login: field('text'),
 			password: field('text'),
 			disponible: field('text'),
-			secteur: field('fk-secteur.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			ville: field('text'),
 			private_key: field('text'),
@@ -1048,8 +1016,6 @@ export const tactacScheme: MachineModel = {
 			heureDebut: field('date', { required: true }),
 			heureFin: field('date', { required: true }),
 			actif: field('text'),
-			livreur: field('fk-livreur.id'),
-			secteur: field('fk-secteur.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			code_auto: field('text'),
 			actifLivreur: field('text'),
@@ -1081,9 +1047,6 @@ export const tactacScheme: MachineModel = {
 			duree_realisation: field('text', { required: true }),
 			volume: field('text', { required: true }),
 			stock: field('text'),
-			shop: field('fk-shop.id'),
-			produit_type: field('fk-produit_type.id'),
-			produit_categorie: field('fk-produit_categorie.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: field('text'),
 			ordreProduit_type: field('text'),
@@ -1141,7 +1104,6 @@ export const tactacScheme: MachineModel = {
 			codePostal: field('text'),
 			gpsData: field('text'),
 			slug: field('text'),
-			ville: field('fk-ville.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			slugVille: field('text'),
 			latitude: field('text'),
@@ -1166,8 +1128,6 @@ export const tactacScheme: MachineModel = {
 			name: field('text', { required: true }),
 			heureDebut: field('date'),
 			heureFin: field('date'),
-			secteur: field('fk-secteur.id'),
-			jours: field('fk-jours.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			code_auto: field('text'),
 			ordreJours: field('text'),
@@ -1201,12 +1161,6 @@ export const tactacScheme: MachineModel = {
 			gpsData: field('text'),
 			actif: field('text'),
 			strip_key: field('text'),
-			shop_type: field('fk-shop_type.id'),
-			ville: field('fk-ville.id'),
-			secteur: field('fk-secteur.id'),
-			client: field('fk-client.id'),
-			shop_categorie: field('fk-shop_categorie.id'),
-			shop_client: field('fk-shop_client.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			ville: field('text'),
 			private_key: field('text'),
@@ -1297,8 +1251,6 @@ export const tactacScheme: MachineModel = {
 			name: field('text', { required: true }),
 			actif: field('text'),
 			ordre: field('text'),
-			jours: field('fk-jours.id'),
-			shop: field('fk-shop.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			slugShop: field('text'),
 			actifShop: field('text'),
@@ -1323,8 +1275,6 @@ export const tactacScheme: MachineModel = {
 			heureFin: field('date'),
 			actif: field('text'),
 			ordre: field('text'),
-			shop_jours: field('fk-shop_jours.id'),
-			shop: field('fk-shop.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			ordreShop_jours: field('text'),
 			actifShop_jours: field('text'),
@@ -1349,8 +1299,6 @@ export const tactacScheme: MachineModel = {
 			dateFin: field('date'),
 			heureDebut: field('date'),
 			heureFin: field('date'),
-			shop: field('fk-shop.id'),
-			shop_jours_shift: field('fk-shop_jours_shift.id'),
 			// ── undeclared in registry, detected in _base — verify ──
 			slugShop: field('text'),
 			actifShop: field('text'),
