@@ -1,0 +1,88 @@
+/* ── Dialog ── mounted on document.body, :global required */
+dialog.idae-dialog {
+	z-index: var(--z-modal);
+	isolation: isolate;
+}
+
+@layer components {
+	dialog.idae-dialog {
+		position: fixed;
+		top: 0;
+		left: 0;
+		margin: 0;
+		padding: 0;
+		min-width: 260px;
+		max-height: 90vh;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		color: var(--color-text);
+		background: var(--color-surface-raised);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-lg);
+	}
+
+	dialog.idae-dialog .idae-dialog__bar {
+		display: flex;
+		align-items: center;
+		gap: var(--gutter-sm);
+		padding: var(--pad-xs) var(--pad-sm);
+		position: relative;
+		z-index: var(--z-dropdown);
+		cursor: grab;
+		background: var(--color-surface-alt);
+		border-bottom: var(--border-width) solid var(--color-border);
+	}
+
+	dialog.idae-dialog .idae-dialog__title {
+		flex: 1;
+		font-size: var(--text-sm);
+		font-weight: 600;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	dialog.idae-dialog .idae-dialog__close {
+		margin-left: auto;
+	}
+
+	dialog.idae-dialog .idae-dialog__body {
+		flex: 1 1 auto;
+		position: relative;
+		min-height: 0;
+		overflow: auto;
+		padding: var(--pad-md);
+	}
+
+	dialog.idae-dialog .idae-dialog__body--framed {
+		padding: 0;
+	}
+
+	dialog.idae-dialog .idae-dialog__footer {
+		display: flex;
+		justify-content: flex-end;
+		gap: var(--gutter-sm);
+		padding: var(--pad-sm) var(--pad-md);
+		border-top: var(--border-width) solid var(--color-border);
+	}
+}
+
+@layer components {
+    taskbar {
+		gap: var(--gutter-xs);
+		padding: var(--pad-xs) var(--pad-sm);
+		background: var(--color-surface);
+		border-bottom: var(--border-width) solid var(--color-border);
+		overflow-x: auto;
+	}
+
+    toolbar {
+        display: flex;
+        gap: var(--pad-sm);
+        padding: var(--pad-sm);
+        background: var(--color-surface);
+        border-bottom: var(--border-width) solid var(--color-border);
+    }
+}

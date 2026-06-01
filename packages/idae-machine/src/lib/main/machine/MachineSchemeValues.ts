@@ -1,7 +1,9 @@
-import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFields } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
+import { machineRights } from '$lib/main/machine/MachineRights.js';
 /**
  * @class MachineSchemeValues
  * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
@@ -39,16 +41,27 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	presentation(data: Record<string, unknown>): string {
 		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const presentation = this.machine.collection(this.collectionName).template.presentation;
+			const scheme       = this.machine.collection(this.collectionName);
+			const presentation = scheme.template?.presentation;
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
-			const fields = presentation.split(' ');
-			return fields
-				.map((field: string) => {
-					const value = data[field];
-					return value !== null && value !== undefined ? String(value) : '';
+			const tokens = (presentation as string).split(' ').filter(Boolean);
+			return tokens
+				.map((token: string) => {
+					// Dot notation: 'fks.firm.name', 'address.city', etc.
+				const value = token.split('.').reduce<unknown>(
+					(acc, key) => (acc != null && typeof acc === 'object') ? (acc as Record<string, unknown>)[key] : undefined,
+						data,
+					);
+					if (value === null || value === undefined) return '';
+					// For dot-notation tokens, skip type-aware formatting (no field metadata at depth).
+					if (token.includes('.')) return String(value);
+					const fieldInfo = scheme.field(token).parse();
+					return fieldInfo?.fieldType
+						? MachineSchemeFieldType.format(value, fieldInfo.fieldType as string)
+						: String(value);
 				})
+				.filter(Boolean)
 				.join(' ');
 		} catch (error) {
 			MachineError.handleError(error);
@@ -70,7 +83,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	indexValue(data: Record<string, unknown>): unknown | null {
 		try {
 			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
-			const indexName = this.machine.collection(this.collectionName).template.index;
+			const indexName = this.machine.collection(this.collectionName).index;
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -118,19 +131,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			if (!fieldInfo) {
 				return String(data[fieldName]);
 			}
-			switch (fieldInfo.fieldType as string) {
-				case 'number':
-					return this.#formatNumberField(data[fieldName] as number);
-				case 'text':
-				case 'text-tiny':
-				case 'text-short':
-				case 'text-medium':
-				case 'text-long':
-				case 'text-giant':
-					return this.#formatTextField(data[fieldName], fieldInfo.fieldType as string);
-				default:
-					return String(data[fieldName]);
-			}
+			return MachineSchemeFieldType.format(data[fieldName], fieldInfo.fieldType as string);
 		} catch (error) {
 			MachineError.handleError(error);
 			return '';
@@ -154,13 +155,14 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		fieldName: string,
 		data: T
 	): Record<
-		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs'}`,
+		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
 		string
 	> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
-		const fieldType = fieldInfo?.fieldType ?? '';
-		const fieldArgs = fieldInfo?.fieldArgs?.join(' ') ?? '';
-		const indexName = this.machine.collection(this.collectionName).template.index;
+		const fieldType  = fieldInfo?.fieldType ?? '';
+		const fieldArgs  = fieldInfo?.fieldArgs?.join(' ') ?? '';
+		const inputSize  = fieldInfo?.inputSize ?? '';
+		const indexName  = this.machine.collection(this.collectionName).index;
 
 		return {
 			'data-collection':   this.collectionName,
@@ -169,7 +171,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 				: '',
 			'data-fieldName':    String(fieldName),
 			'data-fieldType':    fieldType,
-			'data-fieldArgs':    fieldArgs
+			'data-fieldArgs':    fieldArgs,
+			'data-inputSize':    inputSize
 		};
 	}
 
@@ -203,24 +206,15 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 						}
 					: undefined
 			)
-			.filter((x): x is Record<string, unknown> => x !== undefined);
+			.filter((x): x is NonNullable<typeof x> => x !== undefined) as Array<Record<string, unknown>>;
 	}
 
 	/**
-	 * Iterate over an object field and return an array of IDbForge objects for each property.
+	 * Iterate over an object field and return data rows keyed by property name.
 	 * @param fieldName The field name.
 	 * @param data The object data.
-	 * @returns An array of IDbForge objects.
+	 * @returns Data rows derived from the object's properties.
 	 */
-	/**
-	 * Iterate over an object field and return an array of IDbForge objects for each property.
-	 * @role Object field iteration
-	 * @param {keyof TplFields} fieldName The field name.
-	 * @param {Record<string, unknown>} data The object data.
-	 * @return {IDbForge[]} An array of IDbForge objects.
-	 */
-	// NOTE: Return type is any[] to match actual runtime type from parser (fieldArgs may be string)
-	// TODO: Refine IDbForge type if needed for stricter typing
 	iterateObjectField(
 		fieldName: keyof TplFields,
 		data: Record<string, unknown>
@@ -239,49 +233,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 						}
 					: undefined
 			)
-			.filter((x): x is Record<string, unknown> => x !== undefined);
-	}
-
-	/**
-	 * Internal: Format a number field for display.
-	 * @param value The number value.
-	 * @returns The formatted string.
-	 */
-	/**
-	 * Internal: Format a number field for display.
-	 * @role Number formatting
-	 * @param {number} value The number value.
-	 * @return {string} The formatted string.
-	 */
-	#formatNumberField(value: number): string {
-		// Implement number formatting logic here
-		return value.toString();
-	}
-
-	/**
-	 * Internal: Format a text field for display, with length limits by type.
-	 * @param value The string value.
-	 * @param type The text type (e.g. 'text-short').
-	 * @returns The formatted string.
-	 */
-	/**
-	 * Internal: Format a text field for display, with length limits by type.
-	 * @role Text formatting
-	 * @param {unknown} value The string value.
-	 * @param {string} type The text type (e.g. 'text-short').
-	 * @return {string} The formatted string.
-	 */
-	#formatTextField(value: unknown, type: string): string {
-		const lengths = {
-			'text-tiny':   10,
-			'text-short':  20,
-			'text-medium': 30,
-			'text-long':   40,
-			'text-giant':  50
-		};
-		const str = typeof value === 'string' ? value : String(value ?? '');
-		const maxLength = lengths[type as keyof typeof lengths] || str.length;
-		return str.substring(0, maxLength);
+			.filter((x): x is NonNullable<typeof x> => x !== undefined) as Array<Record<string, unknown>>;
 	}
 
 	/**
@@ -294,8 +246,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 * @return {boolean} True if access is allowed.
 	 */
 	#checkAccess(): boolean {
-		// Implement access check logic here
-		return true;
+		return machineRights.checkAccess(this.collectionName, 'R');
 	}
 
 	/**
@@ -317,12 +268,73 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		}
 	}
 	/**
+	 * Resolved descriptor for a single field — the machine-native equivalent of the legacy
+	 * `columnModel[]` entry. Scalar-vs-FK divergence is decided HERE, never in a component.
+	 */
+	descriptor(fieldName: string): {
+		kind:           'scalar' | 'fk';
+		fieldName:      string;
+		fieldType:      string;
+		title:          string;
+		fkCollection?:  string;
+		fkIndexField?:  string;
+	} | null {
+		try {
+			const info = this.machine.collection(this.collectionName).field(fieldName).parse();
+			if (!info) return null;
+			const type  = (info.fieldType ?? '') as string;
+			const title = (info as Record<string, unknown>).title as string ?? fieldName;
+			if (type.startsWith('fk-')) {
+				const [fkCollection, fkIndexField = 'code'] = type.slice(3).split('.');
+				if (!fkCollection) return { kind: 'scalar', fieldName, fieldType: type, title };
+				return { kind: 'fk', fieldName, fieldType: type, title, fkCollection, fkIndexField };
+			}
+			return { kind: 'scalar', fieldName, fieldType: type, title };
+		} catch {
+			return null;
+		}
+	}
+
+	/**
+	 * Human-readable display value for a field.
+	 * Scalar → MachineSchemeFieldType.format(). FK → presentation(targetRecord).
+	 * `resolveTarget` is injected by the caller (keeps this class pure/testable).
+	 */
+	displayValue(
+		fieldName: keyof T,
+		data: T,
+		resolveTarget?: (fkCollection: string, fkIndexField: string, value: unknown) => Record<string, unknown> | undefined
+	): string {
+		const d = this.descriptor(String(fieldName));
+		if (!d) return String(data[fieldName] ?? '');
+
+		if (d.kind === 'scalar') {
+			return MachineSchemeFieldType.format(data[fieldName], d.fieldType);
+		}
+
+		// FK path — resolve target record, then use its presentation template
+		const raw = data[fieldName];
+		if (raw == null) return '—';
+		const target = resolveTarget?.(d.fkCollection!, d.fkIndexField!, raw);
+		if (!target) return String(raw);
+		try {
+			const fkValues = new MachineSchemeValues<Record<string, unknown>>(
+				d.fkCollection! as TplCollectionName,
+				this.machine
+			);
+			return fkValues.presentation(target) || String(raw);
+		} catch {
+			return String(raw);
+		}
+	}
+
+	/**
 	 * Get default values for the collection, using global and collection-specific factories.
 	 * @role Default values
 	 * @returns {Record<string, unknown>} An object with default values for each field in the collection.
 	 */
 	getDefaults(): Record<string, unknown> {
-		const fields = Object.keys(this.machine.collection(this.collectionName).template.fields || {});
+		const fields = Object.keys(this.machine.collection(this.collectionName).fields || {});
 		return SchemeFieldDefaultValues.getDefaults(fields, this.collectionName);
 	}
 }

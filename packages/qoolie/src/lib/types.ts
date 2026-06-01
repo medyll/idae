@@ -26,6 +26,8 @@ export interface CollectionConfig {
   keyPath: string;
   /** Enable sync for this collection (inherits global config if true) */
   sync?: boolean | SyncConfig;
+  /** Auto-hydrate from server on cold read (default: true) */
+  autoHydrate?: boolean;
 }
 
 /**
@@ -142,6 +144,8 @@ export interface QoolieInstance<T extends CollectionConfigMap> {
   };
   /** Sync controller */
   sync: SyncController;
+  /** Resolves once the IDB database is open and ready for operations */
+  ready(): Promise<void>;
   /** Cleanup all resources */
   destroy(): void;
 }
@@ -154,6 +158,10 @@ export interface QoolieCollection<T extends CollectionConfig> {
   where(query: any): any;
   /** Get by ID */
   get(id: any): Promise<any>;
+  /** Get all documents (reactive in svelte5 mode) */
+  getAll(): any;
+  /** Count documents, optionally filtered */
+  count(query?: any): Promise<number>;
   /** Create document */
   create(data: any): Promise<any>;
   /** Update by ID */
@@ -164,6 +172,8 @@ export interface QoolieCollection<T extends CollectionConfig> {
   updateWhere(query: any, data: any): Promise<boolean>;
   /** Bulk delete */
   deleteWhere(query: any): Promise<boolean>;
+  /** Revalidate — force fresh server pull bypassing session dedup */
+  revalidate(): Promise<void>;
 }
 
 /**

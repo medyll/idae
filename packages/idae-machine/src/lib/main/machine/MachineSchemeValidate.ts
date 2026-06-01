@@ -1,8 +1,9 @@
-import type { TplCollectionName, TplFields } from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFields } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineErrorValidation } from './MachineErrorValidation.js';
 import { MachineError } from './MachineError.js';
 import MachineSchemeFieldType, { defaultTypes } from '$lib/main/machine/MachineFieldType.js';
+import { validateField as validateFieldPure, type FieldRule } from './validateRules.js';
 
 /**
  * @class MachineSchemeValidate
@@ -206,11 +207,11 @@ export class MachineSchemeValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.machineDb.collection(this.collection).template.fields;
+		const fields = this.machineDb.collection(this.collection).fields;
 		if (!fields) {
 			return {
 				isValid:       false,
-				errors:        { general: 'Collection template not found' },
+				errors:        { general: 'Collection fields not found' },
 				invalidFields: ['general']
 			};
 		}
@@ -283,10 +284,17 @@ export class MachineSchemeValidate {
 		type: string | undefined,
 		ctx?: { formData?: Record<string, unknown>; fieldName?: string }
 	): Promise<boolean> {
+		// First try the shared pure validateRules for standard types
+		const pureError = validateFieldPure(value, { type: type ?? 'any' });
+		if (pureError !== null) {
+			return false;
+		}
+
+		// Then check MachineSchemeFieldType registry for custom types
 		const typeDef = MachineSchemeFieldType.getFieldType(type ?? 'any');
 		if (typeDef && typeDef.validator) {
 			const res = typeDef.validator(value, ctx);
-			if (res && typeof (res as any)?.then === 'function') {
+			if (res && typeof (res as Promise<unknown>)?.then === 'function') {
 				return (await res) as boolean;
 			}
 			return Boolean(res);

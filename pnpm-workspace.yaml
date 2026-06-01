@@ -1,7 +1,10 @@
 packages:
   - packages/*
   - packages-config/*
+  - packages/idae-machine/server
 
 onlyBuiltDependencies:
   - sqlite3
   - esbuild
+overrides:
+  '@medyll/css-base': link:../css-base

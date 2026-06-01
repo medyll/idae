@@ -13,7 +13,9 @@ export type IdbqlEventPayload = {
     | "update"
     | "updateWhere"
     | "delete"
-    | "deleteWhere";
+    | "deleteWhere"
+    | "batchAdd"
+    | "batchPut";
   data?: any;
   keyPath?: string;
   // new fields for sync control
@@ -88,23 +90,26 @@ export function createStatorAdapter(opts?: StatorAdapterOptions): StatorAdapter 
         break;
 
       case "updateWhere":
-        if (data && typeof data === "object") {
+        // Use whereClause for matching if available
+        const updateWhereClause = (event as any).whereClause || data;
+        const updatePayload = (event as any).whereClause ? data : {};
+        
+        if (updateWhereClause && typeof updateWhereClause === "object") {
           const arr = Array.isArray(s.value) ? [...s.value] : [];
-          const dataKeys = Object.keys(data);
+          const clauseKeys = Object.keys(updateWhereClause);
           for (let i = 0; i < arr.length; i++) {
             const item = arr[i];
             let match = true;
-            for (const k of dataKeys) {
-              // only treat a key as a matcher if the existing item already has it
+            for (const k of clauseKeys) {
               if (item && Object.prototype.hasOwnProperty.call(item, k)) {
-                if (item[k] !== (data as any)[k]) {
+                if (item[k] !== (updateWhereClause as any)[k]) {
                   match = false;
                   break;
                 }
               }
             }
             if (match) {
-              arr[i] = { ...item, ...data };
+              arr[i] = { ...item, ...updatePayload };
             }
           }
           s.value = arr;
@@ -125,13 +130,54 @@ export function createStatorAdapter(opts?: StatorAdapterOptions): StatorAdapter 
         break;
 
       case "deleteWhere":
-        if (data && typeof data === "object") {
+        // Use whereClause for matching if available
+        const deleteWhereClause = (event as any).whereClause || data;
+        
+        if (deleteWhereClause && typeof deleteWhereClause === "object") {
           const arr = Array.isArray(s.value) ? [...s.value] : [];
           for (let i = arr.length - 1; i >= 0; i--) {
             const item = arr[i];
-            if (item && Object.entries(data).every(([k, v]) => item[k] === v)) {
+            if (item && Object.entries(deleteWhereClause).every(([k, v]) => item[k] === v)) {
               arr.splice(i, 1);
             }
+          }
+          s.value = arr;
+        }
+        break;
+
+      case "batchAdd":
+        if (Array.isArray(data)) {
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          arr.push(...data);
+          s.value = arr;
+        } else if (data) {
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          arr.push(data);
+          s.value = arr;
+        }
+        break;
+
+      case "batchPut":
+        if (Array.isArray(data)) {
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          for (const item of data) {
+            if (item && keyPath) {
+              const existingIndex = arr.findIndex((existing: any) => existing[keyPath] === item[keyPath]);
+              if (existingIndex !== -1) {
+                arr[existingIndex] = { ...arr[existingIndex], ...item };
+              } else {
+                arr.push(item);
+              }
+            }
+          }
+          s.value = arr;
+        } else if (data && keyPath) {
+          const arr = Array.isArray(s.value) ? [...s.value] : [];
+          const existingIndex = arr.findIndex((existing: any) => existing[keyPath] === data[keyPath]);
+          if (existingIndex !== -1) {
+            arr[existingIndex] = { ...arr[existingIndex], ...data };
+          } else {
+            arr.push(data);
           }
           s.value = arr;
         }

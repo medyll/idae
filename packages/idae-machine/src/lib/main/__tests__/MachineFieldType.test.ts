@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
 	MachineSchemeFieldType,
 	defaultTypes,
@@ -20,6 +20,14 @@ describe('MachineSchemeFieldType (singleton)', () => {
 		expect(MachineSchemeFieldType.getFieldType('number')?.formatter(2.7)).toBe(2.7); // default formatter
 		MachineSchemeFieldType.setFormatter('number', (v) => Math.round(Number(v)));
 		expect(MachineSchemeFieldType.getFieldType('number')?.formatter(2.7)).toBe(3);
+	});
+
+	it('formats null/undefined as empty string, never the literal "null"', () => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+		expect(MachineSchemeFieldType.format(null, 'text')).toBe('');
+		expect(MachineSchemeFieldType.format(undefined, 'text')).toBe('');
+		expect(MachineSchemeFieldType.format(null, 'number')).toBe('');
+		expect(MachineSchemeFieldType.format('abc', 'text')).toBe('abc');
 	});
 
 	it('should register and retrieve a custom field type', () => {
@@ -79,5 +87,98 @@ describe('MachineSchemeFieldType (singleton)', () => {
 		expect(found?.formatter('a')).toBe('overridea');
 		expect(found?.validator?.('ok') ?? true).toBe(true);
 		expect(found?.validator?.('no') ?? false).toBe(false);
+	});
+
+	it('should validate HTML time strings with the built-in time type', async () => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+		await expect(MachineSchemeFieldType.validate('09:30', defaultTypes.time)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('09:30:45', defaultTypes.time)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('25:00', defaultTypes.time)).resolves.toBe(false);
+	});
+
+	it('should format and validate boolean form strings consistently', async () => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+		const booleanType = MachineSchemeFieldType.getFieldType(defaultTypes.boolean);
+
+		expect(booleanType?.formatter('true')).toBe(true);
+		expect(booleanType?.formatter('false')).toBe(false);
+		await expect(MachineSchemeFieldType.validate('true', defaultTypes.boolean)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('false', defaultTypes.boolean)).resolves.toBe(true);
+		await expect(MachineSchemeFieldType.validate('yes', defaultTypes.boolean)).resolves.toBe(false);
+	});
+});
+
+describe('schemelink field type', () => {
+	beforeEach(() => {
+		MachineSchemeFieldType.init(defaultFieldTypesDef);
+	});
+
+	it('should format a valid schemelink value', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def).toBeDefined();
+		expect(def!.formatter({ collection: 'client', collection_value: '63361' })).toBe('client#63361');
+	});
+
+	it('should format schemelink with numeric value', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.formatter({ collection: 'user', collection_value: 42 })).toBe('user#42');
+	});
+
+	it('should format null/undefined schemelink as empty string', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.formatter(null)).toBe('');
+		expect(def!.formatter(undefined)).toBe('');
+	});
+
+	it('should format schemelink with missing collection as ?', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.formatter({ collection_value: 'abc' })).toBe('?#abc');
+	});
+
+	it('should format schemelink with missing value as ?', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.formatter({ collection: 'order' })).toBe('order#?');
+	});
+
+	it('should validate a complete schemelink object', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.({ collection: 'client', collection_value: '63361' })).toBe(true);
+	});
+
+	it('should validate schemelink with collection_vars', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.({ collection: 'client', collection_value: 1, collection_vars: { foo: 'bar' } })).toBe(true);
+	});
+
+	it('should accept null as valid schemelink', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.(null)).toBe(true);
+	});
+
+	it('should reject non-object schemelink', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.('string')).toBe(false);
+		expect(def!.validator?.(42)).toBe(false);
+		expect(def!.validator?.(true)).toBe(false);
+	});
+
+	it('should reject schemelink missing collection', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.({ collection_value: 'abc' })).toBe(false);
+	});
+
+	it('should reject schemelink with empty collection string', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.({ collection: '', collection_value: 'abc' })).toBe(false);
+	});
+
+	it('should reject schemelink missing collection_value', () => {
+		const def = MachineSchemeFieldType.getFieldType('schemelink');
+		expect(def!.validator?.({ collection: 'client' })).toBe(false);
+	});
+
+	it('should be registered in defaultFieldTypesDef', () => {
+		expect(defaultFieldTypesDef.schemelink).toBeDefined();
+		expect(defaultFieldTypesDef.schemelink.id).toBe('schemelink');
 	});
 });

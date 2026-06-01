@@ -1,4 +1,5 @@
-import type { IdbqModel, TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName } from '$lib/types/index.js';
+import type { MachineModel } from '$lib/types/index.js';
 import { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import { MachineParserForge } from '$lib/main/machineParserForge.js';
 
@@ -10,7 +11,7 @@ export class MachineDb {
 	/**
 	 * The database model (schema) used for introspection.
 	 */
-	model:               IdbqModel;
+	model:               MachineModel;
 	machineForge:        MachineParserForge = new MachineParserForge();
 	#idbCollectionsList: Record<string, MachineScheme> = {};
 
@@ -19,7 +20,7 @@ export class MachineDb {
 	 * @role Constructor
 	 * @param {IdbqModel} model Custom model to use.
 	 */
-	constructor(model: IdbqModel) {
+	constructor(model: MachineModel) {
 		this.model = model;
 		this.machineForge = new MachineParserForge();
 	}
@@ -48,5 +49,31 @@ export class MachineDb {
 			this.#idbCollectionsList[collection] = new MachineScheme(collection, this, this.model);
 		}
 		return this.#idbCollectionsList[collection];
+	}
+
+	/**
+	 * Non-throwing variant of `collection()`. Returns null when the collection is not in the model.
+	 * Use in components/UI layers that must not throw on unknown collection names.
+	 */
+	collectionOr<F>(collection: string, fallback: F): MachineScheme | F {
+		try {
+			return this.collection(collection as TplCollectionName);
+		} catch {
+			return fallback;
+		}
+	}
+
+	/**
+	 * Return all unique `base` module names declared in the model.
+	 * Used by the server to know which MongoDB databases to create.
+	 * e.g. ['machine_base', 'machine_app']
+	 */
+	getBaseModules(): string[] {
+		const bases = new Set<string>();
+		for (const col of Object.values(this.model)) {
+			const base = col.base;
+			if (base) bases.add(base);
+		}
+		return [...bases];
 	}
 }

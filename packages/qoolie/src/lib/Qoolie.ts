@@ -1,229 +1,281 @@
-import type { IdbqModel } from '@medyll/idae-idbql';
-import { createDb } from '@medyll/idae-idbql';
+import { createDb, type SimpleModel } from './engine/IdbEngine.js';
+import { createIdbState, type CollectionState } from './engine/IdbState.js';
+import { IdbCollection } from './engine/IdbCollection.js';
+import { idbEventBus } from './engine/IdbEventBus.js';
 import { initSync, type SyncAdapter, type OutboxStore, type IdaeApiDeliverer } from '@medyll/idae-sync';
 
 import type {
-  QoolieOptions,
-  QoolieInstance,
-  CollectionConfigMap,
-  SyncConfig,
+	QoolieOptions,
+	QoolieInstance,
+	CollectionConfigMap,
+	SyncConfig,
 } from './types.js';
 
 import { normalizeConfig } from './utils/normalizeConfig.js';
 import { autoDetectBaseUrl } from './utils/autoDetectBaseUrl.js';
 import { QoolieCollection } from './QoolieCollection.js';
 import { SyncController } from './SyncController.js';
+import { HydrationController, type HydrationHooks } from './HydrationController.js';
 
 /**
- * Convert CollectionConfigMap to IdbqModel format
- */
-function toIdbqModel<T extends CollectionConfigMap>(collections: T): IdbqModel {
-  const model: Record<string, any> = {};
-  for (const [name, config] of Object.entries(collections)) {
-    model[name] = {
-      keyPath: config.keyPath,
-      ts: {},
-    };
-  }
-  return model;
-}
-
-/**
- * Main Qoolie class - orchestrates idae-idbql and optional sync
+ * Main Qoolie class - orchestrates internal engine and optional sync
  */
 export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> {
-  private db: ReturnType<ReturnType<typeof createDb>['create']>['idbDatabase'];
-  private idbql: ReturnType<ReturnType<typeof createDb>['create']>['idbql'];
-  private syncAdapter?: SyncAdapter;
-  private outbox?: OutboxStore;
-  private deliverer?: IdaeApiDeliverer;
-  private collectionMap: Map<string, QoolieCollection<any>>;
-  private syncController?: SyncController;
-  private normalizedConfig: ReturnType<typeof normalizeConfig<T>>;
-  private destroyed = false;
+	private db: ReturnType<ReturnType<typeof createDb>['create']>['idbDatabase'];
+	private idbql: ReturnType<ReturnType<typeof createDb>['create']>['idbql'];
+	private collectionStates: Record<string, CollectionState<any>>;
+	private syncAdapter?: SyncAdapter;
+	private outbox?: OutboxStore;
+	private deliverer?: IdaeApiDeliverer;
+	private collectionMap: Map<string, QoolieCollection<any>>;
+	private engineCollections: Map<string, any>;
+	private syncController?: SyncController;
+	private hydrationController?: HydrationController;
+	private normalizedConfig: ReturnType<typeof normalizeConfig<T>>;
+	private destroyed = false;
+	private _readyPromise!: Promise<void>;
 
-  constructor(options: QoolieOptions<T>) {
-    try {
-      // 1. Normalize configuration
-      this.normalizedConfig = normalizeConfig(options);
+	constructor(options: QoolieOptions<T>) {
+		try {
+			// 1. Normalize configuration
+			this.normalizedConfig = normalizeConfig(options);
 
-      // 2. Auto-detect database host if not provided
-      if (this.normalizedConfig.syncConfig && !this.normalizedConfig.syncConfig.databaseHost) {
-        const detectedUrl = autoDetectBaseUrl();
-        if (detectedUrl) {
-          this.normalizedConfig.syncConfig.databaseHost = detectedUrl;
-        }
-      }
+			// 2. Auto-detect database host if not provided
+			if (this.normalizedConfig.syncConfig && !this.normalizedConfig.syncConfig.databaseHost) {
+				const detectedUrl = autoDetectBaseUrl();
+				if (detectedUrl) {
+					this.normalizedConfig.syncConfig.databaseHost = detectedUrl;
+				}
+			}
 
-      // 3. Initialize idae-idbql
-      const idbqModel = toIdbqModel(this.normalizedConfig.originalOptions.collections);
-      const dbResult = createDb(idbqModel, this.normalizedConfig.dbVersion)
-        .create(this.normalizedConfig.dbName);
+			// 3. Build simple model from collections
+			const model: SimpleModel = {};
+			for (const [name, config] of Object.entries(this.normalizedConfig.originalOptions.collections)) {
+				model[name] = { keyPath: config.keyPath };
+			}
 
-      this.db = dbResult.idbDatabase;
-      this.idbql = dbResult.idbql;
-      this.collectionMap = new Map();
+			// 4. Initialize internal engine
+			const dbResult = createDb(model, this.normalizedConfig.dbVersion)
+				.create(this.normalizedConfig.dbName);
 
-      // 4. Initialize sync if enabled
-      if (this.normalizedConfig.syncEnabled && this.normalizedConfig.syncConfig) {
-        this.initializeSync();
-      }
+			this.db = dbResult.idbDatabase;
+			this.idbql = dbResult.idbql;
+			this.collectionMap = new Map();
 
-      // 5. Create collection wrappers
-      this.createCollections();
-    } catch (error) {
-      throw new Error(`Failed to initialize Qoolie: ${error instanceof Error ? error.message : String(error)}`);
-    }
-  }
+			// 5. Open the database — store promise so callers can await readiness
+			this._readyPromise = this.db.open().catch((err: unknown) => {
+				const msg = String(err).toLowerCase();
+				// Swallow expected non-fatal conditions; surface real failures
+				if (msg.includes('already') || msg.includes('not available')) return;
+				throw err;
+			});
 
-  /**
-   * Initialize sync adapter and deliverer
-   */
-  private initializeSync(): void {
-    const syncConfig = this.normalizedConfig.syncConfig!;
+		// 6. Create engine collections and state
+		const engineCollections: Record<string, IdbCollection<any>> = {};
+		for (const [name, config] of Object.entries(model)) {
+			engineCollections[name] = new IdbCollection(name, config.keyPath, {
+				dbName: this.normalizedConfig.dbName,
+				version: this.normalizedConfig.dbVersion
+			}, idbEventBus);
+		}
+		this.engineCollections = new Map(Object.entries(engineCollections));
 
-    // Build deliverer config - pass all IdaeApiClient options
-    const delivererConfig: Record<string, unknown> = {};
+		const stateResult = createIdbState(engineCollections, idbEventBus);
+		this.collectionStates = stateResult.collectionState;
 
-    // URL configuration
-    if (syncConfig.databaseHost) {
-      delivererConfig.baseUrl = syncConfig.databaseHost;
-    }
-    if (syncConfig.host) {
-      delivererConfig.host = syncConfig.host;
-    }
-    if (syncConfig.port) {
-      delivererConfig.port = syncConfig.port;
-    }
-    if (syncConfig.method) {
-      delivererConfig.method = syncConfig.method;
-    }
-    if (syncConfig.defaultDb) {
-      delivererConfig.defaultDb = syncConfig.defaultDb;
-    }
+			// 7. Initialize sync if enabled
+			if (this.normalizedConfig.syncEnabled && this.normalizedConfig.syncConfig) {
+				this.initializeSync();
+			}
 
-    // Authentication & multi-tenancy
-    if (syncConfig.token) {
-      delivererConfig.token = syncConfig.token;
-    }
-    if (syncConfig.tenantId) {
-      delivererConfig.tenantId = syncConfig.tenantId;
-    }
+		// 8. Initialize hydration controller when sync + databaseHost are set
+		if (this.normalizedConfig.syncEnabled && this.normalizedConfig.syncConfig?.databaseHost && this.deliverer) {
+			const hooks = this.normalizedConfig.hooks as { onColdRead?: any; onHydrated?: any; onHydrateError?: any } | undefined;
+			this.hydrationController = new HydrationController(
+				this.deliverer,
+				this.engineCollections,
+				hooks,
+				true
+			);
+		}
 
-    // Custom headers
-    if (syncConfig.headers && Object.keys(syncConfig.headers).length > 0) {
-      delivererConfig.headers = syncConfig.headers;
-    }
+		// 9. Create collection wrappers
+		this.createCollections();
+		} catch (error) {
+			throw new Error(`Failed to initialize Qoolie: ${error instanceof Error ? error.message : String(error)}`);
+		}
+	}
 
-    // Initialize sync via initSync
-    const syncResult = initSync({
-      dbName: this.normalizedConfig.dbName,
-      dbVersion: this.normalizedConfig.dbVersion,
-      delivererConfig,
-      intervalMs: syncConfig.intervalMs,
-      mode: syncConfig.mode,
-      maxRetries: syncConfig.maxRetries,
-      circuitBreaker: syncConfig.circuitBreaker === false ? false : syncConfig.circuitBreaker,
-      hooks: this.normalizedConfig.hooks ? {
-        onAfterDeliver: this.normalizedConfig.hooks.onSyncEvent,
-      } : undefined,
-    });
+	/**
+	 * Initialize sync adapter and deliverer
+	 */
+	private initializeSync(): void {
+		const syncConfig = this.normalizedConfig.syncConfig!;
 
-    this.syncAdapter = syncResult.syncAdapter;
-    this.outbox = syncResult.outbox;
-    this.deliverer = syncResult.deliverer;
+		// Build deliverer config - pass all IdaeApiClient options
+		const delivererConfig: Record<string, unknown> = {};
 
-    // Start sync adapter
-    this.syncAdapter.start();
-  }
+		// URL configuration
+		if (syncConfig.databaseHost) {
+			delivererConfig.baseUrl = syncConfig.databaseHost;
+		}
+		if (syncConfig.host) {
+			delivererConfig.host = syncConfig.host;
+		}
+		if (syncConfig.port) {
+			delivererConfig.port = syncConfig.port;
+		}
+		if (syncConfig.method) {
+			delivererConfig.method = syncConfig.method;
+		}
+		if (syncConfig.defaultDb) {
+			delivererConfig.defaultDb = syncConfig.defaultDb;
+		}
 
-  /**
-   * Create collection wrappers
-   */
-  private createCollections(): void {
-    for (const collectionConfig of this.normalizedConfig.collections) {
-      const collection = new QoolieCollection(
-        collectionConfig.name,
-        collectionConfig.keyPath,
-        this.idbql,
-        collectionConfig.syncEnabled,
-        this.normalizedConfig.stateEngine
-      );
-      this.collectionMap.set(collectionConfig.name, collection);
-    }
-  }
+		// Authentication & multi-tenancy
+		if (syncConfig.token) {
+			delivererConfig.token = syncConfig.token;
+		}
+		if (syncConfig.tenantId) {
+			delivererConfig.tenantId = syncConfig.tenantId;
+		}
 
-  /**
-   * Collection accessor - dynamic proxy
-   */
-  get collection(): { [K in keyof T]: QoolieCollection<T[K]> } {
-    return new Proxy({} as any, {
-      get: (_, prop: string) => {
-        if (this.destroyed) {
-          throw new Error('Qoolie instance has been destroyed');
-        }
-        const collection = this.collectionMap.get(prop);
-        if (!collection) {
-          throw new Error(`Collection "${prop}" not found. Available collections: ${Array.from(this.collectionMap.keys()).join(', ')}`);
-        }
-        return collection;
-      },
-    });
-  }
+		// Custom headers
+		if (syncConfig.headers && Object.keys(syncConfig.headers).length > 0) {
+			delivererConfig.headers = syncConfig.headers;
+		}
 
-  /**
-   * Sync controller
-   */
-  get sync(): SyncController {
-    if (this.destroyed) {
-      throw new Error('Qoolie instance has been destroyed');
-    }
-    if (!this.syncController) {
-      if (!this.syncAdapter || !this.outbox || !this.deliverer) {
-        throw new Error('Sync is not enabled. Initialize Qoolie with sync: { enabled: true }');
-      }
-      this.syncController = new SyncController(
-        this.syncAdapter,
-        this.outbox,
-        this.deliverer,
-        this.normalizedConfig.syncConfig,
-        this.normalizedConfig.syncConfig?.push
-      );
-    }
-    return this.syncController;
-  }
+		// Initialize sync via initSync
+		const syncResult = initSync({
+			dbName: this.normalizedConfig.dbName,
+			dbVersion: this.normalizedConfig.dbVersion,
+			delivererConfig,
+			intervalMs: syncConfig.intervalMs,
+			mode: syncConfig.mode,
+			maxRetries: syncConfig.maxRetries,
+			circuitBreaker: syncConfig.circuitBreaker === false ? false : syncConfig.circuitBreaker,
+			hooks: this.normalizedConfig.hooks ? {
+				onAfterDeliver: this.normalizedConfig.hooks.onSyncEvent,
+			} : undefined,
+		});
 
-  /**
-   * Cleanup all resources
-   */
-  destroy(): void {
-    if (this.destroyed) {
-      return;
-    }
+		this.syncAdapter = syncResult.syncAdapter;
+		this.outbox = syncResult.outbox;
+		this.deliverer = syncResult.deliverer;
 
-    // Stop sync adapter
-    this.syncAdapter?.stop();
+		// Start sync adapter
+		this.syncAdapter.start();
+	}
 
-    // Clear references
-    this.collectionMap.clear();
-    this.syncController = undefined;
+	/**
+	 * Create collection wrappers
+	 */
+	private createCollections(): void {
+		for (const collectionConfig of this.normalizedConfig.collections) {
+			const colState = this.collectionStates[collectionConfig.name];
+			const collection = new QoolieCollection(
+				collectionConfig.name,
+				collectionConfig.keyPath,
+				this.idbql,
+				collectionConfig.syncEnabled,
+				this.normalizedConfig.stateEngine,
+				undefined,
+				colState,
+				this.hydrationController,
+				collectionConfig.autoHydrate !== false
+			);
+			this.collectionMap.set(collectionConfig.name, collection);
+		}
+	}
 
-    this.destroyed = true;
-  }
+	/** Resolves once the IDB database is open and ready for operations. */
+	ready(): Promise<void> {
+		return this._readyPromise;
+	}
 
-  /**
-   * Check if instance is destroyed
-   */
-  isDestroyed(): boolean {
-    return this.destroyed;
-  }
+	/**
+	 * Pull all (or named) collections from server in parallel and await completion.
+	 * Use after IDB reset to block UI until data is available.
+	 */
+	async hydrateAll(names?: string[]): Promise<void> {
+		if (!this.hydrationController) return;
+		await this.hydrationController.hydrateAll(names);
+	}
+
+	/**
+	 * Collection accessor - dynamic proxy
+	 */
+	get collection(): { [K in keyof T]: QoolieCollection<T[K]> } {
+		return new Proxy({} as any, {
+			get: (_, prop: string) => {
+				if (this.destroyed) {
+					throw new Error('Qoolie instance has been destroyed');
+				}
+				const collection = this.collectionMap.get(prop);
+				if (!collection) {
+					throw new Error(`Collection "${prop}" not found. Available collections: ${Array.from(this.collectionMap.keys()).join(', ')}`);
+				}
+				return collection;
+			},
+		});
+	}
+
+	/**
+	 * Sync controller
+	 */
+	get sync(): SyncController {
+		if (this.destroyed) {
+			throw new Error('Qoolie instance has been destroyed');
+		}
+		if (!this.syncController) {
+			if (!this.syncAdapter || !this.outbox || !this.deliverer) {
+				throw new Error('Sync is not enabled. Initialize Qoolie with sync: { enabled: true }');
+			}
+			this.syncController = new SyncController(
+				this.syncAdapter,
+				this.outbox,
+				this.deliverer,
+				this.normalizedConfig.syncConfig,
+				this.normalizedConfig.syncConfig?.push
+			);
+		}
+		return this.syncController;
+	}
+
+	/**
+	 * Cleanup all resources
+	 */
+	destroy(): void {
+		if (this.destroyed) {
+			return;
+		}
+
+		// Stop sync adapter
+		this.syncAdapter?.stop();
+
+		// Close database
+		this.db.close();
+
+		// Clear references
+		this.collectionMap.clear();
+		this.syncController = undefined;
+
+		this.destroyed = true;
+	}
+
+	/**
+	 * Check if instance is destroyed
+	 */
+	isDestroyed(): boolean {
+		return this.destroyed;
+	}
 }
 
 /**
  * Factory function to create Qoolie instance
  */
 export function createQoolie<T extends CollectionConfigMap>(
-  options: QoolieOptions<T>
+	options: QoolieOptions<T>
 ): QoolieInstance<T> {
-  return new Qoolie(options);
+	return new Qoolie(options);
 }

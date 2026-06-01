@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import { testScheme } from '../../demo/testScheme.js';
+import { demoScheme } from '../../demo/demoScheme.js';
 import { MachineScheme } from '../machine/MachineScheme.js';
 
 describe('MachineScheme', () => {
@@ -8,7 +8,7 @@ describe('MachineScheme', () => {
 	let scheme: MachineScheme;
 
 	beforeEach(() => {
-		db = new MachineDb(testScheme);
+		db = new MachineDb(demoScheme);
 		scheme = db.collection('vehicle');
 	});
 

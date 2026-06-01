@@ -1,42 +1,54 @@
-// auto exports of entry components
-export { default as DataCreate } from '$lib/data/DataCreate.svelte';
-export { default as DataEdit } from '$lib/data/DataEdit.svelte';
-export { default as DataForm } from '$lib/data/DataForm.svelte';
-export * from '$lib/data/DataForm.svelte.spec.js';
-export { default as DataLinks } from '$lib/data/DataLinks.svelte';
-export { default as DataLinksBack } from '$lib/data/DataLinksBack.svelte';
-export { default as DataList } from '$lib/data/DataList.svelte';
-export { default as DataListActions } from '$lib/data/DataListActions.svelte';
-export { default as DataListFields } from '$lib/data/DataListFields.svelte';
-export { default as DataPicker } from '$lib/data/DataPicker.svelte';
-export { default as DataProvider } from '$lib/data/DataProvider.svelte';
-export * from '$lib/demo/analyzeDemo.js';
-export * from '$lib/demo/dbSchema.js';
-export * from '$lib/demo/demoInit.js';
-export * from '$lib/demo/seedData.js';
-export * from '$lib/demo/testScheme.js';
-export { default as FieldDisplay } from '$lib/field/FieldDisplay.svelte';
-export { default as FieldEditor } from '$lib/field/FieldEditor.svelte';
-export * from '$lib/form/types.js';
-export { default as Confirm } from '$lib/fragments/Confirm.svelte';
-export { default as Frame } from '$lib/fragments/Frame.svelte';
-export { default as InfoLine } from '$lib/fragments/InfoLine.svelte';
-export { default as Selector } from '$lib/fragments/Selector.svelte';
-export { default as Skeleton } from '$lib/fragments/Skeleton.svelte';
-export * from '$lib/idae/idae-model-core.js';
-export * from '$lib/idae/schema-types.js';
-export * from '$lib/main/machine.js';
-export * from '$lib/main/machine/MachineError.js';
-export * from '$lib/main/machine/MachineErrorValidation.js';
-export * from '$lib/main/machine/MachineFieldType.js';
-export * from '$lib/main/machine/MachineScheme.js';
-export * from '$lib/main/machine/MachineSchemeFieldForge.js';
-export * from '$lib/main/machine/MachineSchemeFieldValues.js';
-export * from '$lib/main/machine/MachineSchemeValidate.js';
-export * from '$lib/main/machine/MachineSchemeValues.js';
-export * from '$lib/main/machine/SchemeFieldDefaultValues.js';
-export * from '$lib/main/machineDb.js';
-export * from '$lib/main/machineParserForge.js';
-export * from '$lib/types/appschemeTypes.js';
-export { default as CollectionCard } from '$lib/ui/CollectionCard.svelte';
-export { default as CollectionTable } from '$lib/ui/CollectionTable.svelte';
+// idae-machine v2 — public API
+
+// Core machine
+export * from '$lib/main/index.js';
+
+// UI — explorer (collection level)
+export { default as Explorer }            from '$lib/shell/frame/explorer/Explorer.svelte';
+
+// data-ui — data providers (smart, machine-aware)
+export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
+export { default as DataListFk } from '$lib/data-ui/data/DataListFk.svelte';
+export { default as DataListRfk } from '$lib/data-ui/data/DataListRfk.svelte';
+export { default as DataForm }   from '$lib/data-ui/data/DataForm.svelte';
+export { default as DataRecord } from '$lib/data-ui/data/DataRecord.svelte';
+export { default as DataFk }     from '$lib/data-ui/data/DataFk.svelte';
+export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
+
+// UI — frame content: card (record level)
+
+// UI — field (atomic display/edit)
+export { default as DataField }     from '$lib/data-ui/field/DataField.svelte';
+export { default as DataFieldEdit } from '$lib/data-ui/field/DataFieldEdit.svelte';
+export { default as DataFkValue }   from '$lib/data-ui/field/DataFkValue.svelte';
+
+// UI — data controls
+export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';
+
+// UI — input atoms
+export { default as InputBoolean }  from '$lib/data-ui/input/InputBoolean.svelte';
+export { default as InputCurrency } from '$lib/data-ui/input/InputCurrency.svelte';
+export { default as InputEmail }    from '$lib/data-ui/input/InputEmail.svelte';
+export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte';
+export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
+
+// UI — layout
+export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.svelte';
+export { default as App }              from '$lib/shell/layout/App.svelte';
+export { default as TaskBar }          from '$lib/shell/layout/TaskBar.svelte';
+export { default as Navigation }       from '$lib/shell/layout/Navigation.svelte';
+export { default as Breadcrumb }       from '$lib/shell/layout/Breadcrumb.svelte';
+export { default as Pane }             from '$lib/shell/layout/Pane.svelte';
+export { default as PaneRight }        from '$lib/shell/layout/PaneRight.svelte';
+export { default as PaneQuickCreate }  from '$lib/shell/layout/PaneQuickCreate.svelte';
+export { default as PaneRecents }      from '$lib/shell/layout/PaneRecents.svelte';
+export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.svelte';
+
+// UI — fragments
+export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
+export { default as Frame }         from '$lib/shell/Frame.svelte';
+export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
+export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';
+
+// Utils
+export * from '$lib/utils/logger.js';

@@ -24,7 +24,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@medyll/idae-sync': resolve(__dirname, './src/test/mocks/idae-sync.js'),
-      '@medyll/idae-idbql': resolve(__dirname, './src/test/mocks/idae-idbql.js'),
     },
   },
 });

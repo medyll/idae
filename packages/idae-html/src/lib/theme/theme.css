@@ -62,7 +62,7 @@
   /* Transitions & Z-index */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-  --z-below: -1; --z-base: 1; --z-above: 10; --z-header: 100; --z-modal: 1000;
+  --z-below: -1; --z-base: 1; --z-above: 10; --z-header: 100; --z-dropdown: 500; --z-overlay: 900; --z-modal: 1000;
 
   /* Responsive Spacing */
   @media (min-width: 768px) {

@@ -5,8 +5,23 @@ import type { IDeliverer, DeliverResult } from './IDeliverer';
 export class IdaeApiDeliverer implements IDeliverer {
   private client: ReturnType<typeof IdaeApiClient.getInstance>;
 
-  constructor(clientConfig?: Record<string, unknown>) {
+  constructor(clientConfig?: any) {
     this.client = IdaeApiClient.getInstance(clientConfig);
+  }
+
+  /**
+   * Fetch all records from a collection (GET /:collectionName).
+   * Used by hydration layer to pull server data into local IDB.
+   */
+  async fetchAll(collection: string): Promise<any[]> {
+    const col = this.client.collection(collection);
+    const result = await col.where({ limit: 0 } as any);
+    // Normalize both direct array and { data: [] } wrappers
+    if (Array.isArray(result)) return result;
+    if (result && typeof result === 'object' && Array.isArray((result as any).data)) {
+      return (result as any).data;
+    }
+    return [];
   }
 
   async deliver(entry: OutboxEntry): Promise<DeliverResult> {

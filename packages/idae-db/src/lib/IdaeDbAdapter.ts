@@ -46,15 +46,6 @@ export class IdaeDbAdapter<T extends object>
 	private adapter!: IdaeDbAdapterInterface<T>;
 	private static adapters: Map<DbType, AdapterConstructor<IdaeDbConnection>> = new Map();
 
-	static {
-		IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
-		IdaeDbAdapter.addAdapter(DbType.MYSQL, MySQLAdapter);
-		IdaeDbAdapter.addAdapter(DbType.CHROMADB, ChromaDBAdapter);
-		IdaeDbAdapter.addAdapter(DbType.POUCHDB, PouchDBAdapter);
-		IdaeDbAdapter.addAdapter(DbType.SQLITE, SQLiteAdapter);
-		IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, PostgreSQLAdapter);
-	}
-
 	/**
 	 * Adds a new adapter for a specific database type.
 	 * @param dbType The type of database for this adapter.
@@ -177,3 +168,11 @@ export class IdaeDbAdapter<T extends object>
 		this.adapter = new adapterConstructor<T>(collection, connection);
 	}
 }
+
+IdaeDbAdapter.addAdapter(DbType.MONGODB, MongoDBAdapter);
+IdaeDbAdapter.addAdapter(DbType.MYSQL, MySQLAdapter);
+IdaeDbAdapter.addAdapter(DbType.CHROMADB, ChromaDBAdapter);
+IdaeDbAdapter.addAdapter(DbType.POUCHDB, PouchDBAdapter);
+IdaeDbAdapter.addAdapter(DbType.SQLITE, SQLiteAdapter);
+IdaeDbAdapter.addAdapter(DbType.POSTGRESQL, PostgreSQLAdapter);
+

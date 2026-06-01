@@ -1,6 +1,6 @@
 import { getIdbqlEvent } from '@medyll/idae-idbql';
 import { OutboxStore } from './outbox/OutboxStore';
-import { createIdaeApiDeliverer } from './deliverer';
+import { createIdaeApiDeliverer } from './deliverer/index';
 import { createSyncAdapter } from './SyncAdapter';
 import type { SyncMode, SyncEvent, SyncEventHandler } from './SyncMode';
 import type { SyncHooks, DebugFn } from './SyncHooks';
@@ -101,9 +101,9 @@ export function initSync<C extends string = string>(opts?: InitSyncOptions<C>) {
     flush() { return syncAdapter.flush(); },
     getStatus() { return syncAdapter.getStatus(); },
     dlq: {
-      list: () => (outbox as any).listDlq?.() as Promise<unknown[]>,
-      replay: (id: string) => (outbox as any).replayDlq?.(id) as Promise<void>,
-      clear: () => (outbox as any).clearDlq?.() as Promise<void>,
+      list: () => outbox.listDlq(),
+      replay: (id: string) => outbox.replayDlq(id),
+      clear: () => outbox.clearDlq(),
     },
   };
 }

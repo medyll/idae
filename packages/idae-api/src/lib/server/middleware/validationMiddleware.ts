@@ -6,9 +6,9 @@ import { logger } from "$lib/server/services/logger.js";
  * Interface for the validation schema used in routes.
  */
 export interface ValidationSchema {
-  bodySchema?: z.ZodSchema<any>;
-  querySchema?: z.ZodSchema<any>;
-  paramsSchema?: z.ZodSchema<any>;
+  bodySchema?: z.ZodType<any>;
+  querySchema?: z.ZodType<any>;
+  paramsSchema?: z.ZodType<any>;
 }
 
 /**

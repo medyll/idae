@@ -1,16 +1,23 @@
 import type { Schema } from './validation/types.js';
 import { validateOrThrow } from './validation/validate.js';
+import type { HydrationController } from './HydrationController.js';
 
 /**
- * QoolieCollection - wrapper around idae-idbql Collection with CRUD operations
+ * QoolieCollection - wrapper around idae-idbql Collection with CRUD operations.
+ * When idbqlState is provided and stateEngine==='svelte5', reactive methods
+ * (where, getAll) and mutations (add/update/delete) use CollectionState.
  */
 export class QoolieCollection<T extends { keyPath: string }> {
   private name: string;
   private keyPath: string;
   private idbql: any;
+  /** CollectionState<T> for this collection — reactive Svelte 5 layer */
+  private idbqlState?: any;
   private syncEnabled: boolean;
   private stateEngine: 'svelte5' | 'stator';
   private schema?: Schema;
+  private hydrationController?: HydrationController;
+  private autoHydrate: boolean;
 
   constructor(
     name: string,
@@ -18,7 +25,10 @@ export class QoolieCollection<T extends { keyPath: string }> {
     idbql: any,
     syncEnabled: boolean,
     stateEngine: 'svelte5' | 'stator' = 'svelte5',
-    schema?: Schema
+    schema?: Schema,
+    idbqlState?: any,
+    hydrationController?: HydrationController,
+    autoHydrate = true
   ) {
     this.name = name;
     this.keyPath = keyPath;
@@ -26,79 +36,68 @@ export class QoolieCollection<T extends { keyPath: string }> {
     this.syncEnabled = syncEnabled;
     this.stateEngine = stateEngine;
     this.schema = schema;
+    this.idbqlState = idbqlState;
+    this.hydrationController = hydrationController;
+    this.autoHydrate = autoHydrate;
   }
 
-  /**
-   * Get collection name
-   */
+  /** True when reactive state layer is wired and active */
+  private get useState(): boolean {
+    return this.stateEngine === 'svelte5' && !!this.idbqlState;
+  }
+
+  private get col(): any {
+    const c = (this.idbql as any)[this.name];
+    if (!c) throw new Error(`Collection "${this.name}" not found in idbql`);
+    return c;
+  }
+
   get collectionName(): string {
     return this.name;
   }
 
-  /**
-   * Check if sync is enabled for this collection
-   */
   isSyncEnabled(): boolean {
     return this.syncEnabled;
   }
 
-  /**
-   * Query with filters
-   * Returns a reactive result set
-   */
+  private ensureHydration(): void {
+    if (this.autoHydrate) {
+      this.hydrationController?.ensure(this.name);
+    }
+  }
+
+  /** Reactive where query — uses CollectionState when svelte5, idbql otherwise */
   where(query: any): any {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.where(query);
+    this.ensureHydration();
+    if (this.useState) return this.idbqlState.where(query);
+    return this.col.where(query);
   }
 
-  /**
-   * Get document by ID
-   */
+  /** Get by primary key — uses CollectionState in-memory lookup when svelte5 */
   async get(id: any): Promise<any> {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
+    this.ensureHydration();
+    if (this.useState) {
+      const keyField = this.keyPath.replace('++', '');
+      return this.idbqlState.get(id, keyField);
     }
-    return collection.get(id);
+    return this.col.get(id);
   }
 
-  /**
-   * Get all documents
-   */
-  async getAll(): Promise<any[]> {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.getAll();
+  /** Reactive getAll — uses CollectionState when svelte5 */
+  getAll(): any {
+    this.ensureHydration();
+    if (this.useState) return this.idbqlState.getAll();
+    return this.col.getAll();
   }
 
-  /**
-   * Create document
-   */
   async create(data: any): Promise<any> {
-    // Validate against schema if defined
-    if (this.schema) {
-      await validateOrThrow(this.schema, data);
-    }
-
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.add(data);
+    if (this.schema) await validateOrThrow(this.schema, data);
+    if (this.useState) return this.idbqlState.add(data);
+    return this.col.add(data);
   }
 
-  /**
-   * Update document by ID
-   */
   async update(id: any, data: any): Promise<any> {
-    // Validate against schema if defined (partial validation for updates)
     if (this.schema) {
-      // For updates, we only validate the fields being updated
       const partialSchema = {
         ...this.schema.definition,
         fields: Object.fromEntries(
@@ -107,55 +106,32 @@ export class QoolieCollection<T extends { keyPath: string }> {
       };
       await validateOrThrow({ ...this.schema, definition: partialSchema, compiled: new Map() }, data);
     }
-
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.update(id, data);
+    if (this.useState) return this.idbqlState.update(id, data);
+    return this.col.update(id, data);
   }
 
-  /**
-   * Delete document by ID
-   */
   async delete(id: any): Promise<boolean> {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.delete(id);
+    if (this.useState) return this.idbqlState.delete(id);
+    return this.col.delete(id);
   }
 
-  /**
-   * Bulk update by query
-   */
   async updateWhere(query: any, data: any): Promise<boolean> {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.updateWhere(query, data);
+    if (this.useState) return this.idbqlState.updateWhere(query, data);
+    return this.col.updateWhere(query, data);
   }
 
-  /**
-   * Bulk delete by query
-   */
   async deleteWhere(query: any): Promise<boolean> {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.deleteWhere(query);
+    if (this.useState) return this.idbqlState.deleteWhere(query);
+    return this.col.deleteWhere(query);
   }
 
-  /**
-   * Count documents matching query
-   */
   async count(query?: any): Promise<number> {
-    const collection = (this.idbql as any)[this.name];
-    if (!collection) {
-      throw new Error(`Collection "${this.name}" not found in idbql`);
-    }
-    return collection.count(query);
+    if (this.useState) return this.idbqlState.count(query);
+    return this.col.count(query);
+  }
+
+  /** Revalidate — force fresh server pull bypassing session dedup */
+  async revalidate(): Promise<void> {
+    await this.hydrationController?.revalidate(this.name);
   }
 }

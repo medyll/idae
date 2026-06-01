@@ -15,7 +15,7 @@ export class MongooseConnectionManager {
 	}
 
 	async createConnection(dbUri: string, dbName: string, options?: mongoose.ConnectOptions) {
-		const connection = await mongoose.createConnection(dbUri, options).asPromise();
+		const connection = await mongoose.createConnection(dbUri, { dbName, ...options }).asPromise();
 
 		this._connections[dbName] = connection;
 
@@ -27,6 +27,12 @@ export class MongooseConnectionManager {
 
 	getConnection(dbName: string) {
 		return this._connections?.[dbName];
+	}
+
+	async getOrCreate(dbUri: string, dbName: string, options?: mongoose.ConnectOptions) {
+		const existing = this._connections[dbName];
+		if (existing) return existing;
+		return this.createConnection(dbUri, dbName, options);
 	}
 }
 

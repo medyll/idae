@@ -10,7 +10,8 @@
 		"sourceMap": true,
 		"strict": true,
 		"module": "NodeNext",
-		"moduleResolution": "NodeNext"
+		"moduleResolution": "NodeNext",
+		"ignoreDeprecations": "6.0"
 	},
 	"include": ["src/**/*"]
 }

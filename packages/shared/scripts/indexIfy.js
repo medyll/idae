@@ -31,6 +31,10 @@ export class MakeLibIndex {
     "*Example.svelte",
     "*indexApi*",
     "*Readme*",
+    "cli/**",
+    "**/cli/**",
+    "__tests__/**",
+    "**/__tests__/**",
   ];
 
   #libRoot = "lib";

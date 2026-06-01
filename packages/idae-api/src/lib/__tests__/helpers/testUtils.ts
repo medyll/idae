@@ -224,7 +224,7 @@ export function assertMiddlewareCalled(middleware: any, argIndex: number, expect
  * Mock an external module
  */
 export function mockModule(moduleName: string, implementation: any) {
-	return vi.mock(moduleName, () => implementation);
+	return vi.doMock(moduleName, () => implementation);
 }
 
 /**

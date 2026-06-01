@@ -1,10 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { Machine } from '../machine.js';
-import { testScheme } from '../../demo/testScheme.js';
+import { demoScheme } from '../../demo/demoScheme.js';
 import { MachineDb } from '../machineDb.js';
 
 function createTestDb() {
-	return new MachineDb(testScheme);
+	return new MachineDb(demoScheme);
 }
 
 describe('MachineDb', () => {
@@ -14,9 +14,9 @@ describe('MachineDb', () => {
 		db = createTestDb();
 	});
 
-	it('should initialize with testScheme', () => {
+	it('should initialize with demoScheme', () => {
 		expect(db).toBeDefined();
-		expect(db.model).toBe(testScheme);
+		expect(db.model).toBe(demoScheme);
 	});
 
 	it('should return a MachineScheme for a collection', () => {

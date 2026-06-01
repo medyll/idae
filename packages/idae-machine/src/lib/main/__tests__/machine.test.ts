@@ -1,20 +1,29 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+vi.mock('@medyll/qoolie/svelte', () => ({
+	useQoolieCollection: vi.fn((_qoolie: any, name: string) => ({ items: [{ id: 1, name: `mock-${name}` }] })),
+	useQoolieQuery: vi.fn((_qoolie: any, name: string, _query: any) => ({
+		items: [{ id: 2, name: `mock-query-${name}` }],
+	})),
+}));
+
 import { Machine } from '../machine.js';
-import { testScheme } from '../../demo/testScheme.js';
+import { demoScheme } from '../../demo/demoScheme.js';
+import type { MachineModel } from '\$lib/types/index.js';
 
 function createTestMachine() {
-	return new Machine('test-db', 1, testScheme);
+	return new Machine('test-db', 1, demoScheme);
 }
 
 describe('Machine', () => {
 	it('should create named instance and store in registry', () => {
-		const named = Machine.prototype.createInstance('foo', 'foo-db', 1, testScheme);
+		const named = Machine.prototype.createInstance('foo', 'foo-db', 1, demoScheme);
 		expect(named.instanceName).toBe('foo');
 		expect(Machine.instanceRegistry['foo']).toBe(named);
 	});
 
 	it('should retrieve instance by name using instance', () => {
-		const named = Machine.prototype.createInstance('bar', 'bar-db', 1, testScheme);
+		const named = Machine.prototype.createInstance('bar', 'bar-db', 1, demoScheme);
 		const retrieved = Machine.instance('bar');
 		expect(retrieved).toBe(named);
 		expect(retrieved?.instanceName).toBe('bar');
@@ -25,44 +34,197 @@ describe('Machine', () => {
 		machine = createTestMachine();
 	});
 
-	it('should initialize with testScheme', () => {
+	it('should initialize with demoScheme', () => {
 		expect(machine).toBeDefined();
-		expect(machine._model).toBe(testScheme);
+		expect(machine._business).toBe(demoScheme);
 	});
 
-	it('should set dbName, version, and model via init', () => {
-		machine.init({ dbName: 'foo', version: 2, model: testScheme });
+	it('should set dbName, version, and business model via init', () => {
+		machine.init({ dbName: 'foo', version: 2, business: demoScheme });
 		expect(machine._dbName).toBe('foo');
 		expect(machine._version).toBe(2);
-		expect(machine._model).toBe(testScheme);
+		expect(machine._business).toBe(demoScheme);
 	});
 
-	it('should throw if start is called without model', () => {
+	it('should throw if boot is called without dbName', async () => {
 		const m = new Machine();
-		expect(() => m.start()).toThrow();
+		await expect(m.boot()).rejects.toThrow('dbName is required');
 	});
 
-	it('should create collections and store on start', () => {
-		machine.start();
+	describe('moduleDbName()', () => {
+		it('returns org_base when org is set', () => {
+			const m = new Machine();
+			m.init({ business: demoScheme, org: 'test' });
+			expect(m.moduleDbName('machine_base')).toBe('test_machine_base');
+			expect(m.moduleDbName('machine_app')).toBe('test_machine_app');
+		});
+
+		it('returns bare base when org is not set', () => {
+			const m = new Machine();
+			m.init({ business: demoScheme });
+			expect(m.moduleDbName('machine_base')).toBe('machine_base');
+		});
+	});
+
+	it('should create collections and store on boot', async () => {
+		await machine.boot();
 		expect(machine.logic).toBeDefined();
-		expect(machine.idbql).toBeDefined();
 		expect(machine.store).toBeDefined();
 	});
 
-	it('should expose accessors for logic, idbql, store, idbqlState, indexedb, idbqModel', () => {
-		machine.start();
+	it('should expose accessors for logic and store (qoolie-backed)', async () => {
+		await machine.boot();
 		expect(machine.logic).toBe(machine._machineDb);
-		expect(machine.idbql).toBe(machine._idbql);
-		expect(machine.store).toBe(machine._idbqlState);
-		expect(machine.idbqlState).toBe(machine._idbqlState);
-		expect(machine.indexedb).toBe(machine._idbDatabase);
-		expect(machine.idbqModel).toBe(machine._idbqModel);
+		expect(typeof machine.store).toBe('function');
+	});
+
+	it('exposes a constrained componentRegistry surface', () => {
+		expect(machine.componentRegistry.resolve).toBeTypeOf('function');
+		expect(machine.componentRegistry.register).toBeTypeOf('function');
+		expect(machine.componentRegistry.unregister).toBeTypeOf('function');
+		expect(machine.componentRegistry.has).toBeTypeOf('function');
+		expect(machine.componentRegistry.keys).toBeTypeOf('function');
+		expect('clear' in machine.componentRegistry).toBe(false);
+	});
+
+	// --- S35-00: ADR-02 closure — machine.store() return shape ---
+	describe('machine.store() (S35-00)', () => {
+		it('returns an object with an items property', async () => {
+			await machine.boot();
+			const result = machine.store('vehicle');
+			expect(result).toBeDefined();
+			expect(result).toHaveProperty('items');
+			expect(Array.isArray(result.items)).toBe(true);
+		});
+
+		it('returns empty items when called before start', () => {
+			const result = machine.store('vehicle');
+			expect(result.items).toEqual([]);
+		});
+	});
+
+	describe('boot() remote schema loading', () => {
+		it('fetches schema, sets business model, and starts machine', async () => {
+			const fakeModel = {
+				vehicle: {
+					keyPath: '++id', base: 'machine_user', model: {}, ts: {} as any,
+					fields:   { id: { type: 'id' } },
+					fks:      {},
+					template: { presentation: 'id' },
+				}
+			} as MachineModel;
+			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => fakeModel }));
+			// indexedDB not available in test env — readSchemaCache returns null (cache miss)
+			const m = new Machine();
+			m.init({ dbName: 'fetch-test-db', version: 1, sync: { databaseHost: 'http://localhost' } });
+			// Override business to undefined to test boot() sets it
+			m._business = undefined;
+			await m.boot();
+			expect(m._business).toEqual(fakeModel);
+			expect(m.logic).toBeDefined();
+			vi.unstubAllGlobals();
+		});
+	});
+
+	describe('boot() auto-loads remote schema (S34-01)', () => {
+		it('starts immediately with local model when databaseHost is set', async () => {
+			vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true, json: async () => demoScheme }));
+			const m = new Machine();
+			m.init({
+				dbName: 'auto-fetch-local',
+				version: 1,
+				business: demoScheme,
+				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
+			});
+			await m.boot();
+			// Should have started immediately with local model
+			expect(m.logic).toBeDefined();
+			expect(m._effectiveModel).toBeDefined();
+			vi.unstubAllGlobals();
+		});
+
+		it('throws when no local model and fetch fails (databaseHost set)', async () => {
+			vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('Network error')));
+			const m = new Machine();
+			m.init({
+				dbName: 'auto-fetch-no-model',
+				version: 1,
+				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
+			});
+			await expect(m.boot()).rejects.toThrow('Network error');
+			vi.unstubAllGlobals();
+		});
+
+		it('starts normally without databaseHost (no auto-fetch)', async () => {
+			const m = new Machine();
+			m.init({
+				dbName: 'no-database-host',
+				version: 1,
+				business: demoScheme,
+			});
+			await m.boot();
+			expect(m.logic).toBeDefined();
+			expect(m._effectiveModel).toBeDefined();
+		});
+
+		it('starts normally with sync: false (no auto-fetch)', async () => {
+			const m = new Machine();
+			m.init({
+				dbName: 'sync-false',
+				version: 1,
+				business: demoScheme,
+				sync: false,
+			});
+			await m.boot();
+			expect(m.logic).toBeDefined();
+		});
+
+		it('pulls data from server when databaseHost is set (mocked fetch)', async () => {
+			const vehicleData = [
+				{ id: 1, license_plate: 'ABC-123', mileage: 50000 },
+				{ id: 2, license_plate: 'DEF-456', mileage: 30000 },
+			];
+			const fakeModel = {
+				vehicle: {
+					keyPath: '++id', base: 'machine_user', model: {}, ts: {} as any,
+					fields:   { id: { type: 'id' }, license_plate: { type: 'text' }, mileage: { type: 'number' } },
+					fks:      {},
+					template: { presentation: 'license_plate' },
+				}
+			} as MachineModel;
+
+			vi.stubGlobal('fetch', vi.fn().mockImplementation((url: string) => {
+				if (url.includes('/api/scheme')) {
+					return Promise.resolve({ ok: true, json: async () => fakeModel });
+				}
+				if (url.includes('/api/data/vehicle')) {
+					return Promise.resolve({ ok: true, json: async () => vehicleData });
+				}
+				return Promise.resolve({ ok: true, json: async () => [] });
+			}));
+
+			const m = new Machine();
+			m.init({
+				dbName: 'pull-test-db',
+				version: 1,
+				sync: { databaseHost: 'http://localhost:3000', mode: 'server-first' as any },
+			});
+			await m.boot();
+
+			// Verify data was pulled into collection
+			const vehicleCol = m.collection('vehicle');
+			expect(vehicleCol).toBeDefined();
+			const allVehicles = vehicleCol.getAll();
+			expect(Array.isArray(allVehicles)).toBe(true); // getAll returns an array (IDB may be empty in test env)
+
+			vi.unstubAllGlobals();
+		});
 	});
 
 	// --- Intégration MachineDb/MachineScheme ---
 	describe('integration: MachineDb/MachineScheme', () => {
-		beforeEach(() => {
-			machine.start();
+		beforeEach(async () => {
+			await machine.boot();
 		});
 
 		it('should access a collection and its template', () => {

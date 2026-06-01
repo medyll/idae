@@ -1,6 +1,9 @@
 {
-	"missingComponents": [],
-	"warnings": [],
-	"ready": true,
-	"generatedAt": "2026-03-25T21:22:35.159Z"
+  "missingComponents": [
+    "CollectionTable",
+    "CollectionCard"
+  ],
+  "warnings": [],
+  "ready": false,
+  "generatedAt": "2026-05-25T14:17:59.027Z"
 }

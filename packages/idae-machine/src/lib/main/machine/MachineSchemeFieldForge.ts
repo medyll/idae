@@ -1,6 +1,5 @@
-import type { TplCollectionName, TplFieldArgs, TplFieldType } from '@medyll/idae-idbql';
+import type { TplCollectionName, TplFieldArgs, TplFieldType, IDbForge } from '$lib/types/index.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
-import type { IDbForge } from '@medyll/idae-idbql';
 import type { MachineDb } from '../machineDb.js';
 
 /**
@@ -83,6 +82,10 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	get fieldType(): TplFieldType | undefined {
 		return this.forge?.fieldType;
 	}
+
+	get inputSize() {
+		return this.forge?.inputSize;
+	}
 	/**
 	 * will return  text.inputBase  for ['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password']
 	 */
@@ -92,15 +95,13 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	 * @return {string | 'text' | 'area'} The HTML input type.
 	 */
 	get htmlInputType(): string | 'text' | 'area' {
-		const variant = this?.fieldType?.split('text-')?.[1] ?? this.fieldType;
+		const ft = this.forge?.fieldType ?? '';
+		if (ft === 'image') return 'file';
+		const variant = ft.split('text-')?.[1] ?? ft;
 		if (variant === 'area') return variant;
-		if (this.forge?.fieldType?.startsWith('text-')) return 'text';
-		if (
-			['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password'].includes(
-				this.forge?.fieldType ?? ''
-			)
-		) {
-			return this.forge?.fieldType?.trim?.() ?? 'text';
+		if (ft.startsWith('text-')) return 'text';
+		if (['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password'].includes(ft)) {
+			return ft.trim() || 'text';
 		}
 		return 'text';
 	}

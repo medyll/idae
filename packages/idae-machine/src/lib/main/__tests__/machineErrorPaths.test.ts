@@ -1,7 +1,8 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import { MachineError, MachineErrorValidation } from '../machine/MachineError.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
+import { MachineError } from '../machine/MachineError.js';
+import { MachineErrorValidation } from '../machine/MachineErrorValidation.js';
+import type { IdbqModel } from '$lib/types/index.js';
 
 describe('Machine Error Paths', () => {
 	describe('Schema Validation Errors', () => {
@@ -11,15 +12,12 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name', // references 'name' field
-						fields: {
+					fields: {
 							id: 'id (readonly)'
 							// 'name' is missing!
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 
@@ -34,15 +32,12 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'value',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							value: 'unknown-type' // Invalid type
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'value' }
 				}
 			} as any;
 
@@ -60,17 +55,14 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'fk_field',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							fk_field: 'fk-missing_collection.id' // Collection doesn't exist
 						},
-						fks: {
+					fks: {
 							missing_collection: { code: 'missing_collection', multiple: false }
-						}
-					}
+						},
+					template: { presentation: 'fk_field' }
 				}
 			} as any;
 
@@ -87,15 +79,12 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							name: 'text'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 			const db = new MachineDb(schema);
@@ -110,15 +99,12 @@ describe('Machine Error Paths', () => {
 					keyPath: undefined as any, // Missing keyPath
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							name: 'text'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 
@@ -133,15 +119,12 @@ describe('Machine Error Paths', () => {
 					keyPath: 'invalid-key-format!', // Invalid keyPath
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							name: 'text'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 
@@ -160,17 +143,14 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							name: 'text (required)',
 							age: 'number',
 							created: 'date'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 			db = new MachineDb(schema);
@@ -220,16 +200,13 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							name: 'text (required)',
 							email: 'text'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 			db = new MachineDb(schema);
@@ -270,15 +247,12 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'value',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							value: 'text (required)'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'value' }
 				}
 			} as any;
 
@@ -304,15 +278,12 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'count',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							count: 'number (required)'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'count' }
 				}
 			} as any;
 
@@ -340,15 +311,12 @@ describe('Machine Error Paths', () => {
 					keyPath: '++id',
 					model: {},
 					ts: {} as any,
-					template: {
-						index: 'id',
-						presentation: 'name',
-						fields: {
+					fields: {
 							id: 'id (readonly)',
 							name: 'text (required)'
 						},
-						fks: {}
-					}
+					fks: {},
+					template: { presentation: 'name' }
 				}
 			} as any;
 

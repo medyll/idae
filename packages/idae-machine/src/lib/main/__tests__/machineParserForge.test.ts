@@ -44,10 +44,10 @@ describe('MachineParserForge', () => {
 			expect(r?.fieldType).toBe('email');
 		});
 
-		it('parses custom primitive types like "text-long"', () => {
-			const r = p.testIs('primitive', 'text-long');
+		it('parses custom primitive types like "text-lg"', () => {
+			const r = p.testIs('primitive', 'text-lg');
 			expect(r).toBeDefined();
-			expect(r?.fieldType).toBe('text-long');
+			expect(r?.fieldType).toBe('text-lg');
 		});
 
 		it('parses primitive with multiple modifiers', () => {
@@ -189,9 +189,9 @@ describe('MachineParserForge', () => {
 
 	describe('Extract Method', () => {
 		it('extract returns piece and args for primitive', () => {
-			const ex = p.extract('primitive', 'text-long (required private)');
+			const ex = p.extract('primitive', 'text-lg (required private)');
 			expect(ex).toBeDefined();
-			expect(ex.fieldType).toBe('text-long');
+			expect(ex.fieldType).toBe('text-lg');
 			expect(ex.fieldArgs).toEqual(['required', 'private']);
 		});
 

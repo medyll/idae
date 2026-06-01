@@ -12,7 +12,7 @@ export function serializeWhere(where: unknown): string {
     }
     if (typeof value === 'object') {
       const keys = Object.keys(value).sort();
-      const entries = keys.map(k => JSON.stringify(k) + ':' + serialize(value[k]));
+      const entries = keys.map(k => JSON.stringify(k) + ':' + serialize((value as any)[k]));
       return '{' + entries.join(',') + '}';
     }
     // fallback

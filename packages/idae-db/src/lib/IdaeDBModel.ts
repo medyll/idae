@@ -1,7 +1,6 @@
 // packages\idae-db\lib\IdaeDBModel.ts
 import { ObjectId, type Collection, type Db } from 'mongodb';
 import { IdaeDbConnection } from './IdaeDbConnection.js';
-import { IdaeDb } from './idaeDb.js';
 
 export interface IdaeModelOptions {
 	autoIncrementFormat?: (collection: string) => string;
@@ -52,6 +51,7 @@ export class IdaeDBModel<T extends object> {
 	 * @returns The next increment value.
 	 */
 	async getNextIncrement() {
+		const { IdaeDb } = await import('./idaeDb.js');
 		const idaeAuto = IdaeDb.init(this.connection.idaeDb.uri, this.connection.idaeDb.options);
 		const increment_name = 'increment';
 

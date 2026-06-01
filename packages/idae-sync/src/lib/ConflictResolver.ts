@@ -7,8 +7,8 @@ export type OnConflictHook = (
 ) => OnConflictResult | Promise<OnConflictResult>;
 
 export function defaultOnConflict(local: unknown, remote: unknown): OnConflictResult {
-  const localTs = local?.updated_at ? Date.parse(local.updated_at) : 0;
-  const remoteTs = remote?.updated_at ? Date.parse(remote.updated_at) : 0;
+  const localTs  = (local  as any)?.updated_at ? Date.parse((local  as any).updated_at) : 0;
+  const remoteTs = (remote as any)?.updated_at ? Date.parse((remote as any).updated_at) : 0;
   if (remoteTs > localTs) return { resolution: 'remote', result: remote };
   return { resolution: 'local', result: local };
 }

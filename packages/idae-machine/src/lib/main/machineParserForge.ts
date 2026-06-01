@@ -2,12 +2,11 @@ import type {
 	TplCollectionName,
 	TplFieldRules,
 	TplFieldType,
-	TplProperties,
 	TplFieldArgs,
 	TplFields,
 	IDbForge
-} from '@medyll/idae-idbql';
-import type { MachineDb } from './machineDb.js';
+} from '$lib/types/index.js';
+type TplFieldRulesObject = TplFieldRules;
 import { MachineError } from './machine/MachineError.js';
 
 /**
@@ -16,26 +15,28 @@ import { MachineError } from './machine/MachineError.js';
  */
 
 export class MachineParserForge {
-	#machineForge: MachineDb['machineForge'] | undefined;
 
 	/**
 	 * Create a new MachineParserForge instance.
 	 */
-	constructor() {
-		// Correction : ne pas initialiser #machineForge récursivement
-		this.#machineForge = undefined;
-	}
+	constructor() {}
 
 	/**
 	 * Test if a field rule matches a specific type (array, object, fk, primitive).
+	 * Accepts both legacy string rules ('text-long (required)') and new object rules ({ type: 'text', required: true }).
 	 * @param what - The type to test for ("array", "object", "fk", "primitive").
-	 * @param fieldRule - The field rule string to analyze.
+	 * @param fieldRule - The field rule (string or object) to analyze.
 	 * @returns Partial IDbForge object if the rule matches, otherwise undefined.
 	 */
 	testIs(
 		what: 'array' | 'object' | 'fk' | 'primitive',
 		fieldRule: TplFieldRules | string
 	): Partial<IDbForge> | undefined {
+		// New world: object-based field rule
+		if (typeof fieldRule === 'object' && fieldRule !== null) {
+			return this.#fromObjectRule(what, fieldRule as TplFieldRulesObject);
+		}
+		// Legacy: string-based field rule
 		const typeMappings = {
 			fk:        'fk-',
 			array:     'array-of-',
@@ -62,6 +63,54 @@ export class MachineParserForge {
 	}
 
 	/**
+	 * Parse a new-world object field rule into IDbForge format.
+	 * Only returns a value when `what` matches the actual type of the rule.
+	 */
+	#fromObjectRule(
+		what: 'array' | 'object' | 'fk' | 'primitive',
+		rule: TplFieldRulesObject
+	): Partial<IDbForge> | undefined {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const r = rule as any;
+		const type = r.type as string;
+		const isArray     = type.startsWith('array-of-');
+		const isObject    = type.startsWith('object-');
+		const isFk        = type.startsWith('fk-');
+		const isPrimitive = !isArray && !isObject && !isFk;
+
+		const matches: Record<string, boolean> = {
+			array: isArray, object: isObject, fk: isFk, primitive: isPrimitive
+		};
+		if (!matches[what]) return undefined;
+
+		const fieldArgs = this.#argsFromObject(rule);
+		// Pass through any extra options (presets, preset, free, maxSize, etc.) generically.
+		// Known base keys are stripped; everything else is forwarded as-is to IDbForge.
+		const { type: _t, required: _req, readonly: _ro, private: _priv, ...extras } = r;
+		return {
+			fieldType: type as TplFieldType,
+			fieldArgs,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			is:        what as any,
+			...extras,
+			...(type === 'image' ? { accept: 'image/*' } : {}),
+		};
+	}
+
+	/**
+	 * Extract fieldArgs array from an object rule's boolean flags.
+	 */
+	#argsFromObject(rule: TplFieldRulesObject): string[] | undefined {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const r = rule as any;
+		const args: string[] = [];
+		if (r.required) args.push('required');
+		if (r.readonly) args.push('readonly');
+		if (r.private)  args.push('private');
+		return args.length ? args : undefined;
+	}
+
+	/**
 	 * Returns a partial IDbForge object for the given type and field rule.
 	 * @param what - The type to extract ("array", "object", "fk", "primitive").
 	 * @param fieldRule - The field rule string to analyze.
@@ -69,20 +118,18 @@ export class MachineParserForge {
 	 */
 	is(
 		what: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: TplFieldRules | string
+		fieldRule: string
 	): Partial<IDbForge> {
 		return this.extract(what, fieldRule);
 	}
 
 	/**
-	 * Extracts type, rule, and argument information from a field rule string.
-	 * @param type - The type to extract ("array", "object", "fk", "primitive").
-	 * @param fieldRule - The field rule string to analyze.
-	 * @returns Partial IDbForge object with extracted details.
+	 * Extracts type, rule, and argument information from a string field rule.
+	 * Only called after object rules are handled by #fromObjectRule.
 	 */
 	extract(
 		type: 'array' | 'object' | 'fk' | 'primitive',
-		fieldRule: TplFieldRules | string
+		fieldRule: string
 	): Partial<IDbForge> {
 		/**
 		 * Helper to extract the substring after a given pattern, before any arguments.
@@ -90,10 +137,10 @@ export class MachineParserForge {
 		 * @param source - The field rule string.
 		 * @returns The substring after the pattern.
 		 */
-		function extractAfter(pattern: string, source: string) {
+		function extractAfter(pattern: string, source: string): string {
 			const reg = source?.split('(')?.[0];
 			const after = reg.split(pattern)[1];
-			return after?.split('(')?.[0]?.trim() as unknown as TplFieldRules;
+			return (after?.split('(')?.[0]?.trim() ?? '') as string;
 		}
 
 		/**
@@ -136,7 +183,9 @@ export class MachineParserForge {
 		}
 		const result: Partial<IDbForge> = {
 			fieldType: fieldType as TplFieldType | undefined,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			fieldArgs: fieldArgs as unknown as any,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			is:        type as any
 		};
 		return result;
@@ -147,7 +196,7 @@ export class MachineParserForge {
 	 * @param params - The components of the IDbForge object.
 	 * @returns A complete IDbForge object.
 	 */
-	forge({ collection, fieldName, fieldType, fieldRule, fieldArgs, is }: IDbForge): IDbForge {
-		return { collection, fieldName, fieldType, fieldRule, fieldArgs, is };
+	forge(input: IDbForge): IDbForge {
+		return { ...input };
 	}
 }

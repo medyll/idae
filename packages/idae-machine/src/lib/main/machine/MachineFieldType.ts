@@ -42,6 +42,26 @@ export type FieldTypeRegistry = {
 	[key: string]: FieldTypeDef;
 };
 
+const timePattern = /^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/;
+
+function isBooleanLike(value: unknown): value is boolean | 'true' | 'false' {
+	return typeof value === 'boolean' || value === 'true' || value === 'false';
+}
+
+function formatBoolean(value: unknown): boolean {
+	if (value === 'true') return true;
+	if (value === 'false') return false;
+	return Boolean(value);
+}
+
+function isValidTimeValue(value: unknown): boolean {
+	if (value instanceof Date) {
+		return !isNaN(value.getTime());
+	}
+
+	return timePattern.test(String(value));
+}
+
 /**
  * Registry of default field types.
  */
@@ -97,52 +117,92 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 	date:     {
 		id:        defaultTypes.date,
 		formatter: (value: unknown) => {
-			new Date(value as string | number | Date);
+			const d = new Date(value as string | number | Date);
+			return isNaN(d.getTime()) ? String(value) : d.toLocaleDateString();
 		},
 		validator: (value: unknown) => {
-			const date = new Date(value as any);
+			const date = new Date(String(value));
 			return !isNaN(date.getTime());
 		}
 	},
 	datetime: {
 		id:        defaultTypes.datetime,
 		formatter: (value: unknown) => {
-			new Date(value as string | number | Date);
+			const d = new Date(value as string | number | Date);
+			return isNaN(d.getTime()) ? String(value) : d.toLocaleString();
 		},
 		validator: (value: unknown) => {
-			const date = new Date(value as any);
+			const date = new Date(String(value));
 			return !isNaN(date.getTime());
 		}
 	},
 	time:     {
 		id:        defaultTypes.time,
 		formatter: (value: unknown) => {
-			new Date(value as string | number | Date);
+			const d = new Date(`1970-01-01T${value}`);
+			return isNaN(d.getTime()) ? String(value) : d.toLocaleTimeString();
 		},
-		validator: (value: unknown) => {
-			const date = new Date(value as any);
-			return !isNaN(date.getTime());
-		}
+		validator: (value: unknown) => isValidTimeValue(value)
 	},
 	text:     {
 		id:        defaultTypes.text,
 		formatter: (value: unknown) => String(value),
 		validator: (value: unknown) => true
 	},
+	// T-shirt size presets
+	'text-xs':   { id: 'text-xs',   formatter: (v: unknown) => String(v ?? '').substring(0, 10),  validator: () => true },
+	'text-sm':   { id: 'text-sm',   formatter: (v: unknown) => String(v ?? '').substring(0, 20),  validator: () => true },
+	'text-md':   { id: 'text-md',   formatter: (v: unknown) => String(v ?? '').substring(0, 30),  validator: () => true },
+	'text-lg':   { id: 'text-lg',   formatter: (v: unknown) => String(v ?? '').substring(0, 40),  validator: () => true },
+	'text-xl':   { id: 'text-xl',   formatter: (v: unknown) => String(v ?? '').substring(0, 50),  validator: () => true },
+	'text-full': { id: 'text-full', formatter: (v: unknown) => String(v ?? ''),                   validator: () => true },
+	'text-area': { id: 'text-area', formatter: (v: unknown) => String(v ?? ''),                   validator: () => true },
+	// Deprecated aliases — kept for backward compat
+	'text-tiny':   { id: 'text-tiny',   formatter: (v: unknown) => String(v ?? '').substring(0, 10),  validator: () => true },
+	'text-short':  { id: 'text-short',  formatter: (v: unknown) => String(v ?? '').substring(0, 20),  validator: () => true },
+	'text-medium': { id: 'text-medium', formatter: (v: unknown) => String(v ?? '').substring(0, 30),  validator: () => true },
+	'text-long':   { id: 'text-long',   formatter: (v: unknown) => String(v ?? '').substring(0, 40),  validator: () => true },
+	'text-giant':  { id: 'text-giant',  formatter: (v: unknown) => String(v ?? '').substring(0, 50),  validator: () => true },
 	number:   {
 		id:        defaultTypes.number,
-		formatter: (value: unknown) => Number(value as any),
-		validator: (value: unknown) => typeof value === 'number' && !isNaN(value as any)
+		formatter: (value: unknown) => Number(value),
+		validator: (value: unknown) => typeof value === 'number' && !isNaN(value)
 	},
 	boolean:  {
 		id:        defaultTypes.boolean,
-		formatter: (value: unknown) => Boolean(value),
-		validator: (value: unknown) => typeof value === 'boolean'
+		formatter: (value: unknown) => formatBoolean(value),
+		validator: (value: unknown) => isBooleanLike(value)
+	},
+	currency: {
+		id:        'currency',
+		formatter: (value: unknown) => {
+			const n = Number(value);
+			if (isNaN(n)) return String(value);
+			return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'EUR' }).format(n);
+		},
+		validator: (value: unknown) => !isNaN(Number(value))
 	},
 	any:      {
 		id:        defaultTypes.any,
 		formatter: (value: unknown) => value as unknown,
 		validator: (value: unknown) => true
+	},
+	schemelink: {
+		id:        'schemelink',
+		formatter: (value: unknown) => {
+			if (value == null) return '';
+			const link = value as { collection?: string; collection_value?: unknown };
+			const col = link.collection ?? '?';
+			const val = link.collection_value != null ? String(link.collection_value) : '?';
+			return `${col}#${val}`;
+		},
+		validator: (value: unknown) => {
+			if (value == null) return true;
+			if (typeof value !== 'object') return false;
+			const link = value as Record<string, unknown>;
+			return typeof link.collection === 'string' && link.collection.length > 0
+				&& link.collection_value !== undefined;
+		}
 	}
 };
 
@@ -189,7 +249,7 @@ class MachineFieldType {
 		if (fieldType.validator) {
 			const res = fieldType.validator(value, ctx);
 			// Promise detection
-			if (res && typeof (res as any)?.then === 'function') {
+			if (res && typeof (res as Promise<unknown>)?.then === 'function') {
 				return (await res) as boolean;
 			}
 			return Boolean(res);
@@ -263,6 +323,17 @@ class MachineFieldType {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Format a value using the registered formatter for the given type id.
+	 * Falls back to String(value) if type not found.
+	 */
+	format(value: unknown, typeId: FieldTypeId): string {
+		// Empty values render as empty, never the literal strings "null"/"undefined".
+		if (value === null || value === undefined) return '';
+		const formatted = this.getFieldType(typeId)?.formatter(value);
+		return formatted !== undefined ? String(formatted) : String(value);
 	}
 
 	/**

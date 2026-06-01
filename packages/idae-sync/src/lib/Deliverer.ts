@@ -1,6 +1,5 @@
 import type { DeliverResult } from './deliverer/IDeliverer';
-import type { OutboxEntry } from './outbox/OutboxStore';
-import { OutboxStore } from './outbox/OutboxStore';
+import type { OutboxEntry, IOutboxStore } from './outbox/OutboxStore';
 
 export type DeliverFunction = (entry: OutboxEntry) => Promise<DeliverResult>;
 
@@ -12,7 +11,7 @@ export class OutboxDeliverer {
   private backoffBaseMs: number;
 
   constructor(
-    private outbox: OutboxStore,
+    private outbox: IOutboxStore,
     opts?: { maxRetries?: number; backoffBaseMs?: number }
   ) {
     this.maxRetries = opts?.maxRetries;

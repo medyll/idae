@@ -1,17 +1,31 @@
 import { svelteTesting } from '@testing-library/svelte/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vitest/config';
+import path from 'path';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()],
-	test:    {
+	plugins: [sveltekit()],
+	resolve: {
+		alias: {
+			'@chroma-core/default-embed': path.resolve('./src/lib/__stubs__/chroma-embed.ts'),
+			'@medyll/idae-db':            path.resolve('./src/lib/__stubs__/idae-db-stub.ts'),
+			'@medyll/idae-api':           path.resolve('./src/lib/__stubs__/idae-api-stub.ts'),
+			'@medyll/skiller':            path.resolve('./src/lib/__stubs__/skiller-stub.ts'),
+			'jsonwebtoken':               path.resolve('./src/lib/__stubs__/jwt-stub.ts'),
+			'@medyll/qoolie/svelte':      path.resolve('../qoolie/src/adapters/svelte/index.ts'),
+			'@medyll/qoolie':             path.resolve('../qoolie/src/index.ts'),
+		}
+	},
+	optimizeDeps: {
+		entries: ['src/**/*.{svelte,ts,js}'],
+		exclude: ['chromadb'],
+	},
+	test: {
 		projects: [
 			{
 				extends: './vite.config.ts',
 				plugins: [svelteTesting()],
-
-				test:    {
+				test: {
 					name:        'client',
 					environment: 'jsdom',
 					clearMocks:  true,
@@ -22,10 +36,12 @@ export default defineConfig({
 			},
 			{
 				extends: './vite.config.ts',
-
-				test:    {
+				plugins: [],
+				test: {
 					name:        'server',
 					environment: 'node',
+					pool:        'forks',
+					isolate:     true,
 					include:     ['src/**/*.{test,spec}.{js,ts}'],
 					exclude:     ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/e2e/**']
 				}

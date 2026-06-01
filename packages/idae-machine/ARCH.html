@@ -1,0 +1,1296 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>idae-machine · carte d'architecture</title>
+		<style>
+			@import url('https://cdn.jsdelivr.net/npm/@medyll/css-base/dist/app.css');
+
+			@layer components {
+				:root {
+					--color-primary: oklch(0.55 0.12 256);
+					--default-color-surface-light: oklch(0.985 0.001 255);
+					--default-color-surface-dark: oklch(0.14 0.003 255);
+					--default-color-text-light: oklch(0.24 0.008 255);
+					--default-color-text-dark: oklch(0.95 0.002 255);
+					--arch-line: color-mix(in oklch, var(--color-primary) 28%, var(--color-border));
+					--arch-surface: var(--color-surface-raised);
+					--arch-surface-strong: color-mix(
+						in oklch,
+						var(--color-surface-alt) 98%,
+						var(--color-primary) 2%
+					);
+					--arch-title: color-mix(in oklch, var(--color-text) 92%, var(--color-primary) 8%);
+				}
+
+				html,
+				body {
+					min-height: 100%;
+				}
+
+				body {
+					margin: 0;
+					background: var(--color-surface);
+					color: var(--color-text);
+					font-family: var(--font-sans);
+				}
+
+				architecture-component,
+				architecture-hero,
+				architecture-section,
+				architecture-grid,
+				architecture-flow,
+				architecture-nodes,
+				architecture-notes,
+				architecture-footer,
+				group-card,
+				group-lane,
+				group-chip,
+				flow-node,
+				flow-rail,
+				zone-grid,
+				zone-box {
+					display: block;
+				}
+
+				architecture-component {
+					min-height: 100dvh;
+					padding-block: var(--pad-lg);
+					padding-inline: clamp(var(--pad-md), 3vw, var(--pad-xl));
+				}
+
+				.arch-page {
+					display: grid;
+					grid-template-columns: minmax(13rem, 15rem) minmax(0, 1fr);
+					gap: var(--gutter-lg);
+					max-inline-size: 92rem;
+					margin-inline: auto;
+				}
+
+				.arch-nav {
+					position: sticky;
+					top: var(--pad-lg);
+					grid-column: 1;
+					grid-row: 1 / span 20;
+					align-self: start;
+					display: grid;
+					gap: var(--gutter-2xs);
+					padding: var(--pad-xs);
+					border: var(--border-width) solid var(--color-border);
+					border-radius: var(--radius-sm);
+					background: var(--color-surface-alt);
+				}
+
+				.arch-nav::before {
+					content: 'Navigation';
+					padding: 0 var(--pad-xs) var(--pad-xs);
+					color: var(--color-text-muted);
+					font-size: var(--text-xs);
+					font-weight: var(--font-weight-semibold);
+					letter-spacing: var(--tracking-wide);
+					text-transform: uppercase;
+				}
+
+				.arch-nav a {
+					display: block;
+					padding: var(--pad-xs) var(--pad-sm);
+					border-radius: var(--radius-xs);
+					color: var(--color-text-muted);
+					font-size: var(--text-sm);
+					font-weight: var(--font-weight-medium);
+					text-decoration: none;
+					transition:
+						background-color var(--transition-normal),
+						color var(--transition-normal);
+				}
+
+				.arch-nav a:hover,
+				.arch-nav a:focus-visible {
+					background: color-mix(in oklch, var(--color-primary) 10%, transparent);
+					color: var(--arch-title);
+					outline: none;
+				}
+
+				architecture-hero,
+				architecture-section,
+				architecture-notes,
+				architecture-footer {
+					grid-column: 2;
+				}
+
+				architecture-hero {
+					display: grid;
+					gap: var(--gutter-sm);
+					padding-block-end: var(--pad-md);
+				}
+
+				.arch-kicker {
+					margin: 0;
+					color: var(--color-primary);
+					font-size: var(--text-sm);
+					font-weight: var(--font-weight-semibold);
+					text-transform: uppercase;
+					letter-spacing: var(--tracking-wide);
+				}
+
+				.arch-title {
+					margin: 0;
+					max-inline-size: 42ch;
+					color: var(--arch-title);
+					font-size: var(--text-2xl);
+					line-height: var(--leading-tight);
+					letter-spacing: var(--tracking-tight);
+				}
+
+				.arch-subtitle {
+					margin: var(--marg-sm) 0 0;
+					max-inline-size: 68ch;
+					color: var(--color-text-muted);
+					font-size: var(--text-base);
+					line-height: var(--leading-relaxed);
+				}
+
+				.arch-meta {
+					display: flex;
+					flex-wrap: wrap;
+					gap: var(--gutter-xs);
+					margin-block-start: var(--marg-sm);
+				}
+
+				architecture-section {
+					margin-block: var(--marg-md) 0;
+					padding-block-start: var(--pad-md);
+					border-top: var(--border-width) solid var(--color-border);
+					scroll-margin-top: var(--pad-lg);
+				}
+
+				.arch-h {
+					display: flex;
+					align-items: baseline;
+					gap: var(--gutter-xs);
+					margin: 0 0 var(--marg-sm);
+					color: var(--arch-title);
+					font-size: var(--text-xl);
+				}
+
+				.arch-h::before {
+					content: attr(data-n);
+					display: inline-flex;
+					align-items: center;
+					justify-content: center;
+					inline-size: 1.5rem;
+					block-size: 1.5rem;
+					border: var(--border-width) solid var(--arch-line);
+					border-radius: var(--radius-xs);
+					background: color-mix(in oklch, var(--color-primary) 10%, var(--color-surface-raised));
+					color: var(--color-primary);
+					font-family: var(--font-mono);
+					font-size: var(--text-xs);
+					font-weight: var(--font-weight-bold);
+					flex: none;
+				}
+
+				architecture-grid {
+					display: grid;
+					gap: var(--gutter-sm);
+					grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+				}
+
+				.arch-card,
+				.arch-panel {
+					display: grid;
+					gap: var(--gutter-xs);
+					padding: var(--pad-md);
+					border: var(--border-width) solid var(--color-border);
+					border-radius: var(--radius-sm);
+					background: var(--arch-surface);
+				}
+
+				.arch-card {
+					transition:
+						background-color var(--transition-normal),
+						border-color var(--transition-normal);
+				}
+
+				.arch-card:hover {
+					border-color: color-mix(in oklch, var(--color-primary) 28%, var(--color-border));
+					background: var(--arch-surface-strong);
+				}
+
+				.arch-card h3,
+				.arch-card h4,
+				.arch-panel h3,
+				.arch-panel h4,
+				.arch-card p,
+				.arch-panel p {
+					margin: 0;
+				}
+
+				.arch-card code,
+				.arch-panel code {
+					font-size: var(--text-sm);
+					color: var(--color-primary);
+				}
+
+				.arch-panel[data-tone='primary'] {
+					background: var(--arch-surface-strong);
+					border-color: color-mix(in oklch, var(--color-primary) 35%, var(--color-border));
+				}
+
+				group-chip {
+					display: flex;
+					flex-wrap: wrap;
+					gap: var(--gutter-xs);
+					margin-block-start: 0;
+				}
+
+				.arch-badge {
+					display: inline-flex;
+					align-items: center;
+					padding: var(--pad-2xs) var(--pad-xs);
+					border: var(--border-width) solid
+						color-mix(in oklch, var(--color-primary) 18%, transparent);
+					border-radius: var(--radius-sm);
+					background: color-mix(in oklch, var(--color-primary) 8%, transparent);
+					color: var(--color-primary);
+					font-size: var(--text-xs);
+					font-weight: var(--font-weight-semibold);
+				}
+
+				.arch-badge[data-tone='neutral'] {
+					border-color: color-mix(in oklch, var(--color-text) 10%, transparent);
+					background: color-mix(in oklch, var(--color-text) 6%, transparent);
+					color: var(--color-text-muted);
+				}
+
+				architecture-nodes {
+					display: grid;
+					justify-items: stretch;
+					gap: 0;
+				}
+
+				flow-node {
+					display: grid;
+					gap: var(--gutter-2xs);
+					inline-size: 100%;
+					min-inline-size: 0;
+					padding: var(--pad-sm) var(--pad-md);
+					border: var(--border-width) solid var(--color-border);
+					border-radius: var(--radius-sm);
+					background: var(--arch-surface);
+					text-align: start;
+				}
+
+				flow-node[data-tone='primary'] {
+					border-color: color-mix(in oklch, var(--color-primary) 45%, var(--color-border));
+					background: var(--arch-surface-strong);
+				}
+
+				flow-node[data-tone='store'] {
+					border-color: color-mix(
+						in oklch,
+						var(--color-success, oklch(0.7 0.15 150)) 50%,
+						var(--color-border)
+					);
+					background: color-mix(
+						in oklch,
+						var(--color-success, oklch(0.7 0.15 150)) 6%,
+						var(--color-surface-raised)
+					);
+				}
+
+				flow-node strong {
+					font-size: var(--text-base);
+				}
+
+				flow-node small {
+					color: var(--color-text-muted);
+					font-size: var(--text-sm);
+					font-family: var(--font-mono);
+				}
+
+				flow-rail {
+					justify-self: center;
+					inline-size: var(--border-width-thick, 2px);
+					block-size: var(--pad-md);
+					background: linear-gradient(var(--arch-line), var(--arch-line));
+					position: relative;
+				}
+
+				flow-rail::after {
+					content: '';
+					position: absolute;
+					inset-block-end: 0;
+					inset-inline-start: 50%;
+					transform: translate(-50%, 50%) rotate(45deg);
+					inline-size: 0.5rem;
+					block-size: 0.5rem;
+					border-right: var(--border-width-thick, 2px) solid var(--arch-line);
+					border-bottom: var(--border-width-thick, 2px) solid var(--arch-line);
+				}
+
+				flow-rail[data-label]::before {
+					content: attr(data-label);
+					position: absolute;
+					inset-inline-start: calc(50% + var(--pad-sm));
+					inset-block-start: 50%;
+					transform: translateY(-50%);
+					white-space: nowrap;
+					font-family: var(--font-mono);
+					font-size: var(--text-xs);
+					color: var(--color-text-muted);
+				}
+
+				.arch-fanout {
+					display: grid;
+					gap: var(--gutter-xs);
+					grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+					inline-size: 100%;
+				}
+
+				.arch-leaf {
+					display: grid;
+					gap: var(--gutter-2xs);
+					min-inline-size: 0;
+					padding: var(--pad-sm);
+					border: var(--border-width) solid
+						color-mix(in oklch, var(--color-primary) 18%, var(--color-border));
+					border-radius: var(--radius-xs);
+					background: color-mix(in oklch, var(--color-primary) 4%, var(--color-surface-raised));
+				}
+
+				.arch-leaf code {
+					color: var(--color-primary);
+					font-size: var(--text-sm);
+					font-weight: var(--font-weight-semibold);
+					overflow-wrap: anywhere;
+				}
+
+				.arch-leaf small {
+					color: var(--color-text-muted);
+					font-size: var(--text-xs);
+				}
+
+				architecture-flow {
+					display: grid;
+					gap: var(--gutter-sm);
+					grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+					align-items: start;
+				}
+
+				group-lane {
+					display: grid;
+					gap: var(--gutter-xs);
+				}
+
+				.lane-step {
+					display: grid;
+					gap: var(--gutter-2xs);
+					padding: var(--pad-sm);
+					border: var(--border-width) solid var(--color-border);
+					border-radius: var(--radius-xs);
+					background: var(--arch-surface);
+				}
+
+				.lane-step:not(:last-child)::after {
+					content: '↓';
+					display: block;
+					text-align: center;
+					color: var(--arch-line);
+					margin-block-start: calc(var(--gutter-sm) * -0.5);
+				}
+
+				.lane-step strong {
+					font-size: var(--text-sm);
+				}
+
+				.lane-step small,
+				.lane-step code {
+					font-family: var(--font-mono);
+					font-size: var(--text-xs);
+					color: var(--color-text-muted);
+				}
+
+				zone-grid {
+					display: grid;
+					gap: var(--gutter-sm);
+					grid-template-columns: 1fr 16rem;
+					grid-template-rows: auto auto;
+					grid-template-areas:
+						'main panel'
+						'modal panel';
+					min-block-size: 18rem;
+					padding: var(--pad-sm);
+					border: var(--border-width) dashed var(--arch-line);
+					border-radius: var(--radius-sm);
+					background: var(--color-surface-alt);
+				}
+
+				zone-box {
+					display: grid;
+					gap: var(--gutter-2xs);
+					align-content: center;
+					justify-items: center;
+					padding: var(--pad-sm);
+					border: var(--border-width) solid var(--color-border);
+					border-radius: var(--radius-xs);
+					background: color-mix(in oklch, var(--color-primary) 6%, var(--color-surface-raised));
+					text-align: center;
+				}
+
+				zone-box code {
+					color: var(--color-primary);
+					font-weight: var(--font-weight-semibold);
+				}
+
+				zone-box small {
+					color: var(--color-text-muted);
+					font-size: var(--text-xs);
+				}
+
+				zone-box[data-zone='main'] {
+					grid-area: main;
+				}
+
+				zone-box[data-zone='panel'] {
+					grid-area: panel;
+					background: color-mix(in oklch, var(--color-primary) 10%, var(--color-surface-raised));
+				}
+
+				zone-box[data-zone='modal'] {
+					grid-area: modal;
+					border-style: dashed;
+				}
+
+				.arch-table {
+					inline-size: 100%;
+					border-collapse: collapse;
+				}
+
+				.arch-table th,
+				.arch-table td {
+					padding: var(--pad-sm);
+					border-bottom: var(--border-width) solid var(--color-border);
+					text-align: left;
+					vertical-align: top;
+				}
+
+				.arch-table th {
+					color: var(--color-text-muted);
+					font-size: var(--text-sm);
+					font-weight: var(--font-weight-semibold);
+				}
+
+				.arch-table tbody tr:hover {
+					background: color-mix(in oklch, var(--color-primary) 4%, transparent);
+				}
+
+				.arch-table code {
+					font-size: var(--text-sm);
+					color: var(--color-primary);
+				}
+
+				.arch-note {
+					margin: 0;
+					color: var(--color-text-muted);
+					font-size: var(--text-sm);
+					line-height: var(--leading-relaxed);
+					max-inline-size: 72ch;
+				}
+
+				.arch-list {
+					margin: 0;
+					padding-inline-start: var(--pad-lg);
+				}
+
+				.arch-list li + li {
+					margin-block-start: var(--marg-2xs);
+				}
+
+				.arch-zones {
+					grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr);
+				}
+
+				.arch-footer-note {
+					margin: 0;
+					color: var(--color-text-muted);
+					font-size: var(--text-sm);
+				}
+
+				@media (width < 72rem) {
+					.arch-page {
+						grid-template-columns: 1fr;
+						gap: var(--gutter-lg);
+					}
+
+					.arch-nav,
+					architecture-hero,
+					architecture-section,
+					architecture-notes,
+					architecture-footer {
+						grid-column: 1;
+					}
+
+					.arch-nav {
+						position: relative;
+						top: auto;
+						grid-row: auto;
+						display: flex;
+						flex-wrap: wrap;
+					}
+
+					.arch-nav::before {
+						inline-size: 100%;
+					}
+
+					.arch-zones {
+						grid-template-columns: 1fr;
+					}
+
+					flow-rail[data-label]::before {
+						position: static;
+						display: block;
+						transform: none;
+						padding-block-start: var(--pad-xs);
+						text-align: center;
+					}
+
+					zone-grid {
+						grid-template-columns: 1fr;
+						grid-template-areas:
+							'main'
+							'panel'
+							'modal';
+					}
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<architecture-component>
+			<div class="arch-page">
+				<nav class="arch-nav">
+					<a href="#sys">01 · Système</a>
+					<a href="#roles">02 · Couches</a>
+					<a href="#surface">03 · Surface API</a>
+					<a href="#e2e">04 · End-to-end</a>
+					<a href="#zones">05 · Zones</a>
+					<a href="#server">06 · Server</a>
+					<a href="#resp">07 · Responsabilités</a>
+					<a href="#rules">08 · Règles</a>
+					<a href="#files">09 · Fichiers</a>
+				</nav>
+
+				<architecture-hero>
+					<p class="arch-kicker">idae-machine · carte d'architecture</p>
+					<h1 class="arch-title">Comment core, seed, server, storage et UI s'articulent</h1>
+					<p class="arch-subtitle">
+						Vue totale&nbsp;: qui possède le schéma, qui le déploie, qui le relit, qui le rend à
+						l'écran, et comment une collection métier devient une UI pilotée par la machine, sans
+						code spécifique par écran.
+					</p>
+					<div class="arch-meta">
+						<span class="arch-badge">Machine core</span>
+						<span class="arch-badge">Server + meta-schema</span>
+						<span class="arch-badge">Seed / deploy</span>
+						<span class="arch-badge">IndexedDB (qoolie) + sync</span>
+						<span class="arch-badge">Shell + data-ui</span>
+						<span class="arch-badge">RBAC · socket · hooks</span>
+					</div>
+				</architecture-hero>
+
+				<!-- ====================================================== 1 -->
+				<architecture-section id="sys">
+					<h2 class="arch-h" data-n="1">Diagramme système total</h2>
+					<div class="arch-panel" data-tone="primary">
+						<architecture-nodes>
+							<flow-node>
+								<strong>Déclarations de modèle</strong>
+								<small>engineModel.ts · idae-model-core.ts · demoScheme</small>
+							</flow-node>
+							<flow-rail data-label="MachineModel (fields · fks · template · _views)"></flow-rail>
+
+							<flow-node>
+								<strong>Server bootstrap</strong>
+								<small>deployModel() → seedEngineRegistries() → seedBusinessData()</small>
+							</flow-node>
+							<flow-rail data-label="écrit Mongo : appscheme_*"></flow-rail>
+
+							<flow-node>
+								<strong>MachineServer.getModel()</strong>
+								<small
+									>relit appscheme / _field / _has_field / _view → reconstruit MachineModel</small
+								>
+							</flow-node>
+							<flow-rail data-label="GET /api/scheme"></flow-rail>
+
+							<flow-node data-tone="primary">
+								<strong>machine.boot()</strong>
+								<small
+									>loadSchema() cache-first → buildEffectiveModel(core+business) → new MachineDb →
+									createQoolie(IDB)</small
+								>
+							</flow-node>
+							<flow-rail></flow-rail>
+
+							<div class="arch-fanout">
+								<div class="arch-leaf">
+									<code>machine.logic</code><small>introspection schéma</small>
+								</div>
+								<div class="arch-leaf">
+									<code>machine.store()</code><small>reads réactifs</small>
+								</div>
+								<div class="arch-leaf">
+									<code>machine.collection()</code><small>CRUD impératif</small>
+								</div>
+								<div class="arch-leaf">
+									<code>machine.framer</code><small>frames dynamiques</small>
+								</div>
+								<div class="arch-leaf">
+									<code>machine.router</code><small>navigation hash</small>
+								</div>
+								<div class="arch-leaf"><code>machine.rights</code><small>RBAC / user</small></div>
+								<div class="arch-leaf">
+									<code>machine.action</code><small>writes user-scoped</small>
+								</div>
+								<div class="arch-leaf">
+									<code>machine.sync · socket</code><small>push server → local</small>
+								</div>
+							</div>
+							<flow-rail></flow-rail>
+
+							<flow-node data-tone="store">
+								<strong>shell + data-ui</strong>
+								<small
+									>TemplateShell · Frame · Explorer · Synthesis · DataList · DataForm ·
+									DataRecord</small
+								>
+							</flow-node>
+							<flow-rail></flow-rail>
+
+							<flow-node data-tone="store">
+								<strong>App runtime piloté par schéma</strong>
+							</flow-node>
+						</architecture-nodes>
+					</div>
+				</architecture-section>
+
+				<!-- ====================================================== 2 -->
+				<architecture-section id="roles">
+					<h2 class="arch-h" data-n="2">Carte des rôles par couche</h2>
+					<architecture-grid>
+						<group-card class="arch-card">
+							<h3>Machine core</h3>
+							<p><code>src/lib/main/machine.ts</code></p>
+							<p>
+								Orchestrateur du runtime&nbsp;: boot, résolution du schéma, création du store IDB
+								(qoolie), wiring socket/sync, injection router/framer, chargement des droits, API
+								publique <code>machine.*</code>. Singleton, ne jamais importer les internes.
+							</p>
+							<group-chip>
+								<span class="arch-badge">boot()</span>
+								<span class="arch-badge">logic</span>
+								<span class="arch-badge">store()</span>
+								<span class="arch-badge">collection()</span>
+								<span class="arch-badge">framer</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Cerveau du schéma</h3>
+							<p><code>machineDb.ts</code> + <code>machineParserForge.ts</code></p>
+							<p>
+								Couche <strong>pure</strong> d'introspection. Parse les règles de champ, expose les
+								collections comme <code>MachineScheme</code>, calcule vues, types, labels, defaults,
+								validation. Pas d'I/O, déterministe.
+							</p>
+							<group-chip>
+								<span class="arch-badge">pure</span>
+								<span class="arch-badge">parser</span>
+								<span class="arch-badge">views</span>
+								<span class="arch-badge">field metadata</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Owner du meta-schema</h3>
+							<p><code>server/src/MachineServer.ts</code></p>
+							<p>
+								Possède le meta-schema autoritaire en Mongo. Relit <code>appscheme_*</code>,
+								reconstruit un <code>MachineModel</code>, sert <code>/api/scheme</code>, déploie les
+								modèles, démarre routes (auth/data/files/mail) et socket IO.
+							</p>
+							<group-chip>
+								<span class="arch-badge">/api/scheme</span>
+								<span class="arch-badge">deployModel()</span>
+								<span class="arch-badge">socket</span>
+								<span class="arch-badge">routes</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Pipeline seed / deploy</h3>
+							<p><code>server/src/bootstrap/*.ts</code></p>
+							<p>
+								Transforme un <code>MachineModel</code> en lignes engine&nbsp;: registries,
+								collections, fields, relations, views, puis seed des users et des données métier.
+								Pont entre le code déclaratif et les meta-documents Mongo.
+							</p>
+							<group-chip>
+								<span class="arch-badge">deployModel()</span>
+								<span class="arch-badge">seedUsers()</span>
+								<span class="arch-badge">seedBusinessData()</span>
+								<span class="arch-badge">bootstrap-demo.ts</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Runtime storage / sync</h3>
+							<p><code>qoolie</code> + schema cache + IDB drift adapter</p>
+							<p>
+								Une fois booté, le client vit sur IndexedDB. Schéma caché, drift détecté, stores
+								migrés. sync + socket repoussent l'état server dans la data locale réactive.
+								<strong>Reads = store · CRUD = collection</strong> (ne jamais mélanger).
+							</p>
+							<group-chip>
+								<span class="arch-badge">IndexedDB</span>
+								<span class="arch-badge">schema cache</span>
+								<span class="arch-badge">drift</span>
+								<span class="arch-badge">sync</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Shell + UI générique</h3>
+							<p><code>shell/*</code> + <code>data-ui/*</code></p>
+							<p>
+								Le shell donne les zones et points de montage (Frame dynamique). La data-ui consomme
+								la metadata du schéma et rend records, forms, lists, relations FK/RFK et navigation
+								sans code par collection.
+							</p>
+							<group-chip>
+								<span class="arch-badge">Frame.svelte</span>
+								<span class="arch-badge">TemplateShell</span>
+								<span class="arch-badge">DataList</span>
+								<span class="arch-badge">DataForm</span>
+							</group-chip>
+						</group-card>
+					</architecture-grid>
+				</architecture-section>
+
+				<!-- ====================================================== 3 -->
+				<architecture-section id="surface">
+					<h2 class="arch-h" data-n="3">Surface API · <code>machine.*</code></h2>
+					<div class="arch-panel">
+						<table class="arch-table">
+							<thead>
+								<tr>
+									<th>Accès</th>
+									<th>Type</th>
+									<th>Rôle</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>machine.init(opts)</code></td>
+									<td>setup</td>
+									<td>org / domain / version / core / business / sync / socket</td>
+								</tr>
+								<tr>
+									<td><code>await machine.boot()</code></td>
+									<td>async</td>
+									<td>point d'entrée : schéma, MachineDb, qoolie, rights, drift</td>
+								</tr>
+								<tr>
+									<td><code>machine.destroy()</code></td>
+									<td>teardown</td>
+									<td>arrêt sync/socket, libération stores</td>
+								</tr>
+								<tr>
+									<td><code>machine.logic</code></td>
+									<td>MachineDb</td>
+									<td>couche schéma (introspection pure)</td>
+								</tr>
+								<tr>
+									<td><code>machine.store(name, query?)</code></td>
+									<td>réactif</td>
+									<td><code>{ items }</code> read-only (runes Svelte 5)</td>
+								</tr>
+								<tr>
+									<td><code>machine.collection(name)</code></td>
+									<td>impératif</td>
+									<td>QoolieCollection, CRUD brut</td>
+								</tr>
+								<tr>
+									<td><code>machine.rights</code></td>
+									<td>MachineRights</td>
+									<td>RBAC + utilisateur courant</td>
+								</tr>
+								<tr>
+									<td><code>machine.action</code></td>
+									<td>dispatcher</td>
+									<td>writes user-scoped (prefs / history / activity / favoris)</td>
+								</tr>
+								<tr>
+									<td><code>machine.sync</code></td>
+									<td>controller</td>
+									<td>contrôleur de sync qoolie</td>
+								</tr>
+								<tr>
+									<td><code>machine.socket</code></td>
+									<td>client</td>
+									<td>EventDataClientInstance (push temps réel)</td>
+								</tr>
+								<tr>
+									<td><code>machine.router</code></td>
+									<td>MachineRouter</td>
+									<td>dispatcher URL/hash</td>
+								</tr>
+								<tr>
+									<td><code>machine.framer</code></td>
+									<td>FrameManager</td>
+									<td>loadFrame / loadIn / loadInDialog</td>
+								</tr>
+								<tr>
+									<td><code>machine.componentRegistry</code></td>
+									<td>façade</td>
+									<td>register / resolve / has / keys</td>
+								</tr>
+								<tr>
+									<td><code>machine.be</code></td>
+									<td>builders</td>
+									<td>helpers query / field</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="arch-note">
+							⚠ Invariant&nbsp;: <code>machine.init()</code> puis
+							<code>await machine.boot()</code> avant tout accès store/logic/shell. Jamais importer
+							les singletons internes (<code>machineFrameManager</code>,
+							<code>componentRegistry</code>) directement.
+						</p>
+					</div>
+				</architecture-section>
+
+				<!-- ====================================================== 4 -->
+				<architecture-section id="e2e">
+					<h2 class="arch-h" data-n="4">Articulation end-to-end</h2>
+					<architecture-flow>
+						<group-lane>
+							<h3>A. Authoring → seed → Mongo</h3>
+							<div class="lane-step">
+								<strong>Déclarations</strong
+								><code>engineModel.ts · idae-model-core.ts · demoScheme</code>
+							</div>
+							<div class="lane-step">
+								<strong>deployModel()</strong
+								><small
+									>ensureCodeField · base rows · appscheme(_field/_has_field/_view) rows</small
+								>
+							</div>
+							<div class="lane-step">
+								<strong>seedUsers + seedBusinessData</strong
+								><small>RBAC grants + données métier</small>
+							</div>
+							<div class="lane-step">
+								<strong>Mongo <code>{org}_machine_app</code></strong
+								><small>appscheme_* = schéma machine-readable déployable</small>
+							</div>
+							<ul class="arch-list">
+								<li><strong>Central :</strong> le server possède la baseline.</li>
+								<li>
+									<strong>Nuance :</strong> le client ne lit pas <code>idae-model-core</code> comme
+									vérité live.
+								</li>
+								<li><strong>Résultat :</strong> Mongo = source de schéma active.</li>
+							</ul>
+						</group-lane>
+
+						<group-lane>
+							<h3>B. Server → boot → runtime local</h3>
+							<div class="lane-step">
+								<strong>MachineServer.getModel()</strong
+								><small>relit appscheme_* → rebuild MachineModel</small>
+							</div>
+							<div class="lane-step">
+								<strong>GET /api/scheme</strong><small>JSON model servi au client</small>
+							</div>
+							<div class="lane-step">
+								<strong>loadSchema()</strong
+								><small>cache hit → start + revalidate · miss → fetch puis cache</small>
+							</div>
+							<div class="lane-step">
+								<strong>machine.boot()</strong
+								><small
+									>buildEffectiveModel · new MachineDb · loadPolicies · detectDrift ·
+									createQoolie</small
+								>
+							</div>
+							<ul class="arch-list">
+								<li><strong>Machine</strong> = conducteur, pas la source.</li>
+								<li><strong>MachineDb</strong> = cerveau schéma de l'UI/logique.</li>
+								<li><strong>Qoolie</strong> = store opérationnel local.</li>
+							</ul>
+						</group-lane>
+
+						<group-lane>
+							<h3>C. Render / nav / CRUD</h3>
+							<div class="lane-step">
+								<strong>TemplateShell</strong><small>fournit les zones de layout</small>
+							</div>
+							<div class="lane-step">
+								<strong>Frame.svelte</strong
+								><small>s'enregistre auprès de MachineFrameManager</small>
+							</div>
+							<div class="lane-step">
+								<strong>componentRegistry</strong
+								><small>explorer · fiche · card.form · synthesis · rbac.matrix</small>
+							</div>
+							<div class="lane-step">
+								<strong>DataList / DataRecord / DataForm</strong
+								><small>logic = schéma · store = reads · collection = CRUD</small>
+							</div>
+							<ul class="arch-list">
+								<li><strong>Framer</strong> = chargement dynamique par zone.</li>
+								<li><strong>Router</strong> = sémantique nav URL/hash.</li>
+								<li><strong>Data-ui</strong> générique car schéma déjà normalisé en amont.</li>
+							</ul>
+						</group-lane>
+					</architecture-flow>
+				</architecture-section>
+
+				<!-- ====================================================== 5 -->
+				<architecture-section id="zones">
+					<h2 class="arch-h" data-n="5">Frame zones &amp; sizing</h2>
+					<architecture-grid class="arch-zones">
+						<div class="arch-panel">
+							<h3>Zones (<code>data-target-zone</code>)</h3>
+							<zone-grid>
+								<zone-box data-zone="main">
+									<code>main</code>
+									<small>zone primaire, lists, forms</small>
+								</zone-box>
+								<zone-box data-zone="panel">
+									<code>main.panel</code>
+									<small>panneau latéral droit</small>
+								</zone-box>
+								<zone-box data-zone="modal">
+									<code>main.modal</code> / <code>main.window</code>
+									<small>overlay modal · fenêtre flottante</small>
+								</zone-box>
+							</zone-grid>
+						</div>
+						<div class="arch-panel" data-tone="primary">
+							<h3><code>createHost(target, { fill })</code></h3>
+							<p>
+								<code>fill: true</code> (défaut) → <code>position:absolute; inset:0</code>. Correct
+								pour une <strong>zone dimensionnée</strong> (main, panel). Utilisé par
+								<code>shell/Frame.svelte</code>.
+							</p>
+							<p>
+								<code>fill: false</code> → <code>position:relative</code> (flux normal). Requis pour
+								les hôtes <strong>content-driven</strong> (Dialog flottant auto-dimensionné).
+							</p>
+							<p class="arch-note">
+								⚠ Trap&nbsp;: dialog hôte avec <code>fill:true</code> → n'affiche que la 1ère ligne
+								(hôte collapse, contenu overflow invisible). Vérifier ça en premier.
+							</p>
+						</div>
+					</architecture-grid>
+				</architecture-section>
+
+				<!-- ====================================================== 6 -->
+				<architecture-section id="server">
+					<h2 class="arch-h" data-n="6">Server · au-delà du schéma</h2>
+					<architecture-grid>
+						<group-card class="arch-card">
+							<h4>Routes</h4>
+							<p><code>routes/scheme · auth · data · files · mail · health · bootstrap</code></p>
+							<p>API REST par domaine, montées par <code>MachineServer</code>.</p>
+						</group-card>
+						<group-card class="arch-card">
+							<h4>Services</h4>
+							<p>
+								<code
+									>AuthService · GrantService · AuditService · MailService · ImageService ·
+									FileService</code
+								>
+							</p>
+							<p>Logique métier server-side, hors meta-schema.</p>
+						</group-card>
+						<group-card class="arch-card">
+							<h4>RBAC / permission</h4>
+							<p><code>middleware/permission.ts · GrantService</code></p>
+							<p>Grants seedés depuis le model, appliqués par middleware.</p>
+						</group-card>
+						<group-card class="arch-card">
+							<h4>Hooks</h4>
+							<p><code>hooks/HooksRegistry.ts · builtins.ts · domainActions.ts</code></p>
+							<p>Hooks de cycle de vie + actions de domaine déclaratives.</p>
+						</group-card>
+						<group-card class="arch-card">
+							<h4>Sync / socket</h4>
+							<p><code>sync/ConflictResolver.ts · socket/conflictHandler.ts</code></p>
+							<p>Résolution de conflit + push temps réel vers les clients.</p>
+						</group-card>
+						<group-card class="arch-card">
+							<h4>Images / fichiers</h4>
+							<p><code>ImagePresetRegistry · ImageResolver · FileService</code></p>
+							<p>Presets d'image, résolution d'URL, upload.</p>
+						</group-card>
+					</architecture-grid>
+				</architecture-section>
+
+				<!-- ====================================================== 7 -->
+				<architecture-section id="resp">
+					<h2 class="arch-h" data-n="7">Responsabilités en une table</h2>
+					<div class="arch-panel">
+						<table class="arch-table">
+							<thead>
+								<tr>
+									<th>Zone</th>
+									<th>Fichiers</th>
+									<th>Possède</th>
+									<th>Ne possède pas</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Machine core</td>
+									<td><code>main/machine.ts</code></td>
+									<td>Boot, qoolie, exposition router/framer, wiring rights/action/socket/sync</td>
+									<td>La persistance du meta-schema</td>
+								</tr>
+								<tr>
+									<td>Schema parsing</td>
+									<td><code>machineDb.ts</code>, <code>machineParserForge.ts</code></td>
+									<td>Parsing champs, introspection collections, dérivation vues, metadata</td>
+									<td>Le réseau, le déploiement storage</td>
+								</tr>
+								<tr>
+									<td>Engine model</td>
+									<td><code>types/engineModel.ts</code>, <code>idae-model-core.ts</code></td>
+									<td>Description déclarative des collections machine + fields/fks/template</td>
+									<td>Le boot runtime</td>
+								</tr>
+								<tr>
+									<td>Model merge</td>
+									<td><code>machineModelBuilder.ts</code></td>
+									<td>Merge pur core + business, invariant <code>code</code></td>
+									<td>L'I/O</td>
+								</tr>
+								<tr>
+									<td>Server</td>
+									<td><code>server/src/MachineServer.ts</code></td>
+									<td>R/W meta-schema Mongo, API, deploy, routes, sockets</td>
+									<td>Le rendu client</td>
+								</tr>
+								<tr>
+									<td>Seed</td>
+									<td><code>bootstrap/deployModel.ts</code>, <code>bootstrap-demo.ts</code></td>
+									<td>MachineModel → lignes appscheme + seed démo</td>
+									<td>UI</td>
+								</tr>
+								<tr>
+									<td>Shell</td>
+									<td>
+										<code>TemplateShell.svelte</code>, <code>Frame.svelte</code>,
+										<code>MachineFrameManager.ts</code>
+									</td>
+									<td>Zones, points de montage, cycle de vie frames, chargement dynamique</td>
+									<td>Les règles de validation métier</td>
+								</tr>
+								<tr>
+									<td>Generic data-ui</td>
+									<td><code>DataList</code>, <code>DataForm</code>, <code>DataRecord</code></td>
+									<td>Lists/forms/records/relations pilotés par schéma</td>
+									<td>L'authoring du schéma</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</architecture-section>
+
+				<!-- ====================================================== 8 -->
+				<architecture-section id="rules">
+					<h2 class="arch-h" data-n="8">Règles runtime clés</h2>
+					<architecture-grid>
+						<group-card class="arch-card"
+							><h4>Boot first</h4>
+							<p>
+								<code>machine.init()</code> puis <code>await machine.boot()</code> avant
+								store/logic/shell.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Server possède le core schema</h4>
+							<p>
+								La baseline est déployée en Mongo puis servie. Le client n'importe pas le core comme
+								vérité live.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Le parser reste pur</h4>
+							<p>
+								<code>MachineParserForge</code> ne parse que règles + metadata. Pas d'I/O, pas
+								d'effets de bord.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Reads vs CRUD</h4>
+							<p>
+								<code>machine.store</code> (réactif) pour lire,
+								<code>machine.collection</code> (impératif) pour écrire. Mélanger = qoolie dual-bus
+								→ reads vides.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Framer = pont UI</h4>
+							<p>
+								Nav résolue en zones + composants via <code>MachineFrameManager</code> +
+								<code>componentRegistry</code>, pas de mounts hardcodés.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Seed ≠ runtime</h4>
+							<p>
+								Bootstrap écrit le meta-schema en Mongo. Le boot relit puis crée le storage local
+								opérationnel.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Custom tag = display explicite</h4>
+							<p>
+								Chaque tag custom déclare son <code>display</code> CSS. Manquant = inline = layout
+								cassé.
+							</p></group-card
+						>
+						<group-card class="arch-card"
+							><h4>Runes Svelte 5 only</h4>
+							<p>
+								<code>$state · $derived · $effect · $props · $bindable</code>. Pas de
+								<code>$:</code>, <code>onMount</code>, <code>export let</code>.
+							</p></group-card
+						>
+					</architecture-grid>
+				</architecture-section>
+
+				<!-- ====================================================== 9 -->
+				<architecture-section id="files">
+					<h2 class="arch-h" data-n="9">Index pratique des fichiers</h2>
+					<div class="arch-panel">
+						<table class="arch-table">
+							<thead>
+								<tr>
+									<th>Fichier</th>
+									<th>Rôle</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>src/lib/main/machine.ts</code></td>
+									<td>singleton public / orchestration boot / accès qoolie + framer + rights</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/machineDb.ts</code></td>
+									<td>façade d'introspection schéma au-dessus du modèle effectif</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/machineParserForge.ts</code></td>
+									<td>parser des règles de champ (collection/field logic)</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/machineModelBuilder.ts</code></td>
+									<td>merge pur core + business + invariant <code>code</code></td>
+								</tr>
+								<tr>
+									<td>
+										<code>src/lib/main/machineSchemaLoader.ts</code> ·
+										<code>machineSchemaCache.ts</code>
+									</td>
+									<td>loadSchema cache-first + revalidation</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/machineIdbAdapter.ts</code></td>
+									<td>détection de drift IDB + migration des stores</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/machine/MachineRights.ts</code></td>
+									<td>RBAC, policies, utilisateur courant</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/machine/MachineAction.ts</code></td>
+									<td>dispatcher des writes user-scoped</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/frame/MachineFrameManager.ts</code></td>
+									<td>hôte / mount / registry SvelteMap des frames</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/main/router/componentRegistry.ts</code></td>
+									<td>registre des types de frame</td>
+								</tr>
+								<tr>
+									<td>
+										<code>src/lib/types/engineModel.ts</code> · <code>idae-model-core.ts</code>
+									</td>
+									<td>déclarations engine déployables</td>
+								</tr>
+								<tr>
+									<td><code>server/src/bootstrap/deployModel.ts</code></td>
+									<td>MachineModel → lignes Mongo <code>appscheme_*</code></td>
+								</tr>
+								<tr>
+									<td><code>server/src/MachineServer.ts</code></td>
+									<td>rebuild MachineModel depuis Mongo + runtime server</td>
+								</tr>
+								<tr>
+									<td><code>server/src/bootstrap/bootstrap-demo.ts</code></td>
+									<td>chaîne clear → seed → deploy → données démo</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/shell/Frame.svelte</code></td>
+									<td>hôte de frame dynamique (mechanic)</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/shell/layout/TemplateShell.svelte</code></td>
+									<td>squelette layout avec zones cibles</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/data-ui/data/DataList.svelte</code></td>
+									<td>listing / grouping / sorting / nav réactif</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/data-ui/data/DataForm.svelte</code></td>
+									<td>formulaire CRUD générique + validateurs</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/data-ui/data/DataRecord.svelte</code></td>
+									<td>détail record (data prop OU collectionId via store)</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</architecture-section>
+
+				<architecture-notes class="arch-panel" data-tone="primary">
+					<h3>Modèle mental en une ligne</h3>
+					<p>
+						<strong>Server/bootstrap</strong> fabrique et stocke le schéma machine-readable,
+						<strong>machine core</strong> boote un runtime local réactif à partir de lui, et
+						<strong>shell/data-ui</strong> rendent des interfaces génériques en consommant ce schéma
+						parsé au lieu de hardcoder des écrans métier.
+					</p>
+				</architecture-notes>
+
+				<architecture-footer>
+					<p class="arch-footer-note">
+						Vérifié contre le codebase (paths, surface <code>machine.*</code>, componentRegistry,
+						zones, services server) et restylé le 2026-05-31.
+					</p>
+				</architecture-footer>
+			</div>
+		</architecture-component>
+	</body>
+</html>

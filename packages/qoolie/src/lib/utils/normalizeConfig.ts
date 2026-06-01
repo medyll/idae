@@ -13,6 +13,7 @@ export interface NormalizedCollectionConfig {
   keyPath: string;
   syncEnabled: boolean;
   syncConfig: SyncConfig | null;
+  autoHydrate: boolean;
 }
 
 /**
@@ -120,6 +121,7 @@ export function normalizeConfig<T extends CollectionConfigMap>(
       keyPath: config.keyPath,
       syncEnabled: collectionSyncEnabled,
       syncConfig: collectionSyncConfig,
+      autoHydrate: config.autoHydrate !== false,
     });
   }
   

@@ -40,10 +40,31 @@ export type TplFieldFk = `fk-${string}.${string}`;
 export type TplFkObject = IdbObjectify<TplFieldFk>;
 export type TplTypes = TplFieldPrimitive | TplObjectFieldPrimitive | TplFieldFk | TplFkObject;
 
+/**
+ * @deprecated Legacy string format. Use `TplFieldRulesObject` + `field()` builder instead.
+ * @example Before: 'text-long (required)'
+ * @example After:  field('text-long', { required: true })
+ */
 export type TplFieldArgs = `${TplTypes} (${CombinedArgs})`;
 
-/** rules */
-export type TplFieldRules = TplFieldArgs | TplTypes;
+/**
+ * Object-based field declaration — new world format.
+ * Replaces string rules like 'text-long (required)'.
+ * @example { type: 'text', required: true }
+ * @example { type: 'fk-category.id' }
+ */
+export type TplFieldRulesObject = {
+	type:      TplTypes;
+	required?: boolean;
+	readonly?: boolean;
+	private?:  boolean;
+};
+
+/**
+ * Field rules — union of legacy string form and new object form.
+ * Prefer `TplFieldRulesObject` for new schemas.
+ */
+export type TplFieldRules = TplFieldArgs | TplTypes | TplFieldRulesObject;
 export type TplFieldType = TplFieldArgs | TplTypes;
 
 export type IDbForge = {
@@ -68,6 +89,8 @@ export type CollectionModel<T = TplCollectionFields> = {
 	/** @deprecated use ts instead */
 	model:    any;
 	ts:       any; // put typing here , as type
+	/** Module database name (without org/domain prefix). Used by server to route to the right MongoDB database. e.g. 'machine_base' → '{org}_{domain}_machine_base' */
+	base?:    string;
 	template: {
 		index:        string;
 		presentation: CombineElements<Extract<keyof CollectionModel<T>['ts'], string>>;

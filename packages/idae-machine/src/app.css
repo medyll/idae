@@ -1,1 +1,13 @@
-@import 'tailwindcss';
+@import '@medyll/css-base';
+@import './styles/shell.css';
+@import './styles/components.css';
+
+:root {
+  /* layout dimensions — not in css-base */
+  --sidebar-width: 240px;
+  --header-height: 48px;
+  --panel-width:   400px;
+
+  /* --color-bg maps to css-base surface-sunken */
+  --color-bg: var(--color-surface-sunken);
+}

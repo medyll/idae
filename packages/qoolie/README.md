@@ -1,19 +1,8 @@
 # @medyll/qoolie
 
-> **Client database IndexedDB the easy way, add server sync. JWT auth, multi-tenancy, custom headers — all configured in one place. The unified data layer for your frontend.**
+IndexedDB client with optional server sync. Offline-first, reactive, framework-agnostic.
 
-🔧 **Your strategy** | 🔐 **Auth-ready** | 🔄 **Sync when you want** | 🏢 **Multi-tenant** | 🎛️ **Full API control**
-
-## Features
-
-- **Single Namespace**: All CRUD operations via `qoolie.collection('name')`
-- **Optional Sync**: Enable/disable sync per collection
-- **Auto-Detection**: API endpoint detected from environment or browser
-- **Full API Client Control**: All `IdaeApiClient` options exposed (host, port, method, defaultDb, headers)
-- **JWT Authentication**: Token-based auth for protected APIs
-- **Multi-Tenancy**: Tenant ID support for isolated data
-- **Reactive State**: Works with Svelte 5 runes or idae-stator
-- **Type-Safe**: Full TypeScript inference
+---
 
 ## Installation
 
@@ -21,7 +10,11 @@
 pnpm add @medyll/qoolie
 ```
 
-## Quick Start
+---
+
+## Basic usage
+
+Create a database, read and write records.
 
 ```typescript
 import { createQoolie } from '@medyll/qoolie';
@@ -29,68 +22,79 @@ import { createQoolie } from '@medyll/qoolie';
 const qoolie = createQoolie({
   dbName: 'my-app',
   dbVersion: 1,
-  
-  // Global sync config
-  sync: {
-    enabled: true,
-    databaseHost: 'https://api.example.com',
-    token: 'your-jwt-token',
-    tenantId: 'tenant-123',  // Multi-tenancy
-    defaultDb: 'app',
-    mode: 'mobile-first',
-  },
-  
   collections: {
-    users: { keyPath: 'id', sync: true },
-    drafts: { keyPath: 'id', sync: false },  // Local only
+    users: { keyPath: '++id' },
+    posts: { keyPath: '++id' },
   },
 });
 
-// CRUD operations
-await qoolie.users.create({ name: 'Alice', age: 30 });
-const adults = qoolie.users.where({ age: { $gte: 18 } });
+// Write
+await qoolie.collection.users.create({ name: 'Alice', age: 30 });
+await qoolie.collection.users.update(1, { age: 31 });
+await qoolie.collection.users.delete(1);
 
-// Sync control
-qoolie.sync.pause();
-qoolie.sync.resume();
-
-// Update token (e.g., after login/refresh)
-qoolie.sync.setToken('new-jwt-token');
-
-// Update tenant (e.g., user switches organization)
-qoolie.sync.setTenantId('tenant-456');
-
-// Add custom headers
-qoolie.sync.setHeaders({ 'X-Custom-Header': 'value' });
+// Read
+const user  = await qoolie.collection.users.get(1);
+const all   = qoolie.collection.users.getAll();
+const found = qoolie.collection.users.where({ age: { $gte: 18 } });
+const count = await qoolie.collection.users.count();
 ```
 
-## API Reference
+`getAll()` and `where()` return synchronous snapshots from in-memory state. `get()`, `create()`, `update()`, `delete()` are async and hit IndexedDB.
 
-### Initialization
+---
+
+## CRUD reference
 
 ```typescript
-createQoolie(options: QoolieOptions<T>): QoolieInstance<T>
+// Create — returns the inserted record
+const user = await col.create({ name: 'Bob' });
+
+// Get by primary key
+const user = await col.get(id);
+
+// Get all (synchronous snapshot)
+const users = col.getAll();
+
+// Query with filter (synchronous snapshot)
+const adults = col.where({ age: { $gte: 18 } });
+const admins = col.where({ role: 'admin', active: true });
+
+// Update by primary key — returns updated record
+await col.update(id, { age: 32 });
+
+// Update matching records
+await col.updateWhere({ role: 'guest' }, { active: false });
+
+// Delete by primary key
+await col.delete(id);
+
+// Delete matching records
+await col.deleteWhere({ active: false });
+
+// Count, optionally filtered
+const total  = await col.count();
+const active = await col.count({ active: true });
 ```
 
-#### QoolieOptions
+### Query operators
 
 ```typescript
-interface QoolieOptions<T extends CollectionConfigMap> {
-  dbName: string;
-  dbVersion?: number;
-  sync?: SyncConfig | false;
-  collections: T;
-  stateEngine?: 'svelte5' | 'stator';  // Default: 'svelte5'
-  hooks?: {
-    onSyncEvent?: (event: SyncEvent) => void;
-    onError?: (error: Error, context: SyncErrorContext) => void;
-  };
-}
+col.where({ age:  { $gte: 18 } })           // greater than or equal
+col.where({ age:  { $lte: 65 } })           // less than or equal
+col.where({ age:  { $gt: 0 }  })            // greater than
+col.where({ age:  { $lt: 100 }})            // less than
+col.where({ name: { $contains: 'ali' } })   // substring match
+col.where({ role: { $in: ['admin','mod'] }})// value in array
+col.where({ role: { $nin: ['guest'] } })    // value not in array
+col.where({ bio:  { $exists: true } })      // field exists
 ```
 
-### Svelte 5 Reactivity
+---
 
-When using `stateEngine: 'svelte5'` (default), qoolie queries are reactive with Svelte 5 runes:
+## Reactive state
+
+By default, qoolie uses Svelte 5 runes (`stateEngine: 'svelte5'`). `getAll()` and `where()` are reactive — any mutation (local or synced) triggers a re-render automatically.
 
 ```svelte
 <script lang="ts">
@@ -98,323 +102,220 @@ import { createQoolie } from '@medyll/qoolie';
 
 const qoolie = createQoolie({
   dbName: 'my-app',
-  collections: {
-    users: { keyPath: '++id' }
-  }
+  collections: { users: { keyPath: '++id' } },
 });
 
-// Reactive queries with $derived
-let allUsers = $derived(qoolie.collection.users.getAll());
+let users  = $derived(qoolie.collection.users.getAll());
 let adults = $derived(qoolie.collection.users.where({ age: { $gte: 18 } }));
-
-// Updates automatically when data changes!
 </script>
 
-{#each adults.value as user}
-  <p>{user.name} - {user.age}</p>
+{#each adults as user}
+  <p>{user.name}</p>
 {/each}
 
 <button onclick={() => qoolie.collection.users.create({ name: 'New', age: 25 })}>
-  Add User
+  Add
 </button>
 ```
 
-#### SyncConfig
+No manual subscriptions. No `$store`. No `onMount`. Mutations update the UI immediately.
 
-All fields are optional.
+---
 
-```typescript
-interface SyncConfig {
-  // Connection
-  enabled?: boolean;
-  databaseHost?: string;    // Full URL (overrides host/port/method)
-  host?: string;            // Default: 'localhost'
-  port?: number;            // Default: 3000
-  method?: 'http' | 'https';// Default: 'https'
-  defaultDb?: string;       // Default: 'app'
-  
-  // Authentication & Multi-tenancy
-  token?: string;             // JWT token for auth
-  tenantId?: string;          // Tenant ID for multi-tenancy
-  headers?: Record<string, string>;  // Custom headers
-  
-  // Sync behavior
-  mode?: 'mobile-first' | 'server-first';
-  intervalMs?: number;        // Default: 5000
-  maxRetries?: number;        // Default: 10
-  circuitBreaker?: {...} | false;
-  
-  // Server Push (real-time sync)
-  push?: {
-    enabled?: boolean;
-    protocol?: 'sse' | 'websocket';
-    url?: string;
-  };
-}
-```
+## Server sync
 
-All `IdaeApiClientConfig` options are supported for full compatibility with idae-api.
-
-### Framework Integrations
-
-#### React Hooks
+Enable sync to push local writes to a backend and pull remote changes.
 
 ```typescript
-import { useQoolie, useQoolieCollection, useQoolieSync } from '@medyll/qoolie/react';
-
-function App() {
-  const { qoolie } = useQoolie({
-    dbName: 'my-app',
-    sync: { enabled: true },
-    collections: { users: { keyPath: 'id' } },
-  });
-
-  return <UsersList />;
-}
-
-function UsersList() {
-  const { data, loading, error, refresh } = useQoolieCollection('users', {
-    query: (collection) => collection.where({ active: true }).toArray(),
-    reactive: true,
-  });
-
-  const { status, pause, resume } = useQoolieSync();
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-
-  return (
-    <div>
-      <span>Queue: {status.queueLength}</span>
-      <button onClick={pause}>Pause Sync</button>
-      <ul>
-        {data.map(user => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-```
-
-#### Vue 3 Composables
-
-```vue
-<script setup lang="ts">
-import { useQoolie, useQoolieCollection, useQoolieSync } from '@medyll/qoolie/vue';
-
-const { qoolie } = useQoolie({
+const qoolie = createQoolie({
   dbName: 'my-app',
-  sync: { enabled: true },
-  collections: { users: { keyPath: 'id' } },
+  dbVersion: 1,
+
+  sync: {
+    enabled:      true,
+    databaseHost: 'https://api.example.com',
+    token:        localStorage.getItem('jwt') ?? undefined,
+    mode:         'mobile-first', // or 'server-first'
+    intervalMs:   5000,
+  },
+
+  collections: {
+    users: { keyPath: '++id', sync: true  },
+    drafts:{ keyPath: '++id', sync: false }, // local-only
+  },
 });
-
-const { data, loading, error, refresh } = useQoolieCollection('users', {
-  query: (collection) => collection.where({ active: true }).toArray(),
-  reactive: true,
-});
-
-const { status, pause, resume } = useQoolieSync();
-</script>
-
-<template>
-  <div v-if="loading">Loading...</div>
-  <div v-else-if="error">Error: {{ error.message }}</div>
-  <div v-else>
-    <span>Queue: {{ status?.queueLength }}</span>
-    <button @click="pause">Pause Sync</button>
-    <ul>
-      <li v-for="user in data" :key="user.id">{{ user.name }}</li>
-    </ul>
-  </div>
-</template>
 ```
 
-- `qoolie.collection.where(query)` - Query with filters
-- `qoolie.collection.get(id)` - Get by ID
-- `qoolie.collection.create(data)` - Create document
-- `qoolie.collection.update(id, data)` - Update by ID
-- `qoolie.collection.delete(id)` - Delete by ID
-- `qoolie.collection.deleteWhere(query)` - Bulk delete
+Writes go to the outbox immediately. The sync adapter flushes them in the background. On conflict, the configured strategy resolves automatically.
 
-### Sync Control
+### Sync modes
 
-- `qoolie.sync.pause()` - Pause sync
-- `qoolie.sync.resume()` - Resume sync
-- `qoolie.sync.getStatus()` - Get sync status
-- `qoolie.sync.flush()` - Flush pending operations
-- `qoolie.sync.onEvent(handler)` - Listen to sync events
-- `qoolie.sync.setToken(token)` - Update JWT token
-- `qoolie.sync.clearToken()` - Clear JWT token
-- `qoolie.sync.setTenantId(tenantId)` - Update tenant ID
-- `qoolie.sync.setHeaders(headers)` - Update custom headers
-- `qoolie.sync.configure(options)` - Update any client option
-- `qoolie.sync.dlq.list()` - List failed operations
-- `qoolie.sync.dlq.replay(id)` - Retry failed operation
-- `qoolie.sync.dlq.clear()` - Clear DLQ
+| Mode | Behavior |
+|------|----------|
+| `mobile-first` | Local writes first, sync in background (default) |
+| `server-first` | Block on server confirmation before updating local state |
 
-### DevTools Panel
-
-Debug sync operations with the built-in DevTools panel:
+### Sync control
 
 ```typescript
-import { createDevTools } from '@medyll/qoolie/devtools';
-const devtools = createDevTools(qoolie);
-devtools.toggle();
+qoolie.sync.pause();
+qoolie.sync.resume();
+
+const status = qoolie.sync.getStatus();
+// { running, queueLength, dlqLength, lastSyncAt }
+
+await qoolie.sync.flush();          // drain outbox now
+qoolie.sync.onEvent(handler);       // listen to sync events
+
+qoolie.sync.setToken('new-token');  // update JWT after login
+qoolie.sync.clearToken();           // clear JWT on logout
+qoolie.sync.setTenantId('org-456'); // switch tenant
+qoolie.sync.setHeaders({ 'X-Custom': 'value' });
 ```
 
-### Migrations
+### Dead-letter queue
 
-Manage IndexedDB schema changes:
+Failed operations move to the DLQ after `maxRetries` attempts.
 
 ```typescript
-import { defineMigration, runMigrations } from '@medyll/qoolie/migrations';
-
-const migrations = [
-  defineMigration(2, (db) => {
-    db.createObjectStore('posts', { keyPath: 'id' });
-  }),
-  defineMigration(3, async (db, tx) => {
-    // Migrate data
-  }),
-];
-
-await runMigrations('my-app', migrations);
+const failed = await qoolie.sync.dlq.list();
+await qoolie.sync.dlq.replay(failed[0].id);
+await qoolie.sync.dlq.clear();
 ```
 
-### Benchmarks
-
-Run performance benchmarks:
-
-```bash
-pnpm run bench
-```
+---
 
 ## Authentication
 
-Qoolie supports JWT authentication for protected APIs:
-
 ```typescript
-// Initialize with token
 const qoolie = createQoolie({
   dbName: 'my-app',
   sync: {
     enabled: true,
-    token: localStorage.getItem('jwt'),
+    token:   localStorage.getItem('jwt') ?? undefined,
   },
-  collections: { ... },
+  collections: { users: { keyPath: '++id' } },
 });
 
-// Update token after login
-async function login(credentials) {
-  const response = await fetch('/api/login', {
+async function login(credentials: { email: string; password: string }) {
+  const res = await fetch('/api/login', {
     method: 'POST',
-    body: JSON.stringify(credentials),
+    body:   JSON.stringify(credentials),
   });
-  const { token } = await response.json();
+  const { token } = await res.json();
   qoolie.sync.setToken(token);
   localStorage.setItem('jwt', token);
 }
 
-// Clear token on logout
 function logout() {
   qoolie.sync.clearToken();
   localStorage.removeItem('jwt');
 }
 ```
 
-## Multi-Tenancy
+---
 
-Qoolie supports multi-tenant architectures:
+## Multi-tenancy
 
 ```typescript
-// Initialize with tenant
 const qoolie = createQoolie({
   dbName: 'my-app',
   sync: {
-    enabled: true,
-    token: '...',
-    tenantId: 'tenant-123',  // Required for tenant isolation
+    enabled:  true,
+    token:    '...',
+    tenantId: 'org-123',
   },
   collections: { ... },
 });
 
-// Switch tenant (e.g., user changes organization)
-function switchTenant(newTenantId: string) {
-  qoolie.sync.setTenantId(newTenantId);
-  localStorage.setItem('tenantId', newTenantId);
+function switchOrg(orgId: string) {
+  qoolie.sync.setTenantId(orgId);
 }
 ```
 
-## Custom Headers
+---
 
-Add custom headers to all API requests:
+## Full sync configuration
+
+```typescript
+interface SyncConfig {
+  // Transport
+  enabled?:      boolean;
+  databaseHost?: string;                // full URL — overrides host/port/method
+  host?:         string;                // default: 'localhost'
+  port?:         number;                // default: 3000
+  method?:       'http' | 'https';      // default: 'https'
+  defaultDb?:    string;
+
+  // Auth & identity
+  token?:    string;
+  tenantId?: string;
+  headers?:  Record<string, string>;
+
+  // Behavior
+  mode?:        'mobile-first' | 'server-first';
+  intervalMs?:  number;                // default: 5000
+  maxRetries?:  number;                // default: 10
+  circuitBreaker?: {
+    enabled?:         boolean;
+    failureThreshold?: number;
+    resetTimeoutMs?:   number;
+  } | false;
+
+  // Server push
+  push?: {
+    enabled?:  boolean;
+    protocol?: 'sse' | 'websocket';
+    url?:      string;
+  };
+}
+```
+
+---
+
+## Server push (real-time)
+
+Receive changes from the server without polling.
 
 ```typescript
 const qoolie = createQoolie({
   dbName: 'my-app',
   sync: {
-    enabled: true,
-    headers: {
-      'X-API-Version': 'v2',
-      'X-Custom-Header': 'value',
+    enabled:      true,
+    databaseHost: 'https://api.example.com',
+    token:        '...',
+    push: {
+      enabled:  true,
+      protocol: 'sse',
+      url:      'https://api.example.com/events',
     },
   },
-  collections: { ... },
+  collections: { users: { keyPath: '++id' } },
 });
 
-// Update headers at runtime
-qoolie.sync.setHeaders({
-  'X-New-Header': 'new-value',
-});
-
-// Or use configure for full control
-qoolie.sync.configure({
-  host: 'api.example.com',
-  port: 443,
-  method: 'https',
-  headers: { 'Authorization': 'Bearer ...' },
+qoolie.sync.onServerChange((change) => {
+  // change.type:       'create' | 'update' | 'delete'
+  // change.collection: string
+  // change.id:         string | number
+  // change.data:       record data
 });
 ```
 
-## Health Check
+---
 
-Get health status and collection statistics:
+## Data validation
 
-```typescript
-import { createQoolie, getHealthStatus, getCollectionStats } from '@medyll/qoolie';
-
-const qoolie = createQoolie({
-  dbName: 'my-app',
-  collections: { users: { keyPath: 'id' } },
-});
-
-// Get overall health status
-const health = await getHealthStatus(qoolie);
-console.log(health);
-// {
-//   indexeddb: 'connected',
-//   sync: 'running',
-//   queueLength: 5,
-//   dlqLength: 0,
-//   collections: { users: { count: 150 } },
-//   timestamp: 1234567890
-// }
-```
-
-## Data Validation
-
-Define schemas to validate data before writing:
+Define a schema per collection. Invalid writes throw `ValidationError`.
 
 ```typescript
 import { createQoolie, defineSchema } from '@medyll/qoolie';
 
 const userSchema = defineSchema({
   fields: {
-    name: { type: 'string', required: true, min: 2, max: 100 },
-    email: { type: 'email', required: true },
-    age: { type: 'number', min: 0, max: 150 },
-    role: { type: 'string', enum: ['admin', 'user', 'guest'] },
+    name:  { type: 'string',  required: true, min: 2, max: 100 },
+    email: { type: 'email',   required: true },
+    age:   { type: 'number',  min: 0, max: 150 },
+    role:  { type: 'string',  enum: ['admin', 'user', 'guest'] },
   },
 });
 
@@ -425,152 +326,210 @@ const qoolie = createQoolie({
   },
 });
 
-// Validation error on invalid data
 try {
-  await qoolie.collection.users.create({ name: 'A' }); // name too short
-} catch (error) {
-  console.log(error.errors); // Validation errors
+  await qoolie.collection.users.create({ name: 'A' });
+} catch (err) {
+  if (err instanceof ValidationError) {
+    console.log(err.errors); // field-level error list
+  }
 }
 ```
 
-## Conflict Resolution
+---
 
-Handle sync conflicts with configurable strategies:
+## Conflict resolution
+
+Configure how sync conflicts are handled when local and server records diverge.
 
 ```typescript
 import { createQoolie, ConflictResolver } from '@medyll/qoolie';
 
 const resolver = new ConflictResolver({
-  default: 'latest-timestamp', // or 'local-wins', 'server-wins', 'manual', 'custom'
+  default: 'latest-timestamp',  // 'local-wins' | 'server-wins' | 'latest-timestamp' | 'manual'
   perCollection: {
-    users: 'manual', // Require manual resolution for users
+    users: 'manual',
   },
   customResolver: (local, server) => ({
-    ...local,
     ...server,
+    ...local,
     mergedAt: Date.now(),
   }),
 });
 
-// Handle manual conflicts
 resolver.onConflict((event) => {
-  console.log('Conflict detected:', event.conflict);
-  event.resolve('local'); // or 'server', or custom data
-});
-
-// Resolve a conflict
-const resolution = await resolver.resolve({
-  collection: 'users',
-  id: 1,
-  local: { id: 1, name: 'Local' },
-  server: { id: 1, name: 'Server' },
-  localTimestamp: Date.now(),
-  serverTimestamp: Date.now() - 1000,
+  // Inspect conflict and resolve
+  event.resolve('server'); // or 'local', or custom record
 });
 ```
 
-## Server Push (Real-time Sync)
+---
 
-Enable real-time server push via SSE or WebSocket:
+## Encryption at rest
+
+Encrypt IndexedDB data with AES-GCM before it is written to disk.
 
 ```typescript
-import { createQoolie } from '@medyll/qoolie';
+import { EncryptionHelper } from '@medyll/qoolie';
 
-const qoolie = createQoolie({
-  dbName: 'my-app',
-  sync: {
-    enabled: true,
-    databaseHost: 'https://api.example.com',
-    token: 'your-jwt-token',
-    // Server push configuration
-    push: {
-      enabled: true,
-      protocol: 'sse', // or 'websocket'
-      url: 'wss://api.example.com/sync',
-    },
-  },
-  collections: { users: { keyPath: 'id' } },
-});
+const enc = new EncryptionHelper({ password: 'user-secret', salt: 'app-salt' });
+await enc.init();
 
-// Listen to server changes
-qoolie.sync.onServerChange((change) => {
-  console.log('Server change:', change);
-  // change.type: 'create' | 'update' | 'delete'
-  // change.collection: collection name
-  // change.id: document id
-  // change.data: document data
-});
-
-// Check push connection status
-console.log('Push connected:', qoolie.sync.isPushConnected());
+const encrypted = await enc.encrypt({ secret: 'sensitive' });
+const plain     = await enc.decrypt(encrypted);
 ```
 
-## Encryption at Rest
+---
 
-Encrypt IndexedDB data using AES-GCM:
+## Plugins
 
-```typescript
-import { createQoolie, EncryptionHelper } from '@medyll/qoolie';
-
-// Create encryption helper
-const encryption = new EncryptionHelper({
-  password: 'user-password',
-  salt: 'random-salt', // Store securely
-});
-
-// Initialize encryption
-await encryption.init();
-
-// Encrypt data before storing
-const data = { secret: 'sensitive-info' };
-const encrypted = await encryption.encrypt(data);
-
-// Decrypt data after reading
-const decrypted = await encryption.decrypt(encrypted);
-```
-
-## Plugin System
-
-Extend Qoolie with custom plugins:
+Extend qoolie with lifecycle hooks.
 
 ```typescript
 import { createQoolie, definePlugin } from '@medyll/qoolie';
 
-// Define a plugin
-const myPlugin = definePlugin({
-  name: 'my-plugin',
+const logPlugin = definePlugin({
+  name:    'logger',
   version: '1.0.0',
   hooks: {
-    beforeSync: (entry) => {
-      console.log('Before sync:', entry);
-      return entry;
-    },
-    afterSync: (result) => {
-      console.log('Sync completed:', result);
-    },
-    onError: (error, entry) => {
-      console.error('Sync error:', error);
-    },
+    beforeSync: (entry) => { console.log('outgoing:', entry); return entry; },
+    afterSync:  (result) => { console.log('synced:',  result); },
+    onError:    (err, entry) => { console.error('failed:', err); },
   },
 });
 
-// Use plugin
 const qoolie = createQoolie({
-  dbName: 'my-app',
-  plugins: [myPlugin],
-  collections: { users: { keyPath: 'id' } },
+  dbName:    'my-app',
+  plugins:   [logPlugin],
+  collections: { users: { keyPath: '++id' } },
 });
 ```
 
+---
+
+## Schema migrations
+
+Migrate IndexedDB structure across versions.
+
+```typescript
+import { defineMigration, runMigrations } from '@medyll/qoolie/migrations';
+
+const migrations = [
+  defineMigration(2, (db) => {
+    db.createObjectStore('posts', { keyPath: 'id' });
+  }),
+  defineMigration(3, async (db, tx) => {
+    const store = tx.objectStore('users');
+    // transform existing records
+  }),
+];
+
+await runMigrations('my-app', migrations);
+```
+
+---
+
+## Import / export
+
+```typescript
+import { exportDatabase, importDatabase, downloadExport } from '@medyll/qoolie';
+
+// Export all collections to JSON
+const snapshot = await exportDatabase(qoolie);
+downloadExport(snapshot, 'backup.json'); // triggers file download
+
+// Import (merge by default)
+await importDatabase(qoolie, snapshot, { strategy: 'merge' });
+// strategy: 'merge' | 'replace' | 'skip'
+```
+
+---
+
+## Health check
+
+```typescript
+import { getHealthStatus, getCollectionStats } from '@medyll/qoolie';
+
+const health = await getHealthStatus(qoolie);
+// {
+//   indexeddb:   'connected',
+//   sync:        'running',
+//   queueLength:  5,
+//   dlqLength:    0,
+//   collections: { users: { count: 150 } },
+//   timestamp:   1234567890
+// }
+
+const stats = await getCollectionStats(qoolie, 'users');
+```
+
+---
+
+## Framework adapters
+
+### React
+
+```typescript
+import { useQoolie, useQoolieCollection, useQoolieSync } from '@medyll/qoolie/react';
+
+function App() {
+  const { qoolie } = useQoolie({
+    dbName: 'my-app',
+    collections: { users: { keyPath: '++id' } },
+  });
+
+  const { data, loading, error } = useQoolieCollection('users', {
+    query:    (col) => col.where({ active: true }),
+    reactive: true,
+  });
+
+  const { status, pause, resume } = useQoolieSync();
+
+  if (loading) return <p>Loading...</p>;
+  return <ul>{data.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
+}
+```
+
+### Vue 3
+
+```vue
+<script setup lang="ts">
+import { useQoolie, useQoolieCollection } from '@medyll/qoolie/vue';
+
+const { qoolie } = useQoolie({
+  dbName: 'my-app',
+  collections: { users: { keyPath: '++id' } },
+});
+
+const { data, loading } = useQoolieCollection('users', {
+  query:    (col) => col.where({ active: true }),
+  reactive: true,
+});
+</script>
+
+<template>
+  <ul>
+    <li v-for="user in data" :key="user.id">{{ user.name }}</li>
+  </ul>
+</template>
+```
+
+---
+
+## DevTools
+
+```typescript
+import { createDevTools } from '@medyll/qoolie/devtools';
+
+const devtools = createDevTools(qoolie);
+devtools.toggle(); // shows/hides the debug panel
+```
+
+---
+
 ## CLI
 
-Use the Qoolie CLI for scaffolding and data management:
-
 ```bash
-# Install CLI globally
-npm install -g @medyll/qoolie
-
-# Generate a new collection
+# Scaffold a new collection
 qoolie generate:collection posts --keyPath=id --sync
 
 # Generate a migration
@@ -579,16 +538,22 @@ qoolie generate:migration add_index_to_posts
 # Run migrations
 qoolie migrate:run --db=my-app
 
-# Check database status
+# Database status
 qoolie status --db=my-app
 
 # Export data
-qoolie export users --output=users-backup.json
+qoolie export users --output=users.json
 
 # Import data
-qoolie import users --input=users-backup.json --merge
+qoolie import users --input=users.json --merge
 ```
+
+---
 
 ## License
 
-MIT © [Medyll](https://github.com/medyll)
+MIT
+
+---
+
+Author: Lebrun Meddy

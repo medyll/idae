@@ -1,5 +1,4 @@
 import {
-	Collection,
 	type ChromaClient,
 	type AddParams,
 	type Metadata,
@@ -11,6 +10,8 @@ import {
 import type { IdaeDbParams, AbstractIdaeDbAdapter } from '../@types/types.js';
 import { IdaeDbConnection } from '../IdaeDbConnection.js';
 
+type ChromaCollection = Awaited<ReturnType<ChromaClient['getOrCreateCollection']>>;
+
 type ChromaDBAdapterContent = {
 	id: ID;
 	embeddings: Embeddings;
@@ -18,7 +19,7 @@ type ChromaDBAdapterContent = {
 	documents: Documents;
 };
 export class ChromaDBAdapter<T extends ChromaDBAdapterContent> implements AbstractIdaeDbAdapter<T> {
-	private collection!: Collection;
+	private collection!: ChromaCollection;
 	private client: ChromaClient;
 
 	constructor(

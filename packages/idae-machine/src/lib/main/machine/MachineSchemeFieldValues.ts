@@ -1,6 +1,5 @@
-import type { TplCollectionName } from '@medyll/idae-idbql';
+import type { TplCollectionName, IDbForge } from '$lib/types/index.js';
 import { MachineSchemeValues } from './MachineSchemeValues.js';
-import type { IDbForge } from '@medyll/idae-idbql';
 import { machine } from '../machine.js';
 
 /**
@@ -64,7 +63,7 @@ export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
 			.field(String(fieldName))
 			.parse();
 		if (fieldInfo?.is === 'array') {
-			return this.iterateArray(String(fieldName), this.#data as unknown[]);
+			return this.iterateArray(String(fieldName), this.#data as unknown as unknown[]);
 		}
 		if (fieldInfo?.is === 'object') {
 			return this.iterateObject(String(fieldName), this.#data);

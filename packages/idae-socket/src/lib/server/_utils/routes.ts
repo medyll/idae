@@ -1,5 +1,5 @@
 import { IRouteProps, TRoute, TRoutesConfig } from '../@types';
-const cmdRoutes = require('../_config/cmdRoutes.json');
+import cmdRoutes from '../_config/cmdRoutes.json' with { type: 'json' };
 
 export class appRoutes {
 	static getRoutes(): TRoutesConfig {

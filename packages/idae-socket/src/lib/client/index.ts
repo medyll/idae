@@ -1,5 +1,4 @@
-import { type Socket, SocketOptions } from "socket.io-client";
-import { ManagerOptions } from "socket.io-client";
+import { type Socket, type SocketOptions, type ManagerOptions } from "socket.io-client";
 
 import io from "socket.io-client";
 

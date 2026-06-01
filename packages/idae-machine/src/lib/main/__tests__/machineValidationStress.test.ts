@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import type { IdbqModel } from '@medyll/idae-idbql';
+
 
 describe('Field Validation — Stress Tests', () => {
 	let db: MachineDb;
@@ -9,25 +9,17 @@ describe('Field Validation — Stress Tests', () => {
 		large_dataset: {
 			keyPath: '++id',
 			model: {},
-			ts: {} as {
-				id: string;
-				name: string;
-				value: number;
-				active: boolean;
+			ts: {} as { id: string; name: string; value: number; active: boolean },
+			fields: {
+				id:     'id (readonly)',
+				name:   'text (required)',
+				value:  'number',
+				active: 'boolean',
 			},
-			template: {
-				index: 'id',
-				presentation: 'name value',
-				fields: {
-					id: 'id (readonly)',
-					name: 'text (required)',
-					value: 'number',
-					active: 'boolean'
-				},
-				fks: {}
-			}
+			fks: {},
+			template: { presentation: 'name value' },
 		}
-	} satisfies IdbqModel;
+	} as any;
 
 	beforeEach(() => {
 		db = new MachineDb(stressSchema);
