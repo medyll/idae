@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import { demoScheme } from '../../demo/demoScheme.js';
+import { demoScheme } from '../../__fixtures__/demoModel.js';
 import { MachineScheme } from '../machine/MachineScheme.js';
 
 describe('MachineScheme', () => {

@@ -3,7 +3,7 @@
  * All engine collections live in base 'machine_app' (resolved server-side to {org}_machine_app).
  * Result is a MachineModel that can be deployed via deployModel() like any user model.
  */
-import { appModelDeclaration } from './idae-model-core.js';
+import { appModelDeclaration } from './engineMetaSeed.js';
 import { FieldList }            from './schema-types.js';
 import type {
 	MachineModel,

@@ -1,7 +1,7 @@
 /**
  * ⚠ DO NOT IMPORT THIS FILE DIRECTLY ON THE CLIENT ⚠
  *
- * `idae-model-core` is the **seed declaration** of the engine meta-model, used by
+ * `engineMetaSeed` is the **seed declaration** of the engine meta-model, used by
  * the server bootstrap to deploy the schema into MongoDB (appscheme_*). It is **not**
  * the runtime source of truth client-side and **must not** be read directly by UI
  * components, stores, or routing code.

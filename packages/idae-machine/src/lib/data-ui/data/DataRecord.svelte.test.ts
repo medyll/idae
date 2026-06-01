@@ -2,7 +2,7 @@ import { cleanup, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import DataRecord from './DataRecord.svelte';
 import { machine } from '$lib/main/machine.js';
-import demoSeed, { demoScheme } from '$lib/demo/demoScheme.js';
+import demoSeed, { demoScheme } from '$lib/__fixtures__/demoModel.js';
 
 let dbCounter = 0;
 function nextDbName(prefix: string): string {

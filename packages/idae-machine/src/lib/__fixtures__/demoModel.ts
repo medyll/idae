@@ -1,3 +1,14 @@
+/**
+ * TEST FIXTURE — not runtime, not the deployable seed.
+ *
+ * `demoScheme` / `demoSeed` here exist ONLY to feed unit tests (machine*, dataList,
+ * DataRecord…). The client never reads this at runtime — the real schema comes from
+ * the server via `machine.boot({ sync: { databaseHost } })`.
+ *
+ * The deployable business seed is the SERVER file:
+ *   `server/src/models/demo/demoScheme.ts` (richer, drives `bootstrap-demo.ts`).
+ * Do NOT confuse the two. Edit this one only to support tests.
+ */
 import type { MachineModel } from '$lib/types/index.js';
 import { field } from '$lib/main/machine/fieldBuilder.js';
 

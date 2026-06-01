@@ -8,7 +8,7 @@ import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Machine } from '../machine.js';
-import { demoScheme, demoSeed } from '../../demo/demoScheme.js';
+import { demoScheme, demoSeed } from '../../__fixtures__/demoModel.js';
 
 const COLLECTIONS = ['vehicle', 'category', 'customer', 'rental', 'location_office', 'maintenance'] as const;
 

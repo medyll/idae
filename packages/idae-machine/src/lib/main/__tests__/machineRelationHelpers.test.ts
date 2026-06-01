@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MachineDb } from '../machineDb.js';
-import { demoScheme } from '../../demo/demoScheme.js';
+import { demoScheme } from '../../__fixtures__/demoModel.js';
 import {
 	buildRelationWhere,
 	resolveForwardRelations,

@@ -8,7 +8,7 @@ vi.mock('@medyll/qoolie/svelte', () => ({
 }));
 
 import { Machine } from '../machine.js';
-import { demoScheme } from '../../demo/demoScheme.js';
+import { demoScheme } from '../../__fixtures__/demoModel.js';
 import type { MachineModel } from '\$lib/types/index.js';
 
 function createTestMachine() {
