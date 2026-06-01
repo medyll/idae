@@ -154,8 +154,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	getInputDataSet(
 		fieldName: string,
 		data: T
-	): Record<
-		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
+): Record<
+		`data-${'collection' | 'collection-id' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
 		string
 	> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
@@ -165,8 +165,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		const indexName  = this.machine.collection(this.collectionName).index;
 
 		return {
-			'data-collection':   this.collectionName,
-			'data-collectionId': indexName && data?.[indexName] !== undefined
+			'data-collection':    this.collectionName,
+			'data-collection-id': indexName && data?.[indexName] !== undefined
 				? String(data?.[indexName])
 				: '',
 			'data-fieldName':    String(fieldName),

@@ -24,8 +24,11 @@ export async function getAllSchemes(): Promise<unknown> {
 export async function getScheme(_service: unknown, params: { table: string }): Promise<unknown> {
 	try {
 		const { table } = params;
+		if (!table) {
+			throw new HttpError(400, 'Missing table parameter');
+		}
 		const model = await machineServer.getModel(table);
-		if (!Object.keys(model).length) {
+		if (!model[table]) {
 			throw new HttpError(404, `Scheme '${table}' not found`);
 		}
 		return model;

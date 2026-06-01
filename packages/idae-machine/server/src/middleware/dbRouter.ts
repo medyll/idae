@@ -4,6 +4,10 @@ import { config } from '../config.js';
 
 const baseCache = new Map<string, string>();
 
+function cacheKey(org: string, collectionName: string): string {
+	return `${org}:${collectionName}`;
+}
+
 export async function getConn(dbName: string): Promise<Connection> {
 	return mongooseConnectionManager.getConnection(dbName)
 		?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName, { dbName });
@@ -14,7 +18,8 @@ export async function getConn(dbName: string): Promise<Connection> {
  * Throws if the collection is not registered in appscheme — no silent fallback.
  */
 export async function getDbForCollection(collectionName: string): Promise<Connection> {
-	let base = baseCache.get(collectionName);
+	const key = cacheKey(config.org, collectionName);
+	let base = baseCache.get(key);
 
 	if (!base) {
 		const metaConn = await getConn(`${config.org}_machine_app`);
@@ -27,7 +32,7 @@ export async function getDbForCollection(collectionName: string): Promise<Connec
 		}
 
 		base = scheme.base as string;
-		baseCache.set(collectionName, base);
+		baseCache.set(key, base);
 	}
 
 	return getConn(`${config.org}_${base}`);
@@ -35,6 +40,10 @@ export async function getDbForCollection(collectionName: string): Promise<Connec
 
 /** Invalidate cache entry — call after seed updates appscheme. */
 export function invalidateBaseCache(collectionName?: string): void {
-	if (collectionName) baseCache.delete(collectionName);
-	else baseCache.clear();
+	if (collectionName) baseCache.delete(cacheKey(config.org, collectionName));
+	else {
+		for (const key of baseCache.keys()) {
+			if (key.startsWith(`${config.org}:`)) baseCache.delete(key);
+		}
+	}
 }

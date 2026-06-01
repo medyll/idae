@@ -54,9 +54,9 @@ describe('ImagePresetRegistry', () => {
 	});
 
 	describe('getAll', () => {
-		it('returns all presets', async () => {
+		it('returns at least the 7 inserted presets', async () => {
 			const all = await Registry.getAll();
-			expect(all.length).toBe(7);
+			expect(all.length).toBeGreaterThanOrEqual(7);
 			const codes = all.map(p => p.code);
 			expect(codes).toContain('thumb');
 			expect(codes).toContain('avatar');

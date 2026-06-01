@@ -36,10 +36,20 @@ describe('ImageResolver', () => {
 	describe('resolve existing preset', () => {
 		it('returns preset from DB', async () => {
 			const preset = await Resolver.resolve('thumb');
-			expect(preset.code).toBe('thumb');
-			expect(preset.width).toBe(150);
-			expect(preset.height).toBe(150);
-			expect(preset.fit).toBe('cover');
+			expect(preset).not.toBeNull();
+			expect(preset?.code).toBe('thumb');
+			expect(preset?.width).toBe(150);
+			expect(preset?.height).toBe(150);
+			expect(preset?.fit).toBe('cover');
+		});
+	});
+
+	describe('getAll (cache content)', () => {
+		it('returns at least the 2 inserted presets', async () => {
+			const all = await Registry.getAll();
+			expect(all.length).toBeGreaterThanOrEqual(2);
+			const codes = all.map(p => p.code);
+			expect(codes).toContain('thumb');
 		});
 	});
 

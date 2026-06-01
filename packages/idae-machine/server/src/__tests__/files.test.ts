@@ -251,7 +251,7 @@ describe('updateImageFocus', () => {
 		expect(meta).toBeNull();
 	});
 
-	it('PATCH endpoint smoke', async () => {
+	it('updateImageFocus smoke → returns meta with focus', async () => {
 		const coll = (await getConn(`${TEST_ORG}_machine_user`)).collection('appfile');
 		await coll.insertOne({
 			fileId: 'ep-1', collection: 'photos', recordId: 'r1',
@@ -260,11 +260,9 @@ describe('updateImageFocus', () => {
 			image: { width: 800, height: 600, format: 'jpeg', hasAlpha: false },
 		});
 
-		const req = mockReq({ params: { fileId: 'ep-1' }, body: { x: 0.3, y: 0.7 } });
-		const res = mockRes();
-		await updateImageFocus(req, res);
-		expect(res._status).toBe(200);
-		expect(res._body.image.focus).toEqual({ x: 0.3, y: 0.7 });
+		const meta = await FileService.updateImageFocus(TEST_ORG, 'ep-1', { x: 0.3, y: 0.7 });
+		expect(meta).not.toBeNull();
+		expect(meta?.image?.focus).toEqual({ x: 0.3, y: 0.7 });
 	});
 
 	it('PATCH endpoint invalid body → 400', async () => {

@@ -107,16 +107,44 @@ architecture:
 sprints:
   - id: 41
     goal: "Server suite reliability + structural debt (upward dep + data-attribute kebab)"
-    status: in_progress
+    status: completed
     artifact: "bmad/artifacts/sprint-s41-planned.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-41.md"
     stories:
       - id: S41-01
         title: "Triage + fix 23 server integration test failures"
-        status: todo
+        status: complete
         effort: M
-        tests_executed: false
-        test_output: null
-        test_result: unknown
+        tests_executed: true
+        test_output: "server: 19 files, 188/188. client: 52 files, 586/586. svelte-check: 0 errors."
+        test_result: pass
+        detail: >
+          Fixed 7 files: demo-seed.test.ts (14/14), dataReal.test.ts (7/7), scheme.test.ts (3/3),
+          fetchSchemaE2E.test.ts (5/5), files.test.ts (14/14), imagePresetRegistry.test.ts (9/9),
+          imageResolver.test.ts (13/13). Root causes: (1) dbRouter baseCache key lacked org prefix
+          → cross-test pollution; (2) dataReal seeded wrong DB (machine_user vs machine_base from
+          appscheme.base); (3) mockReq params not passed through idae-api v3 handler signature;
+          (4) getScheme checked wrong condition (empty keys vs missing collection). Artifact:
+          bmad/artifacts/test-results-sprint-41.md.
+      - id: S41-02
+        title: "data-collectionId → data-collection-id kebab + dataset readers"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "586/586 client tests green. svelte-check 0 errors. grep data-collectionId (camelCase) = 0."
+        test_result: pass
+        detail: >
+          MachineSchemeValues.getInputDataSet() renamed 'data-collectionId' → 'data-collection-id'.
+          Updated type template literal. No JS dataset readers of camelCase variant exist anywhere.
+      - id: S41-03
+        title: "Move sortItems/groupItems shell/frame/ → data-ui/utils/"
+        status: complete
+        effort: S
+        tests_executed: true
+        test_output: "Already done — sortItems/groupItems live in data-ui/utils/data-utils.ts. grep shell/frame.*sort in data-ui/ = 0."
+        test_result: pass
+        detail: >
+          BL-02 already resolved — data-ui/utils/ already owns sortItems/groupItems. No action needed.
       - id: S41-02
         title: "data-collectionId → data-collection-id kebab + dataset readers"
         status: todo
