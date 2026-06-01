@@ -6,13 +6,13 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-05-29T00:00"
+last_updated: "2026-06-01T00:00"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Deprecated cleanup verified DONE (all 8 symbols absent from src, zero @deprecated). Next: BACK-05 Playwright RBAC golden-path (3 tests)."
-next_command: "bmad-backlog"
-next_role: "scrum"
-active_role: "tester"
+next_action: "Sprint 41 planifié (3 stories). Démarrer S41-01: triage 23 server failures."
+next_command: "bmad-continue"
+next_role: "dev"
+active_role: "scrum"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -105,6 +105,33 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 41
+    goal: "Server suite reliability + structural debt (upward dep + data-attribute kebab)"
+    status: in_progress
+    artifact: "bmad/artifacts/sprint-s41-planned.md"
+    stories:
+      - id: S41-01
+        title: "Triage + fix 23 server integration test failures"
+        status: todo
+        effort: M
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S41-02
+        title: "data-collectionId → data-collection-id kebab + dataset readers"
+        status: todo
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+      - id: S41-03
+        title: "Move sortItems/groupItems shell/frame/ → data-ui/utils/"
+        status: todo
+        effort: S
+        tests_executed: false
+        test_output: null
+        test_result: unknown
+
   - id: 40
     goal: "DataListFk & DataListRfk — schema-driven FK/RFK data viewers"
     status: completed
@@ -624,6 +651,25 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-06-01"
+    summary: >
+      bmad-audit (Reviewer): full audit, health 8.5/10. Client: check 0 errors,
+      tests 586/586, lint 0 drift (improved from ~270), no eval/innerHTML.
+      Server: 145 pass / 23 fail / 13 skip — 23 are PRE-EXISTING integration
+      failures (Mongo/signature drift), baseline 28 → 23 after this session fixed
+      seedBusinessData.test.ts. Session work (4 commits, +107/-240 net -133):
+      (1) fix(seed) FK columns invisible client-side — root cause: stale Mongo
+      business data (categoryId numeric) persisting through idempotent seed while
+      model declares category code field. Added clearFirst/--reseed; verified live
+      FK now resolve. (2) refactor(ui) removed DataFkValue duplicate, centralized
+      FK label in DataField, dropped dead view='fk' branch. (3) refactor(types)
+      renamed idae-model-core→engineMetaSeed + demoScheme→__fixtures__/demoModel,
+      deleted dead bootstrap re-export, cleaned types barrel — removed demoScheme
+      name collision. No correctness/security regressions. Artifact:
+      bmad/artifacts/audit-2026-06-01.md. Action item: triage 23 server failures.
+    tests_server: 145
+    tests_client: 586
+
   - date: "2026-05-28"
     summary: >
       bmad-audit (Reviewer): Full codebase audit. Health score 8.5/10.
@@ -732,7 +778,10 @@ backlog:
   - id: BL-05
     title: "MachineDb reactive from IDB:appscheme — long-term vision"
     priority: low
-    description: "machine.logic built from TS model at start(). Vision: read appscheme rows from IDB → collections emerge from sync."
+    description: >
+      machine.logic built from TS model at start(). Vision: read appscheme rows from IDB
+      → collections emerge from sync.
+      > Needs ADR: architectural choice, defines runtime model ownership.
 
   - id: BL-06
     title: "Système état sélection via data-collection / data-collection-id"
@@ -764,6 +813,16 @@ backlog:
       RESTE rouge: bug duplicate-hydration — records serveur ont `_id` mais pas `id`, keyPath `++id`
       réassigne un id neuf à chaque pull → doublons (3→6→9). Lié à la convention FK code.
       Tests RBAC NON requis à 100% — refonte prévue couvrira ce point. Déprioritisé.
+
+  - id: BACK-08
+    title: "Server integration tests — 23 failures (7 files, Mongo/signature drift)"
+    priority: high
+    description: >
+      Audit 2026-06-01: 23 pre-existing server test failures across 7 files.
+      Pattern: tests written against older API signatures the impl outgrew
+      (same pattern as seedBusinessData.test.ts, fixed this session).
+      Triage + fix. No release blockers but degrades server suite signal.
+      Sprint story: read each failing file, identify gap, align to current opts-based APIs.
 
   - id: BACK-06
     title: "FullInfo.svelte — implémenter le contenu (stub enregistré)"
