@@ -49,7 +49,7 @@
  *   - No legacy {id|code|nom|ordre}{Appscheme*} duplicates — purged 2026-05-15.
  *   - `template.presentation` is a space-separated list of field accessors (supports dot notation).
  */
-export const appModelDeclaration = {
+export const idaeModelCore = {
 	collections: {
 		appscheme_base: {
 			base:   'machine_app',

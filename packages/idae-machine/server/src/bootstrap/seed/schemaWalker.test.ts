@@ -3,7 +3,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { analyzeSchema } from './schemaWalker.js';
+import { analyzeSchema } from './schemaWalker.ts';
 
 describe('schemaWalker', () => {
 	it('should build a graph of collections and dependencies', () => {

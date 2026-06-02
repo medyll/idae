@@ -3,7 +3,7 @@
  * Used to identify FK asymmetries and prepare for SCHEME_DRIFT resolution.
  */
 
-import { appModelDeclaration } from './engineMetaSeed.js';
+import { idaeModelCore } from '../../server/src/bootstrap/seed/idae-model-core.js';
 import { FieldList } from './schema-types.js';
 
 /**
@@ -73,8 +73,8 @@ export function walkSchema(): SchemaGraph {
 		fkDependencies: {},
 	};
 
-	// Parse each collection in appModelDeclaration
-	for (const [name, decl] of Object.entries(appModelDeclaration.collections)) {
+	// Parse each collection in idaeModelCore
+	for (const [name, decl] of Object.entries(idaeModelCore.collections)) {
 		const node = parseCollection(name, decl as any);
 		graph.collections[name] = node;
 

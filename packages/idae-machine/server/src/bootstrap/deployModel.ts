@@ -8,7 +8,8 @@
 import { IdaeDb, DbType } from '@medyll/idae-db';
 import { fkRef, FkRef, FieldList } from '../../lib/types/schema-types';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../lib/types/schema-utils';
-import { analyzeSchema } from '../../lib/types/schemaWalker';
+import { analyzeSchema } from './seed/schemaWalker';
+import { idaeModelCore, ENGINE_BASE } from './seed/idae-model-core';
 
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
 interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
@@ -103,11 +104,8 @@ async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 	return idaeDb;
 }
 
-const ENGINE_COLLECTIONS = [
-	'appscheme_base', 'appscheme', 'appscheme_field', 'appscheme_field_type',
-	'appscheme_field_group', 'appscheme_has_field', 'appscheme_type',
-	'appscheme_view_type', 'appscheme_view', 'appscheme_log', 'auto_increment',
-] as const;
+// ENGINE_COLLECTIONS dérivées dynamiquement de appModelDeclaration (via engineModel.ts)
+// Supprimé en juin 2026 pour autonomie totale
 
 // ── clearCollections ──────────────────────────────────────────────────────────
 // Wipes all docs from engine meta collections before a fresh seed.
@@ -128,17 +126,17 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
 
-	// 0. Base 'machine_app' (no fk yet — chicken-egg root)
+	// 0. Base 'ENGINE_BASE' (no fk yet — chicken-egg root)
 	await upsertGetId(
 		col('appscheme_base'),
-		{ code: 'machine_app' },
-		{ code: 'machine_app', name: 'Machine Engine', icon: 'cpu', color: '#111', order: 1 },
+		{ code: ENGINE_BASE },
+		{ code: ENGINE_BASE, name: 'Machine Engine', icon: 'cpu', color: '#111', order: 1 },
 	);
 
 	const baseRef = {
 		appscheme_base: {
 			id:       null as number | null,
-			code:     'machine_app',
+			code:     ENGINE_BASE,
 			name:     'Machine Engine',
 			icon:     'cpu',
 			color:    '#111',

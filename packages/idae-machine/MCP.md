@@ -36,7 +36,7 @@ server/src/mcp/
 
 **Transport :** HTTP/SSE — montable sur `MachineServer.ts`, compatible tous clients MCP.
 
-**Collections méta exposables par SchemeTools** (constante `ENGINE_COLLECTIONS` dans `deployModel.ts`) :
+**Collections méta exposables par SchemeTools** (dérivées dynamiquement de `FieldList` depuis juin 2026) :
 ```
 appscheme_base, appscheme, appscheme_field, appscheme_field_type,
 appscheme_field_group, appscheme_has_field, appscheme_type,
@@ -49,9 +49,9 @@ appscheme_view_type, appscheme_view
 
 `MachineParserForge` est pure et déterministe → idéal pour générer les JSON Schemas MCP.
 
-`deployModel.ts` produit déjà les vues `full / flat / fk / focus` par collection — réutiliser cette partition pour limiter les champs exposés par vue MCP (ex : outil `find` en mode `flat` exclut les FK blobs).
+`deployModel.ts` (factorisé en juin 2026) produit déjà les vues `full / flat / fk / focus` par collection — réutiliser cette partition pour limiter les champs exposés par vue MCP (ex : outil `find` en mode `flat` exclut les FK blobs).
 
-`analyzeSchema()` dans `lib/types/schemaWalker.ts` retourne `{ graph, report }` avec `unresolvedRefs` et `asymmetries` FK — exposer tel quel comme outil de diagnostic MCP.
+`analyzeSchema()` dans `lib/types/schemaWalker.ts` (ajouté juin 2026) retourne `{ graph, report }` avec `unresolvedRefs` et `asymmetries` FK — exposer tel quel comme outil de diagnostic MCP.
 
 Principe : chaque collection du modèle génère automatiquement ses outils MCP à l'init.
 
@@ -59,7 +59,7 @@ Principe : chaque collection du modèle génère automatiquement ses outils MCP 
 // Nouveau : server/src/mcp/McpToolBuilder.ts
 generateMcpTools(schema: MachineModel): McpTool[]
 // → machine_vehicle__find, machine_vehicle__create, …
-// JSON Schema input dérivé de MachineFieldDef.type via FieldList
+// JSON Schema input dérivé de MachineFieldDef.type via FieldList (source dynamique depuis juin 2026)
 ```
 
 > **Invariant à respecter** : `MachineParserForge` reste pure (pas d'I/O). La génération se fait à l'init du server, pas à l'exécution.

@@ -65,6 +65,13 @@ graph TD
 3. Implémenter le Walker/Parser/Crawler.
 4. Remplacer les références directes par des appels au générateur.
 
+## Autonomie totale (juin 2026)
+- **Suppression des valeurs par défaut statiques** :
+  - `ENGINE_COLLECTIONS` supprimé (remplacé par une génération dynamique via `engineModel.ts`).
+  - `machine_app`/`machine_user` en dur supprimés (remplacés par `ENGINE_BASE` lu depuis `appModelDeclaration`).
+- **Règle stricte** : Toute collection doit déclarer sa `base` dans `appModelDeclaration`. Aucun fallback implicite.
+- **Avantage** : Le modèle (`engineMetaSeed.ts`) est la seule source de vérité. Une erreur de configuration est détectée immédiatement.
+
 ---
 
 **Note** : Ce document est ouvert aux annotations par d'autres LLMs. Utilisez des sections claires et des exemples concrets pour enrichir la proposition.
