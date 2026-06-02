@@ -24,6 +24,13 @@ Symptôme ressenti : `engineMetaSeed.ts` ne ressemble plus aux autres modèles (
 
 La vraie question n'est pas *« lequel est cassé »*. C'est *« deux philosophies coexistent, et la postérieure efface l'origine sans le dire »*.
 
+**Priorité révisée (2026-06-02, medyll)** :
+- **Étape 1** : Factoriser `deployModel.ts` (cf. [REDEPLOY.md](REDEPLOY.md)) pour nettoyer les couplages statiques et implémenter un Walker/Parser.
+- **Étape 2** : Utiliser le Crawler pour auditer les FK et proposer une résolution canonique.
+- **Étape 3** : Reprendre la discussion A/B (forme du modèle) une fois les FK stabilisées.
+
+**Raison** : Le Walker/Parser fournira une vue claire des relations, ce qui est un prérequis pour trancher les asymétries FK.
+
 ---
 
 ## 0bis. CORRECTION DE CHRONOLOGIE (révision 2)
