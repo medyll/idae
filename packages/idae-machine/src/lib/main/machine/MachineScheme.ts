@@ -244,9 +244,13 @@ export class MachineScheme {
 			const fieldType = parsed?.fieldType;
 			const prefix = `fk-${targetCollection}.`;
 			if (!fieldType?.startsWith(prefix)) continue;
+			const targetIndex = fieldType.slice(prefix.length);
+			if (targetIndex !== 'code') {
+				console.warn(`[MachineScheme] FK field ${fieldName} uses non-canonical index '${targetIndex}'. Expected 'code'.`);
+			}
 			return {
 				fieldName,
-				targetIndex: fieldType.slice(prefix.length)
+				targetIndex
 			};
 		}
 		return null;

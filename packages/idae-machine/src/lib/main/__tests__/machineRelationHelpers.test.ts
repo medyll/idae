@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MachineDb } from '../machineDb.js';
+import { buildEffectiveModel } from '../machineModelBuilder.js';
 import { demoScheme } from '../../__fixtures__/demoModel.js';
 import {
 	buildRelationWhere,
@@ -8,17 +9,18 @@ import {
 } from '../../data-ui/utils/dataRelationUtils.js';
 
 describe('Machine relation helpers', () => {
-	const db = new MachineDb(demoScheme);
+	const effectiveModel = buildEffectiveModel(demoScheme);
+	const db = new MachineDb(effectiveModel);
 
 	it('findFkField resolves the data field for a target collection', () => {
 		const vehicle = db.collection('vehicle');
 		expect(vehicle.findFkField('category')).toEqual({
 			fieldName: 'category',
-			targetIndex: 'id'
+			targetIndex: 'code'
 		});
 		expect(vehicle.findFkField('location_office')).toEqual({
 			fieldName: 'location_office',
-			targetIndex: 'id'
+			targetIndex: 'code'
 		});
 	});
 
@@ -29,14 +31,14 @@ describe('Machine relation helpers', () => {
 				vehicle: {
 					code: 'vehicle',
 					fieldName: 'vehicle',
-					targetIndex: 'id'
+					targetIndex: 'code'
 				}
 			},
 			maintenance: {
 				vehicle: {
 					code: 'vehicle',
 					fieldName: 'vehicle',
-					targetIndex: 'id'
+					targetIndex: 'code'
 				}
 			}
 		});
@@ -60,15 +62,15 @@ describe('Machine relation helpers', () => {
 				key: 'category',
 				collection: 'category',
 				fieldName: 'category',
-				targetIndex: 'id',
-				where: { id: '2' }
+				targetIndex: 'code',
+				where: { code: '2' }
 			},
 			{
 				key: 'location_office',
 				collection: 'location_office',
 				fieldName: 'location_office',
-				targetIndex: 'id',
-				where: { id: '3' }
+				targetIndex: 'code',
+				where: { code: '3' }
 			}
 		]);
 		expect(relations.unresolved).toEqual([]);
@@ -82,8 +84,8 @@ describe('Machine relation helpers', () => {
 				key: 'category',
 				collection: 'vehicle',
 				fieldName: 'category',
-				targetIndex: 'id',
-				where: { category: 1 }
+				targetIndex: 'code',
+				where: { category: 'compact' }
 			}
 		]);
 		expect(relations.unresolved).toEqual([]);

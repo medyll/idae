@@ -16,7 +16,7 @@ import { field } from '$lib/main/machine/fieldBuilder.js';
  * Synthesize fk fields from the `fks` block into `fields` so forward FK resolution
  * (getFieldsForView, descriptor, findFkField) can see them without double-declaration.
  * Idempotent: skips any field already present (avoids overwriting an explicit declaration).
- * Join index = 'id' (data layer). `fkDef.code` = target collection name.
+ * Join index = 'code' (semantic key, canonical for FK resolution). `fkDef.code` = target collection name.
  */
 export function foldFksIntoFields(model: MachineModel): MachineModel {
 	const out: MachineModel = {};
@@ -25,7 +25,7 @@ export function foldFksIntoFields(model: MachineModel): MachineModel {
 		const fields = { ...( col.fields ?? {}) };
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey in fields) continue;
-			const fd = field(`fk-${fkDef.code}.id`, { required: !!fkDef.required });
+			const fd = field(`fk-${fkDef.code}.code`, { required: !!fkDef.required });
 			(fd as unknown as Record<string, unknown>).group = 'relations';
 			fields[fkKey] = fd;
 		}
@@ -58,11 +58,13 @@ export function ensureCodeField(model: MachineModel): MachineModel {
 /**
  * Merge an optional core MachineModel with an optional business MachineModel.
  * Priority on key collision: business > core. Guarantees the `code` invariant.
+ * Also folds FK relations into fields to ensure forward FK resolution works.
  *
  * @param core     Optional framework collections (rarely set directly — usually the
  *                 server-delivered schema covers everything).
  * @param business Optional application-specific collections.
  */
 export function buildEffectiveModel(core?: MachineModel, business?: MachineModel): MachineModel {
-	return ensureCodeField({ ...(core ?? {}), ...(business ?? {}) });
+	const merged = ensureCodeField({ ...(core ?? {}), ...(business ?? {}) });
+	return foldFksIntoFields(merged);
 }

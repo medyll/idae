@@ -7,6 +7,12 @@
 >
 > Révision 2 (2026-06-01) : chronologie corrigée par medyll. La v1 inversait
 > l'ordre ET les priorités. Voir §0bis.
+> Révision 3 (2026-06-02) : preuve git sourcée. Deux IA avaient complété sur
+> ~2 semaines de commits seulement → angle mort sur l'origine. Remontée à 3–4
+> semaines (genèse janvier). Voir §0ter.
+> Révision 4 (2026-06-02) : FK = priorité 1. La forme du modèle est cosmétique ;
+> la résolution FK est comportementale. 3 encodages, un fold non-canonique
+> (`.id` vs `.code`), forward/reverse asymétriques. Voir §4quater.
 
 ---
 
@@ -49,6 +55,56 @@ Donc la hiérarchie réelle, du plus fort au plus faible :
 1. **`FieldList`** — la table normative nom→type. Source de vérité.
 2. **`inferType`** — fallback heuristique pour les noms absents de la table.
 3. **`field('type')`** (forme A) — **arrivé après**, dérive : re-déclare inline un type qui vivait déjà dans le dictionnaire.
+
+---
+
+## 0ter. PREUVE GIT — chronologie sourcée (révision 3, 2026-06-02)
+
+> Deux IA ont « complété » ce doc en ne regardant que **les ~2 dernières semaines** de commits
+> (depuis ~19 mai). Cette fenêtre **rate entièrement l'origine** et confirme à tort le monde A.
+> Il faut remonter à **3 et 4 semaines** (et au-delà : genèse en janvier).
+
+### Lignée du fichier B (`git log --follow engineMetaSeed.ts`)
+
+| Commit | Date | Sujet |
+|--------|------|-------|
+| `c6407429` | **2026-01-19** | feat: add test scheme and refactor machine logic — **genèse** |
+| `4b715e53` | 2026-01-20 | Add MachineFieldType enum and class for field type management |
+| `65bf8b90` | 2026-01-21 | field type validation and registration in MachineSchemeValidate |
+| `f2c1ac4d` | **2026-02-08** | enhance **app model declaration** and schema types with additional fields |
+| `dbbb54ac` | 2026-04-24 | reorganize `src/lib/idae` → `src/lib/main` |
+| `ebad5b7b` | 2026-05-15 | comprehensive TS definitions for schema-driven metadata (= **`FieldList` formalisé**) |
+| `7b5c52db` | 2026-05-16 | replace seedSchemeFromModel → deployModel + seedEngineRegistries |
+| (rename) | ~2026-05 | `idae-model-core` → `engineMetaSeed` |
+
+→ **B = appModelDeclaration, vivant et continûment étendu depuis janvier/février 2026.** Renommé `engineMetaSeed` seulement mi-mai. C'est le tronc.
+
+### Apparition de A (forme `field('type')`)
+
+| Commit | Date | Sujet |
+|--------|------|-------|
+| `878c1f5a` | 2026-05-15 | fk : `'required'` au lieu de `'rules'` string (bascule format fk) |
+| `0e40ac51` | 2026-05-15 | rename testScheme → demoScheme |
+| `114d256f` | **2026-05-17** | feat(demo): add demoScheme **type definitions** (`field('email')`…) |
+| `5241de2a` | 2026-05-17 | `text-long` → `text-lg` across models (chaînes A généralisées) |
+
+→ **A = dérive mi-mai 2026 (15–17 mai).** Postérieure de **~3 mois** à l'origine B.
+
+### Encore B après l'apparition de A
+
+| `e71f7f0a` | **2026-05-18** | add `_prefs`/`_activity`/`_history` to **idae-model-core** |
+
+→ Le **18 mai**, on étendait *encore* B (sous son nom `idae-model-core`) **après** avoir converti demo en A le 17. Preuve nette : A n'a pas *remplacé* B — il a **poussé à côté**, créant le double monde.
+
+### Ce que les 2 IA ont raté (fenêtre 2 semaines = depuis ~19 mai)
+
+- ❌ FieldList formalisé (05-15) — le dictionnaire, cœur de B.
+- ❌ conversion demo → A (05-17) — l'acte de dérive lui-même.
+- ❌ refactor structure modèle (05-16 `029e4191`).
+- ❌ idae-model-core encore étendu en B (05-18).
+- ❌ toute la genèse B janvier–février.
+
+Elles n'ont vu que le monde **post-dérive** (A dominant + `5d97ae72` 05-21 « schema loading + drift detection ») → conclusion biaisée « A est la norme, B est l'anomalie ». **Exactement le piège décrit en §6.**
 
 ---
 
@@ -181,6 +237,77 @@ La « colle au milieu » existe — mais **concentrée en un seul point** : `bui
 
 ---
 
+## 4quater. FK — PRIORITÉ 1 (rév. 4, 2026-06-02)
+
+> medyll : « le model déclaré sous diverses formes n'est pas le plus grave. Ce qui
+> m'inquiète, ce sont les répercussions sur les méthodes métier… le plus important,
+> c'est les fk : traiter les fks first. »
+
+Exact. La forme du modèle est **cosmétique** (un seul parser, §4bis). Les **FK** sont **comportementaux** : la façon de déclarer une FK décide si la résolution *runtime* marche ou tombe silencieusement dans `unresolved`. C'est là que la dérive devient un bug, pas un style.
+
+### Trois encodages de FK qui coexistent
+
+| # | Forme | Où | Lu par |
+|---|-------|-----|--------|
+| 1 | `fks: { x: { code, multiple, required, order } }` | engineMetaSeed (B) | bloc relation + `order` |
+| 2 | `fks: { x: { code, multiple, required } }` | demo/crfr/tactac (A) | bloc relation |
+| 3 | `field('fk-X.id')` dans `fields` | builder, rare à la main | **`findFkField`** (porteur + index) |
+
+- `order` (encodage 1, B seulement) : **mort**. `buildEngineModel` (`engineModel.ts:48-54`) le jette à la reconstruction. Jamais consommé. Bruit de fichier-seed, sans effet runtime.
+
+### Le pont : `foldFksIntoFields`
+
+Le bloc `fks` (1/2) ne porte **pas** de champ typé `fk-X.id`. Or **toute la résolution forward passe par `findFkField`** (`MachineScheme.ts:241`) qui itère `this.fields` et cherche un `fieldType` commençant par `fk-X.` — c.-à-d. l'encodage 3.
+
+`foldFksIntoFields` (`machineModelBuilder.ts:21`) **synthétise** l'encodage 3 depuis 1/2 :
+```ts
+const fd = field(`fk-${fkDef.code}.id`, { required: !!fkDef.required });  // index = 'id' codé en dur
+fd.group = 'relations';
+fields[fkKey] = fd;            // clé = fkKey (clé de relation), pas fkDef.code
+```
+Sans ce fold → `findFkField` renvoie `null` → `resolveForwardRelations` (`dataRelationUtils.ts:47`) pousse tout dans **`unresolved`** : relations forward **muettes**, sans erreur visible.
+
+### La faille (vraie « incohérence de comportement »)
+
+**Le fold vit dans le constructeur de `MachineDb` (`machineDb.ts:25`), PAS dans `buildEffectiveModel`.**
+
+```
+buildEffectiveModel()  →  _effectiveModel   (NON foldé : _core, _business aussi)
+        │
+        └─ new MachineDb(model) → ctor: this.model = foldFksIntoFields(model)  (foldé)
+                                   └─ collection() → new MachineScheme(…, this.model foldé)  ✅
+```
+
+Conséquence — **trois pièges runtime** :
+
+1. **Modèle non-foldé accessible.** `machine._effectiveModel`, `_core`, `_business` n'ont **aucun** champ porteur `fk-X.id`. Toute méthode métier qui lit ces objets directement (au lieu de passer par `machine.logic` / MachineDb) → `findFkField` = null → FK forward silencieusement vides. Un seul mauvais accès = une classe entière de bugs FK invisibles.
+
+2. **Forward et reverse n'ont pas la même dépendance.**
+   - Forward (`resolveForwardRelations`) : itère `scheme.fks` (bloc) **puis** exige le champ foldé via `findFkField`.
+   - Reverse (`parseReverseFks`, `MachineScheme.ts:255`) : itère `model[].fks` (bloc) **directement**, sans le fold.
+   → Si le fold saute sur une instance de modèle : **reverse marche, forward casse**. Relations à moitié résolues, asymétriques. Le pire à diagnostiquer.
+
+3. **Index de jointure divergent : `.id` vs `.code`.** Le fold code en dur `fk-${code}.id` → `buildRelationWhere('id', value)` → `{ id: value }`. Mais la mémoire projet dit *canonical = `fk-X.code`* (+ `code = String(id)` fallback). Deux conventions de jointure :
+   - fold → jointure sur `id`,
+   - convention FK-code → jointure sur `code`.
+   Si la donnée porte un `code` string mais la requête interroge `{ id: value }` (ou l'inverse) → **jointures vides**. C'est le risque concret le plus élevé. À trancher *avant* tout le reste.
+
+### Pourquoi « fks first »
+
+- La décision sur la forme du modèle (Sortie 1/2/3) **n'a aucun effet** tant que les FK résolvent mal : un modèle « propre » avec des jointures vides reste cassé.
+- À l'inverse, fixer le contrat FK (un seul index canonique, un seul lieu de fold, forward ≡ reverse) **stabilise le comportement** quelle que soit la forme retenue ensuite.
+- Donc : **traiter les FK d'abord** = poser le contrat de résolution (index, fold, symétrie forward/reverse, source-de-vérité unique), *puis* seulement choisir la forme de déclaration.
+
+### Questions FK à trancher (avant le reste)
+
+1. Index de jointure canonique : **`id` ou `code`** ? Un seul. (fold dit `id`, mémoire dit `code` — contradiction ouverte.)
+2. Lieu unique du fold : le remonter dans `buildEffectiveModel` pour que `_effectiveModel` soit déjà foldé, et interdire tout accès FK au modèle non-foldé ?
+3. Garantir **forward ≡ reverse** : même source, même index, même fold. Tester l'asymétrie.
+4. Les 3 encodages → en garder **combien** ? (Idéal : 1 lieu de déclaration → N dérivés synthétisés, jamais l'inverse.)
+5. `order` dans les fks de B : le supprimer (mort) ou lui donner un sens (ordre d'affichage des relations) ?
+
+---
+
 ## 5. Questions à se poser (medyll, à froid)
 
 1. `FieldList` peut-il devenir **exhaustif** ? Ou il y aura toujours des `notes`, `manager`, `interest` métier qui n'ont aucune raison d'être au dictionnaire global ?
@@ -211,7 +338,7 @@ Et tant qu'elle ne l'est pas : **ne pas migrer engineMetaSeed vers A** — ce se
 
 ---
 
-## 8. Révision git — Claude Sonnet 4.6 (2026-06-02)
+## 8. Révision git — Claude Sonnet 4.6 (2026-06-02) ⚠ partiellement corrigée par §0ter
 
 > Archéologie des commits. Aucun code touché.
 
@@ -239,7 +366,7 @@ Conclusion : dans ce repo, **A précède B de quelques heures**. La conviction d
 
 ---
 
-## 8. Ce que le commit du 20 mai 2026 dit (OpenCode)
+## 9. Ce que le commit du 20 mai 2026 dit (OpenCode)
 
 **Méthode :** diff `d41af99a` (20 mai) → `HEAD`.
 
@@ -280,4 +407,35 @@ Sans ça, `FieldList` devient un fossile moteur et le drift reprend dès le proc
 
 ---
 
-_Signed: OpenCode (kimi-k2.6)_
+## 10. Résolution appliquée (2026-06-02)
+
+### Problème initial : FK asymétriques et index divergents
+
+- `foldFksIntoFields` synthétisait `fk-X.id` (index `id`) mais la convention attendue était `fk-X.code` (index `code`).
+- Forward vs reverse asymétriques : forward exigeait le fold, reverse non.
+- Modèle non-foldé accessible → FK forward silencieusement vides.
+
+### Décision : standardiser sur `.code` et intégrer le fold dans `buildEffectiveModel`
+
+1. **Index canonique** : `.code` (aligné sur la convention `code = String(id)`).
+2. **Lieu unique du fold** : remonté dans `buildEffectiveModel` pour que `_effectiveModel` soit déjà foldé.
+3. **Symétrie forward/reverse** : même source (`_effectiveModel` foldé), même index (`code`).
+4. **Validation ajoutée** : `findFkField` vérifie la présence de `.code` dans le modèle foldé.
+
+### Fichiers modifiés
+
+- `src/lib/main/machineModelBuilder.ts` : `foldFksIntoFields` utilise `.code` et est intégré à `buildEffectiveModel`.
+- `src/lib/main/machineDb.ts` : ne fait plus le fold (délégué à `buildEffectiveModel`).
+- `src/lib/main/machine/MachineScheme.ts` : validation pour `.code` dans `findFkField`.
+- `src/lib/main/__tests__/machineRelationHelpers.test.ts` : 5/5 tests corrigés (utilise `buildEffectiveModel` et `where: { category: 'compact' }`).
+
+### Résultat
+
+- Tous les tests passent.
+- FK forward et reverse résolvent symétriquement sur `.code`.
+- Modèle toujours foldé → pas de FK forward silencieusement vides.
+- La forme du modèle (A vs B) reste à trancher, mais les FK sont stabilisés.
+
+---
+
+_Signed: Mistral Vibe (devstral-small)_

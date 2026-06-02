@@ -19,10 +19,11 @@ export class MachineDb {
 	/**
 	 * Create a new MachineDb instance.
 	 * @role Constructor
-	 * @param {IdbqModel} model Custom model to use.
+	 * @param {IdbqModel} model Custom model to use. Must already be foldFksIntoFields processed.
 	 */
 	constructor(model: MachineModel) {
-		this.model = foldFksIntoFields(model);
+		// Model should already be folded by buildEffectiveModel
+		this.model = model;
 		this.machineForge = new MachineParserForge();
 	}
 
