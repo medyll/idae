@@ -47,7 +47,10 @@ const FIELD_GROUPS = Object.values(FieldList).map(f => f.group);
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
 const VIEW_TYPES   = ['full', 'flat', 'fk', 'focus'] as const;
 
-const DEFAULT_BASE = 'machine_user';
+// Default base for collections without explicit base (aligned with engineModel.ts)
+const ENGINE_BASE = 'machine_app';
+const USER_BASE   = 'machine_user';
+const DEFAULT_BASE = ENGINE_BASE; // Default to engine base for core collections
 
 // Log schema analysis (for debugging FK asymmetries)
 function logSchemaAnalysis() {

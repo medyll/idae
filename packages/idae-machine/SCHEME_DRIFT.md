@@ -31,6 +31,18 @@ La vraie question n'est pas *« lequel est cassé »*. C'est *« deux philosophi
 
 **Raison** : Le Walker/Parser fournira une vue claire des relations, ce qui est un prérequis pour trancher les asymétries FK.
 
+### Clarification sur les PK/FK (2026-06-02)
+- **Contexte** : Le système utilise deux backends avec des PK différentes :
+  - **IndexedDB (Qoolie)** : `keyPath: '++id'` → PK auto-incrément numérique.
+  - **MongoDB** : `_id` (ObjectId) → PK auto-générée.
+- **FK** : Résolues par `code` (clé sémantique) dans les deux cas.
+- **Cohérence** : Pas d'asymétrie, car `id` (IndexedDB) et `_id` (MongoDB) sont des implémentations spécifiques au backend. Les FK utilisent `code` pour une résolution sémantique universelle.
+- **Bases physiques vs logiques** :
+  - Dans `appModelDeclaration`, les `code` sont `machine_app`/`machine_user`.
+  - Dans MongoDB, les bases sont préfixées par l'`org` (ex: `demo_machine_app` pour `org = 'demo'`).
+  - **Résolution** : `IdaeDb` gère ce mapping via `dbScope` (ex: `dbScope: 'demo'` → base `demo_machine_app`).
+- **Conclusion** : Aucun changement nécessaire. Le système est cohérent.
+
 ---
 
 ## 0bis. CORRECTION DE CHRONOLOGIE (révision 2)
