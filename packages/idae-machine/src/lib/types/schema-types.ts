@@ -1417,3 +1417,31 @@ export interface AppSchemeView extends Extendable, WithEssentials {
 export interface AppSchemeWithProfiles<T = Record<string, any>> extends AppScheme<T> {
 	_views?: Partial<ViewFields>;
 }
+
+/**
+ * Helper to generate FK reference objects for gridFks.
+ * Centralizes the creation of FK references to avoid duplication.
+ */
+export interface FkRef {
+	id:       number | null;
+	code:     string;
+	name:     string;
+	icon:     string;
+	color:    string;
+	order:    number;
+	multiple: boolean;
+	required: boolean;
+}
+
+export function fkRef(overrides: Partial<FkRef> & { code: string; name: string }): FkRef {
+	return {
+		id:       overrides.id ?? null,
+		code:     overrides.code,
+		name:     overrides.name,
+		icon:     overrides.icon ?? 'link',
+		color:    overrides.color ?? '#888',
+		order:    overrides.order ?? 0,
+		multiple: overrides.multiple ?? false,
+		required: overrides.required ?? false,
+	};
+}

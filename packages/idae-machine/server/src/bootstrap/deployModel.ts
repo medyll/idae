@@ -6,6 +6,9 @@
  * Relations (base, type, group, view_type, link) carried via gridFks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
+import { fkRef, FkRef, FieldList } from '../../lib/types/schema-types';
+import { inferFieldGroup, ICON_BY_GROUP } from '../../lib/types/schema-utils';
+import { analyzeSchema } from '../../lib/types/schemaWalker';
 
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
 interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
@@ -38,59 +41,32 @@ function ensureCodeField(model: MachineModel): MachineModel {
 	return out;
 }
 
-// ── Static registry data ─────────────────────────────────────────────────────
-const FIELD_TYPES = [
-	'id', 'text', 'text-xs', 'text-sm', 'text-md', 'text-lg', 'text-xl', 'text-full', 'text-area',
-	'number', 'boolean', 'date', 'datetime', 'time',
-	'email', 'url', 'phone', 'password', 'currency',
-	'image', 'file', 'json', 'fk', 'range', 'status', 'any',
-] as const;
-
-const FIELD_GROUPS = [
-	'audit', 'classification', 'codification', 'contact', 'date',
-	'finance', 'identification', 'inventory', 'location', 'metrics',
-	'presentation', 'progress', 'quantity', 'security', 'status', 'system', 'custom',
-] as const;
-
+// ── Dynamic registry data (from FieldList) ────────────────────────────────
+const FIELD_TYPES = Object.values(FieldList).map(f => f.type);
+const FIELD_GROUPS = Object.values(FieldList).map(f => f.group);
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
 const VIEW_TYPES   = ['full', 'flat', 'fk', 'focus'] as const;
 
-const ICON_BY_GROUP: Record<string, string> = {
-	audit:          'history',
-	classification: 'tag',
-	codification:   'hash',
-	contact:        'mail',
-	date:           'calendar',
-	finance:        'dollar',
-	identification: 'key',
-	inventory:      'box',
-	location:       'map',
-	metrics:        'ruler',
-	presentation:   'eye',
-	progress:       'trending-up',
-	quantity:       'package',
-	security:       'lock',
-	status:         'flag',
-	system:         'cog',
-	custom:         'star',
-};
-
 const DEFAULT_BASE = 'machine_user';
 
-function inferFieldGroup(name: string, type: string): string {
-	const n = name.toLowerCase();
-	// Identity/label fields drive the focus view (mini-fiche).
-	if (['code', 'name', 'label', 'title', 'nom', 'libelle'].includes(n)) return 'identification';
-	if (n === 'id' || type === 'id')                      return 'system';
-	if (type.startsWith('fk'))                            return 'classification';
-	if (['date', 'datetime', 'time'].includes(type))      return 'date';
-	if (['email', 'phone', 'url'].includes(type))         return 'contact';
-	if (type === 'boolean')                               return 'status';
-	if (type === 'number')                                return 'metrics';
-	if (type === 'currency')                              return 'finance';
-	if (['image', 'file'].includes(type))                 return 'presentation';
-	if (type === 'password')                              return 'security';
-	return 'presentation';
+// Log schema analysis (for debugging FK asymmetries)
+function logSchemaAnalysis() {
+	try {
+		const { graph, report } = analyzeSchema();
+		console.log('[deployModel] Schema analysis:');
+		console.log(`- Collections: ${Object.keys(graph.collections).length}`);
+		console.log(`- FK dependencies: ${Object.keys(graph.fkDependencies).length}`);
+		if (report.unresolvedRefs.length > 0) {
+			console.log(`- Unresolved FK refs: ${report.unresolvedRefs.length}`);
+			report.unresolvedRefs.forEach(ref => console.log(`  ${ref}`));
+		}
+		if (report.asymmetries.length > 0) {
+			console.log(`- Asymmetries: ${report.asymmetries.length}`);
+			report.asymmetries.forEach(a => console.log(`  ${a.sourceCollection}.${a.sourceField} → ${a.targetCollection} (${a.issue})`));
+		}
+	} catch (e) {
+		console.error('[deployModel] Schema analysis failed:', e);
+	}
 }
 
 async function upsertGetId(
@@ -217,6 +193,9 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 // Each collection's `base` is registered in appscheme_base (default: 'machine_user').
 export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
 	const model = ensureCodeField(rawModel);
+	
+	// Analyze schema for FK asymmetries (debugging)
+	logSchemaAnalysis();
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
 
@@ -268,30 +247,13 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const stId = stById.get(typeCode) ?? stById.get('standard') ?? 1;
 
 		const gridFks: Record<string, any> = {
-			appscheme_base: {
-				id: baseId, code: baseCode, name: baseCode,
-				icon: 'database', color: '#333',
-				order: 0, multiple: false, required: true,
-			},
-			appscheme_type: {
-				id: stId, code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1),
-				icon: 'layers', color: '#555',
-				order: 0, multiple: false, required: false,
-			},
+			appscheme_base: fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+			appscheme_type: fkRef({ code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false }),
 		};
 
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			const fk = fkDef as any;
-			gridFks[fkKey] = {
-				id:       null,
-				code:     fk.code ?? fkKey,
-				name:     fk.code ?? fkKey,
-				icon:     'link',
-				color:    '#888',
-				order:    0,
-				multiple: fk.multiple ?? false,
-				required: !!fk.required,
-			};
+			gridFks[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
 		}
 
 		// ── appscheme ─────────────────────────────────────────────────────────
@@ -335,21 +297,9 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 
 			if (!fieldReg.has(fieldName)) {
 				const fieldGridFks = {
-					appscheme_base: {
-						id: baseId, code: baseCode, name: baseCode,
-						icon: 'database', color: '#333',
-						order: 0, multiple: false, required: true,
-					},
-					appscheme_field_type: {
-						id: ftId, code: baseType, name: baseType,
-						icon: 'type', color: '#666',
-						order: 0, multiple: false, required: true,
-					},
-					appscheme_field_group: {
-						id: fgId, code: group, name: group,
-						icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888',
-						order: 0, multiple: false, required: false,
-					},
+					appscheme_base: fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+					appscheme_field_type: fkRef({ code: baseType, name: baseType, icon: 'type', color: '#666', order: 0, multiple: false, required: true }),
+					appscheme_field_group: fkRef({ code: group, name: group, icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
 				};
 
 				const fieldId = await upsertGetId(
@@ -443,22 +393,9 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 						color: '#444',
 						order: order + 1,
 						gridFks: {
-							appscheme: {
-								id: schemeId, code: collectionName, name: collectionName,
-								icon: 'table', color: '#222',
-								order: 0, multiple: false, required: true,
-							},
-							appscheme_view_type: {
-								id: vtId, code: viewTypeCode, name: viewTypeCode,
-								icon: 'eye', color: '#444',
-								order: 0, multiple: false, required: true,
-							},
-							appscheme_field: {
-								id: vFieldId, code: vFieldName, name: vFieldName,
-								icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle',
-								color: '#666',
-								order: order + 1, multiple: false, required: false,
-							},
+							appscheme: fkRef({ code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
+							appscheme_view_type: fkRef({ code: viewTypeCode, name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true }),
+							appscheme_field: fkRef({ code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
 						},
 					},
 				);
