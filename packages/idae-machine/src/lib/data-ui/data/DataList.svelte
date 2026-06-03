@@ -316,7 +316,7 @@ Consumers can override via the item snippet.
 		onclick={currentMode === 'table' ? () => handleItemClick(record) : undefined}
 	>
 		{#if currentMode === 'table'}
-			<DataRecord {collection} data={record as Record<string, any>} mode="row" {view} />
+			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />
 		{:else if itemSnippet}
 			{@render itemSnippet({ record, idx, fieldValues })}
 		{:else}

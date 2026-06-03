@@ -206,7 +206,9 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 {#if fieldForge}
     {#if !isPrivate}
         <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
-            <span class="field-label">{fieldLabel}</span>
+            {#if showLabel}
+                <span class="field-label">{fieldLabel}</span>
+            {/if}
             <div class="field-input" {...inputDataset}>
                 {#if mode === 'show'}
                     {@render fieldShow()}

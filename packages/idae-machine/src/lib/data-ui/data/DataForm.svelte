@@ -19,7 +19,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 
 	let {
 		onsubmit: onsubmit_callback,
-		mode = 'create',
+		mode = 'show',
 		collection,
 		data,
 		dataId,

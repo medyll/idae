@@ -6,7 +6,7 @@ import { mount, unmount, type Component } from 'svelte';
 import { SvelteMap } from 'svelte/reactivity';
 import { buildLoadInUrl } from './frameUrl.js';
 import { computeFrameId } from './frameUtils.js';
-import { componentRegistry } from '$lib/main/router/componentRegistry.js';
+import { componentRegistry, type RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 export interface FrameControls {
 	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
@@ -50,6 +50,8 @@ export class MachineFrameManager {
 	/** Zones with a Frame mount in flight — closes the race where the same URL fires twice
 	 * before the first Frame's $effect registers, causing a duplicate Frame mount. */
 	private mountingZones = new Set<string>();
+	/** zone name → set of registered frameIds in that zone (for sibling hide/show). */
+	private zoneFrames = new Map<string, Set<string>>();
 	private _pushFn?: (url: string) => void;
 	private _onNavigate?: (e: NavigationEvent) => void;
 	private _labelResolver?: LabelResolver;
@@ -166,7 +168,7 @@ export class MachineFrameManager {
 	 * Back/forward, deep links, refresh all work by construction.
 	 */
 	loadFrame(
-		modulePath: string,
+		modulePath: RegistryKey,
 		collection: string,
 		collectionId?: string,
 		vars?: Record<string, string>,
@@ -177,6 +179,7 @@ export class MachineFrameManager {
 		this._pushFn(buildLoadInUrl(modulePath, zone, collection, collectionId, varsStr));
 		try {
 			this._onNavigate?.({ modulePath, collection, collectionId, vars, zone });
+			console.log(`[FrameManager] navigate: ${modulePath} in zone "${zone}" for ${collection}:${collectionId ?? ''}`);
 		} catch (err) {
 			console.warn('[FrameManager] navigation hook failed:', err);
 		}
@@ -188,7 +191,7 @@ export class MachineFrameManager {
 	 */
 	loadIn(
 		zone: string,
-		modulePath: string,
+		modulePath: RegistryKey,
 		collection: string,
 		collectionId?: string,
 		vars?: Record<string, string>
@@ -202,12 +205,13 @@ export class MachineFrameManager {
 	 * existing dialog instead of duplicating; different content stacks new dialogs.
 	 */
 	async loadInDialog(
-		modulePath: string,
+		modulePath: RegistryKey,
 		collection: string,
 		collectionId?: string,
 		vars?: Record<string, string>
 	): Promise<void> {
 		const frameId = `dialog:${modulePath}:${collection}:${collectionId ?? ''}`;
+		console.log(`[FrameManager] loadInDialog: ${frameId}`);
 		// Already open → focus the existing dialog, don't reload/duplicate.
 		const existing = this.registry.get(frameId);
 		if (existing) {
@@ -226,6 +230,9 @@ export class MachineFrameManager {
 	 * By default throws if the frameId is already registered.
 	 * `replace` is intended for DOM/HMR-driven remounts where the frame id is stable
 	 * but the mounted component instance has been recreated.
+	 *
+	 * Zone frames (format "modulePath:zone", not starting with "dialog:") are tracked
+	 * per-zone so siblings can be hidden when a new frame activates.
 	 */
 	register(frameId: string, controls: FrameControls, options: FrameRegisterOptions = {}): void {
 		const existing = this.registry.get(frameId);
@@ -234,6 +241,14 @@ export class MachineFrameManager {
 			throw new Error(`[FrameManager] frame "${frameId}" already registered`);
 		}
 		this.registry.set(frameId, controls);
+		if (!frameId.startsWith('dialog:')) {
+			const colonIdx = frameId.indexOf(':');
+			if (colonIdx !== -1) {
+				const zone = frameId.slice(colonIdx + 1);
+				if (!this.zoneFrames.has(zone)) this.zoneFrames.set(zone, new Set());
+				this.zoneFrames.get(zone)!.add(frameId);
+			}
+		}
 	}
 
 	/**
@@ -241,6 +256,30 @@ export class MachineFrameManager {
 	 */
 	unregister(frameId: string): void {
 		this.registry.delete(frameId);
+		if (!frameId.startsWith('dialog:')) {
+			const colonIdx = frameId.indexOf(':');
+			if (colonIdx !== -1) {
+				const zone = frameId.slice(colonIdx + 1);
+				this.zoneFrames.get(zone)?.delete(frameId);
+			}
+		}
+	}
+
+	/**
+	 * For zone frames (format "modulePath:zone"): hide all sibling frames in the same
+	 * zone and show the target frame. No-op for dialog frames.
+	 */
+	private activateZoneFrame(frameId: string): void {
+		if (frameId.startsWith('dialog:')) return;
+		const colonIdx = frameId.indexOf(':');
+		if (colonIdx === -1) return;
+		const zone = frameId.slice(colonIdx + 1);
+		const siblings = this.zoneFrames.get(zone);
+		if (!siblings) return;
+		for (const sibId of siblings) {
+			if (sibId !== frameId) this.registry.get(sibId)?.hide();
+		}
+		this.registry.get(frameId)?.show();
 	}
 
 	/**
@@ -264,6 +303,7 @@ export class MachineFrameManager {
 	): Promise<void> {
 		const controls = this.registry.get(frameId);
 		if (controls) {
+			this.activateZoneFrame(frameId);
 			controls.load(modulePath, collection, collectionId, vars);
 			return;
 		}
@@ -285,6 +325,7 @@ export class MachineFrameManager {
 			}
 			const fresh = this.registry.get(frameId);
 			if (fresh) {
+				this.activateZoneFrame(frameId);
 				fresh.load(modulePath, collection, collectionId, vars);
 				return;
 			}
@@ -346,6 +387,7 @@ export class MachineFrameManager {
 	/** Clear all registered frames. */
 	clear(): void {
 		this.registry.clear();
+		this.zoneFrames.clear();
 	}
 }
 

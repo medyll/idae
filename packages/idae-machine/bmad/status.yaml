@@ -908,7 +908,7 @@ backlog:
   - id: BACK-06
     title: "FullInfo.svelte — implémenter le contenu (stub enregistré)"
     priority: low
-    description: "Enregistré dans componentRegistry sous 'fullinfo'. Stub vide. Définir intent: detail view d'un record + ses relations."
+    description: "Enregistré dans componentRegistry sous 'synthesis'. Stub vide. Définir intent: detail view d'un record + ses relations."
 
   - { id: BL-01,     priority: done, title: "mobile-first auto-seed — implémenté S36" }
   - { id: BL-02,     priority: done, title: "sortItems/groupItems déjà dans data-ui/utils/" }

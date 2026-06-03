@@ -28,7 +28,8 @@ Iterates a record's fields and renders DataField for each.
 		sortBy,
 		groupBy,
 		groupChildren,
-		inputForm
+		inputForm,
+		showLabel = true
 	}: {
 		collection: string;
 		collectionId?: string | number;
@@ -40,6 +41,7 @@ Iterates a record's fields and renders DataField for each.
 		groupBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
+		showLabel?: boolean | string;
 	} = $props();
 
 	const scheme = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
@@ -74,7 +76,7 @@ Iterates a record's fields and renders DataField for each.
 		{#each fieldNames as fieldName (fieldName)}
 			{#if scheme.fields?.[fieldName] && (fieldName in effectiveData || isFkField(fieldName))}
 				<td>
-					<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
+					<DataField   {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
 				</td>
 			{/if}
 		{/each}
@@ -90,9 +92,9 @@ Iterates a record's fields and renders DataField for each.
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">
 							{#if mode === 'show'}
-								<DataField {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
+								<DataField  {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
 							{:else}
-								{#if data !== undefined}<DataField {collection} {fieldName} {mode} bind:data={data} {inputForm} />{/if}
+								{#if data !== undefined}<DataField  {collection} {fieldName} {mode} bind:data={data} {inputForm} />{/if}
 							{/if}
 						</div>
 					{/if}
@@ -107,9 +109,9 @@ Iterates a record's fields and renders DataField for each.
 				{#if scheme.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 					<div class="field">
 						{#if mode === 'show'}
-							<DataField {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
+							<DataField  {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
 						{:else}
-							{#if data !== undefined}<DataField {collection} {fieldName} {mode} bind:data={data as Record<string,unknown>} {inputForm} />{/if}
+							{#if data !== undefined}<DataField   {collection} {fieldName} {mode} bind:data={data as Record<string,unknown>} {inputForm} />{/if}
 						{/if}
 					</div>
 				{/if}

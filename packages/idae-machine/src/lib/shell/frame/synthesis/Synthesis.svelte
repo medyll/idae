@@ -71,7 +71,7 @@
 	}
 
 	function handleCreateRfk(rfkCollection: string) {
-		void machine.framer.loadInDialog('card.form', rfkCollection);
+		void machine.framer.loadInDialog('form', rfkCollection);
 	}
 
 	function handleNavRfk(rfkCollection: string) {
