@@ -553,4 +553,4 @@ export const idaeModelCore = {
 	},
 } as const;
 
-export default appModelDeclaration;
+export default idaeModelCore;

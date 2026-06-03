@@ -4,7 +4,7 @@ import { machineServer } from '../MachineServer.js';
 import { logger } from '../utils/logger.js';
 import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
 import { clearCollections, seedEngineRegistries, deployModel } from '../bootstrap/deployModel.js';
-import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
+import { buildEngineModel } from '../bootstrap/seed/engineModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
 import { seedImagePresets } from '../bootstrap/seedImagePresets.js';

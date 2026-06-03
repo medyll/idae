@@ -15,7 +15,7 @@ import { initializeSocketIO, getSocketServer, type SocketServerOptions } from '.
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import type { SocketIoServer } from '@medyll/idae-socket';
 import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap/deployModel.js';
-import { buildEngineModel } from '../../src/lib/types/engineModel.js';
+import { buildEngineModel } from './bootstrap/seed/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
 import type { ViewFields, ViewFieldDef } from '../../src/lib/types/schema-types.js';
@@ -24,6 +24,7 @@ import { mcpServer } from './mcp/index.js';
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
+
 
 const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_group', 'appscheme_view_type']);
 
@@ -156,7 +157,7 @@ class MachineServerClass {
 
 			model[code] = {
 				keyPath:  (scheme.keyPath as string) ?? '++id',
-				base:     (scheme.base as string) ?? (scheme.gridFks?.appscheme_base?.code as string) ?? 'machine_user',
+				base:     (scheme.base as string) ?? 'machine_user',
 				model:    {},
 				fields,
 				fks,

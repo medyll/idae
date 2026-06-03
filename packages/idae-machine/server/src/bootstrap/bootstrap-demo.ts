@@ -13,7 +13,7 @@ const serverEnv = resolve(fileURLToPath(import.meta.url), '../../../../.env');
 dotenv({ path: serverEnv });
 
 import { clearCollections, seedEngineRegistries, deployModel } from './deployModel.js';
-import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
+import { buildEngineModel } from './seed/engineModel.js';
 import { demoScheme, demoSeed } from '../models/demo/demoScheme.js';
 import { seedUsers } from './seedUsers.js';
 import { seedBusinessData } from './seedBusinessData.js';

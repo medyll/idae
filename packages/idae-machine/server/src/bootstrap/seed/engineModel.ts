@@ -3,8 +3,8 @@
  * All engine collections live in base 'machine_app' (resolved server-side to {org}_machine_app).
  * Result is a MachineModel that can be deployed via deployModel() like any user model.
  */
-import { idaeModelCore } from '../../server/src/bootstrap/seed/idae-model-core.js';
-import { FieldList }            from './schema-types.js';
+import { idaeModelCore } from './idae-model-core.js';
+import { FieldList }            from '../../../../src/lib/types/schema-types.js';
 import type {
 	MachineModel,
 	MachineCollectionModel,
@@ -12,7 +12,7 @@ import type {
 	MachineFkDef,
 	MachineDisplayTemplate,
 	MachineRightsPolicy,
-} from './machine-model.js';
+} from '../../../../src/lib/types/machine-model.js';
 
 export const ENGINE_BASE = 'machine_app';
 export const USER_BASE   = 'machine_user';
@@ -73,6 +73,10 @@ export function buildEngineModel(): MachineModel {
 	const model: MachineModel = {};
 	for (const [name, decl] of Object.entries(idaeModelCore.collections)) {
 		model[name] = buildCollection(decl as Record<string, unknown>);
+	}
+	console.log('[buildEngineModel] collections:', Object.keys(model).length);
+	for (const [name, col] of Object.entries(model)) {
+		console.log(`  ${name} → base=${col.base}`);
 	}
 	return model;
 }

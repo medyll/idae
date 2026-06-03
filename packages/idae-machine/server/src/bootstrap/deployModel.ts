@@ -1,15 +1,15 @@
 /**
- * deployModel — writes a MachineModel into Mongo meta collections (appscheme_*).
+ * deployModel — writes a MachineModel into Mongo meta collections.
  * Reflexive: engine model can be deployed by the same function — see buildEngineModel().
  *
  * Convention: every meta doc has {id, code, name, color, icon, order}.
  * Relations (base, type, group, view_type, link) carried via gridFks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { fkRef, FkRef, FieldList } from '../../lib/types/schema-types';
-import { inferFieldGroup, ICON_BY_GROUP } from '../../lib/types/schema-utils';
-import { analyzeSchema } from './seed/schemaWalker';
-import { idaeModelCore, ENGINE_BASE } from './seed/idae-model-core';
+import { fkRef, FieldList } from '../../../src/lib/types/schema-types.js';
+import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
+import { analyzeSchema } from './seed/schemaWalker.js';
+import { ENGINE_BASE } from './seed/engineModel.js';
 
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
 interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
@@ -24,6 +24,19 @@ interface MachineCollection {
 interface MachineModel { [collection: string]: MachineCollection; }
 
 interface DeployOpts { org: string; mongoUri: string; }
+
+/** Single source of truth for meta-schema collection names. */
+const META = {
+	base:       'appscheme_base',
+	scheme:     'appscheme',
+	field:      'appscheme_field',
+	hasField:   'appscheme_has_field',
+	view:       'appscheme_view',
+	fieldType:  'appscheme_field_type',
+	fieldGroup: 'appscheme_field_group',
+	schemeType: 'appscheme_type',
+	viewType:   'appscheme_view_type',
+} as const;
 
 /** Ensure every collection declares a `code` field (semantic key). Pure. */
 function ensureCodeField(model: MachineModel): MachineModel {
@@ -43,17 +56,13 @@ function ensureCodeField(model: MachineModel): MachineModel {
 }
 
 // ── Dynamic registry data (from FieldList) ────────────────────────────────
-const FIELD_TYPES = Object.values(FieldList).map(f => f.type);
+const FIELD_TYPES  = Object.values(FieldList).map(f => f.type);
 const FIELD_GROUPS = Object.values(FieldList).map(f => f.group);
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
 const VIEW_TYPES   = ['full', 'flat', 'fk', 'focus'] as const;
 
-// Default base for collections without explicit base (aligned with engineModel.ts)
-const ENGINE_BASE = 'machine_app';
-const USER_BASE   = 'machine_user';
-const DEFAULT_BASE = ENGINE_BASE; // Default to engine base for core collections
+const DEFAULT_BASE = ENGINE_BASE;
 
-// Log schema analysis (for debugging FK asymmetries)
 function logSchemaAnalysis() {
 	try {
 		const { graph, report } = analyzeSchema();
@@ -100,24 +109,25 @@ async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 			autoIncrementDbCollection: 'auto_increment',
 		},
 	});
-	await idaeDb.db('machine_app');
+	const conn = await idaeDb.db('machine_app');
+	console.log(`[initDb] connected → ${(conn as any).dbName ?? 'unknown'}`);
 	return idaeDb;
 }
-
-// ENGINE_COLLECTIONS dérivées dynamiquement de appModelDeclaration (via engineModel.ts)
-// Supprimé en juin 2026 pour autonomie totale
 
 // ── clearCollections ──────────────────────────────────────────────────────────
 // Wipes all docs from engine meta collections before a fresh seed.
 export async function clearCollections(opts: DeployOpts): Promise<void> {
+	console.log('[clearCollections] start, org=', opts.org);
 	const idaeDb = await initDb(opts);
-	for (const name of ENGINE_COLLECTIONS) {
+	for (const name of Object.values(META)) {
 		try {
 			await idaeDb.collection(name).deleteWhere({ query: {} });
-		} catch {
-			// Collection may not exist yet on first run — ignore
+			console.log(`  cleared ${name}`);
+		} catch (e) {
+			console.log(`  skip ${name} (not found)`);
 		}
 	}
+	console.log('[clearCollections] done');
 }
 
 // ── seedEngineRegistries ─────────────────────────────────────────────────────
@@ -126,15 +136,15 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
 
-	// 0. Base 'ENGINE_BASE' (no fk yet — chicken-egg root)
+	// 0. Base root (no fk yet — chicken-egg root)
 	await upsertGetId(
-		col('appscheme_base'),
+		col(META.base),
 		{ code: ENGINE_BASE },
 		{ code: ENGINE_BASE, name: 'Machine Engine', icon: 'cpu', color: '#111', order: 1 },
 	);
 
-	const baseRef = {
-		appscheme_base: {
+	const baseRef: Record<string, any> = {
+		[META.base]: {
 			id:       null as number | null,
 			code:     ENGINE_BASE,
 			name:     'Machine Engine',
@@ -145,44 +155,44 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 			required: true,
 		},
 	};
-	const baseDoc = await col('appscheme_base').findOne({ query: { code: 'machine_app' } });
-	if (baseDoc) baseRef.appscheme_base.id = baseDoc.id;
+	const baseDoc = await col(META.base).findOne({ query: { code: ENGINE_BASE } });
+	if (baseDoc) baseRef[META.base].id = baseDoc.id;
 
-	// 1. appscheme_field_type
+	// 1. field_type
 	let ftOrder = 0;
 	for (const code of FIELD_TYPES) {
 		await upsertGetId(
-			col('appscheme_field_type'),
+			col(META.fieldType),
 			{ code },
 			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, gridFks: baseRef },
 		);
 	}
 
-	// 2. appscheme_field_group
+	// 2. field_group
 	let fgOrder = 0;
 	for (const code of FIELD_GROUPS) {
 		await upsertGetId(
-			col('appscheme_field_group'),
+			col(META.fieldGroup),
 			{ code },
 			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, gridFks: baseRef },
 		);
 	}
 
-	// 3. appscheme_type
+	// 3. scheme_type
 	let stOrder = 0;
 	for (const code of SCHEME_TYPES) {
 		await upsertGetId(
-			col('appscheme_type'),
+			col(META.schemeType),
 			{ code },
 			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, gridFks: baseRef },
 		);
 	}
 
-	// 4. appscheme_view_type
+	// 4. view_type
 	let vtOrder = 0;
 	for (const code of VIEW_TYPES) {
 		await upsertGetId(
-			col('appscheme_view_type'),
+			col(META.viewType),
 			{ code },
 			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, gridFks: baseRef },
 		);
@@ -191,37 +201,25 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 
 // ── deployModel ──────────────────────────────────────────────────────────────
 // Writes schemes / fields / has_field / views for the given MachineModel.
-// Each collection's `base` is registered in appscheme_base (default: 'machine_user').
+// Each collection's `base` is registered in META.base (default: ENGINE_BASE).
 export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
 	const model = ensureCodeField(rawModel);
-	
-	// Analyze schema for FK asymmetries (debugging)
+
 	logSchemaAnalysis();
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
+ 
 
-	// Resolve registries — must exist (seedEngineRegistries first).
-	const ftDocs = await col('appscheme_field_type').find({ query: {} });
-	const ftById = new Map<string, number>(ftDocs.map((d: any) => [d.code as string, d.id as number]));
-
-	const fgDocs = await col('appscheme_field_group').find({ query: {} });
-	const fgById = new Map<string, number>(fgDocs.map((d: any) => [d.code as string, d.id as number]));
-
-	const stDocs = await col('appscheme_type').find({ query: {} });
-	const stById = new Map<string, number>(stDocs.map((d: any) => [d.code as string, d.id as number]));
-
-	const vtDocs = await col('appscheme_view_type').find({ query: {} });
-	const vtById = new Map<string, number>(vtDocs.map((d: any) => [d.code as string, d.id as number]));
-
-	// ── Ensure every base referenced by the model exists in appscheme_base ──
+	// ── Ensure every base referenced by the model exists in META.base ──
 	const baseById = new Map<string, number>();
 	const bases    = new Set<string>();
 	for (const c of Object.values(model)) bases.add(c.base ?? DEFAULT_BASE);
+	console.log('[deployModel] bases in model:', [...bases]);
 
 	let baseOrder = 10;
 	for (const code of bases) {
 		const id = await upsertGetId(
-			col('appscheme_base'),
+			col(META.base),
 			{ code },
 			{ code, name: code, icon: 'database', color: '#333', order: ++baseOrder },
 		);
@@ -237,42 +235,41 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const fks      = colDef.fks      ?? {};
 		const fields   = colDef.fields   ?? {};
 		const baseCode = colDef.base     ?? DEFAULT_BASE;
-		const baseId   = baseById.get(baseCode)!;
 
-		// Scheme type reflects the collection's role so DataList can group by it.
 		const typeCode =
 			((colDef as any).isType   ?? collectionName.endsWith('_type'))   ? 'type'   :
 			((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  ? 'group'  :
 			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
 			'standard';
-		const stId = stById.get(typeCode) ?? stById.get('standard') ?? 1;
 
 		const gridFks: Record<string, any> = {
-			appscheme_base: fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-			appscheme_type: fkRef({ code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false }),
+			[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+			[META.schemeType]: fkRef({ code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false }),
 		};
 
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
+			if (fkKey === META.base) continue; // base entry already set above — skip to avoid overwrite
 			const fk = fkDef as any;
 			gridFks[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
 		}
 
-		// ── appscheme ─────────────────────────────────────────────────────────
+		// ── META.scheme ───────────────────────────────────────────────────────
 		const isType   = ((colDef as any).isType   ?? collectionName.endsWith('_type'))   || undefined;
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
+		console.log(`  [deployModel] ${collectionName} → base=${baseCode}`, {gridFks});
 		const schemeId = await upsertGetId(
-			col('appscheme'),
+			col(META.scheme),
 			{ code: collectionName },
 			{
-				code:         collectionName,
-				name:         collectionName,
-				icon:         'table',
-				color:        '#222',
-				order:        ++schemeOrder,
-				keyPath:      colDef.keyPath ?? '++id',
-				base:         baseCode,
+				code:     collectionName,
+				name:     collectionName,
+				icon:     'table',
+				color:    '#222',
+				order:    ++schemeOrder,
+				keyPath:  colDef.keyPath ?? '++id',
+				base:     baseCode,
 				...(isType   ? { isType:   true } : {}),
 				...(isGroup  ? { isGroup:  true } : {}),
 				...(isStatus ? { isStatus: true } : {}),
@@ -281,30 +278,27 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			},
 		);
 
-		// ── appscheme_field + appscheme_has_field ────────────────────────────
+		// ── META.field + META.hasField ────────────────────────────────────────
 		let fieldOrder = 0;
 		for (const [fieldName, fieldDef] of Object.entries(fields)) {
-			const fd        = fieldDef as any;
-			const rawType   = fd.type ?? 'text';
-			const baseType  = rawType.startsWith('fk-')
+			const fd       = fieldDef as any;
+			const rawType  = fd.type ?? 'text';
+			const baseType = rawType.startsWith('fk-')
 				? 'fk'
 				: (FIELD_TYPES.includes(rawType as any) ? rawType : 'text');
 			const group     = inferFieldGroup(fieldName, rawType);
-			const ftId      = ftById.get(baseType) ?? ftById.get('text') ?? 1;
-			const fgId      = fgById.get(group)    ?? fgById.get('presentation') ?? 1;
 			const fieldIcon = ICON_BY_GROUP[group] ?? 'circle';
-
 			const fieldType = rawType;
 
 			if (!fieldReg.has(fieldName)) {
 				const fieldGridFks = {
-					appscheme_base: fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-					appscheme_field_type: fkRef({ code: baseType, name: baseType, icon: 'type', color: '#666', order: 0, multiple: false, required: true }),
-					appscheme_field_group: fkRef({ code: group, name: group, icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
+					[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+					[META.fieldType]:  fkRef({ code: baseType, name: baseType, icon: 'type', color: '#666', order: 0, multiple: false, required: true }),
+					[META.fieldGroup]: fkRef({ code: group, name: group, icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
 				};
 
 				const fieldId = await upsertGetId(
-					col('appscheme_field'),
+					col(META.field),
 					{ code: fieldName },
 					{
 						code:     fieldName,
@@ -327,8 +321,8 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			fieldOrder++;
 
 			await upsertGetId(
-				col('appscheme_has_field'),
-				{ 'gridFks.appscheme.code': collectionName, 'gridFks.appscheme_field.code': fieldName },
+				col(META.hasField),
+				{ [`gridFks.${META.scheme}.code`]: collectionName, [`gridFks.${META.field}.code`]: fieldName },
 				{
 					code:     `${collectionName}_${fieldName}`,
 					name:     fieldName,
@@ -339,12 +333,12 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 					required: fd.required ? 1 : 0,
 					readonly: fd.readonly ? 1 : 0,
 					gridFks: {
-						appscheme: {
+						[META.scheme]: {
 							id: schemeId, code: collectionName, name: collectionName,
 							icon: 'table', color: '#222',
 							order: 0, multiple: false, required: true,
 						},
-						appscheme_field: {
+						[META.field]: {
 							id: fieldId, code: fieldName, name: fieldName,
 							icon: fieldIcon, color: '#666',
 							order: 0, multiple: false, required: true,
@@ -354,9 +348,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			);
 		}
 
-		// ── appscheme_view ────────────────────────────────────────────────────
-		// Partition by fk-ness (full = flat ∪ fk). Plus a curated `focus` subset =
-		// 'identification' group fields, falling back to [code, name] when none.
+		// ── META.view ─────────────────────────────────────────────────────────
 		const allFieldNames = Object.keys(fields);
 		const fkSet = new Set(
 			allFieldNames.filter((n) => ((fields[n] as any)?.type ?? '').startsWith('fk-')),
@@ -376,16 +368,15 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {
-			const vtId = vtById.get(viewTypeCode) ?? 1;
 			for (const [order, vFieldName] of viewFields.entries()) {
 				const vFieldId = fieldReg.get(vFieldName);
 				if (!vFieldId) continue;
 				await upsertGetId(
-					col('appscheme_view'),
+					col(META.view),
 					{
-						'gridFks.appscheme.code':           collectionName,
-						'gridFks.appscheme_view_type.code': viewTypeCode,
-						'gridFks.appscheme_field.code':     vFieldName,
+						[`gridFks.${META.scheme}.code`]:   collectionName,
+						[`gridFks.${META.viewType}.code`]: viewTypeCode,
+						[`gridFks.${META.field}.code`]:    vFieldName,
 					},
 					{
 						code:  `${collectionName}_${viewTypeCode}_${vFieldName}`,
@@ -394,9 +385,9 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 						color: '#444',
 						order: order + 1,
 						gridFks: {
-							appscheme: fkRef({ code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
-							appscheme_view_type: fkRef({ code: viewTypeCode, name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true }),
-							appscheme_field: fkRef({ code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
+							[META.scheme]:   fkRef({ code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
+							[META.viewType]: fkRef({ code: viewTypeCode, name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true }),
+							[META.field]:    fkRef({ code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
 						},
 					},
 				);
