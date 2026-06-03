@@ -22,7 +22,7 @@ function inferType(name: string): string {
 	if (/(At|^timestamp$|^startedAt$|^expiresAt$|^lastActivityAt$|^performedAt$|^lockedUntil$|^validFrom$|^validUntil$|^assignedAt$|^revokedAt$|^grantedAt$)/.test(name)) return 'datetime';
 	if (/^(is|has|can|must|emailVerified)/.test(name))              return 'boolean';
 	if (name.endsWith('Hash') || name === 'password')               return 'password';
-	if (['preferences','deviceInfo','options','_views','appPermissions','constraints','details','changes','metadata','gridFks'].includes(name)) return 'json';
+	if (['preferences','deviceInfo','options','_views','appPermissions','constraints','details','changes','metadata','fks'].includes(name)) return 'json';
 	if (['order','roleLevel','failedLoginCount','resourceId','sessionId','assignedBy','revokedBy','grantedBy','actorId'].includes(name)) return 'number';
 	return 'text';
 }

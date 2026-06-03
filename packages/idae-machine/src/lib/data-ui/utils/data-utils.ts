@@ -77,12 +77,12 @@ export function parseFkType(
 
 /**
  * Label for an FK relation stored as a nested object on the record under
- * `gridFks.<key>` (engine collections) — `{ id, code, name, … }`.
- * `fks` is accepted as an alias. Returns undefined when the relation is not
- * stored as a nested object (e.g. flat code values that need a store lookup).
+ * `fks.<key>` — `{ id, code, name, … }`.
+ * Returns undefined when the relation is not stored as a nested object
+ * (e.g. flat code values that need a store lookup).
  */
 export function fkObjectLabel(item: Record<string, unknown>, fkKey: string): string | undefined {
-	const bag = (item.gridFks ?? (item as Record<string, unknown>).fks) as
+	const bag = item.fks as
 		| Record<string, unknown>
 		| undefined;
 	const fk = bag?.[fkKey];

@@ -3,7 +3,7 @@
  * Reflexive: engine model can be deployed by the same function — see buildEngineModel().
  *
  * Convention: every meta doc has {id, code, name, color, icon, order}.
- * Relations (base, type, group, view_type, link) carried via gridFks only — no scalar duplicates.
+ * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
 import { fkRef, FieldList } from '../../../src/lib/types/schema-types.js';
@@ -164,7 +164,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 		await upsertGetId(
 			col(META.fieldType),
 			{ code },
-			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, gridFks: baseRef },
+			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, fks: baseRef },
 		);
 	}
 
@@ -174,7 +174,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 		await upsertGetId(
 			col(META.fieldGroup),
 			{ code },
-			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, gridFks: baseRef },
+			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, fks: baseRef },
 		);
 	}
 
@@ -184,7 +184,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 		await upsertGetId(
 			col(META.schemeType),
 			{ code },
-			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, gridFks: baseRef },
+			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, fks: baseRef },
 		);
 	}
 
@@ -194,7 +194,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 		await upsertGetId(
 			col(META.viewType),
 			{ code },
-			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, gridFks: baseRef },
+			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, fks: baseRef },
 		);
 	}
 }
@@ -242,7 +242,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
 			'standard';
 
-		const gridFks: Record<string, any> = {
+		const fks: Record<string, any> = {
 			[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
 			[META.schemeType]: fkRef({ code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false }),
 		};
@@ -250,7 +250,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey === META.base) continue; // base entry already set above — skip to avoid overwrite
 			const fk = fkDef as any;
-			gridFks[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
+			fks[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
 		}
 
 		// ── META.scheme ───────────────────────────────────────────────────────
@@ -258,7 +258,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
-		console.log(`  [deployModel] ${collectionName} → base=${baseCode}`, {gridFks});
+		console.log(`  [deployModel] ${collectionName} → base=${baseCode}`, {fks});
 		const schemeId = await upsertGetId(
 			col(META.scheme),
 			{ code: collectionName },
@@ -274,7 +274,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 				...(isGroup  ? { isGroup:  true } : {}),
 				...(isStatus ? { isStatus: true } : {}),
 				template,
-				gridFks,
+				fks,
 			},
 		);
 
@@ -310,7 +310,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 						required: fd.required ? 1 : 0,
 						readonly: fd.readonly ? 1 : 0,
 						private:  fd.private  ? 1 : 0,
-						gridFks: fieldGridFks,
+						fks: fieldGridFks,
 					},
 					{ fkTargetCol: '', fkTargetField: '' },
 				);
@@ -322,7 +322,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 
 			await upsertGetId(
 				col(META.hasField),
-				{ [`gridFks.${META.scheme}.code`]: collectionName, [`gridFks.${META.field}.code`]: fieldName },
+				{ [`fks.${META.scheme}.code`]: collectionName, [`fks.${META.field}.code`]: fieldName },
 				{
 					code:     `${collectionName}_${fieldName}`,
 					name:     fieldName,
@@ -332,7 +332,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 					visible:  fd.private ? 0 : 1,
 					required: fd.required ? 1 : 0,
 					readonly: fd.readonly ? 1 : 0,
-					gridFks: {
+					fks: {
 						[META.scheme]: {
 							id: schemeId, code: collectionName, name: collectionName,
 							icon: 'table', color: '#222',
@@ -374,9 +374,9 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 				await upsertGetId(
 					col(META.view),
 					{
-						[`gridFks.${META.scheme}.code`]:   collectionName,
-						[`gridFks.${META.viewType}.code`]: viewTypeCode,
-						[`gridFks.${META.field}.code`]:    vFieldName,
+						[`fks.${META.scheme}.code`]:   collectionName,
+						[`fks.${META.viewType}.code`]: viewTypeCode,
+						[`fks.${META.field}.code`]:    vFieldName,
 					},
 					{
 						code:  `${collectionName}_${viewTypeCode}_${vFieldName}`,
@@ -384,7 +384,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 						icon:  'eye',
 						color: '#444',
 						order: order + 1,
-						gridFks: {
+						fks: {
 							[META.scheme]:   fkRef({ code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
 							[META.viewType]: fkRef({ code: viewTypeCode, name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true }),
 							[META.field]:    fkRef({ code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),

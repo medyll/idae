@@ -78,7 +78,7 @@ class MachineServerClass {
 		// group has_field by collection, sorted by order
 		const hasFieldByScheme: Record<string, any[]> = {};
 		for (const hf of hasFieldDocs) {
-			const code = hf.gridFks?.appscheme?.code as string;
+			const code = hf.fks?.appscheme?.code as string;
 			if (!code) continue;
 			(hasFieldByScheme[code] ??= []).push(hf);
 		}
@@ -94,11 +94,11 @@ class MachineServerClass {
 
 			const fields: MachineModel[string]['fields'] = {};
 			for (const hf of hasFields) {
-				const fieldCode = hf.gridFks?.appscheme_field?.code as string;
+				const fieldCode = hf.fks?.appscheme_field?.code as string;
 				if (!fieldCode) continue;
 
 				const fieldDoc = fieldByCode.get(fieldCode);
-				const rawType  = (fieldDoc?.gridFks?.appscheme_field_type?.code as string) ?? 'text';
+				const rawType  = (fieldDoc?.fks?.appscheme_field_type?.code as string) ?? 'text';
 
 				const finalType = (fieldDoc?.fieldType as string) ?? rawType;
 
@@ -107,7 +107,7 @@ class MachineServerClass {
 					required: !!(fieldDoc?.required),
 					readonly: !!(fieldDoc?.readonly),
 					private:  !!(fieldDoc?.private),
-					group:    (fieldDoc?.gridFks?.appscheme_field_group?.code as string) ?? undefined,
+					group:    (fieldDoc?.fks?.appscheme_field_group?.code as string) ?? undefined,
 				};
 			}
 
@@ -118,8 +118,8 @@ class MachineServerClass {
 			else if (fields.name && !fields.code) fields.code = { ...fields.name };
 
 			const fks: MachineModel[string]['fks'] = {};
-			const gridFks = (scheme.gridFks ?? {}) as Record<string, any>;
-			for (const [key, fkItem] of Object.entries(gridFks)) {
+			const fks = (scheme.fks ?? {}) as Record<string, any>;
+			for (const [key, fkItem] of Object.entries(fks)) {
 				if (META_FK_KEYS.has(key)) continue;
 				fks[key] = {
 					code:     fkItem.code ?? key,
@@ -131,11 +131,11 @@ class MachineServerClass {
 			// Build _views from appscheme_view rows
 			const _views: Partial<ViewFields> = {};
 			const schemeViews = viewDocs.filter((v: any) =>
-				v.gridFks?.appscheme?.code === code
+				v.fks?.appscheme?.code === code
 			);
 			for (const v of schemeViews) {
-				const viewTypeCode = v.gridFks?.appscheme_view_type?.code as string;
-				const fieldCode = v.gridFks?.appscheme_field?.code as string;
+				const viewTypeCode = v.fks?.appscheme_view_type?.code as string;
+				const fieldCode = v.fks?.appscheme_field?.code as string;
 				if (!viewTypeCode || !fieldCode) continue;
 
 				// Map view_type.code to ViewFields key

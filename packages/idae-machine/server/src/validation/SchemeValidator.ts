@@ -45,13 +45,13 @@ async function fetchSchemeRules(collection: string): Promise<Record<string, Fiel
 
 	const hasDocs = await conn
 		.collection('appscheme_has_field')
-		.find({ 'gridFks.appscheme.code': collection })
+		.find({ 'fks.appscheme.code': collection })
 		.toArray();
 
 	if (hasDocs.length === 0) return {};
 
 	const fieldNames: string[] = hasDocs
-		.map((d: any) => d.gridFks?.appscheme_field?.code as string | undefined)
+		.map((d: any) => d.fks?.appscheme_field?.code as string | undefined)
 		.filter((c): c is string => !!c);
 
 	const fieldDocs = await conn
@@ -62,14 +62,14 @@ async function fetchSchemeRules(collection: string): Promise<Record<string, Fiel
 	const typeByCode = new Map<string, string>(
 		fieldDocs.map((d: any) => [
 			d.code as string,
-			(d.gridFks?.appscheme_field_type?.code as string) ?? 'text',
+			(d.fks?.appscheme_field_type?.code as string) ?? 'text',
 		])
 	);
 
 	const rules: Record<string, FieldRule> = {};
 
 	for (const doc of hasDocs) {
-		const fieldCode = doc.gridFks?.appscheme_field?.code as string | undefined;
+		const fieldCode = doc.fks?.appscheme_field?.code as string | undefined;
 		if (!fieldCode) continue;
 
 		const appType = typeByCode.get(fieldCode) ?? 'text';

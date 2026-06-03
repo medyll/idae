@@ -1,6 +1,13 @@
 import { MachineError } from './MachineError.js';
 import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy, } from '$lib/types/index.js';
 export type FieldObject = { key: string } & Record<string, unknown>;
+
+function resolveDotPath(obj: Record<string, unknown>, path: string): unknown {
+	return path.split('.').reduce((acc: unknown, key) => {
+		if (acc !== null && typeof acc === 'object') return (acc as Record<string, unknown>)[key];
+		return undefined;
+	}, obj as unknown);
+}
 import type {
 	MachineModel,
 	MachineCollectionModel,
@@ -164,7 +171,6 @@ export class MachineScheme {
 	 * Resolve the ordered field list for display, with optional sort + group.
 	 * Moves the view/showFields selection + sort + group out of components.
 	 */
-
 	resolveFieldList(opts: {
 		view?:       string;
 		showFields?: string[];

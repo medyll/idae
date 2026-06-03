@@ -273,7 +273,7 @@ Consumers can override via the item snippet.
 		if (fkKey) {
 			// labelMap covers flat-stored FK values (record holds the target's
 			// code/id); engine collections instead embed the relation as a nested
-			// object under gridFks.<key>, resolved first via fkObjectLabel.
+			// object under fks.<key>, resolved first via fkObjectLabel.
 			const fkCollection = collLogic?.fks?.[fkKey]?.code ?? null;
 			const labelMap = new Map<unknown, string>();
 			if (fkCollection) {
