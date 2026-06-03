@@ -17,7 +17,7 @@ Iterates a record's fields and renders DataField for each.
 	import { MachineRecordIdentity } from '$lib/main/index.js';
 	import type { SortBy } from '$lib/types/index.js';
 	import { getContext } from 'svelte';
-	import DataList from './DataList.svelte';
+	import { DataList } from '$lib/index.js';
 
 	let {
 		collection = getContext('collection'),
@@ -83,15 +83,11 @@ Iterates a record's fields and renders DataField for each.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
 
-	const whereFieldView = { 'fks.appscheme.code': { $eq: collection },'fks.appscheme_view_type.code':{ $eq: 'full' } };
+	const whereFieldView = { 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } };
 </script>
 
 <!-- Exemple : fields list-->
-<DataList collection="appscheme_view" where={whereFieldView}>
-	{#snippet item(item)}
-		  {item.idx}
-	{/snippet}
-</DataList>
+<DataList collection="appscheme_view" where={whereFieldView} />
 <!-- Fin Exemple -->
 {#if mode === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}

@@ -118,8 +118,8 @@ class MachineServerClass {
 			else if (fields.name && !fields.code) fields.code = { ...fields.name };
 
 			const fks: MachineModel[string]['fks'] = {};
-			const fks = (scheme.fks ?? {}) as Record<string, any>;
-			for (const [key, fkItem] of Object.entries(fks)) {
+			const schemeFks = (scheme.fks ?? {}) as Record<string, any>;
+			for (const [key, fkItem] of Object.entries(schemeFks)) {
 				if (META_FK_KEYS.has(key)) continue;
 				fks[key] = {
 					code:     fkItem.code ?? key,
@@ -208,8 +208,8 @@ class MachineServerClass {
 			// No origin = same-origin request, curl, server-to-server — allow.
 			if (!origin) return cb(null, true);
 			if (allowedOrigins.includes(origin)) return cb(null, true);
-			// Dev: any localhost port (Vite may pick 5174+ when 5173 is taken).
-			if (config.nodeEnv !== 'production' && /^https?:\/\/localhost:\d+$/.test(origin)) return cb(null, true);
+			// Dev: localhost + LAN (192.168/172.16/10.x) + Tailscale (100.x) ranges.
+			if (config.nodeEnv !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1|(?:192\.168|172\.(?:1[6-9]|2\d|3[01])|10|100)\.\d{1,3}\.\d{1,3}):\d+$/.test(origin)) return cb(null, true);
 			cb(new Error(`CORS: origin not allowed: ${origin}`));
 		};
 

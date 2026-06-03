@@ -6,42 +6,22 @@
 	import { API_URL } from '$lib/config.js';
 
 	const apiUrl = API_URL;
-	// Always refresh token on boot — prevents stale JWT causing 401 on hydration.
-	// Falls back to cached token if server is offline.
 	let bootPromise: Promise<void>;
 	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };
 
 	if (_g.__idae_boot) {
 		bootPromise = _g.__idae_boot;
-	} else if (typeof window !== 'undefined') {
-		const cachedToken = window.localStorage.getItem('auth_token') ?? '';
-		bootPromise = fetch(`${apiUrl}/api/auth/login`, {
-			method:  'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body:    JSON.stringify({ login: 'admin', password: 'admin123' }),
-		})
-			.then((r) => (r.ok ? r.json() : null))
-			.then((data) => {
-				if (data?.token) {
-					window.localStorage.setItem('auth_token', data.token);
-					return doBoot(data.token);
-				}
-				// Server offline or login failed — use cached token if available
-				return doBoot(cachedToken);
-			})
-			.catch(() => doBoot(cachedToken));
 	} else {
-		bootPromise = doBoot('');
+		bootPromise = doBoot();
 	}
 	_g.__idae_boot = bootPromise;
 
-	async function doBoot(authToken: string): Promise<void> {
+	async function doBoot(): Promise<void> {
 		await machine.boot({
 			org: 'demo', domain: 'machine', version: 7,
 			sync: {
 				mode: 'server-first',
 				databaseHost: apiUrl,
-				...(authToken && { token: authToken, headers: { Authorization: `Bearer ${authToken}` } }),
 			},
 		});
 		machine.initRouter({ baseUrl: '/', authEnabled: false });
@@ -50,8 +30,14 @@
 			(window as any).__machine = machine;
 		}
 
-		// Ensure schema descriptor is in IDB before rendering — collection list needs it.
-		await machine.warmup(['appscheme']);
+		// Block render until all schema collections are in IDB — prevents empty-set race.
+		await machine.warmup([
+			'appscheme',
+			'appscheme_field',
+			'appscheme_view',
+			'appscheme_view_type',
+			'appscheme_has_field',
+		]);
 	}
 </script>
 

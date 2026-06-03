@@ -36,5 +36,6 @@ export const config = {
 		minDim: Number(process.env.IMG_MIN_DIM ?? 16),
 		maxDim: Number(process.env.IMG_MAX_DIM ?? 4096),
 	},
-	version:    '2.0.0'
+	version:    '2.0.0',
+	authDisabled: process.env.AUTH_DISABLED === 'true',
 };

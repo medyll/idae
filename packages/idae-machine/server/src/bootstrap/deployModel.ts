@@ -242,15 +242,15 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
 			'standard';
 
-		const fks: Record<string, any> = {
+		const schemeFksDoc: Record<string, any> = {
 			[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
 			[META.schemeType]: fkRef({ code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false }),
 		};
 
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
-			if (fkKey === META.base) continue; // base entry already set above — skip to avoid overwrite
+			if (fkKey === META.base) continue;
 			const fk = fkDef as any;
-			fks[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
+			schemeFksDoc[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
 		}
 
 		// ── META.scheme ───────────────────────────────────────────────────────
@@ -258,7 +258,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
-		console.log(`  [deployModel] ${collectionName} → base=${baseCode}`, {fks});
+		console.log(`  [deployModel] ${collectionName} → base=${baseCode}`, {fks: schemeFksDoc});
 		const schemeId = await upsertGetId(
 			col(META.scheme),
 			{ code: collectionName },
@@ -274,7 +274,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 				...(isGroup  ? { isGroup:  true } : {}),
 				...(isStatus ? { isStatus: true } : {}),
 				template,
-				fks,
+				fks: schemeFksDoc,
 			},
 		);
 
