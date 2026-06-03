@@ -61,7 +61,7 @@ Consumers can override via the item snippet.
 		link,
 		linkVars,
 		linkCollectionField,
-		showToolbar = true,
+		showToolbar = false,
 		usePrefs = true,
 		prefsScope: prefsScopeProp,
 		item: itemSnippet,

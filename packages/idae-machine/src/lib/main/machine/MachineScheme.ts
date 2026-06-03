@@ -164,6 +164,7 @@ export class MachineScheme {
 	 * Resolve the ordered field list for display, with optional sort + group.
 	 * Moves the view/showFields selection + sort + group out of components.
 	 */
+
 	resolveFieldList(opts: {
 		view?:       string;
 		showFields?: string[];
@@ -210,7 +211,7 @@ export class MachineScheme {
 		if (groupBy) {
 			groups = new Map<string, FieldObject[]>();
 			for (const item of fieldObjects) {
-				const key = String(item[groupBy] ?? '—');
+				const key = String(resolveDotPath(item, groupBy) ?? '—');
 				if (!groups.has(key)) groups.set(key, []);
 				groups.get(key)!.push(item);
 			}
