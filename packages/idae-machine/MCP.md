@@ -22,16 +22,13 @@ Point d'entrée naturel : les routes Express existantes (`routes/data.ts`, `rout
 
 **Auth :** `middleware/permission.ts` est le garde existant. Brancher sur les tool-handlers, ne pas bypasser. Contrat concret : token JWT dans header `Authorization: Bearer <token>` — même flow que les routes REST actuelles (`routes/auth.ts`).
 
-**Structure proposée :**
+**Structure implémentée :**
 ```
 server/src/mcp/
 ├── McpServer.ts             ← @modelcontextprotocol/sdk, transport HTTP/SSE sur /mcp
-├── tools/
-│   ├── CollectionTools.ts   ← find / findOne / create / update / delete
-│   ├── SchemeTools.ts       ← listCollections / getSchema (lit appscheme_*)
-│   └── SchemaAnalysisTools.ts ← wraps analyzeSchema() de schemaWalker.ts (graph + asymmetries)
-└── resources/
-    └── SchemaResources.ts   ← machine://schema/{collection}
+├── CollectionTools.ts       ← find / findOne / create / update / delete
+├── SchemeTools.ts           ← listCollections / getSchema (lit appscheme_*)
+└── index.ts                 ← exports publics
 ```
 
 **Transport :** HTTP/SSE — montable sur `MachineServer.ts`, compatible tous clients MCP.
@@ -94,7 +91,7 @@ Candidats :
 | Phase | Périmètre | Fichiers clés | Dépendances |
 |-------|-----------|---------------|-------------|
 | 1 | MCP Server HTTP/SSE monté sur `MachineServer.ts` | `server/src/mcp/McpServer.ts` | `@modelcontextprotocol/sdk` |
-| 2 | `CollectionTools` + `SchemeTools` schema-driven | `McpToolBuilder.ts`, `schemaWalker.ts` | `routes/data.ts` (modèle à réutiliser) |
+| 2 | `CollectionTools` + `SchemeTools` schema-driven | `CollectionTools.ts`, `SchemeTools.ts` | `routes/data.ts` (modèle à réutiliser) |
 | 3 | RBAC + multi-tenant dans tool-handlers | `middleware/permission.ts`, `middleware/dbRouter.ts` | `GrantService.ts` |
 | 4 | `SchemaAnalysisTools` (diagnostic FK) | `lib/types/schemaWalker.ts` | — |
 | 5 | Client MCP (`web-mcp`) | SvelteKit side | navigateur + SvelteKit |
@@ -116,3 +113,7 @@ Candidats :
 <!-- web-mcp (phase 5) : pertinent si besoin d'exposer machine.store() réactif à un agent in-browser, sinon server-side suffit pour 95% des cas -->
 <!-- SchemaAnalysisTools : analyzeSchema() déjà dispo dans lib/types/schemaWalker.ts — exposition gratuite, haute valeur pour agents qui construisent des queries -->
 <!-- appuser_* : bloquer read/write via permission.ts — ne jamais exposer sans RBAC explicite -->
+
+<!-- Mise à jour 2026-06-03 : Intégration MCP implémentée -->
+<!-- McpServer.ts, CollectionTools.ts, SchemeTools.ts créés et intégrés dans MachineServer.ts -->
+<!-- MCP server démarré/arrêté avec le serveur principal -->

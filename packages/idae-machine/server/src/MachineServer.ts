@@ -19,6 +19,7 @@ import { buildEngineModel } from '../../src/lib/types/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
 import type { ViewFields, ViewFieldDef } from '../../src/lib/types/schema-types.js';
+import { mcpServer } from './mcp/index.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
@@ -229,6 +230,9 @@ class MachineServerClass {
 
 		await idaeApi.start();
 
+		// Start MCP server
+		await mcpServer.start();
+
 		// Direct Express routes (idaeApi.app.METHOD) — AFTER start() so cors/helmet are already on the stack
 		registerHealthRoutes();
 		registerFileRoutes();
@@ -249,6 +253,7 @@ class MachineServerClass {
 	// ── stop ──────────────────────────────────────────────────────────────────
 
 	async stop(): Promise<void> {
+		await mcpServer.stop();
 		await idaeApi.stop();
 		logger.info('Server stopped');
 	}
