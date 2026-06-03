@@ -235,9 +235,10 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         grid-gap: inherit;
     }
     /* inputSize presets — control .field-input max-width or grid span */
-    .field-line.input-size-xs  { --field-input-width: 5rem; }
-    .field-line.input-size-sm  { --field-input-width: 10rem; }
-    .field-line.input-size-md  { --field-input-width: 100%; }
+    .field-line.input-size-xs   { --field-input-width: 5rem; }
+    .field-line.input-size-sm   { --field-input-width: 10rem; }
+    .field-line.input-size-md   { --field-input-width: 100%; }
+    .field-line.input-size-lg   { --field-input-width: 20rem; }
     .field-line.input-size-full { grid-column: 1 / -1; }
 
     .field-input { width: var(--field-input-width, 100%); }

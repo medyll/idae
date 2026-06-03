@@ -16,7 +16,7 @@ export type { PermissionCode };
 export type SortBy = { field: string; direction: 'asc' | 'desc' };
 
 // ── Input size preset ─────────────────────────────────────────────────────────
-export type InputSize = 'xs' | 'sm' | 'md' | 'full';
+export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'full';
 
 // ── Field definition ──────────────────────────────────────────────────────────
 interface BaseFieldDef {

@@ -119,3 +119,19 @@ Iterates a record's fields and renders DataField for each.
 		{/if}
 	</div>
 {/if}
+
+<style>
+	.form {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+	}
+	.field {
+		display: contents;
+	}
+	fieldset.field-group {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+	}
+</style>

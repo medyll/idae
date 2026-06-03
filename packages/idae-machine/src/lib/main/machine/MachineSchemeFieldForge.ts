@@ -84,7 +84,13 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	}
 
 	get inputSize() {
-		return this.forge?.inputSize;
+		if (this.forge?.inputSize) return this.forge.inputSize;
+		const ft = this.forge?.fieldType ?? '';
+		if (ft === 'text-area' || ft === 'text-full') return 'full' as const;
+		if (ft === 'text-xs') return 'xs' as const;
+		if (ft === 'text-sm') return 'sm' as const;
+		if (ft === 'text-lg' || ft === 'text-long') return 'lg' as const;
+		return undefined;
 	}
 	/**
 	 * will return  text.inputBase  for ['url', 'email', 'number', 'date', 'time', 'datetime', 'phone', 'password']
