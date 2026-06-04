@@ -1,5 +1,6 @@
 export type { SortBy } from '$lib/types/index.js';
 import type { SortBy } from '$lib/types/index.js';
+import { parseFkKey } from '$lib/data-ui/utils/dataRelationUtils.js';
 
 export function sortItems<T extends Record<string, unknown>>(
 	items: T[],
@@ -75,20 +76,37 @@ export function parseFkType(
 	return { collection, targetIndex: targetIndex || 'id' };
 }
 
+/** Label a single nested FK entry object `{ id, code, name, … }`. */
+function fkEntryLabel(o: Record<string, unknown>): string {
+	return String(o.name ?? o.code ?? o.id ?? '—');
+}
+
 /**
- * Label for an FK relation stored as a nested object on the record under
- * `fks.<key>` — `{ id, code, name, … }`.
+ * Label for an FK relation stored as a nested object on the record under `fks`.
+ *
+ * Supports two storage shapes:
+ *   - legacy bare key:   `fks.<key>      = { id, code, name }`
+ *   - suffixed key(s):   `fks.<key>_<id> = { id, code, name }` (one per reference;
+ *                        multiple references → labels joined with ', ')
+ *
  * Returns undefined when the relation is not stored as a nested object
  * (e.g. flat code values that need a store lookup).
  */
 export function fkObjectLabel(item: Record<string, unknown>, fkKey: string): string | undefined {
-	const bag = item.fks as
-		| Record<string, unknown>
-		| undefined;
-	const fk = bag?.[fkKey];
-	if (fk && typeof fk === 'object') {
-		const o = fk as Record<string, unknown>;
-		return String(o.name ?? o.code ?? o.id ?? '—');
+	const bag = item.fks as Record<string, unknown> | undefined;
+	if (!bag || typeof bag !== 'object') return undefined;
+
+	// Legacy bare key first (backward-compat).
+	const bare = bag[fkKey];
+	if (bare && typeof bare === 'object') return fkEntryLabel(bare as Record<string, unknown>);
+
+	// Suffixed convention: collect every `fks.<fkKey>_<id>` entry.
+	const labels: string[] = [];
+	for (const key of Object.keys(bag)) {
+		const { baseName, refId } = parseFkKey(key);
+		if (!refId || baseName !== fkKey) continue;
+		const entry = bag[key];
+		if (entry && typeof entry === 'object') labels.push(fkEntryLabel(entry as Record<string, unknown>));
 	}
-	return undefined;
+	return labels.length ? labels.join(', ') : undefined;
 }

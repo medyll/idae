@@ -41,6 +41,32 @@ describe('fkObjectLabel', () => {
 		expect(fkObjectLabel({ category: 'sedan' }, 'category')).toBeUndefined();
 		expect(fkObjectLabel({}, 'category')).toBeUndefined();
 	});
+
+	it('reads suffixed convention fks.<key>_<id>', () => {
+		const rec = { fks: { category_7: { id: 7, code: 'sedan', name: 'Sedan' } } };
+		expect(fkObjectLabel(rec, 'category')).toBe('Sedan');
+	});
+
+	it('joins labels for multiple suffixed entries of the same relation', () => {
+		const rec = {
+			fks: {
+				destination_1:  { id: 1, name: 'Paris' },
+				destination_42: { id: 42, name: 'Rome' },
+			},
+		};
+		expect(fkObjectLabel(rec, 'destination')).toBe('Paris, Rome');
+	});
+
+	it('does not confuse a base name that is a prefix of another relation', () => {
+		const rec = {
+			fks: {
+				dest_5:         { id: 5, name: 'Short' },
+				dest_special_9: { id: 9, name: 'Long' },
+			},
+		};
+		expect(fkObjectLabel(rec, 'dest')).toBe('Short');
+		expect(fkObjectLabel(rec, 'dest_special')).toBe('Long');
+	});
 });
 
 describe('grouping appscheme by fks.appscheme_type (Explorer case)', () => {
