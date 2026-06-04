@@ -117,7 +117,7 @@ Candidats :
 <!-- Mise à jour 2026-06-03 : squelette créé (stub vide), pas encore fonctionnel -->
 
 <!-- Mise à jour 2026-06-04 : Phase 1+2 réellement implémentées -->
-<!-- McpServer.ts : transport Streamable HTTP stateless monté sur idaeApi.app (POST /mcp), -->
+<!-- McpServer.ts : transport Streamable HTTP stateless monté sur idaeApi.app (POST /api/mcp), -->
 <!--   un Server SDK + transport construits par requête pour clore sur le contexte auth. -->
 <!-- Tools schema-driven (inputSchema JSON Schema) : list_collections, get_schema, get_fields, -->
 <!--   get_fks, find, find_one, count, create, update, delete. -->
@@ -130,6 +130,11 @@ Candidats :
 <!--   listToolDescriptors) — McpServer.ts ne fait plus que le wiring transport. -->
 <!-- analyze_schema : diagnostic FK léger (refs vers collections absentes du modèle). -->
 <!--   NB : lib/types/schemaWalker.ts n'existe pas — analyzeSchema dérivé de getAllSchemas. -->
+<!-- Path : /api/mcp (PAS /mcp). idaeApi monte des routes CRUD génériques GET/POST/DELETE -->
+<!--   /:collectionName (routeDefinitions.js) — un /mcp nu est avalé comme collection "mcp". -->
+<!--   Sous /api/* (2 segments) on échappe à /:collectionName, comme routes/data.ts (/api/data). -->
+<!-- Smoke test live 2026-06-04 (AUTH_DISABLED=true, org=demo) : initialize, tools/list (11), -->
+<!--   tools/call list_collections (37 colls), analyze_schema, find vehicle, gardes + unknown → OK. -->
 <!-- Tests : server/src/__tests__/mcp.test.ts — 13 cas (registry, RBAC, gardes query vide, -->
 <!--   analyze_schema), mocks purs sans Mongo. Vert. -->
 <!-- Reste à faire : -->

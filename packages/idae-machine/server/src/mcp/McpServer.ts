@@ -32,10 +32,15 @@ function createServer(auth: McpAuth): Server {
 	return server;
 }
 
+// Mounted under /api/* to dodge idaeApi's generic `/:collectionName` CRUD routes,
+// which only match single-segment paths (a bare `/mcp` would be swallowed as a
+// "mcp" collection). Same reason routes/data.ts lives under /api/data.
+const MCP_PATH = '/api/mcp';
+
 const methodNotAllowed = (_req: Request, res: Response): void => {
 	res.status(405).json({
 		jsonrpc: '2.0',
-		error: { code: -32000, message: 'Method not allowed: stateless MCP server accepts POST /mcp only' },
+		error: { code: -32000, message: `Method not allowed: stateless MCP server accepts POST ${MCP_PATH} only` },
 		id: null,
 	});
 };
@@ -47,7 +52,7 @@ export class McpServer {
 		if (this.#started) return;
 		const app = idaeApi.app;
 
-		app.post('/mcp', async (req: Request, res: Response) => {
+		app.post(MCP_PATH, async (req: Request, res: Response) => {
 			try {
 				const auth = await buildAuth(req);
 				const server = createServer(auth);
@@ -71,11 +76,11 @@ export class McpServer {
 		});
 
 		// Stateless transport — no GET stream / DELETE session.
-		app.get('/mcp', methodNotAllowed);
-		app.delete('/mcp', methodNotAllowed);
+		app.get(MCP_PATH, methodNotAllowed);
+		app.delete(MCP_PATH, methodNotAllowed);
 
 		this.#started = true;
-		logger.info('[McpServer] MCP endpoint mounted at POST /mcp (stateless HTTP)');
+		logger.info(`[McpServer] MCP endpoint mounted at POST ${MCP_PATH} (stateless HTTP)`);
 	}
 
 	async stop(): Promise<void> {
