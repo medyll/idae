@@ -3,27 +3,50 @@ import { logAudit } from '../services/AuditService.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDomainActions } from '../models/domainActions.js';
 import * as ImagePresetRegistry from '../services/ImagePresetRegistry.js';
-import { validateFkEntries, findReverseFkHolders, parseFkKey } from '../validation/FkValidator.js';
+import { findReverseFkHolders, parseFkKey } from '../validation/FkValidator.js';
+import { foldFks, type FkResolver } from '../validation/FkFolder.js';
 import { getDbForCollection } from '../middleware/dbRouter.js';
+import { machineServer } from '../MachineServer.js';
 import { Schema } from 'mongoose';
 
+async function makeMongoResolver(): Promise<FkResolver> {
+	return async (targetCollection, scalarId) => {
+		const db  = await getDbForCollection(targetCollection);
+		const col = db.collection(targetCollection);
+		const numId = Number(scalarId);
+		const doc = !isNaN(numId)
+			? await col.findOne({ id: numId })
+			: await col.findOne({ code: String(scalarId) });
+		if (!doc) return null;
+		const { _id, ...rest } = doc as Record<string, unknown> & { _id: unknown };
+		return rest;
+	};
+}
+
+async function foldAndMutate(ctx: { collection: string; data?: unknown }): Promise<Array<{ fkName: string; message: string }>> {
+	if (!ctx.data || typeof ctx.data !== 'object') return [];
+	const model    = await machineServer.getModel(ctx.collection);
+	const resolver = await makeMongoResolver();
+	const { data: folded, errors } = await foldFks(
+		model, ctx.collection, ctx.data as Record<string, unknown>, resolver,
+	);
+	Object.assign(ctx.data as Record<string, unknown>, folded);
+	return errors;
+}
+
 export function registerBuiltinHooks(): void {
-	// FK VALIDATION — priority 20, blocking, pre:create + pre:update
+	// FK FOLD + VALIDATE — priority 20, blocking, pre:create + pre:update
 	registerHook('pre:create', async (ctx) => {
-		if (!ctx.data || typeof ctx.data !== 'object') return;
-		const result = await validateFkEntries(ctx.collection, ctx.data as Record<string, unknown>);
-		if (!result.valid) {
-			const err = Object.assign(new Error('FK validation failed'), { fkErrors: result.errors, statusCode: 422 });
-			throw err;
+		const errors = await foldAndMutate(ctx);
+		if (errors.length) {
+			throw Object.assign(new Error('FK fold failed'), { fkErrors: errors, statusCode: 422 });
 		}
 	}, { priority: 20, blocking: true });
 
 	registerHook('pre:update', async (ctx) => {
-		if (!ctx.data || typeof ctx.data !== 'object') return;
-		const result = await validateFkEntries(ctx.collection, ctx.data as Record<string, unknown>);
-		if (!result.valid) {
-			const err = Object.assign(new Error('FK validation failed'), { fkErrors: result.errors, statusCode: 422 });
-			throw err;
+		const errors = await foldAndMutate(ctx);
+		if (errors.length) {
+			throw Object.assign(new Error('FK fold failed'), { fkErrors: errors, statusCode: 422 });
 		}
 	}, { priority: 20, blocking: true });
 
