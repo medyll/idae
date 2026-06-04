@@ -19,14 +19,14 @@ import { buildAuth, listToolDescriptors, callTool, type McpAuth } from './McpToo
 const MCP_NAME = 'idae-machine';
 const MCP_VERSION = '0.1.0';
 
-/** Build a per-request SDK Server closing over the resolved auth context. */
-function createServer(auth: McpAuth): Server {
+/** Build a per-request SDK Server closing over the resolved auth context + original HTTP request. */
+function createServer(auth: McpAuth, httpReq: Request): Server {
 	const server = new Server({ name: MCP_NAME, version: MCP_VERSION }, { capabilities: { tools: {} } });
 
 	server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: listToolDescriptors() }));
 
-	server.setRequestHandler(CallToolRequestSchema, async (req) =>
-		callTool(req.params.name, (req.params.arguments ?? {}) as Record<string, any>, auth)
+	server.setRequestHandler(CallToolRequestSchema, async (mcpReq) =>
+		callTool(mcpReq.params.name, (mcpReq.params.arguments ?? {}) as Record<string, any>, auth, httpReq)
 	);
 
 	return server;
@@ -55,7 +55,7 @@ export class McpServer {
 		app.post(MCP_PATH, async (req: Request, res: Response) => {
 			try {
 				const auth = await buildAuth(req);
-				const server = createServer(auth);
+				const server = createServer(auth, req);
 				const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
 				res.on('close', () => {
 					void transport.close();

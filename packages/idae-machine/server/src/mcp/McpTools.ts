@@ -14,6 +14,7 @@ import { config } from '../config.js';
 import { resolveUser } from '../services/AuthService.js';
 import { grantService } from '../services/GrantService.js';
 import type { Permission, UserContext } from '../middleware/permission.js';
+import { logAudit, extractAuditContext } from '../services/AuditService.js';
 import * as CollectionTools from './CollectionTools.js';
 import * as SchemeTools from './SchemeTools.js';
 
@@ -210,18 +211,47 @@ export function listToolDescriptors(): Array<{ name: string; description: string
 export async function callTool(
 	name: string,
 	args: Record<string, any>,
-	auth: McpAuth
+	auth: McpAuth,
+	req?: Partial<Request>
 ): Promise<{ content: Array<{ type: 'text'; text: string }>; isError?: boolean }> {
 	const tool = TOOL_BY_NAME.get(name);
+	const auditCtx = req ? extractAuditContext(req as Request) : {};
+	const collection = (args?.collection as string) ?? name;
+
 	if (!tool) {
+		logAudit({
+			action: 'execute', userId: auth.user?.userId, login: auth.user?.login,
+			resourceType: collection, status: 'failure',
+			failureReason: `Unknown MCP tool: ${name}`, details: { tool: name, args },
+			...auditCtx,
+		});
 		return { content: [{ type: 'text', text: `Unknown tool: ${name}` }], isError: true };
 	}
+
 	try {
 		const result = await tool.run(args ?? {}, auth);
+		logAudit({
+			action: 'execute', userId: auth.user?.userId, login: auth.user?.login,
+			resourceType: collection, status: 'success',
+			details: { tool: name, args },
+			...auditCtx,
+		});
 		const text = typeof result === 'string' ? result : JSON.stringify(result, null, 2);
 		return { content: [{ type: 'text', text }] };
 	} catch (e) {
-		return { content: [{ type: 'text', text: `Error: ${(e as Error).message}` }], isError: true };
+		const msg = (e as Error).message;
+		const isForbidden = msg.startsWith('FORBIDDEN');
+		logAudit({
+			action:        isForbidden ? 'permission_denied' : 'execute',
+			userId:        auth.user?.userId,
+			login:         auth.user?.login,
+			resourceType:  collection,
+			status:        isForbidden ? 'denied' : 'failure',
+			failureReason: msg,
+			details:       { tool: name, args },
+			...auditCtx,
+		});
+		return { content: [{ type: 'text', text: `Error: ${msg}` }], isError: true };
 	}
 }
 
