@@ -66,6 +66,7 @@ export type ResultSet<T> = T[] & {
 	map: <U>(mapper: (item: T) => U) => ResultSet<U>;
 	distinct: (key?: DotPath<T>) => ResultSet<T>;
 	reverse: () => ResultSet<T>;
+	slice: (start?: number, end?: number) => ResultSet<T>;
 	sum: (field: DotPath<T>) => number;
 	avg: (field: DotPath<T>) => number;
 	min: (field: DotPath<T>) => number;
