@@ -71,8 +71,8 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     let hasParentValue = $state(false);
 
     // FK store — guard prevents machine.store('') phantom subscription on non-FK fields
-    const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { items: [] as Record<string, unknown>[] });
-    const fkItems  = $derived(fkStore.items as Record<string, unknown>[]);
+    const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { records: [] as Record<string, unknown>[] });
+    const fkItems  = $derived(fkStore.records as Record<string, unknown>[]);
     const fkScheme = $derived(fkCollection ? machine.logic.collectionOr(fkCollection, null) : null);
     const fkLabel  = $derived.by(() => {
         if (!fkCollection || internalValue == null) return '—';
@@ -86,7 +86,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     const hasAppscheme  = $derived('appscheme' in (machine.logic?.model ?? {}));
     const fkTargetName  = $derived.by(() => {
         if (!fkCollection || !hasAppscheme) return null;
-        const meta = (machine.store('appscheme').items as Record<string, unknown>[])
+        const meta = (machine.store('appscheme').records as Record<string, unknown>[])
             .find(i => i.code === fkCollection);
         return (meta?.name as string) ?? fkCollection;
     });

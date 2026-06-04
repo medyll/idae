@@ -22,6 +22,7 @@
 7. Every custom tag needs an explicit `display` CSS rule. Missing = inline default = broken layout. Frame-type components (loaded into a host) must declare display for **their own** custom tags — they have no `<style>` by default (e.g. `Fiche.svelte`'s `fiche-component`/`fiche-zone`/`zone-main`).
 8. **Reads go through `machine.store` (reactive); `machine.collection` is imperative CRUD only.** Mixing them can hit different qoolie instances → stale/empty reads.
 9. A frame host that is **content-driven** (auto-sized, e.g. floating `Dialog`) must call `createHost(target, { fill: false })`. Default `fill:true` (absolute inset:0) only works inside a **sized** zone.
+10. `machine.store(name)` returns `{ records: ResultSet<T> }` — `records` is a **getter**, on purpose. **Never** "simplify" it to a bare value (`{ records: src.items }`), a returned array, or a Proxy. The underlying qoolie `$state` binding is *reassigned* on every change, and the read must happen inside the consumer's reactive frame to be tracked. Eager/flattened/Proxy variants silently break reactivity (a common LLM mis-refactor). Read = `machine.store`; `machine.collection` returns the same `ResultSet` API but **non-reactive** (imperative CRUD).
 
 ---
 
@@ -33,7 +34,7 @@ await machine.boot()          // async entry point
 machine.destroy()
 
 machine.logic             → MachineDb (schema layer)
-machine.store(name)       → reactive { items } (read-only Svelte 5 runes)
+machine.store(name)       → reactive { records: ResultSet } (read-only Svelte 5 runes; `records` getter — see invariant 10)
 machine.rights            → MachineRights (RBAC)
 machine.sync              → qoolie sync controller
 machine.socket            → EventDataClientInstance
@@ -146,7 +147,7 @@ main.panel  → right-side panel
 | Source | When | How |
 |--------|------|-----|
 | `data` prop | controlled (e.g. `DataList` passes a store item) | used as-is |
-| `collectionId` prop | uncontrolled (e.g. `Fiche`) | reactive `machine.store(collection, { id })` → `items[0]` |
+| `collectionId` prop | uncontrolled (e.g. `Fiche`) | reactive `machine.store(collection, { id })` → `records[0]` |
 
 Rules:
 - **Reads use `machine.store` (reactive), never `machine.collection` (imperative CRUD).** The raw collection can resolve a different qoolie/IdbEventBus instance — see [Qoolie dual-bus](#) note in project memory.

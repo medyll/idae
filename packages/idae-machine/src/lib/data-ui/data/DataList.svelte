@@ -26,9 +26,10 @@ Consumers can override via the item snippet.
 <script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { Snippet } from 'svelte';
 	import { untrack } from 'svelte';
-	import type { SortBy, Where } from '$lib/types/index.js';
+	import type { SortBy, TplCollectionName, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems, groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { getResultSet, type ResultSet } from '@medyll/qoolie';
 	import { useMachinePrefs } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
@@ -93,7 +94,7 @@ Consumers can override via the item snippet.
 		usePrefs?: boolean;
 		/** Override appuser_prefs scope key. Defaults to `datalist.{collection}`. */
 		prefsScope?: string;
-		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
+		item?: Snippet<[{ collection: TplCollectionName, collectionId: number, record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
@@ -134,12 +135,12 @@ Consumers can override via the item snippet.
 		return { ...(where as Record<string, unknown>), ...userFindWhere };
 	});
 
-	const store = $derived(
+	const store: { records: COL[] } = $derived(
 		collection
 			? effectiveWhere
-				? machine.store(collection, effectiveWhere as Where<COL>)
-				: machine.store(collection)
-			: { items: [] as COL[] }
+				? machine.store<COL>(collection, effectiveWhere as Where<COL>)
+				: machine.store<COL>(collection)
+			: { records: [] as unknown as COL[] }
 	);
 	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 	const indexField = 'id';
@@ -222,18 +223,20 @@ Consumers can override via the item snippet.
 		return collLogic?.collectionValues.presentation(record) ?? '';
 	}
 
-	const rawItems = $derived(store?.items ? (store.items as COL[]) : ([] as COL[]));
+	const rawItems: ResultSet<COL> = $derived(getResultSet<COL>([...(store?.records ?? [])] as COL[]));
 
-	const sortedItems = $derived.by(() => {
+	const sortedItems: ResultSet<COL> = $derived.by(() => {
 		if (!rawItems.length) return rawItems;
-		return sortItems(rawItems, effectiveSort);
+		const chain = Array.isArray(effectiveSort) ? effectiveSort : [effectiveSort];
+		const spec  = Object.fromEntries(chain.map((s) => [s.field, s.direction]));
+		return getResultSet<COL>([...rawItems] as COL[]).sortBy(spec) as ResultSet<COL>;
 	});
 
-	const paginatedItems = $derived.by(() => {
-		if (infiniteScroll) return sortedItems.slice(0, visibleCount);
+	const paginatedItems: ResultSet<COL> = $derived.by(() => {
+		if (infiniteScroll) return sortedItems.slice(0, visibleCount) as ResultSet<COL>;
 		if (!pageSize || pageSize <= 0) return sortedItems;
 		const start = (page - 1) * pageSize;
-		return sortedItems.slice(start, start + pageSize);
+		return sortedItems.slice(start, start + pageSize) as ResultSet<COL>;
 	});
 
 	const chunkSize = $derived(pageSize > 0 ? pageSize : 20);
@@ -279,7 +282,7 @@ Consumers can override via the item snippet.
 			if (fkCollection) {
 				const fkScheme     = machine.logic.collectionOr(fkCollection, null);
 				const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
-				const fkItems      = machine.store(fkCollection).items as Record<string, unknown>[];
+				const fkItems      = machine.store(fkCollection).records as Record<string, unknown>[];
 				for (const item of fkItems) {
 					const id = item[fkIndexField];
 					labelMap.set(id, fkScheme?.collectionValues.presentation(item) || String(id ?? '\u2014'));
@@ -294,7 +297,8 @@ Consumers can override via the item snippet.
 			});
 		}
 
-		return groupItems(paginatedItems, effectiveGroupBy);
+		const rec = paginatedItems.groupBy(effectiveGroupBy, true);
+		return new Map(Object.entries(rec));
 	});
 
 	let errorMessage = $state<string | null>(null);
@@ -319,7 +323,7 @@ Consumers can override via the item snippet.
 		{#if currentMode === 'table'}
 			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />
 		{:else if itemSnippet}
-			{@render itemSnippet({ record, idx, fieldValues })}
+			{@render itemSnippet({collection,collectionId:record?.id, record, idx, fieldValues })}
 		{:else}
 			{@const rec = record as Record<string, unknown>}
 			{@const label = renderPresentation(rec)}

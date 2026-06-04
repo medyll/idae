@@ -37,7 +37,7 @@ FK-aware select input atom. Queries machine store for related collection records
 	const scheme     = $derived(machine.logic.collectionOr(collection, null));
 	const indexField = $derived(targetField ?? scheme?.index ?? 'id');
 	const store      = $derived(machine.store(collection));
-	const items      = $derived(store.items ?? []);
+	const items      = $derived(store.records ?? []);
 
 	function getLabel(item: Record<string, unknown>): string {
 		return scheme?.collectionValues.presentation(item) || String(item[indexField] ?? '—');

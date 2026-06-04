@@ -22,7 +22,7 @@
 	}
 
 	const store = $derived(machine.store<Record<string, unknown>>(collection));
-	const record = $derived(store.items.find((r) => String(r.id) === String(collectionId)) ?? null);
+	const record = $derived(store.records.find((r) => String(r.id) === String(collectionId)) ?? null);
 	const scheme = $derived(safeScheme(collection));
 	const presentation = $derived((scheme as { template?: { presentation?: string } } | null)?.template?.presentation ?? '');
 

@@ -63,7 +63,7 @@ Iterates a record's fields and renders DataField for each.
 				)
 			: null
 	);
-	const fetchedData = $derived(recordStore?.items?.[0] as Record<string, any> | undefined);
+	const fetchedData = $derived(recordStore?.records?.[0] as Record<string, any> | undefined);
 
 	const effectiveData = $derived(data ?? fetchedData);
 
@@ -84,10 +84,13 @@ Iterates a record's fields and renders DataField for each.
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
 
 	const whereFieldView = { 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } };
+
+	const qy = $derived(machine.collection('appscheme_view').where(whereFieldView))
+
+	$inspect({ whereFieldView, qy });
 </script>
 
-<!-- Exemple : fields list-->
-<DataList collection="appscheme_view" where={whereFieldView} />
+ 
 <!-- Fin Exemple -->
 {#if mode === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}

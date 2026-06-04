@@ -26,7 +26,7 @@ export function groupItems<T extends Record<string, unknown>>(
 ): Map<string, T[]> {
 	const map = new Map<string, T[]>();
 	for (const item of items) {
-		const key = String(item[field] ?? '\u2014');
+		const key = String(item[field] ?? '—');
 		if (!map.has(key)) map.set(key, []);
 		map.get(key)!.push(item);
 	}
