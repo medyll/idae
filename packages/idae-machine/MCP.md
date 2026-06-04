@@ -114,6 +114,26 @@ Candidats :
 <!-- SchemaAnalysisTools : analyzeSchema() déjà dispo dans lib/types/schemaWalker.ts — exposition gratuite, haute valeur pour agents qui construisent des queries -->
 <!-- appuser_* : bloquer read/write via permission.ts — ne jamais exposer sans RBAC explicite -->
 
-<!-- Mise à jour 2026-06-03 : Intégration MCP implémentée -->
-<!-- McpServer.ts, CollectionTools.ts, SchemeTools.ts créés et intégrés dans MachineServer.ts -->
-<!-- MCP server démarré/arrêté avec le serveur principal -->
+<!-- Mise à jour 2026-06-03 : squelette créé (stub vide), pas encore fonctionnel -->
+
+<!-- Mise à jour 2026-06-04 : Phase 1+2 réellement implémentées -->
+<!-- McpServer.ts : transport Streamable HTTP stateless monté sur idaeApi.app (POST /mcp), -->
+<!--   un Server SDK + transport construits par requête pour clore sur le contexte auth. -->
+<!-- Tools schema-driven (inputSchema JSON Schema) : list_collections, get_schema, get_fields, -->
+<!--   get_fks, find, find_one, count, create, update, delete. -->
+<!-- RBAC : buildAuth() → resolveUser (JWT Bearer) + grantService.checkGrant ; appuser_* bloqué -->
+<!--   sauf admin ; appscheme read public ; AUTH_DISABLED → admin synthétique. Pas de duplication. -->
+<!-- Multi-tenant : CollectionTools route via getDbForCollection (résout base depuis appscheme), -->
+<!--   plus de DB hardcodée. update/delete refusent une query vide (garde anti-wipe). -->
+<!-- Mise à jour 2026-06-04 (suite) : registry extrait + phase 4 + tests -->
+<!-- McpTools.ts : registry/auth/dispatch transport-free (TOOLS, buildAuth, callTool, -->
+<!--   listToolDescriptors) — McpServer.ts ne fait plus que le wiring transport. -->
+<!-- analyze_schema : diagnostic FK léger (refs vers collections absentes du modèle). -->
+<!--   NB : lib/types/schemaWalker.ts n'existe pas — analyzeSchema dérivé de getAllSchemas. -->
+<!-- Tests : server/src/__tests__/mcp.test.ts — 13 cas (registry, RBAC, gardes query vide, -->
+<!--   analyze_schema), mocks purs sans Mongo. Vert. -->
+<!-- Reste à faire : -->
+<!--   - phase 5 (web-mcp client navigator.modelContext) — scope navigateur séparé. -->
+<!--   - grant.constraints (territory/dept/...) → filtres find : PAS branché car routes/data.ts -->
+<!--     ne les applique nulle part (aucune convention de traduction constraint→filtre Mongo). -->
+<!--     L'implémenter ici diverger ait du REST — à traiter d'abord côté data.ts/GrantService. -->
