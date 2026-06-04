@@ -3,8 +3,58 @@ import { logAudit } from '../services/AuditService.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDomainActions } from '../models/domainActions.js';
 import * as ImagePresetRegistry from '../services/ImagePresetRegistry.js';
+import { validateFkEntries, findReverseFkHolders, parseFkKey } from '../validation/FkValidator.js';
+import { getDbForCollection } from '../middleware/dbRouter.js';
+import { Schema } from 'mongoose';
 
 export function registerBuiltinHooks(): void {
+	// FK VALIDATION — priority 20, blocking, pre:create + pre:update
+	registerHook('pre:create', async (ctx) => {
+		if (!ctx.data || typeof ctx.data !== 'object') return;
+		const result = await validateFkEntries(ctx.collection, ctx.data as Record<string, unknown>);
+		if (!result.valid) {
+			const err = Object.assign(new Error('FK validation failed'), { fkErrors: result.errors, statusCode: 422 });
+			throw err;
+		}
+	}, { priority: 20, blocking: true });
+
+	registerHook('pre:update', async (ctx) => {
+		if (!ctx.data || typeof ctx.data !== 'object') return;
+		const result = await validateFkEntries(ctx.collection, ctx.data as Record<string, unknown>);
+		if (!result.valid) {
+			const err = Object.assign(new Error('FK validation failed'), { fkErrors: result.errors, statusCode: 422 });
+			throw err;
+		}
+	}, { priority: 20, blocking: true });
+
+	// FK CASCADE NULLIFY — non-blocking, post:delete
+	// When a record is deleted, unset all fks.{fkName}_{deletedId} entries in referencing collections.
+	registerHook('post:delete', async (ctx) => {
+		if (!ctx.recordId) return;
+		const holders = await findReverseFkHolders(ctx.collection);
+		if (!Object.keys(holders).length) return;
+
+		for (const [sourceCollection, fkNames] of Object.entries(holders)) {
+			try {
+				const db = await getDbForCollection(sourceCollection);
+				const schema = new Schema({}, { strict: false, collection: sourceCollection.toLowerCase() });
+				const modelName = `${db.name}__${sourceCollection}`;
+				const Model = db.models[modelName] ?? db.model(modelName, schema, sourceCollection.toLowerCase());
+
+				for (const fkName of fkNames) {
+					const fkKey = `fks.${fkName}_${ctx.recordId}`;
+					await (Model as any).updateMany(
+						{ [fkKey]: { $exists: true } },
+						{ $unset: { [fkKey]: '' } },
+					);
+				}
+			} catch (err) {
+				// Non-blocking — log and continue
+				console.warn(`FK cascade nullify failed for ${sourceCollection}:`, err);
+			}
+		}
+	}, { priority: 95 });
+
 	// IMAGE PRESET CACHE INVALIDATION — priority 10 (earliest)
 	registerHook('post:create', (ctx) => {
 		if (ctx.collection === 'appimage_preset') ImagePresetRegistry.invalidate();
