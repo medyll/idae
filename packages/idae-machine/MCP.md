@@ -137,8 +137,15 @@ Candidats :
 <!--   tools/call list_collections (37 colls), analyze_schema, find vehicle, gardes + unknown → OK. -->
 <!-- Tests : server/src/__tests__/mcp.test.ts — 13 cas (registry, RBAC, gardes query vide, -->
 <!--   analyze_schema), mocks purs sans Mongo. Vert. -->
+<!-- Phase 5 implémentée 2026-06-04 : src/lib/mcp/MachineMcpClient.ts -->
+<!-- registerMachineMcpTools(machine) — appeler une fois après machine.boot(). -->
+<!-- 7 tools : machine_list_collections, machine_find (filter+limit), machine_get, -->
+<!--   machine_create, machine_update, machine_navigate (loadFrame), machine_user_context. -->
+<!-- Utilise machine.collection() (impératif) — PAS machine.store() (runes, contexte réactif). -->
+<!-- Shim TypeScript pour navigator.modelContext (pas encore en lib.dom.d.ts). -->
+<!-- No-op si modelContext absent (SSR, non-WebMCP). -->
+<!-- Tests : src/__tests__/mcp-client.svelte.test.ts — 15 cas. Vert. -->
 <!-- Reste à faire : -->
-<!--   - phase 5 (web-mcp client navigator.modelContext) — scope navigateur séparé. -->
 <!--   - grant.constraints (territory/dept/...) → filtres find : PAS branché car routes/data.ts -->
 <!--     ne les applique nulle part (aucune convention de traduction constraint→filtre Mongo). -->
 <!--     L'implémenter ici diverger ait du REST — à traiter d'abord côté data.ts/GrantService. -->

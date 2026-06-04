@@ -49,5 +49,8 @@ export { default as Frame }         from '$lib/shell/Frame.svelte';
 export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
 export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';
 
+// MCP — client-side WebMCP tool registration
+export { registerMachineMcpTools } from '$lib/mcp/MachineMcpClient.js';
+
 // Utils
 export * from '$lib/utils/logger.js';
