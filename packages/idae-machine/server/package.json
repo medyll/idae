@@ -13,8 +13,7 @@
 		"test:watch": "vitest",
 		"lint": "prettier --check .",
 		"format": "prettier --write .",
-		"seed": "tsx src/bootstrap/bootstrap-demo.ts",
-		"seed:reseed": "tsx src/bootstrap/bootstrap-demo.ts --reseed"
+		"seed": "tsx src/bootstrap/bootstrap-demo.ts"
 	},
 	"dependencies": {
 		"@medyll/idae-api": "workspace:*",

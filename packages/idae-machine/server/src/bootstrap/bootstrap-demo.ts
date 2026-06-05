@@ -21,7 +21,6 @@ import { seedImagePresets } from './seedImagePresets.js';
 import mongoose from 'mongoose';
 
 const args     = process.argv.slice(2).filter((a) => !a.startsWith('--'));
-const reseed   = process.argv.includes('--reseed');
 const org      = args[0] ?? 'demo';
 const mongoUri = args[1] ?? process.env.MONGODB_URI ?? 'mongodb://localhost:27017';
 
@@ -49,8 +48,8 @@ await userConn.asPromise();
 await seedUsers(userConn);
 await userConn.close();
 
-console.log(`[5b/6] Seeding business data (routed by model.base)${reseed ? ' — reseed: clearing stale docs first' : ''}`);
-await seedBusinessData({ org, mongoUri, model: demoScheme, data: demoSeed, clearFirst: reseed });
+console.log(`[5b/6] Seeding business data (routed by model.base) — clearing stale docs first`);
+await seedBusinessData({ org, mongoUri, model: demoScheme, data: demoSeed, clearFirst: true });
 
 console.log(`[6/6] Done.`);
 process.exit(0);

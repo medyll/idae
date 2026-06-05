@@ -186,7 +186,7 @@ export class Machine {
 			this._qoolie = undefined;
 		}
 		const collections = Object.fromEntries(
-			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath }])
+			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }])
 		);
 		this._qoolie = createQoolie({
 			dbName:    this._dbName,

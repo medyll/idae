@@ -68,7 +68,7 @@ export class MachineScheme {
 
 	/** Primary key field name, derived from keyPath ('++id' → 'id'). */
 	get index(): string {
-		return indexFromKeyPath(this.#collectionModel.keyPath);
+		return indexFromKeyPath(this.#collectionModel.keyPath ?? '++id');
 	}
 
 	/** Default sort inferred from defaultSort or field naming/type conventions. */

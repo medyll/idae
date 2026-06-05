@@ -112,8 +112,8 @@ export interface MachineRightsPolicy {
 
 // ── Collection model ──────────────────────────────────────────────────────────
 export interface MachineCollectionModel<T = any> {
-	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. */
-	keyPath:     string;
+	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. Optional — defaults to '++id' (engine/deploy inject it). */
+	keyPath?:    string;
 	/** MongoDB database module name (without org prefix). e.g. 'machine_user' → '{org}_machine_user'. */
 	base?:       string;
 	/** TypeScript type hint for record shape (never stored at runtime). */

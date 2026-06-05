@@ -1,78 +1,65 @@
 import type { MachineModel } from '../../../../src/lib/types/machine-model.js';
-import { field } from '../../../../src/lib/main/machine/fieldBuilder.js';
 
 export const demoScheme: MachineModel = {
 
 	// ── Référentiels ──────────────────────────────────────────────────────────
 
 	category: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as { id: string; code: string; name: string; description?: string; daily_rate_base?: number },
+		base: 'machine_base',
 		fields: {
-			id:              field('id',     { readonly: true }),
-			code:            field('text',   { required: true }),
-			name:            field('text',   { required: true }),
-			description:     field('text-lg'),
-			daily_rate_base: field('number'),
+			id:              { type: 'id',     readonly: true },
+			code:            { type: 'text',   required: true },
+			name:            { type: 'text',   required: true },
+			description:     { type: 'text-lg' },
+			daily_rate_base: { type: 'number' },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	location_office: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as { id: string; code: string; name: string; address: string; city: string; country: string; phone?: string; manager?: string },
+		base: 'machine_base',
 		fields: {
-			id:      field('id',    { readonly: true }),
-			code:    field('text',  { required: true }),
-			name:    field('text',  { required: true }),
-			address: field('text'),
-			city:    field('text'),
-			country: field('text'),
-			phone:   field('phone'),
-			manager: field('text'),
+			id:      { type: 'id',    readonly: true },
+			code:    { type: 'text',  required: true },
+			name:    { type: 'text',  required: true },
+			address: { type: 'text' },
+			city:    { type: 'text' },
+			country: { type: 'text' },
+			phone:   { type: 'phone' },
+			manager: { type: 'text' },
 		},
 		fks: {},
 		template: { presentation: 'name city code' },
 	},
 
 	supplier: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; code: string; name: string;
-			contact_name?: string; email?: string; phone?: string;
-			city?: string; country?: string; type: 'dealer' | 'importer' | 'auction' | 'other';
-		},
+		base: 'machine_base',
 		fields: {
-			id:           field('id',    { readonly: true }),
-			code:         field('text',  { required: true }),
-			name:         field('text',  { required: true }),
-			type:         field('text'),
-			contact_name: field('text'),
-			email:        field('email'),
-			phone:        field('phone'),
-			city:         field('text'),
-			country:      field('text'),
+			id:           { type: 'id',    readonly: true },
+			code:         { type: 'text',  required: true },
+			name:         { type: 'text',  required: true },
+			type:         { type: 'text' },
+			contact_name: { type: 'text' },
+			email:        { type: 'email' },
+			phone:        { type: 'phone' },
+			city:         { type: 'text' },
+			country:      { type: 'text' },
 		},
 		fks: {},
 		template: { presentation: 'name city type' },
 	},
 
 	seller: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; first_name: string; last_name: string;
-			email: string; phone?: string; location_office?: string;
-			status: 'active' | 'inactive'; hire_date?: Date;
-		},
+		base: 'machine_base',
 		fields: {
-			id:              field('id',                        { readonly: true }),
-			first_name:      field('text',                      { required: true }),
-			last_name:       field('text',                      { required: true }),
-			email:           field('email',                     { required: true }),
-			phone:           field('phone'),
-			status:          field('text'),
-			hire_date:       field('date'),
+			id:              { type: 'id',    readonly: true },
+			first_name:      { type: 'text',  required: true },
+			last_name:       { type: 'text',  required: true },
+			email:           { type: 'email', required: true },
+			phone:           { type: 'phone' },
+			status:          { type: 'text' },
+			hire_date:       { type: 'date' },
 		},
 		fks: {
 			location_office: { code: 'location_office', multiple: false },
@@ -83,24 +70,18 @@ export const demoScheme: MachineModel = {
 	// ── Flotte ────────────────────────────────────────────────────────────────
 
 	vehicle: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; license_plate: string; model: string; brand: string; year: number;
-			category?: string; location_office?: string;
-			status: 'available' | 'rented' | 'maintenance' | 'sold' | 'retired';
-			mileage?: number; color?: string; fuel_type?: string; created_at?: Date;
-		},
+		base: 'machine_base',
 		fields: {
-			id:              field('id',                        { readonly: true }),
-			license_plate:   field('text',                      { required: true }),
-			model:           field('text',                      { required: true }),
-			brand:           field('text',                      { required: true }),
-			year:            field('number'),
-			color:           field('text'),
-			fuel_type:       field('text'),
-			status:          field('text'),
-			mileage:         field('number'),
-			created_at:      field('date'),
+			id:              { type: 'id',    readonly: true },
+			license_plate:   { type: 'text',  required: true },
+			model:           { type: 'text',  required: true },
+			brand:           { type: 'text',  required: true },
+			year:            { type: 'number' },
+			color:           { type: 'text' },
+			fuel_type:       { type: 'text' },
+			status:          { type: 'text' },
+			mileage:         { type: 'number' },
+			created_at:      { type: 'date' },
 		},
 		fks: {
 			category:        { code: 'category',        multiple: false },
@@ -110,19 +91,14 @@ export const demoScheme: MachineModel = {
 	},
 
 	vehicle_acquisition: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; vehicle: string; supplier: string;
-			acquisition_date: Date; purchase_price: number;
-			invoice_ref?: string; warranty_months?: number; notes?: string;
-		},
+		base: 'machine_base',
 		fields: {
-			id:               field('id',                { readonly: true }),
-			acquisition_date: field('date',              { required: true }),
-			purchase_price:   field('currency',          { required: true }),
-			invoice_ref:      field('text'),
-			warranty_months:  field('number'),
-			notes:            field('text-lg'),
+			id:               { type: 'id',       readonly: true },
+			acquisition_date: { type: 'date',     required: true },
+			purchase_price:   { type: 'currency', required: true },
+			invoice_ref:      { type: 'text' },
+			warranty_months:  { type: 'number' },
+			notes:            { type: 'text-lg' },
 		},
 		fks: {
 			vehicle:  { code: 'vehicle',  multiple: false, required: true },
@@ -132,21 +108,16 @@ export const demoScheme: MachineModel = {
 	},
 
 	insurance: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; vehicle: string; provider: string;
-			policy_number: string; start_date: Date; expires_at: Date;
-			annual_premium: number; coverage_type: string; status: 'active' | 'expired' | 'cancelled';
-		},
+		base: 'machine_base',
 		fields: {
-			id:             field('id',              { readonly: true }),
-			provider:       field('text',            { required: true }),
-			policy_number:  field('text',            { required: true }),
-			start_date:     field('date'),
-			expires_at:     field('date'),
-			annual_premium: field('currency'),
-			coverage_type:  field('text'),
-			status:         field('text'),
+			id:             { type: 'id',       readonly: true },
+			provider:       { type: 'text',     required: true },
+			policy_number:  { type: 'text',     required: true },
+			start_date:     { type: 'date' },
+			expires_at:     { type: 'date' },
+			annual_premium: { type: 'currency' },
+			coverage_type:  { type: 'text' },
+			status:         { type: 'text' },
 		},
 		fks: {
 			vehicle: { code: 'vehicle', multiple: false, required: true },
@@ -155,20 +126,15 @@ export const demoScheme: MachineModel = {
 	},
 
 	maintenance: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; vehicle: string; date: Date;
-			type: string; cost?: number; mileage_at_service?: number; notes?: string;
-			status: 'scheduled' | 'in_progress' | 'completed';
-		},
+		base: 'machine_base',
 		fields: {
-			id:                 field('id',              { readonly: true }),
-			date:               field('date'),
-			type:               field('text'),
-			cost:               field('currency'),
-			mileage_at_service: field('number'),
-			notes:              field('text-lg'),
-			status:             field('text'),
+			id:                 { type: 'id',       readonly: true },
+			date:               { type: 'date' },
+			type:               { type: 'text' },
+			cost:               { type: 'currency' },
+			mileage_at_service: { type: 'number' },
+			notes:              { type: 'text-lg' },
+			status:             { type: 'text' },
 		},
 		fks: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },
@@ -177,18 +143,14 @@ export const demoScheme: MachineModel = {
 	},
 
 	fuel_log: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; vehicle: string; date: Date;
-			liters: number; cost: number; mileage: number; station?: string;
-		},
+		base: 'machine_base',
 		fields: {
-			id:      field('id',              { readonly: true }),
-			date:    field('date',            { required: true }),
-			liters:  field('number',          { required: true }),
-			cost:    field('currency'),
-			mileage: field('number'),
-			station: field('text'),
+			id:      { type: 'id',       readonly: true },
+			date:    { type: 'date',     required: true },
+			liters:  { type: 'number',   required: true },
+			cost:    { type: 'currency' },
+			mileage: { type: 'number' },
+			station: { type: 'text' },
 		},
 		fks: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },
@@ -199,42 +161,33 @@ export const demoScheme: MachineModel = {
 	// ── Location ──────────────────────────────────────────────────────────────
 
 	customer: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; first_name: string; last_name: string;
-			email: string; phone?: string; drivers_license?: string;
-			address?: string; city?: string; loyalty_points?: number; created_at?: Date;
-		},
+		base: 'machine_base',
 		fields: {
-			id:              field('id',    { readonly: true }),
-			first_name:      field('text',  { required: true }),
-			last_name:       field('text',  { required: true }),
-			email:           field('email', { required: true }),
-			phone:           field('phone'),
-			drivers_license: field('text'),
-			address:         field('text'),
-			city:            field('text'),
-			loyalty_points:  field('number'),
-			created_at:      field('date'),
+			id:              { type: 'id',    readonly: true },
+			first_name:      { type: 'text',  required: true },
+			last_name:       { type: 'text',  required: true },
+			email:           { type: 'email', required: true },
+			phone:           { type: 'phone' },
+			drivers_license: { type: 'text' },
+			address:         { type: 'text' },
+			city:            { type: 'text' },
+			loyalty_points:  { type: 'number' },
+			created_at:      { type: 'date' },
 		},
 		fks: {},
 		template: { presentation: 'last_name first_name email city' },
 	},
 
 	pricing_rule: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; category: string; season_code: string;
-			price_per_day: number; min_days?: number; discount_pct?: number; valid_from?: Date; valid_until?: Date;
-		},
+		base: 'machine_base',
 		fields: {
-			id:            field('id',                { readonly: true }),
-			season_code:   field('text',              { required: true }),
-			price_per_day: field('currency',          { required: true }),
-			min_days:      field('number'),
-			discount_pct:  field('number'),
-			valid_from:    field('date'),
-			valid_until:   field('date'),
+			id:            { type: 'id',       readonly: true },
+			season_code:   { type: 'text',     required: true },
+			price_per_day: { type: 'currency', required: true },
+			min_days:      { type: 'number' },
+			discount_pct:  { type: 'number' },
+			valid_from:    { type: 'date' },
+			valid_until:   { type: 'date' },
 		},
 		fks: {
 			category: { code: 'category', required: true, multiple: false },
@@ -243,26 +196,19 @@ export const demoScheme: MachineModel = {
 	},
 
 	rental: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; vehicle: string; customer: string; seller?: string;
-			start_date: Date; end_date?: Date; planned_return?: Date;
-			price_per_day: number; total_price?: number; deposit?: number;
-			status: 'booked' | 'active' | 'completed' | 'cancelled';
-			pickup_mileage?: number; return_mileage?: number; notes?: string;
-		},
+		base: 'machine_base',
 		fields: {
-			id:              field('id',               { readonly: true }),
-			start_date:      field('date',             { required: true }),
-			planned_return:  field('date'),
-			end_date:        field('date'),
-			price_per_day:   field('currency',         { required: true }),
-			total_price:     field('currency'),
-			deposit:         field('currency'),
-			pickup_mileage:  field('number'),
-			return_mileage:  field('number'),
-			status:          field('text'),
-			notes:           field('text-lg'),
+			id:              { type: 'id',       readonly: true },
+			start_date:      { type: 'date',     required: true },
+			planned_return:  { type: 'date' },
+			end_date:        { type: 'date' },
+			price_per_day:   { type: 'currency', required: true },
+			total_price:     { type: 'currency' },
+			deposit:         { type: 'currency' },
+			pickup_mileage:  { type: 'number' },
+			return_mileage:  { type: 'number' },
+			status:          { type: 'text' },
+			notes:           { type: 'text-lg' },
 		},
 		fks: {
 			vehicle:  { code: 'vehicle',  required: true, multiple: false },
@@ -273,22 +219,16 @@ export const demoScheme: MachineModel = {
 	},
 
 	damage_report: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; rental: string; vehicle: string;
-			reported_at: Date; description: string; location_on_vehicle?: string;
-			estimated_cost?: number; repair_cost?: number;
-			charged_to_customer: boolean; status: 'new' | 'assessed' | 'repaired' | 'disputed';
-		},
+		base: 'machine_base',
 		fields: {
-			id:                  field('id',              { readonly: true }),
-			reported_at:         field('date',            { required: true }),
-			description:         field('text-lg',         { required: true }),
-			location_on_vehicle: field('text'),
-			estimated_cost:      field('currency'),
-			repair_cost:         field('currency'),
-			charged_to_customer: field('boolean'),
-			status:              field('text'),
+			id:                  { type: 'id',       readonly: true },
+			reported_at:         { type: 'date',     required: true },
+			description:         { type: 'text-lg',  required: true },
+			location_on_vehicle: { type: 'text' },
+			estimated_cost:      { type: 'currency' },
+			repair_cost:         { type: 'currency' },
+			charged_to_customer: { type: 'boolean' },
+			status:              { type: 'text' },
 		},
 		fks: {
 			rental:  { code: 'rental',  required: true, multiple: false },
@@ -300,26 +240,19 @@ export const demoScheme: MachineModel = {
 	// ── CRM / Ventes ──────────────────────────────────────────────────────────
 
 	lead: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; first_name: string; last_name: string;
-			email?: string; phone?: string; source: string;
-			interest?: string; budget?: number; seller?: string;
-			status: 'new' | 'contacted' | 'qualified' | 'negotiation' | 'won' | 'lost';
-			created_at?: Date; notes?: string;
-		},
+		base: 'machine_base',
 		fields: {
-			id:         field('id',             { readonly: true }),
-			first_name: field('text',           { required: true }),
-			last_name:  field('text',           { required: true }),
-			email:      field('email'),
-			phone:      field('phone'),
-			source:     field('text'),
-			interest:   field('text'),
-			budget:     field('currency'),
-			status:     field('text'),
-			notes:      field('text-lg'),
-			created_at: field('date'),
+			id:         { type: 'id',       readonly: true },
+			first_name: { type: 'text',     required: true },
+			last_name:  { type: 'text',     required: true },
+			email:      { type: 'email' },
+			phone:      { type: 'phone' },
+			source:     { type: 'text' },
+			interest:   { type: 'text' },
+			budget:     { type: 'currency' },
+			status:     { type: 'text' },
+			notes:      { type: 'text-lg' },
+			created_at: { type: 'date' },
 		},
 		fks: {
 			seller: { code: 'seller', multiple: false },
@@ -328,24 +261,16 @@ export const demoScheme: MachineModel = {
 	},
 
 	sale_task: {
-		keyPath: '++id', base: 'machine_base', model: {},
-		ts: {} as {
-			id: string; seller: string; lead?: string; customer?: string;
-			type: 'call' | 'email' | 'visit' | 'demo' | 'quote' | 'follow_up' | 'other';
-			title: string; due_date: Date; completed_at?: Date;
-			priority: 'low' | 'medium' | 'high' | 'urgent';
-			status: 'todo' | 'in_progress' | 'done' | 'cancelled';
-			notes?: string;
-		},
+		base: 'machine_base',
 		fields: {
-			id:           field('id',               { readonly: true }),
-			type:         field('text',             { required: true }),
-			title:        field('text',             { required: true }),
-			due_date:     field('date',             { required: true }),
-			completed_at: field('date'),
-			priority:     field('text'),
-			status:       field('text'),
-			notes:        field('text-lg'),
+			id:           { type: 'id',       readonly: true },
+			type:         { type: 'text',     required: true },
+			title:        { type: 'text',     required: true },
+			due_date:     { type: 'date',     required: true },
+			completed_at: { type: 'date' },
+			priority:     { type: 'text' },
+			status:       { type: 'text' },
+			notes:        { type: 'text-lg' },
 		},
 		fks: {
 			seller:   { code: 'seller',   required: true,  multiple: false },
