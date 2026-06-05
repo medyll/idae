@@ -126,9 +126,9 @@ export interface MachineCollectionModel<T = any> {
 	template?:   MachineDisplayTemplate;
 	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */
 	defaultSort?: SortBy[];
-	/** Structural rights policy — declared in schema, seeded as default grants by deployModel. */
+	/** Structural rights policy — declared in schema, seeded as default grants by publishModel. */
 	rights?:     MachineRightsPolicy;
-	/** Semantic role flags — written to appscheme doc by deployModel. Drive UI/validation/routing. */
+	/** Semantic role flags — written to appscheme doc by publishModel. Drive UI/validation/routing. */
 	isType?:     boolean;
 	isGroup?:    boolean;
 	isStatus?:   boolean;

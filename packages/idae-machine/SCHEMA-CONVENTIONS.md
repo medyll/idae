@@ -15,7 +15,7 @@ isType?:   boolean   // this collection is a type catalog
 isGroup?:  boolean   // this collection is a group/category catalog
 ```
 
-These flags are written to the `appscheme` document by `deployModel`.
+These flags are written to the `appscheme` document by `publishModel`.
 They drive UI decisions at runtime (filter sidebar, groupBy candidates, etc.).
 
 **Legacy equivalent:** `hasStatutScheme`, stored on each appscheme MongoDB doc.

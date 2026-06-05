@@ -14,7 +14,7 @@ All four business models now use the **canonical literal format** (same shape as
 - Removed `field` import, `keyPath: '++id'` (now defaults at engine/deploy via `?? '++id'`), `ts`/`model` slots.
 - `MachineCollectionModel.keyPath` made **optional** in `src/lib/types/machine-model.ts` to allow omission.
 
-Lossless: explicit `type` kept on every field because `deployModel()` reads `fd.type ?? 'text'` directly (it does **not** consult the `FieldList` catalog by name — only the engine-core builder does).
+Lossless: explicit `type` kept on every field because `publishModel()` reads `fd.type ?? 'text'` directly (it does **not** consult the `FieldList` catalog by name — only the engine-core builder does).
 
 Files: `demo/demoScheme.ts`, `crfr/crfrScheme.ts`, `idaenext/idaenextScheme.ts`, `tactac/tactacScheme.ts`.
 

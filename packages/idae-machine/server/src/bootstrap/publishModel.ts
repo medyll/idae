@@ -1,6 +1,7 @@
 /**
- * deployModel — writes a MachineModel into Mongo meta collections.
- * Reflexive: engine model can be deployed by the same function — see buildEngineModel().
+ * publishModel — publishes a MachineModel into Mongo meta collections (appscheme_*).
+ * Not infra/DDL: it writes the schema-as-data (rows describing collections/fields/views).
+ * Reflexive: the engine model is published by the same function — see buildEngineModel().
  *
  * Convention: every meta doc has {id, code, name, color, icon, order}.
  * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
@@ -66,7 +67,7 @@ const DEFAULT_BASE = ENGINE_BASE;
 function logSchemaAnalysis() {
 	try {
 		const { graph, report } = analyzeSchema();
-		console.log('[deployModel] Schema analysis:');
+		console.log('[publishModel] Schema analysis:');
 		console.log(`- Collections: ${Object.keys(graph.collections).length}`);
 		console.log(`- FK dependencies: ${Object.keys(graph.fkDependencies).length}`);
 		if (report.unresolvedRefs.length > 0) {
@@ -78,7 +79,7 @@ function logSchemaAnalysis() {
 			report.asymmetries.forEach(a => console.log(`  ${a.sourceCollection}.${a.sourceField} → ${a.targetCollection} (${a.issue})`));
 		}
 	} catch (e) {
-		console.error('[deployModel] Schema analysis failed:', e);
+		console.error('[publishModel] Schema analysis failed:', e);
 	}
 }
 
@@ -199,10 +200,10 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 	}
 }
 
-// ── deployModel ──────────────────────────────────────────────────────────────
+// ── publishModel ──────────────────────────────────────────────────────────────
 // Writes schemes / fields / has_field / views for the given MachineModel.
 // Each collection's `base` is registered in META.base (default: ENGINE_BASE).
-export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
+export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
 	const model = ensureCodeField(rawModel);
 
 	logSchemaAnalysis();
@@ -214,7 +215,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 	const baseById = new Map<string, number>();
 	const bases    = new Set<string>();
 	for (const c of Object.values(model)) bases.add(c.base ?? DEFAULT_BASE);
-	console.log('[deployModel] bases in model:', [...bases]);
+	console.log('[publishModel] bases in model:', [...bases]);
 
 	let baseOrder = 10;
 	for (const code of bases) {
@@ -258,7 +259,7 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
-		console.log(`  [deployModel] ${collectionName} → base=${baseCode}`, {fks: schemeFksDoc});
+		console.log(`  [publishModel] ${collectionName} → base=${baseCode}`, {fks: schemeFksDoc});
 		const schemeId = await upsertGetId(
 			col(META.scheme),
 			{ code: collectionName },
@@ -397,4 +398,4 @@ export async function deployModel(rawModel: MachineModel, opts: DeployOpts): Pro
 }
 
 // Back-compat alias — old call sites still work.
-export const seedSchemeFromModel = deployModel;
+export const seedSchemeFromModel = publishModel;

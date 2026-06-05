@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
 import { getAllSchemes, getScheme } from '../routes/scheme.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 
 const TEST_ORG = 'vitest';
 const META_DB  = `${TEST_ORG}_machine_app`;
@@ -41,7 +41,7 @@ describe('GET /api/scheme', () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 	});
 
 	afterAll(async () => {

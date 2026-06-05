@@ -481,7 +481,7 @@ import { machineServer } from '@medyll/idae-machine/server';
 
 await machineServer.start(); // Express + MongoDB + Socket.IO
 const model = await machineServer.getModel(); // reads appscheme_* → MachineModel
-await machineServer.deployModel(myModel, { org }); // writes MachineModel → MongoDB
+await machineServer.publishModel(myModel, { org }); // publishes MachineModel → MongoDB (appscheme_*)
 await machineServer.stop();
 ```
 

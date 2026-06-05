@@ -20,7 +20,7 @@
  *   Server:
  *     GET /api/scheme → MachineServer.getModel()   reads appscheme_* from MongoDB
  *     MongoDB appscheme_* rows deployed at bootstrap from THIS file via
- *     buildEngineModel() (engineModel.ts) + deployModel().
+ *     buildEngineModel() (engineModel.ts) + publishModel().
  *
  * So this file's ONLY job is the server seed. It is NOT read on the client and is
  * NOT the runtime source of truth — the server-delivered schema is.
@@ -84,7 +84,7 @@ export const idaeModelCore = {
 				isGroup:  { required: false, readonly: true  },
 				isStatus: { required: false, readonly: true  },
 				// _views intentionally absent: stored directly on the appscheme document
-				// (injected by deployModel, read by MachineServer.getModel → ViewFields),
+				// (injected by publishModel, read by MachineServer.getModel → ViewFields),
 				// never a user-facing schema field.
 			},
 			fks: {

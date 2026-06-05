@@ -12,7 +12,7 @@ import { createServer, type Server } from 'http';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
 import { machineServer } from '../MachineServer.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
 import { invalidateBaseCache } from '../middleware/dbRouter.js';
 
@@ -35,7 +35,7 @@ describe('fetchSchema E2E: real HTTP → machineServer', () => {
 		(config as any).org = TEST_ORG;
 		invalidateBaseCache();
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		// Minimal Express: GET /api/scheme → machineServer.getModel()
 		const app = express();

@@ -9,7 +9,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose, { Connection, Schema } from 'mongoose';
 import { config } from '../config.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { demoScheme, demoSeed } from '../models/demo/demoScheme.js';
 import { invalidateBaseCache } from '../middleware/dbRouter.js';
 import { listRecords, createRecord, deleteRecord, getRecord } from '../routes/data.js';
@@ -53,7 +53,7 @@ describe('S11-03: API /api/data/* avec données réelles', () => {
 		(config as any).org = TEST_ORG;
 
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		invalidateBaseCache();
 
 		// Determine the actual base from the deployed model and seed into that DB

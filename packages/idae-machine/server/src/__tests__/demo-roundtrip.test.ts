@@ -1,5 +1,5 @@
 /**
- * Integration test: demoScheme → deployModel → getModel → MachineModel shape
+ * Integration test: demoScheme → publishModel → getModel → MachineModel shape
  *
  * Verifies that the full server roundtrip produces a MachineModel that:
  *   - contains all expected collections
@@ -12,7 +12,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { machineServer } from '../MachineServer.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
 import { appModelDeclaration } from '../../../src/lib/types/engineMetaSeed.js';
@@ -30,14 +30,14 @@ function mockRes(): any {
 	return res;
 }
 
-describe('demoScheme roundtrip: deployModel → getModel', () => {
+describe('demoScheme roundtrip: publishModel → getModel', () => {
 	let model: MachineModel;
 
 	beforeAll(async () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		model = await machineServer.getModel();
 	});
 
@@ -132,8 +132,8 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 
 	// ── idempotency ──────────────────────────────────────────────────────────────
 
-	it('second deployModel produces same model (idempotent)', async () => {
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+	it('second publishModel produces same model (idempotent)', async () => {
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		const model2 = await machineServer.getModel();
 		expect(Object.keys(model2)).toEqual(expect.arrayContaining(COLLECTIONS));
 		expect(model2.vehicle.fields.license_plate.type).toBe('text');

@@ -11,7 +11,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose, { Schema } from 'mongoose';
 import { config } from '../config.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { demoScheme, demoSeed } from '../models/demo/demoScheme.js';
 import { invalidateBaseCache } from '../middleware/dbRouter.js';
 
@@ -39,7 +39,7 @@ beforeAll(async () => {
 		(config as any).org = TEST_ORG;
 		invalidateBaseCache();
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const dataDb = mongoose.connection.useDb(DATA_DB, { useCache: true });
 		for (const col of Object.keys(demoSeed)) {

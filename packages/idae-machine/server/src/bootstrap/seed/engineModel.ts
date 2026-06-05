@@ -1,7 +1,7 @@
  /**
  * Engine model — derived from appModelDeclaration + FieldList.
  * All engine collections live in base 'machine_app' (resolved server-side to {org}_machine_app).
- * Result is a MachineModel that can be deployed via deployModel() like any user model.
+ * Result is a MachineModel that can be published via publishModel() like any user model.
  */
 import { idaeModelCore } from './idae-model-core.js';
 import { FieldList }            from '../../../../src/lib/types/schema-types.js';

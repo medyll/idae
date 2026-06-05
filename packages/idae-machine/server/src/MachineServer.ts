@@ -14,7 +14,7 @@ import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import type { SocketIoServer } from '@medyll/idae-socket';
-import { deployModel as runDeployModel, seedEngineRegistries } from './bootstrap/deployModel.js';
+import { publishModel as runPublishModel, seedEngineRegistries } from './bootstrap/publishModel.js';
 import { buildEngineModel } from './bootstrap/seed/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
@@ -169,16 +169,16 @@ class MachineServerClass {
 		return model;
 	}
 
-	// ── deployModel ─ writes MachineModel into appscheme_* (destructive, voluntary) ──
+	// ── publishModel ─ writes MachineModel into appscheme_* (destructive, voluntary) ──
 
-	async deployModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
+	async publishModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
 		const org      = opts?.org ?? config.org;
 		const mongoUri = opts?.mongoUri ?? config.mongodbUri;
 		await seedEngineRegistries({ org, mongoUri });
-		await runDeployModel(buildEngineModel(), { org, mongoUri });
-		await runDeployModel(model, { org, mongoUri });
+		await runPublishModel(buildEngineModel(), { org, mongoUri });
+		await runPublishModel(model, { org, mongoUri });
 		invalidateBaseCache();
-		logger.info(`Model deployed for org="${org}"`);
+		logger.info(`Model published for org="${org}"`);
 	}
 
 	// ── socket ────────────────────────────────────────────────────────────────

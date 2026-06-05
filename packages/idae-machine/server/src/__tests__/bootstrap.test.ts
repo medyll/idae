@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, afterEach } from 'vitest';
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { config } from '../config.js';
 
 const TEST_ORG = 'vitest';
@@ -58,7 +58,7 @@ describe('seedSchemeFromModel', () => {
 
 	it('seeds all meta collections', async () => {
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const ftCount  = (await idaeDb.collection('appscheme_field_type').find({ query: {} })).length;
 		const fgCount  = (await idaeDb.collection('appscheme_field_group').find({ query: {} })).length;
@@ -90,7 +90,7 @@ describe('seedSchemeFromModel', () => {
 
 	it('appscheme.gridFks contains appscheme_base and FK links', async () => {
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const product = await idaeDb.collection('appscheme').findOne({ query: { code: 'product' } });
 
@@ -102,9 +102,9 @@ describe('seedSchemeFromModel', () => {
 
 	it('is idempotent — second seed does not duplicate appscheme', async () => {
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		const schemes = await idaeDb.collection('appscheme').find({ query: { code: 'product' } });
 		expect(schemes.length).toBe(1);

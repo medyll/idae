@@ -82,7 +82,7 @@ async function main() {
 	const source = new MongoClient(args.legacyUri);
 	await source.connect();
 
-	// Target — same IdaeDb scoping convention as deployModel.ts
+	// Target — same IdaeDb scoping convention as publishModel.ts
 	const target = IdaeDb.init(
 		process.env.MONGODB_URI ?? 'mongodb://localhost:27017',
 		{

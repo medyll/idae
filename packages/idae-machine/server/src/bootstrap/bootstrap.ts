@@ -17,7 +17,7 @@ import { fileURLToPath } from 'url';
 const serverEnv = resolve(fileURLToPath(import.meta.url), '../../../../.env');
 dotenv({ path: serverEnv });
 
-import { clearCollections, seedEngineRegistries, deployModel } from './deployModel.js';
+import { clearCollections, seedEngineRegistries, publishModel } from './publishModel.js';
 import { buildEngineModel } from './seed/engineModel.js';
 import { seedUsers } from './seedUsers.js';
 import { seedBusinessData } from './seedBusinessData.js';
@@ -44,11 +44,11 @@ await clearCollections({ org, mongoUri });
 console.log(`[1/6] Seeding engine registries into ${org}_machine_app`);
 await seedEngineRegistries({ org, mongoUri });
 
-console.log(`[2/6] Deploying engine model (self-registering meta collections)`);
-await deployModel(buildEngineModel(), { org, mongoUri });
+console.log(`[2/6] Publishing engine model (self-registering meta collections)`);
+await publishModel(buildEngineModel(), { org, mongoUri });
 
-console.log(`[3/6] Deploying ${org} model (${Object.keys(scheme).length} collections)`);
-await deployModel(scheme, { org, mongoUri });
+console.log(`[3/6] Publishing ${org} model (${Object.keys(scheme).length} collections)`);
+await publishModel(scheme, { org, mongoUri });
 
 console.log(`[4/6] Seeding image presets into ${org}_machine_app`);
 const appConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_app` });
