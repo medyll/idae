@@ -14,7 +14,7 @@ import { ENGINE_BASE } from './seed/engineModel.js';
 interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
 interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
 interface MachineCollection {
-	keyPath:   string;
+	keyPath?:  string;
 	base?:     string;
 	ts?:       any;
 	fields:    Record<string, MachineFieldDef>;

@@ -6,7 +6,7 @@
  * the server via `machine.boot({ sync: { databaseHost } })`.
  *
  * The deployable business seed is the SERVER file:
- *   `server/src/models/demo/demoScheme.ts` (richer, drives `bootstrap-demo.ts`).
+ *   `server/src/models/demo/demoScheme.ts` (richer, drives `bootstrap.ts`).
  * Do NOT confuse the two. Edit this one only to support tests.
  */
 import type { MachineModel } from '$lib/types/index.js';

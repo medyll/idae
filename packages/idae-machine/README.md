@@ -515,11 +515,13 @@ await machineServer.stop();
 ### Seed & bootstrap
 
 ```bash
-# Deploy schema + seed users (admin/user/viewer) into MongoDB
-npx tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
+# Deploy schema + seed users (admin/user/viewer) into MongoDB.
+# Resolves <org>Scheme dynamically; seeds business data only if <org>Seed exists.
+npx tsx server/src/bootstrap/bootstrap.ts [org] [mongoUri]
 
-# Example
-npx tsx server/src/bootstrap/bootstrap-demo.ts demo mongodb://localhost:27017
+# Examples
+npx tsx server/src/bootstrap/bootstrap.ts demo mongodb://localhost:27017  # demo + data
+npx tsx server/src/bootstrap/bootstrap.ts crfr                            # crfrScheme, no data
 ```
 
 Default seeded users (`{org}_machine_user`):

@@ -179,7 +179,7 @@ pnpm run test:e2e        # Playwright (src/e2e/playwright.config.ts)
 
 # Server
 cd server && pnpm run dev
-npx tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]  # seed MongoDB
+npx tsx server/src/bootstrap/bootstrap.ts [org] [mongoUri]  # seed MongoDB (org default=demo; loads <org>Scheme, skips data if no <org>Seed)
 ```
 
 **Test projects** (see `vite.config.ts`):
@@ -214,7 +214,7 @@ npx tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]  # seed MongoDB
 | `src/lib/data-ui/data/DataListRfk.svelte` | Reverse-FK relation lists |
 | `src/lib/data-ui/field/DataField.svelte` | Field type dispatch to input atoms |
 | `src/lib/main/machine/MachineAction.ts` | `machine.action` dispatcher |
-| `server/src/bootstrap/bootstrap-demo.ts` | MongoDB seed CLI |
+| `server/src/bootstrap/bootstrap.ts` | MongoDB seed CLI (org-parametrized; resolves `<org>Scheme`/`<org>Seed`) |
 
 **Do not confuse:**
 - `shell/Frame.svelte` (mechanic) ≠ `shell/frame/` (frame types)
