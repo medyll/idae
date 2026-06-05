@@ -4,6 +4,20 @@ dialog.idae-dialog {
 	isolation: isolate;
 }
 
+/* Modal scrim — sits just under the dialog on the same --z-modal layer. */
+.idae-dialog__backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-modal);
+	background: color-mix(in oklch, var(--color-text) 45%, transparent);
+}
+
+@layer components {
+	dialog.idae-dialog.idae-dialog--modal .idae-dialog__bar {
+		cursor: default;
+	}
+}
+
 @layer components {
 	dialog.idae-dialog {
 		position: fixed;

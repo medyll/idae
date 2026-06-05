@@ -36,7 +36,7 @@ function resolvePresentationToken(data: Record<string, unknown>, token: string):
 	// Legacy bare key first (backward-compat).
 	if (bagObj[base] != null) return walkPath(bagObj[base], rest);
 
-	// Suffixed convention: `fks.<base>_<id>`. Collect all entries for this base.
+	// Suffixed convention: `fks.<base>_<id>` → flat snapshot. Collect all entries for this base.
 	const values: string[] = [];
 	for (const key of Object.keys(bagObj)) {
 		const pos = key.lastIndexOf('_');

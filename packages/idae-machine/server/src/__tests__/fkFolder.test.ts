@@ -22,7 +22,7 @@ function makeResolver(map: Record<string, Record<number, Record<string, unknown>
 }
 
 describe('foldFks', () => {
-	it('builds fks.{name}_{id} entry from scalar', async () => {
+	it('builds flat fks.{name}_{id} snapshot from scalar', async () => {
 		const resolver = makeResolver({ agency: { 3: acmeRecord } });
 		const { data, errors } = await foldFks(
 			travelModel, 'travel',
@@ -33,20 +33,32 @@ describe('foldFks', () => {
 		expect((data.fks as any).agency_3).toMatchObject({ id: 3, name: 'ACME' });
 	});
 
-	it('builds multiple entries from array scalar', async () => {
+	it('strips _id and nested fks from embedded snapshot', async () => {
+		const richTarget = { id: 3, name: 'ACME', _id: 'mongo_oid', fks: { sub_1: { id: 1 } } };
+		const resolver = makeResolver({ agency: { 3: richTarget as any } });
+		const { data } = await foldFks(travelModel, 'travel', { agency: 3 }, resolver);
+		const snap = (data.fks as any).agency_3;
+		expect(snap._id).toBeUndefined();
+		expect(snap.fks).toBeUndefined();
+		expect(snap.name).toBe('ACME');
+	});
+
+	it('builds multiple flat entries from array scalar (order = scalar array order)', async () => {
 		const resolver = makeResolver({
 			destination: { 1: parisRecord, 42: romeRecord },
 			agency:      { 3: acmeRecord },
 		});
 		const { data, errors } = await foldFks(
 			travelModel, 'travel',
-			{ destination: [1, 42], agency: 3 },
+			{ destination: [42, 1], agency: 3 },
 			resolver,
 		);
 		expect(errors).toEqual([]);
-		const fks = data.fks as Record<string, unknown>;
+		const fks = data.fks as Record<string, any>;
 		expect(fks['destination_1']).toMatchObject({ name: 'Paris' });
 		expect(fks['destination_42']).toMatchObject({ name: 'Rome' });
+		// Order lives in the scalar array, not the fks map.
+		expect(data.destination).toEqual([42, 1]);
 	});
 
 	it('error when required FK absent', async () => {
@@ -114,5 +126,6 @@ describe('foldFks', () => {
 		const resolver = makeResolver({ agency: { 7: { id: 7, code: '7', name: 'X' } } });
 		const { data } = await foldFks(travelModel, 'travel', { agency: 7 }, resolver);
 		expect((data.fks as any)['agency_7']).toBeDefined();
+		expect((data.fks as any)['agency_7']).toMatchObject({ id: 7 });
 	});
 });

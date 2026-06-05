@@ -48,13 +48,19 @@ export async function foldFks(
 
 		for (const id of scalars) {
 			if (id == null) continue;
-			const target = await resolve(fkDef.code, id);
+			let target: Record<string, unknown> | null;
+			try { target = await resolve(fkDef.code, id); }
+			catch { target = null; }
 			if (!target) {
 				errors.push({ fkName, message: `${fkName}: no record found for id=${id} in '${fkDef.code}'` });
 				continue;
 			}
-			const targetId         = target.id ?? id;
-			newFks[`${fkName}_${targetId}`] = target;
+			const targetId = target.id ?? id;
+			// Flat snapshot — depth-1, strip Mongo _id and any nested fks block.
+			// Order of members lives in the scalar FK array, NOT here. Relation-level
+			// attrs (principal, etc.) are decomposed into parent FK fields, never folded onto the link.
+			const { _id, fks: _nested, ...snapshot } = target as Record<string, unknown> & { _id?: unknown; fks?: unknown };
+			newFks[`${fkName}_${targetId}`] = snapshot;
 			resolved++;
 		}
 

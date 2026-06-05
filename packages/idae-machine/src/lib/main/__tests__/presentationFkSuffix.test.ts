@@ -24,7 +24,7 @@ describe('presentation token — FK suffix awareness', () => {
 		expect(rentalValues.presentation(rec)).toBe('AB-123 Durand 01/01/2026 open');
 	});
 
-	it('resolves suffixed fks.<base>_<id>.<field>', () => {
+	it('resolves suffixed fks.<base>_<id>.<field> (flat snapshot)', () => {
 		const rec = {
 			start_date: '2026-01-01',
 			status:     'open',

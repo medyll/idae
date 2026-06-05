@@ -21,6 +21,10 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		iconClose?: string;
 		center?: boolean;
 		removeOnClose?: boolean;
+		/** Render a backdrop scrim behind the dialog (blocks interaction with the page). */
+		modal?: boolean;
+		/** Allow closing via the header button, Escape, or backdrop click. */
+		closable?: boolean;
 		onClose?: () => void;
 		header?: Snippet;
 		footer?: Snippet;
@@ -37,6 +41,8 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		iconClose = 'mdi:close',
 		center = true,
 		removeOnClose = false,
+		modal = false,
+		closable = true,
 		onClose = () => {},
 		header,
 		footer,
@@ -109,18 +115,27 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 	}
 
 	function onKeydown(e: KeyboardEvent) {
-		if (e.key === 'Escape') close();
+		if (closable && e.key === 'Escape') close();
 	}
 </script>
 
 {#if open}
+	{#if modal && visible}
+		<!-- Scrim: blocks the page; click-to-close only when closable. -->
+		<div
+			class="idae-dialog__backdrop"
+			role="presentation"
+			onpointerdown={() => closable && close()}
+		></div>
+	{/if}
 	<dialog
 		bind:this={element}
 		open
 		class="idae-dialog"
+		class:idae-dialog--modal={modal}
 		tabindex="-1"
 		style:display={visible ? 'flex' : 'none'}
-		use:draggable={{ handle: '[data-drag-handle]' }}
+		use:draggable={{ handle: modal ? '__none__' : '[data-drag-handle]' }}
 		onpointerdown={raise}
 		onkeydown={onKeydown}
 		aria-label={title}
@@ -131,14 +146,16 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 			{:else}
 				<span class="idae-dialog__title">{title}</span>
 			{/if}
-			<button
-				type="button"
-				class="btn-icon btn-sm idae-dialog__close"
-				aria-label="Close"
-				onclick={close}
-			>
-				<Icon icon={iconClose} />
-			</button>
+			{#if closable}
+				<button
+					type="button"
+					class="btn-icon btn-sm idae-dialog__close"
+					aria-label="Close"
+					onclick={close}
+				>
+					<Icon icon={iconClose} />
+				</button>
+			{/if}
 		</header>
 
 		<div

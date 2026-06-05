@@ -42,7 +42,7 @@ describe('fkObjectLabel', () => {
 		expect(fkObjectLabel({}, 'category')).toBeUndefined();
 	});
 
-	it('reads suffixed convention fks.<key>_<id>', () => {
+	it('reads suffixed convention fks.<key>_<id> (flat snapshot)', () => {
 		const rec = { fks: { category_7: { id: 7, code: 'sedan', name: 'Sedan' } } };
 		expect(fkObjectLabel(rec, 'category')).toBe('Sedan');
 	});

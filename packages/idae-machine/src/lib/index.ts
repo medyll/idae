@@ -34,6 +34,7 @@ export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelt
 // UI — layout
 export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.svelte';
 export { default as App }              from '$lib/shell/layout/App.svelte';
+export { default as Login }            from '$lib/shell/auth/Login.svelte';
 export { default as TaskBar }          from '$lib/shell/layout/TaskBar.svelte';
 export { default as Navigation }       from '$lib/shell/layout/Navigation.svelte';
 export { default as Breadcrumb }       from '$lib/shell/layout/Breadcrumb.svelte';
@@ -51,6 +52,9 @@ export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';
 
 // MCP — client-side WebMCP tool registration
 export { registerMachineMcpTools } from '$lib/mcp/MachineMcpClient.js';
+
+// Auth gate signal
+export { authState } from '$lib/main/machine/authState.svelte.js';
 
 // Utils
 export * from '$lib/utils/logger.js';

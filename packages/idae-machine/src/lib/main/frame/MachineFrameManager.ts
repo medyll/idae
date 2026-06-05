@@ -208,7 +208,8 @@ export class MachineFrameManager {
 		modulePath: RegistryKey,
 		collection: string,
 		collectionId?: string,
-		vars?: Record<string, string>
+		vars?: Record<string, string>,
+		opts?: { modal?: boolean; closable?: boolean }
 	): Promise<void> {
 		const frameId = `dialog:${modulePath}:${collection}:${collectionId ?? ''}`;
 		console.log(`[FrameManager] loadInDialog: ${frameId}`);
@@ -221,7 +222,7 @@ export class MachineFrameManager {
 		}
 		await this.load(frameId, modulePath, collection, collectionId, vars, async (id) => {
 			const { openDialog } = await import('$lib/data-ui/fragments/dialog/dialog.svelte.js');
-			openDialog({ id });
+			openDialog({ id, ...opts });
 		});
 	}
 

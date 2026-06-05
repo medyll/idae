@@ -100,7 +100,7 @@ export function fkObjectLabel(item: Record<string, unknown>, fkKey: string): str
 	const bare = bag[fkKey];
 	if (bare && typeof bare === 'object') return fkEntryLabel(bare as Record<string, unknown>);
 
-	// Suffixed convention: collect every `fks.<fkKey>_<id>` entry.
+	// Suffixed convention: collect every flat `fks.<fkKey>_<id>` snapshot.
 	const labels: string[] = [];
 	for (const key of Object.keys(bag)) {
 		const { baseName, refId } = parseFkKey(key);

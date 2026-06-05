@@ -37,6 +37,7 @@ Consumers can override via the item snippet.
 	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
 	import DataToolbar from '$lib/data-ui/controls/DataToolbar.svelte';
 	import { parseLink } from '$lib/main/frame/linkParser.js';
+	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 	interface PaginationInfo {
 		page: number;
@@ -204,11 +205,11 @@ Consumers can override via the item snippet.
 		}
 
 		if (action === 'loadFrame') {
-			machine.framer.loadFrame(module, navCollection, navId, linkVars, zone);
+			machine.framer.loadFrame(module as RegistryKey, navCollection, navId, linkVars, zone);
 		} else if (action === 'loadIn') {
-			machine.framer.loadIn(zone, module, navCollection, navId, linkVars);
+			machine.framer.loadIn(zone, module as RegistryKey, navCollection, navId, linkVars);
 		} else if (action === 'loadInDialog') {
-			void machine.framer.loadInDialog(module, navCollection, navId, linkVars);
+			void machine.framer.loadInDialog(module as RegistryKey, navCollection, navId, linkVars);
 		}
 	}
 

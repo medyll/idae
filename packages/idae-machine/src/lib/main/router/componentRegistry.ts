@@ -61,6 +61,7 @@ const REGISTRY_ENTRIES = {
 	'fiche.update':         () => import('$lib/shell/layout/FicheUpdate.svelte'),
 	'rbac.matrix':          () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
 	'synthesis':            () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
+	'login':                () => import('$lib/shell/auth/Login.svelte'),
 } satisfies Record<string, ComponentLoader>;
 
 export type RegistryKey = keyof typeof REGISTRY_ENTRIES;
