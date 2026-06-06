@@ -175,9 +175,10 @@ describe('DomainActions registry', () => {
 		});
 
 		it('rejects negative kilometrage', async () => {
-			// Clear and re-import demo actions to register vehicule
+			// Re-register demo actions explicitly — a bare re-import would be a
+			// no-op (ESM module cache) after the registry clear.
 			domainActionsRegistry.clear();
-			await import('../models/demo/actions.js');
+			(await import('../models/demo/actions.js')).registerDemoActions();
 
 			const req = mockReq({ params: { table: VEHICULE_TABLE }, body: { name: 'Car', kilometrage: -100 } });
 			const res = mockRes();
@@ -210,7 +211,7 @@ describe('DomainActions registry', () => {
 
 		it('accepts valid vehicule', async () => {
 			domainActionsRegistry.clear();
-			await import('../models/demo/actions.js');
+			(await import('../models/demo/actions.js')).registerDemoActions();
 
 			const req = mockReq({ params: { table: VEHICULE_TABLE }, body: { name: 'Car', kilometrage: 5000, prixJour: 50 } });
 			const res = mockRes();

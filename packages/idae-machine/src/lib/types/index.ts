@@ -1,8 +1,8 @@
 // Types barrel export
 export * from './schema-types.js';
-// engineMetaSeed exports only the `appModelDeclaration` VALUE (engine meta seed,
-// server-bootstrap only) — intentionally NOT re-exported here. Import it directly
-// from './engineMetaSeed.js' where the bootstrap needs it; it is not a types module.
+// The engine meta-seed VALUE now lives in
+// server/src/bootstrap/seed/idae-model-core.ts (`idaeModelCore`) — it is a
+// server-bootstrap value, not a types module, so it is not re-exported here.
 
 // machine-model: all types except ViewFields/ViewFieldDef which conflict
 // with the DB-resolved versions in schema-types.ts.

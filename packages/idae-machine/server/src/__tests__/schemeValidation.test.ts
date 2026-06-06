@@ -8,19 +8,19 @@ import {
 // ── Mock dbRouter ─────────────────────────────────────────────────────────────
 
 const HAS_FIELD_VEHICULE = [
-	{ gridFks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'nomVehicule' } }, required: 1 },
-	{ gridFks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'prixJour' } },    required: 1 },
-	{ gridFks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'idVehicule' } },  required: 0 },
-	{ gridFks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'emailContact' } }, required: 0 },
-	{ gridFks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'fkCategorie' } },  required: 0 },
+	{ fks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'nomVehicule' } }, required: 1 },
+	{ fks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'prixJour' } },    required: 1 },
+	{ fks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'idVehicule' } },  required: 0 },
+	{ fks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'emailContact' } }, required: 0 },
+	{ fks: { appscheme: { code: 'vehicule' }, appscheme_field: { code: 'fkCategorie' } },  required: 0 },
 ];
 
 const FIELD_DOCS = [
-	{ code: 'nomVehicule',  gridFks: { appscheme_field_type: { code: 'text' } } },
-	{ code: 'prixJour',     gridFks: { appscheme_field_type: { code: 'number' } } },
-	{ code: 'idVehicule',   gridFks: { appscheme_field_type: { code: 'id' } } },
-	{ code: 'emailContact', gridFks: { appscheme_field_type: { code: 'email' } } },
-	{ code: 'fkCategorie',  gridFks: { appscheme_field_type: { code: 'fk-categorie.id' } } },
+	{ code: 'nomVehicule',  fks: { appscheme_field_type: { code: 'text' } } },
+	{ code: 'prixJour',     fks: { appscheme_field_type: { code: 'number' } } },
+	{ code: 'idVehicule',   fks: { appscheme_field_type: { code: 'id' } } },
+	{ code: 'emailContact', fks: { appscheme_field_type: { code: 'email' } } },
+	{ code: 'fkCategorie',  fks: { appscheme_field_type: { code: 'fk-categorie.id' } } },
 ];
 
 let callCount = 0;
@@ -33,7 +33,7 @@ vi.mock('../middleware/dbRouter.js', () => ({
 				find: (query: any) => ({
 					toArray: async () => {
 						if (name === 'appscheme_has_field') {
-							const code = query['gridFks.appscheme.code'];
+							const code = query['fks.appscheme.code'];
 							if (code === 'vehicule') return HAS_FIELD_VEHICULE;
 							return [];
 						}
@@ -105,9 +105,9 @@ describe('mapType (via getSchemeRules)', () => {
 				find: (_: any) => ({
 					toArray: async () => {
 						if (name === 'appscheme_has_field') return [
-							{ gridFks: { appscheme: { code: 'x' }, appscheme_field: { code: 'bio' } }, required: 0 },
+							{ fks: { appscheme: { code: 'x' }, appscheme_field: { code: 'bio' } }, required: 0 },
 						];
-						return [{ code: 'bio', gridFks: { appscheme_field_type: { code: 'text-area' } } }];
+						return [{ code: 'bio', fks: { appscheme_field_type: { code: 'text-area' } } }];
 					},
 				}),
 			}),

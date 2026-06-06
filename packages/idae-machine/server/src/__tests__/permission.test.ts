@@ -101,6 +101,12 @@ describe('Permission Middleware', () => {
 	});
 
 	describe('requireDroit middleware', () => {
+		// server/.env sets AUTH_DISABLED=true (dev) → synthetic-admin bypass.
+		// These tests exercise the real auth/grant path, so force it on.
+		const prevAuthDisabled = config.authDisabled;
+		beforeEach(() => { (config as any).authDisabled = false; });
+		afterEach(() => { (config as any).authDisabled = prevAuthDisabled; });
+
 		it('calls next() when user has permission', async () => {
 			vi.spyOn(grantService, 'resolveAccess').mockResolvedValueOnce({ allowed: true, permission: 'R', constraints: null } as any);
 			const next: NextFunction = vi.fn();

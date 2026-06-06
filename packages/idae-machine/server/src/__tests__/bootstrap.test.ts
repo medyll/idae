@@ -81,10 +81,10 @@ describe('seedSchemeFromModel', () => {
 		expect(fields.some((f: any) => f.code === 'name' && f.required === 1)).toBe(true);
 		expect(fields.some((f: any) =>
 			f.code === 'categoryId'
-			&& f.gridFks?.appscheme_field_type?.code === 'fk'
+			&& f.fks?.appscheme_field_type?.code === 'fk'
 			&& f.fieldType === 'fk-category.id'
 		)).toBe(true);
-		expect(hasF.some((h: any) => h.gridFks?.appscheme?.code === 'product' && h.gridFks?.appscheme_field?.code === 'id')).toBe(true);
+		expect(hasF.some((h: any) => h.fks?.appscheme?.code === 'product' && h.fks?.appscheme_field?.code === 'id')).toBe(true);
 		expect(views.length).toBeGreaterThan(0);
 	});
 
@@ -94,10 +94,10 @@ describe('seedSchemeFromModel', () => {
 
 		const product = await idaeDb.collection('appscheme').findOne({ query: { code: 'product' } });
 
-		expect(product?.gridFks?.appscheme_base?.code).toBe('test_base');
-		expect(product?.gridFks?.appscheme_type?.code).toBe('standard');
-		expect(product?.gridFks?.category?.code).toBe('category');
-		expect(product?.gridFks?.category?.multiple).toBe(false);
+		expect(product?.fks?.appscheme_base?.code).toBe('test_base');
+		expect(product?.fks?.appscheme_type?.code).toBe('standard');
+		expect(product?.fks?.category?.code).toBe('category');
+		expect(product?.fks?.category?.multiple).toBe(false);
 	});
 
 	it('is idempotent — second seed does not duplicate appscheme', async () => {
