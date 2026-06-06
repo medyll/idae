@@ -160,8 +160,15 @@ export class MakeLibIndex {
     );
     if (fs.existsSync(path.join(this.#srcPath, this.#libRoot, "index.ts"))) {
       let indexPath = path.join(this.#srcPath, this.#libRoot, "index.ts");
+      const existing = fs.readFileSync(indexPath, "utf8");
+      // Opt-out: a hand-maintained barrel (e.g. a deliberate client/server split)
+      // carries the `@indexify-ignore` marker and must never be auto-overwritten.
+      if (existing.includes("@indexify-ignore")) {
+        console.log(`skip (manual barrel, @indexify-ignore): ${indexPath}`);
+        return;
+      }
       // if content differs, write
-      if (fs.readFileSync(indexPath, "utf8") !== exportString) {
+      if (existing !== exportString) {
         await fs.writeFile(indexPath, exportString);
       }
     }
