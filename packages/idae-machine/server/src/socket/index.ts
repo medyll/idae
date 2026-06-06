@@ -3,6 +3,14 @@ import jwt from 'jsonwebtoken';
 import { SocketIoServer } from '@medyll/idae-socket/server';
 import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
+import { grantService } from '../services/GrantService.js';
+
+/** Identity decoded from the handshake JWT (mirrors AuthService JwtPayload). */
+interface SocketUser {
+	userId:  string;
+	login?:  string;
+	isAdmin: boolean;
+}
 
 export interface SocketServerOptions {
 	auth?:   { strategy: 'jwt' | 'introspection' | 'none'; jwtSecret?: string; introspectionUrl?: string };
@@ -45,10 +53,10 @@ export function initializeSocketIO(
 	io.on('connection', (socket: any) => {
 		// Decode the handshake-validated token (set on socket.data.token by the
 		// idae-socket authorization middleware) into a user identity.
-		let user: unknown = null;
+		let user: SocketUser | null = null;
 		const token = socket.data?.token;
 		if (token) {
-			try { user = jwt.verify(token, jwtSecret); } catch { user = null; }
+			try { user = jwt.verify(token, jwtSecret) as SocketUser; } catch { user = null; }
 		}
 		socket.data.user = user;
 		// 'none' strategy = dev: allow unauthenticated. Otherwise require a decoded user.
@@ -56,10 +64,20 @@ export function initializeSocketIO(
 
 		logger.info(`🔌 Client connected: ${socket.id}${authed ? '' : ' (unauthenticated)'}`);
 
-		socket.on('subscribe', (table: string) => {
+		socket.on('subscribe', async (table: string) => {
 			if (!authed) { logger.warn(`⛔ ${socket.id} subscribe denied (unauthenticated) → ${table}`); return; }
-			// TODO(rbac): per-table authorization — check this user holds 'L' on `table`
-			// (server-side grant lookup) before joining. Currently any authenticated user.
+			// Per-table authorization: the user must hold 'L' (list) on `table`.
+			// Admins and the dev 'none' strategy bypass the grant lookup.
+			const bypass = authStrategy === 'none' || user?.isAdmin === true;
+			if (!bypass) {
+				const allowed = user?.userId
+					? await grantService.checkGrant(user.userId, table, 'L')
+					: false;
+				if (!allowed) {
+					logger.warn(`⛔ ${socket.id} subscribe denied (no 'L' grant) → ${table}`);
+					return;
+				}
+			}
 			socket.join(`room_${table}`);
 			logger.info(`📡 ${socket.id} → room_${table}`);
 		});
