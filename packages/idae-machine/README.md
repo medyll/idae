@@ -119,7 +119,7 @@ await machine.boot({ org: 'myapp', domain: 'machine', version: 1, business: myMo
 </TemplateShell>
 
 <!-- Or open a record in a frame -->
-<button onclick={() => machine.framer.loadFrame('card.form', 'users', userId)}>
+<button onclick={() => machine.framer.loadFrame('form', 'users', userId)}>
 	Edit user
 </button>
 ```
@@ -207,10 +207,10 @@ await scheme.validator.validateField('email', value);
 ```ts
 // Open a collection or record in a frame (tab-like window)
 machine.framer.loadFrame('explorer', 'users');         // collection explorer
-machine.framer.loadFrame('card.form', 'users', userId); // edit record
+machine.framer.loadFrame('form', 'users', userId); // edit record
 
 // Open in a floating draggable dialog (content-keyed, focuses if already open)
-machine.framer.loadInDialog('card.form', 'users', userId);
+machine.framer.loadInDialog('form', 'users', userId);
 
 // Frame controls via machine.framer singleton
 machine.framer.show(frameId);

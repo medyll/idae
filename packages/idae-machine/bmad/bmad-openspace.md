@@ -8,7 +8,7 @@ Inter-role communication log.
 
 ### Root wrapper: `App.svelte`
 
-NOT AppShell. Minimal wrapper — no sidebar, no navbar:
+NOT TemplateShell. Minimal wrapper — no sidebar, no navbar:
 
 ```
 App.svelte
@@ -19,7 +19,7 @@ App.svelte
 ```
 
 No Frame component at root level — just a plain content zone.
-AppShell is reserved for frame content (Explorer, etc.) — not root.
+TemplateShell is reserved for frame content (Explorer, etc.) — not root.
 
 ### Collection navigation
 

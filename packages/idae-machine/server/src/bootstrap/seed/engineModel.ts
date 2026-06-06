@@ -1,5 +1,5 @@
  /**
- * Engine model — derived from appModelDeclaration + FieldList.
+ * Engine model — derived from idaeModelCore + FieldList.
  * All engine collections live in base 'machine_app' (resolved server-side to {org}_machine_app).
  * Result is a MachineModel that can be published via publishModel() like any user model.
  */
