@@ -1,4 +1,4 @@
-import { type FilterQuery, type SortOrder, Schema } from 'mongoose';
+import { type SortOrder, Schema } from 'mongoose';
 import { idaeApi } from '@medyll/idae-api';
 import type { Request, Response } from 'express';
 import { logger } from '../utils/logger.js';
@@ -130,10 +130,10 @@ export async function listRecords(req: Request, res: Response): Promise<void> {
 		const activeFilters = activeRecordsFilter(filters);
 
 		// Get total count
-		const total = await Model.countDocuments(activeFilters as FilterQuery<any>);
+		const total = await Model.countDocuments(activeFilters as Record<string, unknown>);
 
 		// Get paginated data — limit=0 means no limit (used by sync)
-		const query = Model.find(activeFilters as FilterQuery<any>).sort(sort).skip(skip);
+		const query = Model.find(activeFilters as Record<string, unknown>).sort(sort).skip(skip);
 		if (limit > 0) query.limit(limit);
 		const data = await query.lean();
 

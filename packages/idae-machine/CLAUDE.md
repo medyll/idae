@@ -83,7 +83,7 @@ src/lib/
     ├── Frame.svelte       ← dynamic frame mechanics (ROOT of shell/)
     ├── frame/             ← frame types (loadable content)
     │   ├── explorer/      → Explorer.svelte, ExplorerContent.svelte
-    │   ├── synthesis/     → Synthesis.svelte  (frame type key: 'fullinfo')
+    │   ├── synthesis/     → Synthesis.svelte  (frame type key: 'synthesis')
     │   └── rbac/          → RbacMatrix.svelte
     └── layout/            ← static UI structure
         ├── App.svelte           → minimal shell (TaskBar + main zone)
@@ -123,18 +123,19 @@ main.panel  → right-side panel
 ```ts
 'explorer'        → shell/frame/explorer/Explorer.svelte
 'explorer.content'→ shell/frame/explorer/ExplorerContent.svelte
-'card.form'       → data-ui/data/DataForm.svelte
+'form'            → data-ui/data/DataForm.svelte
 'fiche'           → shell/layout/Fiche.svelte           (record detail; opened via loadInDialog)
+'fiche.update'    → shell/layout/FicheUpdate.svelte
 'rbac.matrix'     → shell/frame/rbac/RbacMatrix.svelte
-'fullinfo'        → shell/frame/synthesis/Synthesis.svelte
 'synthesis'       → shell/frame/synthesis/Synthesis.svelte
+'login'           → shell/auth/Login.svelte
 ```
 
 ### DataList navigation props
 
 | Prop | Usage |
 |------|-------|
-| `link` | `"loadFrame:explorer"` or `"loadIn:card.form@main.panel"` |
+| `link` | `"loadFrame:explorer"` or `"loadIn:form@main.panel"` |
 | `linkCollectionField` | Field used as target collection name (e.g. `"code"` for appscheme) |
 | `linkVars` | Extra vars passed to framer |
 
@@ -208,7 +209,7 @@ npx tsx server/src/bootstrap/bootstrap.ts [org] [mongoUri]  # seed MongoDB (org 
 | `src/lib/main/router/componentRegistry.ts` | Frame type registry |
 | `src/lib/main/frame/MachineFrameManager.ts` | Frame host / mount / SvelteMap registry |
 | `src/lib/shell/Frame.svelte` | Dynamic frame mount point |
-| `src/lib/shell/frame/synthesis/Synthesis.svelte` | Record synthesis frame ('fullinfo') |
+| `src/lib/shell/frame/synthesis/Synthesis.svelte` | Record synthesis frame ('synthesis') |
 | `src/lib/data-ui/data/DataList.svelte` | List provider + renderer |
 | `src/lib/data-ui/data/DataForm.svelte` | CRUD form engine |
 | `src/lib/data-ui/data/DataListRfk.svelte` | Reverse-FK relation lists |

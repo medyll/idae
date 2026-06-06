@@ -11,18 +11,12 @@ import { fkRef, FieldList } from '../../../src/lib/types/schema-types.js';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
 import { ENGINE_BASE } from './seed/engineModel.js';
-
-interface MachineFieldDef { type: string; required?: boolean; readonly?: boolean; private?: boolean; }
-interface MachineFkDef    { code: string; multiple: boolean; required?: boolean; }
-interface MachineCollection {
-	keyPath?:  string;
-	base?:     string;
-	ts?:       any;
-	fields:    Record<string, MachineFieldDef>;
-	fks:       Record<string, MachineFkDef>;
-	template?: Record<string, any>;
-}
-interface MachineModel { [collection: string]: MachineCollection; }
+import type {
+	MachineModel,
+	MachineCollectionModel as MachineCollection,
+	MachineFieldDef,
+	MachineFkDef,
+} from '../../../src/lib/types/machine-model.js';
 
 interface DeployOpts { org: string; mongoUri: string; }
 

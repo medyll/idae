@@ -14,8 +14,8 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('explorer.collections')).toBe(false);
 	});
 
-	it('has "card.form" registered pointing to DataForm', () => {
-		expect(componentRegistry.has('card.form')).toBe(true);
+	it('has "form" registered pointing to DataForm', () => {
+		expect(componentRegistry.has('form')).toBe(true);
 	});
 
 	it('has "fiche" registered pointing to Fiche.svelte', () => {
@@ -39,23 +39,29 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('rbac.matrix')).toBe(true);
 	});
 
-	it('has "fullinfo" registered', () => {
-		expect(componentRegistry.has('fullinfo')).toBe(true);
+	it('does NOT have "fullinfo" (removed — synthesis only)', () => {
+		expect(componentRegistry.has('fullinfo')).toBe(false);
 	});
 
-	it('has "synthesis" registered (semantic alias for Synthesis.svelte)', () => {
+	it('has "synthesis" registered (Synthesis.svelte)', () => {
 		expect(componentRegistry.has('synthesis')).toBe(true);
 	});
 
-	it('has exactly 7 entries', () => {
+	it('has "fiche.update" and "login" registered', () => {
+		expect(componentRegistry.has('fiche.update')).toBe(true);
+		expect(componentRegistry.has('login')).toBe(true);
+	});
+
+	it('has exactly 8 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(7);
+		expect(keys).toHaveLength(8);
 		expect(keys.sort()).toEqual([
-			'card.form',
 			'explorer',
 			'explorer.content',
 			'fiche',
-			'fullinfo',
+			'fiche.update',
+			'form',
+			'login',
 			'rbac.matrix',
 			'synthesis',
 		]);

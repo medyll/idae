@@ -134,6 +134,8 @@ export interface MachineCollectionModel<T = any> {
 	isStatus?:   boolean;
 	/** Legacy compat slot kept for schema literals that still include `model: {}`. */
 	model?:      unknown;
+	/** View field projections, injected at runtime by the server (publishModel → getModel). Never declared in a schema literal. */
+	_views?:     Partial<ViewFields>;
 }
 
 // ── Model ─────────────────────────────────────────────────────────────────────

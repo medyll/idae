@@ -13,7 +13,7 @@ import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
-import type { SocketIoServer } from '@medyll/idae-socket';
+import type { SocketIoServer } from '@medyll/idae-socket/server';
 import { publishModel as runPublishModel, seedEngineRegistries } from './bootstrap/publishModel.js';
 import { buildEngineModel } from './bootstrap/seed/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';

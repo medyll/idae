@@ -10,5 +10,7 @@ yarn.lock
 node_modules/
 dist/
 
-# BMAD status YAML contains folded scalars that Prettier's YAML parser cannot handle
-bmad/status.yaml
+# BMAD is skill-owned tracked state: bmad/status.yaml indexes the artifacts/ tree,
+# so the docs must NOT be relocated (the bmad-method skill's references would break).
+# Ignore the whole tree for formatting noise. status.yaml also has folded scalars Prettier can't parse.
+bmad/

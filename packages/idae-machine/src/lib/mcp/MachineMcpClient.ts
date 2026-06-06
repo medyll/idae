@@ -151,7 +151,7 @@ function buildTools(machine: Machine): McpToolInput[] {
 		// ── Navigation ──────────────────────────────────────────────────────
 		{
 			name:        'machine_navigate',
-			description: 'Load a frame in a zone. modulePath = registered component key (e.g. "explorer", "card.form"). zone defaults to "main".',
+			description: 'Load a frame in a zone. modulePath = registered component key (e.g. "explorer", "form"). zone defaults to "main".',
 			inputSchema: {
 				type: 'object',
 				properties: {
