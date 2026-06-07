@@ -16,16 +16,17 @@
 </script>
 
 <script lang="ts">
-	import { mount, unmount } from 'svelte';
+	import { mount, unmount, untrack } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { componentRegistry } from '$lib/main/router/componentRegistry.js';
 	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import { generateFrameId } from '$lib/main/frame/frameUtils.js';
 	import Columner from './Columner.svelte';
 
 	let { collection, collectionId, component = DataList, componentProps = {}, parentFrameId }: ColumnerProps = $props();
 
-	const id: ColumnId = crypto.randomUUID();
+	const id: ColumnId = generateFrameId('col');
 	const frameId = `columner:${id}`;
 	let dock: HTMLElement;
 	let sticky = $state(false);
@@ -99,11 +100,11 @@
 			},
 		};
 
-		machine.framer.register(frameId, controls, { replace: true });
+		untrack(() => machine.framer.register(frameId, controls, { replace: true }));
 
 		return () => {
 			controls.close();
-			machine.framer.unregister(frameId);
+			untrack(() => machine.framer.unregister(frameId));
 		};
 	});
 </script>
