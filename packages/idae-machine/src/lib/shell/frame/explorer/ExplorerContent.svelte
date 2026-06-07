@@ -6,7 +6,6 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import DataList from '$lib/data-ui/data/DataList.svelte';
-	import { machine } from '$lib/main/machine.js';
 	import type { SortBy, Where } from '$lib/types/index.js';
 
 	let {
@@ -25,10 +24,7 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 		pageSize?: number;
 	} = $props();
 
-	function openCard(record: COL): void {
-		const id = (record as Record<string, unknown>).id ?? (record as Record<string, unknown>)._id;
-		void machine.framer.loadInDialog('fiche', collection, String(id));
-	}
+
 </script>
 
 <DataList
@@ -38,7 +34,7 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 	{groupBy}
 	{pageSize}
 	mode={modeProp}
-	onItemClick={(record) => openCard(record as COL)}
+	link="loadInDialog:fiche"
 	listClass="list list-grid"
 	groupClass="explorer-group"
 >

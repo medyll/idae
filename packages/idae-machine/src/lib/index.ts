@@ -31,6 +31,10 @@ export { default as InputEmail }    from '$lib/data-ui/input/InputEmail.svelte';
 export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte';
 export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
 
+// UI — columner (Finder-style column navigation)
+export { default as Columner }              from '$lib/shell/columner/Columner.svelte';
+export type { ColumnId, ColumnerProps }     from '$lib/shell/columner/Columner.svelte';
+
 // UI — layout
 export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.svelte';
 export { default as App }              from '$lib/shell/layout/App.svelte';

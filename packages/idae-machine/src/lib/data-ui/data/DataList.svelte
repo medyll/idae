@@ -11,7 +11,7 @@ Consumers can override via the item snippet.
 @prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
 @prop {string[]} [showFields] - Fields to display (overrides view)
 @prop {'full'|'flat'|'fk'|'focus'|string} [view='full'] - Named view driving the field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
-@prop {(record: COL) => void} [onItemClick] - Click handler for items/rows
+@prop {string} [linkTarget] - Zone / frameId to target for navigation (overrides zone from link)
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
 @prop {number} [page] - 1-based (only used when infiniteScroll=false)
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
@@ -36,7 +36,7 @@ Consumers can override via the item snippet.
 	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
 	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
 	import DataToolbar from '$lib/data-ui/controls/DataToolbar.svelte';
-	import { parseLink } from '$lib/main/frame/linkParser.js';
+	import { parseLink, type LinkString } from '$lib/main/frame/linkParser.js';
 	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 	interface PaginationInfo {
@@ -54,13 +54,13 @@ Consumers can override via the item snippet.
 		mode: modeProp = 'list',
 		showFields,
 		view = 'full',
-		onItemClick,
 		pageSize = 0,
 		page = 1,
 		infiniteScroll = true,
 		listClass,
 		groupClass,
 		link,
+		linkTarget,
 		linkVars,
 		linkCollectionField,
 		showToolbar = false,
@@ -79,13 +79,13 @@ Consumers can override via the item snippet.
 		mode?: 'list' | 'table' | 'grid';
 		showFields?: string[];
 		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
-		onItemClick?: (record: COL) => void;
 		pageSize?: number;
 		page?: number;
 		infiniteScroll?: boolean;
 		listClass?: string;
 		groupClass?: string;
-		link?: string;
+		link?: LinkString;
+		linkTarget?: string;
 		linkVars?: Record<string, any>;
 		/** Field of the record to use as collection name for navigation (e.g. "code" for appscheme). */
 		linkCollectionField?: string;
@@ -195,13 +195,17 @@ Consumers can override via the item snippet.
 		let navId: string | undefined;
 
 		if (linkCollectionField) {
-			// record IS a collection reference — e.g. appscheme with linkCollectionField="code"
 			navCollection = String(record[linkCollectionField] ?? '');
 			navId = undefined;
 		} else {
-			// record IS a data record — navigate to its detail
 			navCollection = collection;
 			navId = String(record[indexField] ?? '');
+		}
+
+		// linkTarget = zone override — routes to a registered frame (e.g. a Columner dock).
+		if (linkTarget) {
+			void machine.framer.load(linkTarget, module as RegistryKey, navCollection, navId, linkVars);
+			return;
 		}
 
 		if (action === 'loadFrame') {
@@ -214,10 +218,7 @@ Consumers can override via the item snippet.
 	}
 
 	function handleItemClick(record: COL): void {
-		onItemClick?.(record);
-		if (parsedLink) {
-			navigate(record as Record<string, unknown>);
-		}
+		if (parsedLink) navigate(record as Record<string, unknown>);
 	}
 
 	function renderPresentation(record: Record<string, unknown>): string {
@@ -318,7 +319,7 @@ Consumers can override via the item snippet.
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<svelte:element
 		this={currentMode === 'table' ? 'tr' : 'li'}
-		class:clickable={currentMode === 'table' && (!!onItemClick || !!parsedLink)}
+		class:clickable={currentMode === 'table' && !!parsedLink}
 		onclick={currentMode === 'table' ? () => handleItemClick(record) : undefined}
 	>
 		{#if currentMode === 'table'}

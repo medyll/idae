@@ -37,5 +37,6 @@ export const config = {
 		maxDim: Number(process.env.IMG_MAX_DIM ?? 4096),
 	},
 	version:    '2.0.0',
-	authDisabled: process.env.AUTH_DISABLED === 'true',
+	// Never bypass auth in production regardless of env var.
+	authDisabled: process.env.NODE_ENV !== 'production' && process.env.AUTH_DISABLED === 'true',
 };
