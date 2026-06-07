@@ -22,12 +22,13 @@
 | Core schema logic | `src/lib/main/machine/*.ts` |
 | Field parser | `src/lib/main/machineParserForge.ts` |
 | Field builder helper | `src/lib/main/machine/fieldBuilder.ts` |
-| Explorer components | `src/lib/main-ui/explorer/` |
-| Card components | `src/lib/main-ui/card/` |
-| Field components | `src/lib/main-ui/field/` |
-| Input atoms | `src/lib/main-ui/input/` |
-| Layout | `src/lib/main-ui/layout/` |
-| Fragments | `src/lib/main-ui/fragments/` |
+| Data components (DataList/DataForm/DataRecord…) | `src/lib/data-ui/data/` |
+| Toolbar/find/sort/group controls | `src/lib/data-ui/controls/` |
+| Field dispatch + edit | `src/lib/data-ui/field/` |
+| Input atoms | `src/lib/data-ui/input/` |
+| Fragments (Confirm, Skeleton, Dialog…) | `src/lib/data-ui/fragments/` |
+| Frame mount + frame types (Explorer, Synthesis, Rbac) | `src/lib/shell/Frame.svelte`, `src/lib/shell/frame/` |
+| Static layout shells (App, TemplateShell, TaskBar, Pane…) | `src/lib/shell/layout/` |
 | Logic tests | `src/lib/main/__tests__/*.test.ts` |
 | Component tests | Colocated: `Component.svelte.spec.ts` |
 
@@ -35,7 +36,7 @@
 
 - Classes: PascalCase (`MachineDb`, `MachineScheme`)
 - Files: camelCase for logic, PascalCase for components
-- Components: prefix = level (`Explorer*`, `Card*`, `Field*`, `Input*`)
+- Components: prefix = role (`Data*` for data-ui, frame-type name for shell/frame, layout name for shell/layout — no `Explorer*`/`Card*`/`Field*`/`Input*` global-prefix scheme anymore)
 - Tests: `.test.ts` for logic, `.svelte.spec.ts` for components
 - Props UI de visibilité de contrôle: ordre sémantique `showControlX` (`showControlSort`,
   `showControlGroup`, `showControlFind`, `showControlMode`)
@@ -90,7 +91,7 @@ pnpm run lint    # Prettier check
 ## Dependencies
 
 - Package manager: **pnpm** (not npm/yarn)
-- Key: Svelte 5, `@medyll/idae-idbql`, `@medyll/idae-slotui-svelte`
+- Key: Svelte 5, `@medyll/qoolie` (data layer — replaced `idae-idbql`, see [[project_qoolie_migration]]), `@medyll/idae-slotui-svelte`
 
 ## Image presets
 
