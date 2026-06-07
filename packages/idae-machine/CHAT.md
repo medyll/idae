@@ -13,7 +13,7 @@
 - Embed AI chat (Ollama-backed) as a first-class idae-machine feature
 - Follow machine philosophy: schema-driven, frame-based UI, `machine.*` surface only
 - Reuse qoolie/IndexedDB as persistence layer (no RxDB/PouchDB)
-- Streaming via server-sent events (SSE), consistent with existing idae-machine server patterns
+- Streaming via `@medyll/idae-api` (`SseStream` server helper, `parseStream`/`client.stream()` client helper — see commit `888865ee`). No hand-rolled SSE framing/parsing.
 - Future-proof for wollama migration (collections compatible at schema level)
 
 ### Non-goals (phase 1)
@@ -46,8 +46,9 @@ Each field is a plain `MachineFieldDef` literal `{ type, required?, readonly?, p
 Machine conventions applied:
 - `keyPath: '++id'` at the collection root; PK field is `id` (`{ type: 'id', readonly: true }`).
 - Every collection carries `id` (auto-increment) **and** `code` (semantic string) — invariant.
-- **Relations live in `fks`, not `fields`.** A relation `chat` is `fks: { chat: { code: 'ai_chat', multiple, required } }`
-  and is stored on the record under the relation name as the target's `code` (FK code convention, `code = String(id)` fallback).
+- **Relations live in `fks`, not `fields`.** FK key = target collection name (idae-model-core convention,
+  e.g. `appuser_history.fks.appuser`). A message's chat link is `fks: { ai_chat: { code: 'ai_chat', multiple: false, required: true } }`,
+  stored on the record under `ai_chat` as the target's `code` (FK code convention, `code = String(id)` fallback).
   There are no `*_id` columns in `fields`.
 - No `default` / `enum` on the field def. Defaults are applied at seed/controller level; enumerated values
   (`status`, `role`) are plain `text` and validated by status conventions / collection capabilities.
@@ -75,22 +76,38 @@ export const aiCompanionScheme: MachineModel = {
     keyPath: '++id',
     base: 'machine_base',
     fields: {
-      id:            { type: 'id',     readonly: true },
-      code:          { type: 'text',   required: true },
-      name:          { type: 'text',   required: true },
-      model:         { type: 'text',   required: true },   // default 'mistral' at seed
-      endpoint:      { type: 'text' },                     // default 'http://127.0.0.1:11434' at seed
-      system_prompt: { type: 'textarea' },
-      temperature:   { type: 'number' },                   // 0..2, default 0.7 at seed
-      max_tokens:    { type: 'number' },
-      context_size:  { type: 'number' },
-      is_active:     { type: 'boolean' },
+      id:             { type: 'id',     readonly: true },
+      code:           { type: 'text',   required: true },
+      name:           { type: 'text',   required: true },
+      description:    { type: 'text' },
+      model:          { type: 'text',   required: true },   // default 'mistral' at seed
+      endpoint:       { type: 'text' },                     // default 'http://127.0.0.1:11434' at seed
+      system_prompt:  { type: 'textarea' },
+      temperature:    { type: 'number' },                   // 0..2, default 0.7 at seed
+      max_tokens:     { type: 'number' },
+      context_size:   { type: 'number' },
+      is_active:      { type: 'boolean' },
+      avatar:         { type: 'text' },
+      specialization: { type: 'text' },
+      is_locked:      { type: 'boolean' },
+      // Audio / affective — dormant fields, phase 2 pipeline activates them
+      voice_id:       { type: 'text' },
+      voice_tone:     { type: 'text' },   // 'neutral' | 'fast' | 'slow' | 'deep' | 'high'
+      mood:           { type: 'text' },   // 'neutral' | 'happy' | 'sad' | 'angry' | 'sarcastic' | 'professional' | 'friendly'
+      // Extensibility bindings — dormant fields, phase 2 skills/hooks engine activates them
+      hooks:          { type: 'json' },   // string[] of hook codes
+      skills:         { type: 'json' },   // string[] of skill codes
     },
-    fks: {},
+    fks: {
+      // absent = global template; set = user-owned instance/clone with overrides
+      appuser: { code: 'appuser', multiple: false, required: false },
+    },
     template: { presentation: 'name model code' },
   },
 }
 ```
+
+**Template vs instance:** `ai_companion` records with no `appuser` FK are global templates (seeded, shared). A user can clone one into their own scoped instance — same collection, `appuser` FK set, fields overridden (model, system_prompt, voice, mood…). `machine.ai` consumers don't need to know which: resolution always goes through `machine.store('ai_companion', { code })`.
 
 **Seed (demo org):**
 
@@ -103,7 +120,7 @@ export const aiCompanionScheme: MachineModel = {
 
 ### 2.2 `ai_chat`
 
-A conversation session. Bound to one companion (`fks.companion`), contains N messages.
+A conversation session. Bound to one companion (`fks.ai_companion`), contains N messages.
 
 ```ts
 // src/lib/ai/schema/ai-chat.ts — MachineModel partial
@@ -112,21 +129,27 @@ export const aiChatScheme: MachineModel = {
     keyPath: '++id',
     base: 'machine_base',
     fields: {
-      id:          { type: 'id',   readonly: true },
-      code:        { type: 'text', required: true },
-      title:       { type: 'text' },                     // default 'New chat' at controller
-      status:      { type: 'text' },                     // 'idle' | 'streaming' | 'error'
-      model:       { type: 'text' },                     // optional per-chat model override
-      context:     { type: 'json' },                     // sliding-window context cache (array)
-      token_count: { type: 'number' },
+      id:            { type: 'id',   readonly: true },
+      code:          { type: 'text', required: true },
+      title:         { type: 'text' },                     // default 'New chat' at controller; auto-generated after N messages
+      description:   { type: 'text' },
+      category:      { type: 'text' },
+      status:        { type: 'text' },                     // 'idle' | 'streaming' | 'error'
+      model:         { type: 'text' },                     // optional per-chat model override
+      system_prompt: { type: 'textarea' },                 // chat-level override of companion.system_prompt
+      context:       { type: 'json' },                     // sliding-window context cache (array)
+      token_count:   { type: 'number' },
     },
     fks: {
-      companion: { code: 'ai_companion', multiple: false, required: true },
+      ai_companion: { code: 'ai_companion', multiple: false, required: true },
+      tag:          { code: 'tag',          multiple: true,  required: false },
     },
     template: { presentation: 'title status code' },
   },
 }
 ```
+
+**`system_prompt` resolution order:** chat-level override → companion's `system_prompt` → fallback default. Built by `MachineAiController` before each send (see §4 "Context window management").
 
 ---
 
@@ -141,17 +164,30 @@ export const aiMessageScheme: MachineModel = {
     keyPath: '++id',
     base: 'machine_base',
     fields: {
-      id:      { type: 'id',       readonly: true },
-      code:    { type: 'text',     required: true },
-      role:    { type: 'text',     required: true },   // 'user' | 'assistant' | 'system' | 'tool'
-      content: { type: 'textarea' },
-      status:  { type: 'text' },                       // 'idle' | 'sent' | 'streaming' | 'done' | 'error'
-      tokens:  { type: 'number' },
-      error:   { type: 'text' },
+      id:              { type: 'id',       readonly: true },
+      code:            { type: 'text',     required: true },
+      role:            { type: 'text',     required: true },   // 'user' | 'assistant' | 'system' | 'tool'
+      content:         { type: 'textarea' },
+      status:          { type: 'text' },                       // 'idle' | 'sent' | 'streaming' | 'done' | 'error'
+      tokens:          { type: 'number' },
+      error:           { type: 'text' },
+      model:           { type: 'text' },                       // model actually used for this message
+      rating:          { type: 'number' },                     // -1 | 0 | 1
+      rated_at:        { type: 'datetime' },
+      // Multimodal
+      images:          { type: 'json' },   // { name, type, dataUri, base64 }[]
+      urls:            { type: 'json' },   // { url, image, title, order }[]
+      // Audio / affective — dormant fields, phase 2 pipeline activates them
+      audio_file_path: { type: 'text' },
+      sentiment:       { type: 'text' },
+      voice_style:     { type: 'text' },
+      // Extensibility — dormant fields, phase 2 skills/hooks/tools engine activates them
+      skill_invoked:   { type: 'text' },   // e.g. "/translate fr"
+      hook_log:        { type: 'json' },   // { hook_id, event, duration_ms, mutated, error }[]
     },
     fks: {
-      chat:      { code: 'ai_chat',       multiple: false, required: true },
-      tool_call: { code: 'ai_tool_call',  multiple: false, required: false },   // phase 2
+      ai_chat:      { code: 'ai_chat',      multiple: false, required: true },
+      ai_tool_call: { code: 'ai_tool_call', multiple: false, required: false },   // phase 2
     },
     template: { presentation: 'role status' },
   },
@@ -189,12 +225,68 @@ export const aiToolCallScheme: MachineModel = {
       ended_at:   { type: 'datetime' },
     },
     fks: {
-      message: { code: 'ai_message', multiple: false, required: true },
+      ai_message: { code: 'ai_message', multiple: false, required: true },
     },
     template: { presentation: 'tool_name status' },
   },
 }
 ```
+
+---
+
+### 2.5 `tag`
+
+App-scoped catalog. Linked from `ai_chat` (and any future collection) via `fks.tag` (multiple). Searchable, colored, iconified — conventional idae catalog collection, not chat-specific.
+
+```ts
+// src/lib/ai/schema/tag.ts — MachineModel partial
+export const tagScheme: MachineModel = {
+  tag: {
+    keyPath: '++id',
+    base: 'machine_base',
+    fields: {
+      id:          { type: 'id',   readonly: true },
+      code:        { type: 'text', required: true },
+      name:        { type: 'text', required: true },
+      color:       { type: 'text' },
+      icon:        { type: 'text' },
+      order:       { type: 'number' },
+      description: { type: 'text' },
+    },
+    fks: {},
+    template: { presentation: 'name' },
+  },
+}
+```
+
+---
+
+### 2.6 `ai_user_prompt`
+
+Custom instructions auto-injected into the companion's resolved system prompt (alongside chat-level and companion-level prompts — see §2.2 resolution order). User-scoped, toggle-active.
+
+```ts
+// src/lib/ai/schema/ai-user-prompt.ts — MachineModel partial
+export const aiUserPromptScheme: MachineModel = {
+  ai_user_prompt: {
+    keyPath: '++id',
+    base: 'machine_base',
+    fields: {
+      id:        { type: 'id',       readonly: true },
+      code:      { type: 'text',     required: true },
+      content:   { type: 'textarea', required: true },
+      is_active: { type: 'boolean' },
+      locale:    { type: 'text' },
+    },
+    fks: {
+      appuser: { code: 'appuser', multiple: false, required: true },
+    },
+    template: { presentation: 'content is_active' },
+  },
+}
+```
+
+Active prompts (`is_active: true`, matching `locale`) are concatenated and injected into the system message alongside the resolved companion/chat prompt — see §4 "Context window management".
 
 ---
 
@@ -209,7 +301,13 @@ machine.ai.abort(chatId)                 // cancel in-flight SSE stream
 machine.ai.models()                      // list available ollama models → string[]
 machine.ai.deleteChat(chatId)            // delete chat + all messages
 machine.ai.clearHistory(chatId)          // delete messages, keep chat record
+
+machine.ai.rate(messageId, score)         // score: -1 | 0 | 1 — sets rating + rated_at
+machine.ai.regenerate(messageId)          // re-send the preceding user message, replace this assistant message
+machine.ai.generateTitle(chatId)          // ask the companion to summarize the chat → updates ai_chat.title
 ```
+
+`rate`/`regenerate`/`generateTitle` are thin wrappers — no new collections. `regenerate` deletes/recreates the assistant message via the same streaming-write path as `send` (§4); `generateTitle` is a one-shot non-streaming completion that patches `ai_chat.title`.
 
 ### Type signatures
 
@@ -261,21 +359,40 @@ src/lib/ai/MachineAiController.ts
 
 const col = machine.collection('ai_message')   // QoolieCollection: create / update(id, data) / get / delete
 
-// 1. Insert placeholder — `chat` is the FK (target's code), not a `chat_id` column
+// 1. Insert placeholder — `ai_chat` is the FK (target's code), not a `chat_id` column
 const created = await col.create({
   code: generateCode(),
-  chat: chatCode,        // ai_chat.code (FK code convention)
+  ai_chat: chatCode,     // FK to ai_chat by code (FK code convention; key = target collection name)
   role: 'assistant',
   content: '',
   status: 'streaming'
 })
 const msgId = created.id
 
-// 2. Stream SSE chunks
+// 2. Stream chunks via idae-api client (parseStream "sse" under the hood, AbortSignal-aware)
 let accumulated = ''
-for await (const chunk of streamSSE(url, body, signal)) {
-  accumulated += chunk
+let pending = ''
+const FLUSH_MS = 120   // throttle IDB writes — don't update() per token
+
+const flush = async () => {
+  if (!pending) return
+  accumulated += pending
+  pending = ''
   await col.update(msgId, { content: accumulated })
+}
+const timer = setInterval(flush, FLUSH_MS)
+try {
+  for await (const { chunk } of apiClient.stream<{ chunk: string }>({
+    slug: `ai/chat/${chatId}/send`,
+    body,
+    format: 'sse',
+    signal
+  })) {
+    pending += chunk
+  }
+} finally {
+  clearInterval(timer)
+  await flush()
 }
 
 // 3. Finalize
@@ -355,31 +472,33 @@ data: {"done": true, "tokens": 142}
 
 ### `AiRouter.ts` sketch
 
+Uses `SseStream` from `@medyll/idae-api/server` — sets headers, frames `data: <json>\n\n`, sentinel handling. No manual `res.write` framing.
+
 ```ts
 import { Router } from 'express'
+import { SseStream } from '@medyll/idae-api/server'
 import { OllamaService } from './OllamaService.js'
 
 const router = Router()
 const ollama = new OllamaService(process.env.OLLAMA_ENDPOINT ?? 'http://127.0.0.1:11434')
 
 router.post('/chat/:chatId/send', async (req, res) => {
-  res.setHeader('Content-Type', 'text/event-stream')
-  res.setHeader('Cache-Control', 'no-cache')
-  res.setHeader('Connection', 'keep-alive')
+  const sse = new SseStream(res)
+
+  // Express request has no native AbortSignal — bridge socket close to AbortController.
+  const controller = new AbortController()
+  req.on('close', () => controller.abort())
 
   const { messages, model, temperature } = req.body
 
   try {
-    for await (const chunk of ollama.streamChat({ model, messages, options: { temperature } }, req.signal)) {
-      res.write(`data: ${JSON.stringify({ chunk })}\n\n`)
+    for await (const chunk of ollama.streamChat({ model, messages, options: { temperature } }, controller.signal)) {
+      sse.send({ chunk })
     }
-    res.write(`data: ${JSON.stringify({ done: true })}\n\n`)
+    sse.done()
   } catch (err: any) {
-    if (err.name !== 'AbortError') {
-      res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`)
-    }
-  } finally {
-    res.end()
+    if (err.name !== 'AbortError') sse.error(err.message)
+    else sse.done()
   }
 })
 
@@ -393,7 +512,16 @@ export { router as AiRouter }
 
 ### `OllamaService.ts`
 
+Ollama's native stream is **ndjson** (one JSON object per line) — `parseStream(body, 'ndjson', signal)` from `@medyll/idae-api/client` decodes it directly (handles partial/split frames). No hand-rolled `reader.read()` loop.
+
 ```ts
+import { parseStream } from '@medyll/idae-api/client'
+
+interface OllamaChatChunk {
+  message?: { content?: string }
+  done?: boolean
+}
+
 export class OllamaService {
   constructor(private endpoint: string = 'http://127.0.0.1:11434') {}
 
@@ -410,17 +538,8 @@ export class OllamaService {
     if (!res.ok) throw new Error(`Ollama error: ${res.status}`)
     if (!res.body) throw new Error('No response body')
 
-    const reader = res.body.getReader()
-    const decoder = new TextDecoder()
-
-    while (true) {
-      const { done, value } = await reader.read()
-      if (done) break
-      const lines = decoder.decode(value).split('\n').filter(Boolean)
-      for (const line of lines) {
-        const parsed = JSON.parse(line)
-        if (parsed.message?.content) yield parsed.message.content
-      }
+    for await (const parsed of parseStream<OllamaChatChunk>(res.body, 'ndjson', signal)) {
+      if (parsed.message?.content) yield parsed.message.content
     }
   }
 
@@ -487,10 +606,10 @@ src/lib/ai/frame/
   const chatStore = machine.store('ai_chat', { id: collectionId })
   const chat = $derived(chatStore.records[0])
 
-  // Reactive message list — filtered server-side by the `chat` FK (target code).
+  // Reactive message list — filtered by the `ai_chat` FK (target code).
   // `records` is a ResultSet → use .sortBy on the base-provided dateCreated.
-  const msgStore = $derived(machine.store('ai_message', { chat: chat?.code }))
-  const messages = $derived(msgStore.records.sortBy?.('dateCreated', 'asc') ?? msgStore.records)
+  const msgStore = $derived(machine.store('ai_message', { ai_chat: chat?.code }))
+  const messages = $derived(msgStore.records.sortBy('dateCreated', 'asc'))
 
   async function send(content: string) {
     await machine.ai.send(collectionId, content)
@@ -634,6 +753,8 @@ export { aiCompanionScheme }  from './ai/schema/ai-companion.js'
 export { aiChatScheme }       from './ai/schema/ai-chat.js'
 export { aiMessageScheme }    from './ai/schema/ai-message.js'
 export { aiToolCallScheme }   from './ai/schema/ai-tool-call.js'
+export { tagScheme }          from './ai/schema/tag.js'
+export { aiUserPromptScheme } from './ai/schema/ai-user-prompt.js'
 ```
 
 ---
@@ -646,8 +767,8 @@ User types + hits Enter
   ▼
 AiInput.svelte  →  machine.ai.send(chatId, content)
   │
-  ├─ machine.collection('ai_message').create({ chat, role:'user',      content, status:'done'      })
-  ├─ machine.collection('ai_message').create({ chat, role:'assistant', content:'', status:'streaming' })  → msgId
+  ├─ machine.collection('ai_message').create({ ai_chat, role:'user',      content, status:'done'      })
+  ├─ machine.collection('ai_message').create({ ai_chat, role:'assistant', content:'', status:'streaming' })  → msgId
   ├─ machine.collection('ai_chat').update(chatId, { status: 'streaming' })
   │
   ├─ POST /api/ai/chat/:chatId/send  [SSE open]
@@ -686,6 +807,13 @@ await machine.action(
   { code: 'fav', collection: 'ai_companion', collection_value: String(companionId), value: true },
   { upsertOn: ['collection', 'collection_value'] }
 )
+
+// Favorite a tag (e.g. pin to quick-filter bar)
+await machine.action(
+  'appuser_prefs',
+  { code: 'fav', collection: 'tag', collection_value: String(tagId), value: true },
+  { upsertOn: ['collection', 'collection_value'] }
+)
 ```
 
 ---
@@ -722,7 +850,9 @@ src/lib/ai/
 │   ├── ai-companion.ts
 │   ├── ai-chat.ts
 │   ├── ai-message.ts
-│   └── ai-tool-call.ts         (phase 2)
+│   ├── ai-tool-call.ts         (phase 2)
+│   ├── tag.ts
+│   └── ai-user-prompt.ts
 └── frame/
     ├── AiChat.svelte
     ├── AiChatList.svelte        (phase 2)
@@ -743,6 +873,7 @@ server/src/ai/
 | `src/lib/index.ts` | Export AI types + schemas |
 | `server/src/MachineServer.ts` | Mount `AiRouter` at `/api/ai` |
 | `server/src/migrate/mapping/` | Add AI collections to org schemas |
+| `package.json` / `server/package.json` | Add `@medyll/idae-api` dep (`SseStream` server-side, `parseStream`/`stream()` client-side) |
 
 ---
 
@@ -750,23 +881,27 @@ server/src/ai/
 
 ### Phase 1 — Core (this spec)
 
-- [ ] Schema: `ai_companion`, `ai_chat`, `ai_message`
+- [ ] Schema: `ai_companion`, `ai_chat`, `ai_message`, `tag`, `ai_user_prompt` (all landed in `idae-model-core.ts`)
 - [ ] `OllamaService.ts` server-side SSE
 - [ ] `AiRouter.ts` — `/send` + `/models` endpoints
-- [ ] `MachineAiController.ts` + `machine.ai` getter
+- [ ] `MachineAiController.ts` + `machine.ai` getter (`newChat`, `send`, `abort`, `models`, `deleteChat`, `clearHistory`, `rate`, `regenerate`, `generateTitle`)
 - [ ] `AiChat.svelte` + `AiMessage.svelte` + `AiInput.svelte`
 - [ ] componentRegistry entries `'ai.chat'`
-- [ ] Demo seed: 2 companions (default + coder)
+- [ ] Multimodal: `images`/`urls` rendering in `AiMessage.svelte`, attachment picker in `AiInput.svelte`
+- [ ] Tag picker/filter on chat list (uses `tag` collection + `ai_chat.fks.tag`)
+- [ ] User prompts management UI (CRUD on `ai_user_prompt`, injected per §2.6 resolution)
+- [ ] Demo seed: 2 companion templates (default + coder), a handful of default tags
 - [ ] Export surface update in `src/lib/index.ts`
 
 ### Phase 2 — Extensions
 
 - [ ] `ai_tool_call` schema + execution log UI
-- [ ] Skills engine: slash commands in `AiInput` (`/translate`, `/summarize`)
-- [ ] Hooks: pre-send / post-receive pipeline
+- [ ] Skills engine: slash commands in `AiInput` (`/translate`, `/summarize`) — backed by `ai_companion.skills` bindings
+- [ ] Hooks: pre-send / post-receive pipeline — backed by `ai_companion.hooks` bindings, logged to `ai_message.hook_log`
 - [ ] `AiChatList.svelte` — chat history browser (frame `'ai.chat.list'`)
 - [ ] Context window management (token budget, auto-prune)
 - [ ] `machine.ai.models()` companion selector UI
+- [ ] Audio/affective pipeline (STT/TTS, sentiment detection) — activates dormant fields: `ai_companion.{voice_id,voice_tone,mood}`, `ai_message.{audio_file_path,sentiment,voice_style}`
 
 ### Phase 3 — wollama migration (future)
 
