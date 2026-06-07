@@ -83,11 +83,9 @@ Iterates a record's fields and renders DataField for each.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
 
-	const whereFieldView = { 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } };
+	const whereFieldView = $derived({ 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } });
 
-	const qy = $derived(machine.collection('appscheme_view').where(whereFieldView))
-
-	$inspect({ whereFieldView, qy });
+	const qy = $derived(machine.collection('appscheme_view').where(whereFieldView));
 </script>
 
  

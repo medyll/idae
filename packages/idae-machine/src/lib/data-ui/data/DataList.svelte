@@ -325,7 +325,7 @@ Consumers can override via the item snippet.
 		{#if currentMode === 'table'}
 			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />
 		{:else if itemSnippet}
-			{@render itemSnippet({collection,collectionId:record?.id, record, idx, fieldValues })}
+			{@render itemSnippet({collection,collectionId:record?.id as number, record, idx, fieldValues })}
 		{:else}
 			{@const rec = record as Record<string, unknown>}
 			{@const label = renderPresentation(rec)}

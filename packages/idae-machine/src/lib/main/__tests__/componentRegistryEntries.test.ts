@@ -52,17 +52,20 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('login')).toBe(true);
 	});
 
-	it('has exactly 8 entries', () => {
+	it('has exactly 11 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(8);
+		expect(keys).toHaveLength(11);
 		expect(keys.sort()).toEqual([
+			'columner',
 			'explorer',
 			'explorer.content',
 			'fiche',
 			'fiche.update',
 			'form',
+			'list',
 			'login',
 			'rbac.matrix',
+			'record',
 			'synthesis',
 		]);
 	});
