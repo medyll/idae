@@ -22,7 +22,13 @@ export interface FkResolve {
 export interface CollectionMap {
 	/** New collection name in the canonical model. */
 	target: string;
-	/** FR→EN (or any) field renames. Unlisted fields pass through unchanged. */
+	/** Legacy source database suffix (e.g. "sitebase_base"). Full name = `${org}_${sourceDb}`. Defaults to "sitebase_base". */
+	sourceDb?: string;
+	/** Legacy PK field name. Renamed to `id` in the canonical record. Defaults to 'id'. */
+	pkField?: string;
+	/** Legacy semantic-key field name. Renamed to `code` in the canonical record. Defaults to 'code'. */
+	codeField?: string;
+	/** FR→EN (or any) field renames. Do NOT include pkField/codeField here — handled automatically. */
 	fields?: FieldMap;
 	/** Optional explicit type overrides, applied after the model's declared types. */
 	typeCoerce?: Record<string, string>;
@@ -30,6 +36,11 @@ export interface CollectionMap {
 	fks?: Record<string, FkResolve>;
 	/** Fields to drop entirely (legacy noise: PHPSESSID, md5, private_key…). */
 	drop?: string[];
+	/**
+	 * Auto-drop creation/modification tracking fields:
+	 * date|heure + Creation|Modification (case-insensitive prefix), /^time[A-Z]/ timestamps, updated_fields.
+	 */
+	dropNoise?: boolean;
 }
 
 /** Full mapping for one org: legacy collection name → mapping. */

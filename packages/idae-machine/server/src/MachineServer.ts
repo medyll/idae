@@ -208,8 +208,8 @@ class MachineServerClass {
 			// No origin = same-origin request, curl, server-to-server — allow.
 			if (!origin) return cb(null, true);
 			if (allowedOrigins.includes(origin)) return cb(null, true);
-			// Dev: localhost + LAN (192.168/172.16/10.x) + Tailscale (100.x) ranges.
-			if (config.nodeEnv !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1|(?:192\.168|172\.(?:1[6-9]|2\d|3[01])|10|100)\.\d{1,3}\.\d{1,3}):\d+$/.test(origin)) return cb(null, true);
+			// Dev: localhost + LAN (192.168/172.16/10.x.x) + Tailscale (100.x.x) ranges.
+			if (config.nodeEnv !== 'production' && /^https?:\/\/(localhost|127\.0\.0\.1|(?:192\.168|172\.(?:1[6-9]|2\d|3[01])|10\.\d{1,3}|100\.\d{1,3})\.\d{1,3}\.\d{1,3}):\d+$/.test(origin)) return cb(null, true);
 			cb(new Error(`CORS: origin not allowed: ${origin}`));
 		};
 
