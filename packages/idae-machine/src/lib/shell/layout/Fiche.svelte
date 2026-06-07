@@ -18,10 +18,10 @@
     </fiche-header>
     <fiche-zone>
         <sidebar-info></sidebar-info>
-        <zone-main>
+        <zone-main-half>
             <DataRecord {collection} {collectionId} />
             <DataRecord {collection} {collectionId} view="fk" />
-        </zone-main>
+        </zone-main-half>
     </fiche-zone>
 </fiche-component>
 
@@ -55,7 +55,7 @@
             flex: 0 0 auto;
         }
 
-        :global(zone-main) {
+        :global(zone-main-half) {
             display: flex;
             flex-direction: row;
             flex: 1;
