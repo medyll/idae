@@ -11,6 +11,7 @@ declare global {
       dbName?: string;
       idaeDb?: IdaeDb;
       connectedCollection: IdaeDbAdapter;
+      user?: { roles?: string[]; role?: string; [key: string]: unknown };
     }
   }
 }

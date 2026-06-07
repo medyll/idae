@@ -1,5 +1,6 @@
 // packages\idae-api\src\lib\client\IdaeApiClientRequest.ts
 import { IdaeApiClientConfigCore } from "./IdaeApiClientConfig.js";
+import { parseStream, type StreamFormat } from "./IdaeApiStreamParser.js";
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 type RouteNamespace = `methods/${"dbs" | "collections"}` | undefined;
 
@@ -16,6 +17,11 @@ interface RequestOptions<T> extends UrlParams {
   method?: HttpMethod;
   body?: T;
   headers?: RequestInit["headers"];
+}
+
+interface StreamRequestOptions<T> extends RequestOptions<T> {
+  signal?: AbortSignal;
+  format?: StreamFormat;
 }
 
 class IdaeApiClientRequest {
@@ -119,6 +125,68 @@ class IdaeApiClientRequest {
     }
   }
 
+  /**
+   * Performs an HTTP request and yields parsed chunks as they arrive (SSE/ndjson/text).
+   * Mirrors `doRequest`'s URL building and auth, but reads `response.body` incrementally
+   * instead of buffering the full response — required for streaming endpoints (e.g. AI chat).
+   *
+   * @template TChunk - The parsed shape of each streamed chunk
+   * @template TBody - The request body data type
+   */
+  async *doStream<TChunk = any, TBody = any>({
+    baseUrl = this.clientConfig.baseUrl ||
+      `${this.clientConfig.method}:${this.clientConfig.separator}${this.clientConfig.host}:${this.clientConfig.port}`,
+    method = "POST",
+    body,
+    headers = {
+      "Content-Type": "application/json",
+    },
+    dbName = this.clientConfig.defaultDb,
+    collectionName,
+    slug,
+    params,
+    routeNamespace,
+    signal,
+    format = "sse",
+  }: StreamRequestOptions<TBody>): AsyncGenerator<TChunk> {
+    const url = this.buildUrl({
+      routeNamespace,
+      dbName,
+      collectionName,
+      slug,
+      params,
+    });
+
+    const authHeader = this.clientConfig.token
+      ? { Authorization: `Bearer ${this.clientConfig.token}` }
+      : {};
+
+    const response = await fetch(`${baseUrl}${url}`, {
+      method,
+      headers: Object.assign(
+        { Accept: "text/event-stream" },
+        headers,
+        authHeader,
+      ) as HeadersInit,
+      body: body ? JSON.stringify(body) : undefined,
+      signal,
+    });
+
+    if (!response) {
+      throw new Error("No response received from fetch");
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    if (!response.body) {
+      throw new Error("No response body for stream");
+    }
+
+    yield* parseStream<TChunk>(response.body, format, signal);
+  }
+
   private buildUrl({
     dbName,
     collectionName,
@@ -147,4 +215,5 @@ export {
   type RouteNamespace,
   type UrlParams,
   type RequestOptions,
+  type StreamRequestOptions,
 };

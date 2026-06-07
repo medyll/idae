@@ -72,15 +72,15 @@ export function createValidationMiddleware(validationSchema: ValidationSchema) {
       next();
     } catch (error) {
       if (error instanceof z.ZodError) {
-        logger.warn({ 
-          method: req.method, 
-          url: req.url, 
-          errors: error.errors 
+        logger.warn({
+          method: req.method,
+          url: req.url,
+          errors: error.issues
         }, "Validation failed");
 
         res.status(400).json({
           error: "Validation failed",
-          details: error.errors.map((e) => ({
+          details: error.issues.map((e) => ({
             path: e.path.join("."),
             message: e.message,
           })),

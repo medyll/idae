@@ -45,7 +45,7 @@ export const routes: RouteDefinition[] = [
     path: "/:collectionName",
     validation: {
       paramsSchema: z.object({ collectionName: z.string().min(1) }),
-      querySchema: z.record(z.any()).optional(),
+      querySchema: z.record(z.string(), z.any()).optional(),
     },
     handler: async (service, params, body, query) => service.find({ query }),
   },
@@ -62,7 +62,7 @@ export const routes: RouteDefinition[] = [
     path: "/:collectionName",
     validation: {
       paramsSchema: z.object({ collectionName: z.string().min(1) }),
-      bodySchema: z.record(z.any()),
+      bodySchema: z.record(z.string(), z.any()),
     },
     handler: async (service, params, body) => service.create(body),
   },
@@ -71,7 +71,7 @@ export const routes: RouteDefinition[] = [
     path: "/:collectionName/:id",
     validation: {
       paramsSchema: z.object({ collectionName: z.string().min(1), id: z.string().min(1) }),
-      bodySchema: z.record(z.any()),
+      bodySchema: z.record(z.string(), z.any()),
     },
     handler: async (service, params, body) =>
       service.update(params.id as string, body),
@@ -102,7 +102,7 @@ export const routes: RouteDefinition[] = [
         command: z.string().min(1),
         parameters: z.string().optional(),
       }),
-      bodySchema: z.record(z.any()).optional(),
+      bodySchema: z.record(z.string(), z.any()).optional(),
     },
     handler: async (service, params, body) => {
       const command = params.command as string;

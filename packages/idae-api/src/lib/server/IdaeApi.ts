@@ -231,7 +231,7 @@ class IdaeApi {
         standardHeaders: "draft-7",
         legacyHeaders: false,
       };
-      this.#app.use(rateLimit(limiterOptions));
+      this.#app.use(rateLimit(limiterOptions) as any);
     }
 
     this.#app.use(express.json({ limit: jsonLimit }));

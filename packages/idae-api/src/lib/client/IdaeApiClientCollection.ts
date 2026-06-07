@@ -92,7 +92,7 @@ class IdaeApiClientCollection implements IdaeDbApiMethods<object> {
     throw new Error("createIndex is not supported via HTTP client");
   }
 
-  async findOne<T>(params?: any): Promise<T | null> {
+  async findOne<T extends object>(params?: any): Promise<T | null> {
     const results = await this.find<T>(params);
     return results?.[0] ?? null;
   }
