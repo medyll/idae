@@ -550,6 +550,150 @@ export const idaeModelCore = {
 				presentation: 'collection label lastSeen',
 			},
 		},
+
+		// ── AI chat collections ─────────────────────────────────────────────
+		// See CHAT.md for the consumer contract. ai_companion is app-scoped
+		// (shared personas). ai_chat / ai_message are user-scoped. Once qoolie
+		// gains online-first mode (see API_DRIFT.md §7 + §8), ai_chat /
+		// ai_message become candidates — they don't need offline persistence.
+
+		ai_companion: {
+			base:   'machine_app',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:             { required: true,  readonly: true  },
+				code:           { required: true,  readonly: false },
+				name:           { required: true,  readonly: false },
+				description:    { required: false, readonly: false },
+				model:          { required: true,  readonly: false },
+				endpoint:       { required: false, readonly: false },
+				system_prompt:  { required: false, readonly: false },
+				temperature:    { required: false, readonly: false },
+				max_tokens:     { required: false, readonly: false },
+				context_size:   { required: false, readonly: false },
+				is_active:      { required: false, readonly: false },
+				avatar:         { required: false, readonly: false },
+				specialization: { required: false, readonly: false },
+				is_locked:      { required: false, readonly: false },
+				// Audio / affective — dormant until phase 2 pipeline lands
+				voice_id:       { required: false, readonly: false },
+				voice_tone:     { required: false, readonly: false },   // 'neutral' | 'fast' | 'slow' | 'deep' | 'high'
+				mood:           { required: false, readonly: false },   // 'neutral' | 'happy' | 'sad' | 'angry' | 'sarcastic' | 'professional' | 'friendly'
+				// Extensibility bindings — dormant until phase 2 skills/hooks engine lands
+				hooks:          { required: false, readonly: false },   // string[] of hook codes
+				skills:         { required: false, readonly: false },   // string[] of skill codes
+			},
+			fks: {
+				// absent = global template; set = user-owned instance/clone with overrides
+				appuser: { code: 'appuser', order: 0, multiple: false, required: false },
+			},
+			template: {
+				presentation: 'name model code',
+			},
+		},
+
+		ai_chat: {
+			base:   'machine_user',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:            { required: true,  readonly: true  },
+				code:          { required: true,  readonly: false },
+				title:         { required: false, readonly: false },
+				description:   { required: false, readonly: false },
+				category:      { required: false, readonly: false },
+				status:        { required: false, readonly: false },   // 'idle' | 'streaming' | 'error'
+				model:         { required: false, readonly: false },
+				system_prompt: { required: false, readonly: false },   // chat-level override of companion.system_prompt
+				context:       { required: false, readonly: false },
+				token_count:   { required: false, readonly: false },
+			},
+			fks: {
+				appuser:      { code: 'appuser',      order: 0, multiple: false, required: true },
+				ai_companion: { code: 'ai_companion', order: 1, multiple: false, required: true },
+				tag:          { code: 'tag',          order: 2, multiple: true,  required: false },
+			},
+			template: {
+				presentation: 'title status code',
+			},
+		},
+
+		ai_message: {
+			base:   'machine_user',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:              { required: true,  readonly: true  },
+				code:            { required: true,  readonly: false },
+				role:            { required: true,  readonly: false },   // 'user' | 'assistant' | 'system' | 'tool'
+				content:         { required: false, readonly: false },
+				status:          { required: false, readonly: false },   // 'idle' | 'sent' | 'streaming' | 'done' | 'error'
+				tokens:          { required: false, readonly: false },
+				error:           { required: false, readonly: false },
+				model:           { required: false, readonly: false },   // model actually used for this message
+				rating:          { required: false, readonly: false },   // -1 | 0 | 1
+				rated_at:        { required: false, readonly: false },
+				// Multimodal
+				images:          { required: false, readonly: false },   // { name, type, dataUri, base64 }[]
+				urls:            { required: false, readonly: false },   // { url, image, title, order }[]
+				// Audio / affective — dormant until phase 2 pipeline lands
+				audio_file_path: { required: false, readonly: false },
+				sentiment:       { required: false, readonly: false },
+				voice_style:     { required: false, readonly: false },
+				// Extensibility — dormant until phase 2 skills/hooks/tools engine lands
+				skill_invoked:   { required: false, readonly: false },   // e.g. "/translate fr"
+				hook_log:        { required: false, readonly: false },   // { hook_id, event, duration_ms, mutated, error }[]
+			},
+			fks: {
+				appuser:      { code: 'appuser',      order: 0, multiple: false, required: true },
+				ai_chat:      { code: 'ai_chat',      order: 1, multiple: false, required: true },
+				ai_tool_call: { code: 'ai_tool_call', order: 2, multiple: false, required: false },   // phase 2
+			},
+			template: {
+				presentation: 'role status',
+			},
+		},
+
+		// ── Tags ─────────────────────────────────────────────────────────────
+		// App-scoped catalog — searchable, colored, iconified. Linked from
+		// ai_chat (and any future collection) via fks.tag (multiple).
+
+		tag: {
+			base:   'machine_app',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:          { required: true,  readonly: true  },
+				code:        { required: true,  readonly: false },
+				name:        { required: true,  readonly: false },
+				color:       { required: false, readonly: false },
+				icon:        { required: false, readonly: false },
+				order:       { required: false, readonly: false },
+				description: { required: false, readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name',
+			},
+		},
+
+		// ── User prompts ─────────────────────────────────────────────────────
+		// Custom instructions auto-injected into the companion's system prompt.
+
+		ai_user_prompt: {
+			base:   'machine_user',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:        { required: true,  readonly: true  },
+				code:      { required: true,  readonly: false },
+				content:   { required: true,  readonly: false },
+				is_active: { required: false, readonly: false },
+				locale:    { required: false, readonly: false },
+			},
+			fks: {
+				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+			},
+			template: {
+				presentation: 'content is_active',
+			},
+		},
 	},
 } as const;
 
