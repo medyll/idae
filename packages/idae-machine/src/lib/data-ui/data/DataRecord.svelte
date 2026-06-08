@@ -89,7 +89,7 @@ Iterates a record's fields and renders DataField for each.
 			{@render groupChildren({ key, fieldNames: groupFields.map((f) => f.code) })}
 		{:else}
 			<fieldset class="field-group">
-				<legend>{key}</legend>
+				<legend  >- {key}</legend>
 				{#each groupFields as { code: fieldName } (fieldName)}
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">
@@ -133,16 +133,22 @@ Iterates a record's fields and renders DataField for each.
 
 <style>
 	.form {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+		align-items: flex-start;
 	}
 	.field {
 		display: contents;
 	}
 	fieldset.field-group {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: var(--space-1, 0.25rem) var(--space-2, 0.5rem);
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
+		align-items: flex-start;
+		border: none;
+	}
+	legend {
+		padding: var(--space-2, 0.5rem)
 	}
 </style>

@@ -249,25 +249,37 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
 <style>
     .field-line {
-        grid-column: span 2;
-        display: grid;
-        grid: inherit;
-        grid-template-columns: subgrid;
-        grid-gap: inherit;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: var(--space-1, 0.25rem);
+        flex: 0 0 auto; /* sized by content: label + input */
     }
-    /* inputSize presets — control .field-input max-width or grid span */
-    .field-line.input-size-xs   { --field-input-width: 5rem; }
-    .field-line.input-size-sm   { --field-input-width: 10rem; }
-    .field-line.input-size-md   { --field-input-width: 100%; }
-    .field-line.input-size-lg   { --field-input-width: 20rem; }
-    .field-line.input-size-full { grid-column: 1 / -1; }
+    .field-line.input-size-full {
+        flex: 1 1 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-    .field-input { width: var(--field-input-width, 100%); }
+    .field-label {
+        flex: 0 0 var(--field-label-w, 90px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .field-line.input-size-full .field-label { flex: 0 0 auto; }
+
+    /* inputSize presets — constrain the INPUT, not the field wrapper */
+    .field-input { min-width: 0; }
+    .field-line.input-size-xs .field-input { width: 5rem; }
+    .field-line.input-size-sm .field-input { width: 10rem; }
+    .field-line.input-size-md .field-input { width: 18rem; }
+    .field-line.input-size-lg .field-input { width: 28rem; }
+    .field-line.input-size-full .field-input { width: 100%; }
+    /* default (no preset): input fills available */
+    .field-input { flex: 1 1 auto; }
     .field-input :global(input),
     .field-input :global(select),
     .field-input :global(textarea) { width: 100%; }
-    .field-label {
-        font-weight: bold;
-    }
     .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
 </style>
