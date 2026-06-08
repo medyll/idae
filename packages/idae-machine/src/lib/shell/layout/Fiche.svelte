@@ -16,7 +16,7 @@
 				>synthese</button
 			>
 			<button onclick={() => machine.framer.loadInDialog('fiche.update', collection, collectionId)}
-				>synthese</button
+				>update</button
 			>
 		</toolbar-component>
 	</fiche-header>
