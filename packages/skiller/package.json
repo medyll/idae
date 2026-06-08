@@ -3,22 +3,25 @@
   "version": "2.2.10",
   "type": "module",
   "description": "Skill installer and evaluator for @medyll packages",
-  "main": "./src/lib/index.mjs",
+  "main": "./dist/lib/index.mjs",
+  "types": "./dist/lib/index.d.mts",
   "exports": {
-    ".": "./src/lib/index.mjs"
+    ".": {
+      "types": "./dist/lib/index.d.mts",
+      "import": "./dist/lib/index.mjs"
+    }
   },
   "bin": {
-    "skiller": "./src/lib/cli.js",
-    "install-skill": "./src/lib/cli.js",
-    "add-skill": "./src/lib/client-cli.js",
-    "create-skill": "./src/lib/client-cli.js",
-    "test-skill": "./src/lib/test-cli.js",
-    "report": "./src/lib/test-cli.js",
-    "optimize": "./src/lib/test-cli.js"
+    "skiller": "./dist/lib/cli.js",
+    "install-skill": "./dist/lib/cli.js",
+    "add-skill": "./dist/lib/client-cli.js",
+    "create-skill": "./dist/lib/client-cli.js",
+    "test-skill": "./dist/lib/test-cli.js",
+    "report": "./dist/lib/test-cli.js",
+    "optimize": "./dist/lib/test-cli.js"
   },
   "files": [
-    "src",
-    "lib"
+    "dist"
   ],
   "dependencies": {
     "commander": "^14.0.3"
@@ -39,6 +42,9 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
+    "build": "node scripts/build.js",
+    "package": "node scripts/build.js",
+    "prepublishOnly": "node scripts/build.js",
     "prepackage": "node scripts/package-pre.js"
   }
 }

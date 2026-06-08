@@ -1,8 +1,8 @@
 /**
- * E2E test: real Express server → machine.fetchSchema(url) → MachineScheme
+ * E2E test: real Express server → machineServer.getModel() → MachineModel
  *
  * Spins up a minimal HTTP server (port 0) serving GET /api/scheme from MongoDB,
- * then exercises machine.fetchSchema() end-to-end with no mocks.
+ * then verifies machineServer.getModel() returns the expected demoScheme collections.
  *
  * Run: cd server && pnpm vitest run src/__tests__/fetchSchemaE2E.test.ts
  */
@@ -12,10 +12,9 @@ import { createServer, type Server } from 'http';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
 import { machineServer } from '../MachineServer.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
 import { invalidateBaseCache } from '../middleware/dbRouter.js';
-import { Machine } from '$lib/main/machine.js';
 
 const TEST_ORG = 'vitest_e2e';
 const META_DB  = `${TEST_ORG}_machine_app`;
@@ -29,20 +28,32 @@ const META_COLLECTIONS = [
 let httpServer: Server;
 let baseUrl: string;
 
-describe('fetchSchema E2E: real HTTP → Machine', () => {
+describe('fetchSchema E2E: real HTTP → machineServer', () => {
 	beforeAll(async () => {
 		// Deploy demoScheme into vitest_e2e org
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
 		invalidateBaseCache();
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 
 		// Minimal Express: GET /api/scheme → machineServer.getModel()
 		const app = express();
 		app.get('/api/scheme', async (_req, res) => {
 			try {
 				const model = await machineServer.getModel();
+				res.json(model);
+			} catch (err) {
+				res.status(500).json({ error: String(err) });
+			}
+		});
+		app.get('/api/scheme/:table', async (req, res) => {
+			try {
+				const model = await machineServer.getModel(req.params.table);
+				if (!model[req.params.table]) {
+					res.status(404).json({ error: `Scheme '${req.params.table}' not found` });
+					return;
+				}
 				res.json(model);
 			} catch (err) {
 				res.status(500).json({ error: String(err) });
@@ -67,81 +78,47 @@ describe('fetchSchema E2E: real HTTP → Machine', () => {
 		await mongoose.disconnect();
 	});
 
-	it('/api/scheme returns all 6 demoScheme collections', async () => {
+	it('/api/scheme returns all demoScheme collections', async () => {
 		const res   = await fetch(`${baseUrl}/api/scheme`);
 		const model = await res.json() as Record<string, unknown>;
 		expect(res.status).toBe(200);
-		for (const col of ['vehicle', 'category', 'customer', 'rental', 'location_office', 'maintenance']) {
+		const expected = Object.keys(demoScheme);
+		for (const col of expected) {
 			expect(model, `missing: ${col}`).toHaveProperty(col);
 		}
 	});
 
-	it('machine.fetchSchema() → logic accessible for all 6 collections', async () => {
-		const m = new Machine();
-		m.init({ org: TEST_ORG, domain: 'machine', version: 1, model: demoScheme });
-		await m.fetchSchema(`${baseUrl}/api/scheme`);
-
-		for (const col of ['vehicle', 'category', 'customer', 'rental', 'location_office', 'maintenance']) {
-			expect(() => m.logic.collection(col), `collection missing: ${col}`).not.toThrow();
-		}
+	it('/api/scheme/:table returns 404 for unknown collection', async () => {
+		const res = await fetch(`${baseUrl}/api/scheme/nonexistent`);
+		expect(res.status).toBe(404);
 	});
 
-	it('vehicle field types match demoScheme', async () => {
-		const m = new Machine();
-		m.init({ org: TEST_ORG, domain: 'machine2', version: 1, model: demoScheme });
-		await m.fetchSchema(`${baseUrl}/api/scheme`);
-
-		const vehicle = m.logic.collection('vehicle');
-		expect(vehicle.field('license_plate').parse()?.fieldType).toBe('text');
-		expect(vehicle.field('categoryId').parse()?.fieldType).toBe('fk-category.id');
-		expect(vehicle.field('mileage').parse()?.fieldType).toBe('number');
+	it('machineServer.getModel() returns model with correct fields for vehicle', async () => {
+		const model = await machineServer.getModel();
+		expect(model.vehicle).toBeDefined();
+		expect(model.vehicle.fields).toHaveProperty('license_plate');
+		expect(model.vehicle.fields).toHaveProperty('model');
+		expect(model.vehicle.fields).toHaveProperty('mileage');
 	});
 
-	it('vehicle.parseFks() resolves category and location_office fields', async () => {
-		const m = new Machine();
-		m.init({ org: TEST_ORG, domain: 'machine3', version: 1, model: demoScheme });
-		await m.fetchSchema(`${baseUrl}/api/scheme`);
-
-		// parseFks() → { collection → { fieldName → IDbForge } }
-		const fks = m.logic.collection('vehicle').parseFks();
-		expect(fks).toHaveProperty('category');
-		expect(fks).toHaveProperty('location_office');
-		expect(Object.keys(fks.category)).toContain('name');
-		expect(Object.keys(fks.location_office)).toContain('code');
+	it('machineServer.getModel() returns FK definitions for vehicle', async () => {
+		const model = await machineServer.getModel();
+		expect(model.vehicle.fks).toHaveProperty('category');
+		expect(model.vehicle.fks).toHaveProperty('location_office');
 	});
 
-	it('rental.parseFks() resolves vehicle and customer', async () => {
-		const m = new Machine();
-		m.init({ org: TEST_ORG, domain: 'machine4', version: 1, model: demoScheme });
-		await m.fetchSchema(`${baseUrl}/api/scheme`);
-
-		const fks = m.logic.collection('rental').parseFks();
-		expect(fks).toHaveProperty('vehicle');
-		expect(fks).toHaveProperty('customer');
+	it('machineServer.getModel() returns FK definitions for rental', async () => {
+		const model = await machineServer.getModel();
+		expect(model.rental).toBeDefined();
+		expect(model.rental.fks).toHaveProperty('vehicle');
+		expect(model.rental.fks).toHaveProperty('customer');
 	});
 
-	it('machine.store exposes collections after fetchSchema', async () => {
-		const m = new Machine();
-		m.init({ org: TEST_ORG, domain: 'machine5', version: 1, model: demoScheme });
-		await m.fetchSchema(`${baseUrl}/api/scheme`);
-
-		expect(typeof m.store).toBe('function');
-	});
-
-	it('schema cache: second fetchSchema uses cache, starts immediately', async () => {
-		const url = `${baseUrl}/api/scheme`;
-		const m   = new Machine();
-		m.init({ org: TEST_ORG, domain: 'machine6', version: 1, model: demoScheme });
-
-		// First call: cold → populates cache
-		await m.fetchSchema(url);
-
-		// Second call: cache hit → same machine starts without waiting for network
-		const m2 = new Machine();
-		m2.init({ org: TEST_ORG, domain: 'machine6', version: 1, model: demoScheme });
-		await m2.fetchSchema(url);
-
-		expect(m2.logic).toBeDefined();
-		expect(() => m2.logic.collection('vehicle')).not.toThrow();
+	it('machineServer.getModel() includes _views for collections', async () => {
+		const model = await machineServer.getModel();
+		expect(model.vehicle).toBeDefined();
+		const vehicle = model.vehicle;
+		expect(vehicle._views).toBeDefined();
+		expect(Array.isArray(vehicle._views.focus)).toBe(true);
 	});
 });

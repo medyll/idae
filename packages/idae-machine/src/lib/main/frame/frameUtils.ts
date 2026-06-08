@@ -3,7 +3,9 @@
  * Format: "{prefix}_{8-char hex}" e.g. "vehicle_a1b2c3d4"
  */
 export function generateFrameId(prefix: string): string {
-	return `${prefix}_${crypto.randomUUID().slice(0, 8)}`;
+	const hex = crypto.randomUUID?.().replace(/-/g, '').slice(0, 8)
+		?? Math.floor(Math.random() * 0xffffffff).toString(16).padStart(8, '0');
+	return `${prefix}_${hex}`;
 }
 
 /**

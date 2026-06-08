@@ -3,6 +3,7 @@ import { idaeApi } from '@medyll/idae-api';
 import { grantService, type GrantConstraints } from '../services/GrantService.js';
 import { resolveUser } from '../services/AuthService.js';
 import { logAudit, extractAuditContext } from '../services/AuditService.js';
+import { config } from '../config.js';
 
 export type Permission = 'C' | 'R' | 'U' | 'D' | 'L' | 'X';
 
@@ -10,6 +11,8 @@ export interface UserContext {
 	userId:      string;
 	login:       string;
 	isAdmin?:    boolean;
+	/** Org the token was issued for — drives per-request DB routing. */
+	org?:        string;
 	/** Merged grant constraints for the current request — set by requireDroit. */
 	constraints?: GrantConstraints;
 }
@@ -39,9 +42,21 @@ declare global {
  */
 export function requireDroit(permission: Permission, table?: string) {
 	return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-		const user = await resolveUser(req);
 		const targetTable = table ?? req.params.table;
 		const ctx = extractAuditContext(req);
+
+		// Auth disabled (e.g. AUTH_DISABLED=true in .env) → synthetic admin, no token needed.
+		if (config.authDisabled) {
+			req.user = { userId: 'dev', login: 'dev', isAdmin: true };
+			return next();
+		}
+
+		// Schema metadata is read-only descriptors — public in all envs.
+		if ((permission === 'L' || permission === 'R') && targetTable?.startsWith('appscheme')) {
+			return next();
+		}
+
+		const user = await resolveUser(req);
 
 		if (!user) {
 			logAudit({

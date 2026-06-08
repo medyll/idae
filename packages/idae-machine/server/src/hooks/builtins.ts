@@ -3,8 +3,81 @@ import { logAudit } from '../services/AuditService.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDomainActions } from '../models/domainActions.js';
 import * as ImagePresetRegistry from '../services/ImagePresetRegistry.js';
+import { findReverseFkHolders, parseFkKey } from '../validation/FkValidator.js';
+import { foldFks, type FkResolver } from '../validation/FkFolder.js';
+import { getDbForCollection } from '../middleware/dbRouter.js';
+import { machineServer } from '../MachineServer.js';
+import { Schema } from 'mongoose';
+
+async function makeMongoResolver(): Promise<FkResolver> {
+	return async (targetCollection, scalarId) => {
+		const db  = await getDbForCollection(targetCollection);
+		const col = db.collection(targetCollection);
+		const numId = Number(scalarId);
+		const doc = !isNaN(numId)
+			? await col.findOne({ id: numId })
+			: await col.findOne({ code: String(scalarId) });
+		if (!doc) return null;
+		const { _id, ...rest } = doc as Record<string, unknown> & { _id: unknown };
+		return rest;
+	};
+}
+
+async function foldAndMutate(ctx: { collection: string; data?: unknown }): Promise<Array<{ fkName: string; message: string }>> {
+	if (!ctx.data || typeof ctx.data !== 'object') return [];
+	const model    = await machineServer.getModel(ctx.collection);
+	const resolver = await makeMongoResolver();
+	const { data: folded, errors } = await foldFks(
+		model, ctx.collection, ctx.data as Record<string, unknown>, resolver,
+	);
+	Object.assign(ctx.data as Record<string, unknown>, folded);
+	return errors;
+}
 
 export function registerBuiltinHooks(): void {
+	// FK FOLD + VALIDATE — priority 20, blocking, pre:create + pre:update
+	registerHook('pre:create', async (ctx) => {
+		const errors = await foldAndMutate(ctx);
+		if (errors.length) {
+			throw Object.assign(new Error('FK fold failed'), { fkErrors: errors, statusCode: 422 });
+		}
+	}, { priority: 20, blocking: true });
+
+	registerHook('pre:update', async (ctx) => {
+		const errors = await foldAndMutate(ctx);
+		if (errors.length) {
+			throw Object.assign(new Error('FK fold failed'), { fkErrors: errors, statusCode: 422 });
+		}
+	}, { priority: 20, blocking: true });
+
+	// FK CASCADE NULLIFY — non-blocking, post:delete
+	// When a record is deleted, unset all fks.{fkName}_{deletedId} entries in referencing collections.
+	registerHook('post:delete', async (ctx) => {
+		if (!ctx.recordId) return;
+		const holders = await findReverseFkHolders(ctx.collection);
+		if (!Object.keys(holders).length) return;
+
+		for (const [sourceCollection, fkNames] of Object.entries(holders)) {
+			try {
+				const db = await getDbForCollection(sourceCollection);
+				const schema = new Schema({}, { strict: false, collection: sourceCollection.toLowerCase() });
+				const modelName = `${db.name}__${sourceCollection}`;
+				const Model = db.models[modelName] ?? db.model(modelName, schema, sourceCollection.toLowerCase());
+
+				for (const fkName of fkNames) {
+					const fkKey = `fks.${fkName}_${ctx.recordId}`;
+					await (Model as any).updateMany(
+						{ [fkKey]: { $exists: true } },
+						{ $unset: { [fkKey]: '' } },
+					);
+				}
+			} catch (err) {
+				// Non-blocking — log and continue
+				console.warn(`FK cascade nullify failed for ${sourceCollection}:`, err);
+			}
+		}
+	}, { priority: 95 });
+
 	// IMAGE PRESET CACHE INVALIDATION — priority 10 (earliest)
 	registerHook('post:create', (ctx) => {
 		if (ctx.collection === 'appimage_preset') ImagePresetRegistry.invalidate();

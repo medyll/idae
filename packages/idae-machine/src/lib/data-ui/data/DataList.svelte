@@ -9,15 +9,15 @@ Consumers can override via the item snippet.
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
 @prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
-@prop {string[]} [showFields] - Fields to display (overrides view)
-@prop {'full'|'flat'|'fk'|'focus'|string} [view='full'] - Named view driving the field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
-@prop {(record: COL) => void} [onItemClick] - Click handler for items/rows
+@prop {string} [view='full'] - Named view driving the field list (resolved query-side via appscheme_view/appscheme_field)
+@prop {string} [linkTarget] - Zone / frameId to target for navigation (overrides zone from link)
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
 @prop {number} [page] - 1-based (only used when infiniteScroll=false)
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
-@snippet item({ record, idx, fieldValues }) - override record rendering (optional — DataRecord used by default)
+@snippet item({ record, idx, fieldValues }) - Custom record rendering (list + grid only).
+  Ignored in table mode — table delegates to DataRecord mode="row" (structural layout).
 @snippet groupHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
@@ -25,17 +25,19 @@ Consumers can override via the item snippet.
 <script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { Snippet } from 'svelte';
 	import { untrack } from 'svelte';
-	import type { SortBy, Where } from '$lib/types/index.js';
+	import type { SortBy, TplCollectionName, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems, groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
+	import { getResultSet, type ResultSet } from '@medyll/qoolie';
 	import { useMachinePrefs } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
-	import TableInline from '$lib/data-ui/data/TableInline.svelte';
 	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
 	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
 	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
 	import DataToolbar from '$lib/data-ui/controls/DataToolbar.svelte';
-	import { parseLink } from '$lib/main/frame/linkParser.js';
+	import { parseLink, type LinkString } from '$lib/main/frame/linkParser.js';
+	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 	interface PaginationInfo {
 		page: number;
@@ -50,18 +52,17 @@ Consumers can override via the item snippet.
 		sortBy,
 		groupBy,
 		mode: modeProp = 'list',
-		showFields,
 		view = 'full',
-		onItemClick,
 		pageSize = 0,
 		page = 1,
 		infiniteScroll = true,
 		listClass,
 		groupClass,
 		link,
+		linkTarget,
 		linkVars,
 		linkCollectionField,
-		showToolbar = true,
+		showToolbar = false,
 		usePrefs = true,
 		prefsScope: prefsScopeProp,
 		item: itemSnippet,
@@ -75,15 +76,14 @@ Consumers can override via the item snippet.
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		mode?: 'list' | 'table' | 'grid';
-		showFields?: string[];
-		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
-		onItemClick?: (record: COL) => void;
+		view?: string;
 		pageSize?: number;
 		page?: number;
 		infiniteScroll?: boolean;
 		listClass?: string;
 		groupClass?: string;
-		link?: string;
+		link?: LinkString;
+		linkTarget?: string;
 		linkVars?: Record<string, any>;
 		/** Field of the record to use as collection name for navigation (e.g. "code" for appscheme). */
 		linkCollectionField?: string;
@@ -93,7 +93,7 @@ Consumers can override via the item snippet.
 		usePrefs?: boolean;
 		/** Override appuser_prefs scope key. Defaults to `datalist.{collection}`. */
 		prefsScope?: string;
-		item?: Snippet<[{ record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
+		item?: Snippet<[{ collection: TplCollectionName, collectionId: number, record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
@@ -134,12 +134,12 @@ Consumers can override via the item snippet.
 		return { ...(where as Record<string, unknown>), ...userFindWhere };
 	});
 
-	const store = $derived(
+	const store: { records: COL[] } = $derived(
 		collection
 			? effectiveWhere
-				? machine.store(collection, effectiveWhere as Where<COL>)
-				: machine.store(collection)
-			: { items: [] as COL[] }
+				? machine.store<COL>(collection, effectiveWhere as Where<COL>)
+				: machine.store<COL>(collection)
+			: { records: [] as unknown as COL[] }
 	);
 	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 	const indexField = 'id';
@@ -155,11 +155,12 @@ Consumers can override via the item snippet.
 			: undefined
 	);
 
-	const fullFields = $derived.by(() => {
-		if (showFields?.length) return showFields;
-		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? []).map((f: { name: string }) => f.name);
-		return viewNames.length ? viewNames : presentationFields;
-	});
+	const viewFields = useViewFields(() => collection, () => view ?? 'flat');
+	const tableColumns = $derived(
+		currentMode === 'table'
+			? viewFields.fieldNames.map((name) => ({ name, label: name }))
+			: ([] as { name: string; label: string }[])
+	);
 
 
 	const parsedLink = $derived(link ? parseLink(link) : null);
@@ -184,47 +185,50 @@ Consumers can override via the item snippet.
 		let navId: string | undefined;
 
 		if (linkCollectionField) {
-			// record IS a collection reference — e.g. appscheme with linkCollectionField="code"
 			navCollection = String(record[linkCollectionField] ?? '');
 			navId = undefined;
 		} else {
-			// record IS a data record — navigate to its detail
 			navCollection = collection;
 			navId = String(record[indexField] ?? '');
 		}
 
+		// linkTarget = zone override — routes to a registered frame (e.g. a Columner dock).
+		if (linkTarget) {
+			void machine.framer.load(linkTarget, module as RegistryKey, navCollection, navId, linkVars);
+			return;
+		}
+
 		if (action === 'loadFrame') {
-			machine.framer.loadFrame(module, navCollection, navId, linkVars, zone);
+			machine.framer.loadFrame(module as RegistryKey, navCollection, navId, linkVars, zone);
 		} else if (action === 'loadIn') {
-			machine.framer.loadIn(zone, module, navCollection, navId, linkVars);
+			machine.framer.loadIn(zone, module as RegistryKey, navCollection, navId, linkVars);
 		} else if (action === 'loadInDialog') {
-			void machine.framer.loadInDialog(module, navCollection, navId, linkVars);
+			void machine.framer.loadInDialog(module as RegistryKey, navCollection, navId, linkVars);
 		}
 	}
 
 	function handleItemClick(record: COL): void {
-		onItemClick?.(record);
-		if (parsedLink) {
-			navigate(record as Record<string, unknown>);
-		}
+		if (parsedLink) navigate(record as Record<string, unknown>);
 	}
 
 	function renderPresentation(record: Record<string, unknown>): string {
 		return collLogic?.collectionValues.presentation(record) ?? '';
 	}
 
-	const rawItems = $derived(store?.items ? (store.items as COL[]) : ([] as COL[]));
+	const rawItems: ResultSet<COL> = $derived(getResultSet<COL>([...(store?.records ?? [])] as COL[]));
 
-	const sortedItems = $derived.by(() => {
+	const sortedItems: ResultSet<COL> = $derived.by(() => {
 		if (!rawItems.length) return rawItems;
-		return sortItems(rawItems, effectiveSort);
+		const chain = Array.isArray(effectiveSort) ? effectiveSort : [effectiveSort];
+		const spec  = Object.fromEntries(chain.map((s) => [s.field, s.direction]));
+		return getResultSet<COL>([...rawItems] as COL[]).sortBy(spec) as ResultSet<COL>;
 	});
 
-	const paginatedItems = $derived.by(() => {
-		if (infiniteScroll) return sortedItems.slice(0, visibleCount);
+	const paginatedItems: ResultSet<COL> = $derived.by(() => {
+		if (infiniteScroll) return sortedItems.slice(0, visibleCount) as ResultSet<COL>;
 		if (!pageSize || pageSize <= 0) return sortedItems;
 		const start = (page - 1) * pageSize;
-		return sortedItems.slice(start, start + pageSize);
+		return sortedItems.slice(start, start + pageSize) as ResultSet<COL>;
 	});
 
 	const chunkSize = $derived(pageSize > 0 ? pageSize : 20);
@@ -264,13 +268,13 @@ Consumers can override via the item snippet.
 		if (fkKey) {
 			// labelMap covers flat-stored FK values (record holds the target's
 			// code/id); engine collections instead embed the relation as a nested
-			// object under gridFks.<key>, resolved first via fkObjectLabel.
+			// object under fks.<key>, resolved first via fkObjectLabel.
 			const fkCollection = collLogic?.fks?.[fkKey]?.code ?? null;
 			const labelMap = new Map<unknown, string>();
 			if (fkCollection) {
 				const fkScheme     = machine.logic.collectionOr(fkCollection, null);
 				const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
-				const fkItems      = machine.store(fkCollection).items as Record<string, unknown>[];
+				const fkItems      = machine.store(fkCollection).records as Record<string, unknown>[];
 				for (const item of fkItems) {
 					const id = item[fkIndexField];
 					labelMap.set(id, fkScheme?.collectionValues.presentation(item) || String(id ?? '\u2014'));
@@ -285,7 +289,8 @@ Consumers can override via the item snippet.
 			});
 		}
 
-		return groupItems(paginatedItems, effectiveGroupBy);
+		const rec = paginatedItems.groupBy(effectiveGroupBy, true);
+		return new Map(Object.entries(rec));
 	});
 
 	let errorMessage = $state<string | null>(null);
@@ -297,21 +302,29 @@ Consumers can override via the item snippet.
 			errorMessage = null;
 		}
 	});
+ 
 </script>
 
 {#snippet renderItem(record: COL, idx: number)}
-	{#if itemSnippet}
-		{@render itemSnippet({ record, idx, fieldValues })}
-	{:else}
-		{@const rec = record as Record<string, unknown>}
-		{@const label = renderPresentation(rec)}
-		<li>
+	<!-- svelte-ignore a11y_no_static_element_interactions -->
+	<svelte:element
+		this={currentMode === 'table' ? 'tr' : 'li'}
+		class:clickable={currentMode === 'table' && !!parsedLink}
+		onclick={currentMode === 'table' ? () => handleItemClick(record) : undefined}
+	>
+		{#if currentMode === 'table'}
+			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />
+		{:else if itemSnippet}
+			{@render itemSnippet({collection,collectionId:record?.id as number, record, idx, fieldValues })}
+		{:else}
+			{@const rec = record as Record<string, unknown>}
+			{@const label = renderPresentation(rec)}
 			<button type="button" class="data-list-link"
 				onclick={() => parsedLink ? navigate(rec) : handleItemClick(record)}>
 				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode="show" />{/if}
 			</button>
-		</li>
-	{/if}
+		{/if}
+	</svelte:element>
 {/snippet}
 
 {#snippet modeSwitcher()}
@@ -358,7 +371,42 @@ Consumers can override via the item snippet.
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if currentMode === 'table'}
-	<TableInline {collection} {where} onItemClick={handleItemClick} />
+	<table class="data-table">
+		<thead>
+			<tr>
+				{#each tableColumns as col (col.name)}
+					<th
+						class:sorted={userSortBy.some(s => s.field === col.name)}
+						onclick={() => {
+							const existing = userSortBy.find(s => s.field === col.name);
+							if (existing) {
+								prefs.set('sortBy', [{ field: col.name, direction: existing.direction === 'asc' ? 'desc' : 'asc' }]);
+							} else {
+								prefs.set('sortBy', [{ field: col.name, direction: 'asc' }]);
+							}
+						}}
+					>
+						{col.label}
+						<span class="sort-arrow">
+							{#if userSortBy.some(s => s.field === col.name)}
+								{userSortBy.find(s => s.field === col.name)?.direction === 'asc' ? '↑' : '↓'}
+							{:else}↕{/if}
+						</span>
+					</th>
+				{/each}
+			</tr>
+		</thead>
+		<tbody>
+			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+				{@render renderItem(record as COL, idx)}
+			{/each}
+			{#if !paginatedItems.length}
+				<tr><td colspan={tableColumns.length}>
+					{#if emptySnippet}{@render emptySnippet()}{:else}—{/if}
+				</td></tr>
+			{/if}
+		</tbody>
+	</table>
 {:else if currentMode === 'grid'}
 	<ul class="grid-list" role="list">
 		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
@@ -369,7 +417,7 @@ Consumers can override via the item snippet.
 							{collection}
 							data={record as Record<string, any>}
 							mode="show"
-							showFields={fullFields?.length ? fullFields : undefined}
+							{view}
 						/>
 					</div>
 				</button>

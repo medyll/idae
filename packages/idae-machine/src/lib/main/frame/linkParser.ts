@@ -1,5 +1,9 @@
+export type LinkAction = 'loadFrame' | 'loadIn' | 'loadInDialog';
+/** Typed link string — format: `"action:module"` or `"action:module@zone"`. */
+export type LinkString = `${LinkAction}:${string}` | `${LinkAction}:${string}@${string}`;
+
 export interface ParsedLink {
-	action: 'loadFrame' | 'loadIn' | 'loadInDialog';
+	action: LinkAction;
 	module: string;
 	zone: string;
 }

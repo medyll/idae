@@ -41,12 +41,12 @@ Renders forward or reverse FK relations for a record as DataList sections.
 		[key: string]: unknown;
 	} = $props();
 
-	const sourceStore = $derived(collection ? machine.store<Record<string, unknown>>(collection) : { items: [] as Record<string, unknown>[] });
+	const sourceStore = $derived(collection ? machine.store<Record<string, unknown>>(collection) : { records: [] as Record<string, unknown>[] });
 	const scheme      = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 	const record      = $derived.by(() => {
 		if (data) return data;
 		if (recordId == null) return null;
-		return sourceStore.items.find((item) => String(item.id) === String(recordId)) ?? null;
+		return sourceStore.records.find((item) => String(item.id) === String(recordId)) ?? null;
 	});
 
 	let recordLookupSettled = $state(false);

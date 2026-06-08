@@ -1,5 +1,5 @@
 import { MachineDb } from '$lib/main/machineDb.js';
-import { createQoolie, type SyncConfig, type SyncErrorContext } from '@medyll/qoolie';
+import { createQoolie, type SyncConfig, type SyncErrorContext, type ResultSet } from '@medyll/qoolie';
 import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
@@ -186,7 +186,7 @@ export class Machine {
 			this._qoolie = undefined;
 		}
 		const collections = Object.fromEntries(
-			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath }])
+			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }])
 		);
 		this._qoolie = createQoolie({
 			dbName:    this._dbName,
@@ -249,7 +249,8 @@ export class Machine {
 
 		// Resolve schema: server (cache-first SWR) or local fallback
 		if (dbHost) {
-			const url = dbHost.replace(/\/+$/, '') + '/api/scheme';
+			const orgQs = this._org ? `?org=${encodeURIComponent(this._org)}` : '';
+			const url = dbHost.replace(/\/+$/, '') + '/api/scheme' + orgQs;
 			const { loadSchema } = await import('$lib/main/machineSchemaLoader.js');
 			await loadSchema(url, {
 				onModel: (model) => {
@@ -307,19 +308,27 @@ export class Machine {
 	}
 
 	/**
-	 * Reactive collection reader — returns live-updating { items } via Svelte 5 runes.
-	 * Usage: const { items } = machine.store('users');
-	 *        const { items } = machine.store('users', { status: 'active' });
+	 * Reactive collection reader — returns live-updating { records } via Svelte 5 runes.
+	 * `records` is a ResultSet<T> (array + .sortBy/.groupBy/.getPage/.distinct/…).
+	 * Usage: const { records } = machine.store('users');
+	 *        const { records } = machine.store('users', { status: 'active' });
 	 *
 	 * Must be called from within a Svelte component or .svelte.ts context.
 	 * For imperative CRUD use machine.collection(name) instead.
 	 */
-	store<T = any>(name: string, query?: Parameters<typeof useQoolieQuery>[2]): { items: T[] } {
-		if (!this._qoolie || !name) return { items: [] };
-		if (query) {
-			return useQoolieQuery<T>(this._qoolie, name, query);
-		}
-		return useQoolieCollection<T>(this._qoolie, name);
+	store<T = any>(name: string, query?: Parameters<typeof useQoolieQuery>[2]): { records: ResultSet<T> } {
+		if (!this._qoolie || !name) return { records: [] as unknown as ResultSet<T> };
+		const src = query
+			? useQoolieQuery<T>(this._qoolie, name, query)
+			: useQoolieCollection<T>(this._qoolie, name);
+		// ⚠️ Return a getter, never `{ records: src.items }`. Reading `src.items`
+		// eagerly here snapshots it OUTSIDE any reactive frame → no dependency is
+		// tracked → consumers never update. The getter defers the read to the
+		// consumer's $derived/$effect, where Svelte can track it. Likewise do not
+		// "flatten" store() to return the array directly: the underlying $state
+		// binding in the qoolie adapter is reassigned, so only a getter sees fresh
+		// values. This indirection looks redundant but is load-bearing.
+		return { get records() { return src.items as ResultSet<T>; } };
 	}
 
 	/**

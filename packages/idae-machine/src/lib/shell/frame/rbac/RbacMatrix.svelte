@@ -27,12 +27,12 @@ Composes existing store API + InputBoolean. No custom field logic.
 	});
 
 	const groupStore = machine.store('appuser_group');
-	const groups = $derived(groupStore.items as Array<Record<string, unknown>>);
+	const groups = $derived(groupStore.records as Array<Record<string, unknown>>);
 
 	const grantStore = machine.store('appuser_grant');
 	const grants = $derived.by(() => {
 		if (!selectedGroupId) return [] as Array<Record<string, unknown>>;
-		return grantStore.items.filter(g => {
+		return grantStore.records.filter(g => {
 			const fks = g.fks as Record<string, { id?: string }> | undefined;
 			return fks?.appuser_group?.id === selectedGroupId;
 		}) as Array<Record<string, unknown>>;

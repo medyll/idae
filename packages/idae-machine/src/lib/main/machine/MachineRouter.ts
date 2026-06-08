@@ -77,22 +77,28 @@ export class MachineRouter {
 		const path = ctx.path ?? '';
 		const segments = parseLoadInUrl(path);
 
-		const mountFn = async (frameId: string) => {
-			if (typeof document === 'undefined') return;
-			const target = document.querySelector(`[data-target-zone="${frameId}"]`);
-			if (!target) return;
-			// Zones can opt out of the taskbar via data-taskbar="false" (inner content zones).
-			const taskbar = (target as HTMLElement).dataset.taskbar !== 'false';
-			const { mount } = await import('svelte');
-			const { default: Frame } = await import('$lib/shell/Frame.svelte');
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			mount(Frame as any, { target, props: { id: frameId, taskbar } });
-		};
-
 		for (const seg of segments) {
+			// frameId is content-keyed: "modulePath:zone" — mirrors loadInDialog's "dialog:modulePath:collection:id".
+			// Enables registry lookup by content, and allows sibling-hide across zone frames.
+			const contentFrameId = `${seg.modulePath}:${seg.targetId}`;
+
+			const mountFn = async (frameId: string) => {
+				if (typeof document === 'undefined') return;
+				// DOM zone lookup uses zone name (targetId), not the content-keyed frameId.
+				const zone = frameId.slice(frameId.indexOf(':') + 1);
+				const target = document.querySelector(`[data-target-zone="${zone}"]`);
+				if (!target) return;
+				// Zones can opt out of the taskbar via data-taskbar="false" (inner content zones).
+				const taskbar = (target as HTMLElement).dataset.taskbar !== 'false';
+				const { mount } = await import('svelte');
+				const { default: Frame } = await import('$lib/shell/Frame.svelte');
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				mount(Frame as any, { target, props: { id: frameId, taskbar } });
+			};
+
 			try {
 				await machineFrameManager.load(
-					seg.targetId,
+					contentFrameId,
 					seg.modulePath,
 					seg.collection,
 					seg.collectionId,

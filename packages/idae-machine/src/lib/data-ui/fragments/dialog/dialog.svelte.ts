@@ -6,6 +6,10 @@ export interface OpenDialogOptions {
 	id: string;
 	iconClose?: string;
 	center?: boolean;
+	/** Render a backdrop scrim behind the dialog. */
+	modal?: boolean;
+	/** Allow closing via button / Escape / backdrop. Defaults to true. */
+	closable?: boolean;
 	/** Mount target. Defaults to document.body. */
 	target?: HTMLElement;
 	onClose?: () => void;

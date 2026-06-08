@@ -5,7 +5,7 @@ import {
   type IdaeApiClientConfigCoreOptions,
 } from "$lib/client/IdaeApiClientConfig.js";
 import { IdaeApiClientCollection } from "$lib/client/IdaeApiClientCollection.js";
-import { IdaeApiClientRequest } from "./IdaeApiClientRequest.js";
+import { IdaeApiClientRequest, type StreamRequestOptions } from "./IdaeApiClientRequest.js";
 
 type IdaeApiClientRequestParams<T = any> = Record<string, T>;
 
@@ -35,6 +35,16 @@ class IdaeApiClient {
 
   get request() {
     return this._request;
+  }
+
+  /**
+   * Performs a streaming HTTP request (SSE/ndjson/text) and yields parsed chunks
+   * as they arrive. Use for long-running endpoints (e.g. AI chat completion).
+   */
+  stream<TChunk = any, TBody = any>(
+    options: StreamRequestOptions<TBody>,
+  ): AsyncGenerator<TChunk> {
+    return this._request.doStream<TChunk, TBody>(options);
   }
 
   public setOptions(options?: IdaeApiClientConfigCoreOptions & { baseUrl?: string }): void {

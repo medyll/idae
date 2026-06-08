@@ -1,6 +1,6 @@
 import type { Request } from 'express';
 import { getConn } from '../middleware/dbRouter.js';
-import { config } from '../config.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
 import { logger } from '../utils/logger.js';
 
 export type AuditAction =
@@ -51,7 +51,7 @@ export function logAudit(entry: AuditEntry): void {
 }
 
 async function writeAudit(entry: AuditEntry): Promise<void> {
-	const conn = await getConn(`${config.org}_machine_user`);
+	const conn = await getConn(`${getCurrentOrg()}_machine_user`);
 	await conn.collection('appuser_audit').insertOne({
 		...entry,
 		performedAt: new Date().toISOString(),

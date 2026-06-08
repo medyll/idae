@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022",
+    "outDir": "dist",
+    "rootDir": "src",
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmitOnError": false
+  },
+  "include": ["src/lib/**/*.js", "src/lib/**/*.mjs"],
+  "exclude": ["node_modules", "dist", "**/*.test.js", "**/*.spec.js"]
+}

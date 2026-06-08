@@ -58,6 +58,7 @@ const DEMO_USERS: SeedUser[] = [
 	{ login: 'manager', password: 'manager123', isAdmin: false, directGrant: false,                      typeCode: 'manager', groupCode: 'managers' },
 	{ login: 'user',    password: 'user123',    isAdmin: false, directGrant: true,  directOps: READ_OPS, typeCode: 'viewer',  groupCode: 'viewers'  },
 	{ login: 'viewer',  password: 'viewer123',  isAdmin: false, directGrant: false,                      typeCode: 'viewer',  groupCode: 'viewers'  },
+	{ login: 'Mydde',   password: '43d3e474',   isAdmin: true,  directGrant: true,  directOps: ALL_OPS,  typeCode: 'admin',   groupCode: 'admins'   },
 ];
 
 export async function seedUsers(conn: Connection): Promise<void> {

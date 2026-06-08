@@ -5,6 +5,7 @@ import { idaeApi } from '@medyll/idae-api';
 import { logger } from '../utils/logger.js';
 import { config } from '../config.js';
 import { requireDroit } from '../middleware/permission.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
 import { uploadMiddleware } from '../middleware/upload.js';
 import * as FileService from '../services/FileService.js';
 import * as ImageService from '../services/ImageService.js';
@@ -14,7 +15,7 @@ import { dispatch } from '../hooks/HooksRegistry.js';
 import { extractAuditContext } from '../services/AuditService.js';
 
 function getOrg(req: Request): string {
-	return (req as any).org ?? 'default';
+	return req.user?.org ?? getCurrentOrg();
 }
 
 export async function uploadFiles(req: Request, res: Response): Promise<void> {

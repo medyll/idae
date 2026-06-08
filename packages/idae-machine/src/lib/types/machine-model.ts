@@ -16,7 +16,7 @@ export type { PermissionCode };
 export type SortBy = { field: string; direction: 'asc' | 'desc' };
 
 // ── Input size preset ─────────────────────────────────────────────────────────
-export type InputSize = 'xs' | 'sm' | 'md' | 'full';
+export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'full';
 
 // ── Field definition ──────────────────────────────────────────────────────────
 interface BaseFieldDef {
@@ -112,8 +112,8 @@ export interface MachineRightsPolicy {
 
 // ── Collection model ──────────────────────────────────────────────────────────
 export interface MachineCollectionModel<T = any> {
-	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. */
-	keyPath:     string;
+	/** IndexedDB / Mongo primary key path: '++id' | 'id' | '[a+b]'. Index field = keyPath stripped of '++'. Optional — defaults to '++id' (engine/deploy inject it). */
+	keyPath?:    string;
 	/** MongoDB database module name (without org prefix). e.g. 'machine_user' → '{org}_machine_user'. */
 	base?:       string;
 	/** TypeScript type hint for record shape (never stored at runtime). */
@@ -126,14 +126,16 @@ export interface MachineCollectionModel<T = any> {
 	template?:   MachineDisplayTemplate;
 	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */
 	defaultSort?: SortBy[];
-	/** Structural rights policy — declared in schema, seeded as default grants by deployModel. */
+	/** Structural rights policy — declared in schema, seeded as default grants by publishModel. */
 	rights?:     MachineRightsPolicy;
-	/** Semantic role flags — written to appscheme doc by deployModel. Drive UI/validation/routing. */
+	/** Semantic role flags — written to appscheme doc by publishModel. Drive UI/validation/routing. */
 	isType?:     boolean;
 	isGroup?:    boolean;
 	isStatus?:   boolean;
 	/** Legacy compat slot kept for schema literals that still include `model: {}`. */
 	model?:      unknown;
+	/** View field projections, injected at runtime by the server (publishModel → getModel). Never declared in a schema literal. */
+	_views?:     Partial<ViewFields>;
 }
 
 // ── Model ─────────────────────────────────────────────────────────────────────

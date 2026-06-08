@@ -289,7 +289,7 @@ $effect(() => {
 <script>
   function openCard(record) {
     const id = record.id ?? record._id;
-    machine.framer.loadFrame('card.form', collection, String(id));
+    machine.framer.loadFrame('form', collection, String(id));
   }
 </script>
 <DataList {collection} onItemClick={(r) => openCard(r)} />
@@ -298,7 +298,7 @@ $effect(() => {
 **After**
 ```svelte
 <!-- Plus de JS pour la navigation -->
-<DataList {collection} data-item-action="loadFrame:card.form" data-item-id-field="id" />
+<DataList {collection} data-item-action="loadFrame:form" data-item-id-field="id" />
 
 <!-- Le handler est global et déclaré une seule fois -->
 ```

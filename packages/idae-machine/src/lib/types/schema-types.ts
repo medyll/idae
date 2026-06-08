@@ -932,7 +932,7 @@ export interface Extendable {
 	[key: string]: unknown;
 }
 
-export interface gridFksItem<T = unknown> extends Extendable {
+export interface FksItem<T = unknown> extends Extendable {
 	id?:     unknown;
 	uid?:     string;
 	name:     SchemeName;
@@ -959,17 +959,17 @@ export interface AppScheme<T = Record<string, any>> extends Extendable, WithEsse
 	 * @see ViewFields for standard view type definitions
 	 */
 	_views?:     Partial<ViewFields>;
-	gridFks?:    {
-		[key: string]: gridFksItem;
+	fks?:    {
+		[key: string]: FksItem;
 	};
 }
 
 /** Core scheme with explicit system relations */
 export interface AppSchemeCore<T = Record<string, any>> extends AppScheme<T> {
-	gridFks?: {
-		appscheme_base: gridFksItem<AppSchemeBase>;
-		appscheme_type: gridFksItem<AppSchemeType>;
-		[key: string]: gridFksItem;
+	fks?: {
+		appscheme_base: FksItem<AppSchemeBase>;
+		appscheme_type: FksItem<AppSchemeType>;
+		[key: string]: FksItem;
 	};
 }
 
@@ -986,9 +986,9 @@ export interface AppSchemeField extends Extendable, WithEssentials {
 	required?:      boolean | 0 | 1;
 	readonly?:      boolean | 0 | 1;
 	private?:       boolean | 0 | 1;
-	gridFks?: {
-		appscheme_field_type?:  gridFksItem<AppSchemeFieldType>;
-		appscheme_field_group?: gridFksItem<AppSchemeFieldGroup>;
+	fks?: {
+		appscheme_field_type?:  FksItem<AppSchemeFieldType>;
+		appscheme_field_group?: FksItem<AppSchemeFieldGroup>;
 	};
 }
 
@@ -996,9 +996,9 @@ export interface AppSchemeHasField extends Extendable, WithEssentials {
 	visible?:  boolean | 0 | 1;
 	readonly?: boolean | 0 | 1;
 	required?: boolean | 0 | 1;
-	gridFks: {
-		appscheme:       gridFksItem<AppScheme>;
-		appscheme_field: gridFksItem<AppSchemeField>;
+	fks: {
+		appscheme:       FksItem<AppScheme>;
+		appscheme_field: FksItem<AppSchemeField>;
 	};
 }
 
@@ -1009,8 +1009,8 @@ export interface AppSchemeLog extends Extendable, WithID {
 	timestamp?: DateValue;
 	details?:  Extendable;
 	changes?:  Extendable;
-	gridFks?: {
-		appscheme: gridFksItem<AppScheme>;
+	fks?: {
+		appscheme: FksItem<AppScheme>;
 	};
 }
 
@@ -1114,8 +1114,8 @@ export interface AppUser extends Extendable, WithEssentials {
 	 * @example { "ADMIN": true, "DEV": false, "BYPASS_AUDIT": true }
 	 */
 	appPermissions?: AppPermissions;
-	gridFks: {
-		appuser_profile?: gridFksItem<AppUserProfile>;
+	fks: {
+		appuser_profile?: FksItem<AppUserProfile>;
 	};
 }
 
@@ -1138,7 +1138,7 @@ export interface AppUserProfile extends Extendable, WithID {
 	 * @example { "theme": "dark", "notifications": { "email": true, "sms": false } }
 	 */
 	preferences?: Extendable;
-	gridFks: {};
+	fks: {};
 }
 
 /**
@@ -1208,10 +1208,10 @@ export interface AppUserAssignment extends Extendable, WithID {
 	revokedBy?: ID;
 	revokedAt?: DateValue;
 	revocationReason?: string;
-	gridFks: {
-		appuser: gridFksItem<AppUser>;
-		appuser_type?: gridFksItem<AppUserType>;
-		appuser_group?: gridFksItem<AppUserGroup>;
+	fks: {
+		appuser: FksItem<AppUser>;
+		appuser_type?: FksItem<AppUserType>;
+		appuser_group?: FksItem<AppUserGroup>;
 	};
 }
 
@@ -1248,11 +1248,11 @@ export interface AppUserGrant extends Extendable, WithID {
 	 * @example { "territory": "EU", "maxAmount": 10000 }
 	 */
 	constraints?: GrantConstraints;
-	gridFks: {
-		appscheme: gridFksItem<AppScheme>;
-		appuser_type?: gridFksItem<AppUserType>;
-		appuser_group?: gridFksItem<AppUserGroup>;
-		appuser?: gridFksItem<AppUser>;
+	fks: {
+		appscheme: FksItem<AppScheme>;
+		appuser_type?: FksItem<AppUserType>;
+		appuser_group?: FksItem<AppUserGroup>;
+		appuser?: FksItem<AppUser>;
 	};
 }
 
@@ -1275,8 +1275,8 @@ export interface AppUserSession extends Extendable, WithID {
 	 * Reason for revocation: 'logout', 'timeout', 'security', 'admin_action'
 	 */
 	revocationReason?: string;
-	gridFks: {
-		appuser: gridFksItem<AppUser>;
+	fks: {
+		appuser: FksItem<AppUser>;
 	};
 }
 
@@ -1320,8 +1320,8 @@ export interface AppUserAudit extends Extendable, WithID {
 	status: AuditStatus;
 	failureReason?: string;
 	performedAt: DateValue;
-	gridFks: {
-		appuser: gridFksItem<AppUser>;
+	fks: {
+		appuser: FksItem<AppUser>;
 	};
 }
 
@@ -1403,10 +1403,10 @@ export interface AppSchemeViewType extends Extendable, WithEssentials {
  * Pivot table: appscheme_view
  */
 export interface AppSchemeView extends Extendable, WithEssentials {
-	gridFks: {
-		appscheme: gridFksItem<AppScheme>;
-		appscheme_view_type: gridFksItem<AppSchemeViewType>;
-		appscheme_field: gridFksItem<AppSchemeField>;
+	fks: {
+		appscheme: FksItem<AppScheme>;
+		appscheme_view_type: FksItem<AppSchemeViewType>;
+		appscheme_field: FksItem<AppSchemeField>;
 	};
 }
 
@@ -1416,4 +1416,32 @@ export interface AppSchemeView extends Extendable, WithEssentials {
  */
 export interface AppSchemeWithProfiles<T = Record<string, any>> extends AppScheme<T> {
 	_views?: Partial<ViewFields>;
+}
+
+/**
+ * Helper to generate FK reference objects for fks.
+ * Centralizes the creation of FK references to avoid duplication.
+ */
+export interface FkRef {
+	id:       number | null;
+	code:     string;
+	name:     string;
+	icon:     string;
+	color:    string;
+	order:    number;
+	multiple: boolean;
+	required: boolean;
+}
+
+export function fkRef(overrides: Partial<FkRef> & { code: string; name: string }): FkRef {
+	return {
+		id:       overrides.id ?? null,
+		code:     overrides.code,
+		name:     overrides.name,
+		icon:     overrides.icon ?? 'link',
+		color:    overrides.color ?? '#888',
+		order:    overrides.order ?? 0,
+		multiple: overrides.multiple ?? false,
+		required: overrides.required ?? false,
+	};
 }

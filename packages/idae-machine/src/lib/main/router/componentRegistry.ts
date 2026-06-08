@@ -53,12 +53,20 @@ export class ComponentRegistry {
 
 export const componentRegistry = new ComponentRegistry();
 
-componentRegistry.registerMany({
+const REGISTRY_ENTRIES = {
 	'explorer':             () => import('$lib/shell/frame/explorer/Explorer.svelte'),
 	'explorer.content':     () => import('$lib/shell/frame/explorer/ExplorerContent.svelte'),
-	'card.form':            () => import('$lib/data-ui/data/DataForm.svelte'),
+	'form':                 () => import('$lib/data-ui/data/DataForm.svelte'),
+	'list':                 () => import('$lib/data-ui/data/DataList.svelte'),
+	'record':               () => import('$lib/data-ui/data/DataRecord.svelte'),
+	'columner':             () => import('$lib/shell/columner/Columner.svelte'),
 	'fiche':                () => import('$lib/shell/layout/Fiche.svelte'),
+	'fiche.update':         () => import('$lib/shell/layout/FicheUpdate.svelte'),
 	'rbac.matrix':          () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
-	'fullinfo':             () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
 	'synthesis':            () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
-});
+	'login':                () => import('$lib/shell/auth/Login.svelte'),
+} satisfies Record<string, ComponentLoader>;
+
+export type RegistryKey = keyof typeof REGISTRY_ENTRIES;
+
+componentRegistry.registerMany(REGISTRY_ENTRIES);

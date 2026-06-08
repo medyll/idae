@@ -15,7 +15,7 @@ vi.mock('$lib/main/machineSeed.js', () => ({
 }));
 
 import { Machine } from '../machine.js';
-import { demoScheme } from '../../demo/demoScheme.js';
+import { demoScheme } from '../../__fixtures__/demoModel.js';
 
 const testSeed = {
 	vehicle: [{ id: 1, brand: 'Renault', model: 'Clio' }],

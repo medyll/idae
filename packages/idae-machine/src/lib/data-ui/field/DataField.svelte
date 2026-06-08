@@ -71,8 +71,8 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     let hasParentValue = $state(false);
 
     // FK store — guard prevents machine.store('') phantom subscription on non-FK fields
-    const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { items: [] as Record<string, unknown>[] });
-    const fkItems  = $derived(fkStore.items as Record<string, unknown>[]);
+    const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { records: [] as Record<string, unknown>[] });
+    const fkItems  = $derived(fkStore.records as Record<string, unknown>[]);
     const fkScheme = $derived(fkCollection ? machine.logic.collectionOr(fkCollection, null) : null);
     const fkLabel  = $derived.by(() => {
         if (!fkCollection || internalValue == null) return '—';
@@ -81,9 +81,22 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         return fkScheme?.collectionValues.presentation(item) || String(internalValue);
     });
 
+    // FK field label = target collection's appscheme.name (e.g. "Catégorie"),
+    // resolved upstream-style from the appscheme store. Falls back to fieldName.
+    const hasAppscheme  = $derived('appscheme' in (machine.logic?.model ?? {}));
+    const fkTargetName  = $derived.by(() => {
+        if (!fkCollection || !hasAppscheme) return null;
+        const meta = (machine.store('appscheme').records as Record<string, unknown>[])
+            .find(i => i.code === fkCollection);
+        return (meta?.name as string) ?? fkCollection;
+    });
+    const fieldLabel    = $derived(fkTargetName ?? String(fieldName));
+
     // parent → child (tracked read, untracked write to avoid loop)
     $effect(() => {
-        const incoming = data?.[fieldName];
+        const incoming = fkCollection
+            ? readFkRaw(data as Record<string, unknown> | null | undefined, String(fieldName), fkIndexField)
+            : data?.[fieldName];
         untrack(() => {
             internalValue = incoming;
             hasParentValue = true;
@@ -93,12 +106,31 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     $effect(() => {
         if (!hasParentValue || !data) return;
         const key = String(fieldName);
-        if ((data as Record<string, unknown>)[key] === internalValue) return;
+        const current = fkCollection
+            ? readFkRaw(data as Record<string, unknown>, key, fkIndexField)
+            : (data as Record<string, unknown>)[key];
+        if (current === internalValue) return;
 
         untrack(() => {
             (data as Record<string, unknown>)[key] = internalValue;
         });
     });
+
+    // FK raw value lookup — supports both canonical flat storage (`data[fieldName]` = code)
+    // and legacy nested storage (`data.fks[fieldName]` = { code } or bare scalar), as seeded
+    // by publishModel.ts for system appscheme_* collections.
+    function readFkRaw(rec: Record<string, unknown> | null | undefined, name: string, indexField: string): unknown {
+        if (!rec) return undefined;
+        const flat = rec[name];
+        if (flat != null) return flat;
+        const bag = rec.fks as Record<string, unknown> | undefined;
+        const nested = bag?.[name];
+        if (nested == null) return undefined;
+        if (typeof nested === 'object') {
+            return (nested as Record<string, unknown>)[indexField] ?? (nested as Record<string, unknown>).code;
+        }
+        return nested;
+    }
 
     function updateValue(val: unknown) {
         internalValue = val;
@@ -195,7 +227,9 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 {#if fieldForge}
     {#if !isPrivate}
         <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
-            <span class="field-label">{fieldName}</span>
+            {#if showLabel}
+                <span class="field-label">{fieldLabel}</span>
+            {/if}
             <div class="field-input" {...inputDataset}>
                 {#if mode === 'show'}
                     {@render fieldShow()}
@@ -215,24 +249,37 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
 <style>
     .field-line {
-        grid-column: span 2;
-        display: grid;
-        grid: inherit;
-        grid-template-columns: subgrid;
-        grid-gap: inherit;
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        gap: var(--space-1, 0.25rem);
+        flex: 0 0 auto; /* sized by content: label + input */
     }
-    /* inputSize presets — control .field-input max-width or grid span */
-    .field-line.input-size-xs  { --field-input-width: 5rem; }
-    .field-line.input-size-sm  { --field-input-width: 10rem; }
-    .field-line.input-size-md  { --field-input-width: 100%; }
-    .field-line.input-size-full { grid-column: 1 / -1; }
+    .field-line.input-size-full {
+        flex: 1 1 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-    .field-input { width: var(--field-input-width, 100%); }
+    .field-label {
+        flex: 0 0 var(--field-label-w, 90px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .field-line.input-size-full .field-label { flex: 0 0 auto; }
+
+    /* inputSize presets — constrain the INPUT, not the field wrapper */
+    .field-input { min-width: 0; }
+    .field-line.input-size-xs .field-input { width: 5rem; }
+    .field-line.input-size-sm .field-input { width: 10rem; }
+    .field-line.input-size-md .field-input { width: 18rem; }
+    .field-line.input-size-lg .field-input { width: 28rem; }
+    .field-line.input-size-full .field-input { width: 100%; }
+    /* default (no preset): input fills available */
+    .field-input { flex: 1 1 auto; }
     .field-input :global(input),
     .field-input :global(select),
     .field-input :global(textarea) { width: 100%; }
-    .field-label {
-        font-weight: bold;
-    }
     .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
 </style>

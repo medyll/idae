@@ -1,5 +1,5 @@
 /**
- * Integration test: demoScheme → deployModel → getModel → MachineModel shape
+ * Integration test: demoScheme → publishModel → getModel → MachineModel shape
  *
  * Verifies that the full server roundtrip produces a MachineModel that:
  *   - contains all expected collections
@@ -12,10 +12,10 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { machineServer } from '../MachineServer.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
-import { appModelDeclaration } from '../../../src/lib/types/idae-model-core.js';
+import { idaeModelCore } from '../bootstrap/seed/idae-model-core.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 const TEST_ORG = 'vitest_demo';
@@ -30,14 +30,14 @@ function mockRes(): any {
 	return res;
 }
 
-describe('demoScheme roundtrip: deployModel → getModel', () => {
+describe('demoScheme roundtrip: publishModel → getModel', () => {
 	let model: MachineModel;
 
 	beforeAll(async () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		model = await machineServer.getModel();
 	});
 
@@ -74,8 +74,8 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 			expect(fields.id.readonly).toBe(true);
 			expect(fields.license_plate.type).toBe('text');
 			expect(fields.license_plate.required).toBe(true);
-			expect(fields.category.type).toBe('fk-category.code');
-			expect(fields.location_office.type).toBe('fk-location_office.code');
+			// FK relations live in `fks` (getModel contract); the fk-X.code field
+			// synthesis is a client-builder step (foldFksIntoFields), asserted there.
 			expect(fields.year.type).toBe('number');
 			expect(fields.mileage.type).toBe('number');
 			expect(fields.created_at.type).toBe('date');
@@ -91,32 +91,18 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 	// ── rental ───────────────────────────────────────────────────────────────────
 
 	describe('rental', () => {
-		it('has FK fields for vehicle and customer', () => {
-			const { fields } = model.rental;
-			expect(fields.vehicle.type).toBe('fk-vehicle.code');
-			expect(fields.vehicle.required).toBe(true);
-			expect(fields.customer.type).toBe('fk-customer.code');
-			expect(fields.customer.required).toBe(true);
-		});
-
-		it('has fks for vehicle and customer', () => {
+		it('has fks for vehicle and customer (required)', () => {
 			const { fks } = model.rental;
-			expect(fks.vehicle).toMatchObject({ code: 'vehicle', multiple: false });
-			expect(fks.customer).toMatchObject({ code: 'customer', multiple: false });
+			expect(fks.vehicle).toMatchObject({ code: 'vehicle', multiple: false, required: true });
+			expect(fks.customer).toMatchObject({ code: 'customer', multiple: false, required: true });
 		});
 	});
 
 	// ── maintenance ──────────────────────────────────────────────────────────────
 
 	describe('maintenance', () => {
-		it('has FK field for vehicle', () => {
-			const { fields } = model.maintenance;
-			expect(fields.vehicle.type).toBe('fk-vehicle.code');
-			expect(fields.vehicle.required).toBe(true);
-		});
-
-		it('has fk for vehicle', () => {
-			expect(model.maintenance.fks.vehicle).toMatchObject({ code: 'vehicle', multiple: false });
+		it('has fk for vehicle (required)', () => {
+			expect(model.maintenance.fks.vehicle).toMatchObject({ code: 'vehicle', multiple: false, required: true });
 		});
 	});
 
@@ -132,8 +118,8 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 
 	// ── idempotency ──────────────────────────────────────────────────────────────
 
-	it('second deployModel produces same model (idempotent)', async () => {
-		await deployModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
+	it('second publishModel produces same model (idempotent)', async () => {
+		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		const model2 = await machineServer.getModel();
 		expect(Object.keys(model2)).toEqual(expect.arrayContaining(COLLECTIONS));
 		expect(model2.vehicle.fields.license_plate.type).toBe('text');
@@ -142,7 +128,7 @@ describe('demoScheme roundtrip: deployModel → getModel', () => {
 });
 
 describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', () => {
-	const { collections } = appModelDeclaration;
+	const { collections } = idaeModelCore;
 
 	it('appuser_prefs exists in idae-model-core with correct fields', () => {
 		expect(collections).toHaveProperty('appuser_prefs');

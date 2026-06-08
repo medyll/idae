@@ -141,42 +141,33 @@ export class SocketIoServer {
 	 * @param next
 	 */
 	async authorization(socket: Socket, next: any) {
-		//
-		const authMethod = socket.handshake?.auth?.authMode;
-		const authHeaders =
-			socket.handshake?.headers?.Authorization ?? socket.handshake?.auth?.Authorization;
-
-		// post to api for json_token
-		if (!authHeaders) {
-			return next(new Error('Missing Auth method'));
+		// 'none' strategy = dev only: skip auth entirely.
+		if (this.config.auth.strategy === 'none') {
+			return next();
 		}
-		
-		// ---------------------------------------------------------
-		// AUTH DELEGATION
-		// In a real scenario, validate the token here.
-		// For now, we allow everything but log a warning if it looks suspicious.
-		// ---------------------------------------------------------
-		const isValid = await this.validator.validate(authHeaders);
+
+		// Accept the token from handshake.auth.token (preferred), or an Authorization
+		// header / auth field. Case-insensitive on the header name.
+		const h = socket.handshake;
+		const raw =
+			h?.auth?.token ??
+			h?.auth?.Authorization ??
+			h?.headers?.authorization ??
+			h?.headers?.Authorization;
+
+		if (!raw) {
+			return next(new Error('Unauthorized: missing token'));
+		}
+
+		const isValid = await this.validator.validate(String(raw));
 		if (!isValid) {
-			// Uncomment to enforce auth
-			// return next(new Error('Invalid Credentials'));
-			if (this.config.auth.strategy !== 'none') {
-				console.warn(`[idae-socket] Auth failed (${this.config.auth.strategy}) for client ${socket.id}`);
-			}
+			console.warn(`[idae-socket] Auth failed (${this.config.auth.strategy}) for client ${socket.id}`);
+			return next(new Error('Unauthorized: invalid token'));
 		}
 
+		// Expose the bearer token to downstream handlers for identity/RBAC.
+		(socket.data as Record<string, unknown>).token = String(raw).replace(/^Bearer\s+/i, '');
 		next();
-
-		switch (authMethod) {
-			case 'Basic':
-			case 'Bearer':
-			case 'AwsSignature':
-				next();
-				break;
-			case 'UrlToken':
-				next();
-				break;
-		}
 	}
 
 	onConnection() {
@@ -230,10 +221,22 @@ export class SocketIoServer {
 	listenAuth(socket: Socket) {
 		socket.on('grantIn', (data, fn) => {
 			this.debug('grantIn', data, fn);
-			if (data.ROLE) {
+
+			// Only authenticated sockets may join rooms (handshake set socket.data.token).
+			const authed = !!(socket.data as Record<string, unknown>)?.token
+				|| this.config.auth.strategy === 'none';
+			if (!authed) {
+				if (fn) return fn('false');
+				return;
+			}
+
+			// NOTE: room entitlement is NOT verified here — the library cannot know the
+			// app's RBAC. Consumers MUST validate that the user is allowed to join the
+			// requested ROLE/host before relying on these rooms for authorization.
+			if (data?.ROLE) {
 				socket.join(data.ROLE);
 			}
-			if (data.host) {
+			if (data?.host) {
 				socket.join(data.host);
 			}
 

@@ -4,6 +4,50 @@ import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
+
+/** Walk a plain dot-path into an object (no FK awareness). */
+function walkPath(root: unknown, segments: string[]): unknown {
+	return segments.reduce<unknown>(
+		(acc, key) => (acc != null && typeof acc === 'object') ? (acc as Record<string, unknown>)[key] : undefined,
+		root,
+	);
+}
+
+/**
+ * Resolve a presentation token against a record.
+ *
+ * Plain paths ('name', 'address.city') walk directly. FK paths ('fks.firm.name')
+ * are suffix-aware: the segment after `fks` is an FK base name that may be stored
+ * either as a legacy bare key (`fks.firm`) or as suffixed entries (`fks.firm_<id>`).
+ * Multiple suffixed entries → their resolved values joined with ', '.
+ */
+function resolvePresentationToken(data: Record<string, unknown>, token: string): unknown {
+	const segments = token.split('.');
+	if (segments[0] !== 'fks' || segments.length < 2) {
+		return walkPath(data, segments);
+	}
+
+	const bag = data.fks;
+	if (!bag || typeof bag !== 'object') return undefined;
+	const base = segments[1];
+	const rest = segments.slice(2);
+	const bagObj = bag as Record<string, unknown>;
+
+	// Legacy bare key first (backward-compat).
+	if (bagObj[base] != null) return walkPath(bagObj[base], rest);
+
+	// Suffixed convention: `fks.<base>_<id>` → flat snapshot. Collect all entries for this base.
+	const values: string[] = [];
+	for (const key of Object.keys(bagObj)) {
+		const pos = key.lastIndexOf('_');
+		if (pos < 1) continue;
+		if (key.slice(0, pos) !== base) continue;
+		const resolved = walkPath(bagObj[key], rest);
+		if (resolved != null) values.push(String(resolved));
+	}
+	return values.length ? values.join(', ') : undefined;
+}
+
 /**
  * @class MachineSchemeValues
  * @role Provides utilities to display, format, and introspect field values for a given collection, using the schema and provided data.
@@ -49,10 +93,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			return tokens
 				.map((token: string) => {
 					// Dot notation: 'fks.firm.name', 'address.city', etc.
-				const value = token.split('.').reduce<unknown>(
-					(acc, key) => (acc != null && typeof acc === 'object') ? (acc as Record<string, unknown>)[key] : undefined,
-						data,
-					);
+					const value = resolvePresentationToken(data, token);
 					if (value === null || value === undefined) return '';
 					// For dot-notation tokens, skip type-aware formatting (no field metadata at depth).
 					if (token.includes('.')) return String(value);
@@ -154,8 +195,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	getInputDataSet(
 		fieldName: string,
 		data: T
-	): Record<
-		`data-${'collection' | 'collectionId' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
+): Record<
+		`data-${'collection' | 'collection-id' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
 		string
 	> {
 		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
@@ -165,8 +206,8 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		const indexName  = this.machine.collection(this.collectionName).index;
 
 		return {
-			'data-collection':   this.collectionName,
-			'data-collectionId': indexName && data?.[indexName] !== undefined
+			'data-collection':    this.collectionName,
+			'data-collection-id': indexName && data?.[indexName] !== undefined
 				? String(data?.[indexName])
 				: '',
 			'data-fieldName':    String(fieldName),
@@ -285,7 +326,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 			const type  = (info.fieldType ?? '') as string;
 			const title = (info as Record<string, unknown>).title as string ?? fieldName;
 			if (type.startsWith('fk-')) {
-				const [fkCollection, fkIndexField = 'code'] = type.slice(3).split('.');
+				const [fkCollection, fkIndexField = 'id'] = type.slice(3).split('.');
 				if (!fkCollection) return { kind: 'scalar', fieldName, fieldType: type, title };
 				return { kind: 'fk', fieldName, fieldType: type, title, fkCollection, fkIndexField };
 			}

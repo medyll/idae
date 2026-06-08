@@ -18,7 +18,6 @@ export interface UploadFileInput {
 }
 
 export interface FileMeta {
-	_id?:         string;
 	fileId:       string;
 	collection:   string;
 	recordId:     string;
@@ -107,7 +106,7 @@ export async function deleteFile(org: string, fileId: string, permanent = false)
 
 export async function listFiles(org: string, collection: string, recordId: string): Promise<FileMeta[]> {
 	const coll = await getFileCollection(org);
-	return coll.find({ collection, recordId, deletedAt: null }).toArray() as Promise<FileMeta[]>;
+	return coll.find({ collection, recordId, deletedAt: null }).toArray() as unknown as Promise<FileMeta[]>;
 }
 
 export async function updateImageFocus(

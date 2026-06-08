@@ -84,7 +84,7 @@ export async function sendMail(input: SendMailInput): Promise<{ messageId: strin
 		logger.info('[MailService disabled] would send:', input.subject, '→', input.to);
 		return { skipped: true, reason: 'mail.enabled=false' };
 	}
-	const info = await withRetry(() => t.sendMail({ ...input, from: input.from ?? config.mail.from }));
+	const info = await withRetry(() => t.sendMail({ ...input, from: input.from ?? config.mail.from } as nodemailer.SendMailOptions));
 	return { messageId: info.messageId };
 }
 

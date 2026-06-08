@@ -3,8 +3,8 @@ import type { Request, Response } from 'express';
 import { machineServer } from '../MachineServer.js';
 import { logger } from '../utils/logger.js';
 import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
-import { clearCollections, seedEngineRegistries, deployModel } from '../bootstrap/deployModel.js';
-import { buildEngineModel } from '../../../src/lib/types/engineModel.js';
+import { clearCollections, seedEngineRegistries, publishModel } from '../bootstrap/publishModel.js';
+import { buildEngineModel } from '../bootstrap/seed/engineModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
 import { seedImagePresets } from '../bootstrap/seedImagePresets.js';
@@ -22,7 +22,7 @@ async function bootstrapHandler(req: Request, res: Response): Promise<void> {
 			return;
 		}
 
-		await machineServer.deployModel(model, { org });
+		await machineServer.publishModel(model, { org });
 		invalidateSchemeCache();
 
 		res.json({ ok: true, org });
@@ -56,9 +56,9 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 
 		if (steps.includes('deploy')) {
 			await seedEngineRegistries({ org, mongoUri });
-			await deployModel(buildEngineModel(), { org, mongoUri });
+			await publishModel(buildEngineModel(), { org, mongoUri });
 			// Default to demoScheme when no model supplied — dev reset shortcut
-			await deployModel(model ?? demoScheme, { org, mongoUri });
+			await publishModel(model ?? demoScheme, { org, mongoUri });
 			invalidateSchemeCache();
 			results.deploy = 'ok';
 			logger.info(`[admin/reset] deploy done for org="${org}"`);

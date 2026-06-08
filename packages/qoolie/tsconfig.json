@@ -17,6 +17,6 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },
-  "include": ["src/lib/**/*", "src/cli/**/*", "src/react/**/*", "src/vue/**/*", "src/test/**/*"],
+  "include": ["src/index.ts", "src/lib/**/*", "src/cli/**/*", "src/react/**/*", "src/vue/**/*", "src/test/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

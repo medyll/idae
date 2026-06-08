@@ -17,8 +17,8 @@
       "import": "./src/lib/index.ts"
     },
     "./server": {
-      "types": "./src/lib/server.ts",
-      "import": "./src/lib/server.ts"
+      "types": "./dist/server.d.ts",
+      "import": "./dist/server.js"
     },
     "./client": {
       "types": "./src/lib/client/index.ts",

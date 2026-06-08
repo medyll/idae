@@ -1,13 +1,11 @@
 import { MachineError } from './MachineError.js';
 import type { TplCollectionName, TplFields, IDbForge, TplFieldRules, SortBy, } from '$lib/types/index.js';
-export type FieldObject = { key: string } & Record<string, unknown>;
 import type {
 	MachineModel,
 	MachineCollectionModel,
 	MachineDisplayTemplate,
 	MachineFkDef,
 } from '$lib/types/index.js';
-import type { ViewFields, ViewFieldDef } from '$lib/types/schema-types.js';
 import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
@@ -61,7 +59,7 @@ export class MachineScheme {
 
 	/** Primary key field name, derived from keyPath ('++id' → 'id'). */
 	get index(): string {
-		return indexFromKeyPath(this.#collectionModel.keyPath);
+		return indexFromKeyPath(this.#collectionModel.keyPath ?? '++id');
 	}
 
 	/** Default sort inferred from defaultSort or field naming/type conventions. */
@@ -94,43 +92,6 @@ export class MachineScheme {
 		return [{ field: this.index, direction: 'asc' }];
 	}
 
-	/** Fields per view context from appscheme_view (full, flat, fk, focus). */
-	get viewFields(): Partial<ViewFields> | undefined {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		return (this.#collectionModel as any)?._views ?? undefined;
-	}
-
-	/**
-	 * Resolve the ordered field list for a view.
-	 * Prefers seeded `_views`; otherwise derives:
-	 * - partition by fk-ness: full = all, flat = non-fk, fk = fk-only (full = flat ∪ fk)
-	 * - focus = curated identity subset: 'identification' group fields,
-	 *   falling back to [code, name] (at least [code]). Never empty.
-	 */
-	getFieldsForView(view: 'full' | 'flat' | 'fk' | 'focus'): ViewFieldDef[] {
-		const seeded = this.viewFields?.[view];
-		if (seeded?.length) return seeded;
-
-		const fields = this.fields as Record<string, { group?: string } | undefined>;
-		const names = Object.keys(fields);
-		const isFk = (name: string) => (this.field(name).parse()?.fieldType ?? '').startsWith('fk-');
-
-		let picked: string[];
-		if (view === 'full') {
-			picked = names;
-		} else if (view === 'flat') {
-			picked = names.filter((n) => !isFk(n));
-		} else if (view === 'fk') {
-			picked = names.filter((n) => isFk(n));
-		} else {
-			// focus: identification group, else [code, name], else [code]
-			const ident = names.filter((n) => fields[n]?.group === 'identification');
-			picked = ident.length ? ident : ['code', 'name'].filter((n) => n in fields);
-			if (!picked.length && 'code' in fields) picked = ['code'];
-		}
-		return picked.map((name, i) => ({ name, code: name, order: i }));
-	}
-
 	get validator(): MachineSchemeValidate {
 		return new MachineSchemeValidate(this.collection, this.#machineDb);
 	}
@@ -160,65 +121,6 @@ export class MachineScheme {
 		);
 	}
 
-	/**
-	 * Resolve the ordered field list for display, with optional sort + group.
-	 * Moves the view/showFields selection + sort + group out of components.
-	 */
-	resolveFieldList(opts: {
-		view?:       string;
-		showFields?: string[];
-		sortBy?:     SortBy | SortBy[];
-		groupBy?:    string;
-	} = {}): {
-		fieldObjects: FieldObject[];
-		fieldNames:   string[];
-		groups:       Map<string, FieldObject[]> | undefined;
-	} {
-		const { view, showFields, sortBy, groupBy } = opts;
-		const fields = this.fields as unknown as Record<string, Record<string, unknown> | undefined>;
-
-		let keys: string[];
-		if (showFields?.length) {
-			keys = showFields.filter(k => k in fields);
-		} else if (view) {
-			keys = (this.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? [])
-				.map(f => f.name)
-				.filter(k => k in fields);
-		} else {
-			keys = Object.keys(fields);
-		}
-
-		let fieldObjects: FieldObject[] = keys.map(key => ({ key, ...(fields[key] ?? {}) }));
-
-		if (sortBy) {
-			const chain = Array.isArray(sortBy) ? sortBy : [sortBy];
-			fieldObjects = [...fieldObjects].sort((a, b) => {
-				for (const { field, direction } of chain) {
-					const av = a[field] ?? null;
-					const bv = b[field] ?? null;
-					if (av === null && bv === null) continue;
-					if (av === null) return 1;
-					if (bv === null) return -1;
-					const cmp = av < bv ? -1 : av > bv ? 1 : 0;
-					if (cmp !== 0) return direction === 'asc' ? cmp : -cmp;
-				}
-				return 0;
-			});
-		}
-
-		let groups: Map<string, FieldObject[]> | undefined;
-		if (groupBy) {
-			groups = new Map<string, FieldObject[]>();
-			for (const item of fieldObjects) {
-				const key = String(item[groupBy] ?? '—');
-				if (!groups.has(key)) groups.set(key, []);
-				groups.get(key)!.push(item);
-			}
-		}
-
-		return { fieldObjects, fieldNames: fieldObjects.map(f => f.key), groups };
-	}
-
 	parse(): Record<string, IDbForge | undefined> | undefined {
 		const fields = this.fields;
 		if (!fields) return;
@@ -244,9 +146,13 @@ export class MachineScheme {
 			const fieldType = parsed?.fieldType;
 			const prefix = `fk-${targetCollection}.`;
 			if (!fieldType?.startsWith(prefix)) continue;
+			const targetIndex = fieldType.slice(prefix.length);
+			if (targetIndex !== 'code') {
+				console.warn(`[MachineScheme] FK field ${fieldName} uses non-canonical index '${targetIndex}'. Expected 'code'.`);
+			}
 			return {
 				fieldName,
-				targetIndex: fieldType.slice(prefix.length)
+				targetIndex
 			};
 		}
 		return null;

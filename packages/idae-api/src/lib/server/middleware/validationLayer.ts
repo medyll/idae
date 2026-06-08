@@ -21,7 +21,7 @@ export function validationLayer(opts: ValidationLayerOptions) {
       next();
     } catch (err) {
       if (err instanceof ZodError) {
-        return res.status(422).json({ error: "Validation failed", details: err.errors });
+        return res.status(422).json({ error: "Validation failed", details: err.issues });
       }
       next(err);
     }

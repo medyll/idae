@@ -4,6 +4,20 @@ dialog.idae-dialog {
 	isolation: isolate;
 }
 
+/* Modal scrim — sits just under the dialog on the same --z-modal layer. */
+.idae-dialog__backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-modal);
+	background: color-mix(in oklch, var(--color-text) 45%, transparent);
+}
+
+@layer components {
+	dialog.idae-dialog.idae-dialog--modal .idae-dialog__bar {
+		cursor: default;
+	}
+}
+
 @layer components {
 	dialog.idae-dialog {
 		position: fixed;
@@ -84,5 +98,65 @@ dialog.idae-dialog {
         padding: var(--pad-sm);
         background: var(--color-surface);
         border-bottom: var(--border-width) solid var(--color-border);
+    }
+}
+
+@layer components {
+    :global(table.data-table) {
+        width: 100%;
+        border-collapse: collapse;
+        position: relative;
+        font-size: var(--text-sm, 0.875rem);
+    }
+    :global(table.data-table thead th) {
+        color: var(--color-text, #333);
+        height: 2.4em;
+        line-height: 2.4em;
+        cursor: pointer;
+        user-select: none;
+        overflow: hidden;
+        background-color: var(--color-surface, #fafafa);
+        white-space: nowrap;
+        border-right: 1px solid var(--color-border, #e0e0e0);
+        border-top: 1px solid var(--color-border, #e9e9e9);
+        border-bottom: 1px solid var(--color-border, #ededed);
+        vertical-align: middle;
+        text-overflow: ellipsis;
+        padding: 0 0.6em;
+        text-align: left;
+        text-transform: capitalize;
+        font-weight: var(--font-medium, 500);
+    }
+    :global(table.data-table thead th:hover) {
+        background-color: var(--color-surface-hover);
+    }
+    :global(table.data-table thead th.sorted) {
+        background-color: var(--color-surface-active);
+    }
+    :global(table.data-table .sort-arrow) {
+        font-size: 0.7em;
+        opacity: 0.6;
+        margin-left: 0.3em;
+    }
+    :global(table.data-table tbody tr.clickable) {
+        cursor: pointer;
+    }
+    :global(table.data-table tbody td) {
+        white-space: nowrap;
+        line-height: 22px;
+        min-height: 22px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+        border-bottom: 1px solid var(--color-border, #ededed);
+        padding: 0 0.5em;
+        color: var(--color-text);
+    }
+    :global(table.data-table tbody tr:hover td) {
+        background-color: var(--color-surface-hover);
+        box-shadow: 0 1px 0 0 var(--color-border) inset, 0 -1px 0 0 var(--color-border) inset;
+    }
+    :global(table.data-table tbody tr:nth-child(5n+3) td) {
+        background-color: var(--color-surface, #f5f5f5);
     }
 }

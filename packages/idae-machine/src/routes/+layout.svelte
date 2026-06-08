@@ -4,55 +4,124 @@
 	import { App } from '$lib/shell/layout/index.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import { API_URL } from '$lib/config.js';
+	import { authState } from '$lib/main/machine/authState.svelte.js';
+	import { deleteIdbDatabase } from '$lib/main/machineIdbAdapter.js';
+	import type { AppUser } from '$lib/types/schema-types.js';
 
 	const apiUrl = API_URL;
-	// Always refresh token on boot — prevents stale JWT causing 401 on hydration.
-	// Falls back to cached token if server is offline.
 	let bootPromise: Promise<void>;
 	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };
 
+	let booted = $state(false);
+
 	if (_g.__idae_boot) {
 		bootPromise = _g.__idae_boot;
-	} else if (typeof window !== 'undefined') {
-		const cachedToken = window.localStorage.getItem('auth_token') ?? '';
-		bootPromise = fetch(`${apiUrl}/api/auth/login`, {
-			method:  'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body:    JSON.stringify({ login: 'admin', password: 'admin123' }),
-		})
-			.then((r) => (r.ok ? r.json() : null))
-			.then((data) => {
-				if (data?.token) {
-					window.localStorage.setItem('auth_token', data.token);
-					return doBoot(data.token);
-				}
-				// Server offline or login failed — use cached token if available
-				return doBoot(cachedToken);
-			})
-			.catch(() => doBoot(cachedToken));
 	} else {
-		bootPromise = doBoot('');
+		bootPromise = doBoot();
 	}
 	_g.__idae_boot = bootPromise;
+	void bootPromise.then(() => { booted = true; });
 
-	async function doBoot(authToken: string): Promise<void> {
-		await machine.boot({
-			org: 'demo', domain: 'machine', version: 7,
-			sync: {
-				mode: 'server-first',
-				databaseHost: apiUrl,
-				...(authToken && { token: authToken, headers: { Authorization: `Bearer ${authToken}` } }),
-			},
-		});
+	async function doBoot(): Promise<void> {
+		const org =
+			(typeof localStorage !== 'undefined' && localStorage.getItem('idae_org')) || 'demo';
+
+		// Carry the JWT on every sync request — the server reads the org from the
+		// verified token (orgContextMiddleware), so data routes to the right backend.
+		const token =
+			typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+		try {
+			await machine.boot({
+				org, domain: 'machine', version: 7,
+				sync: {
+					mode: 'server-first',
+					databaseHost: apiUrl,
+					...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+				},
+			});
+		} catch (err) {
+			await recoverFromCorruptBoot(org, err as Error);
+			return;
+		}
 		machine.initRouter({ baseUrl: '/', authEnabled: false });
 
 		if (typeof window !== 'undefined') {
 			(window as any).__machine = machine;
 		}
 
-		// Ensure schema descriptor is in IDB before rendering — collection list needs it.
-		await machine.warmup(['appscheme']);
+		// Block render until all schema collections are in IDB — prevents empty-set race.
+		await machine.warmup([
+			'appscheme',
+			'appscheme_field',
+			'appscheme_view',
+			'appscheme_view_type',
+			'appscheme_has_field',
+		]);
+
+		restoreSession();
 	}
+
+	/**
+	 * Boot can fail when local state (stale auth token / mismatched org / corrupt IDB
+	 * schema cache) drifts from the server — non-devs would otherwise hit a raw
+	 * "Boot failed" screen needing a manual localStorage.clear(). Wipe the local
+	 * state once and reload; if it still fails, surface the real error.
+	 */
+	async function recoverFromCorruptBoot(org: string, err: Error): Promise<void> {
+		const FLAG = 'idae_boot_recovery_attempted';
+		if (typeof sessionStorage === 'undefined' || sessionStorage.getItem(FLAG)) {
+			throw err;
+		}
+		sessionStorage.setItem(FLAG, '1');
+		console.warn('[idae-machine] Boot failed, clearing local state and retrying:', err);
+
+		if (typeof localStorage !== 'undefined') {
+			localStorage.removeItem('auth_token');
+			localStorage.removeItem('auth_user');
+			localStorage.removeItem('idae_org');
+		}
+		await deleteIdbDatabase(`${org}_machine`).catch(() => {});
+
+		if (typeof window !== 'undefined') window.location.reload();
+	}
+
+	/** Rehydrate auth from a persisted token so a reload doesn't re-prompt. */
+	function restoreSession(): void {
+		if (typeof localStorage === 'undefined') return;
+		const token = localStorage.getItem('auth_token');
+		const rawUser = localStorage.getItem('auth_user');
+		if (!token || !rawUser) {
+			authState.authed = false;
+			return;
+		}
+		try {
+			const user = JSON.parse(rawUser) as { userId: string; login: string; isAdmin: boolean };
+			machine.rights.setCurrentUser(
+				{
+					id: user.userId,
+					login: user.login,
+					isActive: true,
+					isLocked: false,
+					appPermissions: { ADMIN: user.isAdmin }
+				} as unknown as AppUser,
+				[]
+			);
+			authState.authed = true;
+		} catch {
+			authState.authed = false;
+		}
+	}
+
+	// Gate: when booted but not authed, open the modal login over the splash.
+	$effect(() => {
+		if (booted && !authState.authed) {
+			void machine.framer.loadInDialog('login', 'appuser', undefined, undefined, {
+				modal: true,
+				closable: false
+			});
+		}
+	});
 </script>
 
 {#await bootPromise}
@@ -61,7 +130,13 @@
 		<div class="boot-text">Loading…</div>
 	</div>
 {:then}
-	<App />
+	{#if authState.authed}
+		<App />
+	{:else}
+		<div class="boot-splash">
+			<div class="boot-text">Authentification…</div>
+		</div>
+	{/if}
 {:catch err}
 	<div class="boot-error">
 		<h2>Boot failed</h2>

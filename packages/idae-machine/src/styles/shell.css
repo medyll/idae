@@ -183,6 +183,39 @@
 		}
 	}
 
+	.taskbar-user {
+		position: relative;
+		display: inline-flex;
+	}
+
+	.taskbar-user-menu {
+		position: fixed;
+		top: calc(var(--header-height) - var(--pad-sm));
+		right: var(--pad-sm);
+		min-width: 9rem;
+		background: var(--color-bg);
+		border: var(--border-width) solid var(--color-border);
+		border-radius: var(--radius-sm);
+		box-shadow: var(--shadow-md);
+		display: flex;
+		flex-direction: column;
+		z-index: var(--z-dropdown, 100);
+	}
+
+	.taskbar-user-menu-item {
+		padding: var(--pad-xs) var(--pad-sm);
+		border: none;
+		background: transparent;
+		text-align: left;
+		cursor: pointer;
+		font-size: var(--text-sm);
+		color: var(--color-text);
+
+		&:hover {
+			background: var(--color-hover);
+		}
+	}
+
 	.navigation {
 		width: 250px;
 		height: 100vh;

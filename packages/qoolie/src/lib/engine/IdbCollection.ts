@@ -613,6 +613,13 @@ export function getResultSet<T>(data: T[]): ResultSet<T> {
 			enumerable: true,
 			configurable: true
 		},
+		slice: {
+			value: function (start?: number, end?: number) {
+				return getResultSet(Array.prototype.slice.call(this, start, end));
+			},
+			enumerable: true,
+			configurable: true
+		},
 		last: {
 			value: function (): T | undefined {
 				return this[this.length - 1];

@@ -23,17 +23,17 @@ describe('parseFkGroupKey', () => {
 });
 
 describe('fkObjectLabel', () => {
-	it('reads a nested gridFks relation object (name preferred)', () => {
-		const rec = { id: 1, gridFks: { appscheme_type: { id: 3, code: 'standard', name: 'Standard' } } };
+	it('reads a nested fks relation object (name preferred)', () => {
+		const rec = { id: 1, fks: { appscheme_type: { id: 3, code: 'standard', name: 'Standard' } } };
 		expect(fkObjectLabel(rec, 'appscheme_type')).toBe('Standard');
 	});
 
 	it('falls back code → id when name is absent', () => {
-		expect(fkObjectLabel({ gridFks: { t: { code: 'c1' } } }, 't')).toBe('c1');
-		expect(fkObjectLabel({ gridFks: { t: { id: 9 } } }, 't')).toBe('9');
+		expect(fkObjectLabel({ fks: { t: { code: 'c1' } } }, 't')).toBe('c1');
+		expect(fkObjectLabel({ fks: { t: { id: 9 } } }, 't')).toBe('9');
 	});
 
-	it('accepts fks as an alias for gridFks', () => {
+	it('accepts fks as an alias for fks', () => {
 		expect(fkObjectLabel({ fks: { t: { name: 'X' } } }, 't')).toBe('X');
 	});
 
@@ -41,14 +41,40 @@ describe('fkObjectLabel', () => {
 		expect(fkObjectLabel({ category: 'sedan' }, 'category')).toBeUndefined();
 		expect(fkObjectLabel({}, 'category')).toBeUndefined();
 	});
+
+	it('reads suffixed convention fks.<key>_<id> (flat snapshot)', () => {
+		const rec = { fks: { category_7: { id: 7, code: 'sedan', name: 'Sedan' } } };
+		expect(fkObjectLabel(rec, 'category')).toBe('Sedan');
+	});
+
+	it('joins labels for multiple suffixed entries of the same relation', () => {
+		const rec = {
+			fks: {
+				destination_1:  { id: 1, name: 'Paris' },
+				destination_42: { id: 42, name: 'Rome' },
+			},
+		};
+		expect(fkObjectLabel(rec, 'destination')).toBe('Paris, Rome');
+	});
+
+	it('does not confuse a base name that is a prefix of another relation', () => {
+		const rec = {
+			fks: {
+				dest_5:         { id: 5, name: 'Short' },
+				dest_special_9: { id: 9, name: 'Long' },
+			},
+		};
+		expect(fkObjectLabel(rec, 'dest')).toBe('Short');
+		expect(fkObjectLabel(rec, 'dest_special')).toBe('Long');
+	});
 });
 
 describe('grouping appscheme by fks.appscheme_type (Explorer case)', () => {
 	it('groups records by their embedded relation label', () => {
 		const items = [
-			{ id: 1, code: 'vehicle',  gridFks: { appscheme_type: { id: 1, code: 'standard', name: 'Standard' } } },
-			{ id: 2, code: 'rental',   gridFks: { appscheme_type: { id: 1, code: 'standard', name: 'Standard' } } },
-			{ id: 3, code: 'category', gridFks: { appscheme_type: { id: 2, code: 'type',     name: 'Type' } } },
+			{ id: 1, code: 'vehicle',  fks: { appscheme_type: { id: 1, code: 'standard', name: 'Standard' } } },
+			{ id: 2, code: 'rental',   fks: { appscheme_type: { id: 1, code: 'standard', name: 'Standard' } } },
+			{ id: 3, code: 'category', fks: { appscheme_type: { id: 2, code: 'type',     name: 'Type' } } },
 		];
 		const fkKey = parseFkGroupKey('fks.appscheme_type', { appscheme_type: { code: 'appscheme_type' } })!;
 		const groups = groupItemsResolved(items, fkKey, (item) => fkObjectLabel(item, fkKey) ?? '—');

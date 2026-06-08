@@ -39,7 +39,8 @@ class RequestDatabaseManager {
     collectionName: string;
     dbUri: string;
   } {
-    const rawCollectionName = req.params?.collectionName ?? "default";
+    const rawParam = req.params?.collectionName ?? "default";
+    const rawCollectionName = Array.isArray(rawParam) ? rawParam.join(".") : rawParam;
 
     const [dbPart, ...rest] = rawCollectionName.split(".");
     const dbName = rest.length > 0 ? dbPart || this.config.defaultDbName : this.config.defaultDbName;

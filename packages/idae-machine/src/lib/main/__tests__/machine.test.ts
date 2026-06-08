@@ -8,7 +8,7 @@ vi.mock('@medyll/qoolie/svelte', () => ({
 }));
 
 import { Machine } from '../machine.js';
-import { demoScheme } from '../../demo/demoScheme.js';
+import { demoScheme } from '../../__fixtures__/demoModel.js';
 import type { MachineModel } from '\$lib/types/index.js';
 
 function createTestMachine() {
@@ -93,13 +93,13 @@ describe('Machine', () => {
 			await machine.boot();
 			const result = machine.store('vehicle');
 			expect(result).toBeDefined();
-			expect(result).toHaveProperty('items');
-			expect(Array.isArray(result.items)).toBe(true);
+			expect(result).toHaveProperty('records');
+			expect(Array.isArray(result.records)).toBe(true);
 		});
 
-		it('returns empty items when called before start', () => {
+		it('returns empty records when called before start', () => {
 			const result = machine.store('vehicle');
-			expect(result.items).toEqual([]);
+			expect(result.records).toEqual([]);
 		});
 	});
 

@@ -1,2213 +1,1653 @@
-// AUTO-GENERATED from legacy MongoDB crfr_sitebase_app + sampled _base.
-// Source: appscheme / appscheme_has_field / appscheme_field (+ FK & undeclared fields inferred from _base docs).
-// Reconstructed in idae-machine model-core (MachineModel) shape. Review 'undeclared' fields before seeding.
+// crfr org — canonical MachineModel (reviewed 2026-06-07)
+// Changes from auto-generated:
+//   - bases corrected per MongoDB sitebase_* mapping
+//   - agent_* removed (covered by core appuser_*); user_tuile/user_list/user_note/user_table kept (crfr-specific)
+//   - agent_recherche / app_version_file_preprod removed
+//   - FR field names → EN
+//   - undeclared junk stripped (mongodate, md5, ip, F_action, grille*, id{Legacy} FK columns)
+//   - FKs completed (tache_statut, conge appuser, devis_passager, facture_ligne, etc.)
 import type { MachineModel } from '../../../../src/lib/types/machine-model.js';
-import { field } from '../../../../src/lib/main/machine/fieldBuilder.js';
 
 export const crfrScheme: MachineModel = {
-	"aeroport": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			petitNom: field('text'),
-			description: field('text-long'),
-			image: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
 
-	"agent": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			petitNom: field('text', { required: true }),
-			estActif: field('text'),
-			prenom: field('text', { required: true }),
-			login: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			email: field('email'),
-			groupe: field('text'),
-			mailPassword: field('email'),
-			password: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_groupe": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_groupe_droit": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			agent_groupe: field('fk-agent_groupe.id'),
-			appscheme: field('fk-appscheme.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			init: field('text'),
-			D: field('text'),
-			U: field('text'),
-			L: field('text'),
-			R: field('text'),
-			C: field('text'),
-		},
-		fks: {
-				agent_groupe: { code: 'agent_groupe', multiple: false },
-				appscheme: { code: 'appscheme', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_history": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_liste": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_note": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_recherche": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_table": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_tuile": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			valeur: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"agent_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
+	// ── BASE ──────────────────────────────────────────────────────────────────
 
 	"app_conf": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"app_daemon": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"app_version": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"app_version_file": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"app_version_file_preprod": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme": {
-		keyPath: '++id',
-		base: 'machine_app',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			icon: field('text'),
-			estSite: field('url'),
-			ordre: field('text'),
-			appscheme_base: field('fk-appscheme_base.id'),
-			appscheme_type: field('fk-appscheme_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			collection: field('text'),
-			base: field('text'),
-			namespace_app: field('text'),
-			mainscope_app: field('text'),
-			hasTypeScheme: field('text'),
-			hasImageScheme: field('text'),
-			hasColorScheme: field('text'),
-			hasRefScheme: field('text'),
-			grilleFK: field('text'),
-		},
-		fks: {
-				appscheme_base: { code: 'appscheme_base', multiple: false },
-				appscheme_type: { code: 'appscheme_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_base": {
-		keyPath: '++id',
-		base: 'machine_app',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			icon: field('text'),
-			ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_field": {
-		keyPath: '++id',
-		base: 'machine_app',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			icon: field('text'),
-			ordre: field('text'),
-			appscheme_field_group: field('fk-appscheme_field_group.id'),
-			appscheme_field_type: field('fk-appscheme_field_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			field_title: field('text'),
-			field_raw: field('text'),
-			field_group: field('text'),
-			field_type: field('text'),
-			ordreAppscheme_field_group: field('text'),
-			idappshemefield_type: field('text'),
-			petitNom: field('text'),
-		},
-		fks: {
-				appscheme_field_group: { code: 'appscheme_field_group', multiple: false },
-				appscheme_field_type: { code: 'appscheme_field_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_field_group": {
-		keyPath: '++id',
-		base: 'machine_app',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			group_name: field('text'),
-			group_ordre: field('text'),
-			ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_field_type": {
-		keyPath: '++id',
-		base: 'machine_app',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			// ── undeclared in registry, detected in _base — verify ──
-			type_name: field('text'),
-			type_ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_has_field": {
-		keyPath: '++id',
-		base: 'machine_app',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			field_raw: field('text'),
-			collection: field('text'),
-			required: field('text'),
-			ordre: field('text'),
-		},
-		fks: {
-				appscheme: { code: 'appscheme', multiple: false },
-				appscheme_field: { code: 'appscheme_field', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_has_table_field": {
-		keyPath: '++id',
-		base: 'machine_app',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			appscheme: field('fk-appscheme.id'),
-			appscheme_field: field('fk-appscheme_field.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			idappscheme_link: field('text'),
-			field_raw: field('text'),
-			field_name: field('text'),
-			collection: field('text'),
-			petitNom: field('text'),
-			ordreAppscheme_field: field('text'),
-			petitNomAppscheme_field: field('text'),
-		},
-		fks: {
-				appscheme: { code: 'appscheme', multiple: false },
-				appscheme_field: { code: 'appscheme_field', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_icon": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			icon: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_type": {
-		keyPath: '++id',
-		base: 'machine_app',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			icon: field('text'),
-			appscheme: field('fk-appscheme.id'),
-		},
-		fks: {
-				appscheme: { code: 'appscheme', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"appscheme_view": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appsite": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			url: field('url'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appsite_page": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appsite_page_ligne": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appsite_page_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appsite_template": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"appsite_template_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"article": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			categorie: field('fk-categorie.id'),
-			site: field('fk-site.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			categorie_idcategorie: field('text'),
-			contenu: field('text'),
-			description: field('text'),
-			ordre: field('text'),
-			vignette: field('text'),
-		},
-		fks: {
-				categorie: { code: 'categorie', multiple: false },
-				site: { code: 'site', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"article_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"asavoir": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			asavoir_type: field('fk-asavoir_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			petitNom: field('text'),
-			atout: field('text'),
-			description: field('text'),
-			information: field('text'),
-		},
-		fks: {
-				asavoir_type: { code: 'asavoir_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"asavoir_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			petitNom: field('text'),
-			atout: field('text'),
-			description: field('text'),
-			information: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"categorie": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			site: field('fk-site.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			description: field('text'),
-			ordre: field('text'),
-		},
-		fks: {
-				site: { code: 'site', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"client": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			actif: field('text'),
-			prenom: field('text'),
-			dateCreation: field('date'),
-			codePostal: field('text'),
-			adresse: field('text'),
-			ville: field('text'),
-			email: field('email'),
-			mobile: field('phone'),
-			telephone: field('phone'),
-			heureCreation: field('text'),
-			// ── undeclared in registry, detected in _base — verify ──
-			adressePlus: field('text'),
-			estClient: field('text'),
-			grilleDestination: field('text'),
-			grilleFournisseur: field('text'),
-			grilleProduitType: field('text'),
-			ip: field('text'),
-			scope: field('text'),
-			sexe: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"client_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"conge": {
-		keyPath: '++id',
 		base: 'machine_base',
 		isType:   true,
 		isStatus: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fks: {
+			conge_type:   { code: 'conge_type',   multiple: false },
+			conge_statut: { code: 'conge_statut', multiple: false },
+			appuser:      { code: 'appuser',       multiple: false },
+		},
 		template: { presentation: 'name code' },
 	},
 
 	"conge_statut": {
-		keyPath: '++id',
 		base: 'machine_base',
-		isGroup:  true,
+		isGroup: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"conge_type": {
-		keyPath: '++id',
 		base: 'machine_base',
-		isGroup:  true,
+		isGroup: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"continent": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-			color: field('text'),
-			ref: field('text'),
-			// ── undeclared in registry, detected in _base — verify ──
-			adjectif: field('text'),
-			ordre: field('text'),
-			prefixe: field('text'),
-			estTop: field('text'),
-			estVisible: field('text'),
-			estActif: field('text'),
-			petitNom: field('text'),
-			nombreVue: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"daemon": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			date: field('date'),
-			dateDebut: field('date'),
-			heureDebut: field('date'),
-			heure: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"destination": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			color: field('text'),
-			ref: field('text'),
-			information: field('text'),
-			description: field('text-long'),
-			continent: field('fk-continent.id'),
-			pays: field('fk-pays.id'),
-			ville: field('fk-ville.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			adjectifContinent: field('text'),
-			adjectif: field('text'),
-			adjectifPays: field('text'),
-			descriptionVille: field('text'),
-			estTop: field('text'),
-			latitudeVille: field('text'),
-			longitudeVille: field('text'),
-			ordrePays: field('text'),
-			ordreVille: field('text'),
-			prefixeContinent: field('text'),
-			prefixe: field('text'),
-			prefixePays: field('text'),
-			nombreVue: field('text'),
-		},
-		fks: {
-				continent: { code: 'continent', multiple: false },
-				pays: { code: 'pays', multiple: false },
-				ville: { code: 'ville', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"devis": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		isStatus: true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prix: field('currency'),
-			dateCreation: field('date'),
-			description: field('text-long'),
-			email: field('email'),
-			heureCreation: field('text'),
-			dateDebut: field('date'),
-			telephone: field('phone'),
-			client: field('fk-client.id'),
-			fournisseur: field('fk-fournisseur.id'),
-			hotel_gamme: field('fk-hotel_gamme.id'),
-			produit: field('fk-produit.id'),
-			produit_tarif: field('fk-produit_tarif.id'),
-			produit_tarif_gamme: field('fk-produit_tarif_gamme.id'),
-			transport: field('fk-transport.id'),
-			devis_type: field('fk-devis_type.id'),
-			produit_type: field('fk-produit_type.id'),
-			devis_statut: field('fk-devis_statut.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			archive: field('text'),
-			devisCommentaire: field('text'),
-			dreamLetter: field('text'),
-			envie: field('text'),
-			ipClient: field('text'),
-			md5: field('text'),
-			md5: field('text'),
-			mongodate: field('text'),
-			nombreAdulte: field('text'),
-			nombreEnfant: field('text'),
-			numero: field('text'),
-			prixSite: field('url'),
-			scope: field('text'),
-			sexe: field('text'),
-			timestamp: field('text'),
-			type: field('text'),
-			nbreAdulte: field('text'),
-		},
-		fks: {
-				client: { code: 'client', multiple: false },
-				fournisseur: { code: 'fournisseur', multiple: false },
-				hotel_gamme: { code: 'hotel_gamme', multiple: false },
-				produit: { code: 'produit', multiple: false },
-				produit_tarif: { code: 'produit_tarif', multiple: false },
-				produit_tarif_gamme: { code: 'produit_tarif_gamme', multiple: false },
-				transport: { code: 'transport', multiple: false },
-				devis_type: { code: 'devis_type', multiple: false },
-				produit_type: { code: 'produit_type', multiple: false },
-				devis_statut: { code: 'devis_statut', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_acompte": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prix: field('currency'),
-			date: field('date'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_acompte_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_annotation": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_envie": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_mail": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_marge": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			prixAchat: field('text'),
-			// ── undeclared in registry, detected in _base — verify ──
-			iddevis_prestataire: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_marge_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_passager": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prenom: field('text'),
-			email: field('email'),
-			telephone: field('phone'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_prestation": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			prix: field('currency'),
-			quantite: field('number'),
-			description: field('text-long'),
-			total: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_statut": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"devis_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			// ── undeclared in registry, detected in _base — verify ──
-			petitNom: field('text'),
-			description: field('text'),
-			iddevis_type_type: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"document": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"document_extension": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"document_type": {
-		keyPath: '++id',
 		base: 'machine_base',
-		isGroup:  true,
+		isGroup: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"dossier_devis": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			devis: field('fk-devis.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			numeroDossierDevis: field('text'),
-			numero: field('text'),
-		},
-		fks: {
-				devis: { code: 'devis', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"facture": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			date: field('date'),
-			total: field('text'),
-			client: field('fk-client.id'),
-			devis: field('fk-devis.id'),
-			dossier_devis: field('fk-dossier_devis.id'),
-			facture_type: field('fk-facture_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			grille: field('text'),
-			numeroDossierDevis: field('text'),
-			numeroFactureDevis: field('text'),
-			pctTvaFR: field('text'),
-			pctTvaHUE: field('text'),
-			pctTvaUE: field('text'),
-			referenceExterne: field('text'),
-			titre: field('text'),
-			txn_id: field('text'),
-			type: field('text'),
-			numeroDossier_devis: field('text'),
-		},
-		fks: {
-				client: { code: 'client', multiple: false },
-				devis: { code: 'devis', multiple: false },
-				dossier_devis: { code: 'dossier_devis', multiple: false },
-				facture_type: { code: 'facture_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"facture_ligne": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"facture_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"feed_header": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-			url: field('url'),
-			estActif: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fleuve": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			image: field('text'),
-			description: field('text-long'),
-			pays: field('fk-pays.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			fleuve_id: field('text'),
-			idfleuve_trad: field('text'),
-			lang_idlang: field('text'),
-			ordre: field('text'),
-			url: field('url'),
-		},
-		fks: {
-				pays: { code: 'pays', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"fleuve_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fournisseur": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			color: field('text'),
-			petitNom: field('text'),
-			description: field('text-long'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fournisseur_clause": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			descriptionHTML: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fournisseur_clause_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fournisseur_presentation": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fournisseur_presentation_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"fournisseur_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			transport_type: field('fk-transport_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			adjectif: field('text'),
-			pluriel: field('text'),
-			prefixe: field('text'),
-		},
-		fks: {
-				transport_type: { code: 'transport_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"gamme": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			image: field('text'),
-			ordre: field('text'),
-			description: field('text-long'),
-			produit_type: field('fk-produit_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			idgamme_trad: field('text'),
-			idlang: field('text'),
-			idtype_produit: field('text'),
-			visibleClient: field('text'),
-		},
-		fks: {
-				produit_type: { code: 'produit_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"groupe_agent": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"hotel": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			image: field('text'),
-			codePostal: field('text'),
-			adresse: field('text'),
-			ville: field('text'),
-			ville: field('fk-ville.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			description: field('text'),
-			etoile: field('text'),
-			nombreVue: field('text'),
-		},
-		fks: {
-				ville: { code: 'ville', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"hotel_clause": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"hotel_gamme": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			gamme: field('fk-gamme.id'),
-			hotel: field('fk-hotel.id'),
-			produit_type: field('fk-produit_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			ordreGamme: field('text'),
-		},
-		fks: {
-				gamme: { code: 'gamme', multiple: false },
-				hotel: { code: 'hotel', multiple: false },
-				produit_type: { code: 'produit_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"hotel_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			petitNom: field('text'),
-			description: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"mer": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			image: field('text'),
-			petitNom: field('text'),
-			description: field('text-long'),
-			mer_type: field('fk-mer_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			nombreVue: field('text'),
-		},
-		fks: {
-				mer_type: { code: 'mer_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"mer_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"newsletter": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			color: field('text'),
-			date: field('date'),
-			description: field('text-long'),
-			url: field('url'),
-			bgcolor: field('text'),
-			// ── undeclared in registry, detected in _base — verify ──
-			F_action: field('text'),
-			color_background: field('text'),
-			content: field('text'),
-			date_created: field('text'),
-			date_modified: field('text'),
-			date_: field('text'),
-			preview_content: field('text'),
-			title: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"newsletter_block": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"newsletter_item": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-			ordre: field('text'),
-			url: field('url'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"newsletter_item_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			quantite: field('number', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"newsletter_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"note": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			estActif: field('text'),
-			idnote_origine: field('text'),
-			idagent_writer: field('text'),
-			texte: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"paiement": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			devis: field('fk-devis.id'),
-			client: field('fk-client.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			montant: field('text'),
-			type: field('text'),
-			mode: field('text'),
-			referenceExterne: field('text'),
-			pseudoAgent: field('text'),
-			numeroDossierDevis: field('text'),
+			id:       { type: 'id', readonly: true },
+			code:     { type: 'text', required: true },
+			name:     { type: 'text', required: true },
+			isActive: { type: 'boolean' },
+			text:     { type: 'text-long' },
 		},
 		fks: {
-				devis: { code: 'devis', multiple: false },
-				client: { code: 'client', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"pays": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			image: field('text'),
-			continent: field('fk-continent.id'),
-			destination: field('fk-destination.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			aVisa: field('text'),
-			adjectifContinent: field('text'),
-			adjectifDestination: field('text'),
-			adjectif: field('text'),
-			count: field('text'),
-			countCF: field('text'),
-			countCR: field('text'),
-			countTR: field('text'),
-			description: field('text'),
-			infoVisa: field('text'),
-			ordre: field('text'),
-			prefixeContinent: field('text'),
-			prefixeDestination: field('text'),
-			prefixe: field('text'),
-			nombreVue: field('text'),
+			appuser: { code: 'appuser', multiple: false },
 		},
-		fks: {
-				continent: { code: 'continent', multiple: false },
-				destination: { code: 'destination', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"prestataire": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			commercial: field('text'),
-			commission: field('text'),
-			contact: field('text'),
-			description: field('text'),
-			fax: field('phone'),
-			lienweb: field('url'),
-			mailCommercial: field('email'),
-			scope: field('text'),
-			telephone: field('phone'),
-			telephoneResa: field('phone'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"produit": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prix: field('currency'),
-			date: field('date'),
-			duree: field('text'),
-			estTop: field('text'),
-			estVisible: field('text'),
-			estActif: field('text'),
-			continent: field('fk-continent.id'),
-			destination: field('fk-destination.id'),
-			fournisseur: field('fk-fournisseur.id'),
-			fournisseur_type: field('fk-fournisseur_type.id'),
-			prestataire: field('fk-prestataire.id'),
-			produit_type: field('fk-produit_type.id'),
-			transport: field('fk-transport.id'),
-			transport_type: field('fk-transport_type.id'),
-			ville: field('fk-ville.id'),
-			pays: field('fk-pays.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			autreNom_Transport: field('text'),
-			description: field('text'),
-			dureeJour: field('text'),
-			estActifFournisseur: field('text'),
-			estTopDestination: field('text'),
-			estTopFournisseur: field('text'),
-			grilleClause: field('text'),
-			grilleDestination: field('text'),
-			grilleEtape: field('text'),
-			grillePrestation: field('text'),
-			grilleTheme: field('text'),
-			has_changed: field('text'),
-			idmarche: field('text'),
-			idpaysArrivee: field('text'),
-			idpaysDepart: field('text'),
-			idvilleArrivee: field('text'),
-			idvilleDepart: field('text'),
-			nombreVue: field('text'),
-			ordreFournisseur: field('text'),
-			ordreHomePage: field('text'),
-			pensionComplete: field('text'),
-			petitNomFournisseur: field('text'),
-			plurielProduit_type: field('text'),
-			plusPetitPrix: field('text'),
-			prefixeDestination: field('text'),
-			prefixeFournisseur_type: field('text'),
-			prefixeProduit_type: field('text'),
-			prixPromo: field('text'),
-			promo: field('text'),
-			reference: field('text'),
-			scope: field('text'),
-			sousTitre: field('text'),
-			sousTitrePromo: field('text'),
-			texteProduit_clause: field('text'),
-			villeArrivee: field('text'),
-			villeDepart: field('text'),
-			webNomProduit_type: field('text'),
-			webPlurielProduit_type: field('text'),
-			grilleDate: field('text'),
-			idvilleArrivee: field('text'),
-		},
-		fks: {
-				continent: { code: 'continent', multiple: false },
-				destination: { code: 'destination', multiple: false },
-				fournisseur: { code: 'fournisseur', multiple: false },
-				fournisseur_type: { code: 'fournisseur_type', multiple: false },
-				prestataire: { code: 'prestataire', multiple: false },
-				produit_type: { code: 'produit_type', multiple: false },
-				transport: { code: 'transport', multiple: false },
-				transport_type: { code: 'transport_type', multiple: false },
-				ville: { code: 'ville', multiple: false },
-				pays: { code: 'pays', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_etape": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			image: field('text'),
-			ordre: field('text'),
-			description: field('text-long'),
-			heureDebut: field('date'),
-			heureFin: field('date'),
-			produit: field('fk-produit.id'),
-			ville: field('fk-ville.id'),
-		},
-		fks: {
-				produit: { code: 'produit', multiple: false },
-				ville: { code: 'ville', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_selection": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			F_action: field('text'),
-			actif: field('text'),
-			afterAction: field('text'),
-			description: field('text'),
-			reloadModule: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_tarif": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prix: field('currency'),
-			date: field('date'),
-			produit: field('fk-produit.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			mongodate: field('text'),
-			annee: field('text'),
-			mois: field('text'),
-			mois_fr: field('text'),
-			mois_annee_fr: field('text'),
-		},
-		fks: {
-				produit: { code: 'produit', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_tarif_gamme": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prix: field('currency'),
-			gamme: field('fk-gamme.id'),
-			produit: field('fk-produit.id'),
-			produit_tarif: field('fk-produit_tarif.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			prixPromo: field('text'),
-		},
-		fks: {
-				gamme: { code: 'gamme', multiple: false },
-				produit: { code: 'produit', multiple: false },
-				produit_tarif: { code: 'produit_tarif', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_tarif_gamme_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			description: field('text'),
-			estActif: field('text'),
-			estVisible: field('text'),
-			metaDescription: field('text'),
-			metaTitle: field('text'),
-			ordre: field('text'),
-			pluriel: field('text'),
-			webNom: field('text'),
-			webPluriel: field('text'),
-			nombreVue: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"produit_type_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"site": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			ATTR: field('text'),
-			SERVER_ADDR: field('text'),
-			contact: field('text'),
-			domain: field('text'),
-			sousTitre: field('text'),
-			texteIntro: field('text'),
-			url: field('url'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"site_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"tache": {
-		keyPath: '++id',
 		base: 'machine_base',
 		isType:   true,
 		isStatus: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			dateDebut: field('date'),
-			dateFin: field('date'),
-			description: field('text-long'),
-			heureDebut: field('date'),
-			heureFin: field('date'),
-			client: field('fk-client.id'),
-			tache_type: field('fk-tache_type.id'),
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			startDate:   { type: 'date' },
+			endDate:     { type: 'date' },
+			description: { type: 'text-long' },
+			startTime:   { type: 'datetime' },
+			endTime:     { type: 'datetime' },
 		},
 		fks: {
-				client: { code: 'client', multiple: false },
-				tache_type: { code: 'tache_type', multiple: false },
-			},
+			client:       { code: 'client',       multiple: false },
+			tache_type:   { code: 'tache_type',   multiple: false },
+			tache_statut: { code: 'tache_statut', multiple: false },
+		},
 		template: { presentation: 'name code' },
 	},
 
 	"tache_statut": {
-		keyPath: '++id',
 		base: 'machine_base',
-		isGroup:  true,
+		isGroup: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			color: field('text'),
-			icon: field('text'),
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+			color: { type: 'text' },
+			icon:  { type: 'text' },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"tache_type": {
-		keyPath: '++id',
 		base: 'machine_base',
-		isGroup:  true,
+		isGroup: true,
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			color: field('text'),
-			icon: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"theme": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			theme_type: field('fk-theme_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			actifProduit_: field('text'),
-			actifProduit_theme_type: field('text'),
-			actif: field('text'),
-			actifTheme_type: field('text'),
-			descriptionProduit_: field('text'),
-			description: field('text'),
-			idproduit_: field('text'),
-			idproduit_theme_type: field('text'),
-			petitNom: field('text'),
-			atout: field('text'),
-			information: field('text'),
-		},
-		fks: {
-				theme_type: { code: 'theme_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"theme_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			actifProduit_: field('text'),
-			actif: field('text'),
-			idproduit_: field('text'),
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+			color: { type: 'text' },
+			icon:  { type: 'text' },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"todo": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"transport": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			color: field('text'),
-			description: field('text-long'),
-			fournisseur: field('fk-fournisseur.id'),
-			produit_type: field('fk-produit_type.id'),
-			transport_type: field('fk-transport_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			autreNom_: field('text'),
-			countProduit: field('text'),
-			descriptionExt: field('text'),
-			estActifProduit_type: field('text'),
-			estTop: field('text'),
-			ordreProduit_type: field('text'),
-			plurielProduit_type: field('text'),
-			plurielTransport_type: field('text'),
-			prefixeProduit_type: field('text'),
-			scope: field('text'),
-			webNomProduit_type: field('text'),
-			webPlurielProduit_type: field('text'),
-		},
-		fks: {
-				fournisseur: { code: 'fournisseur', multiple: false },
-				produit_type: { code: 'produit_type', multiple: false },
-				transport_type: { code: 'transport_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"transport_cabine": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-			description: field('text-long'),
-			transport: field('fk-transport.id'),
-			gamme: field('fk-gamme.id'),
-			produit_type: field('fk-produit_type.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			ordreGamme: field('text'),
-			descriptionExtTransport_gamme: field('text'),
-			idgamme_trad: field('text'),
-			idlang: field('text'),
-			visibleClientGamme: field('text'),
-		},
-		fks: {
-				transport: { code: 'transport', multiple: false },
-				gamme: { code: 'gamme', multiple: false },
-				produit_type: { code: 'produit_type', multiple: false },
-			},
-		template: { presentation: 'name code' },
-	},
-
-	"transport_gamme": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"transport_pont": {
-		keyPath: '++id',
-		base: 'machine_base',
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			ordre: field('text'),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"transport_presentation": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isType:   true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"transport_presentation_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-		},
-		fks: {},
-		template: { presentation: 'name code' },
-	},
-
-	"transport_type": {
-		keyPath: '++id',
-		base: 'machine_base',
-		isGroup:  true,
-		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			pluriel: field('text'),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"type_activite": {
-		keyPath: '++id',
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			// ── undeclared in registry, detected in _base — verify ──
-			petitNom: field('text'),
-			description: field('text'),
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			shortName:   { type: 'text' },
+			description: { type: 'text' },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
-	"vacance": {
-		keyPath: '++id',
+	// crfr-specific user extensions (not covered by core appuser_*)
+	"user_list": {
 		base: 'machine_base',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			dateDebut: field('date'),
-			dateFin: field('date'),
-			// ── undeclared in registry, detected in _base — verify ──
-			F_action: field('text'),
-			afterAction: field('text'),
-			description: field('text'),
-			descriptionVance: field('text'),
-			reloadModule: field('text'),
-			zone: field('text'),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			appuser: { code: 'appuser', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"user_note": {
+		base: 'machine_base',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			appuser: { code: 'appuser', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"user_table": {
+		base: 'machine_base',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			appuser: { code: 'appuser', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"user_tuile": {
+		base: 'machine_base',
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			value: { type: 'text' },
+		},
+		fks: {
+			appuser: { code: 'appuser', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"vacance": {
+		base: 'machine_base',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			startDate:   { type: 'date' },
+			endDate:     { type: 'date' },
+			description: { type: 'text' },
+			zone:        { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	// ── DEVIS ─────────────────────────────────────────────────────────────────
+
+	"client": {
+		base: 'machine_devis',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			isActive:    { type: 'boolean' },
+			firstName:   { type: 'text' },
+			createdAt:   { type: 'date' },
+			postalCode:  { type: 'text' },
+			address:     { type: 'text' },
+			address2:    { type: 'text' },
+			city:        { type: 'text' },
+			email:       { type: 'email' },
+			mobilePhone: { type: 'phone' },
+			phone:       { type: 'phone' },
+			gender:      { type: 'text' },
+			isClient:    { type: 'boolean' },
+		},
+		fks: {
+			client_type: { code: 'client_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"client_type": {
+		base: 'machine_devis',
+		isGroup: true,
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"devis": {
+		base: 'machine_devis',
+		isType:   true,
+		isStatus: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			price:       { type: 'currency' },
+			createdAt:   { type: 'date' },
+			description: { type: 'text-long' },
+			email:       { type: 'email' },
+			startDate:   { type: 'date' },
+			phone:       { type: 'phone' },
+			adultCount:  { type: 'number' },
+			childCount:  { type: 'number' },
+			number:      { type: 'text' },
+			isArchived:  { type: 'boolean' },
+			comment:     { type: 'text' },
+			wishLetter:  { type: 'text-long' },
+			desire:      { type: 'text' },
+			gender:      { type: 'text' },
+			siteUrl:     { type: 'url' },
+		},
+		fks: {
+			client:              { code: 'client',              multiple: false },
+			fournisseur:         { code: 'fournisseur',         multiple: false },
+			hotel_gamme:         { code: 'hotel_gamme',         multiple: false },
+			produit:             { code: 'produit',             multiple: false },
+			produit_tarif:       { code: 'produit_tarif',       multiple: false },
+			produit_tarif_gamme: { code: 'produit_tarif_gamme', multiple: false },
+			transport:           { code: 'transport',           multiple: false },
+			devis_type:          { code: 'devis_type',          multiple: false },
+			produit_type:        { code: 'produit_type',        multiple: false },
+			devis_statut:        { code: 'devis_statut',        multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_acompte": {
+		base: 'machine_devis',
+		isType: true,
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			price: { type: 'currency' },
+			date:  { type: 'date' },
+		},
+		fks: {
+			devis:              { code: 'devis',              multiple: false },
+			devis_acompte_type: { code: 'devis_acompte_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_acompte_type": {
+		base: 'machine_devis',
+		isGroup: true,
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_annotation": {
+		base: 'machine_devis',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			devis: { code: 'devis', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_envie": {
+		base: 'machine_devis',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_mail": {
+		base: 'machine_devis',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			devis: { code: 'devis', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_marge": {
+		base: 'machine_devis',
+		isType: true,
+		fields: {
+			id:            { type: 'id', readonly: true },
+			code:          { type: 'text', required: true },
+			name:          { type: 'text', required: true },
+			order:         { type: 'number' },
+			purchasePrice: { type: 'currency' },
+		},
+		fks: {
+			devis:            { code: 'devis',            multiple: false },
+			devis_marge_type: { code: 'devis_marge_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_marge_type": {
+		base: 'machine_devis',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_passager": {
+		base: 'machine_devis',
+		fields: {
+			id:        { type: 'id', readonly: true },
+			code:      { type: 'text', required: true },
+			name:      { type: 'text', required: true },
+			firstName: { type: 'text' },
+			email:     { type: 'email' },
+			phone:     { type: 'phone' },
+		},
+		fks: {
+			devis:  { code: 'devis',  multiple: false },
+			client: { code: 'client', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_prestation": {
+		base: 'machine_devis',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			order:       { type: 'number' },
+			price:       { type: 'currency' },
+			quantity:    { type: 'number' },
+			description: { type: 'text-long' },
+			total:       { type: 'currency' },
+		},
+		fks: {
+			devis: { code: 'devis', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_statut": {
+		base: 'machine_devis',
+		isGroup: true,
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"devis_type": {
+		base: 'machine_devis',
+		isGroup: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			order:       { type: 'number' },
+			shortName:   { type: 'text' },
+			description: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"document": {
+		base: 'machine_devis',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			devis: { code: 'devis', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"dossier_devis": {
+		base: 'machine_devis',
+		fields: {
+			id:            { type: 'id', readonly: true },
+			code:          { type: 'text', required: true },
+			name:          { type: 'text', required: true },
+			number:        { type: 'text' },
+			dossierNumber: { type: 'text' },
+		},
+		fks: {
+			devis: { code: 'devis', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"facture": {
+		base: 'machine_devis',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			date:        { type: 'date' },
+			total:       { type: 'currency' },
+			vatRateFR:   { type: 'text' },
+			vatRateHUE:  { type: 'text' },
+			vatRateUE:   { type: 'text' },
+			externalRef: { type: 'text' },
+			title:       { type: 'text' },
+		},
+		fks: {
+			client:       { code: 'client',       multiple: false },
+			devis:        { code: 'devis',         multiple: false },
+			dossier_devis:{ code: 'dossier_devis', multiple: false },
+			facture_type: { code: 'facture_type',  multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"facture_ligne": {
+		base: 'machine_devis',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {
+			facture: { code: 'facture', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"facture_type": {
+		base: 'machine_devis',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"paiement": {
+		base: 'machine_devis',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			amount:      { type: 'currency' },
+			mode:        { type: 'text' },
+			externalRef: { type: 'text' },
+		},
+		fks: {
+			devis:  { code: 'devis',  multiple: false },
+			client: { code: 'client', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"prestataire": {
+		base: 'machine_devis',
+		fields: {
+			id:               { type: 'id', readonly: true },
+			code:             { type: 'text', required: true },
+			name:             { type: 'text', required: true },
+			contact:          { type: 'text' },
+			commission:       { type: 'text' },
+			phone:            { type: 'phone' },
+			reservationPhone: { type: 'phone' },
+			fax:              { type: 'phone' },
+			commercialEmail:  { type: 'email' },
+			website:          { type: 'url' },
+			description:      { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	// ── NEWSLETTER ────────────────────────────────────────────────────────────
+
+	"newsletter": {
+		base: 'machine_newsletter',
+		isType: true,
+		fields: {
+			id:             { type: 'id', readonly: true },
+			code:           { type: 'text', required: true },
+			name:           { type: 'text', required: true },
+			color:          { type: 'text' },
+			date:           { type: 'date' },
+			description:    { type: 'text-long' },
+			url:            { type: 'url' },
+			bgColor:        { type: 'text' },
+			content:        { type: 'text-long' },
+			previewContent: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"newsletter_block": {
+		base: 'machine_newsletter',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"newsletter_item": {
+		base: 'machine_newsletter',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+			order:       { type: 'number' },
+			url:         { type: 'url' },
+		},
+		fks: {
+			newsletter: { code: 'newsletter', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"newsletter_item_type": {
+		base: 'machine_newsletter',
+		isGroup: true,
+		fields: {
+			id:       { type: 'id', readonly: true },
+			code:     { type: 'text', required: true },
+			name:     { type: 'text', required: true },
+			quantity: { type: 'number', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"newsletter_type": {
+		base: 'machine_newsletter',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	// ── PRODUCTION ────────────────────────────────────────────────────────────
+
+	"aeroport": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			shortName:   { type: 'text' },
+			description: { type: 'text-long' },
+			image:       { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"asavoir": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			shortName:   { type: 'text' },
+			asset:       { type: 'text' },
+			description: { type: 'text' },
+			information: { type: 'text' },
+		},
+		fks: {
+			asavoir_type: { code: 'asavoir_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"asavoir_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			shortName:   { type: 'text' },
+			asset:       { type: 'text' },
+			description: { type: 'text' },
+			information: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"continent": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+			color:       { type: 'text' },
+			ref:         { type: 'text' },
+			adjective:   { type: 'text' },
+			order:       { type: 'number' },
+			prefix:      { type: 'text' },
+			isFeatured:  { type: 'boolean' },
+			isVisible:   { type: 'boolean' },
+			isActive:    { type: 'boolean' },
+			shortName:   { type: 'text' },
+			viewCount:   { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"destination": {
+		base: 'machine_production',
+		fields: {
+			id:                { type: 'id', readonly: true },
+			code:              { type: 'text', required: true },
+			name:              { type: 'text', required: true },
+			color:             { type: 'text' },
+			ref:               { type: 'text' },
+			information:       { type: 'text' },
+			description:       { type: 'text-long' },
+			adjective:         { type: 'text' },
+			adjectifContinent: { type: 'text' },
+			adjectifPays:      { type: 'text' },
+			cityDescription:   { type: 'text' },
+			isFeatured:        { type: 'boolean' },
+			cityLatitude:      { type: 'text' },
+			cityLongitude:     { type: 'text' },
+			countryOrder:      { type: 'text' },
+			cityOrder:         { type: 'text' },
+			continentPrefix:   { type: 'text' },
+			prefix:            { type: 'text' },
+			countryPrefix:     { type: 'text' },
+			viewCount:         { type: 'number' },
+		},
+		fks: {
+			continent: { code: 'continent', multiple: false },
+			pays:      { code: 'pays',      multiple: false },
+			ville:     { code: 'ville',     multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"fleuve": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			image:       { type: 'text' },
+			description: { type: 'text-long' },
+			order:       { type: 'number' },
+			url:         { type: 'url' },
+		},
+		fks: {
+			pays: { code: 'pays', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"fleuve_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"fournisseur": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			color:       { type: 'text' },
+			shortName:   { type: 'text' },
+			description: { type: 'text-long' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"fournisseur_clause": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:              { type: 'id', readonly: true },
+			code:            { type: 'text', required: true },
+			name:            { type: 'text', required: true },
+			order:           { type: 'number' },
+			descriptionHTML: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"fournisseur_clause_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"fournisseur_presentation": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"fournisseur_presentation_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"fournisseur_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:        { type: 'id', readonly: true },
+			code:      { type: 'text', required: true },
+			name:      { type: 'text', required: true },
+			adjective: { type: 'text' },
+			plural:    { type: 'text' },
+			prefix:    { type: 'text' },
+		},
+		fks: {
+			transport_type: { code: 'transport_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"gamme": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			image:       { type: 'text' },
+			order:       { type: 'number' },
+			description: { type: 'text-long' },
+		},
+		fks: {
+			produit_type: { code: 'produit_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"hotel": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			image:       { type: 'text' },
+			postalCode:  { type: 'text' },
+			address:     { type: 'text' },
+			city:        { type: 'text' },
+			description: { type: 'text' },
+			stars:       { type: 'text' },
+			viewCount:   { type: 'number' },
+		},
+		fks: {
+			ville: { code: 'ville', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"hotel_clause": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+		},
+		fks: {
+			hotel: { code: 'hotel', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"hotel_gamme": {
+		base: 'machine_production',
+		fields: {
+			id:         { type: 'id', readonly: true },
+			code:       { type: 'text', required: true },
+			name:       { type: 'text', required: true },
+			gammeOrder: { type: 'text' },
+		},
+		fks: {
+			gamme:        { code: 'gamme',        multiple: false },
+			hotel:        { code: 'hotel',        multiple: false },
+			produit_type: { code: 'produit_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"hotel_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			shortName:   { type: 'text' },
+			description: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"mer": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			image:       { type: 'text' },
+			shortName:   { type: 'text' },
+			description: { type: 'text-long' },
+			viewCount:   { type: 'number' },
+		},
+		fks: {
+			mer_type: { code: 'mer_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"mer_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"pays": {
+		base: 'machine_production',
+		fields: {
+			id:                  { type: 'id', readonly: true },
+			code:                { type: 'text', required: true },
+			name:                { type: 'text', required: true },
+			image:               { type: 'text' },
+			hasVisa:             { type: 'text' },
+			adjectifContinent:   { type: 'text' },
+			adjectifDestination: { type: 'text' },
+			adjective:           { type: 'text' },
+			count:               { type: 'number' },
+			description:         { type: 'text' },
+			visaInfo:            { type: 'text' },
+			order:               { type: 'number' },
+			continentPrefix:     { type: 'text' },
+			destinationPrefix:   { type: 'text' },
+			prefix:              { type: 'text' },
+			viewCount:           { type: 'number' },
+		},
+		fks: {
+			continent:   { code: 'continent',   multiple: false },
+			destination: { code: 'destination', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"produit": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:                    { type: 'id', readonly: true },
+			code:                  { type: 'text', required: true },
+			name:                  { type: 'text', required: true },
+			price:                 { type: 'currency' },
+			date:                  { type: 'date' },
+			duration:              { type: 'number' },
+			durationDays:          { type: 'text' },
+			isFeatured:            { type: 'boolean' },
+			isVisible:             { type: 'boolean' },
+			isActive:              { type: 'boolean' },
+			isActiveFournisseur:   { type: 'boolean' },
+			isFeaturedDestination: { type: 'boolean' },
+			isFeaturedFournisseur: { type: 'boolean' },
+			description:           { type: 'text' },
+			promoPrice:            { type: 'currency' },
+			promoText:             { type: 'text' },
+			reference:             { type: 'text' },
+			subtitle:              { type: 'text' },
+			promoSubtitle:         { type: 'text' },
+			altTransportName:      { type: 'text' },
+			fullBoard:             { type: 'text' },
+			supplierShortName:     { type: 'text' },
+			lowestPrice:           { type: 'text' },
+			destinationPrefix:     { type: 'text' },
+			supplierTypePrefix:    { type: 'text' },
+			productTypePrefix:     { type: 'text' },
+			homePageOrder:         { type: 'text' },
+			supplierOrder:         { type: 'text' },
+			viewCount:             { type: 'number' },
+			arrivalCityName:       { type: 'text' },
+			departureCityName:     { type: 'text' },
+		},
+		fks: {
+			continent:      { code: 'continent',      multiple: false },
+			destination:    { code: 'destination',    multiple: false },
+			fournisseur:    { code: 'fournisseur',    multiple: false },
+			fournisseur_type: { code: 'fournisseur_type', multiple: false },
+			prestataire:    { code: 'prestataire',    multiple: false },
+			produit_type:   { code: 'produit_type',   multiple: false },
+			transport:      { code: 'transport',      multiple: false },
+			transport_type: { code: 'transport_type', multiple: false },
+			ville:          { code: 'ville',          multiple: false },
+			pays:           { code: 'pays',           multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_etape": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			image:       { type: 'text' },
+			order:       { type: 'number' },
+			description: { type: 'text-long' },
+			startTime:   { type: 'datetime' },
+			endTime:     { type: 'datetime' },
+		},
+		fks: {
+			produit: { code: 'produit', multiple: false },
+			ville:   { code: 'ville',   multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_selection": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			isActive:    { type: 'boolean' },
+			description: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_tarif": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			price:       { type: 'currency' },
+			date:        { type: 'date' },
+			year:        { type: 'text' },
+			month:       { type: 'text' },
+			monthFr:     { type: 'text' },
+			monthYearFr: { type: 'text' },
+		},
+		fks: {
+			produit: { code: 'produit', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_tarif_gamme": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:         { type: 'id', readonly: true },
+			code:       { type: 'text', required: true },
+			name:       { type: 'text', required: true },
+			price:      { type: 'currency' },
+			promoPrice: { type: 'currency' },
+		},
+		fks: {
+			gamme:         { code: 'gamme',         multiple: false },
+			produit:       { code: 'produit',       multiple: false },
+			produit_tarif: { code: 'produit_tarif', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_tarif_gamme_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_type": {
+		base: 'machine_production',
+		isType:  true,
+		isGroup: true,
+		fields: {
+			id:              { type: 'id', readonly: true },
+			code:            { type: 'text', required: true },
+			name:            { type: 'text', required: true },
+			description:     { type: 'text' },
+			isActive:        { type: 'boolean' },
+			isVisible:       { type: 'boolean' },
+			metaDescription: { type: 'text' },
+			metaTitle:       { type: 'text' },
+			order:           { type: 'number' },
+			plural:          { type: 'text' },
+			webName:         { type: 'text' },
+			webPlural:       { type: 'text' },
+			viewCount:       { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"produit_type_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"theme": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			shortName:   { type: 'text' },
+			asset:       { type: 'text' },
+			description: { type: 'text' },
+			information: { type: 'text' },
+			isActive:    { type: 'boolean' },
+		},
+		fks: {
+			theme_type: { code: 'theme_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"theme_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:       { type: 'id', readonly: true },
+			code:     { type: 'text', required: true },
+			name:     { type: 'text', required: true },
+			isActive: { type: 'boolean' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"transport": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:             { type: 'id', readonly: true },
+			code:           { type: 'text', required: true },
+			name:           { type: 'text', required: true },
+			color:          { type: 'text' },
+			description:    { type: 'text-long' },
+			altName:        { type: 'text' },
+			descriptionExt: { type: 'text' },
+			isFeatured:     { type: 'boolean' },
+		},
+		fks: {
+			fournisseur:    { code: 'fournisseur',    multiple: false },
+			produit_type:   { code: 'produit_type',   multiple: false },
+			transport_type: { code: 'transport_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"transport_cabine": {
+		base: 'machine_production',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			order:       { type: 'number' },
+			description: { type: 'text-long' },
+		},
+		fks: {
+			transport:    { code: 'transport',    multiple: false },
+			gamme:        { code: 'gamme',        multiple: false },
+			produit_type: { code: 'produit_type', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"transport_gamme": {
+		base: 'machine_production',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"transport_pont": {
+		base: 'machine_production',
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"transport_presentation": {
+		base: 'machine_production',
+		isType: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"transport_presentation_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"transport_type": {
+		base: 'machine_production',
+		isGroup: true,
+		fields: {
+			id:     { type: 'id', readonly: true },
+			code:   { type: 'text', required: true },
+			name:   { type: 'text', required: true },
+			plural: { type: 'text' },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"ville": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_production',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			description: field('text-long'),
-			information: field('text'),
-			color: field('text'),
-			ref: field('text'),
-			latitude: field('text'),
-			longitude: field('text'),
-			estTop: field('text'),
-			continent: field('fk-continent.id'),
-			destination: field('fk-destination.id'),
-			pays: field('fk-pays.id'),
-			// ── undeclared in registry, detected in _base — verify ──
-			adjectifContinent: field('text'),
-			adjectifDestination: field('text'),
-			adjectifPays: field('text'),
-			estPort: field('text'),
-			ordrePays: field('text'),
-			ordre: field('text'),
-			prefixeContinent: field('text'),
-			prefixeDestination: field('text'),
-			prefixePays: field('text'),
+			id:                  { type: 'id', readonly: true },
+			code:                { type: 'text', required: true },
+			name:                { type: 'text', required: true },
+			description:         { type: 'text-long' },
+			information:         { type: 'text' },
+			color:               { type: 'text' },
+			ref:                 { type: 'text' },
+			latitude:            { type: 'text' },
+			longitude:           { type: 'text' },
+			isFeatured:          { type: 'boolean' },
+			isPort:              { type: 'boolean' },
+			adjectifContinent:   { type: 'text' },
+			adjectifDestination: { type: 'text' },
+			adjectifPays:        { type: 'text' },
+			countryOrder:        { type: 'text' },
+			order:               { type: 'number' },
+			continentPrefix:     { type: 'text' },
+			destinationPrefix:   { type: 'text' },
+			countryPrefix:       { type: 'text' },
 		},
 		fks: {
-				continent: { code: 'continent', multiple: false },
-				destination: { code: 'destination', multiple: false },
-				pays: { code: 'pays', multiple: false },
-			},
+			continent:   { code: 'continent',   multiple: false },
+			destination: { code: 'destination', multiple: false },
+			pays:        { code: 'pays',         multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	// ── SITE ──────────────────────────────────────────────────────────────────
+
+	"article": {
+		base: 'machine_site',
+		isType: true,
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text' },
+			content:     { type: 'text-long' },
+			order:       { type: 'number' },
+			thumbnail:   { type: 'text' },
+		},
+		fks: {
+			categorie: { code: 'categorie', multiple: false },
+			site:      { code: 'site',      multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"article_type": {
+		base: 'machine_site',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"categorie": {
+		base: 'machine_site',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text' },
+			order:       { type: 'number' },
+		},
+		fks: {
+			site: { code: 'site', multiple: false },
+		},
+		template: { presentation: 'name code' },
+	},
+
+	"site": {
+		base: 'machine_site',
+		isType: true,
+		fields: {
+			id:       { type: 'id', readonly: true },
+			code:     { type: 'text', required: true },
+			name:     { type: 'text', required: true },
+			contact:  { type: 'text' },
+			domain:   { type: 'text' },
+			subtitle: { type: 'text' },
+			intro:    { type: 'text-long' },
+			url:      { type: 'url' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"site_type": {
+		base: 'machine_site',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	// ── SOCKETS ───────────────────────────────────────────────────────────────
+
+	"daemon": {
+		base: 'machine_sockets',
+		fields: {
+			id:        { type: 'id', readonly: true },
+			code:      { type: 'text', required: true },
+			name:      { type: 'text', required: true },
+			date:      { type: 'date' },
+			startDate: { type: 'date' },
+			startTime: { type: 'datetime' },
+			time:      { type: 'datetime' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	// ── WEB ───────────────────────────────────────────────────────────────────
+
+	"appsite": {
+		base: 'machine_web',
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+			url:  { type: 'url' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"appsite_page": {
+		base: 'machine_web',
+		isType: true,
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"appsite_page_ligne": {
+		base: 'machine_web',
+		fields: {
+			id:    { type: 'id', readonly: true },
+			code:  { type: 'text', required: true },
+			name:  { type: 'text', required: true },
+			order: { type: 'number', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"appsite_page_type": {
+		base: 'machine_web',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"appsite_template": {
+		base: 'machine_web',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	"appsite_template_type": {
+		base: 'machine_web',
+		isGroup: true,
+		fields: {
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	// ── XML ───────────────────────────────────────────────────────────────────
+
+	"feed_header": {
+		base: 'machine_xml',
+		fields: {
+			id:          { type: 'id', readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text-long' },
+			url:         { type: 'url' },
+			isActive:    { type: 'boolean' },
+		},
+		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_conf": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_cruise": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_destination": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_itinerary": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_job": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_price": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
-			prix: field('currency'),
-			dateDebut: field('date'),
+			id:        { type: 'id', readonly: true },
+			code:      { type: 'text', required: true },
+			name:      { type: 'text', required: true },
+			price:     { type: 'currency' },
+			startDate: { type: 'date' },
 		},
 		fks: {},
 		template: { presentation: 'name code' },
 	},
 
 	"xml_ville": {
-		keyPath: '++id',
-		base: 'machine_base',
+		base: 'machine_xml',
 		fields: {
-			id:   field('id', { readonly: true }),
-			code: field('text', { required: true }),
-			name: field('text', { required: true }),
+			id:   { type: 'id', readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
 		},
 		fks: {},
 		template: { presentation: 'name code' },

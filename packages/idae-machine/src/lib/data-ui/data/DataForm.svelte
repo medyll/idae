@@ -7,25 +7,22 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 @prop {'show'|'create'|'update'} [mode] - Form mode
 @prop {Record<string,unknown>} [withData] - Additional data to merge
 @prop {Record<string,unknown>} [data] - Initial data override
-@prop {SortBy | SortBy[]} [sortBy] - Sort field order
-@prop {string} [groupBy] - Group fields by field def property
+@prop {string} [groupFieldBy] - FK relation key on appscheme_field to group fields by (e.g. 'appscheme_field_type')
 @prop {(payload: {mode: string; data: Record<string,unknown>}) => void} [onsubmit] - Submit callback
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
-	import type { SortBy } from '$lib/types/index.js';
 	import DataRecord from './DataRecord.svelte';
 
 	let {
 		onsubmit: onsubmit_callback,
-		mode = 'create',
+		mode = 'show',
 		collection,
 		data,
 		dataId,
 		withData,
-		sortBy,
-		groupBy
+		groupFieldBy
 	}: {
 		onsubmit?: (payload: { mode: string; data: Record<string, unknown> }) => void;
 		mode?: 'show' | 'create' | 'update';
@@ -33,8 +30,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		data?: Record<string, unknown>;
 		dataId?: string | number;
 		withData?: Record<string, unknown>;
-		sortBy?: SortBy | SortBy[];
-		groupBy?: string;
+		groupFieldBy?: string;
 	} = $props();
 
 	const store = $derived(collection ? machine.collection(collection) : undefined);
@@ -152,8 +148,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 				bind:data={formData}
 				{collection}
 				{mode}
-				{sortBy}
-				{groupBy}
+				{groupFieldBy}
 				inputForm={inputFormId}
 			/>
 		</div>

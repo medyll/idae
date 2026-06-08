@@ -119,7 +119,7 @@ await machine.boot({ org: 'myapp', domain: 'machine', version: 1, business: myMo
 </TemplateShell>
 
 <!-- Or open a record in a frame -->
-<button onclick={() => machine.framer.loadFrame('card.form', 'users', userId)}>
+<button onclick={() => machine.framer.loadFrame('form', 'users', userId)}>
 	Edit user
 </button>
 ```
@@ -207,10 +207,10 @@ await scheme.validator.validateField('email', value);
 ```ts
 // Open a collection or record in a frame (tab-like window)
 machine.framer.loadFrame('explorer', 'users');         // collection explorer
-machine.framer.loadFrame('card.form', 'users', userId); // edit record
+machine.framer.loadFrame('form', 'users', userId); // edit record
 
 // Open in a floating draggable dialog (content-keyed, focuses if already open)
-machine.framer.loadInDialog('card.form', 'users', userId);
+machine.framer.loadInDialog('form', 'users', userId);
 
 // Frame controls via machine.framer singleton
 machine.framer.show(frameId);
@@ -481,7 +481,7 @@ import { machineServer } from '@medyll/idae-machine/server';
 
 await machineServer.start(); // Express + MongoDB + Socket.IO
 const model = await machineServer.getModel(); // reads appscheme_* → MachineModel
-await machineServer.deployModel(myModel, { org }); // writes MachineModel → MongoDB
+await machineServer.publishModel(myModel, { org }); // publishes MachineModel → MongoDB (appscheme_*)
 await machineServer.stop();
 ```
 
@@ -515,11 +515,13 @@ await machineServer.stop();
 ### Seed & bootstrap
 
 ```bash
-# Deploy schema + seed users (admin/user/viewer) into MongoDB
-npx tsx server/src/bootstrap/bootstrap-demo.ts [org] [mongoUri]
+# Deploy schema + seed users (admin/user/viewer) into MongoDB.
+# Resolves <org>Scheme dynamically; seeds business data only if <org>Seed exists.
+npx tsx server/src/bootstrap/bootstrap.ts [org] [mongoUri]
 
-# Example
-npx tsx server/src/bootstrap/bootstrap-demo.ts demo mongodb://localhost:27017
+# Examples
+npx tsx server/src/bootstrap/bootstrap.ts demo mongodb://localhost:27017  # demo + data
+npx tsx server/src/bootstrap/bootstrap.ts crfr                            # crfrScheme, no data
 ```
 
 Default seeded users (`{org}_machine_user`):

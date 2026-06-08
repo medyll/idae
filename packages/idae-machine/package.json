@@ -7,7 +7,7 @@
   },
   "version": "0.136.0",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "vite dev --host",
     "build": "vite build && npm run prepack",
     "preview": "vite preview",
     "prepare": "svelte-kit sync || echo ''",
@@ -72,6 +72,7 @@
     "fake-indexeddb": "^6.2.5",
     "globals": "^17.4.0",
     "jsdom": "^29.0.1",
+    "mongodb": "^7.1.1",
     "prettier": "^3.8.1",
     "prettier-plugin-svelte": "^3.5.1",
     "publint": "^0.3.18",

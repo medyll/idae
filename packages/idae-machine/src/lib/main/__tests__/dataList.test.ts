@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto';
 import { IDBFactory } from 'fake-indexeddb';
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { Machine } from '../machine.js';
-import { demoScheme } from '../../demo/demoScheme.js';
+import { demoScheme } from '../../__fixtures__/demoModel.js';
 import { sortItems, groupItems } from '../../data-ui/utils/data-utils.js';
 
 let _dbCounter = 0;

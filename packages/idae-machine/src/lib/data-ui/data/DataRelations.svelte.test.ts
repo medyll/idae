@@ -5,7 +5,7 @@ import DataList from './DataList.svelte';
 import DataListFk from './DataListFk.svelte';
 import DataListRfk from './DataListRfk.svelte';
 import { machine } from '$lib/main/machine.js';
-import demoSeed, { demoScheme } from '$lib/demo/demoScheme.js';
+import demoSeed, { demoScheme } from '$lib/__fixtures__/demoModel.js';
 
 let dbCounter = 0;
 

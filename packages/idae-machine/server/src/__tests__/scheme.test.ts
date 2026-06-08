@@ -2,8 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
 import { getAllSchemes, getScheme } from '../routes/scheme.js';
-import type { Request, Response } from 'express';
-import { deployModel, seedEngineRegistries } from '../bootstrap/deployModel.js';
+import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 
 const TEST_ORG = 'vitest';
 const META_DB  = `${TEST_ORG}_machine_app`;
@@ -33,8 +32,8 @@ function mockRes(): any {
 	res.status = (c: number) => { res._status = c; return res; };
 	return res;
 }
-function mockReq(params: Record<string, string> = {}): Request {
-	return { params } as unknown as Request;
+function mockReq(params: Record<string, string> = {}): any {
+	return { params };
 }
 
 describe('GET /api/scheme', () => {
@@ -42,7 +41,7 @@ describe('GET /api/scheme', () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
 		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
-		await deployModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		await publishModel(testModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 	});
 
 	afterAll(async () => {
@@ -59,14 +58,12 @@ describe('GET /api/scheme', () => {
 	});
 
 	it('GET /api/scheme returns IdbqModel JSON with fields and fks', async () => {
-		const req = mockReq();
 		const res = mockRes();
-		await getAllSchemes(req, res);
+		const body = await getAllSchemes();
 
-		expect(res._status).toBe(200);
-		expect(res._body).toHaveProperty('product');
-
-		const product = res._body.product;
+		expect(body).not.toBeNull();
+		const product = (body as any).product;
+		expect(product).toBeDefined();
 		expect(product.keyPath).toBe('++id');
 		expect(product.base).toBe('machine_base');
 		expect(product.fields).toHaveProperty('id');
@@ -78,19 +75,16 @@ describe('GET /api/scheme', () => {
 	});
 
 	it('GET /api/scheme/:table returns single collection', async () => {
-		const req = mockReq({ table: 'product' });
 		const res = mockRes();
-		await getScheme(req, res);
+		const body = await getScheme({}, { table: 'product' });
 
-		expect(res._status).toBe(200);
-		expect(res._body).toHaveProperty('product');
-		expect(res._body.product.fields.name.required).toBe(true);
+		expect(body).toBeDefined();
+		const product = (body as any).product;
+		expect(product).toBeDefined();
+		expect(product.fields.name.required).toBe(true);
 	});
 
 	it('GET /api/scheme/:table returns 404 for unknown', async () => {
-		const req = mockReq({ table: 'nonexistent' });
-		const res = mockRes();
-		await getScheme(req, res);
-		expect(res._status).toBe(404);
+		await expect(getScheme({}, { table: 'nonexistent' })).rejects.toThrow();
 	});
 });

@@ -20,7 +20,6 @@ export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 // UI — field (atomic display/edit)
 export { default as DataField }     from '$lib/data-ui/field/DataField.svelte';
 export { default as DataFieldEdit } from '$lib/data-ui/field/DataFieldEdit.svelte';
-export { default as DataFkValue }   from '$lib/data-ui/field/DataFkValue.svelte';
 
 // UI — data controls
 export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';
@@ -32,9 +31,14 @@ export { default as InputEmail }    from '$lib/data-ui/input/InputEmail.svelte';
 export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte';
 export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
 
+// UI — columner (Finder-style column navigation)
+export { default as Columner }              from '$lib/shell/columner/Columner.svelte';
+export type { ColumnId, ColumnerProps }     from '$lib/shell/columner/Columner.svelte';
+
 // UI — layout
 export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.svelte';
 export { default as App }              from '$lib/shell/layout/App.svelte';
+export { default as Login }            from '$lib/shell/auth/Login.svelte';
 export { default as TaskBar }          from '$lib/shell/layout/TaskBar.svelte';
 export { default as Navigation }       from '$lib/shell/layout/Navigation.svelte';
 export { default as Breadcrumb }       from '$lib/shell/layout/Breadcrumb.svelte';
@@ -49,6 +53,12 @@ export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
 export { default as Frame }         from '$lib/shell/Frame.svelte';
 export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
 export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';
+
+// MCP — client-side WebMCP tool registration
+export { registerMachineMcpTools } from '$lib/mcp/MachineMcpClient.js';
+
+// Auth gate signal
+export { authState } from '$lib/main/machine/authState.svelte.js';
 
 // Utils
 export * from '$lib/utils/logger.js';
