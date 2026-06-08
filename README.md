@@ -22,7 +22,6 @@ A high-performance monorepo for modern full-stack application development. Focus
 - [@medyll/qoolie](https://github.com/medyll/idae/tree/main/packages/qoolie)
 - [@medyll/idae-shared](https://github.com/medyll/idae/tree/main/packages/shared)
 - [@medyll/skiller](https://github.com/medyll/idae/tree/main/packages/skiller)
-- [@medyll/idae-config-prettier](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier)
 - [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config)
 
 ## Details
@@ -172,14 +171,6 @@ Skill installer and evaluator for @medyll packages
 **Repo:** [@medyll/skiller](https://github.com/medyll/idae/tree/main/packages/skiller)
 
 **Version:** 2.2.10
-##
-### @medyll/idae-config-prettier
-idae svelte Prettier config
-
-**Repo:** [@medyll/idae-config-prettier](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier)
-
-**Version:** 0.0.3 [see changelog](https://github.com/medyll/idae/tree/main/packages-config/idae-config-prettier/CHANGELOG.md)
-
 ##
 ### @medyll/idae-eslint-config
 **Repo:** [@medyll/idae-eslint-config](https://github.com/medyll/idae/tree/main/packages-config/idae-eslint-config)
