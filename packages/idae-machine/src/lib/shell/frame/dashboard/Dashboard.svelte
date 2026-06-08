@@ -1,0 +1,1 @@
+unclosable withiut button bar, so the user can always get back to the dashboard

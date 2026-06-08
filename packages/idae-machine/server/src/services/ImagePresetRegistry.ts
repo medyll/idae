@@ -1,5 +1,5 @@
 import { getConn } from '../middleware/dbRouter.js';
-import { config } from '../config.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
 import { logger } from '../utils/logger.js';
 
 export interface ImagePreset {
@@ -18,7 +18,7 @@ const cache = new Map<string, ImagePreset>();
 let loaded = false;
 
 async function getCollection() {
-	const conn = await getConn(`${config.org}_machine_app`);
+	const conn = await getConn(`${getCurrentOrg()}_machine_app`);
 	return conn.collection('appimage_preset');
 }
 

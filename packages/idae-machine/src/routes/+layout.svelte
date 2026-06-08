@@ -5,6 +5,7 @@
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import { API_URL } from '$lib/config.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
+	import { deleteIdbDatabase } from '$lib/main/machineIdbAdapter.js';
 	import type { AppUser } from '$lib/types/schema-types.js';
 
 	const apiUrl = API_URL;
@@ -25,13 +26,24 @@
 		const org =
 			(typeof localStorage !== 'undefined' && localStorage.getItem('idae_org')) || 'demo';
 
-		await machine.boot({
-			org, domain: 'machine', version: 7,
-			sync: {
-				mode: 'server-first',
-				databaseHost: apiUrl,
-			},
-		});
+		// Carry the JWT on every sync request — the server reads the org from the
+		// verified token (orgContextMiddleware), so data routes to the right backend.
+		const token =
+			typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+
+		try {
+			await machine.boot({
+				org, domain: 'machine', version: 7,
+				sync: {
+					mode: 'server-first',
+					databaseHost: apiUrl,
+					...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+				},
+			});
+		} catch (err) {
+			await recoverFromCorruptBoot(org, err as Error);
+			return;
+		}
 		machine.initRouter({ baseUrl: '/', authEnabled: false });
 
 		if (typeof window !== 'undefined') {
@@ -48,6 +60,30 @@
 		]);
 
 		restoreSession();
+	}
+
+	/**
+	 * Boot can fail when local state (stale auth token / mismatched org / corrupt IDB
+	 * schema cache) drifts from the server — non-devs would otherwise hit a raw
+	 * "Boot failed" screen needing a manual localStorage.clear(). Wipe the local
+	 * state once and reload; if it still fails, surface the real error.
+	 */
+	async function recoverFromCorruptBoot(org: string, err: Error): Promise<void> {
+		const FLAG = 'idae_boot_recovery_attempted';
+		if (typeof sessionStorage === 'undefined' || sessionStorage.getItem(FLAG)) {
+			throw err;
+		}
+		sessionStorage.setItem(FLAG, '1');
+		console.warn('[idae-machine] Boot failed, clearing local state and retrying:', err);
+
+		if (typeof localStorage !== 'undefined') {
+			localStorage.removeItem('auth_token');
+			localStorage.removeItem('auth_user');
+			localStorage.removeItem('idae_org');
+		}
+		await deleteIdbDatabase(`${org}_machine`).catch(() => {});
+
+		if (typeof window !== 'undefined') window.location.reload();
 	}
 
 	/** Rehydrate auth from a persisted token so a reload doesn't re-prompt. */

@@ -1,16 +1,13 @@
 <!--
 Login.svelte — gating login frame. Mounted via machine.framer.loadInDialog('login', …)
-into a modal, non-closable Dialog. Authenticates against the server, hydrates
-machine.rights, logs the login via machine.action, then flips authState.authed.
+into a modal, non-closable Dialog. Authenticates against the server for the selected
+org, persists token + org, then reloads so the app re-boots into that org (the server
+derives org from the verified JWT — see orgContextMiddleware). restoreSession() in
++layout re-auths silently from the persisted token.
 -->
 <script lang="ts">
-	import { machine } from '$lib/main/machine.js';
-	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import { API_URL } from '$lib/config.js';
-	import type { AppUser } from '$lib/types/schema-types.js';
 
-	// frameId is content-keyed by loadInDialog('login', 'appuser') — keep in sync.
-	const FRAME_ID = 'dialog:login:appuser:';
 	const ORGS = ['crfr', 'demo', 'idaenext', 'tactac'] as const;
 
 	const bootedOrg =
@@ -28,7 +25,9 @@ machine.rights, logs the login via machine.action, then flips authState.authed.
 		error = '';
 		busy = true;
 		try {
-			const res = await fetch(`${API_URL}/api/auth/login`, {
+			// Org travels as a query param so the server resolves it before body parsing
+			// (orgContextMiddleware) and authenticates against that org's user DB.
+			const res = await fetch(`${API_URL}/api/auth/login?org=${encodeURIComponent(org)}`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ login, password })
@@ -46,44 +45,18 @@ machine.rights, logs the login via machine.action, then flips authState.authed.
 
 			localStorage.setItem('auth_token', token);
 			localStorage.setItem('auth_user', JSON.stringify(user));
+			localStorage.setItem('idae_org', org);
 
-			// Org changed → re-boot the client into that org (server re-validates there).
-			if (org !== bootedOrg) {
-				localStorage.setItem('idae_org', org);
-				window.location.reload();
-				return;
-			}
-
-			hydrateAndEnter(user);
+			// Always re-boot so the fresh boot carries the JWT in sync headers — the
+			// server derives org from the verified token and routes data accordingly.
+			// restoreSession() re-auths silently from the persisted token, so the
+			// login dialog does not reappear.
+			window.location.reload();
 		} catch {
 			error = 'Connexion au serveur impossible';
 		} finally {
 			busy = false;
 		}
-	}
-
-	function hydrateAndEnter(user: { userId: string; login: string; isAdmin: boolean }) {
-		// Minimal current user — rights only reads id / isActive / isLocked / appPermissions.
-		machine.rights.setCurrentUser(
-			{
-				id: user.userId,
-				login: user.login,
-				isActive: true,
-				isLocked: false,
-				appPermissions: { ADMIN: user.isAdmin }
-			} as unknown as AppUser,
-			[]
-		);
-
-		// Requested machine-action write: record the login event (upsert + bump + touch).
-		void machine.action(
-			'appuser_history',
-			{ code: 'login' },
-			{ upsertOn: ['code'], bump: 'count', touch: 'lastSeen' }
-		);
-
-		authState.authed = true;
-		machine.framer.close(FRAME_ID);
 	}
 </script>
 

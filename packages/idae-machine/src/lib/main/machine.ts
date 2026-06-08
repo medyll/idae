@@ -249,7 +249,8 @@ export class Machine {
 
 		// Resolve schema: server (cache-first SWR) or local fallback
 		if (dbHost) {
-			const url = dbHost.replace(/\/+$/, '') + '/api/scheme';
+			const orgQs = this._org ? `?org=${encodeURIComponent(this._org)}` : '';
+			const url = dbHost.replace(/\/+$/, '') + '/api/scheme' + orgQs;
 			const { loadSchema } = await import('$lib/main/machineSchemaLoader.js');
 			await loadSchema(url, {
 				onModel: (model) => {

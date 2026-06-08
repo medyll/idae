@@ -11,6 +11,8 @@ export interface UserContext {
 	userId:      string;
 	login:       string;
 	isAdmin?:    boolean;
+	/** Org the token was issued for — drives per-request DB routing. */
+	org?:        string;
 	/** Merged grant constraints for the current request — set by requireDroit. */
 	constraints?: GrantConstraints;
 }

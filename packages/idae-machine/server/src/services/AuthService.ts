@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import type { Request } from 'express';
 import { getConn } from '../middleware/dbRouter.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
 import { config } from '../config.js';
 import type { UserContext } from '../middleware/permission.js';
 
@@ -9,6 +10,7 @@ interface JwtPayload {
 	userId:  string;
 	login:   string;
 	isAdmin: boolean;
+	org:     string;
 }
 
 interface AppUserDoc {
@@ -35,6 +37,7 @@ export async function resolveUser(req: Request): Promise<UserContext | null> {
 			userId:  payload.userId,
 			login:   payload.login,
 			isAdmin: payload.isAdmin ?? false,
+			org:     payload.org,
 		};
 	} catch {
 		return null;
@@ -49,7 +52,8 @@ export async function login(
 	login:    string,
 	password: string,
 ): Promise<{ token: string; user: UserContext } | null> {
-	const conn = await getConn(`${config.org}_machine_user`);
+	const org  = getCurrentOrg();
+	const conn = await getConn(`${org}_machine_user`);
 	const doc  = await conn.collection('appuser').findOne({ login }) as AppUserDoc | null;
 
 	if (!doc)              return null;
@@ -65,13 +69,14 @@ export async function login(
 		userId:  String(doc._id),
 		login:   doc.login,
 		isAdmin,
+		org,
 	};
 
 	const token = jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtTtl as any });
 
 	return {
 		token,
-		user: { userId: payload.userId, login: payload.login, isAdmin },
+		user: { userId: payload.userId, login: payload.login, isAdmin, org },
 	};
 }
 

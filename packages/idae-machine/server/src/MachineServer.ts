@@ -17,6 +17,7 @@ import type { SocketIoServer } from '@medyll/idae-socket/server';
 import { publishModel as runPublishModel, seedEngineRegistries } from './bootstrap/publishModel.js';
 import { buildEngineModel } from './bootstrap/seed/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
+import { orgContextMiddleware, getCurrentOrg } from './middleware/orgContext.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
 import type { ViewFields, ViewFieldDef } from '../../src/lib/types/schema-types.js';
 import { mcpServer } from './mcp/index.js';
@@ -43,7 +44,7 @@ class MachineServerClass {
 	// ── DB helpers ────────────────────────────────────────────────────────────
 
 	async #getMetaDb(): Promise<Connection> {
-		const dbName = `${config.org}_machine_app`;
+		const dbName = `${getCurrentOrg()}_machine_app`;
 		return mongooseConnectionManager.getConnection(dbName)
 			?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName, { dbName });
 	}
@@ -177,7 +178,7 @@ class MachineServerClass {
 		await seedEngineRegistries({ org, mongoUri });
 		await runPublishModel(buildEngineModel(), { org, mongoUri });
 		await runPublishModel(model, { org, mongoUri });
-		invalidateBaseCache();
+		invalidateBaseCache(undefined, org);
 		logger.info(`Model published for org="${org}"`);
 	}
 
@@ -228,6 +229,11 @@ class MachineServerClass {
 				},
 			},
 		});
+
+		// Per-request org context — must precede all routes so handlers (and the
+		// deep call chain: dbRouter, hooks, getModel, Grant/Audit) read the
+		// request's org via getCurrentOrg() instead of the static config.org.
+		idaeApi.app.use(orgContextMiddleware);
 
 		await idaeApi.start();
 

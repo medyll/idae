@@ -1,5 +1,5 @@
 import { getConn } from '../middleware/dbRouter.js';
-import { config } from '../config.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
 import { validateRecord, type FieldRule, type ValidationResult } from './validateRules.js';
 import { logger } from '../utils/logger.js';
 
@@ -41,7 +41,7 @@ export function invalidateSchemeCache(collection?: string): void {
 // ── Fetch ─────────────────────────────────────────────────────────────────────
 
 async function fetchSchemeRules(collection: string): Promise<Record<string, FieldRule>> {
-	const conn = await getConn(`${config.org}_machine_app`);
+	const conn = await getConn(`${getCurrentOrg()}_machine_app`);
 
 	const hasDocs = await conn
 		.collection('appscheme_has_field')

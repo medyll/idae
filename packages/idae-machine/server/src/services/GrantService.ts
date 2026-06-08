@@ -1,5 +1,5 @@
 import { getConn } from '../middleware/dbRouter.js';
-import { config } from '../config.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
 import type { Permission } from '../middleware/permission.js';
 
 /**
@@ -129,11 +129,13 @@ class GrantService {
 	 * Load assignments for user → groupIds + typeIds (active only).
 	 */
 	async #loadSources(userId: string): Promise<UserSources> {
-		const cached = this.#sourcesCache.get(userId);
+		const org    = getCurrentOrg();
+		const srcKey = `${org}:${userId}`;
+		const cached = this.#sourcesCache.get(srcKey);
 		if (cached && cached.expiry > Date.now()) return cached.sources;
 
 		try {
-			const conn = await getConn(`${config.org}_machine_user`);
+			const conn = await getConn(`${org}_machine_user`);
 			const docs = await conn.collection('appuser_assignment').find({
 				userId,
 				revokedAt: { $in: [null, undefined] as any },
@@ -151,7 +153,7 @@ class GrantService {
 				typeIds:  valid.filter(a => a.assignmentType === 'role'  && a.typeId ).map(a => a.typeId!),
 			};
 
-			this.#sourcesCache.set(userId, { sources, expiry: Date.now() + CACHE_TTL_MS });
+			this.#sourcesCache.set(srcKey, { sources, expiry: Date.now() + CACHE_TTL_MS });
 			return sources;
 		} catch {
 			return { groupIds: [], typeIds: [] };
@@ -162,14 +164,15 @@ class GrantService {
 	 * Load all grants matching user + collection (direct + group + type cascade).
 	 */
 	async #loadGrants(userId: string, collection: string): Promise<GrantDoc[]> {
-		const cacheKey = `${userId}:${collection}`;
+		const org      = getCurrentOrg();
+		const cacheKey = `${org}:${userId}:${collection}`;
 		const cached   = this.#grantsCache.get(cacheKey);
 
 		if (cached && cached.expiry > Date.now()) return cached.grants;
 
 		try {
 			const sources = await this.#loadSources(userId);
-			const conn    = await getConn(`${config.org}_machine_user`);
+			const conn    = await getConn(`${org}_machine_user`);
 
 			const orClauses: Record<string, unknown>[] = [
 				{ grantType: 'user', userId },
@@ -193,11 +196,16 @@ class GrantService {
 		}
 	}
 
-	/** Invalidate all cached entries for a user (call after grant/assignment change). */
+	/**
+	 * Invalidate all cached entries for a user across every org (call after
+	 * grant/assignment change). Keys are `${org}:${userId}[:${collection}]`.
+	 */
 	invalidateUser(userId: string): void {
-		this.#sourcesCache.delete(userId);
+		for (const key of this.#sourcesCache.keys()) {
+			if (key.endsWith(`:${userId}`)) this.#sourcesCache.delete(key);
+		}
 		for (const key of this.#grantsCache.keys()) {
-			if (key.startsWith(`${userId}:`)) this.#grantsCache.delete(key);
+			if (key.includes(`:${userId}:`)) this.#grantsCache.delete(key);
 		}
 	}
 
