@@ -27,8 +27,9 @@
         </sidebar-info>
 		<zone-main-half>
 			<DataRecord {collection} {collectionId} />
+            <DataListRfk {collection} {collectionId} />
 			<info-bar-right>
-				<DataRecord {collection} {collectionId} view="fk" />
+				<DataRecord {collection} {collectionId} groupFieldBy="fks.appscheme_field_type.code" view="fk" />
 			</info-bar-right>
 		</zone-main-half>
 	</fiche-zone>

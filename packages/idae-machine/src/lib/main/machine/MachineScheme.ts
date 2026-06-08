@@ -172,16 +172,16 @@ export class MachineScheme {
 	 * Moves the view/showFields selection + sort + group out of components.
 	 */
 	resolveFieldList(opts: {
-		view?:       string;
-		showFields?: string[];
-		sortBy?:     SortBy | SortBy[];
-		groupBy?:    string;
+		view?:         string;
+		showFields?:   string[];
+		sortBy?:       SortBy | SortBy[];
+		groupFieldBy?: string;
 	} = {}): {
 		fieldObjects: FieldObject[];
 		fieldNames:   string[];
 		groups:       Map<string, FieldObject[]> | undefined;
 	} {
-		const { view, showFields, sortBy, groupBy } = opts;
+		const { view, showFields, sortBy, groupFieldBy } = opts;
 		const fields = this.fields as unknown as Record<string, Record<string, unknown> | undefined>;
 
 		let keys: string[];
@@ -214,10 +214,10 @@ export class MachineScheme {
 		}
 
 		let groups: Map<string, FieldObject[]> | undefined;
-		if (groupBy) {
+		if (groupFieldBy) {
 			groups = new Map<string, FieldObject[]>();
 			for (const item of fieldObjects) {
-				const key = String(resolveDotPath(item, groupBy) ?? '—');
+				const key = String(resolveDotPath(item, groupFieldBy) ?? '—');
 				if (!groups.has(key)) groups.set(key, []);
 				groups.get(key)!.push(item);
 			}

@@ -8,7 +8,7 @@ Iterates a record's fields and renders DataField for each.
 @prop {string[]} [showFields] - Filter to specific fields (overrides view)
 @prop {'full'|'flat'|'fk'|'focus'|string} [view] - Named view to resolve field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
 @prop {SortBy | SortBy[]} [sortBy] - Sort field order (by field def properties e.g. order, label)
-@prop {string} [groupBy] - Group fields by field def property (e.g. 'group')
+@prop {string} [groupFieldBy] - Group fields by field def property (e.g. 'group')
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
@@ -27,7 +27,6 @@ Iterates a record's fields and renders DataField for each.
 		showFields,
 		view = 'full',
 		sortBy,
-		groupBy,
 		groupFieldBy,
 		groupChildren,
 		inputForm,
@@ -40,8 +39,7 @@ Iterates a record's fields and renders DataField for each.
 		showFields?: string[];
 		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
 		sortBy?: SortBy | SortBy[];
-		groupBy?: string;
-		groupFieldBy?: string | string[];
+		groupFieldBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
 		showLabel?: boolean | string;
@@ -71,24 +69,21 @@ Iterates a record's fields and renders DataField for each.
 	const effectiveData = $derived(data ?? fetchedData);
 
 	const resolved = $derived(
-		scheme?.resolveFieldList({ view, showFields, sortBy, groupBy }) ?? null
+		scheme?.resolveFieldList({ view, showFields, sortBy, groupFieldBy }) ?? null
 	);
 	const fieldNames = $derived(resolved?.fieldNames ?? []);
-	const ungrouped = $derived(
-		groupBy !== undefined &&
-			groupFieldBy !== undefined &&
-			(groupFieldBy === groupBy || (Array.isArray(groupFieldBy) && groupFieldBy.includes(groupBy)))
-	);
-	const groups = $derived(ungrouped ? undefined : (resolved?.groups ?? undefined));
+	const groups = $derived(resolved?.groups ?? undefined);
 
 	// FK fields are shown even when absent from the record (placeholder empty value).
 	// Scalar fields are skipped when absent — MachineSchemeValues.format throws FIELD_NOT_FOUND.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
 
-	const whereFieldView = $derived({ 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } });
+	// const whereFieldView = $derived({ 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } });
 
-	const qy = $derived(machine.collection('appscheme_view').where(whereFieldView));
+	//const qy = $derived(machine.collection('appscheme_view').where(whereFieldView));
+
+	$inspect(showFields);
 </script>
 
  
@@ -114,7 +109,7 @@ Iterates a record's fields and renders DataField for each.
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">
 							{#if mode === 'show'}
-								<DataField {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
+								<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
 							{:else if data !== undefined}<DataField
 									{collection}
 									{fieldName}
@@ -135,13 +130,14 @@ Iterates a record's fields and renders DataField for each.
 				{#if scheme.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 					<div class="field">
 						{#if mode === 'show'}
-							<DataField {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
+							<DataField {collection} {fieldName} {mode} data={effectiveData!} {showLabel} {inputForm} />
 						{:else if data !== undefined}<DataField
 								{collection}
 								{fieldName}
 								{mode}
 								bind:data={data as Record<string, unknown>}
 								{inputForm}
+								{showLabel}
 							/>{/if}
 					</div>
 				{/if}
