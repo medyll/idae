@@ -9,8 +9,7 @@ Consumers can override via the item snippet.
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
 @prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
-@prop {string[]} [showFields] - Fields to display (overrides view)
-@prop {'full'|'flat'|'fk'|'focus'|string} [view='full'] - Named view driving the field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
+@prop {string} [view='full'] - Named view driving the field list (resolved query-side via appscheme_view/appscheme_field)
 @prop {string} [linkTarget] - Zone / frameId to target for navigation (overrides zone from link)
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
 @prop {number} [page] - 1-based (only used when infiniteScroll=false)
@@ -29,6 +28,7 @@ Consumers can override via the item snippet.
 	import type { SortBy, TplCollectionName, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
 	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
 	import { getResultSet, type ResultSet } from '@medyll/qoolie';
 	import { useMachinePrefs } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
@@ -52,7 +52,6 @@ Consumers can override via the item snippet.
 		sortBy,
 		groupBy,
 		mode: modeProp = 'list',
-		showFields,
 		view = 'full',
 		pageSize = 0,
 		page = 1,
@@ -77,8 +76,7 @@ Consumers can override via the item snippet.
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		mode?: 'list' | 'table' | 'grid';
-		showFields?: string[];
-		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
+		view?: string;
 		pageSize?: number;
 		page?: number;
 		infiniteScroll?: boolean;
@@ -157,20 +155,12 @@ Consumers can override via the item snippet.
 			: undefined
 	);
 
-	const fullFields = $derived.by(() => {
-		if (showFields?.length) return showFields;
-		const viewNames = (collLogic?.getFieldsForView(view as 'full' | 'flat' | 'fk' | 'focus') ?? []).map((f: { name: string }) => f.name);
-		return viewNames.length ? viewNames : presentationFields;
-	});
-
-	const tableColumns = $derived.by(() => {
-		if (currentMode !== 'table' || !collLogic) return [] as { name: string; label: string }[];
-		const viewKey = (view as 'full' | 'flat' | 'fk' | 'focus') ?? 'flat';
-		return collLogic.getFieldsForView(viewKey).map(f => ({
-			name: f.name,
-			label: String(f.name),
-		}));
-	});
+	const viewFields = useViewFields(() => collection, () => view ?? 'flat');
+	const tableColumns = $derived(
+		currentMode === 'table'
+			? viewFields.fieldNames.map((name) => ({ name, label: name }))
+			: ([] as { name: string; label: string }[])
+	);
 
 
 	const parsedLink = $derived(link ? parseLink(link) : null);
@@ -427,7 +417,7 @@ Consumers can override via the item snippet.
 							{collection}
 							data={record as Record<string, any>}
 							mode="show"
-							showFields={fullFields?.length ? fullFields : undefined}
+							{view}
 						/>
 					</div>
 				</button>

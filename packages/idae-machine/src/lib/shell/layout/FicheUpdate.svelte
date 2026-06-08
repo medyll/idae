@@ -17,7 +17,7 @@
     </fiche-header>
     <fiche-zone>
         <zone-main>
-            <DataForm {collection} dataId={collectionId} mode="update" />
+            <DataForm {collection} dataId={collectionId} mode="update" groupFieldBy="appscheme_field_group" />
         </zone-main>
     </fiche-zone>
 </fiche-component>

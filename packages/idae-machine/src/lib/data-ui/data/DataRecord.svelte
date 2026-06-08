@@ -5,19 +5,17 @@ Iterates a record's fields and renders DataField for each.
 @prop {string} collection - Collection name
 @prop {Record<string,any>} data - Record data (bindable)
 @prop {'show'|'create'|'update'|'row'} [mode] - Display mode. 'row' emits <td> per field for use inside <tr> (no groupBy support in this mode).
-@prop {string[]} [showFields] - Filter to specific fields (overrides view)
-@prop {'full'|'flat'|'fk'|'focus'|string} [view] - Named view to resolve field list (full=all, flat=non-fk, fk=fk-only, focus=identity subset)
-@prop {SortBy | SortBy[]} [sortBy] - Sort field order (by field def properties e.g. order, label)
-@prop {string} [groupFieldBy] - Group fields by field def property (e.g. 'group')
+@prop {string[]} [showFields] - Explicit field list, bypasses the view query entirely
+@prop {string} [view] - Named view (resolved via appscheme_view/appscheme_field query — see useViewFields)
+@prop {string} [groupFieldBy] - FK relation key on appscheme_field to group by (e.g. 'appscheme_field_type'); grouping runs on `fks.{groupFieldBy}.code` via native groupBy
 -->
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { MachineRecordIdentity } from '$lib/main/index.js';
-	import type { SortBy } from '$lib/types/index.js';
+	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
 	import { getContext } from 'svelte';
-	import { DataList } from '$lib/index.js';
 
 	let {
 		collection = getContext('collection'),
@@ -26,7 +24,6 @@ Iterates a record's fields and renders DataField for each.
 		mode = 'show',
 		showFields,
 		view = 'full',
-		sortBy,
 		groupFieldBy,
 		groupChildren,
 		inputForm,
@@ -37,16 +34,12 @@ Iterates a record's fields and renders DataField for each.
 		data?: Record<string, any>;
 		mode?: 'show' | 'create' | 'update' | 'row';
 		showFields?: string[];
-		view?: 'full' | 'flat' | 'fk' | 'focus' | string;
-		sortBy?: SortBy | SortBy[];
+		view?: string;
 		groupFieldBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
 		showLabel?: boolean | string;
 	} = $props();
-
-
-	
 
 	const scheme = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 
@@ -68,26 +61,18 @@ Iterates a record's fields and renders DataField for each.
 
 	const effectiveData = $derived(data ?? fetchedData);
 
-	const resolved = $derived(
-		scheme?.resolveFieldList({ view, showFields, sortBy, groupFieldBy }) ?? null
-	);
-	const fieldNames = $derived(resolved?.fieldNames ?? []);
-	const groups = $derived(resolved?.groups ?? undefined);
+	// Field list: explicit `showFields` bypasses the view query; otherwise query-resolved
+	// via appscheme_view → appscheme_field (see useViewFields — no client-side heuristics).
+	const viewFields = useViewFields(() => collection, () => view, () => groupFieldBy);
+	const fieldNames = $derived(showFields?.length ? showFields : viewFields.fieldNames);
+	const groups = $derived(showFields?.length ? undefined : viewFields.groups);
 
 	// FK fields are shown even when absent from the record (placeholder empty value).
 	// Scalar fields are skipped when absent — MachineSchemeValues.format throws FIELD_NOT_FOUND.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
-
-	// const whereFieldView = $derived({ 'fks.appscheme.code': { eq: collection },'fks.appscheme_view_type.code':{ eq: 'full' } });
-
-	//const qy = $derived(machine.collection('appscheme_view').where(whereFieldView));
-
-	$inspect(showFields);
 </script>
 
- 
-<!-- Fin Exemple -->
 {#if mode === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}
 		{#each fieldNames as fieldName (fieldName)}
@@ -99,13 +84,13 @@ Iterates a record's fields and renders DataField for each.
 		{/each}
 	{/if}
 {:else if groups}
-	{#each Array.from(groups) as [key, groupFields] (key)}
+	{#each Object.entries(groups) as [key, groupFields] (key)}
 		{#if groupChildren}
-			{@render groupChildren({ key, fieldNames: groupFields.map((f) => f.key) })}
+			{@render groupChildren({ key, fieldNames: groupFields.map((f) => f.code) })}
 		{:else}
 			<fieldset class="field-group">
 				<legend>{key}</legend>
-				{#each groupFields as { key: fieldName } (fieldName)}
+				{#each groupFields as { code: fieldName } (fieldName)}
 					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">
 							{#if mode === 'show'}

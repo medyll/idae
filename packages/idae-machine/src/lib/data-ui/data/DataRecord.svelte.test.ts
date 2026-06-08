@@ -1,5 +1,6 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import type { MachineModel } from '$lib/types/index.js';
 import DataRecord from './DataRecord.svelte';
 import { machine } from '$lib/main/machine.js';
 import demoSeed, { demoScheme } from '$lib/__fixtures__/demoModel.js';
@@ -10,10 +11,56 @@ function nextDbName(prefix: string): string {
 	return `${prefix}-${dbCounter}`;
 }
 
+// Minimal appscheme_view/appscheme_field/appscheme_field_type core meta —
+// DataRecord resolves its field list through these (see useViewFields), no fallback.
+const testCore: MachineModel = {
+	appscheme:           { keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fks: {}, template: { presentation: 'code' } },
+	appscheme_view_type: { keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fks: {}, template: { presentation: 'code' } },
+	appscheme_field_type:{ keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fks: {}, template: { presentation: 'code' } },
+	appscheme_field: {
+		keyPath: '++id', base: 'machine_app', model: {},
+		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
+		fks: { appscheme_field_type: { code: 'appscheme_field_type', multiple: false, required: true } },
+		template: { presentation: 'code' }
+	},
+	appscheme_view: {
+		keyPath: '++id', base: 'machine_app', model: {},
+		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
+		fks: {
+			appscheme:           { code: 'appscheme',           multiple: false, required: true },
+			appscheme_view_type: { code: 'appscheme_view_type', multiple: false, required: true },
+			appscheme_field:     { code: 'appscheme_field',     multiple: false, required: true }
+		},
+		template: { presentation: 'fks.appscheme.code fks.appscheme_view_type.code fks.appscheme_field.code' }
+	}
+};
+
+const VEHICLE_FULL_VIEW_FIELDS = ['license_plate', 'model', 'brand', 'year', 'status'];
+
+async function seedViewFields(collectionCode: string, viewCode: string, fieldCodes: string[]): Promise<void> {
+	await machine.collection('appscheme').create({ code: collectionCode, fks: {} });
+	await machine.collection('appscheme_view_type').create({ code: viewCode, fks: {} });
+	await machine.collection('appscheme_field_type').create({ code: 'scalar', fks: {} });
+	for (const code of fieldCodes) {
+		await machine.collection('appscheme_field').create({
+			code,
+			fks: { appscheme_field_type: { code: 'scalar' } }
+		});
+		await machine.collection('appscheme_view').create({
+			code: `${collectionCode}.${viewCode}.${code}`,
+			fks: {
+				appscheme: { code: collectionCode },
+				appscheme_view_type: { code: viewCode },
+				appscheme_field: { code }
+			}
+		});
+	}
+}
+
 async function bootMachine(dbName: string): Promise<void> {
 	machine.destroy();
 	machine.rights.clearCurrentUser();
-	machine.init({ dbName, version: 1, business: demoScheme, sync: false });
+	machine.init({ dbName, version: 1, core: testCore, business: demoScheme, sync: false });
 	await machine.boot();
 	machine.rights.setCurrentUser({
 		id: 'user-1',
@@ -23,6 +70,7 @@ async function bootMachine(dbName: string): Promise<void> {
 		isLocked: false,
 		appPermissions: {}
 	} as never);
+	await seedViewFields('vehicle', 'full', VEHICLE_FULL_VIEW_FIELDS);
 }
 
 describe('DataRecord data source contract', () => {

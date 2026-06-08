@@ -1,5 +1,4 @@
 <script lang="ts">
-	import DataListFk from '$lib/data-ui/data/DataListFk.svelte';
 	import { DataList, DataListRfk, DataRecord, machine } from '$lib/index.js';
 	let {
 		collection,
@@ -26,10 +25,9 @@
 		<sidebar-info>
         </sidebar-info>
 		<zone-main-half>
-			<DataRecord {collection} {collectionId} />
-            <DataListRfk {collection} {collectionId} />
+			<div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div>
 			<info-bar-right>
-				<DataRecord {collection} {collectionId} groupFieldBy="fks.appscheme_field_type.code" view="fk" />
+				<DataRecord {collection} {collectionId} view="fk" />
 			</info-bar-right>
 		</zone-main-half>
 	</fiche-zone>
