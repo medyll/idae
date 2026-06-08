@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
+	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import type { Snippet } from 'svelte';
 
 	let { devSlot }: { devSlot?: Snippet } = $props();
@@ -8,10 +9,24 @@
 		[...machine.framer.openFrames].filter(([, c]) => c.taskbar !== false)
 	);
 
+	let userMenuOpen = $state(false);
+
 	function openExplorer() {
 		machine.framer.loadFrame('explorer', 'vehicle');
 	}
+
+	function logout() {
+		userMenuOpen = false;
+		machine.rights.clearCurrentUser();
+		authState.authed = false;
+		localStorage.removeItem('auth_token');
+		localStorage.removeItem('auth_user');
+		window.location.reload();
+	}
 </script>
+
+<svelte:window onclick={() => (userMenuOpen = false)} />
+
 
 <div class="taskbar">
 	<!-- Left: nav actions -->
@@ -43,6 +58,25 @@
 			{@render devSlot()}
 		{/if}
 		<button type="button" class="taskbar-icon" title="Settings (mock)">⚙</button>
-		<button type="button" class="taskbar-icon" title="User (mock)">👤</button>
+		<div class="taskbar-user">
+			<button
+				type="button"
+				class="taskbar-icon"
+				title="User"
+				onclick={(e) => {
+					e.stopPropagation();
+					userMenuOpen = !userMenuOpen;
+				}}
+			>
+				👤
+			</button>
+			{#if userMenuOpen}
+				<div class="taskbar-user-menu">
+					<button type="button" class="taskbar-user-menu-item" onclick={logout}>
+						Déconnexion
+					</button>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>
