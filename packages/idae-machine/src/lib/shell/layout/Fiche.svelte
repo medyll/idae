@@ -1,6 +1,6 @@
 <script lang="ts">
 	import DataListFk from '$lib/data-ui/data/DataListFk.svelte';
-	import { DataListRfk, DataRecord, machine } from '$lib/index.js';
+	import { DataList, DataListRfk, DataRecord, machine } from '$lib/index.js';
 	let {
 		collection,
 		collectionId
@@ -23,13 +23,12 @@
 		</toolbar-component>
 	</fiche-header>
 	<fiche-zone>
-		<sidebar-info></sidebar-info>
+		<sidebar-info>
+        </sidebar-info>
 		<zone-main-half>
 			<DataRecord {collection} {collectionId} />
 			<info-bar-right>
 				<DataRecord {collection} {collectionId} view="fk" />
-				<DataListFk {collection} recordId={collectionId}   />
-				<DataListRfk {collection} recordId={collectionId}   />
 			</info-bar-right>
 		</zone-main-half>
 	</fiche-zone>
