@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { DataRecord, machine } from '$lib/index.js';
+	import DataListFk from '$lib/data-ui/data/DataListFk.svelte';
+	import { DataListRfk, DataRecord, machine } from '$lib/index.js';
 	let {
 		collection,
 		collectionId
@@ -18,6 +19,7 @@
 			<button onclick={() => machine.framer.loadInDialog('fiche.update', collection, collectionId)}
 				>update</button
 			>
+        <debug>{collection} {collectionId}</debug>
 		</toolbar-component>
 	</fiche-header>
 	<fiche-zone>
@@ -26,6 +28,8 @@
 			<DataRecord {collection} {collectionId} />
 			<info-bar-right>
 				<DataRecord {collection} {collectionId} view="fk" />
+				<DataListFk {collection} recordId={collectionId}   />
+				<DataListRfk {collection} recordId={collectionId}   />
 			</info-bar-right>
 		</zone-main-half>
 	</fiche-zone>
@@ -43,6 +47,7 @@
 			min-height: 0;
 			gap: var(--gutter-sm);
 			padding: var(--pad-md);
+            width: clamp(100%, 300px, 750px);
 		}
 
 		:global(fiche-header) {

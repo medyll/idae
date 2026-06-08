@@ -199,6 +199,14 @@ class MachineServerClass {
 
 		registerBuiltinHooks();
 
+		// Per-request org context — must precede ALL routes (incl. RouteManager-flushed
+		// ones below) so handlers (and the deep call chain: dbRouter, hooks, getModel,
+		// Grant/Audit, AuthService.login) read the request's org via getCurrentOrg()
+		// instead of the static config.org. Registering it after start() (where it lived
+		// before) put it AFTER the already-flushed scheme/auth routes — login always
+		// resolved to config.org regardless of the `?org=` query param.
+		idaeApi.app.use(orgContextMiddleware);
+
 		// v3 RouteManager routes — must be added BEFORE start() so they're flushed to Express
 		// (cors/helmet/json get installed first inside start, then RouteManager flush appends routes after middleware)
 		registerSchemeRoutes();
@@ -229,11 +237,6 @@ class MachineServerClass {
 				},
 			},
 		});
-
-		// Per-request org context — must precede all routes so handlers (and the
-		// deep call chain: dbRouter, hooks, getModel, Grant/Audit) read the
-		// request's org via getCurrentOrg() instead of the static config.org.
-		idaeApi.app.use(orgContextMiddleware);
 
 		await idaeApi.start();
 

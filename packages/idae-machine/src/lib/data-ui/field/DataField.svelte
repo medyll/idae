@@ -94,7 +94,9 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
     // parent → child (tracked read, untracked write to avoid loop)
     $effect(() => {
-        const incoming = data?.[fieldName];
+        const incoming = fkCollection
+            ? readFkRaw(data as Record<string, unknown> | null | undefined, String(fieldName), fkIndexField)
+            : data?.[fieldName];
         untrack(() => {
             internalValue = incoming;
             hasParentValue = true;
@@ -104,12 +106,31 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     $effect(() => {
         if (!hasParentValue || !data) return;
         const key = String(fieldName);
-        if ((data as Record<string, unknown>)[key] === internalValue) return;
+        const current = fkCollection
+            ? readFkRaw(data as Record<string, unknown>, key, fkIndexField)
+            : (data as Record<string, unknown>)[key];
+        if (current === internalValue) return;
 
         untrack(() => {
             (data as Record<string, unknown>)[key] = internalValue;
         });
     });
+
+    // FK raw value lookup — supports both canonical flat storage (`data[fieldName]` = code)
+    // and legacy nested storage (`data.fks[fieldName]` = { code } or bare scalar), as seeded
+    // by publishModel.ts for system appscheme_* collections.
+    function readFkRaw(rec: Record<string, unknown> | null | undefined, name: string, indexField: string): unknown {
+        if (!rec) return undefined;
+        const flat = rec[name];
+        if (flat != null) return flat;
+        const bag = rec.fks as Record<string, unknown> | undefined;
+        const nested = bag?.[name];
+        if (nested == null) return undefined;
+        if (typeof nested === 'object') {
+            return (nested as Record<string, unknown>)[indexField] ?? (nested as Record<string, unknown>).code;
+        }
+        return nested;
+    }
 
     function updateValue(val: unknown) {
         internalValue = val;

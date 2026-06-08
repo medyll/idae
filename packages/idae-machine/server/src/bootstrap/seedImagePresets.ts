@@ -1,5 +1,4 @@
 import type { Connection } from 'mongoose';
-import { config } from '../config.js';
 import { logger } from '../utils/logger.js';
 import type { ImagePreset } from '../services/ImagePresetRegistry.js';
 
@@ -29,6 +28,6 @@ export async function seedImagePresets(conn: Connection): Promise<void> {
 	}
 
 	if (seeded > 0) {
-		logger.info(`Seeded ${seeded} image presets in ${config.org}_machine_app.appimage_preset`);
+		logger.info(`Seeded ${seeded} image presets in ${conn.name}.appimage_preset`);
 	}
 }
