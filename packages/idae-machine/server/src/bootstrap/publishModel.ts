@@ -94,6 +94,45 @@ async function upsertGetId(
 	return created.id as number;
 }
 
+// ── resolveFkIds ──────────────────────────────────────────────────────────────
+// Post-pass fixup: fkRef() snapshots are built before every target record exists
+// (chicken-egg across appscheme_* collections), so they're seeded with `id: null`
+// and only `code` resolves. Once everything is created, walk every meta doc's
+// `fks` bag and patch `id` by looking up the target META collection by `code`.
+async function resolveFkIds(idaeDb: IdaeDb): Promise<void> {
+	const col = (name: string) => idaeDb.collection(name);
+	const metaNames = new Set<string>(Object.values(META));
+	const idCache = new Map<string, Map<string, number | null>>();
+
+	async function lookupId(collName: string, code: string): Promise<number | null> {
+		let cache = idCache.get(collName);
+		if (!cache) { cache = new Map(); idCache.set(collName, cache); }
+		if (cache.has(code)) return cache.get(code)!;
+		const doc = await col(collName).findOne({ query: { code } });
+		const id = (doc?.id as number | undefined) ?? null;
+		cache.set(code, id);
+		return id;
+	}
+
+	for (const metaName of metaNames) {
+		const docs = await col(metaName).find({ query: {} }) as Record<string, any>[];
+		for (const doc of docs) {
+			const fks = doc.fks as Record<string, any> | undefined;
+			if (!fks || typeof fks !== 'object') continue;
+			let changed = false;
+			for (const [fkKey, fkVal] of Object.entries(fks)) {
+				if (!fkVal || typeof fkVal !== 'object' || fkVal.id != null || !fkVal.code) continue;
+				if (!metaNames.has(fkKey)) continue;
+				const realId = await lookupId(fkKey, fkVal.code);
+				if (realId != null) { fkVal.id = realId; changed = true; }
+			}
+			if (changed) {
+				await col(metaName).updateWhere({ query: { id: doc.id } }, { $set: { fks } } as any, undefined);
+			}
+		}
+	}
+}
+
 async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 	const idaeDb = IdaeDb.init(opts.mongoUri, {
 		dbType:           DbType.MONGODB,
@@ -389,6 +428,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			}
 		}
 	}
+
+	// Fix `id: null` in fkRef snapshots — targets created mid-loop (chicken-egg).
+	await resolveFkIds(idaeDb);
 }
 
 // Back-compat alias — old call sites still work.
