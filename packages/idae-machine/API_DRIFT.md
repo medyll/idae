@@ -171,6 +171,6 @@ Now that `@medyll/idae-api` exposes `parseStream` (client) + `SseStream` (server
 ## 9. Cross-references
 
 - `idae-machine/CLAUDE.md` — surface API, invariants, frame model.
-- `idae-machine/CHAT.md` — AI chat spec; consumes idae-api `parseStream` / `SseStream` directly per rule 4 above.
+- `idae-machine/bmad/intake-sources/CHAT.md` — AI chat spec; consumes idae-api `parseStream` / `SseStream` directly per rule 4 above.
 - `idae-machine/bmad/conventions.md` — code-style + dependency conventions.
 - Memory: `project_qoolie_migration.md`, `project_qoolie_dual_bus_alias.md`.
