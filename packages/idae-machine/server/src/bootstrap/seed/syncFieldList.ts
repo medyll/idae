@@ -29,9 +29,13 @@ const SCHEMA_TYPES = path.join(ROOT, 'src/lib/types/schema-types.ts');
 const DRY_RUN = process.argv.includes('--dry-run');
 const VERBOSE = process.argv.includes('--verbose');
 
+// RBAC single-letter permission ops — real fields, not artefacts
+const RBAC_OPS = new Set(['c', 'r', 'u', 'd', 'l', 'x']);
+
 // ── Field name filter — skip likely non-field keys ───────────────────────────
 function isLikelyField(name: string): boolean {
-	if (name.length < 2) return false;              // single-letter keys = config artefact
+	if (RBAC_OPS.has(name)) return true;            // RBAC ops are real fields
+	if (name.length < 2) return false;              // other single-letter keys = config artefact
 	if (/^[A-Z_]+$/.test(name)) return false;       // ALL_CAPS = constants
 	if (/^[0-9]/.test(name)) return false;           // starts with digit
 	return true;
@@ -39,6 +43,7 @@ function isLikelyField(name: string): boolean {
 
 // ── inferType (mirrors engineModel.ts exactly) ────────────────────────────────
 function inferType(name: string): string {
+	if (RBAC_OPS.has(name))                                                                  return 'boolean';
 	if (name === 'id')                                                                       return 'id';
 	if (/(At|^timestamp$|^startedAt$|^expiresAt$|^lastActivityAt$|^performedAt$|^lockedUntil$|^validFrom$|^validUntil$|^assignedAt$|^revokedAt$|^grantedAt$)/.test(name)) return 'datetime';
 	if (/^(is|has|can|must|emailVerified)/.test(name))                                       return 'boolean';
@@ -51,6 +56,7 @@ function inferType(name: string): string {
 
 // ── inferGroup — best-effort grouping ────────────────────────────────────────
 function inferGroup(name: string, type: string): string {
+	if (RBAC_OPS.has(name))                                                              return 'rbac';
 	if (['actorId','changes','createdBy','updatedBy','version','scheme'].includes(name)) return 'audit';
 	if (type === 'datetime' || name.endsWith('At'))                                      return 'date';
 	if (type === 'boolean')                                                              return 'flags';
