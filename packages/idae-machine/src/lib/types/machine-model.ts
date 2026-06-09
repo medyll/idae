@@ -204,3 +204,27 @@ export type {
 	DataOpGroupByOptions,
 	DotPath,
 } from '@medyll/qoolie';
+
+// ── Diagram graph types ───────────────────────────────────────────────────────
+
+export interface DiagramNode {
+	id:         string;
+	collection: string;
+	record:     Record<string, unknown>;
+	label:      string;
+}
+
+export interface DiagramEdge {
+	from:        string;
+	to:          string;
+	relationKey: string;
+	direction:   'forward' | 'reverse';
+	fieldName:   string;
+	multiple:    boolean;
+}
+
+export interface DiagramGraph {
+	nodes: DiagramNode[];
+	edges: DiagramEdge[];
+	root:  string;
+}
