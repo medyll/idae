@@ -87,6 +87,30 @@ export function resolveForwardRelations(
 			continue;
 		}
 
+		// Nested object format: record.fks[relationKey] = { id, code }
+		// (used by join collections whose template uses `fks.{relation}.code` paths)
+		const fksBag = record.fks;
+		if (fksBag && typeof fksBag === 'object' && !Array.isArray(fksBag)) {
+			const nested = (fksBag as Record<string, unknown>)[relationKey];
+			if (nested && typeof nested === 'object' && !Array.isArray(nested)) {
+				const obj = nested as Record<string, unknown>;
+				const refId = obj['id'] ?? obj['code'];
+				if (refId != null) {
+					const targetIndex = obj['id'] != null ? 'id' : 'code';
+					resolved.push({
+						key:         relationKey,
+						title:       relationKey,
+						collection:  fkDef.code,
+						fieldName:   `fks.${relationKey}`,
+						targetIndex,
+						where:       buildRelationWhere(targetIndex, refId),
+						fkDef
+					});
+					continue;
+				}
+			}
+		}
+
 		// Fallback: legacy flat scalar FK field (e.g. `categoryId` holding code/id).
 		const fieldInfo = scheme.findFkField(fkDef.code);
 		if (!fieldInfo) {

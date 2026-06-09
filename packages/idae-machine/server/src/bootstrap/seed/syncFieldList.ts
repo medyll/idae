@@ -112,10 +112,14 @@ async function loadModels(): Promise<Set<string>> {
 
 // ── Load current FieldList keys from source (regex — no eval needed) ─────────
 function loadFieldListKeys(): Set<string> {
-	const src = fs.readFileSync(SCHEMA_TYPES, 'utf8');
+	const src       = fs.readFileSync(SCHEMA_TYPES, 'utf8');
+	const declStart = src.indexOf('export const FieldList = {');
+	const closeIdx  = src.indexOf('\n} as const satisfies Record<string, Partial<AppSchemeField>>;', declStart);
+	if (declStart === -1 || closeIdx === -1) throw new Error('Could not locate FieldList declaration');
+	const body = src.slice(declStart, closeIdx);
 	// Lines like:  	email:           {
 	const keys = new Set<string>();
-	for (const m of src.matchAll(/^\t([a-zA-Z_][a-zA-Z0-9_]*):\s*\{/gm)) {
+	for (const m of body.matchAll(/^\t([a-zA-Z_][a-zA-Z0-9_]*):\s*\{/gm)) {
 		keys.add(m[1]);
 	}
 	return keys;
@@ -142,8 +146,10 @@ function generateEntry(name: string): string {
 
 // ── Patch schema-types.ts — insert before closing "};" of FieldList ──────────
 function patchSchemaTypes(entries: string[]): void {
-	const src      = fs.readFileSync(SCHEMA_TYPES, 'utf8');
-	const closeIdx = src.lastIndexOf('\n};');
+	const src        = fs.readFileSync(SCHEMA_TYPES, 'utf8');
+	const declStart  = src.indexOf('export const FieldList = {');
+	if (declStart === -1) throw new Error('Could not locate `export const FieldList = {` declaration');
+	const closeIdx   = src.indexOf('\n} as const satisfies Record<string, Partial<AppSchemeField>>;', declStart);
 	if (closeIdx === -1) throw new Error('Could not locate closing `};` of FieldList');
 
 	// group new entries under // SYNCED comment

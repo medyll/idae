@@ -1,15 +1,15 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-06-01T20:25
+# last_updated: 2026-06-10T01:30
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-01T20:25"
+last_updated: "2026-06-10T01:30"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 43 complete. S43-01 livré : DataRecord mode='row' + svelte:element renderItem. ADR-06 conforme. 586/586 verts. 0 erreurs svelte-check. Prêt pour prochain sprint ou tag release."
+next_action: "FABLE.md Phase 0 (rétablir le vert) terminée 2026-06-10 : 608/608 verts, 0 erreur/0 warning svelte-check. Roadmap Phase 1 = clore socle FK/RFK 85%→100% (voir FABLE.md)."
 next_command: "bmad-continue"
 next_role: "scrum"
 active_role: "dev"

@@ -194,7 +194,7 @@ export class MachineScheme {
 				const fieldInfo = sourceScheme.findFkField(this.collection);
 				result[sourceCollection][relationKey] = {
 					...fkDef,
-					fieldName: fieldInfo?.fieldName,
+					fieldName:   fieldInfo?.fieldName,
 					targetIndex: fieldInfo?.targetIndex
 				};
 			}

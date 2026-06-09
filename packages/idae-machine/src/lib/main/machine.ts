@@ -452,7 +452,7 @@ export class Machine {
 	}
 
 	/** Compute a record label from `template.presentation`. Used by navigation history writes and dialog titles. @internal */
-	async _renderLabel(collection: string, collectionId: string): Promise<string | undefined> {
+	async _renderLabel(collection: string, collectionId: string | number): Promise<string | undefined> {
 		try {
 			const scheme = this._machineDb?.collection(collection);
 			const presentation = (scheme as { template?: { presentation?: string } } | null | undefined)

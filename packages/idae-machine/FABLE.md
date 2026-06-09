@@ -1,0 +1,192 @@
+# FABLE.md — Découverte, audit & route de développement
+
+> Audit généré le 2026-06-10 (Fable 5). Méthode : lecture source réelle + `pnpm run check` + `vitest --run` + recoupement docs racine / bmad / mémoire projet.
+> Objectif : fixer une roadmap quand "tout est ouvert en même temps".
+
+---
+
+## 1. État des lieux — inventaire
+
+### Client (`src/lib`)
+
+| Couche | Fichiers | Notes |
+|--------|---------:|-------|
+| `main/` (machine, frame, router, api, multi-base) | 45 | cœur runtime |
+| `main/__tests__` | 46 | bonne densité |
+| `main/machine/` | 20 | scheme, fields, rights, action, identity |
+| `data-ui/` (data, controls, field, input, fragments, utils) | 40 | CRUD UI générique |
+| `shell/` (layout, frame, columner, auth) | 24 | shells + frame types |
+| `types/`, `utils/`, `__stubs__` | 12 | |
+
+### Serveur (`server/src`)
+
+bootstrap (10), models (24), routes (7), services (8), middleware (4), migrate (5), mcp (5), socket/sync (4), tests (24).
+
+### Docs racine (11 fichiers .md)
+
+`CLAUDE.md` (référence IA), `LAYOUT-DATAGRAM.md` (layout, régénéré 2026-06-10), `FK-RFK-DIAGRAM-REPORT.md` (relations, 2026-06-09), `API_DRIFT.md` (transport, 2026-06-07), `VIEWS.md` (système de vues, 2026-05-30), `SCHEMA-CONVENTIONS.md`, `PRODUCT.md`, + bmad/ (status.yaml, audits, sprints).
+
+---
+
+## 2. Signal dur — mesuré aujourd'hui
+
+### `pnpm run check` → **6 erreurs, 2 warnings** ❌
+
+Cause dominante : le chantier `collectionId: string | number` (diff **non commité**) n'est pas propagé jusqu'au bout :
+
+| Fichier | Erreur |
+|---------|--------|
+| `shell/Frame.svelte:27` | `string \| number` → param attend `string` |
+| `data-ui/fragments/dialog/Dialog.svelte:84,85` | idem (2×) |
+| `main/machine.ts:438` | idem |
+| `shell/frame/diagram/Diagram.svelte:97` | `unknown` → `string \| number \| undefined` (le `node.record['id']` brut) |
+| `types/schema-types.ts:1059` | `'action'` n'existe pas dans `Record<PermissionCode, …>` — désynchro RBAC types |
+
+Warnings : tabindex non-interactif (Diagram), `bootPromise` non-`$state` (+layout.svelte).
+
+### `vitest --run` → **602/608, 6 échecs dans 3 fichiers** ❌
+
+| Fichier | Échecs | Diagnostic |
+|---------|-------:|-----------|
+| `machineRelationHelpers.test.ts` | 2 | **Cassés par le diff non commité** : `MachineScheme` expose maintenant `fks.category.code` comme fieldName imbriqué, les tests attendent `category` plat. Comportement voulu → tests à aligner, pas le code. |
+| `DataRelations.svelte.test.ts` | 3 | Pré-existants (connus depuis le quality pass 2026-06-05). RFK render/filter/prefs. |
+| `machineClient.test.ts` | 1 | boot avec schéma distant mocké. |
+
+### Désynchro process ⚠
+
+`bmad/status.yaml` affiche `phase: release, progress: 100, 586/586 verts, 0 erreurs svelte-check` (2026-06-01). Réalité : 608 tests dont 6 rouges, 6 erreurs TS, 7 fichiers modifiés non commités. **Le tableau de bord ment — c'est une des raisons pour lesquelles la roadmap est difficile à fixer.**
+
+---
+
+## 3. Audit par couche
+
+### 3.1 Socle data — FK/RFK (estimation utilisateur : 85% — confirmée)
+
+**Acquis** : `MachineFkDef` + parseFks/parseReverseFks, `resolveForwardRelations`/`resolveReverseRelations`, DataListFk/Rfk/Relations, DataFk/Rfk, format imbriqué `record.fks[rel] = {id, code}` (diff du jour), Diagram frame (graphe SVG des relations), vues (VIEWS.md : flat/fk/full).
+
+**Les ~15% restants** :
+1. Tests relations rouges (2 à aligner + 3 pré-existants + 1 boot).
+2. Dette `fk-X.code` fieldType — workaround historique (ids de seeds incorrects à l'époque), pas un design. À revisiter ou à officialiser.
+3. Rôle `DataListRelations` vs `DataListFk`/`DataListRfk` non documenté.
+4. `required` sur FK déféré (specs requises non écrites).
+
+### 3.2 Field types
+
+**Acquis** : id, boolean, email, currency, textarea, select, **color**, **icon** (show + edit). Dispatch propre dans `DataField.svelte`.
+
+**Restant (TODOs en code)** :
+- `editInPlace` (DataField:37) — feature legacy `app_field_update`, réimplémentation planifiée.
+- `DataFind` mode avancé : field picker + exact/partial (3 TODOs).
+
+### 3.3 Persistence prefs — naming drift
+
+`DataFind`/`DataSort`/`DataGroup` portent 3 TODOs « persist via MachinePrefs once ready ». **`MachinePrefs` n'existe pas** — il a été réalisé sous une autre forme : `machine.action('appuser_prefs', …)` (MachineAction.ts). Le mécanisme est prêt, **seul le câblage manque**. Travail petit, valeur immédiate (sort/group/find mémorisés par collection).
+
+### 3.4 Shell / frames / zones
+
+| Constat | Impact |
+|---------|--------|
+| Zones `main.modal` / `main.window` / `main.panel` documentées (CLAUDE.md) mais **aucun `data-target-zone` dans le DOM** | `loadIn:form@main.panel` ne peut pas monter |
+| `Dashboard.svelte`, `Space.svelte` existent mais **hors componentRegistry** | non chargeables — or le legacy a un écran « Espace » (dashboard) identifié comme frame type majeur |
+| `TemplateShell.rightBar` toujours `aria-hidden` | panneau droit jamais exploité |
+| `Columner` enregistré, non documenté | |
+| Couleurs Diagram en fallback hardcodé | tokens css-base à garantir |
+
+### 3.5 RBAC
+
+Refonte déférée (décision projet) : duplicate-hydration, tests pas exigés à 100%. Mais l'erreur TS `PermissionCode`/`'action'` dans schema-types est **active et bloque le check** — à corriger sans attendre la refonte. RbacMatrix frame + bootstrap ops c/r/u/d/l/x déjà livrés.
+
+### 3.6 Transport (cf. API_DRIFT.md)
+
+- Push : SSEListener/WebSocketListener de qoolie contournent idae-api ; idae-api a maintenant `parseStream`/`SseStream` → refactor éligible.
+- Deux transports push parallèles (Socket.IO + SSE qoolie) — non unifiés, question ouverte.
+- Dead-code suspects : `MachineMultiBase.ts`, `MachineApi.ts` (surface fetch directe non appelée par `machine.boot()`).
+
+### 3.7 Tests / e2e
+
+- Unit : 54 fichiers, 608 tests — bon socle.
+- e2e : 2 specs seulement (`app.spec.ts` **obsolète** — connu, `rbac-matrix.spec.ts`). Pas d'e2e sur le parcours principal réel (login → explorer → fiche → diagram).
+- Dette : 6 tests rouges normalisés (« connus flaky ») = érosion de la valeur du signal vert.
+
+---
+
+## 4. Diagnostic — pourquoi la roadmap est dure à fixer
+
+1. **Le vert est faux.** check ❌ + 6 tests ❌ + status.yaml « 100% release ». Sans baseline fiable, chaque chantier semble risqué et rien ne se priorise.
+2. **Trop de fronts ouverts simultanément** : socle FK, shell/zones, RBAC, transport, CMS public render — chacun documenté dans un .md différent, aucun ordonnancement entre eux.
+3. **Fini-à-85% partout, fini-à-100% nulle part.** Le socle data, le shell, les prefs sont chacun « presque ». Le coût mental de re-rentrer dans chaque sujet dépasse le coût de le finir.
+4. **Docs riches mais éparpillés** (11 md racine + bmad + mémoire) sans vue « quel est LE prochain pas ».
+
+Règle proposée : **un seul front actif, critère de sortie mesurable, status.yaml resynchronisé à chaque fin de phase.**
+
+---
+
+## 5. Roadmap proposée
+
+### Phase 0 — Rétablir le vert (taille S, immédiat) — ✅ DONE 2026-06-10
+
+> Critère de sortie : `pnpm run check` = 0 erreur, `pnpm run test` = 608/608, diff commité, status.yaml synchro.
+
+- [x] Propager `string | number` : Frame.svelte, Dialog.svelte (×2), machine.ts:438, Diagram.svelte (`node.record['id']`), `FrameHost.load`, `LabelResolver`, `computeFrameId`, `contentKey`.
+- [x] Corriger `PermissionCode`/`'action'` — **root cause trouvée** : `syncFieldList.ts` utilisait `lastIndexOf('\n};')` sur tout le fichier → les 2 derniers runs ont injecté ~720 entrées FieldList dans `PERMISSION_CODES` au lieu de `FieldList`. Déplacées vers `FieldList` ; générateur corrigé pour cibler la bonne déclaration (`loadFieldListKeys` aussi restreint au bloc `FieldList`).
+- [x] `machineRelationHelpers` (2 tests) — **root cause** : `MachineScheme.parseReverseFkFields` (`isNestedFk`) ne peut pas distinguer un champ FK synthétisé d'un champ déclaré (`foldFksIntoFields` produit le même fieldName/fieldType dans les 2 cas) → toujours `fks.X.code`, casse la résolution reverse plate (vehicle/category). Hunk reverté ; le format imbriqué forward (dataRelationUtils) reste intact.
+- [x] `DataRelations` (3 tests) — même root cause que ci-dessus, fixés par le revert (pas de dette pré-existante distincte).
+- [x] `machineClient` (1 test) — pré-existant, sans rapport avec le diff : URL fetch attendue sans `?org=test` (multi-org ALS livré 2026-06-08, test pas mis à jour). Assertion corrigée.
+- [x] Warnings : tabindex Diagram (a11y-ignore commenté, `<g>` rôle conditionnel), `bootPromise` → `const` (plus de réassignation = plus de besoin de `$state`).
+- [x] status.yaml resynchro.
+
+**Résultat** : `pnpm run check` 0/0, `pnpm run test` 608/608.
+
+### Phase 1 — Clore le socle data : 85% → 100% (taille M)
+
+> Critère de sortie : relations FK/RFK documentées + testées, dette nommée tranchée, prefs persistées.
+
+- [ ] Trancher la dette `fk-X.code` : officialiser (documenter dans SCHEMA-CONVENTIONS.md) ou migrer. Décision, pas forcément gros chantier.
+- [ ] Documenter `DataListRelations` vs `DataListFk`/`DataListRfk` (FK-RFK-DIAGRAM-REPORT.md §composants).
+- [ ] Câbler la persistence : DataSort/DataGroup/DataFind → `machine.action('appuser_prefs', …)` (mécanisme déjà livré). Purger le nom fantôme « MachinePrefs » des TODOs.
+- [ ] FK `required` : écrire la spec courte, implémenter la validation.
+- [ ] Diagram : tokens couleur garantis (retirer fallbacks hardcodés).
+
+### Phase 2 — Compléter le shell (taille M)
+
+> Critère de sortie : toutes les zones documentées montables, tous les frame types legacy chargeables.
+
+- [ ] Markup réel `main.modal` / `main.window` / `main.panel` dans App/TemplateShell — ou retirer ces zones de CLAUDE.md si abandonnées (les deux sont acceptables, l'écart doc/code ne l'est pas).
+- [ ] Enregistrer `Dashboard` et `Space` dans componentRegistry (l'« Espace » legacy = écran d'accueil).
+- [ ] Activer `rightBar` (PaneRight existe déjà) ou supprimer.
+- [ ] Documenter `Columner` (section LAYOUT-DATAGRAM).
+- [ ] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète).
+
+### Phase 3 — RBAC refonte (taille L, déjà décidée, ne pas commencer avant fin Phase 1)
+
+- [ ] Refonte hydration (duplicate-hydration `_id` sans `id`, keyPath `++id`).
+- [ ] Resynchroniser types `PermissionCode` ↔ ops serveur c/r/u/d/l/x.
+- [ ] Tests RBAC au niveau du reste de la suite.
+
+### Phase 4 — Transport cleanup (taille M, indépendante — peut s'intercaler)
+
+- [ ] Refactor push qoolie sur `idae-api` `parseStream`/`SseStream` (API_DRIFT §TL;DR).
+- [ ] Trancher Socket.IO vs SSE qoolie (un seul transport push).
+- [ ] Supprimer ou réhabiliter `MachineMultiBase` / `MachineApi` (dead-code suspects).
+
+### Phase 5 — Public render / CMS (taille XL, horizon)
+
+Les 6 chantiers déjà identifiés : URL builder public, SSR, theming, split public/admin, primitives de contenu, cache de pages. **Ne pas ouvrir avant que Phases 0–2 soient closes** — c'est le chantier qui consomme le socle, il paie directement chaque % manquant.
+
+### Hors-roadmap assumé (backlog froid)
+
+`editInPlace`, `DataFind` avancé, frame `synthesis` enrichi — valeur réelle mais aucun bloquant ne s'y rattache. Y revenir après Phase 2.
+
+---
+
+## 6. Vue d'ensemble
+
+```
+Phase 0  ──►  Phase 1  ──►  Phase 2  ──►  Phase 3 (RBAC)
+(vert)      (socle 100%)   (shell)        │
+                                          ▼
+            Phase 4 (transport) ──►  Phase 5 (CMS public render)
+            [intercalable]
+```
+
+Prochain pas concret : **Phase 0, premier item** — propager `string | number` dans les 4 fichiers en erreur. Une heure de travail, et le projet retrouve une baseline vraie.

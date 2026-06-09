@@ -2,7 +2,7 @@ export function buildLoadInUrl(
 	modulePath: string,
 	targetId: string,
 	collection: string,
-	collectionId?: string,
+	collectionId?: string | number,
 	vars?: string
 ): string {
 	let url = `/+${targetId}/${modulePath}/${collection}`;

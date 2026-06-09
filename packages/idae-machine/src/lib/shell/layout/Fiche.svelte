@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { DataList, DataListRfk, DataRecord, machine } from '$lib/index.js';
+	import { DataRecord, machine } from '$lib/index.js';
 	let {
 		collection,
 		collectionId
 	}: {
 		collection: string;
-		collectionId: string;
+		collectionId: string | number;
 	} = $props();
 </script>
 
@@ -14,6 +14,9 @@
 		<toolbar-component>
 			<button onclick={() => machine.framer.loadFrame('synthesis', collection, collectionId)}
 				>synthese</button
+			>
+			<button onclick={() => machine.framer.loadFrame('diagram', collection, collectionId)}
+				>diagram</button
 			>
 			<button onclick={() => machine.framer.loadInDialog('fiche.update', collection, collectionId)}
 				>update</button

@@ -9,16 +9,11 @@
 	import type { AppUser } from '$lib/types/schema-types.js';
 
 	const apiUrl = API_URL;
-	let bootPromise: Promise<void>;
 	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };
 
 	let booted = $state(false);
 
-	if (_g.__idae_boot) {
-		bootPromise = _g.__idae_boot;
-	} else {
-		bootPromise = doBoot();
-	}
+	const bootPromise: Promise<void> = _g.__idae_boot ?? doBoot();
 	_g.__idae_boot = bootPromise;
 	void bootPromise.then(() => { booted = true; });
 
