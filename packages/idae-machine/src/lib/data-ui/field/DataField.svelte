@@ -19,6 +19,8 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     import InputBoolean  from '$lib/data-ui/input/InputBoolean.svelte';
     import InputTextarea from '$lib/data-ui/input/InputTextarea.svelte';
     import InputSelect   from '$lib/data-ui/input/InputSelect.svelte';
+    import InputColor    from '$lib/data-ui/input/InputColor.svelte';
+    import InputIcon     from '$lib/data-ui/input/InputIcon.svelte';
 
     let {
         collection = getContext('collection'),
@@ -143,6 +145,10 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <div class="flex-1" {...inputDataset}>
             {#if fkCollection}
                 {fkLabel}
+            {:else if fieldForge?.fieldType === 'color'}
+                <InputColor value={internalValue as string} mode="show" />
+            {:else if fieldForge?.fieldType === 'icon'}
+                <InputIcon value={internalValue as string} mode="show" />
             {:else}
                 {fieldForge?.format}
             {/if}
@@ -204,6 +210,24 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         <InputTextarea
             bind:value={internalValue as string}
             rows={4}
+            id={String(fieldName)}
+            name={String(fieldName)}
+            form={inputForm}
+        />
+
+    {:else if fieldForge?.fieldType === 'color'}
+        <InputColor
+            bind:value={internalValue as string}
+            {mode}
+            id={String(fieldName)}
+            name={String(fieldName)}
+            form={inputForm}
+        />
+
+    {:else if fieldForge?.fieldType === 'icon'}
+        <InputIcon
+            bind:value={internalValue as string}
+            {mode}
             id={String(fieldName)}
             name={String(fieldName)}
             form={inputForm}

@@ -16,7 +16,9 @@ export enum defaultTypes {
 	phone = 'phone',
 	password = 'password',
 	file = 'file',
-	image = 'image'
+	image = 'image',
+	icon = 'icon',
+	color = 'color'
 }
 
 /**
@@ -186,6 +188,16 @@ export const defaultFieldTypesDef: FieldTypeRegistry = {
 		id:        defaultTypes.any,
 		formatter: (value: unknown) => value as unknown,
 		validator: (value: unknown) => true
+	},
+	icon:  {
+		id:        defaultTypes.icon,
+		formatter: (value: unknown) => String(value ?? ''),
+		validator: (value: unknown) => true
+	},
+	color: {
+		id:        defaultTypes.color,
+		formatter: (value: unknown) => String(value ?? ''),
+		validator: (value: unknown) => /^#[0-9a-fA-F]{3,8}$/.test(String(value))
 	},
 	schemelink: {
 		id:        'schemelink',
