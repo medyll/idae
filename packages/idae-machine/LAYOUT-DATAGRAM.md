@@ -1,7 +1,7 @@
 # Layout Datagram — idae-machine
 
 > Carte du système de layout : shell topology → zones → frame hosts → navigation → data-ui tree.
-> Généré 2026-06-09.
+> Régénéré 2026-06-09 (lecture source, recoupé contre les fichiers réels).
 
 ---
 
@@ -20,6 +20,7 @@ Méthode reproductible. Lire le **code source** (pas la mémoire), recouper chaq
 | 5 | `src/lib/main/router/componentRegistry.ts` | Mapping clé → composant (types de frame chargeables) |
 | 6 | `src/lib/data-ui/fragments/dialog/Dialog.svelte` | Host content-driven `fill:false`, dialog flottant |
 | 7 | `src/lib/shell/frame/explorer/Explorer.svelte` | Exemple concret : TemplateShell + loadIn sous-zone |
+| 8 | `src/lib/data-ui/field/DataField.svelte` | Dispatch fieldType → Input* atoms |
 
 ### 2. Globs de cartographie
 
@@ -30,7 +31,7 @@ src/lib/data-ui/**/*.svelte    → inventaire data-ui (data, controls, field, in
 
 ### 3. Recoupements obligatoires (anti-dérive)
 
-- **Zones** : chercher `data-target-zone` dans le DOM réel. Une zone documentée qui n'existe pas dans le markup = frame non montable. (Ici : `main` existe dans App ; `main.modal/window/panel` cités dans CLAUDE.md mais **aucun markup trouvé**.)
+- **Zones** : chercher `data-target-zone` dans le DOM réel. Une zone documentée qui n'existe pas dans le markup = frame non montable. (Ici : `main` dans App ; `{zoneId}` dynamique dans TemplateShell ; `main.modal/window/panel` cités dans CLAUDE.md mais **aucun markup trouvé**.)
 - **Registry vs fichiers** : comparer les clés de `REGISTRY_ENTRIES` à la liste des `.svelte` sous `shell/frame/`. Les fichiers absents du registry = **non chargeables** via framer (ici : `Dashboard.svelte`, `Space.svelte`).
 - **`fill`** : vérifier qui passe `{ fill:false }` (Dialog) vs défaut `true` (Frame). Détermine `position:relative` vs `absolute;inset:0`.
 
@@ -46,7 +47,7 @@ src/lib/data-ui/**/*.svelte    → inventaire data-ui (data, controls, field, in
 ┌─────────────────────────────────────────────────────────┐
 │  App.svelte  (minimal shell)                            │
 │  ┌──────────────────────────────────────────────────┐   │
-│  │  TaskBar.svelte  (top bar + dev toggle)          │   │
+│  │  TaskBar.svelte  (top bar + devSlot ⚠ DEV)       │   │
 │  └──────────────────────────────────────────────────┘   │
 │  ┌──────────────────────────────────────────────────┐   │
 │  │  <main data-target-zone="main">                 │   │
@@ -59,12 +60,15 @@ src/lib/data-ui/**/*.svelte    → inventaire data-ui (data, controls, field, in
 ┌─────────────────────────────────────────────────────────────────┐
 │  TemplateShell.svelte  (sidebar + content + right)              │
 │  ┌────────────┐  ┌────────────────────────┐  ┌──────────────┐  │
-│  │  <aside>   │  │  <main>                │  │  <aside>     │  │
-│  │  leftbar   │  │  data-target-zone=     │  │  rightBar    │  │
-│  │  snippet   │  │  {zoneId}              │  │  (hidden)    │  │
+│  │  <aside>   │  │  <main class=shell-main>│  │  <aside>     │  │
+│  │  shell-    │  │  └ div.shell-frame-zone │  │  shell-right │  │
+│  │  sidebar   │  │    data-target-zone=    │  │  aria-hidden │  │
+│  │  {leftbar} │  │    {zoneId}             │  │  {rightBar}  │  │
 │  └────────────┘  └────────────────────────┘  └──────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+App = `data-target-zone="main"`. TemplateShell zone = `data-target-zone={zoneId}` + `data-taskbar="false"` (sous-zone, pas une window taskbar).
 
 ---
 
@@ -73,10 +77,10 @@ src/lib/data-ui/**/*.svelte    → inventaire data-ui (data, controls, field, in
 | Zone name      | Location                            | Usage                          |
 |---------------|-------------------------------------|-------------------------------|
 | `main`         | `App.svelte` `<main>`               | Primary content (explorer, form) |
-| `main.modal`   | (overlay — markup absent)           | Modal overlay                  |
-| `main.window`  | (floating — markup absent)          | Floating window                |
-| `main.panel`   | right-side panel (markup absent)    | Detail side panel              |
-| `{frameId}`    | `TemplateShell` dynamic zone        | Explorer content sub-zone      |
+| `{zoneId}`     | `TemplateShell` `div.shell-frame-zone` | Sous-zone dynamique (ex: explorer content) |
+| `main.modal`   | (overlay — markup absent)           | Modal overlay (non monté)      |
+| `main.window`  | (floating — markup absent)          | Floating window (non monté)    |
+| `main.panel`   | right-side panel (markup absent)    | Detail side panel (non monté)  |
 
 ---
 
@@ -86,24 +90,24 @@ src/lib/data-ui/**/*.svelte    → inventaire data-ui (data, controls, field, in
 MachineFrameManager.createHost(getTarget, { fill })
          │
          ├─ fill: true  (default)
-         │   position: absolute; inset: 0   ← sized zone (main, panel)
-         │   used by: Frame.svelte
+         │   div.frame-content → position:absolute; inset:0; overflow:hidden
+         │   ← sized zone (main, panel) ; used by: Frame.svelte
          │
          └─ fill: false
-             position: relative; width: 100% ← content-driven (Dialog)
-             used by: Dialog.svelte
+             div.frame-content → position:relative; width:100%
+             ← content-driven (Dialog grows to fit) ; used by: Dialog.svelte
 ```
 
-**Toggle semantics** (not swap) : chaque clé `(modulePath, collection, id, vars)` monte une fois, reste vivante. Re-load = show existant + hide siblings. State préservé à travers la navigation. `destroy()` démonte tout (teardown frame).
+**Toggle semantics** (not swap) : chaque clé `contentKey = modulePath::computeFrameId(collection,id,vars)` monte une fois dans son propre wrapper `div.frame-content`, reste vivante. Re-load = `hideAll()` + show existant. State préservé à travers la navigation. Guard re-entrancy via `seq` (résolution async out-of-order). `destroy()` démonte tout (teardown frame).
 
 ---
 
 ## 4. Frame Types (componentRegistry)
 
 ```
-componentRegistry
+REGISTRY_ENTRIES
 ├─ 'explorer'         → shell/frame/explorer/Explorer.svelte
-│    └─ uses TemplateShell: sidebar=DataList(appscheme) + content=zoneId
+│    └─ uses TemplateShell: sidebar=DataList(appscheme, groupBy=fks.appscheme_base)
 │    └─ sidebar clicks → loadIn:explorer.content@{frameId}
 ├─ 'explorer.content' → shell/frame/explorer/ExplorerContent.svelte
 ├─ 'form'             → data-ui/data/DataForm.svelte
@@ -114,10 +118,11 @@ componentRegistry
 ├─ 'fiche.update'     → shell/layout/FicheUpdate.svelte
 ├─ 'rbac.matrix'      → shell/frame/rbac/RbacMatrix.svelte
 ├─ 'synthesis'        → shell/frame/synthesis/Synthesis.svelte
+├─ 'diagram'          → shell/frame/diagram/Diagram.svelte  (NEW : graphe relations SVG)
 └─ 'login'            → shell/auth/Login.svelte
 ```
 
-**Non enregistrés** (existent mais hors registry → non chargeables) : `shell/frame/dashboard/Dashboard.svelte`, `shell/frame/space/Space.svelte`.
+**Non enregistrés** (existent mais hors registry → non chargeables via framer) : `shell/frame/dashboard/Dashboard.svelte`, `shell/frame/space/Space.svelte`.
 
 ---
 
@@ -126,15 +131,18 @@ componentRegistry
 ```
 machine.framer
 ├─ loadFrame(modulePath, collection, id?, vars?, zone='main')
-│    → URL hash push → router resolves → Frame.svelte mounts in zone
+│    → buildLoadInUrl → _pushFn (router) → _onNavigate hook → Frame.svelte mount
 │
 ├─ loadIn(zone, modulePath, collection, id?, vars?)
 │    → loadFrame avec zone explicite en premier
 │
-└─ loadInDialog(modulePath, collection, id?, vars?, opts?)
-     → content-keyed: même (mp+col+id) = focus existant
-     → nouveau contenu → Dialog.svelte monté (fill:false)
-     → frameId = "dialog:{mp}:{col}:{id}"
+├─ loadInDialog(modulePath, collection, id?, vars?, { modal?, closable? })
+│    → frameId = "dialog:{mp}:{col}:{id}"
+│    → déjà ouvert → show() + focus() (pas de duplication)
+│    → nouveau → load() + openDialog() monte Dialog.svelte (fill:false)
+│
+└─ register / unregister / show / hide / toggle / close / has / getControls / clear
+     + injections init : setRouter, setNavigationHook, setLabelResolver
 ```
 
 ---
@@ -143,19 +151,27 @@ machine.framer
 
 ```
 mount $effect
-  → machine.framer.register(id, controls, { replace:true })
+  → untrack(framer.register(id, controls, { replace:true }))
   → host.load(modulePath, collection, id, vars)   [si props fournis]
 
-controls = { load, show, hide, toggle, close }
-  close() → host.destroy() + framer.unregister(id)
+controls = { load, show, hide, toggle, close, taskbar }
+  show/hide/toggle  → visible state (style display block/none)
+  close()           → host.destroy() + framer.unregister(id)
+  taskbar           → bool (Frame=prop défaut true ; sous-zone loadIn=false)
 
 $effect cleanup
-  → framer.unregister(id) + host.destroy()
+  → untrack(framer.unregister(id)) + host.destroy()
 ```
 
-Garde-fous internes :
-- `mountingZones` : ferme la race "même URL fire 2× avant register".
-- `zoneFrames` : map zone → frameIds, pour hide/show des siblings (`activateZoneFrame`).
+DOM : `.frame { position:absolute; inset:0 }` > `.frame-body { absolute inset:0; flex column }`.
+
+`FrameControls` (interface) : `load, show, hide, toggle, close, focus?, taskbar?`.
+`focus?` implémenté **uniquement** par les frames flottantes (Dialog → raise + element.focus).
+
+Garde-fous internes (MachineFrameManager) :
+- `mountingZones` (Set) : ferme la race "même URL fire 2× avant register".
+- `zoneFrames` (Map zone→Set<frameId>) : hide/show des siblings via `activateZoneFrame`.
+- zone frame id = `"modulePath:zone"` (ne commence pas par `dialog:`) → tracké par zone.
 - re-entrancy guard dans `createHost.load` via `seq`.
 
 ---
@@ -166,9 +182,11 @@ Garde-fous internes :
 DataList
 ├─ DataToolbar / DataFind / DataSort / DataGroup  (controls/)
 ├─ DataField (field/)  ← rendu par cellule
-│    └─ DataFieldEdit  ← mode édition
-│         └─ Input* (input/): InputBoolean, InputSelect, InputEmail,
-│                              InputCurrency, InputTextarea
+│    └─ dispatch par fieldType → Input* (input/)
+│         id │ boolean→InputBoolean │ email→InputEmail │ currency→InputCurrency
+│         *area*→InputTextarea │ select→InputSelect │ color→InputColor │ icon→InputIcon
+│         défaut → <input type={htmlInputType}>
+│    └─ DataFieldEdit  ← wrapper mode édition
 └─ onClick → prop `link` déclenche framer.loadFrame / loadIn / loadInDialog
 
 DataForm
@@ -176,10 +194,14 @@ DataForm
 
 DataRecord
 ├─ source: prop `data` (controlled)  OU  machine.store(collection,{id}).records[0] (reactive)
-├─ DataField* (mode show, uniquement champs présents dans le record)
-├─ DataListFk / DataListRfk  (collections liées)
+├─ useViewFields → itère champs présents dans le record
+├─ DataField* (mode show, uniquement champs `in effectiveData`)
+├─ DataListFk / DataListRfk / DataListRelations  (collections liées)
 └─ DataFk / DataRfk (FK inline)
 ```
+
+Atoms input (input/) : `InputBoolean, InputSelect, InputEmail, InputCurrency, InputTextarea, InputColor, InputIcon`.
+`InputColor` / `InputIcon` supportent `mode="show"` (rendu lecture) en plus de l'édition.
 
 ---
 
@@ -188,34 +210,58 @@ DataRecord
 | Prop | Pattern | Effet |
 |------|--------|--------|
 | `link` | `"loadFrame:explorer"` | URL-nav zone `main` |
+| `link` | `"loadIn:explorer.content@{frameId}"` | Charge dans sous-zone dynamique |
 | `link` | `"loadIn:form@main.panel"` | Charge `form` dans zone `main.panel` |
 | `link` | `"loadInDialog:fiche"` | Ouvre fiche en dialog flottant |
 | `linkCollectionField` | `"code"` | Valeur du champ = nom de collection cible |
 | `linkVars` | `{ key: val }` | Vars supplémentaires au framer |
+| `groupBy` | `"fks.appscheme_base"` | Regroupement (ex: sidebar explorer) |
 
 ---
 
-## 9. Shell Support Files (layout/)
+## 9. Shell Support Files
 
 ```
-layout/
-├─ App.svelte           minimal shell (TaskBar + main zone)
-├─ TemplateShell.svelte sidebar + content zone + right
-├─ TaskBar.svelte
-├─ Fiche.svelte         record detail (via loadInDialog)
-├─ FicheUpdate.svelte
-├─ Navigation.svelte
-├─ Breadcrumb.svelte
-├─ Pane.svelte
-├─ PaneRight.svelte
-├─ PaneRecents.svelte
-├─ PaneQuickCreate.svelte
-└─ DevResetPanel.svelte  (DEV only)
+shell/
+├─ Frame.svelte           mécanique frame (mount point dynamique)
+├─ layout/
+│  ├─ App.svelte           minimal shell (TaskBar + main zone)
+│  ├─ TemplateShell.svelte sidebar + content zone + right
+│  ├─ TaskBar.svelte
+│  ├─ Fiche.svelte         record detail (via loadInDialog)
+│  ├─ FicheUpdate.svelte
+│  ├─ Navigation.svelte
+│  ├─ Breadcrumb.svelte
+│  ├─ Pane.svelte / PaneRight.svelte / PaneRecents.svelte / PaneQuickCreate.svelte
+│  └─ DevResetPanel.svelte  (DEV only, monté via TaskBar devSlot)
+├─ frame/
+│  ├─ explorer/   Explorer.svelte, ExplorerContent.svelte
+│  ├─ synthesis/  Synthesis.svelte
+│  ├─ rbac/       RbacMatrix.svelte
+│  ├─ diagram/    Diagram.svelte           (registry: 'diagram')
+│  ├─ dashboard/  Dashboard.svelte         (NON enregistré)
+│  └─ space/      Space.svelte             (NON enregistré)
+├─ columner/      Columner.svelte          (registry: 'columner')
+└─ auth/          Login.svelte             (registry: 'login')
 ```
 
 ---
 
-## 10. Gaps / points d'attention
+## 10. Diagram frame ('diagram') — relation graph
+
+```
+Diagram.svelte  (props: collection, collectionId, depth=1, direction='both')
+├─ buildGraph(collection, id, { depth, direction })  → DiagramGraph { root, nodes, edges }
+├─ layout radial SVG : root au centre (CX,CY=300), neighbors sur ORBIT=200
+├─ edges dédupliqués (from→to:relationKey), marker fwd (primary) / rev (secondary dashed)
+└─ click node neighbor → machine.framer.loadInDialog('fiche', node.collection, id)
+```
+
+Custom tags : `diagram-component` (flex column, 100%) + `diagram-canvas` (flex:1). Display déclaré en `@layer components :global()`.
+
+---
+
+## 11. Gaps / points d'attention
 
 | Point | Status |
 |-------|--------|
@@ -223,4 +269,6 @@ layout/
 | Zones `main.modal/window/panel` — aucun `data-target-zone` dans App.svelte | frame non montable tant que la zone n'existe pas dans le DOM |
 | `Columner.svelte` enregistré, structure non documentée | à détailler |
 | `TemplateShell.rightBar` toujours `aria-hidden="true"` | pas encore utilisé |
-| Dialogs empilés : ordre DOM = z-order (pas de z-index explicite) | `raise()` repositionne dans le parent |
+| Dialogs empilés : ordre DOM = z-order (`--z-modal`, pas de z-index par dialog) | `raise()` repositionne dans le parent |
+| `DataListRelations.svelte` présent | rôle vs DataListFk/Rfk à documenter |
+| `Diagram` couleurs en fallback hardcodé (`#4f8ef7`…) | tokens css-base via `var(--color-*, fallback)` — fallback à retirer si tokens garantis |

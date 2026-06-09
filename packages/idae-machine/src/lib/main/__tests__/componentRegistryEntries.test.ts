@@ -52,11 +52,16 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('login')).toBe(true);
 	});
 
-	it('has exactly 11 entries', () => {
+	it('has "diagram" registered (DiagramEngine frame)', () => {
+		expect(componentRegistry.has('diagram')).toBe(true);
+	});
+
+	it('has exactly 12 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(11);
+		expect(keys).toHaveLength(12);
 		expect(keys.sort()).toEqual([
 			'columner',
+			'diagram',
 			'explorer',
 			'explorer.content',
 			'fiche',

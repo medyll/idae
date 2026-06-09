@@ -13,6 +13,7 @@ export type {
 	TplFieldType, TplFieldArgs, TplFieldRulesObject, TplFieldRules, TplFields, TplCollectionName,
 	Tpl, IdbqModel, IDbForge,
 	Where, Operator, OperatorType, SupportedOperator, ResultSet, ResultsetOptions,
-	DataOpGroupByOptions, DotPath
+	DataOpGroupByOptions, DotPath,
+	DiagramNode, DiagramEdge, DiagramGraph,
 } from './machine-model.js';
 export { indexFromKeyPath } from './machine-model.js';

@@ -5,6 +5,9 @@ export * from '$lib/main/index.js';
 
 // UI — explorer (collection level)
 export { default as Explorer }            from '$lib/shell/frame/explorer/Explorer.svelte';
+export { default as Diagram }             from '$lib/shell/frame/diagram/Diagram.svelte';
+export { buildGraph }                     from '$lib/data-ui/utils/diagramUtils.js';
+export type { DiagramOptions }            from '$lib/data-ui/utils/diagramUtils.js';
 
 // data-ui — data providers (smart, machine-aware)
 export { default as DataList }   from '$lib/data-ui/data/DataList.svelte';
