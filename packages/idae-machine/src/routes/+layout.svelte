@@ -23,17 +23,19 @@
 	void bootPromise.then(() => { booted = true; });
 
 	async function doBoot(): Promise<void> {
-		const org =
-			(typeof localStorage !== 'undefined' && localStorage.getItem('idae_org')) || 'demo';
+		const org = typeof localStorage !== 'undefined' ? localStorage.getItem('idae_org') : null;
+		const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
 
-		// Carry the JWT on every sync request — the server reads the org from the
-		// verified token (orgContextMiddleware), so data routes to the right backend.
-		const token =
-			typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
+		// No org yet = first visit or logged out. Skip boot entirely and let the
+		// login dialog handle org selection. The reload after login will carry idae_org.
+		if (!org) {
+			booted = true;
+			return;
+		}
 
 		try {
 			await machine.boot({
-				org, domain: 'machine', version: 7,
+				org: org!, domain: 'machine', version: 7,
 				sync: {
 					mode: 'server-first',
 					databaseHost: apiUrl,
