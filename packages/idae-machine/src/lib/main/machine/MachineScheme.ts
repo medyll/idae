@@ -141,19 +141,14 @@ export class MachineScheme {
 	}
 
 	findFkField(targetCollection: string): { fieldName: string; targetIndex: string } | null {
-		for (const fieldName of Object.keys(this.fields)) {
-			const parsed = this.field(fieldName).parse();
-			const fieldType = parsed?.fieldType;
-			const prefix = `fk-${targetCollection}.`;
-			if (!fieldType?.startsWith(prefix)) continue;
-			const targetIndex = fieldType.slice(prefix.length);
-			if (targetIndex !== 'code') {
-				console.warn(`[MachineScheme] FK field ${fieldName} uses non-canonical index '${targetIndex}'. Expected 'code'.`);
+		// FK relations live in the structured `fks` block (MachineFkDef). The relation
+		// key IS the source field name; the join index is always the semantic `code`
+		// (canonical, backend-agnostic). The legacy synthesized `fk-X.code` fieldType
+		// is deprecated — see SCHEMA-CONVENTIONS.md §FK resolution.
+		for (const [fkKey, fkDef] of Object.entries(this.fks)) {
+			if (fkDef?.code === targetCollection) {
+				return { fieldName: fkKey, targetIndex: 'code' };
 			}
-			return {
-				fieldName,
-				targetIndex
-			};
 		}
 		return null;
 	}

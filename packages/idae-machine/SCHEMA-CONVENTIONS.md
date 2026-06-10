@@ -1,4 +1,4 @@
-# SCHEMA-CONVENTIONS.md — idae-machine Schema Conventions
+# SCHEMA-CONVENTIONS.md — idae-legacy => idae-machine Schema Conventions Inspiration
 
 > Reference for AI agents and developers. Covers conventions that schema-driven
 > features rely on. Derived from idae-legacy analysis + idae-machine design.
@@ -162,6 +162,46 @@ $app_default_fields_add = ['petitNom', 'nom', 'bgcolor', 'code', 'color', 'icon'
 **idae-machine equivalent:** `template.presentation` string + `fkLabelTpl`.
 When displaying a FK label, the engine reads `presentation` fields from the
 joined record. For status/type/group FKs, always include `code`, `color`, `icon`.
+
+---
+
+## 6bis. FK resolution — the structured `fks` block is canonical
+
+A foreign key relation lives in the **structured `fks` block** of a collection
+model, typed as `MachineFkDef`:
+
+```ts
+fks: {
+  category:        { code: 'vehicle_category', required: true },
+  location_office: { code: 'office' }
+}
+```
+
+- The **relation key** (`category`) is the source field name.
+- `fkDef.code` is the **target collection** name.
+- The **join index is always `code`** (the semantic key) — backend-agnostic, so a
+  relation resolves identically against IndexedDB (`++id`) and MongoDB (`_id`).
+
+Resolution reads this block directly:
+
+| Concern | Reads | Returns |
+|---------|-------|---------|
+| `MachineScheme.findFkField(target)` | `fks` block | `{ fieldName: relationKey, targetIndex: 'code' }` |
+| `MachineSchemeValues.descriptor(name)` | `fks` block | `kind: 'fk'`, `fkCollection`, `fkIndexField: 'code'` |
+| `useViewFields` (structural views) | `fks` block | relations surfaced alongside scalar fields |
+
+### ⚠ Deprecated: synthesized `fk-X.code` fieldType
+
+Earlier builds **synthesized** a field per relation (`foldFksIntoFields`) carrying
+the magic-string fieldType `fk-<target>.code`, folded into `fields` so consumers
+could discover FKs by parsing `fieldType.startsWith('fk-')`. This was a workaround
+(seed ids were unreliable at the time), **not a design**.
+
+**`fk-X.code` is deprecated.** The fold is removed; FK discovery/resolution reads
+the typed `fks` block, never a parsed string. The `fks` block is the **single**
+FK-detection path in `findFkField`, `descriptor`, and `useViewFields` — there is
+no string-fallback (`fieldType.startsWith('fk-')`). Do **not** reintroduce a
+synthesized `fk-X.code` field or any magic-string FK detection.
 
 ---
 

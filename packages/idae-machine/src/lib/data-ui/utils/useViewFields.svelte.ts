@@ -36,9 +36,12 @@ export function useViewFields(
 	const structuralCodes = $derived.by(() => {
 		if (!scheme || !isStructural) return [] as string[];
 		const fields = scheme.fields as Record<string, { group?: string } | undefined>;
-		const names = Object.keys(fields);
-		const isFk = (name: string) =>
-			((scheme.field(name as any).parse()?.fieldType as string) ?? '').startsWith('fk-');
+		const fks = (scheme.fks ?? {}) as Record<string, unknown>;
+		// FK relations live in the `fks` block, not in `fields` (the synthesized
+		// `fk-X.code` field is deprecated). Surface them alongside scalar fields.
+		const fkNames = Object.keys(fks).filter((n) => !(n in fields));
+		const names = [...Object.keys(fields), ...fkNames];
+		const isFk = (name: string) => name in fks;
 
 		const v = viewName ?? 'full';
 		if (v === 'full') return names;
