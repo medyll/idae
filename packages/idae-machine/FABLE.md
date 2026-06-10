@@ -110,7 +110,7 @@ Warnings : tabindex non-interactif (Diagram), `bootPromise` non-`$state` (+layou
 
 ### 3.6 RBAC
 
-Refonte déférée (décision projet) : duplicate-hydration, tests pas exigés à 100%. Mais l'erreur TS `PermissionCode`/`'action'` dans schema-types est **active et bloque le check** — à corriger sans attendre la refonte. RbacMatrix frame + bootstrap ops c/r/u/d/l/x déjà livrés.
+**Refonte faite 2026-06-10 (Phase 3).** duplicate-hydration résolu (dédup `_id` dans qoolie `bulkUpsertSilent`), types `PermissionCode` alignés (Phase 0), e2e `rbac-matrix.spec.ts` 5/5. RbacMatrix frame + bootstrap ops c/r/u/d/l/x déjà livrés. Détail dans Roadmap §Phase 3.
 
 ### 3.7 Transport (cf. API_DRIFT.md)
 
@@ -179,11 +179,15 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 	- [x] **Médiateur d'état** : `useMachinePrefs` refait en store réactif partagé *par scope* (`datalist.{collection}`). DataList et contrôles externes lisent/écrivent le même `$state` → sync sans se connaître. Cache vidable via `clearMachinePrefsCache()` (isolation tests).
 - [~] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète). Écrit 2026-06-10 : `src/e2e/parcours.spec.ts` (app.spec.ts supprimé), creds demo admin/admin123, exerce FicheToolbar/ButtonAction (list→fiche→diagram). check 0/0. **Pas encore exécuté** — requiert mongo + server :7842 + seed demo (même prérequis que rbac-matrix.spec.ts) ; stack down au moment du commit.
 
-### Phase 3 — RBAC refonte (taille L, déjà décidée, ne pas commencer avant fin Phase 1)
+### Phase 3 — RBAC refonte (taille L) — ✅ DONE 2026-06-10
 
-- [ ] Refonte hydration (duplicate-hydration `_id` sans `id`, keyPath `++id`).
-- [ ] Resynchroniser types `PermissionCode` ↔ ops serveur c/r/u/d/l/x.
-- [ ] Tests RBAC au niveau du reste de la suite.
+> Critère de sortie : hydration dédup sur clé naturelle, types alignés, e2e RBAC verts.
+
+- [x] **Refonte hydration (duplicate-hydration `_id` sans `id`, keyPath `++id`).** Root cause confirmée : `seedUsers.ts` écrit les collections user/RBAC (`appuser`, `appuser_group`, `appuser_grant`, `appuser_type`, `appuser_assignment`) avec `_id` Mongo **seulement, sans `id` numérique**. Store qoolie keyPath = `++id` (autoIncrement) → chaque pull SWR `bulkUpsertSilent` faisait un `put` sans clé inline → nouvelle clé auto à chaque lecture → doublons (3→6→9…). **Fix dans qoolie** (`IdbCollection.bulkUpsertSilent` → `reconcileNaturalKeys`) : un record sans valeur keyPath mais avec `_id` réutilise la clé locale du record existant de même `_id` → le put écrase en place. keyPath `++id` conservé (pas de changement de schéma). Passthrough pur quand aucun record n'a besoin de réconciliation. Test de régression : `qoolie/.../IdbCollection.test.ts` (store autoIncrement, re-pull stable à 3 / idempotence avec `id` présent). qoolie 209/209.
+- [x] **Resynchroniser types `PermissionCode` ↔ ops serveur c/r/u/d/l/x.** Déjà aligné (fait en Phase 0) : `PermissionCode` (client) ≡ `Permission` (server middleware) ≡ `GrantDoc.c/r/u/d/l/x` ≡ `AppUserGrant.c/r/u/d/l/x` ≡ `MachineRights.ALL_OPS`. Vérifié 2026-06-10.
+- [x] **Tests RBAC au niveau de la suite.** `rbac-matrix.spec.ts` 5/5 vert. Le spec était périmé : pas d'étape login alors que le shell ne monte qu'une fois authentifié (gating multi-org ALS 2026-06-08) → ajout `ensureLoggedIn` (admin/admin123, calqué sur `parcours.spec.ts`). Valide la dédup hydration de bout en bout (`appuser_group` = 3 items stables, persiste après reload).
+
+**Issue découverte (backlog) — deep-link reload race.** Recharger une URL hash de frame (`#/+main/rbac.matrix/appuser_group`) sur un boot frais fait tirer le router **avant** que la zone `main` (`data-target-zone`) ne soit montée → `[FrameManager] frame "rbac.matrix:main" not found and no DOM zone`. Frame jamais montée = page blanche au refresh d'un deep-link. Contourné dans le test « toggle persists » (reload propre via BASE puis renavigation). À corriger côté router/boot (différer le 1er dispatch jusqu'à présence de la zone) — hors scope RBAC.
 
 ### Phase 4 — Transport cleanup (taille M, indépendante — peut s'intercaler)
 

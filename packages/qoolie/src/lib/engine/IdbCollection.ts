@@ -340,11 +340,50 @@ export class IdbCollection<T = any> {
    * Bulk upsert records silently — writes to IDB without triggering sync/outbox,
    * then explicitly fires the event bus 'change' event so reactive adapters
    * (e.g. useQoolieCollection) re-render with the hydrated data.
+   *
+   * Hydration dedup: server records carry the Mongo natural key `_id`. When the
+   * store keyPath is auto-increment and an incoming record lacks the keyPath
+   * value, a raw `put` would mint a fresh key on every pull → the same server
+   * record duplicates (3→6→9…). We reconcile on `_id`: a record missing its
+   * keyPath value reuses the local key of the existing record with the same
+   * `_id`, so the put overwrites in place. Records that already carry the
+   * keyPath value, or have no `_id`, are written unchanged.
    */
   async bulkUpsertSilent(items: Partial<T>[]): Promise<T[]> {
-    const results = await this.batchPut(items, { silent: true });
+    const reconciled = await this.reconcileNaturalKeys(items);
+    const results = await this.batchPut(reconciled, { silent: true });
     this.eventBus.emit(this._store, 'put', results);
     return results;
+  }
+
+  /**
+   * Map incoming records lacking the keyPath value onto the local key of an
+   * existing record sharing the same `_id` (Mongo natural key). Prevents
+   * auto-increment duplication on repeated hydration pulls. Pure passthrough
+   * when no record needs reconciliation.
+   */
+  private async reconcileNaturalKeys(items: Partial<T>[]): Promise<Partial<T>[]> {
+    const kp = this.keyPath;
+    const needsReconcile = items.some(
+      (it) => (it as any)[kp] == null && (it as any)._id != null,
+    );
+    if (!needsReconcile) return items;
+
+    const existing = await this.getAll();
+    const byNaturalKey = new Map<string, any>();
+    for (const rec of existing) {
+      const nid = (rec as any)._id;
+      const localKey = (rec as any)[kp];
+      if (nid != null && localKey != null) byNaturalKey.set(String(nid), localKey);
+    }
+
+    return items.map((it) => {
+      if ((it as any)[kp] != null) return it;
+      const nid = (it as any)._id;
+      if (nid == null) return it;
+      const localKey = byNaturalKey.get(String(nid));
+      return localKey != null ? ({ ...it, [kp]: localKey } as Partial<T>) : it;
+    });
   }
 }
 

@@ -1,15 +1,15 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-06-10T01:30
+# last_updated: 2026-06-10T15:30
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-10T01:30"
+last_updated: "2026-06-10T15:30"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "FABLE.md Phase 0 (rétablir le vert) terminée 2026-06-10 : 608/608 verts, 0 erreur/0 warning svelte-check. Roadmap Phase 1 = clore socle FK/RFK 85%→100% (voir FABLE.md)."
+next_action: "FABLE.md Phases 0–3 closes 2026-06-10. Phase 3 (RBAC refonte) : duplicate-hydration résolu via dédup `_id` dans qoolie bulkUpsertSilent (reconcileNaturalKeys) + test régression (qoolie 209/209) ; types PermissionCode déjà alignés (Phase 0) ; rbac-matrix.spec.ts 5/5 vert (login ajouté). idae-machine check 0/0, 609/609. Restant roadmap : Phase 4 (transport cleanup) / Phase 5 (CMS public render)."
 next_command: "bmad-continue"
 next_role: "scrum"
 active_role: "dev"
@@ -892,18 +892,18 @@ backlog:
   - { id: BL-07,     priority: done, title: "DataList mode unification — implémenté S42" }
 
   - id: BACK-05
-    title: "Playwright RBAC golden-path — 3 tests encore rouges"
-    priority: deferred
+    title: "Playwright RBAC golden-path — 3 tests rouges"
+    priority: done
     description: >
-      2026-05-29: investigation. 2 bugs qoolie réels trouvés+corrigés (qoolie 207/207 toujours vert):
-      (1) useQoolieCollection.svelte.ts — adapter réassignait la MÊME ref de dataState (muté in-place
-      par l'event bus) → Svelte 5 ne détecte pas → pas de re-render. Fix: spread `[...getAll()]`.
-      (2) IdbState.feed() — read IDB cold async clobberait dataState déjà hydraté (race cold-start)
-      → wipe des lignes + emit 'load' vide. Fix: guard, ne pas écraser un dataState peuplé avec snapshot vide.
-      Aussi corrigé: server/.env CORS_ORIGIN 5174→5173 (boot "Failed to fetch").
-      RESTE rouge: bug duplicate-hydration — records serveur ont `_id` mais pas `id`, keyPath `++id`
-      réassigne un id neuf à chaque pull → doublons (3→6→9). Lié à la convention FK code.
-      Tests RBAC NON requis à 100% — refonte prévue couvrira ce point. Déprioritisé.
+      RÉSOLU 2026-06-10 (FABLE Phase 3). Root cause duplicate-hydration confirmée : seedUsers.ts
+      écrit les collections user/RBAC avec `_id` Mongo seulement (pas de `id` numérique), keyPath
+      qoolie `++id` (autoIncrement) → chaque pull SWR `bulkUpsertSilent` faisait un put sans clé
+      inline → id neuf à chaque lecture → doublons (3→6→9). Fix dans qoolie : `reconcileNaturalKeys`
+      dans `IdbCollection.bulkUpsertSilent` (record sans keyPath mais avec `_id` réutilise la clé
+      locale du record existant de même `_id`). + test régression IdbCollection.test.ts (qoolie 209/209).
+      Spec rbac-matrix.spec.ts aussi périmé (pas de login alors que le shell gate sur auth) → ajout
+      ensureLoggedIn(admin/admin123). 5/5 vert. Issue connexe notée : deep-link reload race
+      (router avant montage zone main) — backlog router, hors scope RBAC.
 
   - id: BACK-06
     title: "FullInfo.svelte — implémenter le contenu (stub enregistré)"
