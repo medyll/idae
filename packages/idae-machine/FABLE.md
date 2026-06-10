@@ -2,6 +2,7 @@
 
 > Audit généré le 2026-06-10 (Fable 5). Méthode : lecture source réelle + `pnpm run check` + `vitest --run` + recoupement docs racine / bmad / mémoire projet.
 > Objectif : fixer une roadmap quand "tout est ouvert en même temps".
+> Màj 2026-06-10 (soir) : décisions utilisateur intégrées — externalisation toolbars, idae-socket côté push, Columner → layout, MachineMultiBase/MachineApi présumés morts.
 
 ---
 
@@ -89,20 +90,35 @@ Warnings : tabindex non-interactif (Diagram), `bootPromise` non-`$state` (+layou
 | Zones `main.modal` / `main.window` / `main.panel` documentées (CLAUDE.md) mais **aucun `data-target-zone` dans le DOM** | `loadIn:form@main.panel` ne peut pas monter |
 | `Dashboard.svelte`, `Space.svelte` existent mais **hors componentRegistry** | non chargeables — or le legacy a un écran « Espace » (dashboard) identifié comme frame type majeur |
 | `TemplateShell.rightBar` toujours `aria-hidden` | panneau droit jamais exploité — `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés) ; rightBar reste vide, à reconstruire si besoin |
-| `Columner` enregistré, non documenté | |
+| `Columner` enregistré, non documenté, **mal placé** (`shell/columner/`) | composant de layout → à déplacer vers `shell/layout/` |
 | Couleurs Diagram en fallback hardcodé | tokens css-base à garantir |
 
-### 3.5 RBAC
+### 3.5 Toolbars & actions — externalisation (décision 2026-06-10)
+
+État actuel mesuré :
+
+- `DataList.svelte` porte `showToolbar` (rend `DataToolbar` + sort/group/find + mode switcher) **et** un snippet `toolbar` d'override complet — la toolbar vit *dans* le provider de liste.
+- `Fiche.svelte` a une `<toolbar-component>` inline avec 3 boutons câblés en dur (`synthesis`/`diagram`/`fiche.update`) + un `<debug>`.
+- `data-ui/controls/` ne contient que `DataToolbar`, `DataSort`, `DataGroup`, `DataFind` — pas de bouton d'action générique.
+
+**Décision : externaliser totalement.**
+
+1. `DataList` perd `showToolbar` et le snippet `toolbar` — **aucune prop toolbar**. La toolbar devient un composant frère que le consommateur compose autour de la liste.
+2. Nouveau composant `FicheToolbar` — remplace la `toolbar-component` inline de `Fiche.svelte`.
+3. Nouveau composant `ButtonAction` — props habituelles `collection`, `collectionId?` ; brique générique des toolbars (les 3 boutons en dur de Fiche en deviennent des instances).
+4. Nouveaux boutons-menus `Sort` et `Group` (même famille que `ButtonAction`) — les contrôles sort/group sortent du couple DataToolbar/DataList pour devenir composables partout.
+
+### 3.6 RBAC
 
 Refonte déférée (décision projet) : duplicate-hydration, tests pas exigés à 100%. Mais l'erreur TS `PermissionCode`/`'action'` dans schema-types est **active et bloque le check** — à corriger sans attendre la refonte. RbacMatrix frame + bootstrap ops c/r/u/d/l/x déjà livrés.
 
-### 3.6 Transport (cf. API_DRIFT.md)
+### 3.7 Transport (cf. API_DRIFT.md)
 
-- Push : SSEListener/WebSocketListener de qoolie contournent idae-api ; idae-api a maintenant `parseStream`/`SseStream` → refactor éligible.
-- Deux transports push parallèles (Socket.IO + SSE qoolie) — non unifiés, question ouverte.
-- Dead-code suspects : `MachineMultiBase.ts`, `MachineApi.ts` (surface fetch directe non appelée par `machine.boot()`).
+- Push : SSEListener/WebSocketListener de qoolie contournent idae-api ; idae-api a maintenant le **mode streaming** (`parseStream`/`SseStream`) — **signal fort**, le refactor n'est plus « éligible » mais attendu.
+- Deux transports push parallèles (Socket.IO + SSE qoolie) — **orientation utilisateur : `idae-socket`** (`D:/development/idae/packages/idae-socket`) pour le côté socket. **« Via qoolie ? » → tranché (2026-06-10) : OUI, par injection de `PushListener`.** qoolie possède le chemin d'écriture IDB (`handleServerChange` = conflits/outbox/réactivité) ; contourner = re-créer le piège dual-bus. Le seam existe déjà : interface `PushListener` (start/stop/isConnected/onChange/setToken, payload `ServerChange`), exportée publiquement. **Sens de dépendance (souhait initial utilisateur) : idae-socket sort *via* qoolie** — l'adapter vit dans qoolie, pas dans idae-machine. Cohérent avec l'existant : `SSEListener`/`WebSocketListener` vivent déjà dans `qoolie/src/lib/push/` ; idae-socket devient le 3ᵉ protocole. Plan : (1) qoolie : `SocketIOListener implements PushListener` wrappant `EventDataClientInstance`, sélectionné par `protocol: 'socketio'` dans `ServerPushListener` (idae-socket en peer dep optionnelle + import dynamique pour ne pas imposer socket.io-client) ; (2) garder en plus le seam `PushConfig.listener?: PushListener` injecté (~10 lignes SyncController) — utile tests + instance partagée ; (3) idae-machine ne fait que configurer (`sync.push.protocol: 'socketio'`) ; `machine.socket` expose l'instance détenue par qoolie (une seule connexion, sens unique qoolie → idae-socket). `RealtimeClient` (main/api) absorbé/supprimé avec MachineApi. SSE qoolie reste fallback sans-socket.
+- `MachineMultiBase.ts`, `MachineApi.ts` : **plus que suspects** — surface fetch directe non appelée par `machine.boot()`, doublonne idae-api. Présomption de mort ; charge de la preuve inversée : suppression par défaut, réhabilitation seulement sur usage démontré.
 
-### 3.7 Tests / e2e
+### 3.8 Tests / e2e
 
 - Unit : 54 fichiers, 608 tests — bon socle.
 - e2e : 2 specs seulement (`app.spec.ts` **obsolète** — connu, `rbac-matrix.spec.ts`). Pas d'e2e sur le parcours principal réel (login → explorer → fiche → diagram).
@@ -154,7 +170,12 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 - [ ] Markup réel `main.modal` / `main.window` / `main.panel` dans App/TemplateShell — ou retirer ces zones de CLAUDE.md si abandonnées (les deux sont acceptables, l'écart doc/code ne l'est pas).
 - [ ] Enregistrer `Dashboard` et `Space` dans componentRegistry (l'« Espace » legacy = écran d'accueil).
 - [x] `rightBar` : `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés, gardés en export uniquement). `rightBar` reste vide — à reconstruire si un panneau droit est requis.
-- [ ] Documenter `Columner` (section LAYOUT-DATAGRAM).
+- [ ] Déplacer `Columner` : `shell/columner/` → `shell/layout/`, puis documenter (section LAYOUT-DATAGRAM).
+- [ ] **Externaliser les toolbars** (§3.5) :
+	- [ ] `DataList` : supprimer `showToolbar` + snippet `toolbar` — aucune prop toolbar ; migrer les call-sites (ExplorerContent, etc.) vers composition externe.
+	- [ ] Créer `FicheToolbar` ; `Fiche.svelte` l'utilise (sortir les 3 boutons en dur + retirer le `<debug>`).
+	- [ ] Créer `ButtonAction` (`collection`, `collectionId?`).
+	- [ ] Créer boutons-menus `Sort` et `Group` composables hors DataToolbar.
 - [ ] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète).
 
 ### Phase 3 — RBAC refonte (taille L, déjà décidée, ne pas commencer avant fin Phase 1)
@@ -165,9 +186,9 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 
 ### Phase 4 — Transport cleanup (taille M, indépendante — peut s'intercaler)
 
-- [ ] Refactor push qoolie sur `idae-api` `parseStream`/`SseStream` (API_DRIFT §TL;DR).
-- [ ] Trancher Socket.IO vs SSE qoolie (un seul transport push).
-- [ ] Supprimer ou réhabiliter `MachineMultiBase` / `MachineApi` (dead-code suspects).
+- [ ] Refactor push qoolie sur `idae-api` `parseStream`/`SseStream` — le mode streaming est livré côté idae-api, plus de bloquant.
+- [ ] Câbler `idae-socket` comme transport push **dans qoolie** (`SocketIOListener`, `protocol: 'socketio'`, peer dep optionnelle — cf. §3.7) ; idae-machine ne fait que configurer ; `machine.socket` réexpose l'instance qoolie. Supprimer `RealtimeClient`. Un seul transport actif.
+- [ ] Supprimer `MachineMultiBase` / `MachineApi` (présumés morts — réhabilitation seulement sur usage démontré, cf. §3.7).
 
 ### Phase 5 — Public render / CMS (taille XL, horizon)
 
