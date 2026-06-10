@@ -43,12 +43,7 @@ export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.sve
 export { default as App }              from '$lib/shell/layout/App.svelte';
 export { default as Login }            from '$lib/shell/auth/Login.svelte';
 export { default as TaskBar }          from '$lib/shell/layout/TaskBar.svelte';
-export { default as Navigation }       from '$lib/shell/layout/Navigation.svelte';
 export { default as Breadcrumb }       from '$lib/shell/layout/Breadcrumb.svelte';
-export { default as Pane }             from '$lib/shell/layout/Pane.svelte';
-export { default as PaneRight }        from '$lib/shell/layout/PaneRight.svelte';
-export { default as PaneQuickCreate }  from '$lib/shell/layout/PaneQuickCreate.svelte';
-export { default as PaneRecents }      from '$lib/shell/layout/PaneRecents.svelte';
 export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.svelte';
 
 // UI — fragments
