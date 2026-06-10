@@ -158,7 +158,7 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 > Critère de sortie : relations FK/RFK documentées + testées, dette nommée tranchée, prefs persistées.
 
 - [x] Trancher la dette `fk-X.code` : **déprécié 2026-06-10**. Successeur = bloc `fks` structuré (`MachineFkDef`, join `code`). Fold `foldFksIntoFields` supprimé ; `findFkField`/`descriptor`/`useViewFields` lisent le bloc `fks` comme **unique** chemin de détection FK — plus aucun fallback magic-string `startsWith('fk-')`. Documenté SCHEMA-CONVENTIONS.md §6bis. check 0/0, tests 603/603.
-- [ ] Documenter `DataListRelations` vs `DataListFk`/`DataListRfk` (FK-RFK-DIAGRAM-REPORT.md §composants).
+- [x] Documenter `DataListRelations` vs `DataListFk`/`DataListRfk` : déjà fait, FK-RFK-DIAGRAM-REPORT.md §4 (vérifié 2026-06-10, code conforme).
 - [ ] Câbler la persistence : DataSort/DataGroup/DataFind → `machine.action('appuser_prefs', …)` (mécanisme déjà livré). Purger le nom fantôme « MachinePrefs » des TODOs.
 - [ ] FK `required` : écrire la spec courte, implémenter la validation.
 - [ ] Diagram : tokens couleur garantis (retirer fallbacks hardcodés).
