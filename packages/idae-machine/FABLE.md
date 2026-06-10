@@ -88,7 +88,7 @@ Warnings : tabindex non-interactif (Diagram), `bootPromise` non-`$state` (+layou
 |---------|--------|
 | Zones `main.modal` / `main.window` / `main.panel` documentées (CLAUDE.md) mais **aucun `data-target-zone` dans le DOM** | `loadIn:form@main.panel` ne peut pas monter |
 | `Dashboard.svelte`, `Space.svelte` existent mais **hors componentRegistry** | non chargeables — or le legacy a un écran « Espace » (dashboard) identifié comme frame type majeur |
-| `TemplateShell.rightBar` toujours `aria-hidden` | panneau droit jamais exploité |
+| `TemplateShell.rightBar` toujours `aria-hidden` | panneau droit jamais exploité — `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés) ; rightBar reste vide, à reconstruire si besoin |
 | `Columner` enregistré, non documenté | |
 | Couleurs Diagram en fallback hardcodé | tokens css-base à garantir |
 
@@ -153,7 +153,7 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 
 - [ ] Markup réel `main.modal` / `main.window` / `main.panel` dans App/TemplateShell — ou retirer ces zones de CLAUDE.md si abandonnées (les deux sont acceptables, l'écart doc/code ne l'est pas).
 - [ ] Enregistrer `Dashboard` et `Space` dans componentRegistry (l'« Espace » legacy = écran d'accueil).
-- [ ] Activer `rightBar` (PaneRight existe déjà) ou supprimer.
+- [x] `rightBar` : `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés, gardés en export uniquement). `rightBar` reste vide — à reconstruire si un panneau droit est requis.
 - [ ] Documenter `Columner` (section LAYOUT-DATAGRAM).
 - [ ] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète).
 

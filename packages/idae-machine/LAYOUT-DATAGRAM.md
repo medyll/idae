@@ -237,9 +237,7 @@ shell/
 │  ├─ TaskBar.svelte
 │  ├─ Fiche.svelte         record detail (via loadInDialog)
 │  ├─ FicheUpdate.svelte
-│  ├─ Navigation.svelte
 │  ├─ Breadcrumb.svelte
-│  ├─ Pane.svelte / PaneRight.svelte / PaneRecents.svelte / PaneQuickCreate.svelte
 │  └─ DevResetPanel.svelte  (DEV only, monté via TaskBar devSlot)
 ├─ frame/
 │  ├─ explorer/   Explorer.svelte, ExplorerContent.svelte
@@ -281,7 +279,7 @@ Custom tags : `diagram-component` (flex column, 100%) + `diagram-canvas` (flex:1
 | `Dashboard.svelte`, `Space.svelte` non enregistrés | non chargeable via framer |
 | Zones `main.modal/window/panel` — aucun `data-target-zone` dans App.svelte | frame non montable tant que la zone n'existe pas dans le DOM |
 | `Columner.svelte` enregistré, structure non documentée | à détailler |
-| `TemplateShell.rightBar` toujours `aria-hidden="true"` | pas encore utilisé |
+| `TemplateShell.rightBar` toujours `aria-hidden="true"` | pas encore utilisé — `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés) |
 | Dialogs empilés : ordre DOM = z-order (`--z-modal`, pas de z-index par dialog) | `raise()` repositionne dans le parent |
 | `DataListRelations.svelte` présent | rôle vs DataListFk/Rfk à documenter |
 | `Diagram` couleurs en fallback hardcodé (`#4f8ef7`…) | tokens css-base via `var(--color-*, fallback)` — fallback à retirer si tokens garantis |
