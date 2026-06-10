@@ -350,17 +350,17 @@ Consumers can override via the item snippet.
 {:else if showToolbar}
 	<DataToolbar>
 		{#snippet find()}
-			<DataFind {collection} bind:where={prefs.slots.find} />
+			<DataFind {collection} bind:where={() => prefs.get('find'), (v) => prefs.set('find', v)} />
 		{/snippet}
 		{#snippet sort()}
 			{#if presentationFields?.length}
 				{#each presentationFields as f (f)}
-					<DataSort field={f} bind:sortBy={prefs.slots.sortBy} />
+					<DataSort field={f} bind:sortBy={() => prefs.get('sortBy'), (v) => prefs.set('sortBy', v)} />
 				{/each}
 			{/if}
 		{/snippet}
 		{#snippet group()}
-			<DataGroup {collection} bind:groupBy={prefs.slots.groupBy} />
+			<DataGroup {collection} bind:groupBy={() => prefs.get('groupBy'), (v) => prefs.set('groupBy', v)} />
 		{/snippet}
 		{#snippet extras()}
 			{@render modeSwitcher()}

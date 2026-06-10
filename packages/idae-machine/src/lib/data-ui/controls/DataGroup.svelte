@@ -54,7 +54,6 @@ Click sets/clears groupBy.
 	function pick(field: string | undefined): void {
 		groupBy = field;
 		open = false;
-		// TODO: persist active groupBy via MachinePrefs (per collection) once MachinePrefs is ready
 	}
 
 	const label = $derived(groupBy ? `Group: ${groupBy}` : 'Group');

@@ -30,7 +30,6 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 		const nextDir = next(current);
 		const others = sortBy.filter(s => s.field !== field);
 		sortBy = nextDir === 'none' ? others : [...others, { field, direction: nextDir }];
-		// TODO: persist active sort via MachinePrefs (per collection) once MachinePrefs is ready
 	}
 
 	const icon = $derived(

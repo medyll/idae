@@ -153,6 +153,41 @@ export class MachineScheme {
 		return null;
 	}
 
+	/**
+	 * Whether `record` carries a value for FK relation `relationKey` — covers the
+	 * nested `fks.{relationKey}_{id}` convention, the nested object form
+	 * `fks.{relationKey} = { id|code }`, and the legacy flat scalar field
+	 * (via `findFkField`). Used by `MachineSchemeValidate` to enforce
+	 * `MachineFkDef.required`.
+	 */
+	hasFkValue(record: Record<string, unknown>, relationKey: string): boolean {
+		const fkDef = this.fks[relationKey];
+		if (!fkDef) return false;
+
+		const bag = record.fks;
+		if (bag && typeof bag === 'object') {
+			for (const key of Object.keys(bag as Record<string, unknown>)) {
+				const pos = key.lastIndexOf('_');
+				const baseName = pos < 1 ? key : key.slice(0, pos);
+				const refId = pos < 1 ? '' : key.slice(pos + 1);
+				if (baseName === relationKey && refId) return true;
+			}
+			const nested = (bag as Record<string, unknown>)[relationKey];
+			if (nested && typeof nested === 'object' && !Array.isArray(nested)) {
+				const obj = nested as Record<string, unknown>;
+				if (obj['id'] != null || obj['code'] != null) return true;
+			}
+		}
+
+		const fieldInfo = this.findFkField(fkDef.code);
+		if (fieldInfo) {
+			const value = record[fieldInfo.fieldName];
+			if (value != null && !(Array.isArray(value) && value.length === 0)) return true;
+		}
+
+		return false;
+	}
+
 	parseReverseFks(): Record<string, Record<string, unknown>> {
 		const result: Record<string, Record<string, unknown>> = {};
 		Object.entries(this.#model).forEach(([collectionName, collectionModel]) => {

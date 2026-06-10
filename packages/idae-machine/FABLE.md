@@ -159,8 +159,8 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 
 - [x] Trancher la dette `fk-X.code` : **déprécié 2026-06-10**. Successeur = bloc `fks` structuré (`MachineFkDef`, join `code`). Fold `foldFksIntoFields` supprimé ; `findFkField`/`descriptor`/`useViewFields` lisent le bloc `fks` comme **unique** chemin de détection FK — plus aucun fallback magic-string `startsWith('fk-')`. Documenté SCHEMA-CONVENTIONS.md §6bis. check 0/0, tests 603/603.
 - [x] Documenter `DataListRelations` vs `DataListFk`/`DataListRfk` : déjà fait, FK-RFK-DIAGRAM-REPORT.md §4 (vérifié 2026-06-10, code conforme).
-- [ ] Câbler la persistence : DataSort/DataGroup/DataFind → `machine.action('appuser_prefs', …)` (mécanisme déjà livré). Purger le nom fantôme « MachinePrefs » des TODOs.
-- [ ] FK `required` : écrire la spec courte, implémenter la validation.
+- [x] Câbler la persistence : DataSort/DataGroup/DataFind → `machine.action('appuser_prefs', …)`. Fait 2026-06-10 : `bind:` direct sur `prefs.slots.*` bypassait `prefs.set()` (pas de persist) ; remplacé par function-bindings `bind:x={() => prefs.get('x'), (v) => prefs.set('x', v)}` dans `DataList.svelte`. TODOs « MachinePrefs » fantômes retirés de DataSort/DataGroup/DataFind. check 0/0, tests 603/603.
+- [x] FK `required` : spec écrite SCHEMA-CONVENTIONS.md §6ter. Implémenté 2026-06-10 : `MachineScheme.hasFkValue()` (3 conventions FK) + check dans `MachineSchemeValidate.validateForm()`, même shape erreur que champs scalaires. check 0/0, tests 609/609 (+6).
 - [ ] Diagram : tokens couleur garantis (retirer fallbacks hardcodés).
 
 ### Phase 2 — Compléter le shell (taille M)
