@@ -25,7 +25,7 @@ Méthode reproductible. Lire le **code source** (pas la mémoire), recouper chaq
 ### 2. Globs de cartographie
 
 ```
-src/lib/shell/**/*.svelte      → inventaire shell (layout, frame types, columner, auth)
+src/lib/shell/**/*.svelte      → inventaire shell (layout, frame types, auth)
 src/lib/data-ui/**/*.svelte    → inventaire data-ui (data, controls, field, input, fragments)
 ```
 
@@ -113,7 +113,7 @@ REGISTRY_ENTRIES
 ├─ 'form'             → data-ui/data/DataForm.svelte
 ├─ 'list'             → data-ui/data/DataList.svelte
 ├─ 'record'           → data-ui/data/DataRecord.svelte
-├─ 'columner'         → shell/columner/Columner.svelte
+├─ 'columner'         → shell/layout/Columner.svelte
 ├─ 'fiche'            → shell/layout/Fiche.svelte           (dialog, fill:false)
 ├─ 'fiche.update'     → shell/layout/FicheUpdate.svelte
 ├─ 'rbac.matrix'      → shell/frame/rbac/RbacMatrix.svelte
@@ -238,15 +238,15 @@ shell/
 │  ├─ Fiche.svelte         record detail (via loadInDialog)
 │  ├─ FicheUpdate.svelte
 │  ├─ Breadcrumb.svelte
+│  ├─ Columner.svelte      Finder-style column nav (registry: 'columner')
 │  └─ DevResetPanel.svelte  (DEV only, monté via TaskBar devSlot)
 ├─ frame/
 │  ├─ explorer/   Explorer.svelte, ExplorerContent.svelte
 │  ├─ synthesis/  Synthesis.svelte
 │  ├─ rbac/       RbacMatrix.svelte
 │  ├─ diagram/    Diagram.svelte           (registry: 'diagram')
-│  ├─ dashboard/  Dashboard.svelte         (NON enregistré)
-│  └─ space/      Space.svelte             (NON enregistré)
-├─ columner/      Columner.svelte          (registry: 'columner')
+│  ├─ dashboard/  Dashboard.svelte         (registry: 'dashboard')
+│  └─ space/      Space.svelte             (registry: 'space')
 └─ auth/          Login.svelte             (registry: 'login')
 ```
 
@@ -276,10 +276,10 @@ Custom tags : `diagram-component` (flex column, 100%) + `diagram-canvas` (flex:1
 
 | Point | Status |
 |-------|--------|
-| `Dashboard.svelte`, `Space.svelte` non enregistrés | non chargeable via framer |
-| Zones `main.modal/window/panel` — aucun `data-target-zone` dans App.svelte | frame non montable tant que la zone n'existe pas dans le DOM |
-| `Columner.svelte` enregistré, structure non documentée | à détailler |
+| `Dashboard.svelte`, `Space.svelte` | ✅ enregistrés (registry `dashboard`/`space`) 2026-06-10 ; contenu à construire |
+| Zones `main.modal/window/panel` | ✅ abandonnées 2026-06-10 — overlay/panel/window passent par `loadInDialog` |
+| `Columner.svelte` | ✅ déplacé `shell/columner/` → `shell/layout/` 2026-06-10 ; Finder-style column nav, dock monte un Columner enfant par clic |
+| `Diagram` couleurs fallback hardcodé | ✅ retiré 2026-06-10 (tokens css-base garantis) |
 | `TemplateShell.rightBar` toujours `aria-hidden="true"` | pas encore utilisé — `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés) |
 | Dialogs empilés : ordre DOM = z-order (`--z-modal`, pas de z-index par dialog) | `raise()` repositionne dans le parent |
 | `DataListRelations.svelte` présent | rôle vs DataListFk/Rfk à documenter |
-| `Diagram` couleurs en fallback hardcodé (`#4f8ef7`…) | tokens css-base via `var(--color-*, fallback)` — fallback à retirer si tokens garantis |

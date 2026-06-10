@@ -56,11 +56,12 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('diagram')).toBe(true);
 	});
 
-	it('has exactly 12 entries', () => {
+	it('has exactly 14 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(12);
+		expect(keys).toHaveLength(14);
 		expect(keys.sort()).toEqual([
 			'columner',
+			'dashboard',
 			'diagram',
 			'explorer',
 			'explorer.content',
@@ -71,6 +72,7 @@ describe('Global componentRegistry entries', () => {
 			'login',
 			'rbac.matrix',
 			'record',
+			'space',
 			'synthesis',
 		]);
 	});

@@ -168,14 +168,15 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 > Critère de sortie : toutes les zones documentées montables, tous les frame types legacy chargeables.
 
 - [x] Markup réel `main.modal` / `main.window` / `main.panel` dans App/TemplateShell — ou retirer ces zones de CLAUDE.md si abandonnées. Medyll : abandon nommage. Fait 2026-06-10 : zones retirées de CLAUDE.md (seule `main` documentée, overlay/panel/window passent par `loadInDialog`) ; `Synthesis.svelte` `handleNavRfk` appelait `loadIn('main.panel', …)` (mort, aucun `data-target-zone="main.panel"`) → remplacé par `loadFrame('explorer', rfkCollection)`. check 0/0, tests 609/609.
-- [ ] Enregistrer `Dashboard` et `Space` dans componentRegistry (l'« Espace » legacy = écran d'accueil).
+- [x] Enregistrer `Dashboard` et `Space` dans componentRegistry (l'« Espace » legacy = écran d'accueil). Fait 2026-06-10 : clés `dashboard`/`space` ajoutées (composants quasi vides, contenu à construire). check 0/0.
 - [x] `rightBar` : `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés, gardés en export uniquement). `rightBar` reste vide — à reconstruire si un panneau droit est requis.
-- [ ] Déplacer `Columner` : `shell/columner/` → `shell/layout/`, puis documenter (section LAYOUT-DATAGRAM).
-- [ ] **Externaliser les toolbars** (§3.5) :
-	- [ ] `DataList` : supprimer `showToolbar` + snippet `toolbar` — aucune prop toolbar ; migrer les call-sites (ExplorerContent, etc.) vers composition externe.
-	- [ ] Créer `FicheToolbar` ; `Fiche.svelte` l'utilise (sortir les 3 boutons en dur + retirer le `<debug>`).
-	- [ ] Créer `ButtonAction` (`collection`, `collectionId?`).
-	- [ ] Créer boutons-menus `Sort` et `Group` composables hors DataToolbar.
+- [x] Déplacer `Columner` : `shell/columner/` → `shell/layout/`, puis documenter (section LAYOUT-DATAGRAM). Fait 2026-06-10 : `git mv` + 3 imports (index.ts, ExplorerContent, componentRegistry) + LAYOUT-DATAGRAM (arbre, registry, gaps). check 0/0.
+- [x] **Externaliser les toolbars** (§3.5) — fait 2026-06-10. check 0/0, tests 609/609.
+	- [x] `DataList` : `showToolbar` + snippet `toolbar` + mode-switcher supprimés — aucune prop toolbar. Aucun call-site ne rendait la toolbar (tous passaient `showToolbar={false}`), threading mort retiré de DataListRelations/Fk/Rfk + Synthesis.
+	- [x] `FicheToolbar` créé (`shell/layout/`) ; `Fiche.svelte` l'utilise (3 boutons + `<debug>` retirés).
+	- [x] `ButtonAction` créé (`collection`, `collectionId?`, `frame`, `action`).
+	- [x] Boutons-menus composables `Sort`/`Group` (+ `Find`/`ListMode` pour parité) hors DataToolbar/DataList.
+	- [x] **Médiateur d'état** : `useMachinePrefs` refait en store réactif partagé *par scope* (`datalist.{collection}`). DataList et contrôles externes lisent/écrivent le même `$state` → sync sans se connaître. Cache vidable via `clearMachinePrefsCache()` (isolation tests).
 - [ ] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète).
 
 ### Phase 3 — RBAC refonte (taille L, déjà décidée, ne pas commencer avant fin Phase 1)

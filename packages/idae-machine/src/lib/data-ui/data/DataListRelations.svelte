@@ -8,7 +8,6 @@ Renders forward or reverse FK relations for a record as DataList sections.
 @prop {Record<string,unknown>|null} [data] - Source record (controlled)
 @prop {string} [fk] - Filter to a single FK key
 @prop {boolean} [showTitle] - Show section title (default: true)
-@prop {boolean} [showToolbar] - Show DataList toolbar (default: false)
 @prop {boolean} [usePrefs] - Use persisted user prefs (default: false)
 @prop {string} [prefsScope] - Custom prefs scope
 -->
@@ -24,7 +23,6 @@ Renders forward or reverse FK relations for a record as DataList sections.
 		data = undefined,
 		fk,
 		showTitle  = true,
-		showToolbar = false,
 		usePrefs   = false,
 		prefsScope,
 		...dataListProps
@@ -35,7 +33,6 @@ Renders forward or reverse FK relations for a record as DataList sections.
 		data?:       Record<string, unknown> | null;
 		fk?:         string;
 		showTitle?:  boolean;
-		showToolbar?: boolean;
 		usePrefs?:   boolean;
 		prefsScope?: string;
 		[key: string]: unknown;
@@ -86,7 +83,6 @@ Renders forward or reverse FK relations for a record as DataList sections.
 					<h3 class="data-list-relation-title">{relation.title}</h3>
 				{/if}
 				<DataList
-					{showToolbar}
 					{usePrefs}
 					{prefsScope}
 					collection={relation.collection}

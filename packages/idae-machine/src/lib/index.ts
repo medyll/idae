@@ -24,8 +24,13 @@ export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 export { default as DataField }     from '$lib/data-ui/field/DataField.svelte';
 export { default as DataFieldEdit } from '$lib/data-ui/field/DataFieldEdit.svelte';
 
-// UI — data controls
+// UI — data controls (toolbar layout + composable, prefs-aware controls)
 export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';
+export { default as ButtonAction } from '$lib/data-ui/controls/ButtonAction.svelte';
+export { default as Sort }         from '$lib/data-ui/controls/Sort.svelte';
+export { default as Group }        from '$lib/data-ui/controls/Group.svelte';
+export { default as Find }         from '$lib/data-ui/controls/Find.svelte';
+export { default as ListMode }     from '$lib/data-ui/controls/ListMode.svelte';
 
 // UI — input atoms
 export { default as InputBoolean }  from '$lib/data-ui/input/InputBoolean.svelte';
@@ -35,8 +40,8 @@ export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte'
 export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
 
 // UI — columner (Finder-style column navigation)
-export { default as Columner }              from '$lib/shell/columner/Columner.svelte';
-export type { ColumnId, ColumnerProps }     from '$lib/shell/columner/Columner.svelte';
+export { default as Columner }              from '$lib/shell/layout/Columner.svelte';
+export type { ColumnId, ColumnerProps }     from '$lib/shell/layout/Columner.svelte';
 
 // UI — layout
 export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.svelte';

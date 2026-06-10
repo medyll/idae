@@ -127,6 +127,8 @@ Floating/overlay content (dialogs, panels, windows) goes through `machine.framer
 'fiche.update'    → shell/layout/FicheUpdate.svelte
 'rbac.matrix'     → shell/frame/rbac/RbacMatrix.svelte
 'synthesis'       → shell/frame/synthesis/Synthesis.svelte
+'dashboard'       → shell/frame/dashboard/Dashboard.svelte  (accueil/Espace)
+'space'           → shell/frame/space/Space.svelte
 'login'           → shell/auth/Login.svelte
 ```
 

@@ -171,7 +171,7 @@
 			</synthesis-pane-left>
 			<synthesis-pane-right>
 				{#if record}
-					<DataListRfk {collection} recordId={collectionId} showTitle={true} showToolbar={false} />
+					<DataListRfk {collection} recordId={collectionId} showTitle={true} />
 				{/if}
 			</synthesis-pane-right>
 		</synthesis-panes>
