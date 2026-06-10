@@ -177,7 +177,7 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 	- [x] `ButtonAction` créé (`collection`, `collectionId?`, `frame`, `action`).
 	- [x] Boutons-menus composables `Sort`/`Group` (+ `Find`/`ListMode` pour parité) hors DataToolbar/DataList.
 	- [x] **Médiateur d'état** : `useMachinePrefs` refait en store réactif partagé *par scope* (`datalist.{collection}`). DataList et contrôles externes lisent/écrivent le même `$state` → sync sans se connaître. Cache vidable via `clearMachinePrefsCache()` (isolation tests).
-- [ ] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète).
+- [~] e2e parcours principal : login → explorer → fiche → diagram (remplace app.spec.ts obsolète). Écrit 2026-06-10 : `src/e2e/parcours.spec.ts` (app.spec.ts supprimé), creds demo admin/admin123, exerce FicheToolbar/ButtonAction (list→fiche→diagram). check 0/0. **Pas encore exécuté** — requiert mongo + server :7842 + seed demo (même prérequis que rbac-matrix.spec.ts) ; stack down au moment du commit.
 
 ### Phase 3 — RBAC refonte (taille L, déjà décidée, ne pas commencer avant fin Phase 1)
 
