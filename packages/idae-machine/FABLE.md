@@ -153,7 +153,7 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 
 **Résultat** : `pnpm run check` 0/0, `pnpm run test` 608/608.
 
-### Phase 1 — Clore le socle data : 85% → 100% (taille M)
+### Phase 1 — Clore le socle data : 100% ✅ (taille M)
 
 > Critère de sortie : relations FK/RFK documentées + testées, dette nommée tranchée, prefs persistées.
 
@@ -161,13 +161,13 @@ Règle proposée : **un seul front actif, critère de sortie mesurable, status.y
 - [x] Documenter `DataListRelations` vs `DataListFk`/`DataListRfk` : déjà fait, FK-RFK-DIAGRAM-REPORT.md §4 (vérifié 2026-06-10, code conforme).
 - [x] Câbler la persistence : DataSort/DataGroup/DataFind → `machine.action('appuser_prefs', …)`. Fait 2026-06-10 : `bind:` direct sur `prefs.slots.*` bypassait `prefs.set()` (pas de persist) ; remplacé par function-bindings `bind:x={() => prefs.get('x'), (v) => prefs.set('x', v)}` dans `DataList.svelte`. TODOs « MachinePrefs » fantômes retirés de DataSort/DataGroup/DataFind. check 0/0, tests 603/603.
 - [x] FK `required` : spec écrite SCHEMA-CONVENTIONS.md §6ter. Implémenté 2026-06-10 : `MachineScheme.hasFkValue()` (3 conventions FK) + check dans `MachineSchemeValidate.validateForm()`, même shape erreur que champs scalaires. check 0/0, tests 609/609 (+6).
-- [ ] Diagram : tokens couleur garantis (retirer fallbacks hardcodés).
+- [x] Diagram : tokens couleur garantis (retirer fallbacks hardcodés). Fait 2026-06-10 : tous les `var(--x, #hex)` retirés ; `--color-error`→`--color-critical` (token correct css-base) ; `--color-primary-dark`/`-light` (inexistants) → `--color-primary-hover`/`-muted` (commenté). check 0/0.
 
 ### Phase 2 — Compléter le shell (taille M)
 
 > Critère de sortie : toutes les zones documentées montables, tous les frame types legacy chargeables.
 
-- [ ] Markup réel `main.modal` / `main.window` / `main.panel` dans App/TemplateShell — ou retirer ces zones de CLAUDE.md si abandonnées (les deux sont acceptables, l'écart doc/code ne l'est pas).
+- [x] Markup réel `main.modal` / `main.window` / `main.panel` dans App/TemplateShell — ou retirer ces zones de CLAUDE.md si abandonnées. Medyll : abandon nommage. Fait 2026-06-10 : zones retirées de CLAUDE.md (seule `main` documentée, overlay/panel/window passent par `loadInDialog`) ; `Synthesis.svelte` `handleNavRfk` appelait `loadIn('main.panel', …)` (mort, aucun `data-target-zone="main.panel"`) → remplacé par `loadFrame('explorer', rfkCollection)`. check 0/0, tests 609/609.
 - [ ] Enregistrer `Dashboard` et `Space` dans componentRegistry (l'« Espace » legacy = écran d'accueil).
 - [x] `rightBar` : `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés, gardés en export uniquement). `rightBar` reste vide — à reconstruire si un panneau droit est requis.
 - [ ] Déplacer `Columner` : `shell/columner/` → `shell/layout/`, puis documenter (section LAYOUT-DATAGRAM).

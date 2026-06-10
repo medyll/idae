@@ -75,7 +75,7 @@
 	}
 
 	function handleNavRfk(rfkCollection: string) {
-		machine.framer.loadIn('main.panel', 'explorer', rfkCollection);
+		machine.framer.loadFrame('explorer', rfkCollection);
 	}
 </script>
 

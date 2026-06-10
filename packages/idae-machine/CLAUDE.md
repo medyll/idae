@@ -103,17 +103,16 @@ src/lib/
 ### Frame zones (`data-target-zone`)
 
 ```
-main        → primary zone (lists, forms)
-main.modal  → overlay modal
-main.window → floating window
-main.panel  → right-side panel
+main → primary zone (lists, forms) — only zone with a DOM target
 ```
+
+Floating/overlay content (dialogs, panels, windows) goes through `machine.framer.loadInDialog(...)`, not a named zone. `main.modal`/`main.window`/`main.panel` were documented but never implemented — abandoned, do not reintroduce.
 
 ### Frame host sizing — `createHost(getTarget, { fill })`
 
 `MachineFrameManager.createHost` mounts content into a `div.frame-content`. Sizing model depends on the **host**:
 
-- `fill: true` (default) → `position:absolute; inset:0`. Correct for **sized zones** (`main`, `panel`) — frame fills the zone. Used by `shell/Frame.svelte`.
+- `fill: true` (default) → `position:absolute; inset:0`. Correct for the **sized `main` zone** — frame fills the zone. Used by `shell/Frame.svelte`.
 - `fill: false` → `position:relative` (normal flow). Required for **content-driven hosts** (floating `Dialog`) — the host has no intrinsic height, so an absolute frame would collapse and clip its content. `Dialog.svelte` passes `{ fill: false }`.
 
 **Trap:** a dialog that hosts a frame with the default `fill:true` shows only the first line (host collapses to padding height, content overflows invisibly). If a floating/auto-sized host renders truncated content, check this first.
@@ -135,7 +134,7 @@ main.panel  → right-side panel
 
 | Prop | Usage |
 |------|-------|
-| `link` | `"loadFrame:explorer"` or `"loadIn:form@main.panel"` |
+| `link` | `"loadFrame:explorer"` or `"loadInDialog:form"` |
 | `linkCollectionField` | Field used as target collection name (e.g. `"code"` for appscheme) |
 | `linkVars` | Extra vars passed to framer |
 
