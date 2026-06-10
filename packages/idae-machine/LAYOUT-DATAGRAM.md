@@ -1,7 +1,7 @@
 # Layout Datagram — idae-machine
 
 > Carte du système de layout : shell topology → zones → frame hosts → navigation → data-ui tree.
-> Régénéré 2026-06-09 (lecture source, recoupé contre les fichiers réels).
+> Régénéré 2026-06-10 (lecture source, recoupé contre les fichiers réels).
 
 ---
 
@@ -129,7 +129,7 @@ REGISTRY_ENTRIES
 ## 5. Navigation API (`machine.framer`)
 
 ```
-machine.framer
+machine.framer        (id?: string | number — accepté partout, plus de String() forcé côté appelant)
 ├─ loadFrame(modulePath, collection, id?, vars?, zone='main')
 │    → buildLoadInUrl → _pushFn (router) → _onNavigate hook → Frame.svelte mount
 │
@@ -200,6 +200,13 @@ DataRecord
 └─ DataFk / DataRfk (FK inline)
 ```
 
+**Résolution relations forward** (`utils/dataRelationUtils.ts`, ordre par relation) :
+1. `fks.{relationKey}_{id}` (suffixe = id référencé) → fieldName `fks.{relationKey}`, targetIndex `id`, supporte multi-réf
+2. format imbriqué `record.fks[relationKey] = { id, code }` → fieldName `fks.{relationKey}`, targetIndex `id` (fallback `code`)
+3. fallback : champ FK scalaire plat legacy (ex. `category: '2'`)
+
+**Reverse** (`MachineScheme.parseReverseFkFields`) : `fieldName`/`targetIndex` restent ceux de `findFkField` (plat) — `foldFksIntoFields` ne permet pas de distinguer un champ synthétisé d'un champ déclaré (mêmes clé/fieldType dans les deux cas), donc pas de chemin imbriqué côté reverse pour l'instant. `diagramUtils.matchWhere` sait résoudre des chemins pointés via `getPath` si un `where` imbriqué est produit ailleurs.
+
 Atoms input (input/) : `InputBoolean, InputSelect, InputEmail, InputCurrency, InputTextarea, InputColor, InputIcon`.
 `InputColor` / `InputIcon` supportent `mode="show"` (rendu lecture) en plus de l'édition.
 
@@ -230,9 +237,7 @@ shell/
 │  ├─ TaskBar.svelte
 │  ├─ Fiche.svelte         record detail (via loadInDialog)
 │  ├─ FicheUpdate.svelte
-│  ├─ Navigation.svelte
 │  ├─ Breadcrumb.svelte
-│  ├─ Pane.svelte / PaneRight.svelte / PaneRecents.svelte / PaneQuickCreate.svelte
 │  └─ DevResetPanel.svelte  (DEV only, monté via TaskBar devSlot)
 ├─ frame/
 │  ├─ explorer/   Explorer.svelte, ExplorerContent.svelte
@@ -251,11 +256,17 @@ shell/
 
 ```
 Diagram.svelte  (props: collection, collectionId, depth=1, direction='both')
+├─ pre-check : machine.logic.collection(collection) avant buildGraph (erreur claire si collection inconnue)
 ├─ buildGraph(collection, id, { depth, direction })  → DiagramGraph { root, nodes, edges }
+│    ├─ valide collection/recordId, normalise l'id via MachineRecordIdentity.normalizeKey
+│    └─ root sans champ `id` → fallback recordId + console.warn
 ├─ layout radial SVG : root au centre (CX,CY=300), neighbors sur ORBIT=200
 ├─ edges dédupliqués (from→to:relationKey), marker fwd (primary) / rev (secondary dashed)
-└─ click node neighbor → machine.framer.loadInDialog('fiche', node.collection, id)
+├─ status 'error' → message + tip si "not found"
+└─ click node neighbor → machine.framer.loadInDialog('fiche', node.collection, node.record['id'])  (id brut, string|number)
 ```
+
+Entrée : bouton `diagram` dans `Fiche.svelte` → `loadFrame('diagram', collection, collectionId)` (à côté de `synthese`/`update`).
 
 Custom tags : `diagram-component` (flex column, 100%) + `diagram-canvas` (flex:1). Display déclaré en `@layer components :global()`.
 
@@ -268,7 +279,7 @@ Custom tags : `diagram-component` (flex column, 100%) + `diagram-canvas` (flex:1
 | `Dashboard.svelte`, `Space.svelte` non enregistrés | non chargeable via framer |
 | Zones `main.modal/window/panel` — aucun `data-target-zone` dans App.svelte | frame non montable tant que la zone n'existe pas dans le DOM |
 | `Columner.svelte` enregistré, structure non documentée | à détailler |
-| `TemplateShell.rightBar` toujours `aria-hidden="true"` | pas encore utilisé |
+| `TemplateShell.rightBar` toujours `aria-hidden="true"` | pas encore utilisé — `Pane`/`PaneRight`/`PaneQuickCreate`/`PaneRecents`/`Navigation` supprimés 2026-06-10 (dead code, jamais montés) |
 | Dialogs empilés : ordre DOM = z-order (`--z-modal`, pas de z-index par dialog) | `raise()` repositionne dans le parent |
 | `DataListRelations.svelte` présent | rôle vs DataListFk/Rfk à documenter |
 | `Diagram` couleurs en fallback hardcodé (`#4f8ef7`…) | tokens css-base via `var(--color-*, fallback)` — fallback à retirer si tokens garantis |

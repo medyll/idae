@@ -110,7 +110,7 @@ describe('Machine — boot with remote schema (mocked fetch)', () => {
 		m.init({ org: 'test', domain: 'fetchschema', version: 1, sync: { databaseHost: 'http://localhost:3000' } });
 		await m.boot();
 
-		expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/api/scheme');
+		expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/api/scheme?org=test');
 		expect(m.logic).toBeDefined();
 		expect(m.store).toBeDefined();
 	});

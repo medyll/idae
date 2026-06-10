@@ -5,6 +5,8 @@
 > Statut : **Décision prise** — Modèle B retenu. FK stabilisées sur `.code`. Voir §10.
 > Demandeur : medyll
 >
+> **Révision 6 (2026-06-09) : vérification code réel. Débat A vs B CLOS. État stable documenté en §0quater et §11. Sections §1-§9 = contexte historique uniquement — ne pas appliquer au code actuel.**
+>
 > Révision 2 (2026-06-01) : chronologie corrigée par medyll. La v1 inversait
 > l'ordre ET les priorités. Voir §0bis.
 > Révision 3 (2026-06-02) : preuve git sourcée. Deux IA avaient complété sur
@@ -16,6 +18,59 @@
 > Révision 5 (2026-06-02) : **Décision appliquée.** Modèle B canonique. FK
 > standardisées sur `.code`, fold intégré à `buildEffectiveModel`, symétrie
 > forward/reverse garantie. Tous les tests passent. Voir §10.
+
+---
+
+## 0quater. ÉTAT RÉEL 2026-06-09 — LIRE EN PREMIER
+
+> Vérification source sur le code, pas sur la mémoire ni sur ce document.
+
+### Le débat A vs B est clos. B a gagné.
+
+**Il n'existe aucun `field('type', {})` dans les modèles seed actuels.** Zéro hit dans `server/src/bootstrap/seed/`. Le pattern A (`field('email')`, `field('currency')`…) a disparu du code — soit jamais intégré dans les seeds moteur, soit retiré.
+
+### Architecture effective (vérifiée)
+
+```
+idae-model-core.ts       ← modèle : noms de champs + flags uniquement
+  fields: {
+    email:     { required: true },   // PAS de type ici
+    createdAt: { readonly: true },
+  }
+
+FieldList                ← source de vérité : nom → { type, group, description }
+  email: { type: 'email', group: 'contact', … }
+
+engineModel.ts → buildField(name, rules)
+  1. lookup FieldList[name].type     ← source de vérité
+  2. sinon inferType(name)           ← heuristique fallback
+  3. merge rules (required/readonly)
+  → MachineModel (type résolu, champs foldés)
+```
+
+**Loi d'or** :
+- **Modèle** = liste de noms + flags. Jamais de type.
+- **FieldList** = dictionnaire unique. Un champ = une définition.
+- **`buildField`** = colle les deux au moment du seed.
+
+### FieldList exhaustif depuis 2026-06-09
+
+`syncFieldList.ts` (`server/src/bootstrap/seed/syncFieldList.ts`) :
+- Scanne tous les modèles, détecte les noms absents de `FieldList`.
+- Génère l'entrée avec `inferType` + `inferGroup`, patche `schema-types.ts` in place.
+- **Idempotent.** Run : `npx tsx server/src/bootstrap/seed/syncFieldList.ts`
+
+Au 2026-06-09 : 102 entrées ajoutées (96 champs + 6 ops RBAC `c/r/u/d/l/x`). `description: ''` à compléter au fil du temps.
+
+### Seul risque restant
+
+`inferType` → fallback `'text'` silencieux pour tout nom inconnu. Si `FieldList` doit être normatif (erreur si nom absent), transformer ce fallback en `throw`/`warn`. **Non fait intentionnellement** — modèles en construction, discipline exacte non encore imposée.
+
+### Ce que LLM ne doit PAS faire sur ce code
+
+- **Ne jamais réécrire un modèle seed pour y ajouter `field('type')`** — c'est exactement la dérive que ce doc a combatttu.
+- **Ne jamais déduire le type d'un champ depuis la collection** — le type est dans `FieldList`, point.
+- **Ne jamais copier le pattern A** (`field('email')` inline dans un modèle déclaratif) sans avoir vérifié que FieldList ne couvre pas déjà ce nom.
 
 ---
 
@@ -464,3 +519,33 @@ Sans ça, `FieldList` devient un fossile moteur et le drift reprend dès le proc
 ---
 
 _Signed: Mistral Vibe (devstral-small)_
+
+---
+
+## 11. Vérification 2026-06-09 — état stable
+
+> Auteur : Claude Opus 4.8. Lecture code source. Sections §1–§9 = historique, ne pas appliquer.
+
+### Résumé exécutif
+
+| Question | Réponse |
+|----------|---------|
+| `field('type')` existe dans les seeds ? | **Non.** Zéro hit dans `server/src/bootstrap/seed/`. |
+| FieldList est source de vérité ? | **Oui.** `buildField` fait `FieldList[name]?.type ?? inferType(name)`. |
+| Modèles déclarent le type ? | **Non.** `required/readonly` seulement. |
+| FieldList exhaustif ? | **Oui depuis aujourd'hui.** `syncFieldList.ts` a ajouté 102 entrées. |
+| FK stabilisées sur `.code` ? | **Oui.** `buildEffectiveModel` fold en `.code`, symétrie fwd/rev garantie (§10). |
+| Débat A vs B ouvert ? | **Non.** B canonique. Décision §7 effective. |
+
+### Pièges LLM documentés (à relire si ce doc est passé à une IA)
+
+1. **Piège §0ter** : fenêtre git trop courte → croire que A est la norme. Voir §0ter pour la chronologie complète.
+2. **Piège §6** : voir B (noms sans type), le trouver « bizarre », vouloir ajouter `field()`. C'est l'erreur canonique. Ne pas faire.
+3. **Piège §4quater** : accéder à `_effectiveModel` / `_core` / `_business` directement pour lire des FKs → modèle non-foldé → FK forward nulles silencieusement. Toujours passer par `machine.logic`.
+
+### Prochains points à traiter (par ordre de priorité)
+
+- [ ] Remplir `description: ''` dans les 102 entrées SYNCED de `FieldList` (cosmétique, progressif).
+- [ ] Décider si `inferType` → `return 'text'` doit devenir `warn`/`throw` une fois les modèles stabilisés.
+- [ ] Vérifier `MachineMultiBase.ts` + `MachineApi.ts` (dead code suspects — voir `API_DRIFT.md §8`).
+- [ ] Compléter les `name:` des ops RBAC `c/r/u/d/l/x` avec `create/read/update/delete/list/execute`.

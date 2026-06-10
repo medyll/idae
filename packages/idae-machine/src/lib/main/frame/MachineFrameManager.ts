@@ -9,7 +9,7 @@ import { computeFrameId } from './frameUtils.js';
 import { componentRegistry, type RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 export interface FrameControls {
-	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
+	load: (modulePath: string, collection: string, collectionId?: string | number, vars?: Record<string, string>) => void;
 	show: () => void;
 	hide: () => void;
 	toggle: () => void;
@@ -26,12 +26,12 @@ export interface FrameControls {
  * guarding against out-of-order async resolution and unmounting the previous instance.
  */
 export interface FrameHost {
-	load: (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>) => void;
+	load: (modulePath: string, collection: string, collectionId?: string | number, vars?: Record<string, string>) => void;
 	destroy: () => void;
 }
 
 /** Resolves a human label for (collection, id) — injected by machine. */
-export type LabelResolver = (collection: string, collectionId?: string) => Promise<string | undefined>;
+export type LabelResolver = (collection: string, collectionId?: string | number) => Promise<string | undefined>;
 
 export interface FrameRegisterOptions {
 	replace?: boolean;
@@ -40,7 +40,7 @@ export interface FrameRegisterOptions {
 export interface NavigationEvent {
 	modulePath:    string;
 	collection:    string;
-	collectionId?: string;
+	collectionId?: string | number;
 	vars?:         Record<string, string>;
 	zone:          string;
 }
@@ -72,7 +72,7 @@ export class MachineFrameManager {
 	}
 
 	/** Resolve a human label for (collection, id). Falls back to undefined if no resolver set. */
-	async resolveLabel(collection: string, collectionId?: string): Promise<string | undefined> {
+	async resolveLabel(collection: string, collectionId?: string | number): Promise<string | undefined> {
 		if (!this._labelResolver) return undefined;
 		try {
 			return await this._labelResolver(collection, collectionId);
@@ -101,7 +101,7 @@ export class MachineFrameManager {
 		const instances = new Map<string, { app: Record<string, unknown>; el: HTMLElement }>();
 		let seq = 0;
 
-		const contentKey = (modulePath: string, collection: string, collectionId?: string, vars?: Record<string, string>): string =>
+		const contentKey = (modulePath: string, collection: string, collectionId?: string | number, vars?: Record<string, string>): string =>
 			`${modulePath}::${computeFrameId(collection, collectionId, vars)}`;
 
 		const hideAll = () => {
@@ -170,7 +170,7 @@ export class MachineFrameManager {
 	loadFrame(
 		modulePath: RegistryKey,
 		collection: string,
-		collectionId?: string,
+		collectionId?: string | number,
 		vars?: Record<string, string>,
 		zone = 'main'
 	): void {
@@ -207,7 +207,7 @@ export class MachineFrameManager {
 	async loadInDialog(
 		modulePath: RegistryKey,
 		collection: string,
-		collectionId?: string,
+		collectionId?: string | number,
 		vars?: Record<string, string>,
 		opts?: { modal?: boolean; closable?: boolean }
 	): Promise<void> {
@@ -298,7 +298,7 @@ export class MachineFrameManager {
 		frameId: string,
 		modulePath: string,
 		collection: string,
-		collectionId?: string,
+		collectionId?: string | number,
 		vars?: Record<string, string>,
 		mountFn?: (frameId: string) => Promise<void>
 	): Promise<void> {

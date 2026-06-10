@@ -16,7 +16,7 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		id: string;
 		modulePath?: string;
 		collection?: string;
-		collectionId?: string;
+		collectionId?: string | number;
 		vars?: Record<string, string>;
 		iconClose?: string;
 		center?: boolean;
@@ -58,7 +58,7 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 	// sit in normal flow (not absolute inset:0) for the dialog to grow to fit it.
 	const host = machine.framer.createHost(() => bodyEl, { fill: false });
 
-	function setTitle(col?: string, colId?: string) {
+	function setTitle(col?: string, colId?: string | number) {
 		if (!col) return;
 		machine.framer.resolveLabel(col, colId).then((label) => {
 			title = label ? `${col} — ${label}` : col;

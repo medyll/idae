@@ -1,4 +1,5 @@
 import { machine } from '$lib/main/machine.js';
+import { MachineRecordIdentity } from '$lib/main/machine/MachineRecordIdentity.js';
 import type { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import {
 	resolveForwardRelations,
@@ -25,9 +26,13 @@ function resolveLabel(scheme: MachineScheme, record: Record<string, unknown>): s
 	return fallback != null ? String(fallback) : `#${String(record['id'] ?? '?')}`;
 }
 
+function getPath(obj: Record<string, unknown>, path: string): unknown {
+	return path.split('.').reduce((r: unknown, s) => (r != null && typeof r === 'object' ? (r as Record<string, unknown>)[s] : undefined), obj);
+}
+
 function matchWhere(record: Record<string, unknown>, where: Record<string, unknown>): boolean {
 	for (const [key, value] of Object.entries(where)) {
-		const recVal = record[key];
+		const recVal = getPath(record, key);
 		if (value !== null && typeof value === 'object' && '$in' in value) {
 			const arr = (value as { $in: unknown[] })['$in'];
 			if (!arr.some(v => String(v) === String(recVal))) return false;
@@ -60,11 +65,29 @@ export async function buildGraph(
 	const depth = opts?.depth ?? 1;
 	const direction = opts?.direction ?? 'both';
 
-	const rootRecord = (await machine.collection(collection).get(recordId)) as Record<string, unknown> | undefined;
-	if (!rootRecord) throw new Error(`Record ${collection}:${recordId} not found`);
+	// Validate input parameters
+	if (!collection || typeof collection !== 'string') {
+		throw new Error(`Invalid collection name: ${collection}`);
+	}
+	if (recordId === undefined || recordId === null || recordId === '') {
+		throw new Error(`Invalid recordId: ${recordId}`);
+	}
+
+	const id = MachineRecordIdentity.normalizeKey(recordId) ?? recordId;
+	const rootRecord = (await machine.collection(collection).get(id)) as Record<string, unknown> | undefined;
+	if (!rootRecord) {
+		throw new Error(`Record ${collection}:${recordId} not found. Please check that the record exists and the ID is correct.`);
+	}
 
 	const rootScheme = machine.logic.collection(collection);
 	const rootNodeId = `${collection}:${String(recordId)}`;
+	
+	// Ensure the record has a valid ID field
+	if (!rootRecord['id']) {
+		console.warn(`[Diagram] Record ${collection}:${recordId} is missing 'id' field, using recordId as fallback`);
+		rootRecord['id'] = recordId;
+	}
+	
 	const rootNode: DiagramNode = {
 		id:         rootNodeId,
 		collection,

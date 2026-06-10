@@ -2,7 +2,6 @@ import type { TplCollectionName } from '$lib/types/index.js';
 import type { MachineModel } from '$lib/types/index.js';
 import { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import { MachineParserForge } from '$lib/main/machineParserForge.js';
-import { foldFksIntoFields } from '$lib/main/machineModelBuilder.js';
 
 /**
  * @class MachineDb
@@ -19,10 +18,9 @@ export class MachineDb {
 	/**
 	 * Create a new MachineDb instance.
 	 * @role Constructor
-	 * @param {IdbqModel} model Custom model to use. Must already be foldFksIntoFields processed.
+	 * @param {IdbqModel} model Custom model to use (typically from buildEffectiveModel).
 	 */
 	constructor(model: MachineModel) {
-		// Model should already be folded by buildEffectiveModel
 		this.model = model;
 		this.machineForge = new MachineParserForge();
 	}

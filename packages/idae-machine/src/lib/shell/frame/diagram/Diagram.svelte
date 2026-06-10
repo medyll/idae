@@ -23,9 +23,26 @@
 		status   = 'loading';
 		graph    = null;
 		errorMsg = '';
-		buildGraph(collection, collectionId, { depth, direction })
-			.then(g  => { graph = g; status = 'ready'; })
-			.catch(e => { errorMsg = String(e); status = 'error'; });
+		
+		// Check if collection exists before trying to build graph
+		try {
+			const collectionExists = machine.logic.collection(collection);
+			if (!collectionExists) {
+				throw new Error(`Collection "${collection}" not found in the data model.`);
+			}
+			
+			buildGraph(collection, collectionId, { depth, direction })
+				.then(g  => { graph = g; status = 'ready'; })
+				.catch(e => {
+					console.error('[Diagram] Error building graph:', e);
+					errorMsg = String(e);
+					status = 'error';
+				});
+		} catch (e) {
+			console.error('[Diagram] Error initializing:', e);
+			errorMsg = String(e);
+			status = 'error';
+		}
 	});
 
 	// ── SVG layout ────────────────────────────────────────────────────────────
@@ -77,7 +94,7 @@
 
 	function openRecord(node: PositionedNode) {
 		if (node.isRoot) return;
-		void machine.framer.loadInDialog('fiche', node.collection, String(node.record['id']));
+		void machine.framer.loadInDialog('fiche', node.collection, node.record['id'] as string | number | undefined);
 	}
 </script>
 
@@ -85,7 +102,13 @@
 	{#if status === 'loading'}
 		<p class="diagram-status">Loading…</p>
 	{:else if status === 'error'}
-		<p class="diagram-status diagram-status--error">{errorMsg}</p>
+		<p class="diagram-status diagram-status--error">
+			{errorMsg}
+			{#if errorMsg.includes('not found')}
+				<br><br>
+				<small>Tip: Check that you're viewing a valid record and that the collection exists in your data model.</small>
+			{/if}
+		</p>
 	{:else if graph}
 		<diagram-canvas>
 			<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Relation diagram for {collection}">
@@ -119,6 +142,7 @@
 
 				<!-- Nodes -->
 				{#each positionedNodes as node (node.id)}
+					<!-- svelte-ignore a11y_no_noninteractive_tabindex -- g acts as a button only for non-root nodes (role/tabindex set conditionally) -->
 					<g
 						class="diagram-node"
 						class:diagram-node--root={node.isRoot}

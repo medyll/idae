@@ -321,15 +321,27 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		fkIndexField?:  string;
 	} | null {
 		try {
-			const info = this.machine.collection(this.collectionName).field(fieldName).parse();
+			const scheme = this.machine.collection(this.collectionName);
+
+			// FK detection from the structured `fks` block (canonical). The relation key
+			// is the field name; the join index is the semantic `code`. No magic-string
+			// fieldType parsing — the synthesized `fk-X.code` field is deprecated.
+			const fkDef = scheme.fks?.[fieldName];
+			if (fkDef?.code) {
+				return {
+					kind:         'fk',
+					fieldName,
+					fieldType:    `fk-${fkDef.code}.code`,
+					title:        fieldName,
+					fkCollection: fkDef.code,
+					fkIndexField: 'code'
+				};
+			}
+
+			const info = scheme.field(fieldName).parse();
 			if (!info) return null;
 			const type  = (info.fieldType ?? '') as string;
 			const title = (info as Record<string, unknown>).title as string ?? fieldName;
-			if (type.startsWith('fk-')) {
-				const [fkCollection, fkIndexField = 'id'] = type.slice(3).split('.');
-				if (!fkCollection) return { kind: 'scalar', fieldName, fieldType: type, title };
-				return { kind: 'fk', fieldName, fieldType: type, title, fkCollection, fkIndexField };
-			}
 			return { kind: 'scalar', fieldName, fieldType: type, title };
 		} catch {
 			return null;

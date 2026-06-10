@@ -14,7 +14,7 @@
 		id: string;
 		modulePath?: string;
 		collection?: string;
-		collectionId?: string;
+		collectionId?: string | number;
 		vars?: Record<string, string>;
 		taskbar?: boolean;
 	} = $props();

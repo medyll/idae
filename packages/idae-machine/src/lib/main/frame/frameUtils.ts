@@ -20,7 +20,7 @@ export function generateFrameId(prefix: string): string {
  */
 export function computeFrameId(
 	collection: string,
-	collectionId?: string,
+	collectionId?: string | number,
 	vars?: Record<string, string>
 ): string {
 	const base = collectionId ? `${collection}:${collectionId}` : collection;
