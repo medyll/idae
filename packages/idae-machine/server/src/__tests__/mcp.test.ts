@@ -99,7 +99,23 @@ vi.mock('../services/OrgAdminService.js', () => ({
 	seedOrg: (...a: any[]) => orgSeed(...a),
 }));
 
-vi.mock('../config.js', () => ({ config: { authDisabled: false, mcpSchemaWrite: false } }));
+const fileGetMeta = vi.fn(async () => ({ fileId: 'f1', collection: 'vehicle', recordId: '42', originalName: 'a.pdf' }));
+const fileDelete = vi.fn(async () => true);
+vi.mock('../services/FileService.js', () => ({
+	listFiles: vi.fn(async () => [{ fileId: 'f1' }]),
+	getFileMeta: (...a: any[]) => fileGetMeta(...a),
+	deleteFile: (...a: any[]) => fileDelete(...a),
+}));
+vi.mock('../services/MailService.js', () => ({ sendTemplate: vi.fn(async () => ({ messageId: 'm1' })) }));
+vi.mock('../middleware/dbRouter.js', () => ({ getDbForCollection: vi.fn(async () => ({ collection: () => ({ countDocuments: async () => 3 }) })) }));
+vi.mock('../middleware/orgContext.js', () => ({ getCurrentOrg: () => 'vitest' }));
+
+vi.mock('../config.js', () => ({
+	config: {
+		authDisabled: false, mcpSchemaWrite: false,
+		version: '2.0.0', nodeEnv: 'test', mail: { enabled: false },
+	},
+}));
 
 import { buildAuth, callTool, listToolDescriptors, TOOLS } from '../mcp/McpTools.js';
 import { config } from '../config.js';
@@ -132,6 +148,8 @@ describe('MCP tool registry', () => {
 				'rbac_list_groups', 'rbac_list_grants', 'rbac_set_grant', 'grant_check', 'audit_query',
 				// org
 				'list_orgs', 'get_views', 'schema_publish', 'seed_org',
+				// periphery
+				'file_list', 'file_meta', 'file_delete', 'mail_send_template', 'health', 'db_stats',
 			].sort()
 		);
 		for (const t of listToolDescriptors()) {
@@ -389,6 +407,43 @@ describe('MCP dispatch', () => {
 		const auth2 = await buildAuth(req);
 		const r = await callTool('list_orgs', {}, auth2);
 		expect(JSON.parse(r.content[0].text)).toEqual(['demo', 'vitest']);
+	});
+
+	it('file_meta gates on the owning collection permission', async () => {
+		resolveUser.mockResolvedValue(member);
+		checkGrant.mockResolvedValue(false);
+		const auth = await buildAuth(req);
+		const r = await callTool('file_meta', { fileId: 'f1' }, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('FORBIDDEN: R on vehicle');
+	});
+
+	it('file_delete requires D on the owning collection, then deletes', async () => {
+		resolveUser.mockResolvedValue(member);
+		checkGrant.mockResolvedValue(true);
+		const auth = await buildAuth(req);
+		const r = await callTool('file_delete', { fileId: 'f1' }, auth);
+		expect(r.isError).toBeFalsy();
+		expect(checkGrant).toHaveBeenCalledWith('u', 'vehicle', 'D');
+		expect(fileDelete).toHaveBeenCalledWith('vitest', 'f1', false);
+	});
+
+	it('health is public and reports flags', async () => {
+		resolveUser.mockResolvedValue(null);
+		const auth = await buildAuth(req);
+		const r = await callTool('health', {}, auth);
+		expect(r.isError).toBeFalsy();
+		const parsed = JSON.parse(r.content[0].text);
+		expect(parsed.status).toBe('ok');
+		expect(parsed.flags.mcpSchemaWrite).toBe(false);
+	});
+
+	it('db_stats counts per model collection (admin only)', async () => {
+		resolveUser.mockResolvedValue(admin);
+		const auth = await buildAuth(req);
+		const r = await callTool('db_stats', {}, auth);
+		const parsed = JSON.parse(r.content[0].text);
+		expect(parsed.collections).toEqual({ vehicle: 3, appuser_history: 3 });
 	});
 
 	it('analyze_schema flags unresolved FK targets', async () => {
