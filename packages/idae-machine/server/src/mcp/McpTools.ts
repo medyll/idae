@@ -20,6 +20,7 @@ import { type McpAuth, type McpToolDef, requirePerm } from './types.js';
 import { schemaTools, analyzeSchema, type SchemaAnalysis } from './tools/schemaTools.js';
 import { dataTools } from './tools/dataTools.js';
 import { authTools } from './tools/authTools.js';
+import { adminTools } from './tools/adminTools.js';
 
 export { requirePerm, analyzeSchema };
 export type { McpAuth, McpToolDef, SchemaAnalysis };
@@ -53,7 +54,7 @@ export async function buildAuth(req: Request): Promise<McpAuth> {
 
 // ── Tool registry (composed from per-domain modules) ────────────────────────
 
-export const TOOLS: McpToolDef[] = [...schemaTools, ...dataTools, ...authTools];
+export const TOOLS: McpToolDef[] = [...schemaTools, ...dataTools, ...authTools, ...adminTools];
 
 const TOOL_BY_NAME = new Map(TOOLS.map((t) => [t.name, t]));
 

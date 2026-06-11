@@ -49,6 +49,20 @@ vi.mock('../validation/FkValidator.js', () => ({
 vi.mock('../models/domainActions.js', () => ({ getDomainActions: vi.fn(() => undefined) }));
 vi.mock('../MachineServer.js', () => ({ machineServer: { getModel: vi.fn(async () => ({})) } }));
 
+const rbacListUsers = vi.fn(async () => [{ login: 'admin', isAdmin: true }]);
+const rbacSetGrant = vi.fn(async () => ({ grantType: 'user', schemeCode: 'vehicle', r: true }));
+vi.mock('../services/RbacAdminService.js', () => ({
+	listUsers: (...a: any[]) => rbacListUsers(...a),
+	createUser: vi.fn(async () => ({ login: 'new', isAdmin: false })),
+	setUserActive: vi.fn(async () => true),
+	assignGroup: vi.fn(async () => ({ userId: '1', groupId: '2' })),
+	listGroups: vi.fn(async () => []),
+	listGrants: vi.fn(async () => []),
+	setGrant: (...a: any[]) => rbacSetGrant(...a),
+	checkUserGrant: vi.fn(async () => ({ allowed: true, isAdmin: false })),
+	queryAudit: vi.fn(async () => []),
+}));
+
 vi.mock('../mcp/SchemeTools.js', () => ({
 	listCollections: vi.fn(async () => ['vehicle', 'appuser_history']),
 	getSchema: vi.fn(async () => ({ fields: {} })),
@@ -104,6 +118,9 @@ describe('MCP tool registry', () => {
 				'get_by_id', 'resolve_fks', 'restore', 'update', 'update_by_id', 'validate_record',
 				// auth
 				'auth_login', 'auth_whoami', 'apikey_create', 'apikey_list', 'apikey_revoke',
+				// admin
+				'user_list', 'user_create', 'user_set_active', 'user_assign_group',
+				'rbac_list_groups', 'rbac_list_grants', 'rbac_set_grant', 'grant_check', 'audit_query',
 			].sort()
 		);
 		for (const t of listToolDescriptors()) {
@@ -280,6 +297,46 @@ describe('MCP dispatch', () => {
 		const parsed = JSON.parse(r.content[0].text);
 		expect(parsed.key).toBe('mk_test_abc');
 		expect(apiKeyCreate).toHaveBeenCalledWith(member, 'agent', { expiresInDays: undefined });
+	});
+
+	it('admin tools refuse non-admin users', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		for (const name of ['user_list', 'user_create', 'rbac_set_grant', 'audit_query']) {
+			const r = await callTool(name, { login: 'x', password: 'longenough', grantType: 'user', schemeCode: '*' }, auth);
+			expect(r.isError).toBe(true);
+			expect(r.content[0].text).toContain('FORBIDDEN');
+		}
+		expect(rbacListUsers).not.toHaveBeenCalled();
+		expect(rbacSetGrant).not.toHaveBeenCalled();
+	});
+
+	it('admin tools refuse unauthenticated requests', async () => {
+		resolveUser.mockResolvedValue(null);
+		const auth = await buildAuth(req);
+		const r = await callTool('user_list', {}, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('FORBIDDEN');
+	});
+
+	it('user_list works for admin', async () => {
+		resolveUser.mockResolvedValue(admin);
+		const auth = await buildAuth(req);
+		const r = await callTool('user_list', {}, auth);
+		expect(r.isError).toBeFalsy();
+		expect(JSON.parse(r.content[0].text)[0].login).toBe('admin');
+	});
+
+	it('rbac_set_grant normalizes permission booleans and passes grantedBy', async () => {
+		resolveUser.mockResolvedValue(admin);
+		const auth = await buildAuth(req);
+		const r = await callTool('rbac_set_grant', { grantType: 'user', login: 'user', schemeCode: 'vehicle', r: true, l: true }, auth);
+		expect(r.isError).toBeFalsy();
+		expect(rbacSetGrant).toHaveBeenCalledWith(expect.objectContaining({
+			grantType: 'user', login: 'user', schemeCode: 'vehicle',
+			c: false, r: true, u: false, d: false, l: true, x: false,
+			grantedBy: 'admin',
+		}));
 	});
 
 	it('analyze_schema flags unresolved FK targets', async () => {
