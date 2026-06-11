@@ -36,7 +36,7 @@ let md = `# MCP Tool Reference — idae-machine
 
 > GENERATED — do not edit. Regenerate with \`npx tsx server/scripts/generate-mcp-doc.ts\`.
 > Endpoint: \`POST /api/mcp\` (stateless Streamable HTTP). Auth: \`Authorization: Bearer <JWT | mk_<org>_<secret> API key>\`.
-> ${TOOLS.length} tools.
+> ${TOOLS.length} tools. Usage guide (auth flows, RBAC, safety rails): [MCP-GUIDE.md](./MCP-GUIDE.md).
 
 `;
 
