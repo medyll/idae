@@ -35,6 +35,10 @@ nul
 __*.mjs
 __*.png
 
+# Playwright generated artifacts
+src/e2e/playwright-report/
+src/e2e/test-results/
+
 *.jpg
 *.png
 *.jpeg
