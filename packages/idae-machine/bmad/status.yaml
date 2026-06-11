@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-11"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "CHANTIER MCP v2 — M0 DONE (b4e930dd): DataService transport-free extrait de routes/data.ts, REST+MCP = adaptateurs du même pipeline DDD (validation→hooks→write→audit/broadcast, soft-delete). M1 DONE 2026-06-11 (e0f7a8a8): ApiKeyService (clés mk_<org>_<hex>, hash sha256 dans appuser_apikey, plaintext une fois, owner vivant vérifié à chaque résolution), resolveUser accepte JWT ou clé API (REST+MCP), orgContext route depuis le préfixe de clé; tools auth_login/auth_whoami/apikey_create/apikey_list/apikey_revoke; registry éclaté mcp/tools/{schema,data,auth}Tools.ts + mcp/types.ts; 16 tools; mcp 18/18, apikey 11/11, server 242/242, check 0/0. Next: M2 — find enrichi (sort/skip/projection), get/update/delete_by_id, restore, aggregate whitelisté, distinct, resolve_fks/reverse_fks, validate_record dry-run."
+next_action: "CHANTIER MCP v2 TERMINÉ 2026-06-11 — M0→M5 en 6 commits (b4e930dd DataService pipeline unifié REST/MCP, e0f7a8a8 auth+API keys mk_<org>_<hex>, 0a9ef095 data enrichi by-id/aggregate/distinct/FK, cd4d8b49 admin users/RBAC/audit, f4522f36 org+schéma flag MCP_SCHEMA_WRITE, 676bf17c périphérie files/mail/health/db_stats + doc générée server/MCP-TOOLS.md). 44 tools en 6 domaines (mcp/tools/{schema,data,auth,admin,org,periphery}Tools.ts), audit chaque call, passwords redacted. Tests: mcp 34/34, server 272/272, check 0/0. Prochains candidats: tester MCP end-to-end avec un agent réel (claude mcp add → POST /api/mcp), Phase 5 CMS (reportée), ou retour frontend."
 next_command: "bmad-continue"
 next_role: "scrum"
 active_role: "dev"
