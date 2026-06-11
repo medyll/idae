@@ -91,7 +91,15 @@ vi.mock('../services/ApiKeyService.js', () => ({
 	revokeApiKey: vi.fn(async () => true),
 }));
 
-vi.mock('../config.js', () => ({ config: { authDisabled: false } }));
+const orgPublish = vi.fn(async () => ({ org: 'vitest', collections: ['vehicle'] }));
+const orgSeed = vi.fn(async () => ({ org: 'demo', collections: 10, businessSeed: true }));
+vi.mock('../services/OrgAdminService.js', () => ({
+	listOrgs: vi.fn(async () => ['demo', 'vitest']),
+	publishScheme: (...a: any[]) => orgPublish(...a),
+	seedOrg: (...a: any[]) => orgSeed(...a),
+}));
+
+vi.mock('../config.js', () => ({ config: { authDisabled: false, mcpSchemaWrite: false } }));
 
 import { buildAuth, callTool, listToolDescriptors, TOOLS } from '../mcp/McpTools.js';
 import { config } from '../config.js';
@@ -103,6 +111,7 @@ const member = { userId: 'u', login: 'user', isAdmin: false };
 beforeEach(() => {
 	vi.clearAllMocks();
 	(config as any).authDisabled = false;
+	(config as any).mcpSchemaWrite = false;
 	checkGrant.mockResolvedValue(true);
 });
 
@@ -121,6 +130,8 @@ describe('MCP tool registry', () => {
 				// admin
 				'user_list', 'user_create', 'user_set_active', 'user_assign_group',
 				'rbac_list_groups', 'rbac_list_grants', 'rbac_set_grant', 'grant_check', 'audit_query',
+				// org
+				'list_orgs', 'get_views', 'schema_publish', 'seed_org',
 			].sort()
 		);
 		for (const t of listToolDescriptors()) {
@@ -337,6 +348,47 @@ describe('MCP dispatch', () => {
 			c: false, r: true, u: false, d: false, l: true, x: false,
 			grantedBy: 'admin',
 		}));
+	});
+
+	it('schema_publish refused for admin when MCP_SCHEMA_WRITE is off', async () => {
+		resolveUser.mockResolvedValue(admin);
+		const auth = await buildAuth(req);
+		const r = await callTool('schema_publish', { model: { vehicle: {} } }, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('MCP_SCHEMA_WRITE');
+		expect(orgPublish).not.toHaveBeenCalled();
+	});
+
+	it('seed_org refused for non-admin even with the flag on', async () => {
+		(config as any).mcpSchemaWrite = true;
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const r = await callTool('seed_org', { org: 'demo' }, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('FORBIDDEN: admin required');
+		expect(orgSeed).not.toHaveBeenCalled();
+	});
+
+	it('schema_publish runs for admin with the flag on', async () => {
+		(config as any).mcpSchemaWrite = true;
+		resolveUser.mockResolvedValue(admin);
+		const auth = await buildAuth(req);
+		const r = await callTool('schema_publish', { model: { vehicle: { fields: {} } } }, auth);
+		expect(r.isError).toBeFalsy();
+		expect(orgPublish).toHaveBeenCalledWith({ vehicle: { fields: {} } });
+		expect(JSON.parse(r.content[0].text).collections).toEqual(['vehicle']);
+	});
+
+	it('list_orgs is admin-gated', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const denied = await callTool('list_orgs', {}, auth);
+		expect(denied.isError).toBe(true);
+
+		resolveUser.mockResolvedValue(admin);
+		const auth2 = await buildAuth(req);
+		const r = await callTool('list_orgs', {}, auth2);
+		expect(JSON.parse(r.content[0].text)).toEqual(['demo', 'vitest']);
 	});
 
 	it('analyze_schema flags unresolved FK targets', async () => {

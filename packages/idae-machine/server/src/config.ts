@@ -39,4 +39,6 @@ export const config = {
 	version:    '2.0.0',
 	// Never bypass auth in production regardless of env var.
 	authDisabled: process.env.NODE_ENV !== 'production' && process.env.AUTH_DISABLED === 'true',
+	// Schema mutation via MCP (schema_publish / seed_org) — opt-in, admin-only on top.
+	mcpSchemaWrite: process.env.MCP_SCHEMA_WRITE === 'true',
 };
