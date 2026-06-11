@@ -1,15 +1,15 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-06-10T20:18
+# last_updated: 2026-06-11
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-10T20:18"
+last_updated: "2026-06-11"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "FABLE.md Phases 0–3 closes 2026-06-10. Phase 2 dernier item (e2e parcours) EXÉCUTÉ 2026-06-10 : stack montée (mongo + seed demo + server:7842), parcours.spec.ts + rbac-matrix.spec.ts → 8 passed, 1 skipped ; test clé list→fiche→diagram (FicheToolbar→ButtonAction) vert ; 2 fixes (sélecteur scopé explorer-content ; hash-direct → test.fixme = deep-link reload race backlog). Phase 3 (RBAC) : dédup `_id` qoolie bulkUpsertSilent, qoolie 209/209, rbac 5/5. idae-machine check 0/0, 609/609. Restant roadmap : Phase 4 (transport cleanup : idae-socket via qoolie, supprimer MachineApi/MachineMultiBase) / Phase 5 (CMS public render)."
+next_action: "FABLE.md Phases 0–4 closes. Phase 4 (transport) close 2026-06-11 : SSEListener réécrit fetch+ReadableStream (Bearer, sans dep idae-api), SocketIOListener dans qoolie (protocol 'socketio', idae-socket peer dep optionnelle), MachineApi/RealtimeClient/MachineMultiBase/MachineSocket supprimés — commit 34c91207. Deep-link reload race RÉSOLUE 2026-06-11 : MachineRouter.waitForZone (MutationObserver 15s) + buildGraph retry après warmup — commit 08a704d1, e2e 9/9 sans skip, check 0/0, unit 585/585, qoolie 217/217. Phase 5 (CMS public render) reportée long terme. CHANTIER ACTIF : refonte MCP serveur — exposer le maximum de méthodes (CRUD, schéma, RBAC, auth compris), implémentation actuelle limitée."
 next_command: "bmad-continue"
 next_role: "scrum"
 active_role: "dev"
@@ -731,6 +731,25 @@ qa:
 
 # ── Session History ───────────────────────────────────────────────────────────
 sessions:
+  - date: "2026-06-11"
+    summary: >
+      FABLE Phase 4 (transport) close + deep-link reload race résolue.
+      (1) Phase 4 commit 34c91207 : qoolie SSEListener réécrit fetch+ReadableStream
+      (Authorization Bearer, parsing SSE local, plus de dep runtime idae-api côté client) ;
+      SocketIOListener implements PushListener (wrap idae-socket EventDataClientInstance,
+      import dynamique, protocol 'socketio', peer dep optionnelle) ; PushConfig.collections
+      + listener (seam DI) ; SyncController.getPushListener() ; Qoolie.destroy() stoppe push.
+      idae-machine : MachineApi/RealtimeClient/MachineMultiBase/MachineSocket supprimés,
+      machine.socket relit l'instance détenue par qoolie.
+      (2) Deep-link fix commit 08a704d1 : MachineRouter.waitForZone() (MutationObserver +
+      timeout 15s) — mountFn attend data-target-zone au lieu de dropper la navigation ;
+      diagramUtils.buildGraph retry root record après machine.warmup([collection]) sur
+      cache froid. test.fixme parcours réactivé.
+      (3) chore b58a4c64 : playwright-report/ + test-results/ gitignorés.
+      Résultats : e2e 9/9 (0 skip), check 0/0, unit 585/585, qoolie 217/217.
+    tests_server: 585
+    tests_client: 217
+
   - date: "2026-06-01"
     summary: >
       Sprint 42 complete. S42-01: DataList mode unification. TableInline.svelte deleted
