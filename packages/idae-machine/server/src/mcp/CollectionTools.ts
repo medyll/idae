@@ -32,14 +32,71 @@ export interface BulkOpResult {
 	errors?: Array<{ id: string; error: string }>;
 }
 
+export interface FindOptions {
+	limit?: number;
+	skip?: number;
+	sort?: Record<string, 1 | -1>;
+	projection?: Record<string, 0 | 1>;
+}
+
 /** Find documents in a collection (capped result set), excluding soft-deleted records. */
 export async function find(
 	collection: string,
 	query: Record<string, any> = {},
-	limit?: number
+	opts: FindOptions = {}
 ): Promise<any[]> {
 	const db = await getDbForCollection(collection);
-	return db.collection(collection).find(activeRecordsFilter(query)).limit(clampLimit(limit)).toArray();
+	let cursor = db.collection(collection).find(activeRecordsFilter(query));
+	if (opts.sort) cursor = cursor.sort(opts.sort);
+	if (opts.skip && opts.skip > 0) cursor = cursor.skip(opts.skip);
+	if (opts.projection) cursor = cursor.project(opts.projection);
+	return cursor.limit(clampLimit(opts.limit)).toArray();
+}
+
+/** Distinct values of a field across documents matching a query, excluding soft-deleted records. */
+export async function distinct(
+	collection: string,
+	field: string,
+	query: Record<string, any> = {}
+): Promise<any[]> {
+	const db = await getDbForCollection(collection);
+	return db.collection(collection).distinct(field, activeRecordsFilter(query));
+}
+
+/** Aggregation stages an MCP caller may use — no $out/$merge (writes), no $lookup/$unionWith/$graphLookup (cross-collection reads would bypass per-collection RBAC). */
+const ALLOWED_AGGREGATE_STAGES = new Set([
+	'$match', '$group', '$sort', '$limit', '$skip', '$project', '$count', '$unwind', '$addFields', '$bucket', '$sortByCount', '$facet',
+]);
+
+/** Validate an aggregation pipeline against the stage whitelist. Throws on violation. */
+export function assertAggregateStages(pipeline: unknown): asserts pipeline is Record<string, any>[] {
+	if (!Array.isArray(pipeline) || pipeline.length === 0) {
+		throw new Error('aggregate refused: pipeline must be a non-empty array of stages');
+	}
+	for (const stage of pipeline) {
+		const keys = Object.keys((stage ?? {}) as Record<string, unknown>);
+		if (keys.length !== 1) {
+			throw new Error('aggregate refused: each stage must contain exactly one operator');
+		}
+		if (!ALLOWED_AGGREGATE_STAGES.has(keys[0])) {
+			throw new Error(
+				`aggregate refused: stage '${keys[0]}' not allowed (allowed: ${[...ALLOWED_AGGREGATE_STAGES].join(', ')})`
+			);
+		}
+	}
+}
+
+/**
+ * Run a whitelisted aggregation pipeline. Soft-deleted records are excluded by
+ * a prepended $match; the result is capped by an appended $limit.
+ */
+export async function aggregate(collection: string, pipeline: unknown): Promise<any[]> {
+	assertAggregateStages(pipeline);
+	const db = await getDbForCollection(collection);
+	return db
+		.collection(collection)
+		.aggregate([{ $match: activeRecordsFilter() }, ...pipeline, { $limit: MAX_LIMIT }])
+		.toArray();
 }
 
 /** Find one document in a collection, excluding soft-deleted records. */

@@ -3,6 +3,7 @@
  */
 
 import * as SchemeTools from '../SchemeTools.js';
+import { findReverseFkHolders } from '../../validation/FkValidator.js';
 import { type McpToolDef, requirePerm, collectionArg } from '../types.js';
 
 export interface SchemaAnalysis {
@@ -65,6 +66,16 @@ export const schemaTools: McpToolDef[] = [
 		run: async ({ collection }, auth) => {
 			await requirePerm(auth, collection, 'R');
 			return SchemeTools.getFks(collection);
+		},
+	},
+	{
+		name: 'reverse_fks',
+		description:
+			'List all collections holding FK relations that point TO the given collection — { sourceCollection: [fkName, ...] }. Useful before deleting records (cascade impact).',
+		inputSchema: { type: 'object', properties: collectionArg, required: ['collection'] },
+		run: async ({ collection }, auth) => {
+			await requirePerm(auth, collection, 'R');
+			return findReverseFkHolders(collection);
 		},
 	},
 	{

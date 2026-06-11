@@ -10,6 +10,11 @@ vi.mock('../mcp/CollectionTools.js', () => ({
 	find: vi.fn(async () => [{ id: 1 }]),
 	findOne: vi.fn(async () => ({ id: 1 })),
 	count: vi.fn(async () => 1),
+	distinct: vi.fn(async () => ['a', 'b']),
+	aggregate: vi.fn(async (_c: string, pipeline: any) => {
+		if (!Array.isArray(pipeline) || pipeline.length === 0) throw new Error('aggregate refused: pipeline must be a non-empty array of stages');
+		return [{ _id: 'a', count: 2 }];
+	}),
 	create: vi.fn(async () => ({ acknowledged: true })),
 	update: vi.fn(async (_c: string, q: Record<string, any>) => {
 		if (!q || Object.keys(q).length === 0) throw new Error('update refused: empty query would match the entire collection');
@@ -20,6 +25,29 @@ vi.mock('../mcp/CollectionTools.js', () => ({
 		return { deletedCount: 1 };
 	}),
 }));
+
+const dsGetById = vi.fn(async () => ({ _id: 'x1', name: 'rec' }));
+vi.mock('../services/DataService.js', async (importOriginal) => {
+	const orig = await importOriginal<typeof import('../services/DataService.js')>();
+	return {
+		...orig,
+		getById: (...a: any[]) => dsGetById(...a),
+		updateById: vi.fn(async () => ({ _id: 'x1', name: 'updated' })),
+		removeById: vi.fn(async () => ({ _id: 'x1' })),
+		restoreById: vi.fn(async () => ({ _id: 'x1' })),
+	};
+});
+
+vi.mock('../validation/SchemeValidator.js', () => ({
+	validateAgainstScheme: vi.fn(async () => ({ valid: true, errors: [] })),
+}));
+vi.mock('../validation/FkValidator.js', () => ({
+	validateFkEntries: vi.fn(async () => ({ valid: true, errors: [] })),
+	makeMongoFkResolver: vi.fn(() => async () => null),
+	findReverseFkHolders: vi.fn(async () => ({ travel: ['destination'] })),
+}));
+vi.mock('../models/domainActions.js', () => ({ getDomainActions: vi.fn(() => undefined) }));
+vi.mock('../MachineServer.js', () => ({ machineServer: { getModel: vi.fn(async () => ({})) } }));
 
 vi.mock('../mcp/SchemeTools.js', () => ({
 	listCollections: vi.fn(async () => ['vehicle', 'appuser_history']),
@@ -69,8 +97,12 @@ describe('MCP tool registry', () => {
 		const names = listToolDescriptors().map((t) => t.name).sort();
 		expect(names).toEqual(
 			[
-				'analyze_schema', 'count', 'create', 'delete', 'find', 'find_one',
-				'get_fields', 'get_fks', 'get_schema', 'list_collections', 'update',
+				// schema
+				'analyze_schema', 'get_fields', 'get_fks', 'get_schema', 'list_collections', 'reverse_fks',
+				// data
+				'aggregate', 'count', 'create', 'delete', 'delete_by_id', 'distinct', 'find', 'find_one',
+				'get_by_id', 'resolve_fks', 'restore', 'update', 'update_by_id', 'validate_record',
+				// auth
 				'auth_login', 'auth_whoami', 'apikey_create', 'apikey_list', 'apikey_revoke',
 			].sort()
 		);
@@ -166,6 +198,40 @@ describe('MCP dispatch', () => {
 		const r = await callTool('delete', { collection: 'vehicle', query: {} }, auth);
 		expect(r.isError).toBe(true);
 		expect(r.content[0].text).toContain('empty query');
+	});
+
+	it('get_by_id dispatches to DataService with R perm', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const r = await callTool('get_by_id', { collection: 'vehicle', id: 'x1' }, auth);
+		expect(r.isError).toBeFalsy();
+		expect(dsGetById).toHaveBeenCalledWith('vehicle', 'x1');
+	});
+
+	it('aggregate with empty pipeline → guarded isError', async () => {
+		resolveUser.mockResolvedValue(admin);
+		const auth = await buildAuth(req);
+		const r = await callTool('aggregate', { collection: 'vehicle', pipeline: [] }, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('non-empty array');
+	});
+
+	it('validate_record returns valid result without writing', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const r = await callTool('validate_record', { collection: 'vehicle', data: { name: 'ok' } }, auth);
+		expect(r.isError).toBeFalsy();
+		const parsed = JSON.parse(r.content[0].text);
+		expect(parsed.valid).toBe(true);
+		expect(parsed.errors.fk).toEqual([]);
+	});
+
+	it('reverse_fks lists FK holders pointing to the collection', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const r = await callTool('reverse_fks', { collection: 'destination' }, auth);
+		expect(r.isError).toBeFalsy();
+		expect(JSON.parse(r.content[0].text)).toEqual({ travel: ['destination'] });
 	});
 
 	it('auth_whoami returns the resolved user context', async () => {
