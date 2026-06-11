@@ -36,7 +36,18 @@ const checkGrant = vi.fn(async () => true);
 vi.mock('../services/GrantService.js', () => ({ grantService: { checkGrant: (...a: any[]) => checkGrant(...a) } }));
 
 const resolveUser = vi.fn();
-vi.mock('../services/AuthService.js', () => ({ resolveUser: (...a: any[]) => resolveUser(...a) }));
+const authLogin = vi.fn();
+vi.mock('../services/AuthService.js', () => ({
+	resolveUser: (...a: any[]) => resolveUser(...a),
+	login: (...a: any[]) => authLogin(...a),
+}));
+
+const apiKeyCreate = vi.fn(async () => ({ key: 'mk_test_abc', name: 'agent', prefix: 'abcd1234', expiresAt: null }));
+vi.mock('../services/ApiKeyService.js', () => ({
+	createApiKey: (...a: any[]) => apiKeyCreate(...a),
+	listApiKeys: vi.fn(async () => [{ name: 'agent', prefix: 'abcd1234' }]),
+	revokeApiKey: vi.fn(async () => true),
+}));
 
 vi.mock('../config.js', () => ({ config: { authDisabled: false } }));
 
@@ -57,7 +68,11 @@ describe('MCP tool registry', () => {
 	it('exposes a stable tool set with JSON Schema inputs', () => {
 		const names = listToolDescriptors().map((t) => t.name).sort();
 		expect(names).toEqual(
-			['analyze_schema', 'count', 'create', 'delete', 'find', 'find_one', 'get_fields', 'get_fks', 'get_schema', 'list_collections', 'update'].sort()
+			[
+				'analyze_schema', 'count', 'create', 'delete', 'find', 'find_one',
+				'get_fields', 'get_fks', 'get_schema', 'list_collections', 'update',
+				'auth_login', 'auth_whoami', 'apikey_create', 'apikey_list', 'apikey_revoke',
+			].sort()
 		);
 		for (const t of listToolDescriptors()) {
 			expect(t.inputSchema.type).toBe('object');
@@ -151,6 +166,54 @@ describe('MCP dispatch', () => {
 		const r = await callTool('delete', { collection: 'vehicle', query: {} }, auth);
 		expect(r.isError).toBe(true);
 		expect(r.content[0].text).toContain('empty query');
+	});
+
+	it('auth_whoami returns the resolved user context', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const r = await callTool('auth_whoami', {}, auth);
+		expect(r.isError).toBeFalsy();
+		const parsed = JSON.parse(r.content[0].text);
+		expect(parsed.user.login).toBe('user');
+	});
+
+	it('auth_login with bad credentials → isError, password never echoed', async () => {
+		resolveUser.mockResolvedValue(null);
+		authLogin.mockResolvedValue(null);
+		const auth = await buildAuth(req);
+		const r = await callTool('auth_login', { login: 'x', password: 'wrong' }, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('Invalid credentials');
+	});
+
+	it('auth_login success returns token + user', async () => {
+		resolveUser.mockResolvedValue(null);
+		authLogin.mockResolvedValue({ token: 'jwt-token', user: member });
+		const auth = await buildAuth(req);
+		const r = await callTool('auth_login', { login: 'user', password: 'pw' }, auth);
+		expect(r.isError).toBeFalsy();
+		const parsed = JSON.parse(r.content[0].text);
+		expect(parsed.token).toBe('jwt-token');
+		expect(parsed.user.userId).toBe('u');
+	});
+
+	it('apikey_create unauthenticated → FORBIDDEN', async () => {
+		resolveUser.mockResolvedValue(null);
+		const auth = await buildAuth(req);
+		const r = await callTool('apikey_create', { name: 'agent' }, auth);
+		expect(r.isError).toBe(true);
+		expect(r.content[0].text).toContain('FORBIDDEN');
+		expect(apiKeyCreate).not.toHaveBeenCalled();
+	});
+
+	it('apikey_create for an authenticated user returns the plaintext key once', async () => {
+		resolveUser.mockResolvedValue(member);
+		const auth = await buildAuth(req);
+		const r = await callTool('apikey_create', { name: 'agent' }, auth);
+		expect(r.isError).toBeFalsy();
+		const parsed = JSON.parse(r.content[0].text);
+		expect(parsed.key).toBe('mk_test_abc');
+		expect(apiKeyCreate).toHaveBeenCalledWith(member, 'agent', { expiresInDays: undefined });
 	});
 
 	it('analyze_schema flags unresolved FK targets', async () => {
