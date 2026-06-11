@@ -74,7 +74,12 @@ export async function buildGraph(
 	}
 
 	const id = MachineRecordIdentity.normalizeKey(recordId) ?? recordId;
-	const rootRecord = (await machine.collection(collection).get(id)) as Record<string, unknown> | undefined;
+	let rootRecord = (await machine.collection(collection).get(id)) as Record<string, unknown> | undefined;
+	if (!rootRecord) {
+		// Cold deep-link: the collection may not have hydrated from the server yet.
+		await machine.warmup([collection]);
+		rootRecord = (await machine.collection(collection).get(id)) as Record<string, unknown> | undefined;
+	}
 	if (!rootRecord) {
 		throw new Error(`Record ${collection}:${recordId} not found. Please check that the record exists and the ID is correct.`);
 	}

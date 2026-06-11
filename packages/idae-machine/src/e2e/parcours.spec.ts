@@ -80,13 +80,10 @@ test.describe('Main parcours — login → explorer → fiche → diagram', () =
 		await expect(page.locator('diagram-component svg[role="img"]')).toBeVisible();
 	});
 
-	// KNOWN LIMITATION — deep-link reload race (FABLE.md §Phase 3 backlog).
-	// A cold goto() to a record hash dispatches the diagram frame before the
-	// vehicle collection finishes hydrating → "Record vehicle:1 not found".
-	// The record IS in Mongo (verified); the router must defer the first
-	// dispatch until data is present. Out of Phase 2 scope. Diagram
-	// reachability is already covered by the buttons test above.
-	test.fixme('diagram is reachable directly via hash route', async ({ page }) => {
+	// Deep-link reload race fixed 2026-06-11: MachineRouter.waitForZone defers
+	// the dispatch until [data-target-zone] mounts, and buildGraph retries the
+	// root record after machine.warmup(collection) on a cold cache.
+	test('diagram is reachable directly via hash route', async ({ page }) => {
 		await page.goto(`${BASE}#/+main/diagram/vehicle/1`);
 		await expect(page.locator('diagram-component')).toBeVisible({ timeout: 10_000 });
 		await expect(page.locator('diagram-component svg[role="img"]')).toBeVisible();
