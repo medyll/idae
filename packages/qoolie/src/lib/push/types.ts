@@ -2,12 +2,12 @@
  * Server Push types for SSE and WebSocket support
  */
 
-export type PushProtocol = 'sse' | 'websocket';
+export type PushProtocol = 'sse' | 'websocket' | 'socketio';
 
 export interface PushConfig {
   /** Enable server push */
   enabled?: boolean;
-  /** Protocol to use: 'sse' or 'websocket' */
+  /** Protocol to use: 'sse', 'websocket' or 'socketio' */
   protocol?: PushProtocol;
   /** Server URL for push connection */
   url?: string;
@@ -19,6 +19,10 @@ export interface PushConfig {
   maxReconnects?: number;
   /** Connection timeout in ms (default: 30000) */
   timeoutMs?: number;
+  /** Tables to subscribe to (protocol: 'socketio' — joins `room_<table>` per entry) */
+  collections?: string[];
+  /** Pre-built listener instance — bypasses protocol-based construction (test/DI seam) */
+  listener?: PushListener;
 }
 
 export interface ServerChange {

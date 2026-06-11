@@ -7,16 +7,12 @@ import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/Machi
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
-import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
-
-export type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
-import type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
 
 export type MachineComponentRegistry = Readonly<Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>>;
 
@@ -100,12 +96,6 @@ export class Machine {
 		onError?:     (error: Error, context: SyncErrorContext) => void;
 	};
 
-	/** Socket client options — set via init() */
-	_socketOptions?: MachineSocketOptions;
-
-	/** Socket client instance — created at start() if socketOptions provided */
-	_socketClient?: EventDataClientInstance;
-
 	/** Seed data for mobile-first mode — auto-called with onlyIfEmpty on boot if mode === 'mobile-first' */
 	_seed?: Record<string, unknown[]>;
 
@@ -149,7 +139,6 @@ export class Machine {
 			onSyncEvent?: (event: SyncEvent) => void;
 			onError?:     (error: Error, context: SyncErrorContext) => void;
 		};
-		socket?:      MachineSocketOptions;
 		/** Seed data for mobile-first mode. When sync.mode === 'mobile-first', boot() auto-calls seed(seed, { onlyIfEmpty: true }). */
 		seed?:        Record<string, unknown[]>;
 	}) {
@@ -164,7 +153,6 @@ export class Machine {
 		this._syncOptions   = options?.sync        !== undefined ? options.sync : this._syncOptions;
 		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
 		this._hooks         = options?.hooks       ?? this._hooks;
-		this._socketOptions = options?.socket      ?? this._socketOptions;
 		this._seed          = options?.seed        ?? this._seed;
 	}
 
@@ -292,8 +280,6 @@ export class Machine {
 			const { seed } = await import('$lib/main/machineSeed.js');
 			await seed(this._seed, { onlyIfEmpty: true });
 		}
-
-		if (this._socketOptions?.autoConnect) this.connectSocket();
 	}
 
 
@@ -363,17 +349,20 @@ export class Machine {
 	}
 
 	/**
-	 * Socket client — EventDataClientInstance from idae-socket.
-	 * Available after boot() when socket options are provided.
-	 * Call machine.socket.connect() manually unless autoConnect: true.
+	 * Socket client — EventDataClientInstance from idae-socket, owned by qoolie's
+	 * push listener (single connection). Available when `sync.push.protocol === 'socketio'`
+	 * and the listener has connected. Configure via `init({ sync: { push: { protocol: 'socketio', ... } } })`.
 	 */
 	get socket(): EventDataClientInstance | undefined {
-		return this._socketClient;
-	}
-
-	private connectSocket(): void {
-		if (!this._socketOptions) return;
-		this._socketClient = createSocketClient(this._socketOptions);
+		if (!this._qoolie) return undefined;
+		let pushListener;
+		try {
+			pushListener = this._qoolie.sync.getPushListener?.();
+		} catch {
+			return undefined;
+		}
+		const inner = (pushListener as { getListener?: () => unknown } | undefined)?.getListener?.() ?? pushListener;
+		return (inner as { getClient?: () => EventDataClientInstance } | undefined)?.getClient?.();
 	}
 
 	/**
@@ -384,9 +373,6 @@ export class Machine {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
 		this._pendingIdbUpgrade = null;
-
-		this._socketClient?.socket?.disconnect?.();
-		this._socketClient = undefined;
 	}
 
 	/**

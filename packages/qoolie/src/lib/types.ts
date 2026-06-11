@@ -7,7 +7,7 @@ export interface SyncEvent {
   fallbackMode?: SyncMode;
 }
 
-import type { PushConfig } from './push/types.js';
+import type { PushConfig, PushListener } from './push/types.js';
 import type { ServerChange } from './push/types.js';
 
 // Re-export push types for convenience
@@ -196,6 +196,16 @@ export interface SyncController {
   onEvent(handler: (event: SyncEvent) => void): () => void;
   /** Dead letter queue controller */
   dlq: DLQController;
+  /** Start server push listener */
+  startPush(): void;
+  /** Stop server push listener */
+  stopPush(): void;
+  /** Check if server push is connected */
+  isPushConnected(): boolean;
+  /** Underlying push listener (e.g. SocketIOListener — exposes getClient()) */
+  getPushListener(): PushListener | undefined;
+  /** Listen to server changes (returns unsubscribe) */
+  onServerChange(handler: (change: ServerChange) => void): () => void;
 }
 
 /**

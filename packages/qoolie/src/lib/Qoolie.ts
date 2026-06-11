@@ -253,6 +253,9 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 		// Stop sync adapter
 		this.syncAdapter?.stop();
 
+		// Stop server push listener (single connection — also used by machine.socket)
+		this.syncController?.stopPush();
+
 		// Close database
 		this.db.close();
 

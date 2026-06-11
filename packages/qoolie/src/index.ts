@@ -16,7 +16,7 @@ export { SyncController } from './lib/SyncController.js';
 export { DLQController } from './lib/DLQController.js';
 
 // Server Push
-export { ServerPushListener, SSEListener, WebSocketListener } from './lib/push/index.js';
+export { ServerPushListener, SSEListener, WebSocketListener, SocketIOListener } from './lib/push/index.js';
 
 // Encryption
 export { EncryptionHelper, deriveKey, generateSalt } from './lib/encryption/index.js';

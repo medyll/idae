@@ -48,6 +48,7 @@
     "idb": "^8.0.3"
   },
   "devDependencies": {
+    "@medyll/idae-socket": "workspace:*",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
@@ -58,10 +59,14 @@
     "vue": "^3.5.31"
   },
   "peerDependencies": {
+    "@medyll/idae-socket": "workspace:*",
     "react": ">=18.0.0",
     "vue": ">=3.3.0"
   },
   "peerDependenciesMeta": {
+    "@medyll/idae-socket": {
+      "optional": true
+    },
     "react": {
       "optional": true
     },
