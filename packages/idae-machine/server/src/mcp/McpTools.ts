@@ -22,20 +22,25 @@ import * as SchemeTools from './SchemeTools.js';
 
 export interface McpAuth {
 	user: UserContext | null;
+	/** Request audit context (IP/user-agent) — forwarded to DataService for create/update/delete. */
+	audit: { ipAddress?: string; userAgent?: string };
 	/** True when the (collection, permission) pair is granted for this request. */
 	can(collection: string, perm: Permission): Promise<boolean>;
 }
 
 export async function buildAuth(req: Request): Promise<McpAuth> {
+	const audit = extractAuditContext(req);
+
 	// Auth disabled (AUTH_DISABLED=true) → synthetic admin, mirrors permission.ts.
 	if (config.authDisabled) {
-		return { user: { userId: 'dev', login: 'dev', isAdmin: true }, can: async () => true };
+		return { user: { userId: 'dev', login: 'dev', isAdmin: true }, audit, can: async () => true };
 	}
 
 	const user = await resolveUser(req);
 
 	return {
 		user,
+		audit,
 		async can(collection, perm) {
 			// Schema metadata is read-only descriptors — public read, like permission.ts.
 			if ((perm === 'L' || perm === 'R') && collection.startsWith('appscheme')) return true;
@@ -154,7 +159,7 @@ export const TOOLS: McpToolDef[] = [
 	},
 	{
 		name: 'create',
-		description: 'Insert a document into a collection.',
+		description: 'Insert a document into a collection (schema validation, FK checks, audit, broadcast — same pipeline as REST).',
 		inputSchema: {
 			type: 'object',
 			properties: { ...collectionArg, data: { type: 'object', description: 'Document to insert' } },
@@ -162,12 +167,13 @@ export const TOOLS: McpToolDef[] = [
 		},
 		run: async ({ collection, data }, auth) => {
 			await requirePerm(auth, collection, 'C');
-			return CollectionTools.create(collection, data ?? {});
+			return CollectionTools.create(collection, data ?? {}, { user: auth.user ?? undefined, audit: auth.audit });
 		},
 	},
 	{
 		name: 'update',
-		description: 'Update documents matching a query ($set). Empty query is refused.',
+		description:
+			'Update documents matching a query ($set), one record at a time (schema validation, FK checks, audit, broadcast — same pipeline as REST). Empty query is refused. Capped at 1000 matches per call.',
 		inputSchema: {
 			type: 'object',
 			properties: {
@@ -179,23 +185,25 @@ export const TOOLS: McpToolDef[] = [
 		},
 		run: async ({ collection, query, data }, auth) => {
 			await requirePerm(auth, collection, 'U');
-			return CollectionTools.update(collection, query ?? {}, data ?? {});
+			return CollectionTools.update(collection, query ?? {}, data ?? {}, { user: auth.user ?? undefined, audit: auth.audit });
 		},
 	},
 	{
 		name: 'delete',
-		description: 'Delete documents matching a query. Empty query is refused.',
+		description:
+			'Delete documents matching a query, one record at a time (audit, broadcast — same pipeline as REST). Soft delete by default (sets deletedAt); pass permanent:true for hard delete. Empty query is refused. Capped at 1000 matches per call.',
 		inputSchema: {
 			type: 'object',
 			properties: {
 				...collectionArg,
 				query: { type: 'object', description: 'Mongo filter selecting documents to delete' },
+				permanent: { type: 'boolean', description: 'Hard-delete instead of soft delete (default false)' },
 			},
 			required: ['collection', 'query'],
 		},
-		run: async ({ collection, query }, auth) => {
+		run: async ({ collection, query, permanent }, auth) => {
 			await requirePerm(auth, collection, 'D');
-			return CollectionTools.deleteMany(collection, query ?? {});
+			return CollectionTools.deleteMany(collection, query ?? {}, { user: auth.user ?? undefined, audit: auth.audit }, { permanent: permanent === true });
 		},
 	},
 ];

@@ -43,7 +43,7 @@ vi.mock('../config.js', () => ({ config: { authDisabled: false } }));
 import { buildAuth, callTool, listToolDescriptors, TOOLS } from '../mcp/McpTools.js';
 import { config } from '../config.js';
 
-const req = {} as Request;
+const req = { headers: {}, socket: {} } as unknown as Request;
 const admin = { userId: 'a', login: 'admin', isAdmin: true };
 const member = { userId: 'u', login: 'user', isAdmin: false };
 
