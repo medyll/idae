@@ -1,17 +1,16 @@
 <!--
-InputCurrency.svelte
-Currency input with formatting.
-@role input-atom
-@prop {number|string} value - Current value
-@prop {string} [error] - Error message
-@prop {string} [currencySymbol] - Currency symbol (default: $)
-@prop {number} [decimalPlaces] - Decimal places (default: 2)
-@prop {boolean} [disabled] - Disabled state
+FieldCurrency.svelte
+Currency field atom — formatted display in show mode, formatted input in edit.
+@role field-atom
+@prop {number|string} value - Current value (bindable)
+@prop {string} [display] - Pre-formatted display string (from scheme)
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
 	let {
 		value = $bindable(),
+		display = undefined as string | undefined,
+		mode = 'show',
 		error = null as string | null,
 		currencySymbol = '$',
 		decimalPlaces = 2,
@@ -20,14 +19,16 @@ Currency input with formatting.
 		name = undefined as string | undefined,
 		form = undefined as string | undefined
 	} = $props<{
-		value?:         number | string;
-		error?:         string | null;
+		value?: number | string;
+		display?: string;
+		mode?: 'show' | 'create' | 'update';
+		error?: string | null;
 		currencySymbol?: string;
-		decimalPlaces?:  number;
-		disabled?:       boolean;
-		id?:            string;
-		name?:          string;
-		form?:          string;
+		decimalPlaces?: number;
+		disabled?: boolean;
+		id?: string;
+		name?: string;
+		form?: string;
 	}>();
 
 	let inputValue = $state<string>('');
@@ -63,25 +64,29 @@ Currency input with formatting.
 	}
 </script>
 
-<div class="field-currency" class:has-error={error}>
-	<div class="input-wrapper">
-		<span class="currency-symbol">{currencySymbol}</span>
-		<input
-			type="text"
-			bind:value={inputValue}
-			oninput={handleChange}
-			disabled={disabled}
-			{id}
-			{name}
-			{form}
-			placeholder="0.00"
-			class="currency-input"
-		/>
+{#if mode === 'show'}
+	<span class="field-value">{display ?? `${currencySymbol}${value ?? ''}`}</span>
+{:else}
+	<div class="field-currency" class:has-error={error}>
+		<div class="input-wrapper">
+			<span class="currency-symbol">{currencySymbol}</span>
+			<input
+				type="text"
+				bind:value={inputValue}
+				oninput={handleChange}
+				{disabled}
+				{id}
+				{name}
+				{form}
+				placeholder="0.00"
+				class="currency-input"
+			/>
+		</div>
+		{#if error}
+			<span class="error-message">{error}</span>
+		{/if}
 	</div>
-	{#if error}
-		<span class="error-message">{error}</span>
-	{/if}
-</div>
+{/if}
 
 <style>
 	.field-currency { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }

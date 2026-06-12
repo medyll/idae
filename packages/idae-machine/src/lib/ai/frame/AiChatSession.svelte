@@ -9,7 +9,7 @@ AI chat session frame - thin shell around DataList + DataField
     import { machine } from '$lib/main/machine.js';
     import DataList from '$lib/data-ui/data/DataList.svelte';
     import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
-    import InputAiPrompt from '$lib/data-ui/input/InputAiPrompt.svelte';
+    import FieldAiPrompt from '$lib/data-ui/field/snippets/FieldAiPrompt.svelte';
 
     let { collection, collectionId }: { collection: string; collectionId: number } = $props();
 
@@ -83,7 +83,7 @@ AI chat session frame - thin shell around DataList + DataField
         </DataList>
 
         <!-- Input bar — owns AbortController + create-user/create-assistant/stream orchestration -->
-        <InputAiPrompt session={{ id: session.id as number, code: session.code as string }} />
+        <FieldAiPrompt mode="update" session={{ id: session.id as number, code: session.code as string }} />
     {/if}
 </ai-chat-session-frame>
 

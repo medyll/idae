@@ -1,37 +1,38 @@
 <!--
-InputSelect.svelte
-FK-aware select input atom. Queries machine store for related collection records.
-@role input-atom
+FieldSelect.svelte
+FK-aware select field atom. Show mode renders the resolved FK label
+(passed via `display`); edit mode queries machine store for options.
+@role field-atom
 @prop {unknown} value - Current FK value (bindable)
+@prop {string} [display] - Resolved FK label for show mode
 @prop {string} collection - Target collection name (from fk-collection.field)
-@prop {string} [targetField] - Target field written as option value (from fk-X.field). Defaults to scheme index.
-@prop {string} [id] - Input id
-@prop {string} [name] - Input name
-@prop {string} [form] - Form id
-@prop {boolean} [disabled] - Disabled state
-@prop {boolean} [multiple] - Multiple selection
+@prop {string} [targetField] - Target field written as option value. Defaults to scheme index.
 -->
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 
 	let {
-		value    = $bindable(undefined),
+		value = $bindable(undefined),
+		display = undefined as string | undefined,
+		mode = 'show',
 		collection,
 		targetField,
 		id,
 		name,
 		form,
-		disabled  = false,
-		multiple  = false
+		disabled = false,
+		multiple = false
 	} = $props<{
-		value?:       unknown;
-		collection:   string;
+		value?: unknown;
+		display?: string;
+		mode?: 'show' | 'create' | 'update';
+		collection: string;
 		targetField?: string;
-		id?:          string;
-		name?:        string;
-		form?:        string;
-		disabled?:    boolean;
-		multiple?:    boolean;
+		id?: string;
+		name?: string;
+		form?: string;
+		disabled?: boolean;
+		multiple?: boolean;
 	}>();
 
 	const scheme     = $derived(machine.logic.collectionOr(collection, null));
@@ -44,7 +45,9 @@ FK-aware select input atom. Queries machine store for related collection records
 	}
 </script>
 
-{#if multiple}
+{#if mode === 'show'}
+	<span class="field-value">{display ?? '—'}</span>
+{:else if multiple}
 	<select multiple bind:value={value as string[]} {id} {name} {form} {disabled}>
 		{#each items as item (item[indexField])}
 			<option value={item[indexField]}>{getLabel(item)}</option>

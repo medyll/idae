@@ -16,7 +16,7 @@
 	</fiche-header>
 	<fiche-zone>
 		<sidebar-info>
-			<DataRecord {collection} {collectionId} showFields={['icon']} />
+			<DataRecord {collection} {collectionId} showFields={['icon']} showLabel={false} />
         </sidebar-info>
 		<zone-main-half>
 			<div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div>

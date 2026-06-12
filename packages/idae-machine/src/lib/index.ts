@@ -32,13 +32,16 @@ export { default as Group }        from '$lib/data-ui/controls/Group.svelte';
 export { default as Find }         from '$lib/data-ui/controls/Find.svelte';
 export { default as ListMode }     from '$lib/data-ui/controls/ListMode.svelte';
 
-// UI — input atoms
-export { default as InputBoolean }  from '$lib/data-ui/input/InputBoolean.svelte';
-export { default as InputCurrency } from '$lib/data-ui/input/InputCurrency.svelte';
-export { default as InputEmail }    from '$lib/data-ui/input/InputEmail.svelte';
-export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte';
-export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
-export { default as InputAiPrompt } from '$lib/data-ui/input/InputAiPrompt.svelte';
+// UI — field atoms (show + edit, dispatched by DataField)
+export { default as FieldText }     from '$lib/data-ui/field/snippets/FieldText.svelte';
+export { default as FieldBoolean }  from '$lib/data-ui/field/snippets/FieldBoolean.svelte';
+export { default as FieldEmail }    from '$lib/data-ui/field/snippets/FieldEmail.svelte';
+export { default as FieldCurrency } from '$lib/data-ui/field/snippets/FieldCurrency.svelte';
+export { default as FieldTextarea } from '$lib/data-ui/field/snippets/FieldTextarea.svelte';
+export { default as FieldColor }    from '$lib/data-ui/field/snippets/FieldColor.svelte';
+export { default as FieldIcon }     from '$lib/data-ui/field/snippets/FieldIcon.svelte';
+export { default as FieldSelect }   from '$lib/data-ui/field/snippets/FieldSelect.svelte';
+export { default as FieldAiPrompt } from '$lib/data-ui/field/snippets/FieldAiPrompt.svelte';
 
 // UI — columner (Finder-style column navigation)
 export { default as Columner }              from '$lib/shell/layout/Columner.svelte';

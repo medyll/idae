@@ -1,15 +1,14 @@
 <!--
-InputEmail.svelte
-Email input with format validation.
-@role input-atom
-@prop {string} value - Current value
+FieldEmail.svelte
+Email field atom. Show mode renders a mailto link.
+@role field-atom
+@prop {string} value - Current value (bindable)
 @prop {string} [error] - Error message
-@prop {boolean} [required] - Required field
-@prop {boolean} [disabled] - Disabled state
 -->
 <script lang="ts">
 	let {
 		value = $bindable(),
+		mode = 'show',
 		error = null as string | null,
 		required = false,
 		disabled = false,
@@ -18,14 +17,15 @@ Email input with format validation.
 		form = undefined as string | undefined,
 		oninput = undefined as ((e: Event) => void) | undefined
 	} = $props<{
-		value?:    string;
-		error?:    string | null;
+		value?: string;
+		mode?: 'show' | 'create' | 'update';
+		error?: string | null;
 		required?: boolean;
 		disabled?: boolean;
-		id?:       string;
-		name?:     string;
-		form?:     string;
-		oninput?:  (e: Event) => void;
+		id?: string;
+		name?: string;
+		form?: string;
+		oninput?: (e: Event) => void;
 	}>();
 
 	function validateEmail(email: string): boolean {
@@ -34,32 +34,33 @@ Email input with format validation.
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		return emailRegex.test(email);
 	}
-
-	function handleBlur(): void {
-		if (!validateEmail(value ?? '')) {
-			// Could emit error event here
-		}
-	}
 </script>
 
-<div class="field-email" class:has-error={error}>
-	<input
-		type="email"
-		bind:value
-		onblur={handleBlur}
-		{oninput}
-		{disabled}
-		{required}
-		{id}
-		{name}
-		{form}
-		placeholder="email@example.com"
-		class="email-input"
-	/>
-	{#if error}
-		<span class="error-message">{error}</span>
+{#if mode === 'show'}
+	{#if value}
+		<a class="field-email-link" href={`mailto:${value}`}>{value}</a>
+	{:else}
+		<span class="field-empty">—</span>
 	{/if}
-</div>
+{:else}
+	<div class="field-email" class:has-error={error}>
+		<input
+			type="email"
+			bind:value
+			{oninput}
+			{disabled}
+			{required}
+			{id}
+			{name}
+			{form}
+			placeholder="email@example.com"
+			class="email-input"
+		/>
+		{#if error}
+			<span class="error-message">{error}</span>
+		{/if}
+	</div>
+{/if}
 
 <style>
 	.field-email { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }
@@ -68,4 +69,5 @@ Email input with format validation.
 	.field-email.has-error .email-input { border-color: var(--color-critical); }
 	.error-message { color: var(--color-critical); font-size: 0.875rem; }
 	input:disabled { background: var(--color-surface-alt); cursor: not-allowed; }
+	.field-empty { color: var(--color-text-muted); }
 </style>
