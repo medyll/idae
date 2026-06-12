@@ -1,4 +1,8 @@
 import { Router } from 'express'
+// @medyll/idae-api package.json "exports" only declares "." (root) — "/server" and
+// "/client" subpaths are NOT exported and crash at runtime with ERR_PACKAGE_PATH_NOT_EXPORTED
+// (typechecks fine under tsx, fails under real node ESM resolution). SseStream/parseStream
+// are re-exported from root via packages/idae-api/src/lib/index.ts — always import from '@medyll/idae-api'.
 import { SseStream } from '@medyll/idae-api'
 import { OllamaService } from './OllamaService.js'
 
