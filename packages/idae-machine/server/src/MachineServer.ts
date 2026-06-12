@@ -12,6 +12,7 @@ import { registerPermissionRoutes } from './middleware/permission.js';
 import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
 import { AiRouter } from './ai/AiRouter.js';
+import { AgentRouter } from './ai/AgentRouter.js';
 import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import type { SocketIoServer } from '@medyll/idae-socket/server';
@@ -254,6 +255,7 @@ class MachineServerClass {
         
         // AI routes
         idaeApi.app.use('/api/ai', AiRouter);
+        idaeApi.app.use('/api/ai/agent', AgentRouter);
 
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {

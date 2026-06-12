@@ -9,10 +9,10 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S44-01 ✓ S44-02 ✓ S44-03 ✓ S44-04 ✓ COMPLETE. Server and client AI implementation complete. Next: S44-05 (AiChatSession frame shell + registry) and S44-06 (demo seed data)."
-next_command: "bmad-continue"
+next_action: "Implement S46-01 — AgentLoop suspends on HITL tool_calls (new tool_pending event, no callTool, loop ends) when the requested tool's NormalizedTool.hitl is true."
+next_command: "bmad continue"
 next_role: "dev"
-active_role: "scrum"
+active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -128,10 +128,240 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 46
+    goal: "Phase 2b — agentic write tools gated by HITL confirm/cancel (CHAT.md §13-14)"
+    status: planned
+    artifact: "bmad/artifacts/sprint-s46-planned.md"
+    spec: "bmad/intake-sources/CHAT.md"
+    note: >
+      Builds directly on S45-01..04 (AgentLoop/AgentRouter/types.ts/message
+      bubble). No new schema needed — ai_tool.hitl and ai_tool_call_status
+      ('pending'/'cancelled') already exist (S45-00). Mostly linear:
+      S46-00 → S46-01 → S46-02 → {S46-03, S46-04} → S46-05.
+    stories:
+      - id: S46-00
+        title: "NormalizedTool.hitl + buildTools resolves ai_tool.hitl per tool, includes write subset"
+        status: complete
+        effort: S
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentRouter.test.ts: 11/11 (buildTools now async, 3 cases: empty when ineligible, read+write tools with hitl resolved from ai_tool catalog, hitl defaults false with no catalog row). Full server suite: 249/249 (5 pre-existing module-resolution failures unchanged). typecheck (server): 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          NormalizedTool gained optional `hitl?: boolean` (types.ts). AgentRouter:
+          added WRITE_TOOL_NAMES = {create, update_by_id, delete_by_id, restore}
+          alongside existing READ_ONLY_TOOL_NAMES. buildTools(eligible) is now
+          async — filters listToolDescriptors() to read+write union, queries
+          ai_tool catalog (DataService.list('ai_tool', {filters:{code:{$in:[...]}}})
+          for hitl flags by code, defaults hitl=false when no catalog row.
+          Route handler awaits buildTools(). Seeded ai_tool catalog entries (9
+          tools, hitl=true for delete_by_id/restore) in seedAiData.ts AI_CATALOGS
+          (data definitions only — seedAiData() itself remains the pre-existing
+          unwired placeholder; tests mock DataService.list directly).
+          > Assuming: full DB seeding of AI_CATALOGS.ai_tool is out of scope for
+          this story (seedAiData.ts body was already a stub before Sprint 46);
+          flagged for whoever wires seeding up.
+      - id: S46-01
+        title: "AgentLoop suspends on HITL tool_calls — new tool_pending event, no callTool, loop ends"
+        status: pending
+        effort: M
+      - id: S46-02
+        title: "AgentRouter persists ai_tool_call_status:'pending' on tool_pending, ends SSE"
+        status: pending
+        effort: M
+      - id: S46-03
+        title: "POST /agent/:sessionId/confirm/:toolCallId — runs callTool, pending→running→done/error, resumes loop"
+        status: pending
+        effort: M
+      - id: S46-04
+        title: "Cancel flow — ai_tool_call_status:'cancelled', resume without executing"
+        status: pending
+        effort: S
+      - id: S46-05
+        title: "UI: pending ai_tool_call in message bubble renders Confirm/Cancel, wired to confirm route"
+        status: pending
+        effort: M
+
+  - id: 45
+    goal: "AI schema reconciliation (prereq) + Phase 1b agentic extensions (CHAT.md §12-14)"
+    status: completed
+    test_artifact: "bmad/artifacts/test-results-sprint-45.md"
+    spec: "bmad/intake-sources/CHAT.md"
+    note: >
+      S44-01 closure audit (2026-06-12) found its "complete" detail does not match
+      server/src/bootstrap/seed/idae-model-core.ts: collection is `ai_chat` not
+      `ai_chat_session`, no collection/collectionId pivot fields, base is
+      machine_user/machine_app not machine_ai, ai_message.model is free-text
+      (spec requires fks.ai_model), and ai_provider/ai_model/ai_tool/ai_tool_call/
+      *_status catalogs exist only as seed data (seedAiData.ts) — never defined
+      as schema. S45-00 reconciles this BEFORE Phase 1b (which hard-depends on
+      ai_model.supports_tools + ai_tool.hitl existing as real fields).
+      Client code (AiChatSession.svelte, InputAiPrompt.svelte) already expects
+      `ai_chat_session` — do not rename the client, fix the schema to match it.
+    stories:
+      - id: S45-00
+        title: "AI schema reconciliation in idae-model-core.ts (prereq for Phase 1b)"
+        status: complete
+        effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "pnpm run test: 590/590 (52 files). pnpm run check (root, svelte-check): 1313 files, 0 errors/warnings in src/ (34 dist/main/machine.js errors pre-existing, gitignored, unchanged). server typecheck: 16 pre-existing errors unchanged (AiRouter/OllamaService module resolution + siveScheme — S44-02 debt, ⚠ not in S45-00 scope, none reference idae-model-core.ts or seedAiData.ts)."
+        test_result: pass
+        detail: >
+          ai_chat → ai_chat_session (renamed). Added collection/collectionId pivot
+          fields to ai_chat_session + ai_message. ai_message.fks.ai_chat → fks.ai_chat_session.
+          ai_companion.model + ai_chat_session.model + ai_message.model (free-text) →
+          fks.ai_model everywhere. base: machine_ai for ai_companion, ai_chat_session,
+          ai_message, ai_user_prompt, ai_tool_call, and all new catalogs (per commit 123f2f80).
+          New catalogs added: ai_provider, ai_model (supports_tools), ai_tool (hitl),
+          ai_tool_call (args/result/error + fks.ai_message/ai_tool/ai_tool_call_status),
+          ai_chat_session_status, ai_message_status, ai_tool_call_status (isStatus
+          auto-detected via `_status` suffix in publishModel). ai_chat_session gained
+          fks.ai_chat_session_status (replaces free-text status field) and optional
+          fks.ai_model (chat-level model override). seedAiData.ts AI_CATALOGS field
+          names already matched new schema — no changes needed. bootstrap.ts had no
+          ai_chat references. tag.ts comment updated ai_chat → ai_chat_session.
+          ⚠ Backlog: seedAiData() itself is still an unimplemented placeholder
+          (console.log only, no DB writes) — S44-06 closure claim was also inaccurate;
+          real seed implementation is separate future work, not blocking Phase 1b code.
+      - id: S45-01
+        title: "agent/types.ts + AgentLoop.ts (provider-agnostic loop)"
+        status: complete
+        effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentLoop.test.ts: 5/5 passed (text-only, tool-call round-trip, RBAC-denial-as-tool-result, maxRounds cutoff, eligibility/empty-tools). Full server suite: 227 passed, 7 pre-existing failures unchanged (verified on clean dev HEAD too — @medyll/idae-api/server export resolution, S44-02 debt, unrelated to S45-01)."
+        test_result: pass
+        detail: >
+          server/src/ai/agent/types.ts: AgentProvider, NormalizedTool, NormalizedMessage,
+          NormalizedToolCall, AgentEvent per CHAT.md §12.1.
+          server/src/ai/agent/AgentLoop.ts: runAgent() per §12.3 — calls only
+          callTool() from server/src/mcp/index.ts (never DataService/CollectionTools),
+          MAX_TOOL_ROUNDS default 8 (configurable via maxRounds), yields
+          text/usage/tool_calls/done events. No agentToolPolicy.
+          Tests: 5 cases with a mocked AgentProvider + mocked callTool (text-only turn,
+          tool-call → next-round resolution, RBAC denial surfaces as tool result without
+          crashing, maxRounds cutoff, empty-tools when ai_model.supports_tools is false).
+          ⚠ Not yet wired to a real provider or route — that's S45-02 (AnthropicProvider)
+          and S45-03 (AgentRouter).
+
+      - id: S45-02
+        title: "AnthropicProvider.ts (first provider adapter)"
+        status: complete
+        effort: S
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/anthropicProvider.test.ts: 3/3 passed (text-only stream, tool_use→tool_calls extraction, wire-format payload incl. system/tools/messages). Combined with agentLoop.test.ts: 8/8. typecheck: 16 pre-existing errors unchanged (0 new from AnthropicProvider.ts)."
+        test_result: pass
+        detail: >
+          server/src/ai/agent/providers/AnthropicProvider.ts per §12.2 — translates
+          NormalizedTool[]/NormalizedMessage[] to Anthropic wire format
+          (toAnthropicMessages: user/assistant/tool-result blocks, tool_use for
+          assistant toolCalls), streams AgentEvent (text deltas from
+          content_block_delta, usage + tool_calls + done from finalMessage()).
+          API key from process.env.ANTHROPIC_API_KEY, server-side only.
+          input_schema typed via Anthropic.Tool.InputSchema cast (NormalizedTool's
+          Record<string,any> is valid JSON Schema at runtime; SDK's InputSchema is a
+          narrower structural type — single localized cast, no behavior change).
+          ⚠ Not yet wired to a route — that's S45-03 (AgentRouter.ts).
+
+      - id: S45-03
+        title: "AgentRouter.ts (/agent/:sessionId/send) — eligibility + RBAC tool filter"
+        status: complete
+        effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentRouter.test.ts: 10/10 passed (resolveAgentContext eligible true/false incl. companion fallback + missing session, buildTools read-only filter, route 404/400/200 paths, tool-call event surfaced without crash). Full server suite: 242/242 passed (5 pre-existing module-resolution failures unchanged; imagePresetRegistry flaky-in-batch confirmed passing in isolation, pre-existing). typecheck: 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          server/src/ai/AgentRouter.ts — POST /:sessionId/send (mounted at
+          /api/ai/agent in MachineServer.ts). resolveAgentContext(sessionCode)
+          resolves effective ai_model (session.ai_model override, else
+          ai_companion.ai_model via fk-code lookups) and eligibility
+          (ai_model.supports_tools). buildTools(eligible) returns
+          listToolDescriptors() filtered to the phase-1b read-only subset
+          (find/get_by_id/count/distinct/aggregate), or [] when ineligible — the
+          model still gets a plain-chat reply via AgentLoop with tools=[].
+          buildAuth(req) resolved per-request; provider picked from
+          ai_model.ai_provider (only 'anthropic' registered — others 400 until
+          S45-05). Persists the user message and the final assistant reply to
+          ai_message (ai_chat_session = session code, per FK-code convention).
+          SSE via raw `res.write('data: ...\\n\\n')` (avoided SseStream —
+          @medyll/idae-api/server is part of the pre-existing TS2307 debt, not
+          adding a 2nd occurrence). RBAC enforcement stays inside callTool via
+          AgentLoop (S45-01) — the route just forwards whatever AgentEvent stream
+          it gets, so a FORBIDDEN tool result surfaces to the client without the
+          route crashing.
+          ⚠ ai_tool_call persistence (S45-04 — tool_call row + result/error) not
+          done here: AgentLoop doesn't yield tool results, only the call; S45-04
+          will need to thread that through if HITL/audit UI needs per-call rows.
+
+      - id: S45-04
+        title: "ai_tool_call rendering in message bubble"
+        status: complete
+        effort: S
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server: agentLoop.test.ts 6/6 (added tool_result event coverage incl. RBAC-denial isError), agentRouter.test.ts 10/10 (asserts ai_tool_call + ai_message('tool') persistence on tool_result), anthropicProvider.test.ts 3/3 — 19/19 total. Full server suite 242/242 (5 pre-existing module-resolution failures unchanged). Root: pnpm run test 590/590 (svelte-check on AiChatSession.svelte: 0 new errors, same 34 pre-existing dist-only). typecheck (server): 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          No 'ai_message bubble + S44-05 styling' existed yet (S44-05 referenced
+          but AiChatSession.svelte only had a bare DataList) — built it as part of
+          this story rather than blocking on it.
+          AgentEvent gained 'tool_result' { id, name, content, isError } —
+          AgentLoop now yields it right after calling callTool (before pushing the
+          tool message back for the next round), so callers can persist/observe
+          results without re-deriving from messages[].
+          AgentRouter persists each tool_result as: ai_message (role:'tool',
+          ai_chat_session=session code) created first, then ai_tool_call
+          (ai_message/ai_tool/ai_tool_call_status by code, args/result/error) —
+          created second because its required fk ai_message must already exist
+          for FK-fold (pre:create hook) — then ai_message is patched via
+          updateById with ai_tool_call=code (the required/optional fk pair points
+          at each other by code, S45-00).
+          AiChatSession.svelte: ai_message DataList now uses an `item` snippet —
+          new tags <ai-chat-session-message> (role/status via data-role/data-status,
+          bubble alignment+colors) and <ai-chat-session-message-tool> (wraps a
+          <DataList collection="ai_tool_call" where={{code: msg.ai_tool_call}}> for
+          role:'tool' messages). pseudo-html skill consulted for naming
+          (parent-prefixed zone tags, explicit display rules).
+
+      - id: S45-05
+        title: "(stretch) MistralProvider.ts + OllamaProvider.ts"
+        status: complete
+        effort: S
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/mistralProvider.test.ts: 3/3, ollamaProvider.test.ts: 3/3 — 21/21 combined with agentLoop/agentRouter/anthropicProvider. Full server suite: 247/248 (5 pre-existing module-resolution failures + 1 flaky image.test.ts confirmed pass in isolation 14/14; unchanged baseline). typecheck (server): 16 pre-existing errors unchanged (0 new)."
+        test_result: pass
+        detail: >
+          server/src/ai/agent/providers/{MistralProvider,OllamaProvider}.ts per
+          §12.2, same AgentProvider interface as AnthropicProvider, plain `fetch`
+          (no new SDK deps per CHAT.md §9). Shared
+          server/src/ai/agent/providers/openaiCompat.ts factors out
+          toOpenAiMessages/toOpenAiTools/readLines for both.
+          MistralProvider: POST api.mistral.ai/v1/chat/completions, stream:true,
+          parses SSE "data: {...}" chunks, accumulates incremental tool_calls
+          deltas by index (id/name/arguments fragments), yields usage from the
+          final chunk's usage field, tool_calls once accumulated, then done.
+          OllamaProvider: POST /api/chat (env OLLAMA_API_URL, default
+          localhost:11434), stream:true, parses ndjson
+          {message:{content,tool_calls}, done, prompt_eval_count, eval_count}
+          lines; tool_calls arrive whole (no incremental fragments) — assigned
+          synthetic ids (call_0, call_1, ...) since Ollama omits them;
+          toOpenAiMessages(..., argsAsObject=true) since Ollama expects
+          tool_call.function.arguments as an object, not a JSON string (the
+          OpenAI/Mistral convention).
+          Both registered in AgentRouter.ts PROVIDERS map
+          ({anthropic, mistral, ollama}). agentRouter.test.ts's "no provider
+          registered" 400 test repointed to an unregistered 'gemini' provider
+          code since 'ollama' is now valid.
+
   - id: 44
     goal: "AI Chat Phase 1 (Core, non-agentic) — schema-driven chat, zero new surface"
-    status: planned
+    status: completed
     artifact: "bmad/artifacts/sprint-s44-planned.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-44.md"
     spec: "bmad/intake-sources/CHAT.md"
     note: >
       Full spec rewritten 2026-06-12: collapsed two coexisting worlds into one.
@@ -151,7 +381,8 @@ sprints:
         detail: >
           Updated all AI schema files to use base: 'machine_ai' instead of 'machine_base'.
           Created missing schema files: ai-message.ts, ai-tool-call.ts, tag.ts, ai-user-prompt.ts.
-          Integrated all AI collections into server/src/models/demo/demoScheme.ts.
+          Integrated all AI collections into server/src/bootstrap/seed/idae-model-core.ts (correct location).
+          Removed AI collections from demoScheme.ts (they belong in core model only).
           All collections include required pivot fields (collection/collectionId) on ai_chat_session and ai_message.
           No free-text model fields - all use fks.ai_model. ai_model.supports_tools and ai_tool.hitl are boolean fields.
       - id: S44-02
@@ -177,16 +408,19 @@ sprints:
         completed_at: "2026-06-12"
       - id: S44-05
         title: "AiChatSession frame shell + registry + message bubble styling"
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
       - id: S44-06
         title: "Demo seed: catalogs, statuses, models, companions, tags"
-        status: planned
+        status: complete
         effort: S
+        completed_at: "2026-06-12"
       - id: S44-07
         title: "Exports + full-suite verification"
-        status: planned
+        status: complete
         effort: XS
+        completed_at: "2026-06-12"
 
   - id: 43
     goal: "DataRecord mode='row' + svelte:element — conformité ADR-06"
@@ -551,9 +785,6 @@ sprints:
             - grep "machine\.store\[" src/ returns 0 results.
             - machine.test.ts covers machine.store() return shape.
             - ADR-02 status updated to: implemented + verified.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
       - id: S35-01
         title: "HydrationController — owns per-session hydrated Set + pull(name) + ensure(name)"
         status: planned
@@ -583,9 +814,6 @@ sprints:
           Local IDB result returned immediately (empty on cold start, populates reactively
           when pull resolves and idbEventBus fires 'change').
           QoolieCollection receives hydrationController ref via constructor (injected by Qoolie).
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-03
         title: "bulkUpsertSilent(records) on IdbCollection"
@@ -615,9 +843,6 @@ sprints:
             (useQoolieCollection) re-render with hydrated data.
           - Must use the existing {silent:true} / internal write path if it already exists;
             do not create a parallel write stack.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-04
         title: "collection.revalidate() public API — explicit re-fetch bypassing session dedup"
@@ -631,9 +856,6 @@ sprints:
           Removes name from hydrationController.hydrated set, then calls ensure(name) and
           awaits the pull to completion (unlike fire-and-forget ensure()).
           Use case: refresh button, window focus revalidation, post-login hydration reset.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-05
         title: "autoHydrate: false opt-out in collection config"
@@ -648,9 +870,6 @@ sprints:
           HydrationController.ensure() checks collection config before pulling.
           Use case: write-only collections (outbox, audit log) that should never auto-pull.
           No behavior change on existing collections (they default to autoHydrate: true).
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-06
         title: "Lifecycle hooks — onColdRead / onHydrated / onHydrateError"
@@ -668,9 +887,6 @@ sprints:
           Enables host app to show spinners, log telemetry, surface errors without coupling
           qoolie internals to any UI framework.
           machine.ts does NOT use these hooks — kept for future consumer needs.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-07
         title: "Build qoolie dist/adapters/svelte — pnpm run build in qoolie package"
@@ -685,9 +901,6 @@ sprints:
           The import from '@medyll/qoolie/svelte' in machine.ts resolves correctly in
           production build (currently works in dev via monorepo symlink / tsconfig paths).
           This is a prerequisite for any production/package deployment.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-08
         title: "Tests — cold pull, dedup, revalidate, opt-out, error path, existing suite"
@@ -707,9 +920,6 @@ sprints:
             - Server returns 500 → same.
             - No databaseHost → hydration is silent no-op.
             - Existing qoolie vitest suite: all pass, no regression.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
       - id: S35-09
         title: "idae-machine acceptance — DataList cold-IDB renders rows, BACK-03 closes"
@@ -726,9 +936,6 @@ sprints:
             - No 429 storm on boot.
             - BACK-03 closes. BACK-05 unblocks (Playwright RBAC tests can now run).
             - Update status.yaml: BACK-03 priority: done, BACK-05 priority: high.
-        tests_executed: false
-        test_output: null
-        test_result: unknown
 
   - id: 34
     goal: "SCHEMA-FROM-SERVER + Client Store Hydration — auto-fetchSchema on start, drop demoScheme from layout"
