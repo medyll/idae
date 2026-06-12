@@ -9,10 +9,10 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S46-05 (last story, Sprint 46) — UI: pending ai_tool_call in message bubble renders Confirm/Cancel, wired to confirm route. pseudo-html skill required for any new tags (CLAUDE.md §5)."
-next_command: "bmad continue"
-next_role: "dev"
-active_role: "dev"
+next_action: "Sprint 46 complete + tested (test-results-sprint-46.md). Milestone reached (Phase 2b HITL done) — plan Sprint 47 scope from CHAT.md remaining phases (§15+) and backlog."
+next_command: "bmad sprint"
+next_role: "scrum"
+active_role: "scrum"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -130,7 +130,7 @@ architecture:
 sprints:
   - id: 46
     goal: "Phase 2b — agentic write tools gated by HITL confirm/cancel (CHAT.md §13-14)"
-    status: planned
+    status: complete
     artifact: "bmad/artifacts/sprint-s46-planned.md"
     spec: "bmad/intake-sources/CHAT.md"
     note: >
@@ -237,8 +237,27 @@ sprints:
           streamAgentTurn to resume to completion.
       - id: S46-05
         title: "UI: pending ai_tool_call in message bubble renders Confirm/Cancel, wired to confirm route"
-        status: pending
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "svelte-check: 0 new errors (34 pre-existing in dist/main/machine.js unchanged). Client suite: 5 files / 32 tests passed (vitest --project client)."
+        test_result: pass
+        detail: >
+          ai-tool-call.ts fields renamed input/output -> args/result to match
+          server idae-model-core.ts. AiChatSession.svelte: ai_tool_call
+          DataList item snippet renders DataRecord (ai_tool,
+          ai_tool_call_status, args, result, error); when status is
+          'pending', renders <group-tool-confirm> with Confirm/Cancel
+          buttons (pseudo-html: Group of Atoms in existing
+          <ai-chat-session-message-tool> Zone). respondToolCall(): cancel ->
+          machine.collection('ai_tool_call').update(id, {ai_tool_call_status:
+          'cancelled'}) (§13.5) then both paths POST
+          /api/ai/agent/:sessionId/confirm/:toolCallId and drain the SSE
+          response — server persists the resumed turn (S46-03/04), sync
+          delivers updates to machine.store. No dedicated component test
+          (consistent with S45-04); not browser-verified (needs live HITL
+          session, e2e scope).
 
   - id: 45
     goal: "AI schema reconciliation (prereq) + Phase 1b agentic extensions (CHAT.md §12-14)"

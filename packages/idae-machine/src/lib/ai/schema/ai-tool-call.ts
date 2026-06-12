@@ -6,8 +6,8 @@ export const aiToolCallScheme: MachineModel = {
     fields: {
       id:            { type: 'id',   readonly: true },
       code:          { type: 'text', required: true },
-      input:         { type: 'json' },
-      output:        { type: 'json' },
+      args:          { type: 'json' },
+      result:        { type: 'json' },
       error:         { type: 'text' },
     },
     fks: {

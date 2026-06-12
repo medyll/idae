@@ -16,6 +16,27 @@ AI chat session frame - thin shell around DataList + DataField
     // Session record — reactive (records getter, never flatten — invariant 10)
     const sessionStore = $derived(machine.store('ai_chat_session', { id: collectionId }));
     const session = $derived(sessionStore.records[0]);
+
+    /**
+     * HITL confirm/cancel (CHAT.md §13.4-13.5). Cancel patches ai_tool_call_status
+     * to 'cancelled' first; both then POST the confirm route to resume the
+     * suspended agent loop. The route persists the resumed turn server-side —
+     * sync delivers the updated ai_message/ai_tool_call records to this client.
+     */
+    async function respondToolCall(session: Record<string, any>, toolCall: Record<string, any>, cancel: boolean) {
+        if (cancel) {
+            await machine.collection('ai_tool_call').update(toolCall.id, { ai_tool_call_status: 'cancelled' });
+        }
+
+        const toolCallId = String(toolCall.code).slice(String(session.code).length + 1);
+        const res = await fetch(`/api/ai/agent/${session.code}/confirm/${toolCallId}`, { method: 'POST' });
+
+        const reader = res.body?.getReader();
+        while (reader) {
+            const { done } = await reader.read();
+            if (done) break;
+        }
+    }
 </script>
 
 <ai-chat-session-frame>
@@ -35,7 +56,26 @@ AI chat session frame - thin shell around DataList + DataField
                     {#if msg.role === 'tool' && msg.ai_tool_call}
                         <!-- Tool-execution log (S45-00 ai_tool_call) — status-driven styling via data-status -->
                         <ai-chat-session-message-tool>
-                            <DataList collection="ai_tool_call" where={{ code: msg.ai_tool_call }} infiniteScroll={false} />
+                            <DataList collection="ai_tool_call" where={{ code: msg.ai_tool_call }} infiniteScroll={false}>
+                                {#snippet item({ record: toolCallRecord })}
+                                    {@const toolCall = toolCallRecord as Record<string, any>}
+                                    <DataRecord
+                                        collection="ai_tool_call"
+                                        data={toolCall}
+                                        mode="show"
+                                        showFields={['ai_tool', 'ai_tool_call_status', 'args', 'result', 'error']}
+                                        showLabel={false}
+                                    />
+
+                                    {#if toolCall.ai_tool_call_status === 'pending' && session}
+                                        <!-- HITL confirm/cancel (CHAT.md §13-14) -->
+                                        <group-tool-confirm>
+                                            <button class="control-tool-confirm" onclick={() => respondToolCall(session!, toolCall, false)}>Confirm</button>
+                                            <button class="control-tool-cancel" onclick={() => respondToolCall(session!, toolCall, true)}>Cancel</button>
+                                        </group-tool-confirm>
+                                    {/if}
+                                {/snippet}
+                            </DataList>
                         </ai-chat-session-message-tool>
                     {/if}
                 </ai-chat-session-message>
@@ -91,6 +131,22 @@ AI chat session frame - thin shell around DataList + DataField
         :global(ai-chat-session-message-tool) {
             display: block;
             margin-top: var(--space-1, 0.25rem);
+        }
+
+        :global(group-tool-confirm) {
+            display: flex;
+            gap: var(--space-2, 0.5rem);
+            margin-top: var(--space-1, 0.25rem);
+        }
+
+        :global(.control-tool-confirm) {
+            color: var(--color-success, #2f9e44);
+            border-color: var(--color-success, #2f9e44);
+        }
+
+        :global(.control-tool-cancel) {
+            color: var(--color-danger, #e53e3e);
+            border-color: var(--color-danger, #e53e3e);
         }
     }
 </style>
