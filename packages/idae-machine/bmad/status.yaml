@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 46 complete + tested (test-results-sprint-46.md). Milestone reached (Phase 2b HITL done) — plan Sprint 47 scope from CHAT.md remaining phases (§15+) and backlog."
+next_action: "Sprint 47 complete + tested (test-results-sprint-47.md). Active backlog now empty except BL-05 (blocked, needs ADR). Plan next sprint scope (CHAT.md remaining phases or new backlog) or write the BL-05 ADR."
 next_command: "bmad sprint"
 next_role: "scrum"
 active_role: "scrum"
@@ -128,6 +128,39 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 47
+    goal: "Backlog grooming — refresh shell/frame/index.ts barrel (BL-04)"
+    status: complete
+    note: >
+      Backlog grooming 2026-06-12: BACK-06 marked obsolete (Synthesis.svelte
+      392 lines supersedes the FullInfo.svelte stub). BL-05 marked blocked
+      (needs ADR via bmad-adr — not sprint-eligible). Only BL-04 remains
+      active and small enough for a 1-story sprint.
+    stories:
+      - id: S47-00
+        title: "Refresh shell/frame/index.ts barrel — export current frame components"
+        status: complete
+        effort: S
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "svelte-check: 34 pre-existing errors unchanged, 0 new. Root suite: 52 files / 590 tests passed."
+        test_result: pass
+        description: >
+          shell/frame/index.ts currently only exports Explorer from
+          ./explorer/Explorer.svelte (stale — pre-dates the explorer/+card/
+          reorg). Update to export the current shell/frame/ components
+          (Explorer, ExplorerContent, Synthesis, RbacMatrix), matching the
+          ai/frame/index.ts barrel pattern. Verify nothing currently imports
+          from this barrel (grep showed 0 consumers) — if still unused after
+          refresh, note in commit but keep for consistency with ai/frame/.
+        detail: >
+          Barrel now exports Explorer, ExplorerContent, Synthesis,
+          RbacMatrix, Diagram, Dashboard, Space — all current
+          shell/frame/*.svelte components, matching componentRegistry's
+          frame entries. 0 consumers found (src/lib/index.ts exports each
+          component directly); kept for ai/frame/index.ts-pattern
+          consistency.
+
   - id: 46
     goal: "Phase 2b — agentic write tools gated by HITL confirm/cancel (CHAT.md §13-14)"
     status: complete
@@ -1246,11 +1279,12 @@ backlog:
 
   - id: BL-05
     title: "MachineDb reactive from IDB:appscheme — long-term vision"
-    priority: low
+    priority: blocked
     description: >
       machine.logic built from TS model at start(). Vision: read appscheme rows from IDB
       → collections emerge from sync.
-      > Needs ADR: architectural choice, defines runtime model ownership.
+      > BLOCKED on ADR: architectural choice, defines runtime model ownership.
+      Not eligible for sprint planning until an ADR is written (bmad-adr).
 
   - { id: BL-07,     priority: done, title: "DataList mode unification — implémenté S42" }
 
@@ -1268,10 +1302,7 @@ backlog:
       ensureLoggedIn(admin/admin123). 5/5 vert. Issue connexe notée : deep-link reload race
       (router avant montage zone main) — backlog router, hors scope RBAC.
 
-  - id: BACK-06
-    title: "FullInfo.svelte — implémenter le contenu (stub enregistré)"
-    priority: low
-    description: "Enregistré dans componentRegistry sous 'synthesis'. Stub vide. Définir intent: detail view d'un record + ses relations."
+  - { id: BACK-06,   priority: obsolete, title: "FullInfo.svelte stub — superseded by Synthesis.svelte (392 lines, registered under 'synthesis', fully implemented)" }
 
   - { id: BL-01,     priority: done, title: "mobile-first auto-seed — implémenté S36" }
   - { id: BL-02,     priority: done, title: "sortItems/groupItems déjà dans data-ui/utils/" }
