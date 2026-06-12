@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S46-01 — AgentLoop suspends on HITL tool_calls (new tool_pending event, no callTool, loop ends) when the requested tool's NormalizedTool.hitl is true."
+next_action: "Implement S46-02 — AgentRouter persists ai_tool_call with ai_tool_call_status:'pending' on a tool_pending event, ends the SSE stream."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "dev"
@@ -163,8 +163,19 @@ sprints:
           flagged for whoever wires seeding up.
       - id: S46-01
         title: "AgentLoop suspends on HITL tool_calls — new tool_pending event, no callTool, loop ends"
-        status: pending
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentLoop.test.ts: 6/6 (new HITL case: tool_calls -> tool_pending -> done, callTool not called). Full server suite: 250/250 (5 pre-existing module-resolution failures unchanged). typecheck (server): 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          AgentEvent gained `{ type: 'tool_pending'; id; name; input }` (types.ts).
+          AgentLoop builds hitlByName = Map(tools -> !!hitl). Before calling
+          callTool for a requested tool, checks hitlByName.get(call.name): if
+          true, yields tool_pending then done and returns — suspends the loop,
+          no callTool, no further rounds. Non-hitl tools and tools=[] unaffected
+          (!!undefined === false).
       - id: S46-02
         title: "AgentRouter persists ai_tool_call_status:'pending' on tool_pending, ends SSE"
         status: pending

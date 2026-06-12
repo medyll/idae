@@ -132,6 +132,29 @@ describe('AgentLoop.runAgent', () => {
 		expect(events.at(-1)).toEqual({ type: 'done' });
 	});
 
+	it('HITL tool: yields tool_pending and done, never calls callTool, loop ends', async () => {
+		const provider: AgentProvider = {
+			name: 'anthropic',
+			async *streamTurn() {
+				yield { type: 'tool_calls', calls: [{ id: 'call_1', name: 'delete_by_id', input: { collection: 'vehicle', id: 1 } }] };
+				yield { type: 'done' };
+			},
+		};
+
+		const tools: NormalizedTool[] = [
+			{ name: 'delete_by_id', description: 'delete', input_schema: { type: 'object' }, hitl: true },
+		];
+
+		const events = await collect(runAgent(provider, { ...baseOpts, tools }));
+
+		expect(callTool).not.toHaveBeenCalled();
+		expect(events).toEqual([
+			{ type: 'tool_calls', calls: [{ id: 'call_1', name: 'delete_by_id', input: { collection: 'vehicle', id: 1 } }] },
+			{ type: 'tool_pending', id: 'call_1', name: 'delete_by_id', input: { collection: 'vehicle', id: 1 } },
+			{ type: 'done' },
+		]);
+	});
+
 	it('eligibility from catalog: caller passes empty tools when ai_model.supports_tools is false', async () => {
 		const provider: AgentProvider = {
 			name: 'anthropic',

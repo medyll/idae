@@ -29,6 +29,7 @@ export type AgentEvent =
 	| { type: 'text'; delta: string }
 	| { type: 'tool_calls'; calls: NormalizedToolCall[] }
 	| { type: 'tool_result'; id: string; name: string; content: string; isError?: boolean }
+	| { type: 'tool_pending'; id: string; name: string; input: Record<string, any> }
 	| { type: 'usage'; inputTokens: number; outputTokens: number }
 	| { type: 'done' };
 

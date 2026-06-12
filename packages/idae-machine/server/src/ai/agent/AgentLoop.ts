@@ -29,6 +29,7 @@ export async function* runAgent(
 ): AsyncGenerator<AgentEvent> {
 	const { auth, req, maxRounds = DEFAULT_MAX_ROUNDS } = opts;
 	const messages = [...opts.messages];
+	const hitlByName = new Map(opts.tools.map((t) => [t.name, !!t.hitl]));
 
 	for (let round = 0; round < maxRounds; round++) {
 		const calls: NormalizedToolCall[] = [];
@@ -49,10 +50,16 @@ export async function* runAgent(
 		}
 
 		// Assistant turn requested tools — execute each via callTool (RBAC + audit
-		// enforced inside). The route persists ai_tool_call (pending/running/done)
-		// and handles HITL suspension for ai_tool.hitl === true tools.
+		// enforced inside), unless the tool's ai_tool.hitl is true: those suspend
+		// the loop as 'tool_pending' (§13) for the route to persist and resume later.
 		for (const call of calls) {
 			yield { type: 'tool_calls', calls: [call] };
+
+			if (hitlByName.get(call.name)) {
+				yield { type: 'tool_pending', id: call.id, name: call.name, input: call.input };
+				yield { type: 'done' };
+				return;
+			}
 
 			const result = await callTool(call.name, call.input, auth, req);
 			const content = JSON.stringify(result.content);
