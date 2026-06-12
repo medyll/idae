@@ -577,9 +577,11 @@
 					<a href="#e2e">04 · End-to-end</a>
 					<a href="#zones">05 · Zones</a>
 					<a href="#server">06 · Server</a>
-					<a href="#resp">07 · Responsabilités</a>
-					<a href="#rules">08 · Règles</a>
-					<a href="#files">09 · Fichiers</a>
+					<a href="#ai">07 · AI &amp; agents</a>
+					<a href="#mcp">08 · MCP</a>
+					<a href="#resp">09 · Responsabilités</a>
+					<a href="#rules">10 · Règles</a>
+					<a href="#files">11 · Fichiers</a>
 				</nav>
 
 				<architecture-hero>
@@ -594,9 +596,11 @@
 						<span class="arch-badge">Machine core</span>
 						<span class="arch-badge">Server + meta-schema</span>
 						<span class="arch-badge">Seed / deploy</span>
-						<span class="arch-badge">IndexedDB (qoolie) + sync</span>
+						<span class="arch-badge">IndexedDB (qoolie) + push</span>
 						<span class="arch-badge">Shell + data-ui</span>
-						<span class="arch-badge">RBAC · socket · hooks</span>
+						<span class="arch-badge">RBAC · hooks</span>
+						<span class="arch-badge">AI · agents</span>
+						<span class="arch-badge">MCP · DataService</span>
 					</div>
 				</architecture-hero>
 
@@ -655,7 +659,7 @@
 									<code>machine.action</code><small>writes user-scoped</small>
 								</div>
 								<div class="arch-leaf">
-									<code>machine.sync · socket</code><small>push server → local</small>
+									<code>machine.sync · socket</code><small>push qoolie → local</small>
 								</div>
 							</div>
 							<flow-rail></flow-rail>
@@ -663,8 +667,8 @@
 							<flow-node data-tone="store">
 								<strong>shell + data-ui</strong>
 								<small
-									>TemplateShell · Frame · Explorer · Synthesis · DataList · DataForm ·
-									DataRecord</small
+									>TemplateShell · Frame · Explorer · Synthesis · Diagram · DataList · DataForm ·
+									DataRecord · AiChatSession</small
 								>
 							</flow-node>
 							<flow-rail></flow-rail>
@@ -767,13 +771,17 @@
 							<p>
 								Le shell donne les zones et points de montage (Frame dynamique). La data-ui consomme
 								la metadata du schéma et rend records, forms, lists, relations FK/RFK et navigation
-								sans code par collection.
+								sans code par collection. Atomes de champ show+edit unifiés sous
+								<code>field/snippets/</code> (dispatch par <code>mode</code>) ; toolbars
+								externalisées (<code>FicheToolbar · ButtonAction · Sort/Group</code>, médiateur
+								<code>useMachinePrefs</code>).
 							</p>
 							<group-chip>
 								<span class="arch-badge">Frame.svelte</span>
 								<span class="arch-badge">TemplateShell</span>
 								<span class="arch-badge">DataList</span>
-								<span class="arch-badge">DataForm</span>
+								<span class="arch-badge">field/snippets</span>
+								<span class="arch-badge">toolbars composables</span>
 							</group-chip>
 						</group-card>
 					</architecture-grid>
@@ -815,7 +823,7 @@
 								<tr>
 									<td><code>machine.store(name, query?)</code></td>
 									<td>réactif</td>
-									<td><code>{ items }</code> read-only (runes Svelte 5)</td>
+									<td><code>{ records }</code> read-only · <code>records</code> = getter (runes Svelte 5)</td>
 								</tr>
 								<tr>
 									<td><code>machine.collection(name)</code></td>
@@ -840,7 +848,7 @@
 								<tr>
 									<td><code>machine.socket</code></td>
 									<td>client</td>
-									<td>EventDataClientInstance (push temps réel)</td>
+									<td>EventDataClientInstance — instance détenue par qoolie (push, sens unique)</td>
 								</tr>
 								<tr>
 									<td><code>machine.router</code></td>
@@ -945,7 +953,10 @@
 							</div>
 							<div class="lane-step">
 								<strong>componentRegistry</strong
-								><small>explorer · fiche · form · synthesis · rbac.matrix</small>
+								><small
+									>explorer · fiche · form · list · record · synthesis · diagram · rbac.matrix ·
+									dashboard · space · ai.chat-session</small
+								>
 							</div>
 							<div class="lane-step">
 								<strong>DataList / DataRecord / DataForm</strong
@@ -969,17 +980,24 @@
 							<zone-grid>
 								<zone-box data-zone="main">
 									<code>main</code>
-									<small>zone primaire, lists, forms</small>
+									<small>seule zone DOM réelle — lists, forms, frames</small>
 								</zone-box>
 								<zone-box data-zone="panel">
-									<code>main.panel</code>
-									<small>panneau latéral droit</small>
+									<code>loadInDialog()</code>
+									<small>overlays / dialogs flottants (content-keyed)</small>
 								</zone-box>
 								<zone-box data-zone="modal">
-									<code>main.modal</code> / <code>main.window</code>
-									<small>overlay modal · fenêtre flottante</small>
+									<code>main.panel / .modal / .window</code>
+									<small>abandonnés — jamais montés dans le DOM</small>
 								</zone-box>
 							</zone-grid>
+							<p class="arch-note">
+								⚠ <code>main</code> est la <strong>seule</strong> zone avec une cible DOM. Tout le
+								flottant (dialogs, panneaux, fenêtres) passe par
+								<code>machine.framer.loadInDialog(...)</code>, pas par une zone nommée. Les zones
+								<code>main.panel/modal/window</code> furent documentées mais jamais implémentées —
+								nommage abandonné 2026-06-10.
+							</p>
 						</div>
 						<div class="arch-panel" data-tone="primary">
 							<h3><code>createHost(target, { fill })</code></h3>
@@ -1006,18 +1024,26 @@
 					<architecture-grid>
 						<group-card class="arch-card">
 							<h4>Routes</h4>
-							<p><code>routes/scheme · auth · data · files · mail · health · bootstrap</code></p>
+							<p>
+								<code
+									>routes/scheme · auth · data · files · mail · health · bootstrap · ai · ai/agent ·
+									mcp</code
+								>
+							</p>
 							<p>API REST par domaine, montées par <code>MachineServer</code>.</p>
 						</group-card>
 						<group-card class="arch-card">
 							<h4>Services</h4>
 							<p>
 								<code
-									>AuthService · GrantService · AuditService · MailService · ImageService ·
-									FileService</code
+									>DataService · AuthService · GrantService · AuditService · MailService ·
+									ImageService · FileService</code
 								>
 							</p>
-							<p>Logique métier server-side, hors meta-schema.</p>
+							<p>
+								Logique métier server-side, hors meta-schema. <code>DataService</code> = pipeline
+								d'écriture <strong>unifié REST + MCP</strong> (un seul chemin par responsabilité).
+							</p>
 						</group-card>
 						<group-card class="arch-card">
 							<h4>RBAC / permission</h4>
@@ -1030,9 +1056,13 @@
 							<p>Hooks de cycle de vie + actions de domaine déclaratives.</p>
 						</group-card>
 						<group-card class="arch-card">
-							<h4>Sync / socket</h4>
+							<h4>Sync / push</h4>
 							<p><code>sync/ConflictResolver.ts · socket/conflictHandler.ts</code></p>
-							<p>Résolution de conflit + push temps réel vers les clients.</p>
+							<p>
+								Résolution de conflit + push temps réel. <strong>Un seul transport</strong>, injecté
+								dans qoolie (<code>SocketIOListener</code> via <code>idae-socket</code>, ou SSE
+								fallback) — sens unique qoolie → client.
+							</p>
 						</group-card>
 						<group-card class="arch-card">
 							<h4>Images / fichiers</h4>
@@ -1043,8 +1073,137 @@
 				</architecture-section>
 
 				<!-- ====================================================== 7 -->
+				<architecture-section id="ai">
+					<h2 class="arch-h" data-n="7">AI &amp; agents · <code>une seule world</code></h2>
+					<div class="arch-panel" data-tone="primary">
+						<p class="arch-note">
+							Principe directeur&nbsp;: <strong>il n'y a pas de <code>machine.ai</code></strong>. Le
+							chat et les agents sont de la <strong>composition</strong> au-dessus du socle existant —
+							<code>machine.collection</code> / <code>machine.store</code> /
+							<code>machine.action</code> sur des collections AI ordinaires. Une seule pièce
+							d'orchestration nouvelle côté client&nbsp;: <code>streamIntoRecord</code>.
+						</p>
+					</div>
+					<architecture-grid>
+						<group-card class="arch-card">
+							<h3>Collections (base <code>machine_ai</code>)</h3>
+							<p><code>src/lib/ai/schema/*.ts</code> · <code>server/src/core/model-core.ts</code></p>
+							<p>
+								<code
+									>ai_companion · ai_chat_session · ai_message · ai_tool_call · ai_user_prompt ·
+									tag</code
+								>
+								+ catalogues (<code>ai_model · ai_tool</code>). Mongo = source de vérité ; le
+								serveur les possède.
+							</p>
+							<group-chip>
+								<span class="arch-badge">machine_ai</span>
+								<span class="arch-badge">status-driven</span>
+								<span class="arch-badge">FK ai_tool</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Client — composition only</h3>
+							<p><code>ai/streamIntoRecord.ts</code> · <code>ai/frame/AiChatSession.svelte</code></p>
+							<p>
+								<code>streamIntoRecord</code> = seule orchestration nouvelle (stream SSE → patch
+								record réactif). Field type <code>ai-prompt</code> (barre d'envoi) dispatché par
+								<code>DataField</code>. Frame <code>ai.chat-session</code> dans le registry.
+							</p>
+							<group-chip>
+								<span class="arch-badge">streamIntoRecord</span>
+								<span class="arch-badge">ai-prompt</span>
+								<span class="arch-badge">DataList + DataField</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Server — agent loop</h3>
+							<p><code>server/src/ai/AgentLoop.ts</code> · <code>AgentRouter.ts</code></p>
+							<p>
+								Boucle multi-provider tool-calling (<code>AnthropicProvider · MistralProvider ·
+								OllamaProvider</code>), éligibilité = <code>ai_model.supports_tools</code>. Routes
+								<code>/api/ai</code> (send/models) + <code>/api/ai/agent</code>.
+							</p>
+							<group-chip>
+								<span class="arch-badge">AgentLoop</span>
+								<span class="arch-badge">providers</span>
+								<span class="arch-badge">OllamaService</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>HITL + RBAC</h3>
+							<p><code>AgentRouter · McpAuth.can</code></p>
+							<p>
+								Human-in-the-loop&nbsp;: tool <code>hitl=true</code> → suspend (<code
+									>tool_pending</code
+								>), persiste dans <code>ai_tool_call</code>, reprend sur confirm / annule sur
+								cancel. Filtre des tools = RBAC seul (<code>callTool</code>).
+							</p>
+							<group-chip>
+								<span class="arch-badge">tool_pending</span>
+								<span class="arch-badge">confirm / cancel</span>
+								<span class="arch-badge">RBAC</span>
+							</group-chip>
+						</group-card>
+					</architecture-grid>
+				</architecture-section>
+
+				<!-- ====================================================== 8 -->
+				<architecture-section id="mcp">
+					<h2 class="arch-h" data-n="8">MCP · pipeline unifié</h2>
+					<architecture-grid>
+						<group-card class="arch-card">
+							<h3>DataService = un seul chemin</h3>
+							<p><code>server/src/services/DataService.ts</code></p>
+							<p>
+								Pipeline d'écriture <strong>partagé REST + MCP</strong>&nbsp;: validation, hooks,
+								audit, broadcast au même endroit. REST et MCP ne sont que deux entrées d'un même
+								tube — un seul chemin par responsabilité.
+							</p>
+							<group-chip>
+								<span class="arch-badge">REST + MCP</span>
+								<span class="arch-badge">hooks · audit</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>44 tools · 6 domaines</h3>
+							<p><code>server/src/mcp/*</code> · <code>server/MCP-TOOLS.md</code></p>
+							<p>
+								<code>schema · data · auth · admin · org · periphery</code>. Référence générée
+								(<code>MCP-TOOLS.md</code>) + guide narratif (<code>MCP-GUIDE.md</code>).
+							</p>
+							<group-chip>
+								<span class="arch-badge">schema</span>
+								<span class="arch-badge">data</span>
+								<span class="arch-badge">admin · org</span>
+								<span class="arch-badge">periphery</span>
+							</group-chip>
+						</group-card>
+
+						<group-card class="arch-card">
+							<h3>Auth &amp; garde-fous</h3>
+							<p><code>McpAuth · API keys</code></p>
+							<p>
+								Clés longue durée <code>mk_&lt;org&gt;_&lt;hex&gt;</code>. La mutation de schéma est
+								derrière le flag <code>MCP_SCHEMA_WRITE</code> (off par défaut). RBAC appliqué dans
+								<code>callTool</code>.
+							</p>
+							<group-chip>
+								<span class="arch-badge">mk_&lt;org&gt;_…</span>
+								<span class="arch-badge">MCP_SCHEMA_WRITE</span>
+								<span class="arch-badge">RBAC</span>
+							</group-chip>
+						</group-card>
+					</architecture-grid>
+				</architecture-section>
+
+				<!-- ====================================================== 9 -->
 				<architecture-section id="resp">
-					<h2 class="arch-h" data-n="7">Responsabilités en une table</h2>
+					<h2 class="arch-h" data-n="9">Responsabilités en une table</h2>
 					<div class="arch-panel">
 						<table class="arch-table">
 							<thead>
@@ -1107,14 +1266,26 @@
 									<td>Lists/forms/records/relations pilotés par schéma</td>
 									<td>L'authoring du schéma</td>
 								</tr>
+								<tr>
+									<td>AI / agents</td>
+									<td><code>ai/streamIntoRecord.ts</code>, <code>server/src/ai/*</code></td>
+									<td>Stream + boucle agent + HITL sur collections AI ordinaires</td>
+									<td>Une API <code>machine.ai</code> (n'existe pas — composition)</td>
+								</tr>
+								<tr>
+									<td>MCP / DataService</td>
+									<td><code>server/src/services/DataService.ts</code>, <code>mcp/*</code></td>
+									<td>Pipeline d'écriture unifié REST + MCP, 44 tools, auth par clé</td>
+									<td>Un second chemin d'écriture (REST et MCP partagent le tube)</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
 				</architecture-section>
 
-				<!-- ====================================================== 8 -->
+				<!-- ====================================================== 10 -->
 				<architecture-section id="rules">
-					<h2 class="arch-h" data-n="8">Règles runtime clés</h2>
+					<h2 class="arch-h" data-n="10">Règles runtime clés</h2>
 					<architecture-grid>
 						<group-card class="arch-card"
 							><h4>Boot first</h4>
@@ -1173,12 +1344,21 @@
 								<code>$:</code>, <code>onMount</code>, <code>export let</code>.
 							</p></group-card
 						>
+						<group-card class="arch-card"
+							><h4>Jamais de self-import</h4>
+							<p>
+								Dans <code>src/</code>, jamais
+								<code>from '@medyll/idae-machine'</code> — toujours <code>$lib</code> ou relatif.
+								Le self-import résout vers <code>dist/</code> et fait type-checker le JS compilé
+								(erreurs fantômes).
+							</p></group-card
+						>
 					</architecture-grid>
 				</architecture-section>
 
-				<!-- ====================================================== 9 -->
+				<!-- ====================================================== 11 -->
 				<architecture-section id="files">
-					<h2 class="arch-h" data-n="9">Index pratique des fichiers</h2>
+					<h2 class="arch-h" data-n="11">Index pratique des fichiers</h2>
 					<div class="arch-panel">
 						<table class="arch-table">
 							<thead>
@@ -1269,6 +1449,30 @@
 									<td><code>src/lib/data-ui/data/DataRecord.svelte</code></td>
 									<td>détail record (data prop OU collectionId via store)</td>
 								</tr>
+								<tr>
+									<td><code>src/lib/data-ui/field/snippets/*.svelte</code></td>
+									<td>atomes de champ show+edit unifiés (dispatch par <code>mode</code>)</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/ai/streamIntoRecord.ts</code></td>
+									<td>seule orchestration AI client (stream SSE → patch record réactif)</td>
+								</tr>
+								<tr>
+									<td><code>src/lib/ai/frame/AiChatSession.svelte</code></td>
+									<td>frame chat (registry <code>ai.chat-session</code>)</td>
+								</tr>
+								<tr>
+									<td><code>server/src/services/DataService.ts</code></td>
+									<td>pipeline d'écriture unifié REST + MCP</td>
+								</tr>
+								<tr>
+									<td><code>server/src/ai/AgentLoop.ts</code> · <code>AgentRouter.ts</code></td>
+									<td>boucle agent multi-provider + HITL</td>
+								</tr>
+								<tr>
+									<td><code>server/src/core/model-core.ts</code></td>
+									<td>collections core/AI server-side (source Mongo)</td>
+								</tr>
 							</tbody>
 						</table>
 					</div>
@@ -1287,7 +1491,8 @@
 				<architecture-footer>
 					<p class="arch-footer-note">
 						Vérifié contre le codebase (paths, surface <code>machine.*</code>, componentRegistry,
-						zones, services server) et restylé le 2026-05-31.
+						zones, services server, couche AI/agents, MCP/DataService) le 2026-06-13. Restylé le
+						2026-05-31.
 					</p>
 				</architecture-footer>
 			</div>
