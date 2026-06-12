@@ -227,6 +227,17 @@
 					margin: 0;
 				}
 
+				/* css-base trims heading leading (text-box: cap alphabetic) → card titles
+				   collapse to cap-height and, in the tight card grid (gap 4px), sit on top of
+				   the line below. Restore the full line box so the gap is real breathing room. */
+				.arch-card h3,
+				.arch-card h4,
+				.arch-panel h3,
+				.arch-panel h4 {
+					text-box: normal;
+					line-height: var(--leading-snug, 1.3);
+				}
+
 				.arch-card code,
 				.arch-panel code {
 					font-size: var(--text-sm);
