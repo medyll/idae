@@ -365,4 +365,34 @@ describe('POST /agent/:sessionId/confirm/:toolCallId', () => {
 		expect(callToolMock).not.toHaveBeenCalled();
 		expect(runAgentMock).not.toHaveBeenCalled();
 	});
+
+	it('resumes without executing when the ai_tool_call was cancelled', async () => {
+		listMock.mockImplementation(async (table: string, opts: any) => {
+			if (table === 'ai_chat_session') return { data: [{ code: 'sess-9', ai_companion: 'comp-1', ai_model: 'claude-sonnet-4-6', system_prompt: 'You are helpful.' }] };
+			if (table === 'ai_model') return { data: [{ code: 'claude-sonnet-4-6', ai_provider: 'anthropic', supports_tools: true }] };
+			if (table === 'ai_tool') return { data: [] };
+			if (table === 'ai_tool_call') return { data: [{ _id: 'tc-3', code: 'sess-9-toolu_5', ai_tool: 'delete_by_id', args: JSON.stringify({ collection: 'vehicle', id: 1 }), ai_tool_call_status: 'cancelled' }] };
+			if (table === 'ai_message') {
+				if (opts?.filters?.code === 'sess-9-toolu_5') return { data: [{ _id: 'msg-2', code: 'sess-9-toolu_5', role: 'tool', content: '' }] };
+				return { data: [] };
+			}
+			return { data: [] };
+		});
+		runAgentMock.mockReturnValue(fakeAgentEvents([{ type: 'text', delta: 'No problem, cancelled.' }, { type: 'done' }]));
+
+		const res = await request(buildApp()).post('/agent/sess-9/confirm/toolu_5').send({});
+
+		expect(res.status).toBe(200);
+		expect(res.text).toContain('No problem, cancelled.');
+
+		expect(callToolMock).not.toHaveBeenCalled();
+		expect(updateByIdMock).toHaveBeenCalledWith('ai_tool_call', 'tc-3', { result: 'Cancelled by user' }, expect.anything());
+		expect(updateByIdMock).toHaveBeenCalledWith('ai_message', 'msg-2', { content: 'Cancelled by user' }, expect.anything());
+
+		const [, opts] = runAgentMock.mock.calls[0];
+		expect(opts.messages.at(-2)).toEqual({ role: 'assistant', content: '', toolCalls: [{ id: 'toolu_5', name: 'delete_by_id', input: { collection: 'vehicle', id: 1 } }] });
+		expect(opts.messages.at(-1)).toEqual({ role: 'tool', toolCallId: 'toolu_5', content: 'Cancelled by user', isError: undefined });
+
+		expect(createMock).toHaveBeenCalledWith('ai_message', expect.objectContaining({ role: 'assistant', content: 'No problem, cancelled.', ai_chat_session: 'sess-9' }), expect.anything());
+	});
 });

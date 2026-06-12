@@ -275,30 +275,43 @@ router.post('/:sessionId/confirm/:toolCallId', async (req: Request, res: Respons
 		res.status(404).json({ error: `ai_tool_call '${toolCallCode}' not found` });
 		return;
 	}
-	if (toolCall.ai_tool_call_status !== 'pending') {
+	// Cancel (§13.5): client sets ai_tool_call_status:'cancelled' before posting
+	// here — resume the loop without executing, tool result = "Cancelled by user".
+	const cancelled = toolCall.ai_tool_call_status === 'cancelled';
+	if (!cancelled && toolCall.ai_tool_call_status !== 'pending') {
 		res.status(400).json({ error: `ai_tool_call '${toolCallCode}' is not pending (status: ${toolCall.ai_tool_call_status})` });
 		return;
 	}
 
 	const dataCtx = { user: auth.user ?? undefined, audit: auth.audit };
 	const toolCallRecordId = String(toolCall._id ?? toolCall.id);
-
-	await DataService.updateById('ai_tool_call', toolCallRecordId, { ai_tool_call_status: 'running' }, dataCtx);
-
 	const input = toolCall.args ? JSON.parse(toolCall.args) : {};
-	const result = await callTool(toolCall.ai_tool, input, auth, req);
-	const content = JSON.stringify(result.content);
 
-	await DataService.updateById(
-		'ai_tool_call',
-		toolCallRecordId,
-		{
-			ai_tool_call_status: result.isError ? 'error' : 'done',
-			result: result.isError ? undefined : content,
-			error: result.isError ? content : undefined,
-		},
-		dataCtx
-	);
+	let content: string;
+	let isError: boolean | undefined;
+
+	if (cancelled) {
+		content = 'Cancelled by user';
+		isError = undefined;
+		await DataService.updateById('ai_tool_call', toolCallRecordId, { result: content }, dataCtx);
+	} else {
+		await DataService.updateById('ai_tool_call', toolCallRecordId, { ai_tool_call_status: 'running' }, dataCtx);
+
+		const result = await callTool(toolCall.ai_tool, input, auth, req);
+		content = JSON.stringify(result.content);
+		isError = result.isError;
+
+		await DataService.updateById(
+			'ai_tool_call',
+			toolCallRecordId,
+			{
+				ai_tool_call_status: isError ? 'error' : 'done',
+				result: isError ? undefined : content,
+				error: isError ? content : undefined,
+			},
+			dataCtx
+		);
+	}
 
 	const { data: toolMessages } = await DataService.list('ai_message', { filters: { code: toolCallCode }, limit: 1 });
 	const toolMessage = toolMessages[0];
@@ -314,7 +327,7 @@ router.post('/:sessionId/confirm/:toolCallId', async (req: Request, res: Respons
 	// Reconstruct the suspended round: assistant requested the tool, tool
 	// resolved with `content` — mirrors AgentLoop's non-HITL messages.push.
 	messages.push({ role: 'assistant', content: '', toolCalls: [{ id: toolCallId, name: toolCall.ai_tool, input }] });
-	messages.push({ role: 'tool', toolCallId, content, isError: result.isError });
+	messages.push({ role: 'tool', toolCallId, content, isError });
 
 	const tools = await buildTools(ctx.eligible);
 

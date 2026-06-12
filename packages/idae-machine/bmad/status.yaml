@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S46-04 — Cancel flow: client sets ai_tool_call_status:'cancelled' before calling confirm route; route detects cancelled status, skips callTool, resumes loop with tool_result content 'Cancelled by user'."
+next_action: "Implement S46-05 (last story, Sprint 46) — UI: pending ai_tool_call in message bubble renders Confirm/Cancel, wired to confirm route. pseudo-html skill required for any new tags (CLAUDE.md §5)."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "dev"
@@ -219,8 +219,22 @@ sprints:
           suspended=false on a normal completion).
       - id: S46-04
         title: "Cancel flow — ai_tool_call_status:'cancelled', resume without executing"
-        status: pending
+        status: complete
         effort: S
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentRouter.test.ts: 16/16 (new cancel-flow case: cancelled status skips callTool, sets result 'Cancelled by user', patches tool ai_message, resumes loop). Full server suite: 254/255 across 31 files; 5 stable pre-existing module-resolution failures + 1 order-dependent flaky image.test.ts failure (pre-existing, unrelated). typecheck (server): 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          /:sessionId/confirm/:toolCallId now accepts ai_tool_call_status
+          'cancelled' (client sets this before posting, per §13.5) as an
+          alternative to 'pending'. cancelled = true skips callTool entirely,
+          sets content='Cancelled by user', isError=undefined, persists
+          { result: 'Cancelled by user' } on the ai_tool_call (status stays
+          'cancelled'). Both branches converge: patch the linked 'tool'
+          ai_message.content, rebuild messages from history, append the
+          reconstructed assistant tool_call + tool result, call
+          streamAgentTurn to resume to completion.
       - id: S46-05
         title: "UI: pending ai_tool_call in message bubble renders Confirm/Cancel, wired to confirm route"
         status: pending
