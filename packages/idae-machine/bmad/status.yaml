@@ -22,7 +22,7 @@ gate:
   build_publint: "1 error — @medyll/css-base link: (intentional monorepo dev link, not a release blocker until publish)"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "FABLE_2 Phase 0' DONE 2026-06-13 (gate vert: self-imports ai/schema → \$lib, sive orphan supprimé, @types/express unifié v5 workspace + handler params typés, bin add-skill retiré, pnpm run gate créé, flaky serveur files/image fixé via fileParallelism:false). NEXT: wire pre-push hook (FABLE_2 §6 niveau 2) puis FABLE_2 Phase 1' item 1 — trancher dual-source schéma AI (§3.1.1, recommandation: supprimer copies client)."
+next_action: "FABLE_2 Phase 0' DONE 2026-06-13 (gate vert: self-imports ai/schema → \$lib, sive orphan supprimé, @types/express unifié v5 workspace + handler params typés, bin add-skill retiré, pnpm run gate créé, flaky serveur files/image fixé via fileParallelism:false, hook pre-push ADVISORY non-bloquant via .githooks/core.hooksPath). NEXT: FABLE_2 Phase 1' item 1 — trancher dual-source schéma AI (§3.1.1, recommandation: supprimer copies client)."
 next_command: "bmad sprint"
 next_role: "scrum"
 active_role: "scrum"

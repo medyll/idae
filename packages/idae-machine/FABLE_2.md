@@ -218,20 +218,20 @@ La boucle = `status.yaml` dit vert, la réalité est rouge, parce que **rien ne 
 
 1. **`pnpm run gate`** (créé en Phase 0', 2026-06-12) — un script unique = `check` + `test` client + `typecheck` + `test` serveur. Une commande, un verdict. Plus d'excuse « j'ai oublié la suite serveur ». C'est le socle des deux niveaux suivants.
 
-2. **Hook git `pre-push`** — exécute `gate`, refuse le push si rouge. Le bon grain : `pre-commit` est trop lourd (svelte-check + 2 suites = lent à chaque commit, les gens le `--no-verify`) ; `pre-push` ne tourne qu'au moment de partager, là où le coût d'un rouge devient public. C'est **le** verrou qui aurait empêché les sprints 44–47 de pousser rouge.
+2. **Hook git `pre-push` — advisory, jamais bloquant** (`.githooks/pre-push`, `core.hooksPath`). Exécute `gate` au push et **rapporte** (vert / rouge bruyant), mais `exit 0` toujours : le push passe quoi qu'il arrive. Décision explicite (2026-06-13) : un verrou qui *refuse* le push gêne le flux ; on veut la **mesure visible**, pas le barrage. `pre-push` plutôt que `pre-commit` (trop lourd à chaque commit). Le rouge devient visible au moment de partager — c'est le rappel, pas la barrière.
 
-3. **`status.yaml` dérivé, pas asserté** — `progress: 100` / `phase: release` ne doivent plus être écrits à la main. Un petit script écrit le résultat de `gate` dans `status.yaml` (date + verdict + compte d'erreurs). Le dashboard cesse de mentir parce qu'il **mesure** au lieu de **déclarer**. Tant que `gate` n'est pas vert, `phase: release` est mécaniquement interdit.
+3. **`status.yaml` dérivé, pas asserté** — `progress: 100` / `phase: release` ne doivent plus être écrits à la main. Le bloc `gate:` de `status.yaml` porte le résultat mesuré (date + verdict + comptes). Le dashboard cesse de mentir parce qu'il **mesure** au lieu de **déclarer**.
 
-**Definition-of-Done bmad** = `gate` vert + `status.yaml` régénéré. Un sprint n'est pas « complete + tested » au sens des tests de story ; il l'est au sens du projet entier. Les deux métriques doivent coexister, et c'est la seconde qui ferme un sprint.
+**Definition-of-Done bmad** = `gate` vert + bloc `gate:` régénéré. Un sprint n'est pas « complete + tested » au sens des tests de story ; il l'est au sens du projet entier. Les deux métriques doivent coexister, et c'est la seconde qui ferme un sprint.
 
-Ordre d'adoption : (1) déjà fait ; (2) le prochain commit ; (3) avec la resynchro status.yaml de fin de Phase 0'.
+Les 3 niveaux sont en place (2026-06-13). Le hook étant advisory, la garde réelle reste **culturelle** (lire le verdict) + le bloc `gate:` mesuré — pas un blocage dur, par choix.
 
 ---
 
 ## 7. Vue d'ensemble
 
 ```
-Phase 0' (gate vert + publiable + pre-push hook)
+Phase 0' (gate vert + pre-push advisory)
    │
    ├──► Phase 1' (AI consolidé)  ──►  Phase 2' (CHAT.md Phase 2)
    │
@@ -239,6 +239,6 @@ Phase 0' (gate vert + publiable + pre-push hook)
                  [décision écrite — débloque le backlog très froid : CMS public render]
 ```
 
-**Prochain pas concret** : finir Phase 0' (hook pre-push + status.yaml dérivé), puis Phase 1' item 1 — trancher le dual-source schéma AI (§3.1.1).
+**Prochain pas concret** : Phase 1' item 1 — trancher le dual-source schéma AI (§3.1.1, recommandation : supprimer les copies client).
 
 **Leçon de fond** : le projet sait fermer des fronts (4 phases FABLE + MCP v2 + AI en 2 jours), mais pas encore **garder** le vert. La réponse n'est pas « être plus discipliné » — ça a échoué deux fois — c'est un verrou mécanique (`gate` + `pre-push` + dashboard mesuré). Sans lui, FABLE_3 redira mot pour mot la même chose.
