@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { streamIntoRecord } from './streamIntoRecord';
+import { streamIntoRecord } from './streamIntoRecord.js';
 
 // Mock ApiClient
 class MockApiClient {
-  async stream({ onData, signal }) {
+  async stream({ onData, signal }: { onData: (data: any) => void; signal?: AbortSignal }) {
     // Simulate streaming chunks
     const chunks = ['Hello', ' ', 'world', '!', ' How', ' are', ' you', '?'];
     
@@ -36,9 +36,6 @@ describe('streamIntoRecord', () => {
 
   it('should accumulate chunks and return final string', async () => {
     const result = await streamIntoRecord({
-      collection: 'ai_message',
-      recordId: '123',
-      field: 'content',
       slug: '/test',
       body: {},
       apiClient: new MockApiClient(),
@@ -52,9 +49,6 @@ describe('streamIntoRecord', () => {
     const onChunk = vi.fn();
     
     await streamIntoRecord({
-      collection: 'ai_message',
-      recordId: '123',
-      field: 'content',
       slug: '/test',
       body: {},
       apiClient: new MockApiClient(),
@@ -69,7 +63,7 @@ describe('streamIntoRecord', () => {
   it('should handle abort signal', async () => {
     // Use a slower mock for abort testing
     class SlowMockApiClient {
-      async stream({ onData, signal }) {
+      async stream({ onData, signal }: { onData: (data: any) => void; signal?: AbortSignal }) {
         return new Promise((resolve, reject) => {
           const chunks = ['Hello', ' ', 'world', '!', ' How'];
           let i = 0;
@@ -95,9 +89,6 @@ describe('streamIntoRecord', () => {
     const controller = new AbortController();
     
     const promise = streamIntoRecord({
-      collection: 'ai_message',
-      recordId: '123',
-      field: 'content',
       slug: '/test',
       body: {},
       apiClient: new SlowMockApiClient(),
@@ -113,20 +104,17 @@ describe('streamIntoRecord', () => {
 
   it('should use pick function to extract chunk', async () => {
     class CustomMockApiClient {
-      async stream({ onData }) {
+      async stream({ onData }: { onData: (data: any) => void }) {
         onData({ data: 'test', chunk: 'raw' });
         return { ok: true };
       }
     }
     
     const result = await streamIntoRecord({
-      collection: 'ai_message',
-      recordId: '123',
-      field: 'content',
       slug: '/test',
       body: {},
       apiClient: new CustomMockApiClient(),
-      pick: (data) => data.data,
+      pick: (data: any) => data.data,
       flushMs: 100,
     });
 
@@ -135,16 +123,13 @@ describe('streamIntoRecord', () => {
 
   it('should handle string data directly', async () => {
     class StringMockApiClient {
-      async stream({ onData }) {
+      async stream({ onData }: { onData: (data: any) => void }) {
         onData('direct string');
         return { ok: true };
       }
     }
     
     const result = await streamIntoRecord({
-      collection: 'ai_message',
-      recordId: '123',
-      field: 'content',
       slug: '/test',
       body: {},
       apiClient: new StringMockApiClient(),

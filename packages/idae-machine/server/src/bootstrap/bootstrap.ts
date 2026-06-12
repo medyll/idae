@@ -22,6 +22,7 @@ import { buildEngineModel } from './seed/engineModel.js';
 import { seedUsers } from './seedUsers.js';
 import { seedBusinessData } from './seedBusinessData.js';
 import { seedImagePresets } from './seedImagePresets.js';
+import { seedAiData } from './seedAiData.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 import mongoose from 'mongoose';
 
@@ -68,6 +69,9 @@ if (seed) {
 } else {
 	console.log(`[5b/6] No '${org}Seed' — skipping business data`);
 }
+
+console.log(`[5c/6] Seeding AI data (catalogs, statuses, companions, tags)`);
+await seedAiData({ org, mongoUri, clearFirst: true });
 
 console.log(`[6/6] Done.`);
 process.exit(0);

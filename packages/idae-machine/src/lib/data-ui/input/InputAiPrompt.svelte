@@ -11,7 +11,13 @@ AI chat input field type — textarea + send/abort buttons
     import { streamIntoRecord } from '$lib/ai/streamIntoRecord.js';
     import { generateCode } from '$lib/utils/generateCode.js';
 
-    let { session, value = '' }: { session: { id: number; code: string }; value?: string } = $props();
+    let { session, value = $bindable(''), id, name, form }: {
+        session: { id: number; code: string };
+        value?: string;
+        id?: string;
+        name?: string;
+        form?: string;
+    } = $props();
     let abort: AbortController | null = $state(null);
     const streaming = $derived(!!abort);
 
@@ -48,12 +54,10 @@ AI chat input field type — textarea + send/abort buttons
         abort = new AbortController();
         try {
             const final = await streamIntoRecord({
-                collection: 'ai_message',
-                recordId: asst.id,
-                field: 'content',
                 slug: `ai/chat-session/${session.id}/send`,
                 body: { content },
                 signal: abort.signal,
+                onFlush: (text) => col.update(asst.id, { content: text }),
             });
             
             await col.update(asst.id, {
@@ -89,6 +93,9 @@ AI chat input field type — textarea + send/abort buttons
 <ai-prompt>
     <textarea
         bind:value
+        {id}
+        {name}
+        {form}
         onkeydown={onKeydown}
         placeholder="Message…"
         rows="1"

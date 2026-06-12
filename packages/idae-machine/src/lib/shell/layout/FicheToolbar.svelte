@@ -9,16 +9,20 @@ Replaces the previously inline hardcoded toolbar in Fiche.svelte.
 <script lang="ts">
 	import ButtonAction from '$lib/data-ui/controls/ButtonAction.svelte';
 
-	let {
-		collection,
-		collectionId
-	}: { collection: string; collectionId: string | number } = $props();
+	let { collection, collectionId }: { collection: string; collectionId: string | number } =
+		$props();
 </script>
 
 <toolbar-component>
 	<ButtonAction {collection} {collectionId} frame="synthesis" label="synthese" />
 	<ButtonAction {collection} {collectionId} frame="diagram" label="diagram" />
-	<ButtonAction {collection} {collectionId} action="loadInDialog" frame="fiche.update" label="update" />
+	<ButtonAction
+		{collection}
+		{collectionId}
+		frame="fiche.update"
+		label="update"
+		action="loadInDialog"
+	/>
 </toolbar-component>
 
 <style>

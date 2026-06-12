@@ -252,7 +252,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
                 id={String(fieldName)}
                 name={String(fieldName)}
                 form={inputForm}
-            />
+            ></textarea>
         {/if}
 
     {:else}

@@ -68,6 +68,7 @@ const REGISTRY_ENTRIES = {
 	'dashboard':            () => import('$lib/shell/frame/dashboard/Dashboard.svelte'),
 	'space':                () => import('$lib/shell/frame/space/Space.svelte'),
 	'login':                () => import('$lib/shell/auth/Login.svelte'),
+	'ai.chat-session':      () => import('$lib/ai/frame/AiChatSession.svelte'),
 } satisfies Record<string, ComponentLoader>;
 
 export type RegistryKey = keyof typeof REGISTRY_ENTRIES;

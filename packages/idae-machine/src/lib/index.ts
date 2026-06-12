@@ -38,6 +38,7 @@ export { default as InputCurrency } from '$lib/data-ui/input/InputCurrency.svelt
 export { default as InputEmail }    from '$lib/data-ui/input/InputEmail.svelte';
 export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte';
 export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
+export { default as InputAiPrompt } from '$lib/data-ui/input/InputAiPrompt.svelte';
 
 // UI — columner (Finder-style column navigation)
 export { default as Columner }              from '$lib/shell/layout/Columner.svelte';
@@ -65,3 +66,9 @@ export { authState } from '$lib/main/machine/authState.svelte.js';
 
 // Utils
 export * from '$lib/utils/logger.js';
+
+// AI — reusable streaming helper (no machine.* surface)
+export { streamIntoRecord } from '$lib/ai/streamIntoRecord.js';
+
+// AI — schema fragments and frame components
+export * from '$lib/ai/index.js';

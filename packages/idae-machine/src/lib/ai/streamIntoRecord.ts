@@ -1,44 +1,41 @@
 import type { ApiClient } from '@medyll/idae-api';
 
 /**
- * Stream an SSE endpoint into one field of one record.
+ * Stream an SSE endpoint, accumulating chunks into a single string.
  * Pure function with zero machine.* surface exposure and zero Svelte imports.
  * Built on @medyll/idae-api client.stream().
  *
+ * Persistence (e.g. machine.collection(...).update()) is the caller's
+ * responsibility via `onFlush` — keeps this helper testable without a booted machine.
+ *
  * @param opts - Configuration object
- * @param opts.collection - Collection name to update
- * @param opts.recordId - Record ID to update
- * @param opts.field - Field name to stream into
  * @param opts.slug - API endpoint slug (e.g., '/chat-session/{id}/send')
  * @param opts.body - Request body
  * @param opts.signal - Optional abort signal
  * @param opts.flushMs - Flush interval in milliseconds (default: 120)
  * @param opts.onChunk - Optional callback for each chunk
+ * @param opts.onFlush - Optional callback invoked with the accumulated string, throttled by flushMs and once on completion
  * @param opts.pick - Optional function to transform chunks
  * @param opts.apiClient - API client instance (injected for testability)
  *
  * @returns Promise<string> - The accumulated string
  */
 export async function streamIntoRecord({
-  collection,
-  recordId,
-  field,
   slug,
   body,
   signal,
   flushMs = 120,
   onChunk,
+  onFlush,
   pick,
   apiClient,
 }: {
-  collection: string;
-  recordId: string | number;
-  field: string;
   slug: string;
   body: any;
   signal?: AbortSignal;
   flushMs?: number;
   onChunk?: (chunk: string) => void;
+  onFlush?: (accumulated: string) => void | Promise<void>;
   pick?: (data: any) => string;
   apiClient?: ApiClient;
 }): Promise<string> {
@@ -55,11 +52,7 @@ export async function streamIntoRecord({
       if (accumulated && !flushPending) {
         flushPending = true;
         try {
-          // This would normally call machine.collection(collection).update()
-          // but since we can't import machine, we'll use a placeholder
-          // In real implementation, this would be:
-          // await machine.collection(collection).update(recordId, { [field]: accumulated });
-          console.debug(`[streamIntoRecord] Flushing ${accumulated.length} chars to ${collection}.${recordId}.${field}`);
+          await onFlush?.(accumulated);
         } finally {
           flushPending = false;
         }
@@ -72,7 +65,7 @@ export async function streamIntoRecord({
       slug,
       body,
       signal,
-      onData: (data) => {
+      onData: (data: any) => {
         // Extract chunk from the SSE data
         let chunk = typeof data === 'string' ? data : data.chunk;
         if (pick) {
@@ -90,14 +83,14 @@ export async function streamIntoRecord({
     });
 
     // Final flush after stream completes
+    if (flushTimeout) clearTimeout(flushTimeout);
     if (accumulated) {
-      // await machine.collection(collection).update(recordId, { [field]: accumulated });
-      console.debug(`[streamIntoRecord] Final flush: ${accumulated.length} chars`);
+      await onFlush?.(accumulated);
     }
 
     return accumulated;
-  } catch (error) {
-    if (error.name === 'AbortError') {
+  } catch (error: any) {
+    if (error?.name === 'AbortError') {
       console.debug('[streamIntoRecord] Stream aborted');
     } else {
       console.error('[streamIntoRecord] Stream error:', error);

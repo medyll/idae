@@ -551,21 +551,122 @@ export const idaeModelCore = {
 			},
 		},
 
+		// ── AI catalogs ──────────────────────────────────────────────────────
+		// Provider/model/tool catalogs + status catalogs (isStatus auto-detected
+		// from `_status` suffix in publishModel). All AI collections live in their
+		// own DB (base: machine_ai), isolated from business machine_base — see
+		// commit 123f2f80 and CHAT.md.
+
+		ai_provider: {
+			base:   'machine_ai',
+			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			fields: {
+				id:       { required: true,  readonly: true  },
+				code:     { required: true,  readonly: false },
+				name:     { required: true,  readonly: false },
+				endpoint: { required: false, readonly: false },
+				order:    { required: true,  readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
+		ai_model: {
+			base:   'machine_ai',
+			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			fields: {
+				id:             { required: true,  readonly: true  },
+				code:           { required: true,  readonly: false },
+				name:           { required: true,  readonly: false },
+				supports_tools: { required: false, readonly: false },   // gates Phase 1b agent loop eligibility
+				order:          { required: true,  readonly: false },
+			},
+			fks: {
+				ai_provider: { code: 'ai_provider', order: 0, multiple: false, required: true },
+			},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
+		ai_tool: {
+			base:   'machine_ai',
+			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			fields: {
+				id:          { required: true,  readonly: true  },
+				code:        { required: true,  readonly: false },
+				name:        { required: true,  readonly: false },
+				description: { required: false, readonly: false },
+				hitl:        { required: false, readonly: false },   // human-in-the-loop confirmation required (§13)
+				order:       { required: true,  readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
+		ai_chat_session_status: {
+			base:   'machine_ai',
+			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			fields: {
+				id:    { required: true,  readonly: true  },
+				code:  { required: true,  readonly: false },   // 'idle' | 'streaming' | 'error'
+				name:  { required: true,  readonly: false },
+				order: { required: true,  readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
+		ai_message_status: {
+			base:   'machine_ai',
+			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			fields: {
+				id:    { required: true,  readonly: true  },
+				code:  { required: true,  readonly: false },   // 'streaming' | 'done' | 'error'
+				name:  { required: true,  readonly: false },
+				order: { required: true,  readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
+		ai_tool_call_status: {
+			base:   'machine_ai',
+			rights: { ops: ['R', 'L'], default: ['R', 'L'] },
+			fields: {
+				id:    { required: true,  readonly: true  },
+				code:  { required: true,  readonly: false },   // 'pending' | 'running' | 'done' | 'error' | 'cancelled'
+				name:  { required: true,  readonly: false },
+				order: { required: true,  readonly: false },
+			},
+			fks: {},
+			template: {
+				presentation: 'name code',
+			},
+		},
+
 		// ── AI chat collections ─────────────────────────────────────────────
 		// See CHAT.md for the consumer contract. ai_companion is app-scoped
-		// (shared personas). ai_chat / ai_message are user-scoped. Once qoolie
-		// gains online-first mode (see API_DRIFT.md §7 + §8), ai_chat /
+		// (shared personas). ai_chat_session / ai_message are user-scoped. Once
+		// qoolie gains online-first mode (see API_DRIFT.md §7 + §8), ai_chat_session /
 		// ai_message become candidates — they don't need offline persistence.
 
 		ai_companion: {
-			base:   'machine_app',
+			base:   'machine_ai',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {
 				id:             { required: true,  readonly: true  },
 				code:           { required: true,  readonly: false },
 				name:           { required: true,  readonly: false },
 				description:    { required: false, readonly: false },
-				model:          { required: true,  readonly: false },
 				endpoint:       { required: false, readonly: false },
 				system_prompt:  { required: false, readonly: false },
 				temperature:    { required: false, readonly: false },
@@ -584,16 +685,17 @@ export const idaeModelCore = {
 				skills:         { required: false, readonly: false },   // string[] of skill codes
 			},
 			fks: {
+				ai_model: { code: 'ai_model', order: 0, multiple: false, required: true  },   // provider/model — never free-text
 				// absent = global template; set = user-owned instance/clone with overrides
-				appuser: { code: 'appuser', order: 0, multiple: false, required: false },
+				appuser:  { code: 'appuser',  order: 1, multiple: false, required: false },
 			},
 			template: {
-				presentation: 'name model code',
+				presentation: 'name code',
 			},
 		},
 
-		ai_chat: {
-			base:   'machine_user',
+		ai_chat_session: {
+			base:   'machine_ai',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {
 				id:            { required: true,  readonly: true  },
@@ -601,34 +703,35 @@ export const idaeModelCore = {
 				title:         { required: false, readonly: false },
 				description:   { required: false, readonly: false },
 				category:      { required: false, readonly: false },
-				status:        { required: false, readonly: false },   // 'idle' | 'streaming' | 'error'
-				model:         { required: false, readonly: false },
 				system_prompt: { required: false, readonly: false },   // chat-level override of companion.system_prompt
 				context:       { required: false, readonly: false },
 				token_count:   { required: false, readonly: false },
+				// App-anchor pivot (mirrors DataRecord contract — collectionId resolves session record)
+				collection:    { required: false, readonly: false },
+				collectionId:  { required: false, readonly: false },
 			},
 			fks: {
-				appuser:      { code: 'appuser',      order: 0, multiple: false, required: true },
-				ai_companion: { code: 'ai_companion', order: 1, multiple: false, required: true },
-				tag:          { code: 'tag',          order: 2, multiple: true,  required: false },
+				appuser:                 { code: 'appuser',                 order: 0, multiple: false, required: true  },
+				ai_companion:            { code: 'ai_companion',            order: 1, multiple: false, required: true  },
+				ai_chat_session_status:  { code: 'ai_chat_session_status',  order: 2, multiple: false, required: false },
+				ai_model:                { code: 'ai_model',                order: 3, multiple: false, required: false },   // optional per-chat override of companion's model
+				tag:                     { code: 'tag',                     order: 4, multiple: true,  required: false },
 			},
 			template: {
-				presentation: 'title status code',
+				presentation: 'title code',
 			},
 		},
 
 		ai_message: {
-			base:   'machine_user',
+			base:   'machine_ai',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {
 				id:              { required: true,  readonly: true  },
 				code:            { required: true,  readonly: false },
 				role:            { required: true,  readonly: false },   // 'user' | 'assistant' | 'system' | 'tool'
 				content:         { required: false, readonly: false },
-				status:          { required: false, readonly: false },   // 'idle' | 'sent' | 'streaming' | 'done' | 'error'
 				tokens:          { required: false, readonly: false },
 				error:           { required: false, readonly: false },
-				model:           { required: false, readonly: false },   // model actually used for this message
 				rating:          { required: false, readonly: false },   // -1 | 0 | 1
 				rated_at:        { required: false, readonly: false },
 				// Multimodal
@@ -641,20 +744,45 @@ export const idaeModelCore = {
 				// Extensibility — dormant until phase 2 skills/hooks/tools engine lands
 				skill_invoked:   { required: false, readonly: false },   // e.g. "/translate fr"
 				hook_log:        { required: false, readonly: false },   // { hook_id, event, duration_ms, mutated, error }[]
+				// App-anchor pivot (mirrors DataRecord contract)
+				collection:      { required: false, readonly: false },
+				collectionId:    { required: false, readonly: false },
 			},
 			fks: {
-				appuser:      { code: 'appuser',      order: 0, multiple: false, required: true },
-				ai_chat:      { code: 'ai_chat',      order: 1, multiple: false, required: true },
-				ai_tool_call: { code: 'ai_tool_call', order: 2, multiple: false, required: false },   // phase 2
+				appuser:           { code: 'appuser',           order: 0, multiple: false, required: true  },
+				ai_chat_session:   { code: 'ai_chat_session',   order: 1, multiple: false, required: true  },
+				ai_message_status: { code: 'ai_message_status', order: 2, multiple: false, required: false },
+				ai_model:          { code: 'ai_model',          order: 3, multiple: false, required: false },   // model actually used for this message
+				ai_tool_call:      { code: 'ai_tool_call',      order: 4, multiple: false, required: false },
 			},
 			template: {
-				presentation: 'role status',
+				presentation: 'role code',
+			},
+		},
+
+		ai_tool_call: {
+			base:   'machine_ai',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:     { required: true,  readonly: true  },
+				code:   { required: true,  readonly: false },
+				args:   { required: false, readonly: false },   // JSON input passed to the tool
+				result: { required: false, readonly: false },   // JSON result returned by callTool()
+				error:  { required: false, readonly: false },
+			},
+			fks: {
+				ai_message:         { code: 'ai_message',         order: 0, multiple: false, required: true  },
+				ai_tool:            { code: 'ai_tool',            order: 1, multiple: false, required: true  },
+				ai_tool_call_status: { code: 'ai_tool_call_status', order: 2, multiple: false, required: false },
+			},
+			template: {
+				presentation: 'code',
 			},
 		},
 
 		// ── Tags ─────────────────────────────────────────────────────────────
 		// App-scoped catalog — searchable, colored, iconified. Linked from
-		// ai_chat (and any future collection) via fks.tag (multiple).
+		// ai_chat_session (and any future collection) via fks.tag (multiple).
 
 		tag: {
 			base:   'machine_app',
@@ -678,7 +806,7 @@ export const idaeModelCore = {
 		// Custom instructions auto-injected into the companion's system prompt.
 
 		ai_user_prompt: {
-			base:   'machine_user',
+			base:   'machine_ai',
 			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
 			fields: {
 				id:        { required: true,  readonly: true  },

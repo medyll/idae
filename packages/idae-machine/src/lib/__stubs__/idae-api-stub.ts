@@ -76,6 +76,18 @@ export class IdaeApiClient {
 		};
 	}
 }
+// Streaming client stub — real SSE transport is server-side (@medyll/idae-api/server).
+// Client-side stream() is a no-op fallback; production wiring injects `apiClient` for testability.
+export class ApiClient {
+	async stream(_opts: {
+		slug: string;
+		body?: unknown;
+		signal?: AbortSignal;
+		onData: (data: any) => void;
+	}): Promise<unknown> {
+		return { ok: true };
+	}
+}
 export class IdaeApiClientCollection {}
 export class IdaeApiClientConfig {}
 export class IdaeApiClientConfigCore {
