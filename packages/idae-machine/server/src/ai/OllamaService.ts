@@ -1,4 +1,4 @@
-import { parseStream } from '@medyll/idae-api/client'
+import { parseStream } from '@medyll/idae-api'
 
 interface OllamaChatChunk {
   message?: { content?: string }

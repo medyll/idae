@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { SseStream } from '@medyll/idae-api/server'
+import { SseStream } from '@medyll/idae-api'
 import { OllamaService } from './OllamaService.js'
 
 const router = Router()
