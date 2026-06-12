@@ -11,6 +11,7 @@ import { registerMailRoutes } from './routes/mail.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
 import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
+import { AiRouter } from './ai/AiRouter.js';
 import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import type { SocketIoServer } from '@medyll/idae-socket/server';
@@ -250,6 +251,9 @@ class MachineServerClass {
 		registerPermissionRoutes();
 		registerDataRoutes();
 		if (config.nodeEnv === 'development') registerBootstrapRoutes();
+        
+        // AI routes
+        idaeApi.app.use('/api/ai', AiRouter);
 
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {

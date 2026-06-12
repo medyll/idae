@@ -1,0 +1,16 @@
+import type { MachineModel } from '@medyll/idae-machine'
+
+export const tagScheme: MachineModel = {
+  tag: {
+    keyPath: '++id', base: 'machine_ai',
+    fields: {
+      id:          { type: 'id',   readonly: true },
+      code:        { type: 'text', required: true },
+      name:        { type: 'text', required: true },
+      color:       { type: 'text' },
+      description: { type: 'text' },
+    },
+    fks: {},
+    template: { presentation: 'name code' },
+  },
+}

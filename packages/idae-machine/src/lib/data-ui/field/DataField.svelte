@@ -21,6 +21,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     import InputSelect   from '$lib/data-ui/input/InputSelect.svelte';
     import InputColor    from '$lib/data-ui/input/InputColor.svelte';
     import InputIcon     from '$lib/data-ui/input/InputIcon.svelte';
+    import InputAiPrompt from '$lib/data-ui/input/InputAiPrompt.svelte';
 
     let {
         collection = getContext('collection'),
@@ -232,6 +233,27 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             name={String(fieldName)}
             form={inputForm}
         />
+
+    {:else if fieldForge?.fieldType === 'ai-prompt'}
+        <!-- AI prompt field - requires session context from parent -->
+        {#if data && 'id' in data && 'code' in data}
+            <InputAiPrompt
+                bind:value={internalValue as string}
+                session={{ id: data.id as number, code: data.code as string }}
+                id={String(fieldName)}
+                name={String(fieldName)}
+                form={inputForm}
+            />
+        {:else}
+            <textarea
+                disabled
+                placeholder="AI prompt requires session context"
+                {...inputDataset}
+                id={String(fieldName)}
+                name={String(fieldName)}
+                form={inputForm}
+            />
+        {/if}
 
     {:else}
         <!-- Generic: text, number, date, datetime, time, password, url, phone, text-* -->

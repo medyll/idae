@@ -6,3 +6,4 @@ export { default as InputSelect }   from './InputSelect.svelte';
 export { default as InputTextarea } from './InputTextarea.svelte';
 export { default as InputColor }    from './InputColor.svelte';
 export { default as InputIcon }     from './InputIcon.svelte';
+export { default as InputAiPrompt } from './InputAiPrompt.svelte';

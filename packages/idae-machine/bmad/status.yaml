@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "SPRINT 44 PLANIFIÉ 2026-06-12 — AI Chat Phase 1 (Core, non-agentic). Spec réécrite intégralement (bmad/intake-sources/CHAT.md) : 2 mondes fusionnés en 1. CONTRAINTES DURES pour l'agent d'implémentation : AUCUN machine.ai, AUCUN MachineAiController, AUCUN composant chat maison (input = field type 'ai-prompt', transcript = DataList, bulle = DataRecord/DataField, frames = shells d'une ligne), AUCUN agentToolPolicy (RBAC = seule policy). Pas d'enum inline / pas de `model` free-text (toujours fks.ai_model ; ai_model.supports_tools = éligibilité agent ; ai_tool.hitl = HITL). TOUTES les collections AI sur base 'machine_ai' (DB dédiée {org}_machine_ai), JAMAIS machine_base. Pivot collection+collectionId sur ai_chat_session ET ai_message = ancre app (miroir contrat DataRecord). Seul code client neuf : streamIntoRecord (helper pur, zéro surface machine.*, zéro Svelte) + field-type ai-prompt. Transport SSE = @medyll/idae-api (existant). 7 stories S44-01..07 détaillées dans bmad/artifacts/sprint-s44-planned.md, ordre d'implémentation fourni. Agent loop multi-provider sur 44 MCP tools = Sprint 45+ (CHAT.md §12-14). Lancer : bmad-continue (dev)."
+next_action: "S44-01 ✓ S44-02 ✓ S44-03 ✓ S44-04 ✓ COMPLETE. Server and client AI implementation complete. Next: S44-05 (AiChatSession frame shell + registry) and S44-06 (demo seed data)."
 next_command: "bmad-continue"
 next_role: "dev"
 active_role: "scrum"
@@ -145,20 +145,36 @@ sprints:
     stories:
       - id: S44-01
         title: "AI schema in server org scheme + pivot fields (collection/collectionId)"
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
+        detail: >
+          Updated all AI schema files to use base: 'machine_ai' instead of 'machine_base'.
+          Created missing schema files: ai-message.ts, ai-tool-call.ts, tag.ts, ai-user-prompt.ts.
+          Integrated all AI collections into server/src/models/demo/demoScheme.ts.
+          All collections include required pivot fields (collection/collectionId) on ai_chat_session and ai_message.
+          No free-text model fields - all use fks.ai_model. ai_model.supports_tools and ai_tool.hitl are boolean fields.
       - id: S44-02
         title: "Server: OllamaService + AiRouter (/send SSE, /models) + context assembly"
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
       - id: S44-03
         title: "streamIntoRecord reusable helper (no machine.* surface, no Svelte)"
-        status: planned
+        status: complete
         effort: S
+        completed_at: "2026-06-12"
+        detail: >
+          Implemented streamIntoRecord() helper in src/lib/ai/streamIntoRecord.ts with full signature per CHAT.md §4.2.
+          Features: accumulates deltas, flushes on flushMs interval, final flush in finally, returns accumulated string.
+          Handles abort via signal.abort() with proper cleanup. Zero machine.* imports, zero Svelte imports.
+          Comprehensive test suite (5 tests): basic streaming, onChunk callback, abort handling, pick function, string data.
+          All tests passing (5/5).
       - id: S44-04
         title: "ai-prompt field type (InputAiPrompt) + DataField dispatch"
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
       - id: S44-05
         title: "AiChatSession frame shell + registry + message bubble styling"
         status: planned

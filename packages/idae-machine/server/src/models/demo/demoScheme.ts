@@ -279,6 +279,273 @@ export const demoScheme: MachineModel = {
 		},
 		template: { presentation: 'title type priority status due_date' },
 	},
+
+	// ── AI Collections (machine_ai base) ────────────────────────────────────────
+
+	ai_provider: {
+		base: 'machine_ai',
+		isType: true,
+		fields: {
+			id:              { type: 'id',   readonly: true },
+			code:            { type: 'text', required: true },
+			name:            { type: 'text', required: true },
+			endpoint:        { type: 'text' },
+			api_key_env:     { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	ai_model: {
+		base: 'machine_ai',
+		isType: true,
+		fields: {
+			id:             { type: 'id',      readonly: true },
+			code:           { type: 'text',    required: true },
+			name:           { type: 'text',    required: true },
+			supports_tools: { type: 'boolean' },
+			context_size:   { type: 'number' },
+			is_active:      { type: 'boolean' },
+		},
+		fks: {
+			ai_provider: { code: 'ai_provider', multiple: false, required: true },
+		},
+		template: { presentation: 'name ai_provider supports_tools' },
+	},
+
+	ai_mood: {
+		base: 'machine_ai',
+		isType: true,
+		fields: {
+			id:   { type: 'id',   readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+		},
+		fks: {},
+		template: { presentation: 'name' },
+	},
+
+	ai_voice: {
+		base: 'machine_ai',
+		isType: true,
+		fields: {
+			id:   { type: 'id',   readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+			tone: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name tone' },
+	},
+
+	ai_specialization: {
+		base: 'machine_ai',
+		isType: true,
+		fields: {
+			id:          { type: 'id',   readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name' },
+	},
+
+	ai_tool: {
+		base: 'machine_ai',
+		isType: true,
+		fields: {
+			id:   { type: 'id',   readonly: true },
+			code: { type: 'text', required: true },
+			name: { type: 'text', required: true },
+			hitl: { type: 'boolean' },
+		},
+		fks: {},
+		template: { presentation: 'name code hitl' },
+	},
+
+	ai_skill: {
+		base: 'machine_ai',
+		fields: {
+			id:          { type: 'id',   readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			description: { type: 'text' },
+			is_active:   { type: 'boolean' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	ai_hook: {
+		base: 'machine_ai',
+		fields: {
+			id:      { type: 'id',   readonly: true },
+			code:    { type: 'text', required: true },
+			name:    { type: 'text', required: true },
+			event:   { type: 'text' },
+			is_active: { type: 'boolean' },
+		},
+		fks: {},
+		template: { presentation: 'name event' },
+	},
+
+	ai_chat_session_status: {
+		base: 'machine_ai',
+		isStatus: true,
+		fields: {
+			id:     { type: 'id',   readonly: true },
+			code:   { type: 'text', required: true },
+			name:   { type: 'text', required: true },
+			ordre:  { type: 'number' },
+			color:  { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code ordre' },
+	},
+
+	ai_message_status: {
+		base: 'machine_ai',
+		isStatus: true,
+		fields: {
+			id:     { type: 'id',   readonly: true },
+			code:   { type: 'text', required: true },
+			name:   { type: 'text', required: true },
+			ordre:  { type: 'number' },
+			color:  { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code ordre' },
+	},
+
+	ai_tool_call_status: {
+		base: 'machine_ai',
+		isStatus: true,
+		fields: {
+			id:     { type: 'id',   readonly: true },
+			code:   { type: 'text', required: true },
+			name:   { type: 'text', required: true },
+			ordre:  { type: 'number' },
+			color:  { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code ordre' },
+	},
+
+	ai_companion: {
+		base: 'machine_ai',
+		fields: {
+			id:            { type: 'id',     readonly: true },
+			code:          { type: 'text',   required: true },
+			name:          { type: 'text',   required: true },
+			description:   { type: 'text' },
+			system_prompt: { type: 'textarea' },
+			temperature:   { type: 'number' },
+			max_tokens:    { type: 'number' },
+			is_active:     { type: 'boolean' },
+			avatar:        { type: 'text' },
+			is_locked:     { type: 'boolean' },
+		},
+		fks: {
+			ai_model:          { code: 'ai_model',          multiple: false, required: true },
+			appuser:           { code: 'appuser',           multiple: false, required: false },
+			ai_mood:           { code: 'ai_mood',           multiple: false, required: false },
+			ai_voice:          { code: 'ai_voice',          multiple: false, required: false },
+			ai_specialization: { code: 'ai_specialization', multiple: false, required: false },
+			ai_skill:          { code: 'ai_skill',          multiple: true,  required: false },
+			ai_hook:           { code: 'ai_hook',           multiple: true,  required: false },
+		},
+		template: { presentation: 'name ai_model' },
+	},
+
+	ai_chat_session: {
+		base: 'machine_ai',
+		fields: {
+			id:            { type: 'id',   readonly: true },
+			code:          { type: 'text', required: true },
+			title:         { type: 'text' },
+			description:   { type: 'text' },
+			category:      { type: 'text' },
+			collection:    { type: 'text' },
+			collectionId:  { type: 'text' },
+			system_prompt: { type: 'textarea' },
+			context:       { type: 'json' },
+			token_count:   { type: 'number' },
+		},
+		fks: {
+			ai_companion:           { code: 'ai_companion',           multiple: false, required: true },
+			ai_model:               { code: 'ai_model',               multiple: false, required: false },
+			ai_chat_session_status: { code: 'ai_chat_session_status', multiple: false, required: false },
+			tag:                    { code: 'tag',                    multiple: true,  required: false },
+		},
+		template: { presentation: 'title ai_chat_session_status code' },
+	},
+
+	ai_message: {
+		base: 'machine_ai',
+		fields: {
+			id:            { type: 'id',   readonly: true },
+			code:          { type: 'text', required: true },
+			role:          { type: 'text', required: true },
+			content:       { type: 'textarea' },
+			token_count:   { type: 'number' },
+			collection:    { type: 'text' },
+			collectionId:  { type: 'text' },
+		},
+		fks: {
+			ai_chat_session: { code: 'ai_chat_session', multiple: false, required: true },
+			ai_model:        { code: 'ai_model',        multiple: false, required: false },
+			ai_message_status: { code: 'ai_message_status', multiple: false, required: false },
+			ai_tool_call:    { code: 'ai_tool_call',    multiple: true,  required: false },
+		},
+		template: { presentation: 'role content ai_message_status' },
+	},
+
+	ai_tool_call: {
+		base: 'machine_ai',
+		fields: {
+			id:     { type: 'id',   readonly: true },
+			code:   { type: 'text', required: true },
+			input:  { type: 'json' },
+			output: { type: 'json' },
+			error:  { type: 'text' },
+		},
+		fks: {
+			ai_message:        { code: 'ai_message',        multiple: false, required: true },
+			ai_tool:           { code: 'ai_tool',           multiple: false, required: true },
+			ai_tool_call_status: { code: 'ai_tool_call_status', multiple: false, required: false },
+		},
+		template: { presentation: 'ai_tool ai_tool_call_status' },
+	},
+
+	tag: {
+		base: 'machine_ai',
+		fields: {
+			id:          { type: 'id',   readonly: true },
+			code:        { type: 'text', required: true },
+			name:        { type: 'text', required: true },
+			color:       { type: 'text' },
+			description: { type: 'text' },
+		},
+		fks: {},
+		template: { presentation: 'name code' },
+	},
+
+	ai_user_prompt: {
+		base: 'machine_ai',
+		fields: {
+			id:        { type: 'id',   readonly: true },
+			code:      { type: 'text', required: true },
+			name:      { type: 'text', required: true },
+			content:   { type: 'textarea', required: true },
+			is_active: { type: 'boolean' },
+			is_system: { type: 'boolean' },
+		},
+		fks: {
+			appuser: { code: 'appuser', multiple: false, required: false },
+		},
+		template: { presentation: 'name code is_active' },
+	},
 };
 
 // ── Seed data ──────────────────────────────────────────────────────────────
