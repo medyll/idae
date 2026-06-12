@@ -128,6 +128,7 @@ router.post('/:sessionId/send', async (req: Request, res: Response) => {
 	req.on('close', () => controller.abort());
 
 	let assistantText = '';
+	let suspended = false;
 	const pendingCalls = new Map<string, { name: string; input: Record<string, any> }>();
 
 	for await (const evt of runAgent(provider, {
@@ -179,14 +180,46 @@ router.post('/:sessionId/send', async (req: Request, res: Response) => {
 			await DataService.updateById('ai_message', String(message._id ?? message.id), { ai_tool_call: toolCallCode }, dataCtx);
 		}
 
+		if (evt.type === 'tool_pending') {
+			suspended = true;
+
+			const toolCallCode = `${sessionCode}-${evt.id}`;
+
+			// Same FK-fold ordering as tool_result (S45-04 / above): message first,
+			// then the tool_call, then patch the message with the back-reference.
+			const message = await DataService.create(
+				'ai_message',
+				{ code: toolCallCode, role: 'tool', content: '', ai_chat_session: sessionCode },
+				dataCtx
+			);
+
+			await DataService.create(
+				'ai_tool_call',
+				{
+					code: toolCallCode,
+					args: JSON.stringify(evt.input),
+					ai_message: toolCallCode,
+					ai_tool: evt.name,
+					ai_tool_call_status: 'pending',
+				},
+				dataCtx
+			);
+
+			await DataService.updateById('ai_message', String(message._id ?? message.id), { ai_tool_call: toolCallCode }, dataCtx);
+		}
+
 		sseWrite(res, evt);
 	}
 
-	await DataService.create(
-		'ai_message',
-		{ code: `${sessionCode}-${Date.now()}-assistant`, role: 'assistant', content: assistantText, ai_chat_session: sessionCode },
-		dataCtx
-	);
+	// A tool_pending suspends the loop mid-turn (§13) — no final assistant reply
+	// yet, the confirm/cancel route (S46-03/04) resumes and persists it then.
+	if (!suspended) {
+		await DataService.create(
+			'ai_message',
+			{ code: `${sessionCode}-${Date.now()}-assistant`, role: 'assistant', content: assistantText, ai_chat_session: sessionCode },
+			dataCtx
+		);
+	}
 
 	res.end();
 });

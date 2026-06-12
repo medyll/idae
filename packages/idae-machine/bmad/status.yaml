@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S46-02 — AgentRouter persists ai_tool_call with ai_tool_call_status:'pending' on a tool_pending event, ends the SSE stream."
+next_action: "Implement S46-03 — POST /agent/:sessionId/confirm/:toolCallId: runs callTool for the pending ai_tool_call, updates status pending->running->done/error, resumes the loop to completion."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "dev"
@@ -178,8 +178,20 @@ sprints:
           (!!undefined === false).
       - id: S46-02
         title: "AgentRouter persists ai_tool_call_status:'pending' on tool_pending, ends SSE"
-        status: pending
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentRouter.test.ts: 12/12 (new tool_pending case: persists ai_tool_call status='pending' + 'tool' ai_message + back-ref, no final assistant ai_message). Full server suite: 251/251 (5 pre-existing module-resolution failures unchanged). typecheck (server): 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          On a tool_pending event, AgentRouter persists ai_tool_call (status
+          'pending', args=JSON.stringify(input), ai_tool=name) + a 'tool' role
+          ai_message, same FK-fold create-then-patch ordering as tool_result.
+          Sets suspended=true; the final assistant ai_message create (after the
+          loop) is skipped when suspended — the turn isn't complete, S46-03/04
+          resume and persist it on confirm/cancel. SSE stream ends normally
+          (res.end()) after relaying the tool_pending + done events.
       - id: S46-03
         title: "POST /agent/:sessionId/confirm/:toolCallId — runs callTool, pending→running→done/error, resumes loop"
         status: pending
