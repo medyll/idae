@@ -6,13 +6,13 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-11"
+last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "CHANTIER MCP v2 TERMINÉ 2026-06-11 — M0→M5 en 6 commits (b4e930dd DataService pipeline unifié REST/MCP, e0f7a8a8 auth+API keys mk_<org>_<hex>, 0a9ef095 data enrichi by-id/aggregate/distinct/FK, cd4d8b49 admin users/RBAC/audit, f4522f36 org+schéma flag MCP_SCHEMA_WRITE, 676bf17c périphérie files/mail/health/db_stats + doc générée server/MCP-TOOLS.md). 44 tools en 6 domaines (mcp/tools/{schema,data,auth,admin,org,periphery}Tools.ts), audit chaque call, passwords redacted. Tests: mcp 34/34, server 272/272, check 0/0. Prochains candidats: tester MCP end-to-end avec un agent réel (claude mcp add → POST /api/mcp), Phase 5 CMS (reportée), ou retour frontend."
+next_action: "SPRINT 44 PLANIFIÉ 2026-06-12 — AI Chat Phase 1 (Core, non-agentic). Spec réécrite intégralement (bmad/intake-sources/CHAT.md) : 2 mondes fusionnés en 1. CONTRAINTES DURES pour l'agent d'implémentation : AUCUN machine.ai, AUCUN MachineAiController, AUCUN composant chat maison (input = field type 'ai-prompt', transcript = DataList, bulle = DataRecord/DataField, frames = shells d'une ligne), AUCUN agentToolPolicy (RBAC = seule policy). Pas d'enum inline / pas de `model` free-text (toujours fks.ai_model ; ai_model.supports_tools = éligibilité agent ; ai_tool.hitl = HITL). Pivot collection+collectionId sur ai_chat_session ET ai_message = ancre app (miroir contrat DataRecord). Seul code client neuf : streamIntoRecord (helper pur, zéro surface machine.*, zéro Svelte) + field-type ai-prompt. Transport SSE = @medyll/idae-api (existant). 7 stories S44-01..07 détaillées dans bmad/artifacts/sprint-s44-planned.md, ordre d'implémentation fourni. Agent loop multi-provider sur 44 MCP tools = Sprint 45+ (CHAT.md §12-14). Lancer : bmad-continue (dev)."
 next_command: "bmad-continue"
-next_role: "scrum"
-active_role: "dev"
+next_role: "dev"
+active_role: "scrum"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -128,6 +128,50 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 44
+    goal: "AI Chat Phase 1 (Core, non-agentic) — schema-driven chat, zero new surface"
+    status: planned
+    artifact: "bmad/artifacts/sprint-s44-planned.md"
+    spec: "bmad/intake-sources/CHAT.md"
+    note: >
+      Full spec rewritten 2026-06-12: collapsed two coexisting worlds into one.
+      HARD CONSTRAINTS for the implementing agent: NO machine.ai surface, NO
+      MachineAiController, NO bespoke chat components (input = 'ai-prompt' field
+      type, transcript = DataList, bubble = DataRecord/DataField), NO agentToolPolicy
+      (RBAC = only policy). NO inline enums / no free-text `model` (always fks.ai_model;
+      ai_model.supports_tools drives agent eligibility; ai_tool.hitl drives HITL).
+      Pivot fields collection + collectionId on ai_chat_session AND ai_message = app
+      anchor (mirrors DataRecord contract). Agent loop (CHAT.md §12-14) is Sprint 45+.
+    stories:
+      - id: S44-01
+        title: "AI schema in server org scheme + pivot fields (collection/collectionId)"
+        status: planned
+        effort: M
+      - id: S44-02
+        title: "Server: OllamaService + AiRouter (/send SSE, /models) + context assembly"
+        status: planned
+        effort: M
+      - id: S44-03
+        title: "streamIntoRecord reusable helper (no machine.* surface, no Svelte)"
+        status: planned
+        effort: S
+      - id: S44-04
+        title: "ai-prompt field type (InputAiPrompt) + DataField dispatch"
+        status: planned
+        effort: M
+      - id: S44-05
+        title: "AiChatSession frame shell + registry + message bubble styling"
+        status: planned
+        effort: M
+      - id: S44-06
+        title: "Demo seed: catalogs, statuses, models, companions, tags"
+        status: planned
+        effort: S
+      - id: S44-07
+        title: "Exports + full-suite verification"
+        status: planned
+        effort: XS
+
   - id: 43
     goal: "DataRecord mode='row' + svelte:element — conformité ADR-06"
     status: completed
