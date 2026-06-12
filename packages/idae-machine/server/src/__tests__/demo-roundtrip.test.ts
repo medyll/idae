@@ -15,7 +15,7 @@ import { config } from '../config.js';
 import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
 import { machineServer } from '../MachineServer.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
-import { idaeModelCore } from '../bootstrap/seed/idae-model-core.js';
+import { idaeModelCore } from '../core/index.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 const TEST_ORG = 'vitest_demo';

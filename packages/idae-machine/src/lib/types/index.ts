@@ -1,11 +1,11 @@
 // Types barrel export
-export * from './schema-types.js';
-// The engine meta-seed VALUE now lives in
-// server/src/bootstrap/seed/idae-model-core.ts (`idaeModelCore`) — it is a
-// server-bootstrap value, not a types module, so it is not re-exported here.
+export * from './entity-types.js';
+// The engine meta-seed VALUE and field-definition catalog (FieldList) now live in
+// server/src/core/ (`idaeModelCore`, `FieldList`) — they are server-bootstrap
+// values, not types modules, so they are not re-exported here.
 
 // machine-model: all types except ViewFields/ViewFieldDef which conflict
-// with the DB-resolved versions in schema-types.ts.
+// with the DB-resolved versions in entity-types.ts.
 // If you need the static-definition versions, import from '$lib/types/index.js' directly.
 export type {
 	SortBy, InputSize, ImageFieldDef, MachineFieldDef, MachineFkDef, MachineDisplayTemplate,

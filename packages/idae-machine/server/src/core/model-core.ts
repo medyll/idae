@@ -20,16 +20,16 @@
  *   Server:
  *     GET /api/scheme → MachineServer.getModel()   reads appscheme_* from MongoDB
  *     MongoDB appscheme_* rows deployed at bootstrap from THIS file via
- *     buildEngineModel() (engineModel.ts) + publishModel().
+ *     buildEngineModel() (server/src/bootstrap/seed/engineModel.ts) + publishModel().
  *
  * So this file's ONLY job is the server seed. It is NOT read on the client and is
  * NOT the runtime source of truth — the server-delivered schema is.
  *
- * Transitional shim: buildEffectiveModel still merges `_core` (this file) as a
- * system baseline when no server schema is present. To be removed once the
- * server schema is mandatory at boot. (Note: there is no `machine.fetchSchema()`
- * method today — the runtime path is `boot()` → `loadSchema()`.) Do not add new
- * imports of this file.
+ * Transitional shim: buildEffectiveModel still merges `_core` (this file, via
+ * machineModelBuilder.ts) as a system baseline when no server schema is present.
+ * To be removed once the server schema is mandatory at boot. (Note: there is no
+ * `machine.fetchSchema()` method today — the runtime path is `boot()` → `loadSchema()`.)
+ * Do not add new imports of this file.
  *
  * ──────────────────────────────────────────────────────────────────────────────
  *

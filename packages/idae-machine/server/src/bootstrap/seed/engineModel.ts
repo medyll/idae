@@ -3,8 +3,7 @@
  * All engine collections live in base 'machine_app' (resolved server-side to {org}_machine_app).
  * Result is a MachineModel that can be published via publishModel() like any user model.
  */
-import { idaeModelCore } from './idae-model-core.js';
-import { FieldList }            from '../../../../src/lib/types/schema-types.js';
+import { idaeModelCore, FieldList } from '../../core/index.js';
 import type {
 	MachineModel,
 	MachineCollectionModel,

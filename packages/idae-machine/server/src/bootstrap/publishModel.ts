@@ -7,7 +7,7 @@
  * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { fkRef, FieldList } from '../../../src/lib/types/schema-types.js';
+import { fkRef, FieldList } from '../core/index.js';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
 import { ENGINE_BASE } from './seed/engineModel.js';

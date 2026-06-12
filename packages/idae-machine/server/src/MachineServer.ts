@@ -21,7 +21,7 @@ import { buildEngineModel } from './bootstrap/seed/engineModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import { orgContextMiddleware, getCurrentOrg } from './middleware/orgContext.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
-import type { ViewFields, ViewFieldDef } from '../../src/lib/types/schema-types.js';
+import type { ViewFields, ViewFieldDef } from '../../src/lib/types/entity-types.js';
 import { mcpServer } from './mcp/index.js';
 
 // Load domain actions — registers hooks for demo collections

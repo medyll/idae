@@ -1,4 +1,4 @@
-import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
+import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/entity-types.js';
 import type { MachineModel, MachineRightsPolicy } from '$lib/types/index.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];

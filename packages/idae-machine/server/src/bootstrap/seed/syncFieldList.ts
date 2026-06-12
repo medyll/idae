@@ -3,7 +3,7 @@
  *
  * Scans all model declarations, collects every field name, compares to FieldList.
  * For any name missing from FieldList: infers type + generates entry, then patches
- * src/lib/types/schema-types.ts in place.
+ * server/src/core/field-defs.ts in place.
  *
  * Usage:
  *   npx tsx server/src/bootstrap/seed/syncFieldList.ts [--dry-run] [--verbose]
@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 // ── Paths ──────────────────────────────────────────────────────────────────────
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
 const ROOT         = path.resolve(__dirname, '../../../..');
-const SCHEMA_TYPES = path.join(ROOT, 'src/lib/types/schema-types.ts');
+const FIELD_DEFS   = path.join(ROOT, 'server/src/core/field-defs.ts');
 
 // ── Args ───────────────────────────────────────────────────────────────────────
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -87,7 +87,7 @@ async function loadModels(): Promise<Set<string>> {
 	const all = new Set<string>();
 
 	// 1. Engine core
-	const { idaeModelCore } = await import('./idae-model-core.js');
+	const { idaeModelCore } = await import('../../core/index.js');
 	collectFields(idaeModelCore, all);
 
 	// 2. Any *Scheme.ts / *Model.ts in server/src/bootstrap/seed/ (future-proof)
@@ -95,7 +95,7 @@ async function loadModels(): Promise<Set<string>> {
 	const extras = fs.readdirSync(seedDir).filter(f =>
 		/\.(ts|js)$/.test(f) &&
 		!['syncFieldList.ts','syncFieldList.js','engineModel.ts','engineModel.js',
-		  'idae-model-core.ts','idae-model-core.js','schemaWalker.ts','schemaWalker.js',
+		  'schemaWalker.ts','schemaWalker.js',
 		  'schemaWalker.test.ts'].includes(f)
 	);
 	for (const file of extras) {
@@ -112,7 +112,7 @@ async function loadModels(): Promise<Set<string>> {
 
 // ── Load current FieldList keys from source (regex — no eval needed) ─────────
 function loadFieldListKeys(): Set<string> {
-	const src       = fs.readFileSync(SCHEMA_TYPES, 'utf8');
+	const src       = fs.readFileSync(FIELD_DEFS, 'utf8');
 	const declStart = src.indexOf('export const FieldList = {');
 	const closeIdx  = src.indexOf('\n} as const satisfies Record<string, Partial<AppSchemeField>>;', declStart);
 	if (declStart === -1 || closeIdx === -1) throw new Error('Could not locate FieldList declaration');
@@ -144,9 +144,9 @@ function generateEntry(name: string): string {
 	].join('\n');
 }
 
-// ── Patch schema-types.ts — insert before closing "};" of FieldList ──────────
-function patchSchemaTypes(entries: string[]): void {
-	const src        = fs.readFileSync(SCHEMA_TYPES, 'utf8');
+// ── Patch field-defs.ts — insert before closing "};" of FieldList ────────────
+function patchFieldDefs(entries: string[]): void {
+	const src        = fs.readFileSync(FIELD_DEFS, 'utf8');
 	const declStart  = src.indexOf('export const FieldList = {');
 	if (declStart === -1) throw new Error('Could not locate `export const FieldList = {` declaration');
 	const closeIdx   = src.indexOf('\n} as const satisfies Record<string, Partial<AppSchemeField>>;', declStart);
@@ -160,7 +160,7 @@ function patchSchemaTypes(entries: string[]): void {
 	].join('\n');
 
 	const patched = src.slice(0, closeIdx) + block + '\n' + src.slice(closeIdx + 1);
-	fs.writeFileSync(SCHEMA_TYPES, patched, 'utf8');
+	fs.writeFileSync(FIELD_DEFS, patched, 'utf8');
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -195,8 +195,8 @@ async function main() {
 	}
 
 	const entries = missing.map(generateEntry);
-	patchSchemaTypes(entries);
-	console.log(`[syncFieldList] Patched ${SCHEMA_TYPES}`);
+	patchFieldDefs(entries);
+	console.log(`[syncFieldList] Patched ${FIELD_DEFS}`);
 	console.log('[syncFieldList] Review added entries — fill in description fields as needed.');
 }
 

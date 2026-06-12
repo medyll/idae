@@ -6,7 +6,7 @@
 	import { API_URL } from '$lib/config.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import { deleteIdbDatabase } from '$lib/main/machineIdbAdapter.js';
-	import type { AppUser } from '$lib/types/schema-types.js';
+	import type { AppUser } from '$lib/types/entity-types.js';
 
 	const apiUrl = API_URL;
 	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };

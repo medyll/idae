@@ -3,8 +3,7 @@
  * Used to identify FK asymmetries and prepare for SCHEME_DRIFT resolution.
  */
 
-import { idaeModelCore } from './idae-model-core.js';
-import { FieldList } from '../../../../src/lib/types/schema-types.js';
+import { idaeModelCore, FieldList } from '../../core/index.js';
 
 /**
  * Node in the schema graph representing a collection.
