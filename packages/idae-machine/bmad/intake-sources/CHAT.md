@@ -75,7 +75,7 @@ Machine conventions:
 - Every collection carries `id` (auto-increment) **and** `code` (semantic string) — invariant.
 - **Relations live in `fks`, not `fields`.** FK key = target collection name. The value stored on the record is the target's `code` (FK code convention; `code = String(id)` fallback). No `*_id` columns in `fields`.
 - No `default` / `enum` on a field def. Defaults applied at seed/controller level; enumerated values are **catalog records** referenced via `fks`.
-- `base: 'machine_base'` injects system columns (`dateCreated`, `dateUpdated`, owner). Collections never redeclare timestamps. Order messages by the base-provided `dateCreated`.
+- `base` injects system columns (`dateCreated`, `dateUpdated`, owner) and maps to the physical DB `{org}_{base}`. Collections never redeclare timestamps; order messages by the base-provided `dateCreated`. **AI collections use the dedicated `base: 'machine_ai'`** (own DB, isolated from business `machine_base`) — every AI schema block below sets `machine_ai`.
 
 The runtime schema loads **from the server** (`machine.boot({ sync })`), so these definitions belong in the server org schema (`server/src/models/<org>/` + `server/src/migrate/mapping/`). The `src/lib/ai/schema/*.ts` fragments are reusable `MachineModel` partials the server scheme spreads in — not the live source.
 
@@ -94,7 +94,7 @@ Standard catalog shape (`id`, `code`, `name`, + role-specific fields). Defined o
 export const aiCatalogScheme: MachineModel = {
   // ── Provider ───────────────────────────────────────────────────────────
   ai_provider: {
-    keyPath: '++id', base: 'machine_base', isType: true,
+    keyPath: '++id', base: 'machine_ai', isType: true,
     fields: {
       id:          { type: 'id',   readonly: true },
       code:        { type: 'text', required: true },   // 'ollama' | 'anthropic' | 'mistral'
@@ -109,7 +109,7 @@ export const aiCatalogScheme: MachineModel = {
   // A model belongs to a provider. supports_tools drives agent eligibility
   // (schema-derived — there is NO regex model detection anywhere).
   ai_model: {
-    keyPath: '++id', base: 'machine_base', isType: true,
+    keyPath: '++id', base: 'machine_ai', isType: true,
     fields: {
       id:             { type: 'id',      readonly: true },
       code:           { type: 'text',    required: true },   // 'claude-sonnet-4-6' | 'mistral-large-latest' | 'llama3.1'
@@ -125,13 +125,13 @@ export const aiCatalogScheme: MachineModel = {
   },
 
   ai_mood: {
-    keyPath: '++id', base: 'machine_base', isType: true,
+    keyPath: '++id', base: 'machine_ai', isType: true,
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true } },
     fks: {}, template: { presentation: 'name' },
   },
 
   ai_voice: {
-    keyPath: '++id', base: 'machine_base', isType: true,
+    keyPath: '++id', base: 'machine_ai', isType: true,
     fields: {
       id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true },
       tone: { type: 'text' },   // property of the voice, not the companion
@@ -140,7 +140,7 @@ export const aiCatalogScheme: MachineModel = {
   },
 
   ai_specialization: {
-    keyPath: '++id', base: 'machine_base', isType: true,
+    keyPath: '++id', base: 'machine_ai', isType: true,
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true }, description: { type: 'text' } },
     fks: {}, template: { presentation: 'name' },
   },
@@ -150,7 +150,7 @@ export const aiCatalogScheme: MachineModel = {
   // system — execution authz stays in callTool/McpAuth (RBAC). This catalog only
   // carries the HITL flag and lets the UI render/filter tool metadata.
   ai_tool: {
-    keyPath: '++id', base: 'machine_base', isType: true,
+    keyPath: '++id', base: 'machine_ai', isType: true,
     fields: {
       id:   { type: 'id',   readonly: true },
       code: { type: 'text', required: true },   // MCP tool name, e.g. 'find' | 'update_by_id' | 'delete_by_id'
@@ -162,32 +162,32 @@ export const aiCatalogScheme: MachineModel = {
 
   // ── Extensibility catalogs (phase 2 engines read these) ────────────────
   ai_skill: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true }, description: { type: 'text' }, is_active: { type: 'boolean' } },
     fks: {}, template: { presentation: 'name code' },
   },
 
   ai_hook: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true }, event: { type: 'text' }, is_active: { type: 'boolean' } },
     fks: {}, template: { presentation: 'name event' },
   },
 
   // ── Status catalogs (isStatus → hasStatus capability, status UI) ────────
   ai_chat_session_status: {
-    keyPath: '++id', base: 'machine_base', isStatus: true,
+    keyPath: '++id', base: 'machine_ai', isStatus: true,
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true }, ordre: { type: 'number' }, color: { type: 'text' } },
     fks: {}, template: { presentation: 'name code ordre' },
   },
 
   ai_message_status: {
-    keyPath: '++id', base: 'machine_base', isStatus: true,
+    keyPath: '++id', base: 'machine_ai', isStatus: true,
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true }, ordre: { type: 'number' }, color: { type: 'text' } },
     fks: {}, template: { presentation: 'name code ordre' },
   },
 
   ai_tool_call_status: {
-    keyPath: '++id', base: 'machine_base', isStatus: true,
+    keyPath: '++id', base: 'machine_ai', isStatus: true,
     fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true }, ordre: { type: 'number' }, color: { type: 'text' } },
     fks: {}, template: { presentation: 'name code ordre' },
   },
@@ -238,7 +238,7 @@ import type { MachineModel } from '@medyll/idae-machine'
 
 export const aiCompanionScheme: MachineModel = {
   ai_companion: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: {
       id:            { type: 'id',     readonly: true },
       code:          { type: 'text',   required: true },
@@ -298,7 +298,7 @@ A chat session. Bound to one companion (`fks.ai_companion`), contains N messages
 // src/lib/ai/schema/ai-chat-session.ts — MachineModel partial
 export const aiChatSessionScheme: MachineModel = {
   ai_chat_session: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: {
       id:            { type: 'id',   readonly: true },
       code:          { type: 'text', required: true },
@@ -340,7 +340,7 @@ Individual message. `ai_message_status` drives streaming UI state. **Model actua
 // src/lib/ai/schema/ai-message.ts — MachineModel partial
 export const aiMessageScheme: MachineModel = {
   ai_message: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: {
       id:              { type: 'id',       readonly: true },
       code:            { type: 'text',     required: true },
@@ -396,7 +396,7 @@ Tool-execution log attached to an assistant message. **Phase 1** for agentic com
 // src/lib/ai/schema/ai-tool-call.ts — MachineModel partial
 export const aiToolCallScheme: MachineModel = {
   ai_tool_call: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: {
       id:         { type: 'id',       readonly: true },
       code:       { type: 'text',     required: true },
@@ -428,7 +428,7 @@ App-scoped catalog. Linked from `ai_chat_session` (and any future collection) vi
 // src/lib/ai/schema/tag.ts — MachineModel partial
 export const tagScheme: MachineModel = {
   tag: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: {
       id: { type: 'id', readonly: true }, code: { type: 'text', required: true }, name: { type: 'text', required: true },
       color: { type: 'text' }, icon: { type: 'text' }, order: { type: 'number' }, description: { type: 'text' },
@@ -448,7 +448,7 @@ Custom instructions auto-injected into the resolved system prompt (§2.2 order).
 // src/lib/ai/schema/ai-user-prompt.ts — MachineModel partial
 export const aiUserPromptScheme: MachineModel = {
   ai_user_prompt: {
-    keyPath: '++id', base: 'machine_base',
+    keyPath: '++id', base: 'machine_ai',
     fields: {
       id: { type: 'id', readonly: true }, code: { type: 'text', required: true },
       content: { type: 'textarea', required: true }, is_active: { type: 'boolean' }, locale: { type: 'text' },

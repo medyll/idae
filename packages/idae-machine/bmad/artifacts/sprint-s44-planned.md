@@ -26,6 +26,8 @@ Spec source: `bmad/intake-sources/CHAT.md` (§ references below are to that doc)
 
 **Context:** All AI collections are declared as `MachineModel` partials and spread into the server org schema (the runtime model loads from the server — `src/lib/ai/schema/*.ts` are reusable partials, **not** the live source). This story lands every collection with correct `fks`, `isType`/`isStatus` flags, and the **pivot fields** `collection` + `collectionId` on both `ai_chat_session` and `ai_message` (CHAT.md §2.2/§2.3 — the chat's anchor to a record of any collection).
 
+**HARD: every AI collection uses `base: 'machine_ai'`** — its own DB (`{org}_machine_ai`), isolated from business `machine_base`. Do NOT use `machine_base` for any AI collection. (CHAT.md §2 convention line.)
+
 **Files:**
 - `src/lib/ai/schema/ai-catalogs.ts` — `ai_provider`, `ai_model` (with `supports_tools`, `fks.ai_provider`), `ai_mood`, `ai_voice`, `ai_specialization`, `ai_tool` (with `hitl`), `ai_skill`, `ai_hook`, `ai_chat_session_status`, `ai_message_status`, `ai_tool_call_status`
 - `src/lib/ai/schema/ai-companion.ts` — `fks.ai_model` (required), no `model` field, no `ai_provider` FK
@@ -36,6 +38,7 @@ Spec source: `bmad/intake-sources/CHAT.md` (§ references below are to that doc)
 - `server/src/migrate/mapping/` + `server/src/models/<org>/` — spread the partials into the demo org schema
 
 **Acceptance criteria:**
+- Every AI collection sets `base: 'machine_ai'` (zero `machine_base` in AI schemas).
 - Every collection carries `id` + `code`; relations live in `fks` (target collection name = key), zero `*_id` columns in `fields`.
 - `ai_chat_session.fields.collection`, `ai_chat_session.fields.collectionId`, `ai_message.fields.collection`, `ai_message.fields.collectionId` present.
 - No `model` field anywhere — `ai_companion`/`ai_chat_session`/`ai_message` reference `fks.ai_model`.
