@@ -9,7 +9,7 @@ progress: 100
 last_updated: "2026-06-12"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S46-03 — POST /agent/:sessionId/confirm/:toolCallId: runs callTool for the pending ai_tool_call, updates status pending->running->done/error, resumes the loop to completion."
+next_action: "Implement S46-04 — Cancel flow: client sets ai_tool_call_status:'cancelled' before calling confirm route; route detects cancelled status, skips callTool, resumes loop with tool_result content 'Cancelled by user'."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "dev"
@@ -194,8 +194,29 @@ sprints:
           (res.end()) after relaying the tool_pending + done events.
       - id: S46-03
         title: "POST /agent/:sessionId/confirm/:toolCallId — runs callTool, pending→running→done/error, resumes loop"
-        status: pending
+        status: complete
         effort: M
+        completed_at: "2026-06-12"
+        tests_executed: true
+        test_output: "server/src/__tests__/agentRouter.test.ts: 15/15 (new confirm route: 3 cases — runs callTool + resumes loop, 404 missing ai_tool_call, 400 not-pending). Full server suite: 245/254 (9 skipped) across 31 files; 5 stable pre-existing module-resolution failures + 1 order-dependent flaky image/imagePresetRegistry failure (pre-existing, unrelated). typecheck (server): 16 pre-existing errors unchanged."
+        test_result: pass
+        detail: >
+          Extracted streamAgentTurn(res, req, provider, messages, tools, ctx,
+          sessionCode, auth, dataCtx) from the /send handler — shared SSE
+          loop + persistence (tool_result/tool_pending/final assistant
+          ai_message), used by both routes.
+          New POST /:sessionId/confirm/:toolCallId: looks up ai_tool_call by
+          code `${sessionId}-${toolCallId}` (404 if missing, 400 if status
+          != 'pending'), sets status 'running', runs callTool(ai_tool,
+          JSON.parse(args), auth, req), sets status 'done'/'error' with
+          result/error, patches the linked 'tool' ai_message's content with
+          the result. Rebuilds `messages` from history (user/assistant) then
+          appends the reconstructed suspended round — an assistant message
+          with toolCalls:[{id:toolCallId, name:ai_tool, input}] followed by
+          the tool result message — mirroring AgentLoop's non-HITL
+          messages.push, then calls streamAgentTurn to resume the loop to
+          completion (final assistant ai_message persisted normally since
+          suspended=false on a normal completion).
       - id: S46-04
         title: "Cancel flow — ai_tool_call_status:'cancelled', resume without executing"
         status: pending

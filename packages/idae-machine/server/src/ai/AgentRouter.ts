@@ -10,7 +10,8 @@
 
 import { Router, type Request, type Response } from 'express';
 import * as DataService from '../services/DataService.js';
-import { buildAuth, listToolDescriptors } from '../mcp/index.js';
+import type { DataServiceContext } from '../services/DataService.js';
+import { buildAuth, callTool, listToolDescriptors, type McpAuth } from '../mcp/index.js';
 import { runAgent } from './agent/AgentLoop.js';
 import { AnthropicProvider } from './agent/providers/AnthropicProvider.js';
 import { MistralProvider } from './agent/providers/MistralProvider.js';
@@ -87,39 +88,22 @@ function sseWrite(res: Response, event: Record<string, unknown>): void {
 	res.write(`data: ${JSON.stringify(event)}\n\n`);
 }
 
-router.post('/:sessionId/send', async (req: Request, res: Response) => {
-	const { content } = (req.body ?? {}) as { content?: string };
-	const sessionCode = req.params.sessionId;
-
-	const auth = await buildAuth(req);
-	const ctx = await resolveAgentContext(sessionCode);
-
-	if (!ctx.session) {
-		res.status(404).json({ error: `ai_chat_session '${sessionCode}' not found` });
-		return;
-	}
-
-	const provider = ctx.providerCode ? PROVIDERS[ctx.providerCode] : undefined;
-	if (!provider) {
-		res.status(400).json({ error: `No agent provider available for session '${sessionCode}'` });
-		return;
-	}
-
-	const dataCtx = { user: auth.user ?? undefined, audit: auth.audit };
-
-	await DataService.create(
-		'ai_message',
-		{ code: `${sessionCode}-${Date.now()}-user`, role: 'user', content, ai_chat_session: sessionCode },
-		dataCtx
-	);
-
-	const history = await DataService.list('ai_message', { filters: { ai_chat_session: sessionCode }, sort: { dateCreated: 1 } });
-	const messages: NormalizedMessage[] = history.data
-		.filter((m: any) => m.role === 'user' || m.role === 'assistant')
-		.map((m: any) => ({ role: m.role, content: m.content ?? '' }));
-
-	const tools = await buildTools(ctx.eligible);
-
+/**
+ * Runs one agent turn over SSE and persists the resulting events — shared by
+ * POST /:sessionId/send and POST /:sessionId/confirm/:toolCallId (S46-03),
+ * the latter resuming the loop with the tool result appended to `messages`.
+ */
+async function streamAgentTurn(
+	res: Response,
+	req: Request,
+	provider: AgentProvider,
+	messages: NormalizedMessage[],
+	tools: NormalizedTool[],
+	ctx: AgentContext,
+	sessionCode: string,
+	auth: McpAuth,
+	dataCtx: DataServiceContext
+): Promise<void> {
 	res.setHeader('Content-Type', 'text/event-stream');
 	res.setHeader('Cache-Control', 'no-cache');
 	res.setHeader('Connection', 'keep-alive');
@@ -222,6 +206,119 @@ router.post('/:sessionId/send', async (req: Request, res: Response) => {
 	}
 
 	res.end();
+}
+
+router.post('/:sessionId/send', async (req: Request, res: Response) => {
+	const { content } = (req.body ?? {}) as { content?: string };
+	const sessionCode = req.params.sessionId;
+
+	const auth = await buildAuth(req);
+	const ctx = await resolveAgentContext(sessionCode);
+
+	if (!ctx.session) {
+		res.status(404).json({ error: `ai_chat_session '${sessionCode}' not found` });
+		return;
+	}
+
+	const provider = ctx.providerCode ? PROVIDERS[ctx.providerCode] : undefined;
+	if (!provider) {
+		res.status(400).json({ error: `No agent provider available for session '${sessionCode}'` });
+		return;
+	}
+
+	const dataCtx = { user: auth.user ?? undefined, audit: auth.audit };
+
+	await DataService.create(
+		'ai_message',
+		{ code: `${sessionCode}-${Date.now()}-user`, role: 'user', content, ai_chat_session: sessionCode },
+		dataCtx
+	);
+
+	const history = await DataService.list('ai_message', { filters: { ai_chat_session: sessionCode }, sort: { dateCreated: 1 } });
+	const messages: NormalizedMessage[] = history.data
+		.filter((m: any) => m.role === 'user' || m.role === 'assistant')
+		.map((m: any) => ({ role: m.role, content: m.content ?? '' }));
+
+	const tools = await buildTools(ctx.eligible);
+
+	await streamAgentTurn(res, req, provider, messages, tools, ctx, sessionCode, auth, dataCtx);
+});
+
+/**
+ * Resume after a HITL `pending` tool call (§13-14). Runs callTool for the
+ * pending ai_tool_call (pending -> running -> done/error), patches the linked
+ * 'tool' ai_message with the result, then resumes the agent loop with the
+ * tool result appended to the conversation.
+ */
+router.post('/:sessionId/confirm/:toolCallId', async (req: Request, res: Response) => {
+	const sessionCode = req.params.sessionId;
+	const toolCallId = req.params.toolCallId;
+	const toolCallCode = `${sessionCode}-${toolCallId}`;
+
+	const auth = await buildAuth(req);
+	const ctx = await resolveAgentContext(sessionCode);
+
+	if (!ctx.session) {
+		res.status(404).json({ error: `ai_chat_session '${sessionCode}' not found` });
+		return;
+	}
+
+	const provider = ctx.providerCode ? PROVIDERS[ctx.providerCode] : undefined;
+	if (!provider) {
+		res.status(400).json({ error: `No agent provider available for session '${sessionCode}'` });
+		return;
+	}
+
+	const { data: toolCalls } = await DataService.list('ai_tool_call', { filters: { code: toolCallCode }, limit: 1 });
+	const toolCall = toolCalls[0];
+	if (!toolCall) {
+		res.status(404).json({ error: `ai_tool_call '${toolCallCode}' not found` });
+		return;
+	}
+	if (toolCall.ai_tool_call_status !== 'pending') {
+		res.status(400).json({ error: `ai_tool_call '${toolCallCode}' is not pending (status: ${toolCall.ai_tool_call_status})` });
+		return;
+	}
+
+	const dataCtx = { user: auth.user ?? undefined, audit: auth.audit };
+	const toolCallRecordId = String(toolCall._id ?? toolCall.id);
+
+	await DataService.updateById('ai_tool_call', toolCallRecordId, { ai_tool_call_status: 'running' }, dataCtx);
+
+	const input = toolCall.args ? JSON.parse(toolCall.args) : {};
+	const result = await callTool(toolCall.ai_tool, input, auth, req);
+	const content = JSON.stringify(result.content);
+
+	await DataService.updateById(
+		'ai_tool_call',
+		toolCallRecordId,
+		{
+			ai_tool_call_status: result.isError ? 'error' : 'done',
+			result: result.isError ? undefined : content,
+			error: result.isError ? content : undefined,
+		},
+		dataCtx
+	);
+
+	const { data: toolMessages } = await DataService.list('ai_message', { filters: { code: toolCallCode }, limit: 1 });
+	const toolMessage = toolMessages[0];
+	if (toolMessage) {
+		await DataService.updateById('ai_message', String(toolMessage._id ?? toolMessage.id), { content }, dataCtx);
+	}
+
+	const history = await DataService.list('ai_message', { filters: { ai_chat_session: sessionCode }, sort: { dateCreated: 1 } });
+	const messages: NormalizedMessage[] = history.data
+		.filter((m: any) => m.role === 'user' || m.role === 'assistant')
+		.map((m: any) => ({ role: m.role, content: m.content ?? '' }));
+
+	// Reconstruct the suspended round: assistant requested the tool, tool
+	// resolved with `content` — mirrors AgentLoop's non-HITL messages.push.
+	messages.push({ role: 'assistant', content: '', toolCalls: [{ id: toolCallId, name: toolCall.ai_tool, input }] });
+	messages.push({ role: 'tool', toolCallId, content, isError: result.isError });
+
+	const tools = await buildTools(ctx.eligible);
+
+	await streamAgentTurn(res, req, provider, messages, tools, ctx, sessionCode, auth, dataCtx);
 });
 
 export { router as AgentRouter };

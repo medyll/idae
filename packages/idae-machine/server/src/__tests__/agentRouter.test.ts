@@ -7,6 +7,7 @@ const createMock = vi.fn();
 const updateByIdMock = vi.fn();
 const buildAuthMock = vi.fn();
 const listToolDescriptorsMock = vi.fn();
+const callToolMock = vi.fn();
 const runAgentMock = vi.fn();
 
 vi.mock('../services/DataService.js', () => ({
@@ -18,6 +19,7 @@ vi.mock('../services/DataService.js', () => ({
 vi.mock('../mcp/index.js', () => ({
 	buildAuth: (...args: unknown[]) => buildAuthMock(...args),
 	listToolDescriptors: (...args: unknown[]) => listToolDescriptorsMock(...args),
+	callTool: (...args: unknown[]) => callToolMock(...args),
 }));
 
 vi.mock('../ai/agent/AgentLoop.js', () => ({
@@ -273,5 +275,94 @@ describe('POST /agent/:sessionId/send', () => {
 
 		// no final assistant ai_message — the turn is suspended pending confirm/cancel
 		expect(createMock).not.toHaveBeenCalledWith('ai_message', expect.objectContaining({ role: 'assistant' }), expect.anything());
+	});
+});
+
+describe('POST /agent/:sessionId/confirm/:toolCallId', () => {
+	beforeEach(() => {
+		listMock.mockReset();
+		createMock.mockReset();
+		updateByIdMock.mockReset();
+		buildAuthMock.mockReset();
+		runAgentMock.mockReset();
+		listToolDescriptorsMock.mockReset();
+		callToolMock.mockReset();
+
+		buildAuthMock.mockResolvedValue(auth);
+		createMock.mockResolvedValue({ _id: 'mock-id' });
+		updateByIdMock.mockResolvedValue({});
+		listToolDescriptorsMock.mockReturnValue([
+			{ name: 'find', description: 'find records', inputSchema: { type: 'object' } },
+			{ name: 'delete_by_id', description: 'delete a record', inputSchema: { type: 'object' } },
+		]);
+	});
+
+	it('runs callTool for the pending ai_tool_call, marks done, and resumes the loop', async () => {
+		listMock.mockImplementation(async (table: string, opts: any) => {
+			if (table === 'ai_chat_session') return { data: [{ code: 'sess-6', ai_companion: 'comp-1', ai_model: 'claude-sonnet-4-6', system_prompt: 'You are helpful.' }] };
+			if (table === 'ai_model') return { data: [{ code: 'claude-sonnet-4-6', ai_provider: 'anthropic', supports_tools: true }] };
+			if (table === 'ai_tool') return { data: [] };
+			if (table === 'ai_tool_call') return { data: [{ _id: 'tc-1', code: 'sess-6-toolu_3', ai_tool: 'delete_by_id', args: JSON.stringify({ collection: 'vehicle', id: 1 }), ai_tool_call_status: 'pending' }] };
+			if (table === 'ai_message') {
+				if (opts?.filters?.code === 'sess-6-toolu_3') return { data: [{ _id: 'msg-1', code: 'sess-6-toolu_3', role: 'tool', content: '' }] };
+				return { data: [] };
+			}
+			return { data: [] };
+		});
+		callToolMock.mockResolvedValue({ content: [{ type: 'text', text: 'Deleted vehicle 1' }] });
+		runAgentMock.mockReturnValue(fakeAgentEvents([{ type: 'text', delta: 'Done, deleted.' }, { type: 'done' }]));
+
+		const res = await request(buildApp()).post('/agent/sess-6/confirm/toolu_3').send({});
+
+		expect(res.status).toBe(200);
+		expect(res.text).toContain('Done, deleted.');
+		expect(res.text).toContain('"type":"done"');
+
+		expect(callToolMock).toHaveBeenCalledWith('delete_by_id', { collection: 'vehicle', id: 1 }, auth, expect.anything());
+
+		expect(updateByIdMock).toHaveBeenCalledWith('ai_tool_call', 'tc-1', { ai_tool_call_status: 'running' }, expect.anything());
+		expect(updateByIdMock).toHaveBeenCalledWith('ai_tool_call', 'tc-1', expect.objectContaining({
+			ai_tool_call_status: 'done',
+			result: JSON.stringify([{ type: 'text', text: 'Deleted vehicle 1' }]),
+		}), expect.anything());
+		expect(updateByIdMock).toHaveBeenCalledWith('ai_message', 'msg-1', { content: JSON.stringify([{ type: 'text', text: 'Deleted vehicle 1' }]) }, expect.anything());
+
+		// resumes the loop with the reconstructed assistant tool_call + tool result appended
+		const [, opts] = runAgentMock.mock.calls[0];
+		expect(opts.messages.at(-2)).toEqual({ role: 'assistant', content: '', toolCalls: [{ id: 'toolu_3', name: 'delete_by_id', input: { collection: 'vehicle', id: 1 } }] });
+		expect(opts.messages.at(-1)).toEqual({ role: 'tool', toolCallId: 'toolu_3', content: JSON.stringify([{ type: 'text', text: 'Deleted vehicle 1' }]), isError: undefined });
+
+		// final assistant reply persisted — the resumed turn completed normally
+		expect(createMock).toHaveBeenCalledWith('ai_message', expect.objectContaining({ role: 'assistant', content: 'Done, deleted.', ai_chat_session: 'sess-6' }), expect.anything());
+	});
+
+	it('404s when the ai_tool_call does not exist', async () => {
+		listMock.mockImplementation(async (table: string) => {
+			if (table === 'ai_chat_session') return { data: [{ code: 'sess-7', ai_companion: 'comp-1', ai_model: 'claude-sonnet-4-6' }] };
+			if (table === 'ai_model') return { data: [{ code: 'claude-sonnet-4-6', ai_provider: 'anthropic', supports_tools: true }] };
+			if (table === 'ai_tool_call') return { data: [] };
+			return { data: [] };
+		});
+
+		const res = await request(buildApp()).post('/agent/sess-7/confirm/toolu_missing').send({});
+
+		expect(res.status).toBe(404);
+		expect(callToolMock).not.toHaveBeenCalled();
+		expect(runAgentMock).not.toHaveBeenCalled();
+	});
+
+	it('400s when the ai_tool_call is not pending', async () => {
+		listMock.mockImplementation(async (table: string) => {
+			if (table === 'ai_chat_session') return { data: [{ code: 'sess-8', ai_companion: 'comp-1', ai_model: 'claude-sonnet-4-6' }] };
+			if (table === 'ai_model') return { data: [{ code: 'claude-sonnet-4-6', ai_provider: 'anthropic', supports_tools: true }] };
+			if (table === 'ai_tool_call') return { data: [{ _id: 'tc-2', code: 'sess-8-toolu_4', ai_tool: 'delete_by_id', args: '{}', ai_tool_call_status: 'done' }] };
+			return { data: [] };
+		});
+
+		const res = await request(buildApp()).post('/agent/sess-8/confirm/toolu_4').send({});
+
+		expect(res.status).toBe(400);
+		expect(callToolMock).not.toHaveBeenCalled();
+		expect(runAgentMock).not.toHaveBeenCalled();
 	});
 });
