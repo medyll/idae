@@ -139,7 +139,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         internalValue = val;
     }
 </script>
-
+ 
 
 {#snippet fieldShow()}
     <div class="flex w-48 gap-2">
@@ -151,7 +151,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
             {:else if fieldForge?.fieldType === 'icon'}
                 <InputIcon value={internalValue as string} mode="show" />
             {:else}
-                {fieldForge?.format}
+                {fieldForge?.format} 
             {/if}
         </div>
     </div>

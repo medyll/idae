@@ -675,7 +675,7 @@ export const FieldList = {
 	icon:              {
 		code:        'icon',
 		name:        'icon',
-		type:        'text',
+		type:        'icon',
 		group:       'presentation',
 		description: 'Graphical symbol name or reference'
 	},
