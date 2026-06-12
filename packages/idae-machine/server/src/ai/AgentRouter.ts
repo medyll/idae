@@ -208,7 +208,7 @@ async function streamAgentTurn(
 	res.end();
 }
 
-router.post('/:sessionId/send', async (req: Request, res: Response) => {
+router.post('/:sessionId/send', async (req: Request<{ sessionId: string }>, res: Response) => {
 	const { content } = (req.body ?? {}) as { content?: string };
 	const sessionCode = req.params.sessionId;
 
@@ -250,7 +250,7 @@ router.post('/:sessionId/send', async (req: Request, res: Response) => {
  * 'tool' ai_message with the result, then resumes the agent loop with the
  * tool result appended to the conversation.
  */
-router.post('/:sessionId/confirm/:toolCallId', async (req: Request, res: Response) => {
+router.post('/:sessionId/confirm/:toolCallId', async (req: Request<{ sessionId: string; toolCallId: string }>, res: Response) => {
 	const sessionCode = req.params.sessionId;
 	const toolCallId = req.params.toolCallId;
 	const toolCallCode = `${sessionCode}-${toolCallId}`;

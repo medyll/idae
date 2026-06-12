@@ -106,7 +106,7 @@ function handleServiceError(err: unknown, res: Response): boolean {
  * Get list of records with pagination
  * GET /api/data/:table
  */
-export async function listRecords(req: Request, res: Response): Promise<void> {
+export async function listRecords(req: Request<{ table: string }>, res: Response): Promise<void> {
 	try {
 		const { table } = req.params;
 		const { page, limit, skip } = parsePagination(req);
@@ -126,7 +126,7 @@ export async function listRecords(req: Request, res: Response): Promise<void> {
  * Get single record by ID
  * GET /api/data/:table/:id
  */
-export async function getRecord(req: Request, res: Response): Promise<void> {
+export async function getRecord(req: Request<{ table: string; id: string }>, res: Response): Promise<void> {
 	try {
 		const { table, id } = req.params;
 		const record = await DataService.getById(table, id);
@@ -142,7 +142,7 @@ export async function getRecord(req: Request, res: Response): Promise<void> {
  * Create new record with broadcast
  * POST /api/data/:table
  */
-export async function createRecord(req: Request, res: Response): Promise<void> {
+export async function createRecord(req: Request<{ table: string }>, res: Response): Promise<void> {
 	try {
 		const { table } = req.params;
 		const record = await DataService.create(table, req.body, { user: req.user, audit: extractAuditContext(req) });
@@ -158,7 +158,7 @@ export async function createRecord(req: Request, res: Response): Promise<void> {
  * Update existing record with broadcast
  * PUT /api/data/:table/:id
  */
-export async function updateRecord(req: Request, res: Response): Promise<void> {
+export async function updateRecord(req: Request<{ table: string; id: string }>, res: Response): Promise<void> {
 	try {
 		const { table, id } = req.params;
 		const record = await DataService.updateById(table, id, req.body, { user: req.user, audit: extractAuditContext(req) });
@@ -175,7 +175,7 @@ export async function updateRecord(req: Request, res: Response): Promise<void> {
  * DELETE /api/data/:table/:id
  * Soft delete by default, permanent with ?permanent=true
  */
-export async function deleteRecord(req: Request, res: Response): Promise<void> {
+export async function deleteRecord(req: Request<{ table: string; id: string }>, res: Response): Promise<void> {
 	try {
 		const { table, id } = req.params;
 		const permanent = req.query.permanent === 'true';
@@ -192,7 +192,7 @@ export async function deleteRecord(req: Request, res: Response): Promise<void> {
  * Restore a soft-deleted record
  * PATCH /api/data/:table/:id/restore
  */
-export async function restoreRecord(req: Request, res: Response): Promise<void> {
+export async function restoreRecord(req: Request<{ table: string; id: string }>, res: Response): Promise<void> {
 	try {
 		const { table, id } = req.params;
 		const record = await DataService.restoreById(table, id, { user: req.user, audit: extractAuditContext(req) });

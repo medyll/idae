@@ -51,7 +51,7 @@ export class OllamaService {
       throw new Error(`Ollama API error: ${res.status} ${res.statusText}`)
     }
 
-    const data = await res.json()
-    return data.models?.map((m: any) => m.name) || []
+    const data = (await res.json()) as { models?: Array<{ name: string }> }
+    return data.models?.map((m) => m.name) || []
   }
 }

@@ -8,3 +8,9 @@ onlyBuiltDependencies:
   - esbuild
 overrides:
   '@medyll/css-base': link:../css-base
+  # Unify express types on v5 across the workspace. idae-api/idae-socket already run
+  # express 5; only idae-machine-server lagged on v4 types, which clashed with
+  # idaeApi.app (v5 Application) → TS2769 on every route handler. Server runtime stays
+  # express@4 (no v5-removed API used). Single @types version = no dual-resolution.
+  '@types/express': ^5.0.6
+  '@types/express-serve-static-core': ^5.1.1

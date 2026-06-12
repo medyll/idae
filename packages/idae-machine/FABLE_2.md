@@ -201,27 +201,44 @@ Skills slash-commands (`ai_skill`), hooks pre-send/post-receive (`ai_hook` + `ho
 
 « MachineDb reactive from IDB:appscheme » — les collections émergent du sync au lieu du modèle TS au boot. C'est **la** décision d'architecture restante (ownership du modèle runtime). À écrire via bmad-adr avant tout sprint qui la toucherait ; elle conditionne aussi le chantier CMS (le schéma public-render en dépend).
 
-### Phase 4' — CMS public render (taille XL, horizon inchangé)
+### Backlog très froid (horizon lointain — ne pas annoncer comme phase)
 
-Les 6 chantiers (URL builder, SSR, theming, split public/admin, primitives de contenu, cache) — toujours fermés tant que Phases 0'–1' ne sont pas closes. Position FABLE inchangée : ce chantier paie chaque % manquant du socle.
-
-### Backlog froid (inchangé + ajouts)
-
-`editInPlace`, `DataFind` avancé, `rightBar` reconstruction, MODELS_AUDIT à étendre (sive/latent), pipeline audio AI, wollama (CHAT.md Phase 3), validation mécanique des 22 org models (test itérant `BaseFieldDef`).
+- **CMS public render** (taille XL) — les 6 chantiers (URL builder public, SSR, theming, split public/admin, primitives de contenu, cache de pages). Trop loin pour être une « phase » : c'est l'horizon, pas la route. Il consomme le socle et conditionne BL-05 (Phase 3'). À ne rouvrir que quand le socle + l'AI sont stables ET que BL-05 est tranché.
+- `editInPlace`, `DataFind` avancé, `rightBar` reconstruction.
+- MODELS_AUDIT à étendre (sive/latent), pipeline audio AI, wollama (CHAT.md Phase 3).
+- Validation mécanique des 22 org models (test itérant `BaseFieldDef`) — aurait attrapé sive.
 
 ---
 
-## 6. Vue d'ensemble
+## 6. Sortir de la boucle — le mécanisme, pas la bonne volonté
+
+> Question posée : « que proposes-tu pour ne pas retomber dans la même boucle ? »
+
+La boucle = `status.yaml` dit vert, la réalité est rouge, parce que **rien ne relie le tableau de bord à une mesure**. La checklist CLAUDE.md §7 est déclarative : sous 30 commits en 2 jours, un humain (ou un agent) ne relance pas 4 suites à la main. La bonne volonté a déjà échoué deux fois (FABLE puis FABLE_2). Il faut un **mécanisme qui bloque**, à 3 niveaux du moins contraignant au plus :
+
+1. **`pnpm run gate`** (créé en Phase 0', 2026-06-12) — un script unique = `check` + `test` client + `typecheck` + `test` serveur. Une commande, un verdict. Plus d'excuse « j'ai oublié la suite serveur ». C'est le socle des deux niveaux suivants.
+
+2. **Hook git `pre-push`** — exécute `gate`, refuse le push si rouge. Le bon grain : `pre-commit` est trop lourd (svelte-check + 2 suites = lent à chaque commit, les gens le `--no-verify`) ; `pre-push` ne tourne qu'au moment de partager, là où le coût d'un rouge devient public. C'est **le** verrou qui aurait empêché les sprints 44–47 de pousser rouge.
+
+3. **`status.yaml` dérivé, pas asserté** — `progress: 100` / `phase: release` ne doivent plus être écrits à la main. Un petit script écrit le résultat de `gate` dans `status.yaml` (date + verdict + compte d'erreurs). Le dashboard cesse de mentir parce qu'il **mesure** au lieu de **déclarer**. Tant que `gate` n'est pas vert, `phase: release` est mécaniquement interdit.
+
+**Definition-of-Done bmad** = `gate` vert + `status.yaml` régénéré. Un sprint n'est pas « complete + tested » au sens des tests de story ; il l'est au sens du projet entier. Les deux métriques doivent coexister, et c'est la seconde qui ferme un sprint.
+
+Ordre d'adoption : (1) déjà fait ; (2) le prochain commit ; (3) avec la resynchro status.yaml de fin de Phase 0'.
+
+---
+
+## 7. Vue d'ensemble
 
 ```
-Phase 0' (gate vert + publiable)
+Phase 0' (gate vert + publiable + pre-push hook)
    │
    ├──► Phase 1' (AI consolidé)  ──►  Phase 2' (CHAT.md Phase 2)
    │
-   └──► Phase 3' (ADR BL-05) ────────►  Phase 4' (CMS public render)
-                 [décision écrite, débloque le backlog long terme]
+   └──► Phase 3' (ADR BL-05)
+                 [décision écrite — débloque le backlog très froid : CMS public render]
 ```
 
-**Prochain pas concret** : Phase 0', premier item — remplacer les 7 self-imports dans `src/lib/ai/schema/*.ts`. Trente minutes, et `pnpm run check` redevient un signal.
+**Prochain pas concret** : finir Phase 0' (hook pre-push + status.yaml dérivé), puis Phase 1' item 1 — trancher le dual-source schéma AI (§3.1.1).
 
-**Leçon de fond de cet audit** : le projet sait maintenant fermer des fronts (4 phases FABLE + MCP v2 + AI en 2 jours), mais ne sait pas encore **garder** le vert. Le passage au bmad complet doit embarquer le `gate` comme contrainte de protocole, sinon FABLE_3 redira la même chose.
+**Leçon de fond** : le projet sait fermer des fronts (4 phases FABLE + MCP v2 + AI en 2 jours), mais pas encore **garder** le vert. La réponse n'est pas « être plus discipliné » — ça a échoué deux fois — c'est un verrou mécanique (`gate` + `pre-push` + dashboard mesuré). Sans lui, FABLE_3 redira mot pour mot la même chose.

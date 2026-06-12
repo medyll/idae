@@ -23,6 +23,7 @@
 8. **Reads go through `machine.store` (reactive); `machine.collection` is imperative CRUD only.** Mixing them can hit different qoolie instances → stale/empty reads.
 9. A frame host that is **content-driven** (auto-sized, e.g. floating `Dialog`) must call `createHost(target, { fill: false })`. Default `fill:true` (absolute inset:0) only works inside a **sized** zone.
 10. `machine.store(name)` returns `{ records: ResultSet<T> }` — `records` is a **getter**, on purpose. **Never** "simplify" it to a bare value (`{ records: src.items }`), a returned array, or a Proxy. The underlying qoolie `$state` binding is *reassigned* on every change, and the read must happen inside the consumer's reactive frame to be tracked. Eager/flattened/Proxy variants silently break reactivity (a common LLM mis-refactor). Read = `machine.store`; `machine.collection` returns the same `ResultSet` API but **non-reactive** (imperative CRUD).
+11. **Never import a `src/` file via the package's own name** (`from '@medyll/idae-machine'`). Always use `$lib/...` or a relative path. A self-import resolves through `package.json` exports → `dist/`, so `svelte-check` (allowJs+checkJs) ends up type-checking the **compiled JS in dist**, producing dozens of phantom errors far from the offending source. Type imports too (`import type { MachineModel } from '$lib/types/index.js'`). Caught FABLE_2 2026-06-12: 7 `src/lib/ai/schema/*.ts` files self-imported → 32 `check` errors all pointing at `dist/main/machine.js`.
 
 ---
 

@@ -1,4 +1,4 @@
-import type { MachineModel } from '@medyll/idae-machine'
+import type { MachineModel } from '$lib/types/index.js'
 
 export const aiCompanionScheme: MachineModel = {
   ai_companion: {
