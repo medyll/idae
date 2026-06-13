@@ -1,25 +1,25 @@
 # BMAD Status — idae-machine v2
 # Archive sprints S1-S33: bmad/archive/status-archive-s01-s33.yaml
-# last_updated: 2026-06-13
+# last_updated: 2026-06-14
 
 # ── Core Identity ─────────────────────────────────────────────────────────────
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-13"
+last_updated: "2026-06-14"
 
 # ── Gate (measured, not asserted) ─────────────────────────────────────────────
 # Run `pnpm run gate` (check + client test + server typecheck + server test).
-# Tant que gate n'est pas vert, phase: release est interdit. Mesuré 2026-06-13.
+# Tant que gate n'est pas vert, phase: release est interdit. Mesuré 2026-06-14.
 gate:
   command: "pnpm run gate"
-  last_run: "2026-06-13"
+  last_run: "2026-06-14"
   status: green
   check_client: "0 errors"
   test_client: "590/590"
   typecheck_server: "0 errors"
   test_server: "303/303"
-  build_publint: "1 error — @medyll/css-base link: (intentional monorepo dev link, not a release blocker until publish)"
+  build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
 next_action: "FABLE_2 Phase 0' DONE 2026-06-13 (gate vert: self-imports ai/schema → \$lib, sive orphan supprimé, @types/express unifié v5 workspace + handler params typés, bin add-skill retiré, pnpm run gate créé, flaky serveur files/image fixé via fileParallelism:false, hook pre-push ADVISORY non-bloquant via .githooks/core.hooksPath). NEXT: FABLE_2 Phase 1' item 1 — trancher dual-source schéma AI (§3.1.1, recommandation: supprimer copies client)."
