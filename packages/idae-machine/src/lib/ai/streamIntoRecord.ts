@@ -1,4 +1,4 @@
-import type { ApiClient } from '@medyll/idae-api';
+import type { IdaeApiClient } from '@medyll/idae-api/client';
 
 /**
  * Stream an SSE endpoint, accumulating chunks into a single string.
@@ -37,10 +37,10 @@ export async function streamIntoRecord({
   onChunk?: (chunk: string) => void;
   onFlush?: (accumulated: string) => void | Promise<void>;
   pick?: (data: any) => string;
-  apiClient?: ApiClient;
+  apiClient?: IdaeApiClient;
 }): Promise<string> {
-  // Use provided apiClient or create a default one
-  const client = apiClient || new (await import('@medyll/idae-api')).ApiClient();
+  // Use provided apiClient or create a default one (browser-safe client entry)
+  const client = apiClient || new (await import('@medyll/idae-api/client')).IdaeApiClient();
 
   let accumulated = '';
   let flushTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -61,26 +61,21 @@ export async function streamIntoRecord({
   };
 
   try {
-    await client.stream({
-      slug,
-      body,
-      signal,
-      onData: (data: any) => {
-        // Extract chunk from the SSE data
-        let chunk = typeof data === 'string' ? data : data.chunk;
-        if (pick) {
-          chunk = pick(data);
+    for await (const data of client.stream({ slug, body, signal, method: 'POST' })) {
+      // Extract chunk from the SSE data
+      let chunk = typeof data === 'string' ? data : (data as any).chunk;
+      if (pick) {
+        chunk = pick(data);
+      }
+
+      if (chunk) {
+        accumulated += chunk;
+        if (onChunk) {
+          onChunk(chunk);
         }
-        
-        if (chunk) {
-          accumulated += chunk;
-          if (onChunk) {
-            onChunk(chunk);
-          }
-          scheduleFlush();
-        }
-      },
-    });
+        scheduleFlush();
+      }
+    }
 
     // Final flush after stream completes
     if (flushTimeout) clearTimeout(flushTimeout);

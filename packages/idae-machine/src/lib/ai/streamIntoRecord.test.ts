@@ -1,57 +1,41 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
+import type { IdaeApiClient } from '@medyll/idae-api/client';
 import { streamIntoRecord } from './streamIntoRecord.js';
 
-// Mock ApiClient
+// Minimal mock matching IdaeApiClient.stream() — an async generator (pull model).
+// Cast to IdaeApiClient at call sites; we only exercise stream().
 class MockApiClient {
-  async stream({ onData, signal }: { onData: (data: any) => void; signal?: AbortSignal }) {
-    // Simulate streaming chunks
+  async *stream({ signal }: { signal?: AbortSignal }) {
     const chunks = ['Hello', ' ', 'world', '!', ' How', ' are', ' you', '?'];
-    
-    // Use promise to handle async completion
-    return new Promise((resolve, reject) => {
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < chunks.length) {
-          onData({ chunk: chunks[i++] });
-        } else {
-          clearInterval(interval);
-          resolve({ ok: true });
-        }
-      }, 1);
-      
-      // Handle abort
-      if (signal) {
-        signal.addEventListener('abort', () => {
-          clearInterval(interval);
-          reject(new DOMException('Aborted', 'AbortError'));
-        });
-      }
-    });
+    for (const chunk of chunks) {
+      if (signal?.aborted) throw new DOMException('Aborted', 'AbortError');
+      await new Promise((r) => setTimeout(r, 1));
+      yield { chunk };
+    }
   }
 }
 
-describe('streamIntoRecord', () => {
-  // Note: Not using fake timers because setInterval doesn't work well with them
-  // for streaming simulations. Using real timers with appropriate timeouts.
+const asClient = (m: { stream: unknown }) => m as unknown as IdaeApiClient;
 
+describe('streamIntoRecord', () => {
   it('should accumulate chunks and return final string', async () => {
     const result = await streamIntoRecord({
       slug: '/test',
       body: {},
-      apiClient: new MockApiClient(),
+      apiClient: asClient(new MockApiClient()),
       flushMs: 100,
     });
 
     expect(result).toBe('Hello world! How are you?');
-  }, 2000); // 2s timeout for 8 chunks at 1ms interval
+  }, 2000);
 
   it('should call onChunk callback for each chunk', async () => {
     const onChunk = vi.fn();
-    
+
     await streamIntoRecord({
       slug: '/test',
       body: {},
-      apiClient: new MockApiClient(),
+      apiClient: asClient(new MockApiClient()),
       onChunk,
       flushMs: 100,
     });
@@ -61,59 +45,53 @@ describe('streamIntoRecord', () => {
   }, 2000);
 
   it('should handle abort signal', async () => {
-    // Use a slower mock for abort testing
+    // Slower generator that rejects its pending delay on abort.
     class SlowMockApiClient {
-      async stream({ onData, signal }: { onData: (data: any) => void; signal?: AbortSignal }) {
-        return new Promise((resolve, reject) => {
-          const chunks = ['Hello', ' ', 'world', '!', ' How'];
-          let i = 0;
-          const interval = setInterval(() => {
-            if (i < chunks.length) {
-              onData({ chunk: chunks[i++] });
-            } else {
-              clearInterval(interval);
-              resolve({ ok: true });
-            }
-          }, 50); // Slower interval
-          
-          if (signal) {
-            signal.addEventListener('abort', () => {
-              clearInterval(interval);
-              reject(new DOMException('Aborted', 'AbortError'));
-            });
-          }
-        });
+      async *stream({ signal }: { signal?: AbortSignal }) {
+        const chunks = ['Hello', ' ', 'world', '!', ' How'];
+        for (const chunk of chunks) {
+          await new Promise<void>((res, rej) => {
+            const t = setTimeout(res, 50);
+            signal?.addEventListener(
+              'abort',
+              () => {
+                clearTimeout(t);
+                rej(new DOMException('Aborted', 'AbortError'));
+              },
+              { once: true },
+            );
+          });
+          yield { chunk };
+        }
       }
     }
-    
+
     const controller = new AbortController();
-    
+
     const promise = streamIntoRecord({
       slug: '/test',
       body: {},
-      apiClient: new SlowMockApiClient(),
+      apiClient: asClient(new SlowMockApiClient()),
       signal: controller.signal,
       flushMs: 100,
     });
-    
-    // Abort quickly before stream completes
+
     setTimeout(() => controller.abort(), 100);
-    
+
     await expect(promise).rejects.toThrow('Aborted');
   }, 1000);
 
   it('should use pick function to extract chunk', async () => {
     class CustomMockApiClient {
-      async stream({ onData }: { onData: (data: any) => void }) {
-        onData({ data: 'test', chunk: 'raw' });
-        return { ok: true };
+      async *stream() {
+        yield { data: 'test', chunk: 'raw' };
       }
     }
-    
+
     const result = await streamIntoRecord({
       slug: '/test',
       body: {},
-      apiClient: new CustomMockApiClient(),
+      apiClient: asClient(new CustomMockApiClient()),
       pick: (data: any) => data.data,
       flushMs: 100,
     });
@@ -123,16 +101,15 @@ describe('streamIntoRecord', () => {
 
   it('should handle string data directly', async () => {
     class StringMockApiClient {
-      async stream({ onData }: { onData: (data: any) => void }) {
-        onData('direct string');
-        return { ok: true };
+      async *stream() {
+        yield 'direct string';
       }
     }
-    
+
     const result = await streamIntoRecord({
       slug: '/test',
       body: {},
-      apiClient: new StringMockApiClient(),
+      apiClient: asClient(new StringMockApiClient()),
       flushMs: 100,
     });
 

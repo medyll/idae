@@ -6,10 +6,7 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
-		alias: {
-			'@medyll/idae-api': './src/lib/__stubs__/idae-api-stub.ts'
-		}
+		adapter: adapter()
 	}
 };
 
