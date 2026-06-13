@@ -1,4 +1,4 @@
-import { IdaeApiClient } from '@medyll/idae-api';
+import { IdaeApiClient } from '@medyll/idae-api/client';
 import type { OutboxEntry } from '../outbox/OutboxStore';
 import type { IDeliverer, DeliverResult } from './IDeliverer';
 
