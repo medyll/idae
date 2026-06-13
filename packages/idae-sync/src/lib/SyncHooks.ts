@@ -1,5 +1,5 @@
-import type { OutboxEntry } from './outbox/OutboxStore';
-import type { DeliverResult } from './deliverer/IDeliverer';
+import type { OutboxEntry } from './outbox/OutboxStore.js';
+import type { DeliverResult } from './deliverer/IDeliverer.js';
 
 export type SyncHooks = {
   onBeforeDeliver?: (entry: OutboxEntry) => Promise<OutboxEntry> | OutboxEntry;

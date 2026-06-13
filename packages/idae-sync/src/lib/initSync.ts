@@ -1,11 +1,11 @@
 import { getIdbqlEvent } from '@medyll/idae-idbql';
-import { OutboxStore } from './outbox/OutboxStore';
-import { createIdaeApiDeliverer } from './deliverer/index';
-import { createSyncAdapter } from './SyncAdapter';
-import type { SyncMode, SyncEvent, SyncEventHandler } from './SyncMode';
-import type { SyncHooks, DebugFn } from './SyncHooks';
-import type { CanonicalApplyFn } from './ServerFirstHandler';
-import type { CircuitBreakerOptions } from './CircuitBreaker';
+import { OutboxStore } from './outbox/OutboxStore.js';
+import { createIdaeApiDeliverer } from './deliverer/index.js';
+import { createSyncAdapter } from './SyncAdapter.js';
+import type { SyncMode, SyncEvent, SyncEventHandler } from './SyncMode.js';
+import type { SyncHooks, DebugFn } from './SyncHooks.js';
+import type { CanonicalApplyFn } from './ServerFirstHandler.js';
+import type { CircuitBreakerOptions } from './CircuitBreaker.js';
 
 export type InitSyncOptions<C extends string = string> = {
   dbName?: string;

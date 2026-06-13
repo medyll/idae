@@ -1,4 +1,4 @@
-import type { OutboxStore } from './outbox/OutboxStore';
+import type { OutboxStore } from './outbox/OutboxStore.js';
 
 export type Snapshot = {
   id: string;

@@ -1,1 +1,1 @@
-export * from './IdaeApiDeliverer';
+export * from './IdaeApiDeliverer.js';

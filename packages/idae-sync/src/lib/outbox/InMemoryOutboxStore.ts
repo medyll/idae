@@ -1,4 +1,4 @@
-import { OutboxEntry } from './OutboxStore';
+import { OutboxEntry } from './OutboxStore.js';
 
 export class InMemoryOutboxStore {
   private entries: Map<string, OutboxEntry> = new Map();
