@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import type { Request } from 'express';
 import {
 	RequestDatabaseManager,
@@ -93,15 +93,16 @@ describe('RequestDatabaseManager', () => {
 		});
 
 		it('should construct MongoDB URI with correct format', () => {
+			// No implicit default db anymore — db must come from the request (dotted name).
 			const mockReq = {
-				params: { collectionName: 'items' }
+				params: { collectionName: 'mydb.items' }
 			} as any;
 
 			const result = manager.fromReq(mockReq);
 
 			expect(result.dbUri).toMatch(/^mongodb:\/\//);
 			expect(result.dbUri).toContain(':27017'); // Default MongoDB port
-			expect(result.dbUri).toContain('idaenext_sitebase_app'); // Default DB name
+			expect(result.dbUri).toContain('/mydb'); // db taken from the request
 		});
 
 		it('should construct custom URI for custom database', () => {
@@ -191,7 +192,7 @@ describe('RequestDatabaseManager', () => {
 		it('should respect custom configuration', () => {
 			// This tests the pattern - actual environment vars might not be set
 			const mockReq = {
-				params: { collectionName: 'data' }
+				params: { collectionName: 'scope.data' }
 			} as any;
 
 			const result = manager.fromReq(mockReq);
@@ -302,7 +303,7 @@ describe('RequestDatabaseManager', () => {
 
 		it('should handle URI with special port numbers', () => {
 			const mockReq = {
-				params: { collectionName: 'data' }
+				params: { collectionName: 'scope.data' }
 			} as any;
 
 			const result = manager.fromReq(mockReq);
@@ -329,6 +330,108 @@ describe('RequestDatabaseManager', () => {
 			const result = manager.fromReq(mockReq);
 
 			expect(result.dbName).toBe('db');
+		});
+	});
+
+	describe('Credentialed MONGODB_URI (single source of truth)', () => {
+		const manager = RequestDatabaseManager.getInstance();
+		const original = process.env.MONGODB_URI;
+
+		afterEach(() => {
+			if (original === undefined) delete process.env.MONGODB_URI;
+			else process.env.MONGODB_URI = original;
+		});
+
+		it('preserves credentials from MONGODB_URI and swaps the db name', () => {
+			process.env.MONGODB_URI = 'mongodb://admin:secret@localhost:27017';
+			const result = manager.fromReq({ params: { collectionName: 'tenant_db.users' } } as any);
+
+			expect(result.dbName).toBe('tenant_db');
+			expect(result.dbUri).toContain('admin:secret@');
+			expect(result.dbUri).toContain('/tenant_db');
+		});
+
+		it('pins authSource to admin when base URI has creds but no path', () => {
+			process.env.MONGODB_URI = 'mongodb://admin:secret@localhost:27017';
+			const result = manager.fromReq({ params: { collectionName: 'appscheme' } } as any);
+
+			// /dbName path would otherwise default authSource to the data db → auth failure
+			expect(result.dbUri).toContain('authSource=admin');
+		});
+
+		it('keeps the original auth db as authSource when present in the base URI', () => {
+			process.env.MONGODB_URI = 'mongodb://admin:secret@localhost:27017/authdb';
+			const result = manager.fromReq({ params: { collectionName: 'appscheme' } } as any);
+
+			expect(result.dbUri).toContain('authSource=authdb');
+		});
+
+		it('does not add authSource when the base URI has no credentials', () => {
+			process.env.MONGODB_URI = 'mongodb://localhost:27017';
+			const result = manager.fromReq({ params: { collectionName: 'appscheme' } } as any);
+
+			expect(result.dbUri).not.toContain('authSource');
+		});
+
+		it('falls back to host/port template when MONGODB_URI is absent', () => {
+			delete process.env.MONGODB_URI;
+			const result = manager.fromReq({ params: { collectionName: 'tenant_db.users' } } as any);
+
+			expect(result.dbUri).toMatch(/^mongodb:\/\/[^@]+:\d+\/tenant_db$/);
+		});
+	});
+
+	describe('app.locals.resolveDbName override (multi-tenant DI seam)', () => {
+		const manager = RequestDatabaseManager.getInstance();
+
+		it('uses the resolver db over the URL-derived db', () => {
+			const req = {
+				params: { collectionName: 'appscheme' },
+				app: { locals: { resolveDbName: () => 'demo_machine_app' } },
+			} as any;
+
+			const result = manager.fromReq(req);
+
+			expect(result.dbName).toBe('demo_machine_app');
+			expect(result.collectionName).toBe('appscheme');
+			expect(result.dbUri).toContain('/demo_machine_app');
+		});
+
+		it('resolver wins even when the URL hints another db (no cross-tenant via URL)', () => {
+			const req = {
+				params: { collectionName: 'other_tenant_app.appscheme' },
+				app: { locals: { resolveDbName: () => 'demo_machine_app' } },
+			} as any;
+
+			const result = manager.fromReq(req);
+
+			expect(result.dbName).toBe('demo_machine_app');
+			expect(result.collectionName).toBe('appscheme');
+		});
+
+		it('still refuses a resolver that returns a sitebase db', () => {
+			const req = {
+				params: { collectionName: 'appscheme' },
+				app: { locals: { resolveDbName: () => 'legacy_sitebase_app' } },
+			} as any;
+
+			expect(() => manager.fromReq(req)).toThrow(/sitebase/i);
+		});
+	});
+
+	describe('Safety: protected legacy databases', () => {
+		const manager = RequestDatabaseManager.getInstance();
+
+		it('refuses any "*sitebase*" database name', () => {
+			expect(() =>
+				manager.fromReq({ params: { collectionName: 'idaenext_sitebase_app.appscheme' } } as any),
+			).toThrow(/sitebase/i);
+		});
+
+		it('refuses sitebase regardless of casing', () => {
+			expect(() =>
+				manager.fromReq({ params: { collectionName: 'My_SiteBase_Prod.users' } } as any),
+			).toThrow(/protected legacy data/i);
 		});
 	});
 
@@ -379,10 +482,11 @@ describe('RequestDatabaseManager', () => {
 		});
 
 		it('should have fallback values if env vars not set', () => {
-			// Verify fallback values are applied
+			// Verify fallback values are applied. defaultDbName intentionally has NO
+			// hardcoded fallback (legacy `*sitebase*` removed) — it may be empty.
 			expect(manager.config.port).toBeGreaterThan(0);
 			expect(manager.config.host.length).toBeGreaterThan(0);
-			expect(manager.config.defaultDbName.length).toBeGreaterThan(0);
+			expect(typeof manager.config.defaultDbName).toBe('string');
 		});
 	});
 });

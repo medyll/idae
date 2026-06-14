@@ -6,4 +6,3 @@ export * from '$lib/client/IdaeApiClientCollection.js';
 export * from '$lib/client/IdaeApiClientConfig.js';
 export * from '$lib/client/IdaeApiClientRequest.js';
 export * from '$lib/client/IdaeApiStreamParser.js';
-export * from '$lib/config/routeDefinitions.js';

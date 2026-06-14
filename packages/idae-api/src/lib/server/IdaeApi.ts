@@ -422,7 +422,23 @@ class IdaeApi {
         }
 
         const body = (req as any).validated?.body ?? req.body;
-        const query = (req as any).validated?.query ?? (req.query?.params ?? req.query);
+        // The client wraps the real filter in an `?encoded=true&params=<json>` envelope.
+        // We decode it HERE rather than trusting an upstream mutation of req.query: in
+        // Express 5 `req.query` is a read-only getter, so middleware writes to
+        // `req.query.params` are silently discarded and the envelope ({ encoded, params })
+        // would otherwise be used as the Mongo filter (matching nothing).
+        let decodedParams: unknown = req.query?.params;
+        if (typeof decodedParams === "string") {
+          try {
+            decodedParams = JSON.parse(decodedParams);
+          } catch {
+            /* leave as-is; falls through to the non-object branch below */
+          }
+        }
+        const query =
+          decodedParams && typeof decodedParams === "object"
+            ? decodedParams
+            : ((req as any).validated?.query ?? req.query);
         const params = (req as any).validated?.params ?? req.params;
 
         const result = await action(

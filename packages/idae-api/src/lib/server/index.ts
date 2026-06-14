@@ -2,6 +2,7 @@
 // Exposed via package export "@medyll/idae-api/server" (node condition).
 // Pulls express/mongoose/jwt — never import from a browser bundle.
 export * from '$lib/client/index.js';
+export * from '$lib/config/routeDefinitions.js';
 export * from '$lib/server/engine/mongooseConnectionManager.js';
 export * from '$lib/server/engine/requestDatabaseManager.js';
 export * from '$lib/server/engine/routeManager.js';

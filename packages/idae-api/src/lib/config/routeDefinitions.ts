@@ -2,7 +2,6 @@
 
 import type { IdaeDbAdapter } from "@medyll/idae-db";
 import { z } from "zod";
-import { createValidationMiddleware } from "$lib/server/middleware/validationMiddleware.js";
 
 type RouteHandler = (
   service: IdaeDbAdapter<object>,

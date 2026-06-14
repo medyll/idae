@@ -17,7 +17,10 @@ export class IdaeApiClientConfigCore {
 		host: 'localhost',
 		port: 3000,
 		method: 'https',
-		defaultDb: 'idaenext_sitebase_app',
+		// No default db on purpose — the consumer MUST set it (e.g. `${org}_machine_app`).
+		// A hardcoded fallback here was a legacy production db name and silently routed
+		// sync traffic at sacred data. Empty forces an explicit, tenant-scoped value.
+		defaultDb: '',
 		separator: '//',
 		token: undefined,
 	};
@@ -40,6 +43,13 @@ export class IdaeApiClientConfigCore {
 		}
 
 		this.options = { ...this.options, ...normalized };
+
+		// Safety net: never let the client target a sacred legacy `*sitebase*` database.
+		if (/sitebase/i.test(this.options.defaultDb)) {
+			throw new Error(
+				`IdaeApiClient: refusing db "${this.options.defaultDb}" — "sitebase" databases are protected legacy data.`,
+			);
+		}
 
 		this._baseUrl = this.forgeBaseUrl();
 	}

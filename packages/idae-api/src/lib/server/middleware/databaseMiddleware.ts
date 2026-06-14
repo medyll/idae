@@ -103,7 +103,10 @@ export const idaeDbMiddleware = async (
     const dbOptions = req.app?.locals?.idaeDbOptions ?? {};
     req.idaeDb = IdaeDb.init(dbUri, dbOptions);
     // TODO: Pooling/caching could be added here
-    await req.idaeDb.db("app");
+    // When the host app resolves a full, tenant-scoped db name (app.locals.resolveDbName),
+    // select that database directly. Otherwise keep the legacy logical "app" database.
+    const hasDbResolver = typeof req.app?.locals?.resolveDbName === "function";
+    await req.idaeDb.db(hasDbResolver ? dbName : "app");
     req.connectedCollection = req.idaeDb.collection<any>(collectionName);
     if (req.query.params) {
       try {
