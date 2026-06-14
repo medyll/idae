@@ -38,13 +38,15 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 				return;
 			}
 
-			const { token, user } = (await res.json()) as {
+			const { token, user, grants } = (await res.json()) as {
 				token: string;
 				user: { userId: string; login: string; isAdmin: boolean };
+				grants?: unknown[];
 			};
 
 			localStorage.setItem('auth_token', token);
 			localStorage.setItem('auth_user', JSON.stringify(user));
+			localStorage.setItem('auth_grants', JSON.stringify(grants ?? []));
 			localStorage.setItem('idae_org', org);
 
 			// Always re-boot so the fresh boot carries the JWT in sync headers — the

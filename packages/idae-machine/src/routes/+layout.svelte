@@ -6,7 +6,7 @@
 	import { API_URL } from '$lib/config.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import { deleteIdbDatabase } from '$lib/main/machineIdbAdapter.js';
-	import type { AppUser } from '$lib/types/entity-types.js';
+	import type { AppUser, AppUserGrant } from '$lib/types/entity-types.js';
 
 	const apiUrl = API_URL;
 	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };
@@ -94,6 +94,10 @@
 		}
 		try {
 			const user = JSON.parse(rawUser) as { userId: string; login: string; isAdmin: boolean };
+			// Grants are persisted at login — without them a non-admin would be denied
+			// every read by the client rights gate even though the server allows it.
+			const rawGrants = localStorage.getItem('auth_grants');
+			const grants = rawGrants ? (JSON.parse(rawGrants) as AppUserGrant[]) : [];
 			machine.rights.setCurrentUser(
 				{
 					id: user.userId,
@@ -102,7 +106,7 @@
 					isLocked: false,
 					appPermissions: { ADMIN: user.isAdmin }
 				} as unknown as AppUser,
-				[]
+				grants
 			);
 			authState.authed = true;
 		} catch {

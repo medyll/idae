@@ -21,6 +21,7 @@
 		authState.authed = false;
 		localStorage.removeItem('auth_token');
 		localStorage.removeItem('auth_user');
+		localStorage.removeItem('auth_grants');
 		window.location.reload();
 	}
 </script>
