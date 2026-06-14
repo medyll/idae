@@ -128,5 +128,11 @@ export class IdaeDbConnection {
 	 * Gets the full database name with scope.
 	 * @returns The full database name.
 	 */
-	private getFullDbName = () => [this.idaeDb.options.dbScope, this._dbName].join('_');
+	private getFullDbName = () => {
+		const scope = this.idaeDb.options.dbScope;
+		// No scope → use the db name as-is. Joining an empty/undefined scope produced
+		// a leading-separator garbage name ("_users"); the name may already be full.
+		if (!scope) return this._dbName;
+		return [scope, this._dbName].join(this.idaeDb.options.dbScopeSeparator ?? '_');
+	};
 }
