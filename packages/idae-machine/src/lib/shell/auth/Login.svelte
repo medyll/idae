@@ -6,9 +6,7 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 +layout re-auths silently from the persisted token.
 -->
 <script lang="ts">
-	import { API_URL } from '$lib/config.js';
-
-	const ORGS = ['crfr', 'demo', 'idaenext', 'tactac', 'latent'] as const;
+	import { API_URL, ORGS } from '$lib/config.js';
 
 	const bootedOrg =
 		(typeof localStorage !== 'undefined' && localStorage.getItem('idae_org')) || 'demo';

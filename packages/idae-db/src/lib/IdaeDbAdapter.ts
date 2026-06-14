@@ -138,6 +138,11 @@ export class IdaeDbAdapter<T extends object>
 	}
 
 	@withEmitter()
+	async findOneAndUpdate(query: unknown, update: Partial<T>, options?: unknown) {
+		return this.adapter.findOneAndUpdate(query, update, options);
+	}
+
+	@withEmitter()
 	async deleteById(id: string) {
 		return this.adapter.deleteById(id);
 	}

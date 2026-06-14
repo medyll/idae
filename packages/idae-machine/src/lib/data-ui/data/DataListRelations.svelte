@@ -40,24 +40,43 @@ Renders forward or reverse FK relations for a record as DataList sections.
 
 	const sourceStore = $derived(collection ? machine.store<Record<string, unknown>>(collection) : { records: [] as Record<string, unknown>[] });
 	const scheme      = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
-	const record      = $derived.by(() => {
-		if (data) return data;
+
+	const storeRecord = $derived.by(() => {
 		if (recordId == null) return null;
 		return sourceStore.records.find((item) => String(item.id) === String(recordId)) ?? null;
 	});
 
-	let recordLookupSettled = $state(false);
+	// Reactive store may not have hydrated this record yet. Resolve it via an
+	// explicit awaited read so "not found" is authoritative — not a guess based
+	// on elapsed time.
+	let fetchedRecord = $state<Record<string, unknown> | null>(null);
+	let lookupDone    = $state(false);
 	$effect(() => {
-		void collection; void recordId; void data;
-		recordLookupSettled = data != null || recordId == null;
-		if (data != null || recordId == null) return;
-		const timer = setTimeout(() => { recordLookupSettled = true; }, 50);
-		return () => clearTimeout(timer);
+		if (data != null || recordId == null || storeRecord != null) {
+			lookupDone = true;
+			return;
+		}
+		lookupDone = false;
+		fetchedRecord = null;
+		let cancelled = false;
+		Promise.resolve(machine.collection(collection).get(recordId)).then((rec) => {
+			if (cancelled) return;
+			fetchedRecord = (rec as Record<string, unknown> | undefined) ?? null;
+			lookupDone = true;
+		});
+		return () => { cancelled = true; };
+	});
+
+	const record = $derived.by(() => {
+		if (data) return data;
+		if (recordId == null) return null;
+		return storeRecord ?? fetchedRecord;
 	});
 
 	const recordState = $derived.by(() => {
 		if (record) return 'found';
-		return recordLookupSettled ? 'absent' : 'loading';
+		if (data != null || recordId == null) return 'absent';
+		return lookupDone ? 'absent' : 'loading';
 	});
 
 	const relations = $derived.by(() => {

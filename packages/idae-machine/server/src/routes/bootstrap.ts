@@ -7,7 +7,7 @@ import { clearCollections, seedEngineRegistries, publishModel } from '../bootstr
 import { buildEngineModel } from '../bootstrap/seed/engineModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
-import { seedImagePresets } from '../bootstrap/seedImagePresets.js';
+import { idaeCoreSeed } from '../bootstrap/seed/coreSeed.js';
 import { demoSeed, demoScheme } from '../models/demo/demoScheme.js';
 import { config } from '../config.js';
 import { mongooseConnectionManager } from '@medyll/idae-api';
@@ -67,9 +67,8 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 		}
 
 		if (steps.includes('seed')) {
-			const appConn  = await mongooseConnectionManager.getOrCreate(mongoUri, `${org}_machine_app`);
 			const userConn = await mongooseConnectionManager.getOrCreate(mongoUri, `${org}_machine_user`);
-			await seedImagePresets(appConn);
+			await seedBusinessData({ org, mongoUri, model: buildEngineModel(), data: idaeCoreSeed, clearFirst: true });
 			await seedUsers(userConn);
 			await seedBusinessData({ org, mongoUri, model: demoScheme, data: demoSeed });
 			results.seed = 'ok';

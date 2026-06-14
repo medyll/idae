@@ -114,11 +114,8 @@ class MachineServerClass {
 				};
 			}
 
-			// Solidify code/name: every collection exposes both. Mirror the present
-			// one onto the missing one so downstream (focus fallback, fk labels) can
-			// always rely on code AND name.
-			if (fields.code && !fields.name) fields.name = { ...fields.code };
-			else if (fields.name && !fields.code) fields.code = { ...fields.name };
+			// Note: code/name fields are now guaranteed at publish time by ensureCodeField()
+			// in publishModel.ts. No runtime mirroring needed.
 
 			const fks: MachineModel[string]['fks'] = {};
 			const schemeFks = (scheme.fks ?? {}) as Record<string, any>;
@@ -164,6 +161,7 @@ class MachineServerClass {
 				model:    {},
 				fields,
 				fks,
+				...(scheme.rights ? { rights: scheme.rights } : {}),
 				template: (scheme.template as Record<string, any>) ?? {},
 				_views,
 			};

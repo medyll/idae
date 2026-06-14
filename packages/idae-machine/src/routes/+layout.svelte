@@ -48,13 +48,8 @@
 		}
 
 		// Block render until all schema collections are in IDB — prevents empty-set race.
-		await machine.warmup([
-			'appscheme',
-			'appscheme_field',
-			'appscheme_view',
-			'appscheme_view_type',
-			'appscheme_has_field',
-		]);
+		// Collections are now derived from the model (base='machine_app') instead of hardcoded array.
+		await machine.warmup();
 
 		restoreSession();
 	}

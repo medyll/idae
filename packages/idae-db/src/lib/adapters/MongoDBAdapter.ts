@@ -110,6 +110,33 @@ export class MongoDBAdapter<T extends Document> implements AbstractIdaeDbAdapter
 		);
 	}
 
+	async findOneAndUpdate(
+		query: Filter<T>,
+		update: Partial<T>,
+		options?: UpdateOptions & { returnDocument?: 'before' | 'after' }
+	): Promise<T | null> {
+		const updateDoc: Record<string, unknown> = { ...(update as Record<string, unknown>) };
+
+		// Mongo's upsert doesn't know about our custom auto-increment fieldId —
+		// assign it on insert only, mirroring create().
+		const existing = await this.model.collection.findOne(query);
+		if (!existing) {
+			const id = await this.model.getNextIncrement();
+			updateDoc.$setOnInsert = { ...(updateDoc.$setOnInsert as Record<string, unknown> ?? {}), [this.fieldId]: id };
+		}
+
+		const result = await this.model.collection.findOneAndUpdate(
+			query,
+			updateDoc as Document,
+			{
+				returnDocument: 'after',
+				...options,
+				upsert: true
+			}
+		);
+		return result ? (result as T) : null;
+	}
+
 	async deleteById(id: string | number) {
 		return this.model.collection.deleteMany({ [this.fieldId]: id } as Filter<T>);
 	}

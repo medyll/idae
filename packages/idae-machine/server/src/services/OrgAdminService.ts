@@ -18,7 +18,7 @@ import { clearCollections, seedEngineRegistries, publishModel } from '../bootstr
 import { buildEngineModel } from '../bootstrap/seed/engineModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
-import { seedImagePresets } from '../bootstrap/seedImagePresets.js';
+import { idaeCoreSeed } from '../bootstrap/seed/coreSeed.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 /** Orgs present on the Mongo server — every DB named `<org>_machine_app`. */
@@ -86,10 +86,7 @@ export async function seedOrg(org: string): Promise<SeedOrgResult> {
 	await publishModel(buildEngineModel(), { org, mongoUri });
 	await publishModel(scheme, { org, mongoUri });
 
-	const appConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_app` });
-	await appConn.asPromise();
-	await seedImagePresets(appConn);
-	await appConn.close();
+	await seedBusinessData({ org, mongoUri, model: buildEngineModel(), data: idaeCoreSeed, clearFirst: true });
 
 	const userConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
 	await userConn.asPromise();

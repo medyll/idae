@@ -118,7 +118,9 @@ export function useMachinePrefs<T extends SlotMap>(
 						}
 					}
 				})
-				.catch(() => {})
+				.catch((error) => {
+					console.warn('[useMachinePrefs] Failed to hydrate preferences:', error);
+				})
 				.finally(() => { st.hydrated = true; });
 		});
 	});

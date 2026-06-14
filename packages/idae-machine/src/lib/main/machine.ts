@@ -379,10 +379,21 @@ export class Machine {
 	 * Pre-fetch specific collections into IDB before UI renders.
 	 * Use for schema-critical collections (e.g. 'appscheme') that must be present
 	 * before component mount. Data collections remain on-demand.
+	 * 
+	 * @param collections - Optional explicit list of collections to warm up.
+	 *                      If not provided, derives the list from the model (collections with base='machine_app').
 	 */
 	async warmup(collections?: string[]): Promise<void> {
 		if (!this._qoolie) return;
-		await (this._qoolie as any).hydrateAll?.(collections);
+		
+		// If no explicit collections provided, derive from model
+		let collectionsToWarm = collections;
+		if (!collectionsToWarm || collectionsToWarm.length === 0) {
+			const { getSchemaCriticalCollections } = await import('$lib/main/warmupUtils.js');
+			collectionsToWarm = getSchemaCriticalCollections(this._effectiveModel);
+		}
+		
+		await (this._qoolie as any).hydrateAll?.(collectionsToWarm);
 	}
 
 	async resetClientData(): Promise<void> {

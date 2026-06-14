@@ -3,7 +3,6 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
-import { machineRights } from '$lib/main/machine/MachineRights.js';
 
 /** Walk a plain dot-path into an object (no FK awareness). */
 function walkPath(root: unknown, segments: string[]): unknown {
@@ -123,7 +122,6 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	indexValue(data: Record<string, unknown>): unknown | null {
 		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			const indexName = this.machine.collection(this.collectionName).index;
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
@@ -153,7 +151,6 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	format(fieldName: keyof T, data: T): string {
 		try {
-			this.#checkError(!this.#checkAccess(), 'Access denied', 'ACCESS_DENIED');
 			this.#checkError(
 				!(fieldName in data),
 				`Field ${String(fieldName)} not found in data`,
@@ -275,19 +272,6 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 					: undefined
 			)
 			.filter((x): x is NonNullable<typeof x> => x !== undefined) as Array<Record<string, unknown>>;
-	}
-
-	/**
-	 * Internal: Check if access is allowed (override for custom logic).
-	 * @returns True if access is allowed.
-	 */
-	/**
-	 * Internal: Check if access is allowed (override for custom logic).
-	 * @role Access check
-	 * @return {boolean} True if access is allowed.
-	 */
-	#checkAccess(): boolean {
-		return machineRights.checkAccess(this.collectionName, 'R');
 	}
 
 	/**

@@ -21,8 +21,7 @@ import { clearCollections, seedEngineRegistries, publishModel } from './publishM
 import { buildEngineModel } from './seed/engineModel.js';
 import { seedUsers } from './seedUsers.js';
 import { seedBusinessData } from './seedBusinessData.js';
-import { seedImagePresets } from './seedImagePresets.js';
-import { seedAiData } from './seedAiData.js';
+import { idaeCoreSeed } from './seed/coreSeed.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 import mongoose from 'mongoose';
 
@@ -51,11 +50,8 @@ await publishModel(buildEngineModel(), { org, mongoUri });
 console.log(`[3/6] Publishing ${org} model (${Object.keys(scheme).length} collections)`);
 await publishModel(scheme, { org, mongoUri });
 
-console.log(`[4/6] Seeding image presets into ${org}_machine_app`);
-const appConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_app` });
-await appConn.asPromise();
-await seedImagePresets(appConn);
-await appConn.close();
+console.log(`[4/6] Seeding core catalogs (AI providers/models/tools, tags, image presets)`);
+await seedBusinessData({ org, mongoUri, model: buildEngineModel(), data: idaeCoreSeed, clearFirst: true });
 
 console.log(`[5/6] Seeding users into ${org}_machine_user`);
 const userConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
@@ -69,9 +65,6 @@ if (seed) {
 } else {
 	console.log(`[5b/6] No '${org}Seed' — skipping business data`);
 }
-
-console.log(`[5c/6] Seeding AI data (catalogs, statuses, companions, tags)`);
-await seedAiData({ org, mongoUri, clearFirst: true });
 
 console.log(`[6/6] Done.`);
 process.exit(0);
