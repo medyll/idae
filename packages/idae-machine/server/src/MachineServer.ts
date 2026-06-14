@@ -209,6 +209,12 @@ class MachineServerClass {
 		// resolved to config.org regardless of the `?org=` query param.
 		idaeApi.app.use(orgContextMiddleware);
 
+		// Org-authoritative data routing: idae-api's data middleware resolves the target
+		// database via this hook instead of the URL, pinning every data request to the
+		// current org's database (`${org}_machine_app`). The URL can no longer select a
+		// different tenant's data, and there is no legacy default to fall back to.
+		idaeApi.app.locals.resolveDbName = () => `${getCurrentOrg()}_machine_app`;
+
 		// v3 RouteManager routes — must be added BEFORE start() so they're flushed to Express
 		// (cors/helmet/json get installed first inside start, then RouteManager flush appends routes after middleware)
 		registerSchemeRoutes();
@@ -231,8 +237,9 @@ class MachineServerClass {
 			payloadLimit: '1mb',
 			idaeDbOptions: {
 				dbType:           DbType.MONGODB,
-				dbScope:          config.org,
-				dbScopeSeparator: '_',
+				// No dbScope — the per-request db is resolved in full via app.locals.resolveDbName
+				// (`${org}_machine_app`). A static scope here can't express per-request org and
+				// would double-prefix the resolved name.
 				idaeModelOptions: {
 					autoIncrementFormat:       (_collection: string) => 'id',
 					autoIncrementDbCollection: 'auto_increment',
