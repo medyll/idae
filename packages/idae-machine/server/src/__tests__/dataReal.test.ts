@@ -9,7 +9,7 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose, { Connection, Schema } from 'mongoose';
 import { config } from '../config.js';
-import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
+import { publishModel, seedIdaeRegistries } from '../bootstrap/publishModel.js';
 import { demoScheme, demoSeed } from '../models/demo/demoScheme.js';
 import { invalidateBaseCache } from '../middleware/dbRouter.js';
 import { listRecords, createRecord, deleteRecord, getRecord } from '../routes/data.js';
@@ -52,7 +52,7 @@ describe('S11-03: API /api/data/* avec données réelles', () => {
 		invalidateBaseCache();
 		(config as any).org = TEST_ORG;
 
-		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedIdaeRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
 		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		invalidateBaseCache();
 

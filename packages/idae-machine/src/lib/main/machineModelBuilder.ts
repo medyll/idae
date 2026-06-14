@@ -4,7 +4,7 @@
  *
  * The system baseline (appscheme_*, appuser_*, …) is the server's responsibility:
  * MongoDB `appscheme_*` rows are deployed from `idaeModelCore`
- * (server/src/core/model-core.ts) at server bootstrap, and the
+ * (server/src/idae/idae-model-core.ts) at server bootstrap, and the
  * client receives them through `machine.boot({ sync: { databaseHost } })`. Reading
  * `idaeModelCore` directly on the client is forbidden (see header in that file
  * and BACK-07).

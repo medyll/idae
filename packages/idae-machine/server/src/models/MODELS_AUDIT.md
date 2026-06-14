@@ -8,13 +8,13 @@
 
 ## 1. Format unification (done)
 
-All four business models now use the **canonical literal format** (same shape as `bootstrap/seed/idae-model-core.ts`):
+All four business models now use the **canonical literal format** (same shape as `idae/idae-model-core.ts`):
 
 - `field('type', opts)` helper → plain literal `{ type: 'type', ...opts }`.
-- Removed `field` import, `keyPath: '++id'` (now defaults at engine/deploy via `?? '++id'`), `ts`/`model` slots.
+- Removed `field` import, `keyPath: '++id'` (now defaults at idae/deploy via `?? '++id'`), `ts`/`model` slots.
 - `MachineCollectionModel.keyPath` made **optional** in `src/lib/types/machine-model.ts` to allow omission.
 
-Lossless: explicit `type` kept on every field because `publishModel()` reads `fd.type ?? 'text'` directly (it does **not** consult the `FieldList` catalog by name — only the engine-core builder does).
+Lossless: explicit `type` kept on every field because `publishModel()` reads `fd.type ?? 'text'` directly (it does **not** consult the `FieldList` catalog by name — only the idae-model-core builder does).
 
 Files: `demo/demoScheme.ts`, `crfr/crfrScheme.ts`, `idaenext/idaenextScheme.ts`, `tactac/tactacScheme.ts`.
 
@@ -22,7 +22,7 @@ Files: `demo/demoScheme.ts`, `crfr/crfrScheme.ts`, `idaenext/idaenextScheme.ts`,
 
 ## 2. Own-core removal (done — WS3)
 
-Each legacy model carried a duplicate of the engine meta-core + its own RBAC. These are now provided by the **shared engine** (`idae-model-core`, merged via `buildEffectiveModel(core, business)`). Removed per file:
+Each legacy model carried a duplicate of the idae meta-core + its own RBAC. These are now provided by the **shared idae core** (`idae-model-core`, merged via `buildEffectiveModel(core, business)`). Removed per file:
 
 | Collection group | crfr | idaenext | tactac |
 |---|---|---|---|
@@ -32,7 +32,7 @@ Each legacy model carried a duplicate of the engine meta-core + its own RBAC. Th
 
 Stripped: crfr **12**, idaenext **12**, tactac **14** collections.
 
-**FK repointing:** `appscheme*` fk refs keep their `code` (the shared engine provides identical names → they resolve transparently). The only orphan was tactac `agent.fks.agent_groupe` → repointed to engine **`appuser_group`**. crfr/idaenext had no remaining business→core FK.
+**FK repointing:** `appscheme*` fk refs keep their `code` (the shared idae core provides identical names → they resolve transparently). The only orphan was tactac `agent.fks.agent_groupe` → repointed to idae core **`appuser_group`**. crfr/idaenext had no remaining business→core FK.
 
 > Note: engine RBAC group is `appuser_group` (not `agent_groupe`); droits live in `appuser_grant` / `appuser_assignment`. The removed `agent_groupe_droit` (C/R/U/D/L flags) maps conceptually to `appuser_grant` — no business collection referenced it, so no repoint needed.
 

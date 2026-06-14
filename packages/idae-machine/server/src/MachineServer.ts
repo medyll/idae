@@ -16,8 +16,8 @@ import { AgentRouter } from './ai/AgentRouter.js';
 import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import type { SocketIoServer } from '@medyll/idae-socket/server';
-import { publishModel as runPublishModel, seedEngineRegistries } from './bootstrap/publishModel.js';
-import { buildEngineModel } from './bootstrap/seed/engineModel.js';
+import { publishModel as runPublishModel, seedIdaeRegistries } from './bootstrap/publishModel.js';
+import { buildIdaeModel } from './bootstrap/seed/idaeModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import { orgContextMiddleware, getCurrentOrg } from './middleware/orgContext.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
@@ -175,8 +175,8 @@ class MachineServerClass {
 	async publishModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
 		const org      = opts?.org ?? config.org;
 		const mongoUri = opts?.mongoUri ?? config.mongodbUri;
-		await seedEngineRegistries({ org, mongoUri });
-		await runPublishModel(buildEngineModel(), { org, mongoUri });
+		await seedIdaeRegistries({ org, mongoUri });
+		await runPublishModel(buildIdaeModel(), { org, mongoUri });
 		await runPublishModel(model, { org, mongoUri });
 		invalidateBaseCache(undefined, org);
 		logger.info(`Model published for org="${org}"`);

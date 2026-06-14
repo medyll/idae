@@ -1,17 +1,17 @@
 /**
  * publishModel — publishes a MachineModel into Mongo meta collections (appscheme_*).
  * Not infra/DDL: it writes the schema-as-data (rows describing collections/fields/views).
- * Reflexive: the engine model is published by the same function — see buildEngineModel().
+ * Reflexive: the idae model is published by the same function — see buildIdaeModel().
  *
  * Convention: every meta doc has {id, code, name, color, icon, order}.
  * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { fkRef, FieldList, type FkRef } from '../core/index.js';
+import { fkRef, FieldList, type FkRef } from '../idae/index.js';
 import { resolveOrCreateByCode } from './resolveFkUtils.js';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
-import { ENGINE_BASE } from './seed/engineModel.js';
+import { MACHINE_APP_BASE } from './seed/idaeModel.js';
 import type {
 	MachineModel,
 	MachineCollectionModel as MachineCollection,
@@ -77,7 +77,7 @@ const FIELD_GROUPS = Object.values(FieldList).map(f => f.group);
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
 const VIEW_TYPES   = ['full', 'flat', 'fk', 'focus'] as const;
 
-const DEFAULT_BASE = ENGINE_BASE;
+const DEFAULT_BASE = MACHINE_APP_BASE;
 
 function logSchemaAnalysis() {
 	try {
@@ -149,7 +149,7 @@ async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 }
 
 // ── clearCollections ──────────────────────────────────────────────────────────
-// Wipes all docs from engine meta collections before a fresh seed.
+// Wipes all docs from idae meta collections before a fresh seed.
 export async function clearCollections(opts: DeployOpts): Promise<void> {
 	console.log('[clearCollections] start, org=', opts.org);
 	const idaeDb = await initDb(opts);
@@ -164,21 +164,21 @@ export async function clearCollections(opts: DeployOpts): Promise<void> {
 	console.log('[clearCollections] done');
 }
 
-// ── seedEngineRegistries ─────────────────────────────────────────────────────
+// ── seedIdaeRegistries ─────────────────────────────────────────────────────
 // Bootstraps base 'machine_app' + global registries (field_type, field_group, scheme_type, view_type).
-export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
+export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
 
 	// 0. Base root (no fk yet — chicken-egg root)
 	const baseId = await upsertGetId(
 		col(META.base),
-		{ code: ENGINE_BASE },
-		{ code: ENGINE_BASE, name: 'Machine Engine', icon: 'cpu', color: '#111', order: 1 },
+		{ code: MACHINE_APP_BASE },
+		{ code: MACHINE_APP_BASE, name: 'Machine App', icon: 'cpu', color: '#111', order: 1 },
 	);
 
 	const baseRef: Record<string, any> = {
-		[META.base]: { id: baseId, code: ENGINE_BASE, name: 'Machine Engine', icon: 'cpu', color: '#111', order: 1, multiple: false, required: true },
+		[META.base]: { id: baseId, code: MACHINE_APP_BASE, name: 'Machine App', icon: 'cpu', color: '#111', order: 1, multiple: false, required: true },
 	};
 
 	// 1. field_type
@@ -189,7 +189,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 			code,
 			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, fks: baseRef }
 		);
-		console.log(`  [seedEngineRegistries] field_type ${code} → id=${fieldTypeId}`);
+		console.log(`  [seedIdaeRegistries] field_type ${code} → id=${fieldTypeId}`);
 	}
 
 	// 2. field_group
@@ -200,7 +200,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 			code,
 			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, fks: baseRef }
 		);
-		console.log(`  [seedEngineRegistries] field_group ${code} → id=${fieldGroupId}`);
+		console.log(`  [seedIdaeRegistries] field_group ${code} → id=${fieldGroupId}`);
 	}
 
 	// 3. scheme_type
@@ -211,7 +211,7 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 			code,
 			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, fks: baseRef }
 		);
-		console.log(`  [seedEngineRegistries] scheme_type ${code} → id=${schemeTypeId}`);
+		console.log(`  [seedIdaeRegistries] scheme_type ${code} → id=${schemeTypeId}`);
 	}
 
 	// 4. view_type
@@ -222,13 +222,13 @@ export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
 			code,
 			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, fks: baseRef }
 		);
-		console.log(`  [seedEngineRegistries] view_type ${code} → id=${viewTypeId}`);
+		console.log(`  [seedIdaeRegistries] view_type ${code} → id=${viewTypeId}`);
 	}
 }
 
 // ── publishModel ──────────────────────────────────────────────────────────────
 // Writes schemes / fields / has_field / views for the given MachineModel.
-// Each collection's `base` is registered in META.base (default: ENGINE_BASE).
+// Each collection's `base` is registered in META.base (default: MACHINE_APP_BASE).
 export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
 	const model = ensureCodeField(rawModel);
 

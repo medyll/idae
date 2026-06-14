@@ -1,7 +1,7 @@
 // Types barrel export
 export * from './entity-types.js';
-// The engine meta-seed VALUE and field-definition catalog (FieldList) now live in
-// server/src/core/ (`idaeModelCore`, `FieldList`) — they are server-bootstrap
+// The idae meta-seed VALUE and field-definition catalog (FieldList) now live in
+// server/src/idae/ (`idaeModelCore`, `FieldList`) — they are server-bootstrap
 // values, not types modules, so they are not re-exported here.
 
 // machine-model: all types except ViewFields/ViewFieldDef which conflict

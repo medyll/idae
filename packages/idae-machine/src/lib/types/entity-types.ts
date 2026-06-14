@@ -3,7 +3,7 @@
  * TypeScript representations of schema-driven metadata collections.
  *
  * Field-definition catalog (FieldList) and the fkRef() helper live in
- * server/src/core/field-defs.ts — server seed only. This file holds the
+ * server/src/idae/field-defs.ts — server seed only. This file holds the
  * entity / RBAC / audit / view interfaces (shared typings).
  */
 

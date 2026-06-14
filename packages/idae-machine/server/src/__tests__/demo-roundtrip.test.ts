@@ -12,10 +12,10 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
-import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
+import { publishModel, seedIdaeRegistries } from '../bootstrap/publishModel.js';
 import { machineServer } from '../MachineServer.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
-import { idaeModelCore } from '../core/index.js';
+import { idaeModelCore } from '../idae/index.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 const TEST_ORG = 'vitest_demo';
@@ -36,7 +36,7 @@ describe('demoScheme roundtrip: publishModel → getModel', () => {
 	beforeAll(async () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
-		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedIdaeRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
 		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		model = await machineServer.getModel();
 	});

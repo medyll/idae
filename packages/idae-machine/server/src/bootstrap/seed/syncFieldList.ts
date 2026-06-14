@@ -3,7 +3,7 @@
  *
  * Scans all model declarations, collects every field name, compares to FieldList.
  * For any name missing from FieldList: infers type + generates entry, then patches
- * server/src/core/field-defs.ts in place.
+ * server/src/idae/field-defs.ts in place.
  *
  * Usage:
  *   npx tsx server/src/bootstrap/seed/syncFieldList.ts [--dry-run] [--verbose]
@@ -23,7 +23,7 @@ import { fileURLToPath } from 'node:url';
 // ── Paths ──────────────────────────────────────────────────────────────────────
 const __dirname    = path.dirname(fileURLToPath(import.meta.url));
 const ROOT         = path.resolve(__dirname, '../../../..');
-const FIELD_DEFS   = path.join(ROOT, 'server/src/core/field-defs.ts');
+const FIELD_DEFS   = path.join(ROOT, 'server/src/idae/field-defs.ts');
 
 // ── Args ───────────────────────────────────────────────────────────────────────
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -41,7 +41,7 @@ function isLikelyField(name: string): boolean {
 	return true;
 }
 
-// ── inferType (mirrors engineModel.ts exactly) ────────────────────────────────
+// ── inferType (mirrors idaeModel.ts exactly) ────────────────────────────────
 function inferType(name: string): string {
 	if (RBAC_OPS.has(name))                                                                  return 'boolean';
 	if (name === 'id')                                                                       return 'id';
@@ -87,14 +87,14 @@ async function loadModels(): Promise<Set<string>> {
 	const all = new Set<string>();
 
 	// 1. Engine core
-	const { idaeModelCore } = await import('../../core/index.js');
+	const { idaeModelCore } = await import('../../idae/index.js');
 	collectFields(idaeModelCore, all);
 
 	// 2. Any *Scheme.ts / *Model.ts in server/src/bootstrap/seed/ (future-proof)
 	const seedDir = path.join(__dirname);
 	const extras = fs.readdirSync(seedDir).filter(f =>
 		/\.(ts|js)$/.test(f) &&
-		!['syncFieldList.ts','syncFieldList.js','engineModel.ts','engineModel.js',
+		!['syncFieldList.ts','syncFieldList.js','idaeModel.ts','idaeModel.js',
 		  'schemaWalker.ts','schemaWalker.js',
 		  'schemaWalker.test.ts'].includes(f)
 	);

@@ -14,11 +14,11 @@ import { getConn, invalidateBaseCache } from '../middleware/dbRouter.js';
 import { getCurrentOrg } from '../middleware/orgContext.js';
 import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
 import { invalidateFkDefsCache } from '../validation/FkValidator.js';
-import { clearCollections, seedEngineRegistries, publishModel } from '../bootstrap/publishModel.js';
-import { buildEngineModel } from '../bootstrap/seed/engineModel.js';
+import { clearCollections, seedIdaeRegistries, publishModel } from '../bootstrap/publishModel.js';
+import { buildIdaeModel } from '../bootstrap/seed/idaeModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
-import { idaeCoreSeed } from '../bootstrap/seed/coreSeed.js';
+import { idaeSeed } from '../bootstrap/seed/idaeSeed.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 /** Orgs present on the Mongo server — every DB named `<org>_machine_app`. */
@@ -82,11 +82,11 @@ export async function seedOrg(org: string): Promise<SeedOrgResult> {
 	const mongoUri = config.mongodbUri;
 
 	await clearCollections({ org, mongoUri });
-	await seedEngineRegistries({ org, mongoUri });
-	await publishModel(buildEngineModel(), { org, mongoUri });
+	await seedIdaeRegistries({ org, mongoUri });
+	await publishModel(buildIdaeModel(), { org, mongoUri });
 	await publishModel(scheme, { org, mongoUri });
 
-	await seedBusinessData({ org, mongoUri, model: buildEngineModel(), data: idaeCoreSeed, clearFirst: true });
+	await seedBusinessData({ org, mongoUri, model: buildIdaeModel(), data: idaeSeed, clearFirst: true });
 
 	const userConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
 	await userConn.asPromise();

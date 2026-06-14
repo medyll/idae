@@ -17,11 +17,11 @@ import { fileURLToPath } from 'url';
 const serverEnv = resolve(fileURLToPath(import.meta.url), '../../../../.env');
 dotenv({ path: serverEnv });
 
-import { clearCollections, seedEngineRegistries, publishModel } from './publishModel.js';
-import { buildEngineModel } from './seed/engineModel.js';
+import { clearCollections, seedIdaeRegistries, publishModel } from './publishModel.js';
+import { buildIdaeModel } from './seed/idaeModel.js';
 import { seedUsers } from './seedUsers.js';
 import { seedBusinessData } from './seedBusinessData.js';
-import { idaeCoreSeed } from './seed/coreSeed.js';
+import { idaeSeed } from './seed/idaeSeed.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 import mongoose from 'mongoose';
 
@@ -42,16 +42,16 @@ console.log(`[0/6] Clearing engine collections in ${org}_machine_app`);
 await clearCollections({ org, mongoUri });
 
 console.log(`[1/6] Seeding engine registries into ${org}_machine_app`);
-await seedEngineRegistries({ org, mongoUri });
+await seedIdaeRegistries({ org, mongoUri });
 
 console.log(`[2/6] Publishing engine model (self-registering meta collections)`);
-await publishModel(buildEngineModel(), { org, mongoUri });
+await publishModel(buildIdaeModel(), { org, mongoUri });
 
 console.log(`[3/6] Publishing ${org} model (${Object.keys(scheme).length} collections)`);
 await publishModel(scheme, { org, mongoUri });
 
 console.log(`[4/6] Seeding core catalogs (AI providers/models/tools, tags, image presets)`);
-await seedBusinessData({ org, mongoUri, model: buildEngineModel(), data: idaeCoreSeed, clearFirst: true });
+await seedBusinessData({ org, mongoUri, model: buildIdaeModel(), data: idaeSeed, clearFirst: true });
 
 console.log(`[5/6] Seeding users into ${org}_machine_user`);
 const userConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
