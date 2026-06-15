@@ -7,7 +7,7 @@ import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/Machi
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
-import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
+import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import type { MachineModel } from '$lib/types/index.js';
@@ -165,17 +165,21 @@ export class Machine {
 	private _pendingIdbUpgrade: PendingIdbUpgrade | null = null;
 
 	private async createStore(replaceExisting = false): Promise<void> {
-		if (this._pendingIdbUpgrade) {
-			await performIdbUpgrade(this._dbName, this._version, this._pendingIdbUpgrade, this._effectiveModel);
+		// Capture pending upgrade: performIdbUpgrade handles renames/deletions only
+		// (pure-creation is skipped — qoolie's versioned open creates those stores).
+		const pending = this._pendingIdbUpgrade;
+		if (pending) {
+			await performIdbUpgrade(this._dbName, this._version, pending, this._effectiveModel);
 			this._pendingIdbUpgrade = null;
 		}
 		if (replaceExisting) {
 			this._qoolie?.destroy();
 			this._qoolie = undefined;
 		}
-		const collections = Object.fromEntries(
-			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }])
-		);
+		const collections = Object.fromEntries([
+			...Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }]),
+			['__schema_meta__', { keyPath: 'id' }]
+		]);
 		this._qoolie = createQoolie({
 			dbName:    this._dbName,
 			dbVersion: this._version,
@@ -185,6 +189,15 @@ export class Machine {
 			...(this._hooks        !== undefined && { hooks: this._hooks }),
 		});
 
+		// Persist the schema hash AFTER qoolie's open created __schema_meta__.
+		// Doing this inside performIdbUpgrade (which runs before createQoolie) fails
+		// with "__schema_meta__ store not found" — the store does not exist yet.
+		if (pending) {
+			await this._qoolie.ready();
+			await storeSchemaHash(this._dbName, pending.expectedHash).catch((err) => {
+				console.warn('[idae-machine] Could not persist schema hash after store creation (will retry next boot):', err);
+			});
+		}
 	}
 
 	private async _scheduleDrift(): Promise<void> {
@@ -263,13 +276,17 @@ export class Machine {
 		this._machineDb      = new MachineDb(this._effectiveModel);
 		machineRights.loadPoliciesFromModel(this._effectiveModel);
 
-		await this._scheduleDrift();
-		// Never downgrade IDB — if actual version > declared (drift incremented on prior run), use actual
+		// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
+		// so a drift-triggered bump lands ABOVE the existing version. Reading it after
+		// drift would clobber the bump (this._version = actual >= newVersion) and qoolie
+		// would reopen at the same version → onupgradeneeded never fires → stores from a
+		// corrupt/partial prior boot are never (re)created.
 		const actualVersion = await getActualIdbVersion(this._dbName).catch((err) => {
 			console.warn('[idae-machine] Could not read actual IDB version, defaulting to 0:', err);
 			return 0;
 		});
 		if (actualVersion > this._version) this._version = actualVersion;
+		await this._scheduleDrift();
 		await this.createStore();
 
 		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
