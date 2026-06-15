@@ -31,6 +31,20 @@ export function isProtectedStore(name: string): boolean {
 }
 
 /**
+ * Translate a Dexie-style keyPath config ('++id', 'id', '&code', 'a, b, ++id')
+ * into native createObjectStore options. Mirrors qoolie's IdbSchema.createSchema:
+ * native IDB rejects '++id' ("keyPath is not a valid key path") — the '++' prefix
+ * means autoIncrement on the bare field name.
+ */
+export function nativeStoreOptions(config: string | null | undefined): IDBObjectStoreParameters {
+	const fields = (config ?? '++id').split(',').map((f) => f.trim());
+	const incrementField = fields.find((f) => f.startsWith('++'))?.replace('++', '');
+	const declaredIndex  = fields.find((f) => f.startsWith('&'))?.replace('&', '');
+	const keyPath = incrementField || declaredIndex || fields[0];
+	return { keyPath, autoIncrement: Boolean(incrementField) };
+}
+
+/**
  * Detect drift between expected schema and actual IDB stores.
  * Returns PendingIdbUpgrade (with bumped version) if drift found, null if schema is current.
  */
@@ -133,7 +147,7 @@ export async function performIdbUpgrade(
 			for (const { from, to, keyPath } of renames) {
 				if (!db.objectStoreNames.contains(from)) continue;
 				const oldStore = (db as unknown as IDBDatabase & { objectStore(name: string): IDBObjectStore }).objectStore(from);
-				const newStore = db.createObjectStore(to, { keyPath });
+				const newStore = db.createObjectStore(to, nativeStoreOptions(keyPath));
 				const cursor   = oldStore.openCursor();
 				cursor.onsuccess = () => {
 					const c = cursor.result;
@@ -151,8 +165,7 @@ export async function performIdbUpgrade(
 			const renamedTo = new Set(renames.map((r) => r.to));
 			for (const name of upgrade.toCreate) {
 				if (renamedTo.has(name) || db.objectStoreNames.contains(name)) continue;
-				const keyPath = effectiveModel[name]?.keyPath ?? '++id';
-				db.createObjectStore(name, { keyPath });
+				db.createObjectStore(name, nativeStoreOptions(effectiveModel[name]?.keyPath));
 			}
 		};
 		req.onsuccess = () => { req.result.close(); resolve(); };

@@ -29,7 +29,10 @@ import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
 
 
-const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_group', 'appscheme_view_type']);
+// Only META.base/META.schemeType are auto-injected into every scheme's `fks` doc
+// (publishModel.ts schemeFksDoc). appscheme_field_group/appscheme_view_type are real
+// declared relations (appscheme_field.fks, appscheme_view.fks) — must NOT be stripped.
+const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
 
 class MachineServerClass {
 	static #instance: MachineServerClass | null = null;

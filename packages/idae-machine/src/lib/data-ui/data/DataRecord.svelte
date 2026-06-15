@@ -76,7 +76,7 @@ Iterates a record's fields and renders DataField for each.
 {#if mode === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}
 		{#each fieldNames as fieldName (fieldName)}
-			{#if scheme.fields?.[fieldName] && (fieldName in effectiveData || isFkField(fieldName))}
+			{#if (scheme.fields?.[fieldName] || isFkField(fieldName)) && (fieldName in effectiveData || isFkField(fieldName))}
 				<td>
 					<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
 				</td>
@@ -91,7 +91,7 @@ Iterates a record's fields and renders DataField for each.
 			<fieldset class="field-group">
 				<legend  >- {key}</legend>
 				{#each groupFields as { code: fieldName } (fieldName)}
-					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
+					{#if (scheme?.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">
 							{#if mode === 'show'}
 								<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
@@ -112,7 +112,7 @@ Iterates a record's fields and renders DataField for each.
 	<div class="form">
 		{#if scheme && fieldNames.length}
 			{#each fieldNames as fieldName (fieldName)}
-				{#if scheme.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
+				{#if (scheme.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 					<div class="field">
 						{#if mode === 'show'}
 							<DataField {collection} {fieldName} {mode} data={effectiveData!} {showLabel} {inputForm} />
