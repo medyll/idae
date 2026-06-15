@@ -689,12 +689,12 @@ export const FieldList = {
 		group:       'presentation',
 		description: 'Family or surname'
 	},
-	localization:      {
-		code:        'localization',
-		name:        'localization',
+	location:      {
+		code:        'location',
+		name:        'location',
 		type:        'text',
-		group:       'presentation',
-		description: 'Language or region-specific setting'
+		group:       'location',
+		description: 'gps point'
 	},
 	name:              {
 		code:        'name',
