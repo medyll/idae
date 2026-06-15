@@ -101,6 +101,7 @@ Renders forward or reverse FK relations for a record as DataList sections.
 				{#if showTitle}
 					<h3 class="data-list-relation-title">{relation.title}</h3>
 				{/if}
+				{JSON.stringify(relation.collection)}
 				<DataList
 					{usePrefs}
 					{prefsScope}

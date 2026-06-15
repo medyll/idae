@@ -296,7 +296,12 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
-		console.log(`  [publishModel] ${collectionName} → base=${baseCode}`, {fks: schemeFksDoc});
+		// Log declared FKs (from the model), not the auto-injected meta base/type.
+		const declaredFks = Object.entries(fks)
+			.map(([k, v]) => `${k}${(v as any).multiple ? '[]' : ''}${(v as any).required ? '*' : ''}`);
+		console.log(
+			`  [publishModel] ${collectionName.padEnd(28)} base=${baseCode.padEnd(14)} type=${typeCode.padEnd(9)} fks=[${declaredFks.join(', ')}]`,
+		);
 		const schemeId = await resolveOrCreateByCode(
 			col(META.scheme),
 			collectionName,

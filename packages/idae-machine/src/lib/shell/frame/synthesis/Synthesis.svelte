@@ -3,6 +3,7 @@
 	import DataForm from '$lib/data-ui/data/DataForm.svelte';
 	import DataListRfk from '$lib/data-ui/data/DataListRfk.svelte';
 	import { machine } from '$lib/main/machine.js';
+	import DataList from '$lib/data-ui/data/DataList.svelte';
 
 	let {
 		collection,
@@ -24,7 +25,9 @@
 	const store = $derived(machine.store<Record<string, unknown>>(collection));
 	const record = $derived(store.records.find((r) => String(r.id) === String(collectionId)) ?? null);
 	const scheme = $derived(safeScheme(collection));
-	const presentation = $derived((scheme as { template?: { presentation?: string } } | null)?.template?.presentation ?? '');
+	const presentation = $derived(
+		(scheme as { template?: { presentation?: string } } | null)?.template?.presentation ?? ''
+	);
 
 	const recordLabel = $derived.by(() => {
 		if (!record || !presentation) return collectionId;
@@ -145,7 +148,11 @@
 		</synthesis-tabs>
 
 		<synthesis-toolbar>
-			<button class="action-home" aria-label="Home" onclick={() => machine.framer.loadFrame('explorer', collection)}>
+			<button
+				class="action-home"
+				aria-label="Home"
+				onclick={() => machine.framer.loadFrame('explorer', collection)}
+			>
 				<span class="icon-home"></span>
 			</button>
 			{#each rfkEntries as rfk (rfk.collection)}
@@ -169,10 +176,11 @@
 					<DataRecord {collection} data={record} mode="show" />
 				{/if}
 			</synthesis-pane-left>
-			<synthesis-pane-right>
-				{#if record}
-					<DataListRfk {collection} recordId={collectionId} showTitle={true} />
-				{/if}
+			<synthesis-pane-right> {collectionId}
+				<DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk"  />
+				<!-- {#if record}
+					<DataListRfk {collection} recordId={collectionId} showTitle={true} ></DataListRfk>
+				{/if} -->
 			</synthesis-pane-right>
 		</synthesis-panes>
 	</synthesis-main>

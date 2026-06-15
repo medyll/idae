@@ -21,6 +21,7 @@
 		<zone-main-half>
 			<div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div>
 			<info-bar-right>
+				{collection} {collectionId}
 				<DataRecord {collection} {collectionId} view="fk" />
 			</info-bar-right>
 		</zone-main-half>
