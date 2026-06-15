@@ -117,7 +117,12 @@ export class Qoolie<T extends CollectionConfigMap> implements QoolieInstance<T> 
 
 		// URL configuration
 		if (syncConfig.databaseHost) {
-			delivererConfig.baseUrl = syncConfig.databaseHost;
+			// routePrefix scopes data CRUD to a server namespace (e.g. '/api/data') while
+			// leaving databaseHost as the bare origin for other consumers (schema fetch).
+			const prefix = syncConfig.routePrefix
+				? `/${syncConfig.routePrefix.replace(/^\/+|\/+$/g, '')}`
+				: '';
+			delivererConfig.baseUrl = syncConfig.databaseHost.replace(/\/+$/, '') + prefix;
 		}
 		if (syncConfig.host) {
 			delivererConfig.host = syncConfig.host;

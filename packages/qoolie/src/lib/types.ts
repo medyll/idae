@@ -46,6 +46,12 @@ export interface SyncConfig {
   enabled?: boolean;
   /** Database host for API connection (default: auto-detected from window.location.origin) */
   databaseHost?: string;
+  /**
+   * Path namespace appended to databaseHost for data CRUD requests (reads + writes),
+   * e.g. '/api/data' → deliverer hits `{databaseHost}/api/data/{collection}`.
+   * Leave unset when the server serves collections at the host root.
+   */
+  routePrefix?: string;
   /** API host (default: 'localhost'). Used if databaseHost not provided */
   host?: string;
   /** API port (default: 3000). Used if databaseHost not provided */

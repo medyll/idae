@@ -34,7 +34,13 @@
 				sync: {
 					mode: 'server-first',
 					databaseHost: apiUrl,
-					...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+					// Data CRUD lives behind /api/data (DataService → multi-base DB routing).
+					// databaseHost stays the bare origin so the schema fetch (/api/scheme) is unaffected.
+					routePrefix: '/api/data',
+					// Auth must go through `token`, not `headers`: the idae-api client builds its
+					// Authorization header solely from clientConfig.token and ignores custom headers.
+					// Passing it via headers drops the JWT → business collections 401 → empty IDB.
+					...(token ? { token } : {}),
 				},
 			});
 		} catch (err) {

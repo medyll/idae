@@ -85,6 +85,7 @@ export function normalizeConfig<T extends CollectionConfigMap>(
     ? {
         enabled: syncOptions?.enabled ?? true,
         databaseHost: syncOptions?.databaseHost,
+        routePrefix: syncOptions?.routePrefix,
         host: syncOptions?.host,
         port: syncOptions?.port,
         method: syncOptions?.method,
