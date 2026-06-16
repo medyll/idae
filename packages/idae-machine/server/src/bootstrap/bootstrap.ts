@@ -38,8 +38,8 @@ if (!scheme) {
 	process.exit(1);
 }
 
-console.log(`[0/6] Clearing engine collections in ${org}_machine_app`);
-await clearCollections({ org, mongoUri });
+console.log(`[0/6] Clearing declared collections (each in its own {org}_{base})`);
+await clearCollections({ ...buildIdaeModel(), ...scheme }, { org, mongoUri });
 
 console.log(`[1/6] Seeding engine registries into ${org}_machine_app`);
 await seedIdaeRegistries({ org, mongoUri });

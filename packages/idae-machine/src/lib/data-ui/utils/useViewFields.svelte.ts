@@ -46,7 +46,7 @@ export function useViewFields(
 		const v = viewName ?? 'full';
 		if (v === 'full') return names;
 		if (v === 'flat') return names.filter((n) => !isFk(n));
-		if (v === 'fk') return names.filter(isFk);
+		if (v === 'fk' || v === 'fks') return names.filter(isFk);
 		// focus: identification group, else [code, name], else [code]
 		const ident = names.filter((n) => fields[n]?.group === 'identification');
 		let picked = ident.length ? ident : ['code', 'name'].filter((n) => n in fields);

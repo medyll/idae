@@ -16,12 +16,11 @@
 	</fiche-header>
 	<fiche-zone>
 		<sidebar-info>
-			<DataRecord {collection} {collectionId} showFields={['icon']} showLabel={false} />
+			<!-- <DataRecord {collection} {collectionId} showFields={['icon']} showLabel={false} /> -->
         </sidebar-info>
 		<zone-main-half>
-			<div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div>
-			<info-bar-right>
-				{collection} {collectionId}
+			<!-- <div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div> -->
+			<info-bar-right> 
 				<DataRecord {collection} {collectionId} view="fk" />
 			</info-bar-right>
 		</zone-main-half>

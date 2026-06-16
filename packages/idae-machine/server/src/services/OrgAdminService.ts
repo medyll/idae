@@ -81,7 +81,7 @@ export async function seedOrg(org: string): Promise<SeedOrgResult> {
 
 	const mongoUri = config.mongodbUri;
 
-	await clearCollections({ org, mongoUri });
+	await clearCollections({ ...buildIdaeModel(), ...scheme }, { org, mongoUri });
 	await seedIdaeRegistries({ org, mongoUri });
 	await publishModel(buildIdaeModel(), { org, mongoUri });
 	await publishModel(scheme, { org, mongoUri });

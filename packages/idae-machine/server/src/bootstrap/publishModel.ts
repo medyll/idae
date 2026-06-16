@@ -7,6 +7,7 @@
  * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
+import { mongooseConnectionManager } from '@medyll/idae-api';
 import { buildFkRef, FieldList, type FkRef } from '../idae/index.js';
 import { ensureCodeToId } from './resolveFkUtils.js';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
@@ -143,16 +144,29 @@ async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 }
 
 // ── clearCollections ──────────────────────────────────────────────────────────
-// Wipes all docs from idae meta collections before a fresh seed.
-export async function clearCollections(opts: DeployOpts): Promise<void> {
+// Drops every collection the model declares, each in its OWN {org}_{base} DB.
+// Model-driven, not a hardcoded `appscheme_*` list: the model is the single source
+// of truth, so removing a collection/field from it actually removes its stale rows
+// on the next bootstrap (plain upsert in publishModel can't delete orphans).
+export async function clearCollections(model: MachineModel, opts: DeployOpts): Promise<void> {
 	console.log('[clearCollections] start, org=', opts.org);
-	const idaeDb = await initDb(opts);
-	for (const name of Object.values(META)) {
-		try {
-			await idaeDb.collection(name).deleteWhere({ query: {} });
-			console.log(`  cleared ${name}`);
-		} catch (e) {
-			console.log(`  skip ${name} (not found)`);
+
+	// Group declared collections by their target base DB.
+	const byBase = new Map<string, string[]>();
+	for (const [name, def] of Object.entries(model)) {
+		const base = def.base ?? DEFAULT_BASE;
+		(byBase.get(base) ?? byBase.set(base, []).get(base)!).push(name);
+	}
+
+	for (const [base, names] of byBase) {
+		const conn = await mongooseConnectionManager.getOrCreate(opts.mongoUri, `${opts.org}_${base}`);
+		for (const name of names) {
+			try {
+				await conn.collection(name).drop();
+				console.log(`  dropped ${opts.org}_${base}.${name}`);
+			} catch {
+				// NamespaceNotFound — collection didn't exist yet. Fine.
+			}
 		}
 	}
 	console.log('[clearCollections] done');
@@ -276,13 +290,20 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
 		});
 
-		// Resolve custom FKs eagerly
+		// Custom FKs: store the relation descriptor only ({ code, multiple, required }).
+		// A scheme FK names its TARGET COLLECTION by `code` — it is not a resolved pointer
+		// to a data row, so it must NOT be embedFk'd. Doing so upserted a stub into
+		// col(fkKey) on the META connection (machine_app), creating phantom business
+		// collections there and ignoring the target's own `base`. Consumers
+		// (dataRelationUtils, MachineScheme.findFkField) read `fkDef.code` only.
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey === META.base) continue;
-			const fk = fkDef as any;
-			schemeFksDoc[fkKey] = await embedFk(col(fkKey), fk.code ?? fkKey, {
-				name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required
-			});
+			const fk = fkDef as MachineFkDef;
+			schemeFksDoc[fkKey] = {
+				code:     fk.code ?? fkKey,
+				multiple: fk.multiple ?? false,
+				required: !!fk.required,
+			};
 		}
 
 		// ── META.scheme ───────────────────────────────────────────────────────

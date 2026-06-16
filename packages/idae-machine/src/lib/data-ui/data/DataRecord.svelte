@@ -57,6 +57,9 @@ Iterates a record's fields and renders DataField for each.
 				)
 			: null
 	);
+
+	$inspect(recordStore,groupFieldBy)
+
 	const fetchedData = $derived(recordStore?.records?.[0] as Record<string, any> | undefined);
 
 	const effectiveData = $derived(data ?? fetchedData);
@@ -71,6 +74,8 @@ Iterates a record's fields and renders DataField for each.
 	// Scalar fields are skipped when absent — MachineSchemeValues.format throws FIELD_NOT_FOUND.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
+
+	$inspect({fieldNames});
 </script>
 
 {#if mode === 'row'}

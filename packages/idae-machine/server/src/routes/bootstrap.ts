@@ -47,7 +47,7 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 
 	try {
 		if (steps.includes('clear')) {
-			await clearCollections({ org, mongoUri });
+			await clearCollections({ ...buildIdaeModel(), ...(model ?? demoScheme) }, { org, mongoUri });
 			results.clear = 'ok';
 			logger.info(`[admin/reset] clear done for org="${org}"`);
 		} else {
