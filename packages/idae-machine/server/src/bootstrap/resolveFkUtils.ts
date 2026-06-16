@@ -15,39 +15,39 @@ import { IdaeDb } from '@medyll/idae-db';
  * @param unsetData - Optional fields to unset (for migration/cleanup)
  * @returns The autoincrement id of the resolved/created record
  */
-export async function resolveOrCreateByCode(
+/**
+ * Ensure a record with the given code exists in the target collection, creating it if absent.
+ * Returns the autoincrement id. Never returns null — throws on failure.
+ *
+ * Convention: `ensure*` = create-if-absent. `resolve*` = strict read, throws if absent.
+ */
+export async function ensureCodeToId(
 	adapter: any,  // IdaeDbAdapterInterface<T>
 	code: string,
 	data: Record<string, any>,
 	unsetData?: Record<string, any>
 ): Promise<number> {
-	// Ensure data includes the code
 	const upsertData = { ...data, code };
-	
-	// Build the update operation
+
 	const updateOp: Record<string, any> = { $set: upsertData };
 	if (unsetData && Object.keys(unsetData).length > 0) {
 		updateOp.$unset = unsetData;
 	}
-	
-	// Use findOneAndUpdate with upsert to get the id immediately
+
 	const result = await adapter.findOneAndUpdate(
-		{ code },           // Match by code (unique natural key)
-		updateOp,            // Additive update - never clobbers existing fields
-		{ 
-			returnDocument: 'after',  // Return the document after update/insert
-			upsert: true              // Create if not found
-		}
+		{ code },
+		updateOp,
+		{ returnDocument: 'after', upsert: true }
 	);
-	
+
 	if (!result) {
-		throw new Error(`resolveOrCreateByCode failed: no result for code=${code}`);
+		throw new Error(`ensureCodeToId: no result for code=${code}`);
 	}
-	
+
 	const id = result.id as number | undefined;
 	if (id == null || isNaN(id)) {
-		throw new Error(`resolveOrCreateByCode failed: invalid id=${id} for code=${code}`);
+		throw new Error(`ensureCodeToId: invalid id=${id} for code=${code}`);
 	}
-	
+
 	return id;
 }

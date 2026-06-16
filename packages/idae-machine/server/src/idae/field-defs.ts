@@ -1596,7 +1596,7 @@ export const FieldList = {
  * Centralizes the creation of FK references to avoid duplication.
  */
 export interface FkRef {
-	id:       number | null;
+	id:       number;
 	code:     string;
 	name:     string;
 	icon:     string;
@@ -1606,9 +1606,13 @@ export interface FkRef {
 	required: boolean;
 }
 
-export function fkRef(overrides: Partial<FkRef> & { code: string; name: string }): FkRef {
+/**
+ * Build a FK reference object. `id` is required — call embedFk() instead
+ * when you only have a code and need to resolve/create the id from the DB.
+ */
+export function buildFkRef(overrides: { id: number; code: string; name: string } & Partial<Omit<FkRef, 'id' | 'code' | 'name'>>): FkRef {
 	return {
-		id:       overrides.id ?? null,
+		id:       overrides.id,
 		code:     overrides.code,
 		name:     overrides.name,
 		icon:     overrides.icon ?? 'link',

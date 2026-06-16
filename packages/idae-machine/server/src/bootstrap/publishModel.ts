@@ -7,8 +7,8 @@
  * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { fkRef, FieldList, type FkRef } from '../idae/index.js';
-import { resolveOrCreateByCode } from './resolveFkUtils.js';
+import { buildFkRef, FieldList, type FkRef } from '../idae/index.js';
+import { ensureCodeToId } from './resolveFkUtils.js';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
 import { MACHINE_APP_BASE } from './seed/idaeModel.js';
@@ -115,22 +115,16 @@ async function upsertGetId(
 	return created.id as number;
 }
 
-// ── resolveFkRef ────────────────────────────────────────────────────────────
-// Eager FK resolution: resolves code → id at build time using findOneAndUpdate.
-// Replaces the post-pass resolveFkIds with immediate resolution during publish.
-async function resolveFkRef(
+// ── embedFk ──────────────────────────────────────────────────────────────────
+// Resolves code → id (creating record if absent) then returns a complete FkRef.
+// The adapter MUST target the collection where the FK points — never the caller's DB.
+async function embedFk(
 	adapter: any,
 	code: string,
 	fkData: Omit<FkRef, 'id' | 'code'>
 ): Promise<FkRef> {
-	// Resolve or create the target record by code, get its id immediately
-	const id = await resolveOrCreateByCode(adapter, code, fkData);
-	
-	return {
-		id,
-		code,
-		...fkData
-	};
+	const id = await ensureCodeToId(adapter, code, fkData);
+	return buildFkRef({ id, code, ...fkData });
 }
 
 async function initDb(opts: DeployOpts): Promise<IdaeDb> {
@@ -184,7 +178,7 @@ export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	// 1. field_type
 	let ftOrder = 0;
 	for (const code of FIELD_TYPES) {
-		const fieldTypeId = await resolveOrCreateByCode(
+		const fieldTypeId = await ensureCodeToId(
 			col(META.fieldType),
 			code,
 			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, fks: baseRef }
@@ -195,7 +189,7 @@ export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	// 2. field_group
 	let fgOrder = 0;
 	for (const code of FIELD_GROUPS) {
-		const fieldGroupId = await resolveOrCreateByCode(
+		const fieldGroupId = await ensureCodeToId(
 			col(META.fieldGroup),
 			code,
 			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, fks: baseRef }
@@ -206,7 +200,7 @@ export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	// 3. scheme_type
 	let stOrder = 0;
 	for (const code of SCHEME_TYPES) {
-		const schemeTypeId = await resolveOrCreateByCode(
+		const schemeTypeId = await ensureCodeToId(
 			col(META.schemeType),
 			code,
 			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, fks: baseRef }
@@ -217,7 +211,7 @@ export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	// 4. view_type
 	let vtOrder = 0;
 	for (const code of VIEW_TYPES) {
-		const viewTypeId = await resolveOrCreateByCode(
+		const viewTypeId = await ensureCodeToId(
 			col(META.viewType),
 			code,
 			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, fks: baseRef }
@@ -245,7 +239,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 	let baseOrder = 10;
 	for (const code of bases) {
-		const id = await resolveOrCreateByCode(
+		const id = await ensureCodeToId(
 			col(META.base),
 			code,
 			{ code, name: code, icon: 'database', color: '#333', order: ++baseOrder }
@@ -273,12 +267,12 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		const schemeFksDoc: Record<string, any> = {};
 
 		// Resolve base FK eagerly
-		schemeFksDoc[META.base] = await resolveFkRef(col(META.base), baseCode, {
+		schemeFksDoc[META.base] = await embedFk(col(META.base), baseCode, {
 			name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true
 		});
 
 		// Resolve schemeType FK eagerly
-		schemeFksDoc[META.schemeType] = await resolveFkRef(col(META.schemeType), typeCode, {
+		schemeFksDoc[META.schemeType] = await embedFk(col(META.schemeType), typeCode, {
 			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
 		});
 
@@ -286,7 +280,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey === META.base) continue;
 			const fk = fkDef as any;
-			schemeFksDoc[fkKey] = await resolveFkRef(col(fkKey), fk.code ?? fkKey, {
+			schemeFksDoc[fkKey] = await embedFk(col(fkKey), fk.code ?? fkKey, {
 				name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required
 			});
 		}
@@ -302,7 +296,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		console.log(
 			`  [publishModel] ${collectionName.padEnd(28)} base=${baseCode.padEnd(14)} type=${typeCode.padEnd(9)} fks=[${declaredFks.join(', ')}]`,
 		);
-		const schemeId = await resolveOrCreateByCode(
+		const schemeId = await ensureCodeToId(
 			col(META.scheme),
 			collectionName,
 			{
@@ -336,12 +330,12 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 			if (!fieldReg.has(fieldName)) {
 				const fieldGridFks = {
-					[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-					[META.fieldType]:  fkRef({ code: baseType, name: baseType, icon: 'type', color: '#666', order: 0, multiple: false, required: true }),
-					[META.fieldGroup]: fkRef({ code: group, name: group, icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
+					[META.base]:       await embedFk(col(META.base),       baseCode, { name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+					[META.fieldType]:  await embedFk(col(META.fieldType),  baseType, { name: baseType, icon: 'type',     color: '#666', order: 0, multiple: false, required: true }),
+					[META.fieldGroup]: await embedFk(col(META.fieldGroup), group,    { name: group,    icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
 				};
 
-				const fieldId = await resolveOrCreateByCode(
+				const fieldId = await ensureCodeToId(
                 col(META.field),
                 fieldName,
                 {
@@ -412,6 +406,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {
+			const viewTypeFk = await embedFk(col(META.viewType), viewTypeCode, { name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true });
 			for (const [order, vFieldName] of viewFields.entries()) {
 				const vFieldId = fieldReg.get(vFieldName);
 				if (!vFieldId) continue;
@@ -429,9 +424,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 						color: '#444',
 						order: order + 1,
 						fks: {
-							[META.scheme]:   fkRef({ code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
-							[META.viewType]: fkRef({ code: viewTypeCode, name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true }),
-							[META.field]:    fkRef({ code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
+							[META.scheme]:   buildFkRef({ id: schemeId, code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
+							[META.viewType]: viewTypeFk,
+							[META.field]:    buildFkRef({ id: vFieldId, code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
 						},
 					},
 				);
