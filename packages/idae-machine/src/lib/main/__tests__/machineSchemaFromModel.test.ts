@@ -1,33 +1,29 @@
 /**
  * Unit test: getModel() output → MachineDb construction → schema resolved
  *
- * Uses a MachineModel that mimics getModel() output (flat fields/fks at root,
- * template with presentation hint) — no MongoDB, no IndexedDB required.
- *
- * Validates that MachineDb can consume getModel() output and resolve
- * field types, FK relations, and presentation template correctly.
+ * Uses a MachineModel that mimics getModel() output (scalar fields in `fields`,
+ * FK relations exclusively in `fks` block — no fk-* typed scalar fields).
  */
 import { describe, it, expect } from 'vitest';
 import { MachineDb } from '../machineDb.js';
 import type { MachineModel } from '$lib/types/index.js';
 
-// Simulates what machineServer.getModel() returns for demoScheme
+// Simulates what machineServer.getModel() returns for demoScheme.
+// FK relations live in `fks` only — never as fk-* typed scalars in `fields`.
 const modelFromServer: MachineModel = {
 	vehicle: {
 		keyPath: '++id',
 		base:    'machine_user',
 		model:   {},
 		fields: {
-			id:               { type: 'id',                  readonly: true },
-			license_plate:    { type: 'text',                required: true },
-			model:            { type: 'text',                required: true },
-			brand:            { type: 'text' },
-			year:             { type: 'number' },
-			categoryId:       { type: 'fk-category.id' },
-			locationOfficeId: { type: 'fk-location_office.id' },
-			status:           { type: 'text' },
-			mileage:          { type: 'number' },
-			created_at:       { type: 'date' },
+			id:           { type: 'id',     readonly: true },
+			license_plate:{ type: 'text',   required: true },
+			model:        { type: 'text',   required: true },
+			brand:        { type: 'text' },
+			year:         { type: 'number' },
+			status:       { type: 'text' },
+			mileage:      { type: 'number' },
+			created_at:   { type: 'date' },
 		},
 		fks: {
 			category:        { code: 'category',        multiple: false },
@@ -40,9 +36,9 @@ const modelFromServer: MachineModel = {
 		base:    'machine_user',
 		model:   {},
 		fields: {
-			id:          { type: 'id',        readonly: true },
-			code:        { type: 'text',      required: true },
-			name:        { type: 'text',      required: true },
+			id:          { type: 'id',      readonly: true },
+			code:        { type: 'text',    required: true },
+			name:        { type: 'text',    required: true },
 			description: { type: 'text-lg' },
 		},
 		fks:      {},
@@ -53,14 +49,12 @@ const modelFromServer: MachineModel = {
 		base:    'machine_user',
 		model:   {},
 		fields: {
-			id:            { type: 'id',             readonly: true },
-			vehicleId:     { type: 'fk-vehicle.id',  required: true },
-			customerId:    { type: 'fk-customer.id', required: true },
-			start_date:    { type: 'date',           required: true },
-			end_date:      { type: 'date' },
-			price_per_day: { type: 'number',         required: true },
-			total_price:   { type: 'number' },
-			status:        { type: 'text' },
+			id:           { type: 'id',     readonly: true },
+			start_date:   { type: 'date',   required: true },
+			end_date:     { type: 'date' },
+			price_per_day:{ type: 'number', required: true },
+			total_price:  { type: 'number' },
+			status:       { type: 'text' },
 		},
 		fks: {
 			vehicle:  { code: 'vehicle',  multiple: false, required: true },
@@ -102,8 +96,7 @@ describe('MachineDb constructed from getModel() output', () => {
 	const db = new MachineDb(modelFromServer);
 
 	it('collections() lists all collections', () => {
-		const cols  = db.collections();
-		const names = cols.map((s) => s.name);
+		const names = db.collections().map((s) => s.name);
 		expect(names).toContain('vehicle');
 		expect(names).toContain('category');
 		expect(names).toContain('rental');
@@ -111,8 +104,7 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	it('collection(name) returns MachineScheme', () => {
-		const scheme = db.collection('vehicle');
-		expect(scheme).toBeDefined();
+		expect(db.collection('vehicle')).toBeDefined();
 	});
 
 	describe('vehicle schema', () => {
@@ -127,13 +119,7 @@ describe('MachineDb constructed from getModel() output', () => {
 		});
 
 		it('field(license_plate).parse() resolves fieldType=text', () => {
-			const f = scheme.field('license_plate').parse();
-			expect(f?.fieldType).toBe('text');
-		});
-
-		it('field(categoryId).parse() resolves fk fieldType', () => {
-			const f = scheme.field('categoryId').parse();
-			expect(f?.fieldType).toContain('fk-');
+			expect(scheme.field('license_plate').parse()?.fieldType).toBe('text');
 		});
 
 		it('parseFks() returns forward FK collections', () => {
@@ -141,38 +127,53 @@ describe('MachineDb constructed from getModel() output', () => {
 			expect(fks).toHaveProperty('category');
 			expect(fks).toHaveProperty('location_office');
 		});
+
+		it('field(category).parse() resolves FK relation from fks block (no FIELD_NOT_FOUND)', () => {
+			// category lives in `fks`, not `fields` — getFieldRule must synthesize
+			// a fk-<code>.code rule so DataField can render it (view="fk" path).
+			const f = scheme.field('category').parse();
+			expect(f?.fieldType).toBe('fk-category.code');
+			expect(f?.is).toBe('fk');
+		});
+
+		it('no fk-* typed scalars in fields', () => {
+			const hasFkScalar = Object.values(scheme.fields).some(
+				(f: any) => (f?.type ?? '').startsWith('fk-')
+			);
+			expect(hasFkScalar).toBe(false);
+		});
 	});
 
 	describe('rental schema', () => {
 		const scheme = db.collection('rental');
-
-		it('field(vehicleId).parse() resolves fk-vehicle.id', () => {
-			const f = scheme.field('vehicleId').parse();
-			expect(f?.fieldType).toContain('fk-');
-		});
 
 		it('parseFks() has vehicle and customer', () => {
 			const fks = scheme.parseFks();
 			expect(fks).toHaveProperty('vehicle');
 			expect(fks).toHaveProperty('customer');
 		});
+
+		it('no fk-* typed scalars in fields', () => {
+			const hasFkScalar = Object.values(scheme.fields).some(
+				(f: any) => (f?.type ?? '').startsWith('fk-')
+			);
+			expect(hasFkScalar).toBe(false);
+		});
 	});
 
 	describe('category schema (no fks)', () => {
 		const scheme = db.collection('category');
 
-		it('parseFks() returns empty (no fks defined)', () => {
-			const fks = scheme.parseFks();
-			expect(Object.keys(fks)).toHaveLength(0);
+		it('parseFks() returns empty', () => {
+			expect(Object.keys(scheme.parseFks())).toHaveLength(0);
 		});
 
 		it('field(description).parse() resolves fieldType with text', () => {
-			const f = scheme.field('description').parse();
-			expect(f?.fieldType).toMatch(/text/);
+			expect(scheme.field('description').parse()?.fieldType).toMatch(/text/);
 		});
 	});
 
-	it('unknown collection returns undefined', () => {
+	it('unknown collection throws', () => {
 		expect(() => db.collection('nonexistent')).toThrow();
 	});
 });

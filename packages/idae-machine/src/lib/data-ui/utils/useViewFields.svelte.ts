@@ -3,79 +3,50 @@ import { machine } from '$lib/main/machine.js';
 /**
  * Reactive field-list resolution for a (collection, view) pair.
  *
- * `view` and `groupFieldBy` are ORTHOGONAL axes and never collide:
+ * Both structural views (full/flat/fk/focus) and custom named views are resolved
+ * through `appscheme_view` — the single source of truth published by publishModel.
  *
- *   view         → WHICH fields (the field codes). Resolved on its own, never
- *                  gated by any other query — so fk auto-resolution always works.
- *   groupFieldBy → HOW to group them. Only when set, the selected codes are looked
- *                  up in the appscheme_field registry and grouped on its relation FK.
- *
- * Selecting the field codes (`view`):
- *  1. STRUCTURAL views — reserved names computed from the scheme's own fk-partition:
- *       full  → all fields   (also the default when no view is given)
- *       flat  → non-fk fields
- *       fk    → fk-only fields  (fieldType starts 'fk-')
- *       focus → identity subset ('identification' group, else [code, name], else [code])
- *  2. CUSTOM named views — queried off appscheme_view:
- *       appscheme_view.where(appscheme=collection, appscheme_view_type=view) → field codes
+ * `view` and `groupFieldBy` are ORTHOGONAL axes:
+ *   view         → WHICH fields (field codes from appscheme_view rows)
+ *   groupFieldBy → HOW to group them (looked up in appscheme_field, grouped on its FK)
  */
-
-const STRUCTURAL_VIEWS = new Set(['full', 'flat', 'fk', 'focus']);
-
 export function useViewFields(
 	collection: () => string | undefined,
 	view: () => string | undefined,
 	groupFieldBy?: () => string | undefined
 ) {
-	const scheme = $derived(collection() ? machine.logic.collectionOr(collection()!, null) : null);
-	const viewName = $derived(view());
-	const isStructural = $derived(!viewName || STRUCTURAL_VIEWS.has(viewName));
+	const viewName = $derived(view() ?? 'full');
 
-	// ── view axis → selected field codes (self-contained, never gated) ──────────
-	// Structural: partition the scheme's own fields by fk-ness.
-	const structuralCodes = $derived.by(() => {
-		if (!scheme || !isStructural) return [] as string[];
-		const fields = scheme.fields as Record<string, { group?: string } | undefined>;
-		const fks = (scheme.fks ?? {}) as Record<string, unknown>;
-		// FK relations live in the `fks` block, not in `fields` (the synthesized
-		// `fk-X.code` field is deprecated). Surface them alongside scalar fields.
-		const fkNames = Object.keys(fks).filter((n) => !(n in fields));
-		const names = [...Object.keys(fields), ...fkNames];
-		const isFk = (name: string) => name in fks;
-
-		const v = viewName ?? 'full';
-		if (v === 'full') return names;
-		if (v === 'flat') return names.filter((n) => !isFk(n));
-		if (v === 'fk' || v === 'fks') return names.filter(isFk);
-		// focus: identification group, else [code, name], else [code]
-		const ident = names.filter((n) => fields[n]?.group === 'identification');
-		let picked = ident.length ? ident : ['code', 'name'].filter((n) => n in fields);
-		if (!picked.length && 'code' in fields) picked = ['code'];
-		return picked;
-	});
-
-	// Custom: appscheme_view rows for (collection, view) → field codes.
+	// qoolie's where engine uses BARE operators (eq/in/gte…), NOT Mongo's $-prefixed
+	// form. A `$eq` key matches no operator case → the condition is a silent no-op →
+	// the store returns every appscheme_view row (all collections, all view types),
+	// yielding duplicate field codes (e.g. `id` in full+flat). Use `eq`/`in`.
 	const viewRows = $derived(
-		!isStructural
+		collection()
 			? machine.store('appscheme_view', {
-					'fks.appscheme.code': { $eq: collection() },
-					'fks.appscheme_view_type.code': { $eq: viewName }
+					'fks.appscheme.code':           { eq: collection() },
+					'fks.appscheme_view_type.code': { eq: viewName },
 				} as any)
 			: null
 	);
-	const customCodes = $derived(
-		[...new Set((viewRows?.records ?? []).map((r: any) => r?.fks?.appscheme_field?.code).filter(Boolean))]
+
+	const fieldNames = $derived(
+		[
+			...new Set(
+				(viewRows?.records ?? [])
+					.slice()
+					.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0))
+					.map((r: any) => r?.fks?.appscheme_field?.code as string | undefined)
+					.filter((c): c is string => !!c)
+			)
+		]
 	);
 
-	const fieldNames = $derived(isStructural ? structuralCodes : customCodes);
-
 	// ── groupFieldBy axis → query appscheme_field ONLY when grouping is asked ───
-	// The selected codes are resolved through the field registry purely to read
-	// their grouping FK and run a native groupBy. Absent when no groupFieldBy.
 	const groupKey = $derived(groupFieldBy?.());
 	const fieldStore = $derived(
 		groupKey && fieldNames.length
-			? machine.store('appscheme_field', { code: { $in: fieldNames } } as any)
+			? machine.store('appscheme_field', { code: { in: fieldNames } } as any)
 			: null
 	);
 	const groups = $derived(
@@ -83,13 +54,9 @@ export function useViewFields(
 			? ((fieldStore.records as any).groupBy(`fks.${groupKey}.code`, true) as Record<string, any[]>)
 			: undefined
 	);
-
+$inspect({fieldNames})
 	return {
-		get fieldNames() {
-			return fieldNames;
-		},
-		get groups() {
-			return groups;
-		}
+		get fieldNames() { return fieldNames; },
+		get groups()     { return groups; },
 	};
 }

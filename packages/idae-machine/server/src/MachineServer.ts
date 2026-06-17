@@ -28,10 +28,13 @@ import { mcpServer } from './mcp/index.js';
 import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
 
-
-// Only META.base/META.schemeType are auto-injected into every scheme's `fks` doc
-// (publishModel.ts schemeFksDoc). appscheme_field_group/appscheme_view_type are real
-// declared relations (appscheme_field.fks, appscheme_view.fks) — must NOT be stripped.
+// Meta pointers auto-injected into every scheme's `fks` doc by publishModel
+// (schemeFksDoc base/schemeType). They exist on the raw appscheme rows so the
+// Explorer can group on `fks.appscheme_base`, but MUST be stripped from the
+// in-memory model — their `.code` points at a BASE name (e.g. 'machine_app'),
+// not a queryable collection, so DataList FK-grouping would store() a phantom
+// collection. appscheme_field_group/appscheme_view_type are real declared
+// relations — NOT in this set.
 const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
 
 class MachineServerClass {

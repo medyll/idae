@@ -74,8 +74,7 @@ Iterates a record's fields and renders DataField for each.
 	// Scalar fields are skipped when absent — MachineSchemeValues.format throws FIELD_NOT_FOUND.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
-
-	$inspect({fieldNames});
+ 
 </script>
 
 {#if mode === 'row'}

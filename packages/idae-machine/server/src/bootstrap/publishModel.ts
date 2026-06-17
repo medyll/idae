@@ -280,22 +280,21 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 		const schemeFksDoc: Record<string, any> = {};
 
-		// Resolve base FK eagerly
+		// Meta pointers — written as FK refs so the Explorer can group on
+		// `fks.appscheme_base`. getModel() strips them (META_FK_KEYS) before
+		// building the in-memory model: their `.code` is a base/type code, not a
+		// queryable collection. The pair (write here / strip there) is load-bearing.
 		schemeFksDoc[META.base] = await embedFk(col(META.base), baseCode, {
 			name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true
 		});
-
-		// Resolve schemeType FK eagerly
 		schemeFksDoc[META.schemeType] = await embedFk(col(META.schemeType), typeCode, {
 			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
 		});
 
-		// Custom FKs: store the relation descriptor only ({ code, multiple, required }).
-		// A scheme FK names its TARGET COLLECTION by `code` — it is not a resolved pointer
-		// to a data row, so it must NOT be embedFk'd. Doing so upserted a stub into
-		// col(fkKey) on the META connection (machine_app), creating phantom business
-		// collections there and ignoring the target's own `base`. Consumers
-		// (dataRelationUtils, MachineScheme.findFkField) read `fkDef.code` only.
+		// Business FKs: relation descriptor only ({ code, multiple, required }).
+		// A scheme FK names its TARGET COLLECTION by `code` — not a resolved data
+		// pointer, so it must NOT be embedFk'd (that would upsert a stub into the
+		// META connection and create phantom business collections there).
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey === META.base) continue;
 			const fk = fkDef as MachineFkDef;
@@ -407,12 +406,41 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			);
 		}
 
+		// ── FK relations → appscheme_field (no has_field — not scalar fields) ────
+		// Published so appscheme_view rows can FK-reference them by id.
+		// Excluded from has_field so getModel() doesn't add them to `fields`.
+		for (const [fkKey, fkDef] of Object.entries(fks)) {
+			if (fieldReg.has(fkKey)) continue;
+			const fk = fkDef as MachineFkDef;
+			const fieldGridFks = {
+				[META.base]:       await embedFk(col(META.base),       baseCode,  { name: baseCode,   icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+				[META.fieldType]:  await embedFk(col(META.fieldType),  'fk',      { name: 'fk',       icon: 'link',     color: '#666', order: 0, multiple: false, required: true }),
+				[META.fieldGroup]: await embedFk(col(META.fieldGroup), 'relations',{ name: 'relations', icon: 'link',    color: '#888', order: 0, multiple: false, required: false }),
+			};
+			const fieldId = await ensureCodeToId(
+				col(META.field),
+				fkKey,
+				{
+					code:      fkKey,
+					name:      fkKey,
+					icon:      'link',
+					color:     '#666',
+					order:     0,
+					fieldType: 'fk',
+					required:  fk.required ? 1 : 0,
+					readonly:  0,
+					private:   0,
+					fks: fieldGridFks,
+				},
+				{ fkTargetCol: '', fkTargetField: '' }
+			);
+			fieldReg.set(fkKey, fieldId);
+		}
+
 		// ── META.view ─────────────────────────────────────────────────────────
-		const allFieldNames = Object.keys(fields);
-		const fkSet = new Set(
-			allFieldNames.filter((n) => ((fields[n] as any)?.type ?? '').startsWith('fk-')),
-		);
-		const identFields = allFieldNames.filter(
+		const allFieldNames  = Object.keys(fields);
+		const fkRelNames     = Object.keys(fks);
+		const identFields    = allFieldNames.filter(
 			(n) => inferFieldGroup(n, (fields[n] as any)?.type ?? 'text') === 'identification',
 		);
 		const focusFields = identFields.length
@@ -420,9 +448,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			: ['code', 'name'].filter((n) => n in fields);
 
 		const viewDefs: Record<string, string[]> = {
-			full:  allFieldNames,
-			flat:  allFieldNames.filter((n) => !fkSet.has(n)),
-			fk:    allFieldNames.filter((n) => fkSet.has(n)),
+			full:  [...allFieldNames, ...fkRelNames],
+			flat:  allFieldNames,
+			fk:    fkRelNames,
 			focus: focusFields,
 		};
 
