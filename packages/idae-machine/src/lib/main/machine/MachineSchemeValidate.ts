@@ -232,6 +232,19 @@ export class MachineSchemeValidate {
 			}
 		}
 
+		// FK relations declared `required: true` in the `fks` block — checked
+		// separately from `fields` since FK refs aren't scalar form fields.
+		const scheme = this.machineDb.collection(this.collection);
+		for (const [relationKey, fkDef] of Object.entries(scheme.fks)) {
+			if (!fkDef.required) continue;
+			if (options.ignoreFields && options.ignoreFields.includes(relationKey)) continue;
+			if (!scheme.hasFkValue(formData, relationKey)) {
+				errors[relationKey] = 'Ce champ est obligatoire';
+				invalidFields.push(relationKey);
+				isValid = false;
+			}
+		}
+
 		// Cross-field validators (from options parameter)
 		if (options.crossFieldValidators) {
 			for (const vf of options.crossFieldValidators) {

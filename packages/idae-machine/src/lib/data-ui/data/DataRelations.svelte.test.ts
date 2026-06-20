@@ -5,6 +5,7 @@ import DataList from './DataList.svelte';
 import DataListFk from './DataListFk.svelte';
 import DataListRfk from './DataListRfk.svelte';
 import { machine } from '$lib/main/machine.js';
+import { clearMachinePrefsCache } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 import demoSeed, { demoScheme } from '$lib/__fixtures__/demoModel.js';
 
 let dbCounter = 0;
@@ -78,6 +79,7 @@ async function seedFindPref(scope: string, value: Record<string, unknown>): Prom
 describe('DataList relation components', () => {
 	afterEach(() => {
 		cleanup();
+		clearMachinePrefsCache();
 		machine.destroy();
 		machine.rights.clearCurrentUser();
 	});

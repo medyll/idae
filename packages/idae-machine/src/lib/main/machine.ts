@@ -7,16 +7,12 @@ import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/Machi
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
-import { createSocketClient } from '$lib/main/machine/MachineSocket.js';
-import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
+import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
-
-export type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
-import type { MachineSocketOptions } from '$lib/main/machine/MachineSocket.js';
 
 export type MachineComponentRegistry = Readonly<Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>>;
 
@@ -100,12 +96,6 @@ export class Machine {
 		onError?:     (error: Error, context: SyncErrorContext) => void;
 	};
 
-	/** Socket client options — set via init() */
-	_socketOptions?: MachineSocketOptions;
-
-	/** Socket client instance — created at start() if socketOptions provided */
-	_socketClient?: EventDataClientInstance;
-
 	/** Seed data for mobile-first mode — auto-called with onlyIfEmpty on boot if mode === 'mobile-first' */
 	_seed?: Record<string, unknown[]>;
 
@@ -149,7 +139,6 @@ export class Machine {
 			onSyncEvent?: (event: SyncEvent) => void;
 			onError?:     (error: Error, context: SyncErrorContext) => void;
 		};
-		socket?:      MachineSocketOptions;
 		/** Seed data for mobile-first mode. When sync.mode === 'mobile-first', boot() auto-calls seed(seed, { onlyIfEmpty: true }). */
 		seed?:        Record<string, unknown[]>;
 	}) {
@@ -164,7 +153,6 @@ export class Machine {
 		this._syncOptions   = options?.sync        !== undefined ? options.sync : this._syncOptions;
 		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
 		this._hooks         = options?.hooks       ?? this._hooks;
-		this._socketOptions = options?.socket      ?? this._socketOptions;
 		this._seed          = options?.seed        ?? this._seed;
 	}
 
@@ -177,17 +165,21 @@ export class Machine {
 	private _pendingIdbUpgrade: PendingIdbUpgrade | null = null;
 
 	private async createStore(replaceExisting = false): Promise<void> {
-		if (this._pendingIdbUpgrade) {
-			await performIdbUpgrade(this._dbName, this._version, this._pendingIdbUpgrade, this._effectiveModel);
+		// Capture pending upgrade: performIdbUpgrade handles renames/deletions only
+		// (pure-creation is skipped — qoolie's versioned open creates those stores).
+		const pending = this._pendingIdbUpgrade;
+		if (pending) {
+			await performIdbUpgrade(this._dbName, this._version, pending, this._effectiveModel);
 			this._pendingIdbUpgrade = null;
 		}
 		if (replaceExisting) {
 			this._qoolie?.destroy();
 			this._qoolie = undefined;
 		}
-		const collections = Object.fromEntries(
-			Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }])
-		);
+		const collections = Object.fromEntries([
+			...Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }]),
+			['__schema_meta__', { keyPath: 'id' }]
+		]);
 		this._qoolie = createQoolie({
 			dbName:    this._dbName,
 			dbVersion: this._version,
@@ -197,6 +189,15 @@ export class Machine {
 			...(this._hooks        !== undefined && { hooks: this._hooks }),
 		});
 
+		// Persist the schema hash AFTER qoolie's open created __schema_meta__.
+		// Doing this inside performIdbUpgrade (which runs before createQoolie) fails
+		// with "__schema_meta__ store not found" — the store does not exist yet.
+		if (pending) {
+			await this._qoolie.ready();
+			await storeSchemaHash(this._dbName, pending.expectedHash).catch((err) => {
+				console.warn('[idae-machine] Could not persist schema hash after store creation (will retry next boot):', err);
+			});
+		}
 	}
 
 	private async _scheduleDrift(): Promise<void> {
@@ -275,13 +276,17 @@ export class Machine {
 		this._machineDb      = new MachineDb(this._effectiveModel);
 		machineRights.loadPoliciesFromModel(this._effectiveModel);
 
-		await this._scheduleDrift();
-		// Never downgrade IDB — if actual version > declared (drift incremented on prior run), use actual
+		// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
+		// so a drift-triggered bump lands ABOVE the existing version. Reading it after
+		// drift would clobber the bump (this._version = actual >= newVersion) and qoolie
+		// would reopen at the same version → onupgradeneeded never fires → stores from a
+		// corrupt/partial prior boot are never (re)created.
 		const actualVersion = await getActualIdbVersion(this._dbName).catch((err) => {
 			console.warn('[idae-machine] Could not read actual IDB version, defaulting to 0:', err);
 			return 0;
 		});
 		if (actualVersion > this._version) this._version = actualVersion;
+		await this._scheduleDrift();
 		await this.createStore();
 
 		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
@@ -292,8 +297,6 @@ export class Machine {
 			const { seed } = await import('$lib/main/machineSeed.js');
 			await seed(this._seed, { onlyIfEmpty: true });
 		}
-
-		if (this._socketOptions?.autoConnect) this.connectSocket();
 	}
 
 
@@ -363,17 +366,20 @@ export class Machine {
 	}
 
 	/**
-	 * Socket client — EventDataClientInstance from idae-socket.
-	 * Available after boot() when socket options are provided.
-	 * Call machine.socket.connect() manually unless autoConnect: true.
+	 * Socket client — EventDataClientInstance from idae-socket, owned by qoolie's
+	 * push listener (single connection). Available when `sync.push.protocol === 'socketio'`
+	 * and the listener has connected. Configure via `init({ sync: { push: { protocol: 'socketio', ... } } })`.
 	 */
 	get socket(): EventDataClientInstance | undefined {
-		return this._socketClient;
-	}
-
-	private connectSocket(): void {
-		if (!this._socketOptions) return;
-		this._socketClient = createSocketClient(this._socketOptions);
+		if (!this._qoolie) return undefined;
+		let pushListener;
+		try {
+			pushListener = this._qoolie.sync.getPushListener?.();
+		} catch {
+			return undefined;
+		}
+		const inner = (pushListener as { getListener?: () => unknown } | undefined)?.getListener?.() ?? pushListener;
+		return (inner as { getClient?: () => EventDataClientInstance } | undefined)?.getClient?.();
 	}
 
 	/**
@@ -384,19 +390,27 @@ export class Machine {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
 		this._pendingIdbUpgrade = null;
-
-		this._socketClient?.socket?.disconnect?.();
-		this._socketClient = undefined;
 	}
 
 	/**
 	 * Pre-fetch specific collections into IDB before UI renders.
 	 * Use for schema-critical collections (e.g. 'appscheme') that must be present
 	 * before component mount. Data collections remain on-demand.
+	 * 
+	 * @param collections - Optional explicit list of collections to warm up.
+	 *                      If not provided, derives the list from the model (collections with base='machine_app').
 	 */
 	async warmup(collections?: string[]): Promise<void> {
 		if (!this._qoolie) return;
-		await (this._qoolie as any).hydrateAll?.(collections);
+		
+		// If no explicit collections provided, derive from model
+		let collectionsToWarm = collections;
+		if (!collectionsToWarm || collectionsToWarm.length === 0) {
+			const { getSchemaCriticalCollections } = await import('$lib/main/warmupUtils.js');
+			collectionsToWarm = getSchemaCriticalCollections(this._effectiveModel);
+		}
+		
+		await (this._qoolie as any).hydrateAll?.(collectionsToWarm);
 	}
 
 	async resetClientData(): Promise<void> {

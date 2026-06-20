@@ -1,11 +1,11 @@
 <!--
 RbacMatrix.svelte
 Frame: grant editor — collections × CRUDLX × group.
-Composes existing store API + InputBoolean. No custom field logic.
+Composes existing store API + FieldBoolean. No custom field logic.
 -->
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
-	import InputBoolean from '$lib/data-ui/input/InputBoolean.svelte';
+	import FieldBoolean from '$lib/data-ui/field/snippets/FieldBoolean.svelte';
 
 	let {
 		groupId: initialGroupId,
@@ -129,7 +129,8 @@ Composes existing store API + InputBoolean. No custom field logic.
 						<th class="row-head">{code}</th>
 						{#each OPS as op}
 							<td>
-								<InputBoolean
+								<FieldBoolean
+									mode="update"
 									value={getOp(code, op)}
 									onchange={() => { void toggleCell(code, op); }}
 								/>

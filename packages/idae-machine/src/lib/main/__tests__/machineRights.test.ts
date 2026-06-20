@@ -5,7 +5,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import type { AppUser, AppUserGrant } from '$lib/types/schema-types.js';
+import type { AppUser, AppUserGrant } from '$lib/types/entity-types.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 function makeUser(overrides: Partial<AppUser> = {}): AppUser {

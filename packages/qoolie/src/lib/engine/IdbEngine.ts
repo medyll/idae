@@ -95,11 +95,11 @@ export class IdbEngine<T extends SimpleModel = any> {
 		return new Promise((resolve, reject) => {
 			const dbConnection = indexedDB.open(this.databaseName, this.dbVersion);
 
-			dbConnection.onupgradeneeded = async (event: Event) => {
+			dbConnection.onupgradeneeded = (event: Event) => {
 				const db = (event.target as IDBOpenDBRequest).result;
 				if (db) {
 					const schema = new IdbSchema();
-					await schema.createSchema(db, this.#schema);
+					schema.createSchema(db, this.#schema);
 				} else {
 					reject(new Error('Failed to open database'));
 				}

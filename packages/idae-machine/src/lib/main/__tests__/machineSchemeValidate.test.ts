@@ -175,3 +175,74 @@ describe('MachineSchemeValidate - advanced', () => {
 		expect(rBad.isValid).toBe(false);
 	});
 });
+
+// Model with a required FK relation
+const vehicleModel = {
+	vehicle: {
+		keyPath:  '++id',
+		model:    {},
+		ts:       {} as any,
+		fields: {
+			id:   'id (readonly)',
+			name: 'text (required)'
+		},
+		fks: {
+			category: { code: 'vehicle_category', required: true },
+			location_office: { code: 'office' }
+		},
+		template: { presentation: 'name' }
+	}
+} as any;
+
+describe('MachineSchemeValidate - FK required', () => {
+	function createVehicleDb() {
+		return new MachineDb(vehicleModel);
+	}
+
+	it('missing required FK fails in form', async () => {
+		const db = createVehicleDb();
+		const validator = db.collection('vehicle').validator;
+		const out = await validator.validateForm({ name: 'X' } as any);
+		expect(out.isValid).toBe(false);
+		expect(out.invalidFields).toContain('category');
+		expect(out.errors.category).toBe('Ce champ est obligatoire');
+	});
+
+	it('non-required FK relation does not block form', async () => {
+		const db = createVehicleDb();
+		const validator = db.collection('vehicle').validator;
+		const out = await validator.validateForm({ name: 'X', category: 'compact' } as any);
+		expect(out.invalidFields).not.toContain('location_office');
+	});
+
+	it('flat scalar FK value satisfies required check', async () => {
+		const db = createVehicleDb();
+		const validator = db.collection('vehicle').validator;
+		const out = await validator.validateForm({ name: 'X', category: 'compact' } as any);
+		expect(out.isValid).toBe(true);
+		expect(out.invalidFields).not.toContain('category');
+	});
+
+	it('nested fks.{relation}_{id} value satisfies required check', async () => {
+		const db = createVehicleDb();
+		const validator = db.collection('vehicle').validator;
+		const out = await validator.validateForm({ name: 'X', fks: { category_42: {} } } as any);
+		expect(out.isValid).toBe(true);
+		expect(out.invalidFields).not.toContain('category');
+	});
+
+	it('nested fks.{relation} object value satisfies required check', async () => {
+		const db = createVehicleDb();
+		const validator = db.collection('vehicle').validator;
+		const out = await validator.validateForm({ name: 'X', fks: { category: { id: 7, code: 'compact' } } } as any);
+		expect(out.isValid).toBe(true);
+		expect(out.invalidFields).not.toContain('category');
+	});
+
+	it('ignoreFields skips required FK check', async () => {
+		const db = createVehicleDb();
+		const validator = db.collection('vehicle').validator;
+		const out = await validator.validateForm({ name: 'X' } as any, { ignoreFields: ['category'] });
+		expect(out.invalidFields).not.toContain('category');
+	});
+});

@@ -9,7 +9,7 @@
  * `keyPath` stays at the root (used by IndexedDB + Mongo). Index field name is derived from keyPath
  * by stripping the '++' autoincrement prefix.
  */
-import type { PermissionCode } from './schema-types.js';
+import type { PermissionCode } from './entity-types.js';
 export type { PermissionCode };
 
 // ── Sort type ─────────────────────────────────────────────────────────────────

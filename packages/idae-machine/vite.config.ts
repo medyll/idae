@@ -7,11 +7,6 @@ export default defineConfig({
 	plugins: [sveltekit()],
 	resolve: {
 		alias: {
-			'@chroma-core/default-embed': path.resolve('./src/lib/__stubs__/chroma-embed.ts'),
-			'@medyll/idae-db':            path.resolve('./src/lib/__stubs__/idae-db-stub.ts'),
-			'@medyll/idae-api':           path.resolve('./src/lib/__stubs__/idae-api-stub.ts'),
-			'@medyll/skiller':            path.resolve('./src/lib/__stubs__/skiller-stub.ts'),
-			'jsonwebtoken':               path.resolve('./src/lib/__stubs__/jwt-stub.ts'),
 			'@medyll/qoolie/svelte':      path.resolve('../qoolie/src/adapters/svelte/index.ts'),
 			'@medyll/qoolie':             path.resolve('../qoolie/src/index.ts'),
 		}

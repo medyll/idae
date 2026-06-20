@@ -3,11 +3,11 @@ import type { Request, Response } from 'express';
 import { machineServer } from '../MachineServer.js';
 import { logger } from '../utils/logger.js';
 import { invalidateSchemeCache } from '../validation/SchemeValidator.js';
-import { clearCollections, seedEngineRegistries, publishModel } from '../bootstrap/publishModel.js';
-import { buildEngineModel } from '../bootstrap/seed/engineModel.js';
+import { clearCollections, seedIdaeRegistries, publishModel } from '../bootstrap/publishModel.js';
+import { buildIdaeModel } from '../bootstrap/seed/idaeModel.js';
 import { seedUsers } from '../bootstrap/seedUsers.js';
 import { seedBusinessData } from '../bootstrap/seedBusinessData.js';
-import { seedImagePresets } from '../bootstrap/seedImagePresets.js';
+import { idaeSeed } from '../bootstrap/seed/idaeSeed.js';
 import { demoSeed, demoScheme } from '../models/demo/demoScheme.js';
 import { config } from '../config.js';
 import { mongooseConnectionManager } from '@medyll/idae-api';
@@ -47,7 +47,7 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 
 	try {
 		if (steps.includes('clear')) {
-			await clearCollections({ org, mongoUri });
+			await clearCollections({ ...buildIdaeModel(), ...(model ?? demoScheme) }, { org, mongoUri });
 			results.clear = 'ok';
 			logger.info(`[admin/reset] clear done for org="${org}"`);
 		} else {
@@ -55,8 +55,8 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 		}
 
 		if (steps.includes('deploy')) {
-			await seedEngineRegistries({ org, mongoUri });
-			await publishModel(buildEngineModel(), { org, mongoUri });
+			await seedIdaeRegistries({ org, mongoUri });
+			await publishModel(buildIdaeModel(), { org, mongoUri });
 			// Default to demoScheme when no model supplied — dev reset shortcut
 			await publishModel(model ?? demoScheme, { org, mongoUri });
 			invalidateSchemeCache();
@@ -67,9 +67,8 @@ async function adminResetHandler(req: Request, res: Response): Promise<void> {
 		}
 
 		if (steps.includes('seed')) {
-			const appConn  = await mongooseConnectionManager.getOrCreate(mongoUri, `${org}_machine_app`);
 			const userConn = await mongooseConnectionManager.getOrCreate(mongoUri, `${org}_machine_user`);
-			await seedImagePresets(appConn);
+			await seedBusinessData({ org, mongoUri, model: buildIdaeModel(), data: idaeSeed, clearFirst: true });
 			await seedUsers(userConn);
 			await seedBusinessData({ org, mongoUri, model: demoScheme, data: demoSeed });
 			results.seed = 'ok';

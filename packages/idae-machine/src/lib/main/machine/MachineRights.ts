@@ -1,4 +1,4 @@
-import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/schema-types.js';
+import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/entity-types.js';
 import type { MachineModel, MachineRightsPolicy } from '$lib/types/index.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
@@ -94,7 +94,10 @@ class MachineRights {
 			if (grant.revokedAt) return false;
 			if (grant.validFrom && new Date(grant.validFrom as string) > now) return false;
 			if (grant.validUntil && new Date(grant.validUntil as string) < now) return false;
-			const schemeCode = (grant.fks as Record<string, Record<string, unknown>>)?.appscheme?.code as string | undefined;
+			// Server stores schemeCode flat; legacy/nested shape kept as fallback.
+			const schemeCode =
+				((grant as Record<string, unknown>).schemeCode as string | undefined) ??
+				((grant.fks as Record<string, Record<string, unknown>>)?.appscheme?.code as string | undefined);
 			if (schemeCode && schemeCode !== collection && schemeCode !== '*') return false;
 			return grant[permField] === true;
 		});

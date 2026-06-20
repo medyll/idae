@@ -2,6 +2,7 @@ import { AsyncLocalStorage } from 'node:async_hooks';
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { config } from '../config.js';
+import { parseApiKey } from '../utils/apiKeyFormat.js';
 
 /**
  * Per-request org resolution via AsyncLocalStorage.
@@ -32,8 +33,15 @@ export function runWithOrg<T>(org: string, fn: () => T): T {
 function orgFromToken(req: Request): string | null {
 	const authHeader = req.headers.authorization;
 	if (!authHeader?.startsWith('Bearer ')) return null;
+	const token = authHeader.slice(7);
+
+	// API key (`mk_<org>_<secret>`) — org segment is readable by design; the key
+	// itself is verified later by resolveApiKey (hash lookup in that org's DB).
+	const apiKey = parseApiKey(token);
+	if (apiKey) return apiKey.org;
+
 	try {
-		const payload = jwt.verify(authHeader.slice(7), config.jwtSecret) as { org?: string };
+		const payload = jwt.verify(token, config.jwtSecret) as { org?: string };
 		return payload.org ?? null;
 	} catch {
 		return null;

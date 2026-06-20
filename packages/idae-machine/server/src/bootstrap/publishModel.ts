@@ -1,16 +1,18 @@
 /**
  * publishModel — publishes a MachineModel into Mongo meta collections (appscheme_*).
  * Not infra/DDL: it writes the schema-as-data (rows describing collections/fields/views).
- * Reflexive: the engine model is published by the same function — see buildEngineModel().
+ * Reflexive: the idae model is published by the same function — see buildIdaeModel().
  *
  * Convention: every meta doc has {id, code, name, color, icon, order}.
  * Relations (base, type, group, view_type, link) carried via fks only — no scalar duplicates.
  */
 import { IdaeDb, DbType } from '@medyll/idae-db';
-import { fkRef, FieldList } from '../../../src/lib/types/schema-types.js';
+import { mongooseConnectionManager } from '@medyll/idae-api';
+import { buildFkRef, FieldList, type FkRef } from '../idae/index.js';
+import { ensureCodeToId } from './resolveFkUtils.js';
 import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
-import { ENGINE_BASE } from './seed/engineModel.js';
+import { MACHINE_APP_BASE } from './seed/idaeModel.js';
 import type {
 	MachineModel,
 	MachineCollectionModel as MachineCollection,
@@ -33,19 +35,39 @@ const META = {
 	viewType:   'appscheme_view_type',
 } as const;
 
-/** Ensure every collection declares a `code` field (semantic key). Pure. */
+/** Ensure every collection declares both `code` and `name` fields. Pure. */
 function ensureCodeField(model: MachineModel): MachineModel {
 	const out: MachineModel = {};
 	for (const [name, col] of Object.entries(model)) {
 		const fields = col.fields ?? {};
-		if ('code' in fields) { out[name] = col; continue; }
-		const rebuilt: Record<string, MachineFieldDef> = {};
-		for (const [fn, fd] of Object.entries(fields)) {
-			rebuilt[fn] = fd;
-			if (fn === 'id') rebuilt.code = { type: 'text' };
+		let rebuilt: Record<string, MachineFieldDef> | null = null;
+
+		// Ensure code field exists
+		if (!('code' in fields)) {
+			rebuilt = {};
+			for (const [fn, fd] of Object.entries(fields)) {
+				rebuilt[fn] = fd;
+				if (fn === 'id') rebuilt.code = { type: 'text' };
+			}
+			if (!('code' in rebuilt)) rebuilt.code = { type: 'text' };
 		}
-		if (!('code' in rebuilt)) rebuilt.code = { type: 'text' };
-		out[name] = { ...col, fields: rebuilt };
+
+		// Ensure name field exists, mirror from code if needed
+		if (!('name' in fields)) {
+			if (!rebuilt) {
+				rebuilt = { ...fields };
+			}
+			if (!('name' in rebuilt)) {
+				// Mirror code field definition to name if code exists, otherwise create a basic text field
+				if ('code' in (rebuilt ?? fields)) {
+					rebuilt.name = { ...(rebuilt.code ?? fields.code) };
+				} else {
+					rebuilt.name = { type: 'text' };
+				}
+			}
+		}
+
+		out[name] = rebuilt ? { ...col, fields: rebuilt } : col;
 	}
 	return out;
 }
@@ -56,7 +78,7 @@ const FIELD_GROUPS = Object.values(FieldList).map(f => f.group);
 const SCHEME_TYPES = ['standard', 'type', 'group', 'status', 'range'] as const;
 const VIEW_TYPES   = ['full', 'flat', 'fk', 'focus'] as const;
 
-const DEFAULT_BASE = ENGINE_BASE;
+const DEFAULT_BASE = MACHINE_APP_BASE;
 
 function logSchemaAnalysis() {
 	try {
@@ -94,43 +116,16 @@ async function upsertGetId(
 	return created.id as number;
 }
 
-// ── resolveFkIds ──────────────────────────────────────────────────────────────
-// Post-pass fixup: fkRef() snapshots are built before every target record exists
-// (chicken-egg across appscheme_* collections), so they're seeded with `id: null`
-// and only `code` resolves. Once everything is created, walk every meta doc's
-// `fks` bag and patch `id` by looking up the target META collection by `code`.
-async function resolveFkIds(idaeDb: IdaeDb): Promise<void> {
-	const col = (name: string) => idaeDb.collection(name);
-	const metaNames = new Set<string>(Object.values(META));
-	const idCache = new Map<string, Map<string, number | null>>();
-
-	async function lookupId(collName: string, code: string): Promise<number | null> {
-		let cache = idCache.get(collName);
-		if (!cache) { cache = new Map(); idCache.set(collName, cache); }
-		if (cache.has(code)) return cache.get(code)!;
-		const doc = await col(collName).findOne({ query: { code } });
-		const id = (doc?.id as number | undefined) ?? null;
-		cache.set(code, id);
-		return id;
-	}
-
-	for (const metaName of metaNames) {
-		const docs = await col(metaName).find({ query: {} }) as Record<string, any>[];
-		for (const doc of docs) {
-			const fks = doc.fks as Record<string, any> | undefined;
-			if (!fks || typeof fks !== 'object') continue;
-			let changed = false;
-			for (const [fkKey, fkVal] of Object.entries(fks)) {
-				if (!fkVal || typeof fkVal !== 'object' || fkVal.id != null || !fkVal.code) continue;
-				if (!metaNames.has(fkKey)) continue;
-				const realId = await lookupId(fkKey, fkVal.code);
-				if (realId != null) { fkVal.id = realId; changed = true; }
-			}
-			if (changed) {
-				await col(metaName).updateWhere({ query: { id: doc.id } }, { $set: { fks } } as any, undefined);
-			}
-		}
-	}
+// ── embedFk ──────────────────────────────────────────────────────────────────
+// Resolves code → id (creating record if absent) then returns a complete FkRef.
+// The adapter MUST target the collection where the FK points — never the caller's DB.
+async function embedFk(
+	adapter: any,
+	code: string,
+	fkData: Omit<FkRef, 'id' | 'code'>
+): Promise<FkRef> {
+	const id = await ensureCodeToId(adapter, code, fkData);
+	return buildFkRef({ id, code, ...fkData });
 }
 
 async function initDb(opts: DeployOpts): Promise<IdaeDb> {
@@ -149,93 +144,99 @@ async function initDb(opts: DeployOpts): Promise<IdaeDb> {
 }
 
 // ── clearCollections ──────────────────────────────────────────────────────────
-// Wipes all docs from engine meta collections before a fresh seed.
-export async function clearCollections(opts: DeployOpts): Promise<void> {
+// Drops every collection the model declares, each in its OWN {org}_{base} DB.
+// Model-driven, not a hardcoded `appscheme_*` list: the model is the single source
+// of truth, so removing a collection/field from it actually removes its stale rows
+// on the next bootstrap (plain upsert in publishModel can't delete orphans).
+export async function clearCollections(model: MachineModel, opts: DeployOpts): Promise<void> {
 	console.log('[clearCollections] start, org=', opts.org);
-	const idaeDb = await initDb(opts);
-	for (const name of Object.values(META)) {
-		try {
-			await idaeDb.collection(name).deleteWhere({ query: {} });
-			console.log(`  cleared ${name}`);
-		} catch (e) {
-			console.log(`  skip ${name} (not found)`);
+
+	// Group declared collections by their target base DB.
+	const byBase = new Map<string, string[]>();
+	for (const [name, def] of Object.entries(model)) {
+		const base = def.base ?? DEFAULT_BASE;
+		(byBase.get(base) ?? byBase.set(base, []).get(base)!).push(name);
+	}
+
+	for (const [base, names] of byBase) {
+		const conn = await mongooseConnectionManager.getOrCreate(opts.mongoUri, `${opts.org}_${base}`);
+		for (const name of names) {
+			try {
+				await conn.collection(name).drop();
+				console.log(`  dropped ${opts.org}_${base}.${name}`);
+			} catch {
+				// NamespaceNotFound — collection didn't exist yet. Fine.
+			}
 		}
 	}
 	console.log('[clearCollections] done');
 }
 
-// ── seedEngineRegistries ─────────────────────────────────────────────────────
+// ── seedIdaeRegistries ─────────────────────────────────────────────────────
 // Bootstraps base 'machine_app' + global registries (field_type, field_group, scheme_type, view_type).
-export async function seedEngineRegistries(opts: DeployOpts): Promise<void> {
+export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	const idaeDb = await initDb(opts);
 	const col    = (name: string) => idaeDb.collection(name);
 
 	// 0. Base root (no fk yet — chicken-egg root)
-	await upsertGetId(
+	const baseId = await upsertGetId(
 		col(META.base),
-		{ code: ENGINE_BASE },
-		{ code: ENGINE_BASE, name: 'Machine Engine', icon: 'cpu', color: '#111', order: 1 },
+		{ code: MACHINE_APP_BASE },
+		{ code: MACHINE_APP_BASE, name: 'Machine App', icon: 'cpu', color: '#111', order: 1 },
 	);
 
 	const baseRef: Record<string, any> = {
-		[META.base]: {
-			id:       null as number | null,
-			code:     ENGINE_BASE,
-			name:     'Machine Engine',
-			icon:     'cpu',
-			color:    '#111',
-			order:    1,
-			multiple: false,
-			required: true,
-		},
+		[META.base]: { id: baseId, code: MACHINE_APP_BASE, name: 'Machine App', icon: 'cpu', color: '#111', order: 1, multiple: false, required: true },
 	};
-	const baseDoc = await col(META.base).findOne({ query: { code: ENGINE_BASE } });
-	if (baseDoc) baseRef[META.base].id = baseDoc.id;
 
 	// 1. field_type
 	let ftOrder = 0;
 	for (const code of FIELD_TYPES) {
-		await upsertGetId(
+		const fieldTypeId = await ensureCodeToId(
 			col(META.fieldType),
-			{ code },
-			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, fks: baseRef },
+			code,
+			{ code, name: code, icon: 'type', color: '#666', order: ++ftOrder, fks: baseRef }
 		);
+		console.log(`  [seedIdaeRegistries] field_type ${code} → id=${fieldTypeId}`);
 	}
 
 	// 2. field_group
 	let fgOrder = 0;
 	for (const code of FIELD_GROUPS) {
-		await upsertGetId(
+		const fieldGroupId = await ensureCodeToId(
 			col(META.fieldGroup),
-			{ code },
-			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, fks: baseRef },
+			code,
+			{ code, name: code, icon: ICON_BY_GROUP[code] ?? 'tag', color: '#888', order: ++fgOrder, fks: baseRef }
 		);
+		console.log(`  [seedIdaeRegistries] field_group ${code} → id=${fieldGroupId}`);
 	}
 
 	// 3. scheme_type
 	let stOrder = 0;
 	for (const code of SCHEME_TYPES) {
-		await upsertGetId(
+		const schemeTypeId = await ensureCodeToId(
 			col(META.schemeType),
-			{ code },
-			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, fks: baseRef },
+			code,
+			{ code, name: code, icon: 'layers', color: '#555', order: ++stOrder, fks: baseRef }
 		);
+		console.log(`  [seedIdaeRegistries] scheme_type ${code} → id=${schemeTypeId}`);
 	}
 
 	// 4. view_type
 	let vtOrder = 0;
 	for (const code of VIEW_TYPES) {
-		await upsertGetId(
+		const viewTypeId = await ensureCodeToId(
 			col(META.viewType),
-			{ code },
-			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, fks: baseRef },
+			code,
+			{ code, name: code, icon: 'eye', color: '#444', order: ++vtOrder, fks: baseRef }
 		);
+		console.log(`  [seedIdaeRegistries] view_type ${code} → id=${viewTypeId}`);
 	}
 }
 
 // ── publishModel ──────────────────────────────────────────────────────────────
 // Writes schemes / fields / has_field / views for the given MachineModel.
-// Each collection's `base` is registered in META.base (default: ENGINE_BASE).
+// Each collection's `base` is registered in META.base (default: MACHINE_APP_BASE).
 export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Promise<void> {
 	const model = ensureCodeField(rawModel);
 
@@ -252,12 +253,13 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 	let baseOrder = 10;
 	for (const code of bases) {
-		const id = await upsertGetId(
+		const id = await ensureCodeToId(
 			col(META.base),
-			{ code },
-			{ code, name: code, icon: 'database', color: '#333', order: ++baseOrder },
+			code,
+			{ code, name: code, icon: 'database', color: '#333', order: ++baseOrder }
 		);
 		baseById.set(code, id);
+		console.log(`  [publishModel] base ${code} → id=${id}`);
 	}
 
 	// ── Per-collection ───────────────────────────────────────────────────────
@@ -276,15 +278,31 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
 			'standard';
 
-		const schemeFksDoc: Record<string, any> = {
-			[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-			[META.schemeType]: fkRef({ code: typeCode, name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false }),
-		};
+		const schemeFksDoc: Record<string, any> = {};
 
+		// Meta pointers — written as FK refs so the Explorer can group on
+		// `fks.appscheme_base`. getModel() strips them (META_FK_KEYS) before
+		// building the in-memory model: their `.code` is a base/type code, not a
+		// queryable collection. The pair (write here / strip there) is load-bearing.
+		schemeFksDoc[META.base] = await embedFk(col(META.base), baseCode, {
+			name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true
+		});
+		schemeFksDoc[META.schemeType] = await embedFk(col(META.schemeType), typeCode, {
+			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
+		});
+
+		// Business FKs: relation descriptor only ({ code, multiple, required }).
+		// A scheme FK names its TARGET COLLECTION by `code` — not a resolved data
+		// pointer, so it must NOT be embedFk'd (that would upsert a stub into the
+		// META connection and create phantom business collections there).
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey === META.base) continue;
-			const fk = fkDef as any;
-			schemeFksDoc[fkKey] = fkRef({ code: fk.code ?? fkKey, name: fk.code ?? fkKey, icon: 'link', color: '#888', order: 0, multiple: fk.multiple ?? false, required: !!fk.required });
+			const fk = fkDef as MachineFkDef;
+			schemeFksDoc[fkKey] = {
+				code:     fk.code ?? fkKey,
+				multiple: fk.multiple ?? false,
+				required: !!fk.required,
+			};
 		}
 
 		// ── META.scheme ───────────────────────────────────────────────────────
@@ -292,10 +310,15 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
-		console.log(`  [publishModel] ${collectionName} → base=${baseCode}`, {fks: schemeFksDoc});
-		const schemeId = await upsertGetId(
+		// Log declared FKs (from the model), not the auto-injected meta base/type.
+		const declaredFks = Object.entries(fks)
+			.map(([k, v]) => `${k}${(v as any).multiple ? '[]' : ''}${(v as any).required ? '*' : ''}`);
+		console.log(
+			`  [publishModel] ${collectionName.padEnd(28)} base=${baseCode.padEnd(14)} type=${typeCode.padEnd(9)} fks=[${declaredFks.join(', ')}]`,
+		);
+		const schemeId = await ensureCodeToId(
 			col(META.scheme),
-			{ code: collectionName },
+			collectionName,
 			{
 				code:     collectionName,
 				name:     collectionName,
@@ -307,9 +330,10 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 				...(isType   ? { isType:   true } : {}),
 				...(isGroup  ? { isGroup:  true } : {}),
 				...(isStatus ? { isStatus: true } : {}),
+				...(colDef.rights ? { rights: colDef.rights } : {}),
 				template,
 				fks: schemeFksDoc,
-			},
+			}
 		);
 
 		// ── META.field + META.hasField ────────────────────────────────────────
@@ -326,28 +350,28 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 			if (!fieldReg.has(fieldName)) {
 				const fieldGridFks = {
-					[META.base]:       fkRef({ code: baseCode, name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-					[META.fieldType]:  fkRef({ code: baseType, name: baseType, icon: 'type', color: '#666', order: 0, multiple: false, required: true }),
-					[META.fieldGroup]: fkRef({ code: group, name: group, icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
+					[META.base]:       await embedFk(col(META.base),       baseCode, { name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+					[META.fieldType]:  await embedFk(col(META.fieldType),  baseType, { name: baseType, icon: 'type',     color: '#666', order: 0, multiple: false, required: true }),
+					[META.fieldGroup]: await embedFk(col(META.fieldGroup), group,    { name: group,    icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
 				};
 
-				const fieldId = await upsertGetId(
-					col(META.field),
-					{ code: fieldName },
-					{
-						code:     fieldName,
-						name:     fieldName,
-						icon:     fieldIcon,
-						color:    '#666',
-						order:    0,
-						fieldType,
-						required: fd.required ? 1 : 0,
-						readonly: fd.readonly ? 1 : 0,
-						private:  fd.private  ? 1 : 0,
-						fks: fieldGridFks,
-					},
-					{ fkTargetCol: '', fkTargetField: '' },
-				);
+				const fieldId = await ensureCodeToId(
+                col(META.field),
+                fieldName,
+                {
+                  code:     fieldName,
+                  name:     fieldName,
+                  icon:     fieldIcon,
+                  color:    '#666',
+                  order:    0,
+                  fieldType,
+                  required: fd.required ? 1 : 0,
+                  readonly: fd.readonly ? 1 : 0,
+                  private:  fd.private  ? 1 : 0,
+                  fks: fieldGridFks,
+                },
+                { fkTargetCol: '', fkTargetField: '' }
+              );
 				fieldReg.set(fieldName, fieldId);
 			}
 
@@ -382,12 +406,41 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			);
 		}
 
+		// ── FK relations → appscheme_field (no has_field — not scalar fields) ────
+		// Published so appscheme_view rows can FK-reference them by id.
+		// Excluded from has_field so getModel() doesn't add them to `fields`.
+		for (const [fkKey, fkDef] of Object.entries(fks)) {
+			if (fieldReg.has(fkKey)) continue;
+			const fk = fkDef as MachineFkDef;
+			const fieldGridFks = {
+				[META.base]:       await embedFk(col(META.base),       baseCode,  { name: baseCode,   icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
+				[META.fieldType]:  await embedFk(col(META.fieldType),  'fk',      { name: 'fk',       icon: 'link',     color: '#666', order: 0, multiple: false, required: true }),
+				[META.fieldGroup]: await embedFk(col(META.fieldGroup), 'relations',{ name: 'relations', icon: 'link',    color: '#888', order: 0, multiple: false, required: false }),
+			};
+			const fieldId = await ensureCodeToId(
+				col(META.field),
+				fkKey,
+				{
+					code:      fkKey,
+					name:      fkKey,
+					icon:      'link',
+					color:     '#666',
+					order:     0,
+					fieldType: 'fk',
+					required:  fk.required ? 1 : 0,
+					readonly:  0,
+					private:   0,
+					fks: fieldGridFks,
+				},
+				{ fkTargetCol: '', fkTargetField: '' }
+			);
+			fieldReg.set(fkKey, fieldId);
+		}
+
 		// ── META.view ─────────────────────────────────────────────────────────
-		const allFieldNames = Object.keys(fields);
-		const fkSet = new Set(
-			allFieldNames.filter((n) => ((fields[n] as any)?.type ?? '').startsWith('fk-')),
-		);
-		const identFields = allFieldNames.filter(
+		const allFieldNames  = Object.keys(fields);
+		const fkRelNames     = Object.keys(fks);
+		const identFields    = allFieldNames.filter(
 			(n) => inferFieldGroup(n, (fields[n] as any)?.type ?? 'text') === 'identification',
 		);
 		const focusFields = identFields.length
@@ -395,13 +448,14 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			: ['code', 'name'].filter((n) => n in fields);
 
 		const viewDefs: Record<string, string[]> = {
-			full:  allFieldNames,
-			flat:  allFieldNames.filter((n) => !fkSet.has(n)),
-			fk:    allFieldNames.filter((n) => fkSet.has(n)),
+			full:  [...allFieldNames, ...fkRelNames],
+			flat:  allFieldNames,
+			fk:    fkRelNames,
 			focus: focusFields,
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {
+			const viewTypeFk = await embedFk(col(META.viewType), viewTypeCode, { name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true });
 			for (const [order, vFieldName] of viewFields.entries()) {
 				const vFieldId = fieldReg.get(vFieldName);
 				if (!vFieldId) continue;
@@ -419,9 +473,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 						color: '#444',
 						order: order + 1,
 						fks: {
-							[META.scheme]:   fkRef({ code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
-							[META.viewType]: fkRef({ code: viewTypeCode, name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true }),
-							[META.field]:    fkRef({ code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
+							[META.scheme]:   buildFkRef({ id: schemeId, code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
+							[META.viewType]: viewTypeFk,
+							[META.field]:    buildFkRef({ id: vFieldId, code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
 						},
 					},
 				);
@@ -429,8 +483,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		}
 	}
 
-	// Fix `id: null` in fkRef snapshots — targets created mid-loop (chicken-egg).
-	await resolveFkIds(idaeDb);
+	// FKs are now resolved eagerly during publish — no post-pass needed.
 }
 
 // Back-compat alias — old call sites still work.

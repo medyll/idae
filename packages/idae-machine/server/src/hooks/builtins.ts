@@ -3,32 +3,17 @@ import { logAudit } from '../services/AuditService.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDomainActions } from '../models/domainActions.js';
 import * as ImagePresetRegistry from '../services/ImagePresetRegistry.js';
-import { findReverseFkHolders, parseFkKey } from '../validation/FkValidator.js';
-import { foldFks, type FkResolver } from '../validation/FkFolder.js';
+import { findReverseFkHolders, makeMongoFkResolver, parseFkKey } from '../validation/FkValidator.js';
+import { foldFks } from '../validation/FkFolder.js';
 import { getDbForCollection } from '../middleware/dbRouter.js';
 import { machineServer } from '../MachineServer.js';
 import { Schema } from 'mongoose';
 
-async function makeMongoResolver(): Promise<FkResolver> {
-	return async (targetCollection, scalarId) => {
-		const db  = await getDbForCollection(targetCollection);
-		const col = db.collection(targetCollection);
-		const numId = Number(scalarId);
-		const doc = !isNaN(numId)
-			? await col.findOne({ id: numId })
-			: await col.findOne({ code: String(scalarId) });
-		if (!doc) return null;
-		const { _id, ...rest } = doc as Record<string, unknown> & { _id: unknown };
-		return rest;
-	};
-}
-
 async function foldAndMutate(ctx: { collection: string; data?: unknown }): Promise<Array<{ fkName: string; message: string }>> {
 	if (!ctx.data || typeof ctx.data !== 'object') return [];
-	const model    = await machineServer.getModel(ctx.collection);
-	const resolver = await makeMongoResolver();
+	const model = await machineServer.getModel(ctx.collection);
 	const { data: folded, errors } = await foldFks(
-		model, ctx.collection, ctx.data as Record<string, unknown>, resolver,
+		model, ctx.collection, ctx.data as Record<string, unknown>, makeMongoFkResolver(),
 	);
 	Object.assign(ctx.data as Record<string, unknown>, folded);
 	return errors;

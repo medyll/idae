@@ -3,7 +3,7 @@ import type { SyncAdapter } from '@medyll/idae-sync';
 import type { SyncConfig, SyncStatus, PushConfig } from './types.js';
 import { DLQController } from './DLQController.js';
 import { ServerPushListener } from './push/ServerPushListener.js';
-import type { ServerChange } from './push/types.js';
+import type { ServerChange, PushListener } from './push/types.js';
 
 /**
  * SyncController - Facade for sync operations
@@ -15,7 +15,7 @@ export class SyncController {
   private syncConfig: SyncConfig | null;
   private dlqController: DLQController;
   private eventHandlers: Set<(event: SyncEvent) => void> = new Set();
-  private pushListener?: ServerPushListener;
+  private pushListener?: PushListener;
   private serverChangeHandlers: Set<(change: ServerChange) => void> = new Set();
 
   constructor(
@@ -31,8 +31,12 @@ export class SyncController {
     this.syncConfig = syncConfig;
     this.dlqController = new DLQController(outbox);
 
-    // Initialize server push listener if configured
-    if (pushConfig?.enabled && pushConfig.url) {
+    // Initialize server push listener if configured — `pushConfig.listener` injects a
+    // pre-built listener (DI seam for tests / shared instances), bypassing protocol setup.
+    if (pushConfig?.listener) {
+      this.pushListener = pushConfig.listener;
+      this.pushListener.onChange((change) => this.handleServerChange(change));
+    } else if (pushConfig?.enabled && pushConfig.url) {
       this.pushListener = new ServerPushListener({
         ...pushConfig,
         token: syncConfig?.token,
@@ -166,6 +170,13 @@ export class SyncController {
    */
   isPushConnected(): boolean {
     return this.pushListener?.isConnected() ?? false;
+  }
+
+  /**
+   * Underlying push listener (e.g. to reach `SocketIOListener.getClient()` for `machine.socket`).
+   */
+  getPushListener(): PushListener | undefined {
+    return this.pushListener;
   }
 
   /**

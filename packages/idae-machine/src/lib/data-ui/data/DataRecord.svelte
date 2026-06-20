@@ -57,6 +57,9 @@ Iterates a record's fields and renders DataField for each.
 				)
 			: null
 	);
+
+	$inspect(recordStore,groupFieldBy)
+
 	const fetchedData = $derived(recordStore?.records?.[0] as Record<string, any> | undefined);
 
 	const effectiveData = $derived(data ?? fetchedData);
@@ -71,12 +74,13 @@ Iterates a record's fields and renders DataField for each.
 	// Scalar fields are skipped when absent — MachineSchemeValues.format throws FIELD_NOT_FOUND.
 	const schemeFks = $derived(scheme?.fks ?? {});
 	const isFkField = (fieldName: string) => fieldName in schemeFks;
+ 
 </script>
 
 {#if mode === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}
 		{#each fieldNames as fieldName (fieldName)}
-			{#if scheme.fields?.[fieldName] && (fieldName in effectiveData || isFkField(fieldName))}
+			{#if (scheme.fields?.[fieldName] || isFkField(fieldName)) && (fieldName in effectiveData || isFkField(fieldName))}
 				<td>
 					<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
 				</td>
@@ -91,7 +95,7 @@ Iterates a record's fields and renders DataField for each.
 			<fieldset class="field-group">
 				<legend  >- {key}</legend>
 				{#each groupFields as { code: fieldName } (fieldName)}
-					{#if scheme?.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
+					{#if (scheme?.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">
 							{#if mode === 'show'}
 								<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
@@ -112,7 +116,7 @@ Iterates a record's fields and renders DataField for each.
 	<div class="form">
 		{#if scheme && fieldNames.length}
 			{#each fieldNames as fieldName (fieldName)}
-				{#if scheme.fields?.[fieldName] && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
+				{#if (scheme.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 					<div class="field">
 						{#if mode === 'show'}
 							<DataField {collection} {fieldName} {mode} data={effectiveData!} {showLabel} {inputForm} />

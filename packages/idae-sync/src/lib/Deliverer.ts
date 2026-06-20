@@ -1,5 +1,5 @@
-import type { DeliverResult } from './deliverer/IDeliverer';
-import type { OutboxEntry, IOutboxStore } from './outbox/OutboxStore';
+import type { DeliverResult } from './deliverer/IDeliverer.js';
+import type { OutboxEntry, IOutboxStore } from './outbox/OutboxStore.js';
 
 export type DeliverFunction = (entry: OutboxEntry) => Promise<DeliverResult>;
 

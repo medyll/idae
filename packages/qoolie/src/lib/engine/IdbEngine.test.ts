@@ -199,9 +199,9 @@ function openTestDbWithSchema(
 ): Promise<IDBDatabase> {
 	return new Promise((resolve, reject) => {
 		const request = indexedDB.open(name, version);
-		request.onupgradeneeded = async (event) => {
+		request.onupgradeneeded = (event) => {
 			const db = (event.target as IDBOpenDBRequest).result;
-			await schema.createSchema(db, storeConfig);
+			schema.createSchema(db, storeConfig);
 		};
 		request.onsuccess = () => resolve(request.result);
 		request.onerror = () => reject(request.error);

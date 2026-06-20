@@ -205,6 +205,26 @@ synthesized `fk-X.code` field or any magic-string FK detection.
 
 ---
 
+## 6ter. FK `required` validation
+
+`fkDef.required: true` (in the `fks` block, see §6bis) means the relation
+**must have a value before the record can be saved**.
+
+- Checked in `MachineSchemeValidate.validateForm()`, alongside scalar `fields`
+  validation — same error (`'Ce champ est obligatoire'`), same `errors`/`invalidFields`
+  shape, keyed by the **relation key** (e.g. `category`, not `categoryId`).
+- Presence is checked via `MachineScheme.hasFkValue(record, relationKey)`, which
+  covers all three FK storage shapes:
+  - nested `record.fks.{relationKey}_{id}` (multi-ref convention)
+  - nested object `record.fks.{relationKey} = { id|code }`
+  - legacy flat scalar field, resolved via `findFkField(fkDef.code)`
+- `options.ignoreFields` (passed to `validateForm`) skips a required FK relation
+  the same way it skips a scalar field — pass the relation key.
+- Relations without `required` (or `required: false`) are never checked here;
+  absence is a normal "no related records" state (see DataListRelations).
+
+---
+
 ## 7. Naming conventions for catalog collections
 
 | Pattern | Example | Meaning |

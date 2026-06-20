@@ -1,8 +1,8 @@
-import type { IDeliverer } from './deliverer/IDeliverer';
-import type { OutboxEntry, IOutboxStore } from './outbox/OutboxStore';
-import type { RollbackManager } from './RollbackManager';
-import type { SyncEvent } from './SyncMode';
-import type { SyncHooks } from './SyncHooks';
+import type { IDeliverer } from './deliverer/IDeliverer.js';
+import type { OutboxEntry, IOutboxStore } from './outbox/OutboxStore.js';
+import type { RollbackManager } from './RollbackManager.js';
+import type { SyncEvent } from './SyncMode.js';
+import type { SyncHooks } from './SyncHooks.js';
 
 export type CanonicalApplyFn = (collection: string, key: unknown, response: unknown) => Promise<void> | void;
 

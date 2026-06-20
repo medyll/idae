@@ -1,6 +1,6 @@
 <!--
 DataField.svelte
-Svelte 5 field renderer — dispatches to type-specific input atoms.
+Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit).
 @role data-field
 @prop {string} collection - Collection name
 @prop {string} fieldName - Field name
@@ -14,13 +14,17 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
     import { MachineRecordIdentity } from '$lib/main/index.js';
-    import InputEmail    from '$lib/data-ui/input/InputEmail.svelte';
-    import InputCurrency from '$lib/data-ui/input/InputCurrency.svelte';
-    import InputBoolean  from '$lib/data-ui/input/InputBoolean.svelte';
-    import InputTextarea from '$lib/data-ui/input/InputTextarea.svelte';
-    import InputSelect   from '$lib/data-ui/input/InputSelect.svelte';
-    import InputColor    from '$lib/data-ui/input/InputColor.svelte';
-    import InputIcon     from '$lib/data-ui/input/InputIcon.svelte';
+    import {
+        FieldText,
+        FieldBoolean,
+        FieldEmail,
+        FieldCurrency,
+        FieldTextarea,
+        FieldColor,
+        FieldIcon,
+        FieldSelect,
+        FieldAiPrompt
+    } from '$lib/data-ui/field/snippets/index.js';
 
     let {
         collection = getContext('collection'),
@@ -58,6 +62,10 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
 
     const isPrivate      = $derived(fieldForge?.fieldArgs?.includes('private') ?? false);
     const inputSizeClass = $derived(fieldForge?.inputSize ? `input-size-${fieldForge.inputSize}` : '');
+    // Icon glyph size: reuse the inputSize t-shirt taxonomy (xs/sm/md/lg); 'full' → 'lg'.
+    const iconSize       = $derived(
+        (fieldForge?.inputSize === 'full' ? 'lg' : fieldForge?.inputSize) as 'xs' | 'sm' | 'md' | 'lg' | undefined
+    );
     const labelPosition  = $derived(
         typeof showLabel === 'string' ? showLabel : (showLabel === true ? 'above' : '')
     );
@@ -133,120 +141,7 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
         }
         return nested;
     }
-
-    function updateValue(val: unknown) {
-        internalValue = val;
-    }
 </script>
-
-
-{#snippet fieldShow()}
-    <div class="flex w-48 gap-2">
-        <div class="flex-1" {...inputDataset}>
-            {#if fkCollection}
-                {fkLabel}
-            {:else if fieldForge?.fieldType === 'color'}
-                <InputColor value={internalValue as string} mode="show" />
-            {:else if fieldForge?.fieldType === 'icon'}
-                <InputIcon value={internalValue as string} mode="show" />
-            {:else}
-                {fieldForge?.format}
-            {/if}
-        </div>
-    </div>
-{/snippet}
-
-
-{#snippet fieldInput()}
-    {#if fieldForge?.fieldType === 'id'}
-        {#if mode !== 'create'}
-            <input
-                type="hidden"
-                value={internalValue}
-                {...inputDataset}
-                id={String(fieldName)}
-                name={String(fieldName)}
-                form={inputForm}
-            />
-        {/if}
-
-    {:else if fkCollection}
-        <InputSelect
-            bind:value={internalValue}
-            collection={fkCollection}
-            targetField={fkIndexField}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else if fieldForge?.fieldType === 'boolean'}
-        <InputBoolean
-            bind:value={internalValue as boolean}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else if fieldForge?.fieldType === 'email'}
-        <InputEmail
-            bind:value={internalValue as string}
-            error={error}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else if (fieldForge?.fieldType as string) === 'currency'}
-        <InputCurrency
-            bind:value={internalValue as number | string}
-            error={error}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else if fieldForge?.fieldType?.includes('area')}
-        <InputTextarea
-            bind:value={internalValue as string}
-            rows={4}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else if fieldForge?.fieldType === 'color'}
-        <InputColor
-            bind:value={internalValue as string}
-            {mode}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else if fieldForge?.fieldType === 'icon'}
-        <InputIcon
-            bind:value={internalValue as string}
-            {mode}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-        />
-
-    {:else}
-        <!-- Generic: text, number, date, datetime, time, password, url, phone, text-* -->
-        <input
-            value={internalValue}
-            type={fieldForge?.htmlInputType}
-            {...inputDataset}
-            id={String(fieldName)}
-            name={String(fieldName)}
-            form={inputForm}
-            oninput={(e: Event) => updateValue((e.target as HTMLInputElement).value)}
-        />
-    {/if}
-{/snippet}
-
 
 {#if fieldForge}
     {#if !isPrivate}
@@ -255,10 +150,112 @@ Svelte 5 field renderer — dispatches to type-specific input atoms.
                 <span class="field-label">{fieldLabel}</span>
             {/if}
             <div class="field-input" {...inputDataset}>
-                {#if mode === 'show'}
-                    {@render fieldShow()}
+                {#if fieldForge.fieldType === 'id'}
+                    {#if mode !== 'create'}
+                        <input
+                            type="hidden"
+                            value={internalValue}
+                            id={String(fieldName)}
+                            name={String(fieldName)}
+                            form={inputForm}
+                        />
+                    {/if}
+
+                {:else if fkCollection}
+                    <FieldSelect
+                        bind:value={internalValue}
+                        display={fkLabel}
+                        {mode}
+                        collection={fkCollection}
+                        targetField={fkIndexField}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if fieldForge.fieldType === 'boolean'}
+                    <FieldBoolean
+                        bind:value={internalValue as boolean}
+                        {mode}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if fieldForge.fieldType === 'email'}
+                    <FieldEmail
+                        bind:value={internalValue as string}
+                        {mode}
+                        {error}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if (fieldForge.fieldType as string) === 'currency'}
+                    <FieldCurrency
+                        bind:value={internalValue as number | string}
+                        display={fieldForge.format}
+                        {mode}
+                        {error}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if fieldForge.fieldType?.includes('area')}
+                    <FieldTextarea
+                        bind:value={internalValue as string}
+                        display={fieldForge.format}
+                        {mode}
+                        rows={4}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if fieldForge.fieldType === 'color'}
+                    <FieldColor
+                        bind:value={internalValue as string}
+                        {mode}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if fieldForge.fieldType === 'icon'}
+                    <FieldIcon
+                        bind:value={internalValue as string}
+                        {mode}
+                        size={iconSize ?? 'md'}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
+                {:else if fieldForge.fieldType === 'ai-prompt'}
+                    <FieldAiPrompt
+                        bind:value={internalValue as string}
+                        {mode}
+                        session={data && 'id' in data && 'code' in data
+                            ? { id: data.id as number, code: data.code as string }
+                            : undefined}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
+
                 {:else}
-                    {@render fieldInput()}
+                    <!-- Generic: text, number, date, datetime, time, password, url, phone, text-* -->
+                    <FieldText
+                        bind:value={internalValue}
+                        display={fieldForge.format}
+                        {mode}
+                        type={fieldForge.htmlInputType}
+                        id={String(fieldName)}
+                        name={String(fieldName)}
+                        form={inputForm}
+                    />
                 {/if}
                 {#if error}
                     <div class="error-message">{error}</div>

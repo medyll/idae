@@ -1,6 +1,6 @@
-import { IdaeApiClient } from '@medyll/idae-api';
-import type { OutboxEntry } from '../outbox/OutboxStore';
-import type { IDeliverer, DeliverResult } from './IDeliverer';
+import { IdaeApiClient } from '@medyll/idae-api/client';
+import type { OutboxEntry } from '../outbox/OutboxStore.js';
+import type { IDeliverer, DeliverResult } from './IDeliverer.js';
 
 export class IdaeApiDeliverer implements IDeliverer {
   private client: ReturnType<typeof IdaeApiClient.getInstance>;

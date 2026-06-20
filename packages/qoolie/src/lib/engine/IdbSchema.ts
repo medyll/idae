@@ -32,10 +32,10 @@ export class IdbSchema {
 	 *   Format: "keyPath" or "++autoIncrement" or "&indexedField" or "field1, field2, ++id"
 	 * @returns Array of created store names and their key paths.
 	 */
-	async createSchema(
+	createSchema(
 		db: IDBDatabase,
 		storeListFields: Record<string, string>
-	): Promise<Array<{ storeName: string; keyPath: string }>> {
+	): Array<{ storeName: string; keyPath: string }> {
 		const results: Array<{ storeName: string; keyPath: string }> = [];
 
 		for (const [storeName, storeConfig] of Object.entries(storeListFields)) {
@@ -49,7 +49,7 @@ export class IdbSchema {
 
 			if (store) {
 				for (const field of fields) {
-					await this.createIndexes(store, field, field);
+					this.createIndexes(store, field, field);
 				}
 				results.push({ storeName, keyPath });
 			}
@@ -77,11 +77,11 @@ export class IdbSchema {
 	/**
 	 * Creates an index in the object store.
 	 */
-	private async createIndexes(
+	private createIndexes(
 		store: IDBObjectStore,
 		indexName: string,
 		keyPath: string
-	): Promise<void> {
+	): void {
 		try {
 			const cleanedIndexName = this.cleanIndexName(indexName);
 			const cleanedKeyPath = this.cleanIndexName(keyPath);

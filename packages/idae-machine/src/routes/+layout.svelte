@@ -6,7 +6,7 @@
 	import { API_URL } from '$lib/config.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import { deleteIdbDatabase } from '$lib/main/machineIdbAdapter.js';
-	import type { AppUser } from '$lib/types/schema-types.js';
+	import type { AppUser, AppUserGrant } from '$lib/types/entity-types.js';
 
 	const apiUrl = API_URL;
 	const _g = globalThis as unknown as { __idae_boot?: Promise<void> };
@@ -34,7 +34,13 @@
 				sync: {
 					mode: 'server-first',
 					databaseHost: apiUrl,
-					...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
+					// Data CRUD lives behind /api/data (DataService → multi-base DB routing).
+					// databaseHost stays the bare origin so the schema fetch (/api/scheme) is unaffected.
+					routePrefix: '/api/data',
+					// Auth must go through `token`, not `headers`: the idae-api client builds its
+					// Authorization header solely from clientConfig.token and ignores custom headers.
+					// Passing it via headers drops the JWT → business collections 401 → empty IDB.
+					...(token ? { token } : {}),
 				},
 			});
 		} catch (err) {
@@ -48,13 +54,8 @@
 		}
 
 		// Block render until all schema collections are in IDB — prevents empty-set race.
-		await machine.warmup([
-			'appscheme',
-			'appscheme_field',
-			'appscheme_view',
-			'appscheme_view_type',
-			'appscheme_has_field',
-		]);
+		// Collections are now derived from the model (base='machine_app') instead of hardcoded array.
+		await machine.warmup();
 
 		restoreSession();
 	}
@@ -94,6 +95,10 @@
 		}
 		try {
 			const user = JSON.parse(rawUser) as { userId: string; login: string; isAdmin: boolean };
+			// Grants are persisted at login — without them a non-admin would be denied
+			// every read by the client rights gate even though the server allows it.
+			const rawGrants = localStorage.getItem('auth_grants');
+			const grants = rawGrants ? (JSON.parse(rawGrants) as AppUserGrant[]) : [];
 			machine.rights.setCurrentUser(
 				{
 					id: user.userId,
@@ -102,7 +107,7 @@
 					isLocked: false,
 					appPermissions: { ADMIN: user.isAdmin }
 				} as unknown as AppUser,
-				[]
+				grants
 			);
 			authState.authed = true;
 		} catch {

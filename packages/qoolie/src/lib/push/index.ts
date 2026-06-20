@@ -3,6 +3,7 @@
 export { ServerPushListener } from './ServerPushListener.js';
 export { SSEListener } from './SSEListener.js';
 export { WebSocketListener } from './WebSocketListener.js';
+export { SocketIOListener } from './SocketIOListener.js';
 
 export type {
   PushConfig,

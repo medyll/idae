@@ -86,7 +86,7 @@ export class MachineRouter {
 				if (typeof document === 'undefined') return;
 				// DOM zone lookup uses zone name (targetId), not the content-keyed frameId.
 				const zone = frameId.slice(frameId.indexOf(':') + 1);
-				const target = document.querySelector(`[data-target-zone="${zone}"]`);
+				const target = await this.waitForZone(zone);
 				if (!target) return;
 				// Zones can opt out of the taskbar via data-taskbar="false" (inner content zones).
 				const taskbar = (target as HTMLElement).dataset.taskbar !== 'false';
@@ -109,6 +109,33 @@ export class MachineRouter {
 				logger.warn(`[MachineRouter] Failed to load frame: ${seg.modulePath} → ${seg.targetId}`, err);
 			}
 		}
+	}
+
+	/**
+	 * Deep-link cold boot: the initial hash dispatch can fire before the shell
+	 * (and its [data-target-zone]) is mounted — auth gating renders <App/> only
+	 * after boot resolves. Wait for the zone instead of dropping the navigation.
+	 * Resolves null on timeout (load then fails as before).
+	 */
+	private waitForZone(zone: string, timeoutMs = 15_000): Promise<Element | null> {
+		const selector = `[data-target-zone="${zone}"]`;
+		const existing = document.querySelector(selector);
+		if (existing) return Promise.resolve(existing);
+		return new Promise((resolve) => {
+			const observer = new MutationObserver(() => {
+				const el = document.querySelector(selector);
+				if (el) {
+					observer.disconnect();
+					clearTimeout(timer);
+					resolve(el);
+				}
+			});
+			const timer = setTimeout(() => {
+				observer.disconnect();
+				resolve(null);
+			}, timeoutMs);
+			observer.observe(document.body, { childList: true, subtree: true });
+		});
 	}
 
 	private handleAuthGuard(to: { path?: string; metadata?: Record<string, unknown> }, next: (arg?: false | string | void) => void): void {

@@ -57,7 +57,6 @@ v1: single field (defaultField). `advanced` flag reserved for later field picker
 				} else {
 					where = { [field]: { $contains: kw } };
 				}
-				// TODO: persist last query via MachinePrefs (per collection) once MachinePrefs is ready
 			});
 		}, debounceMs);
 		return () => {

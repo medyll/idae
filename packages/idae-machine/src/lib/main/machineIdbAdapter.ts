@@ -4,6 +4,14 @@
  *
  * Core principle: MongoDB appscheme_* = source of truth.
  * IDB = cache/replica that auto-adapts when server schema changes.
+ *
+ * Architecture note: Qoolie is now the sole IDB opener/creator (see IDB.md §5b).
+ * This module provides read-only introspection and drift detection.
+ * Never calls indexedDB.open() with a version - that's Qoolie's responsibility.
+ *
+ * Constraint: Machine supports only one live Qoolie instance at a time due to
+ * shared idbEventBus in Qoolie. Multiple concurrent instances would cause
+ * reactive-read collisions. boot() destroys old instance before creating new one.
  */
 
 import type { MachineModel } from '$lib/types/index.js';
@@ -20,6 +28,20 @@ export interface PendingIdbUpgrade {
 /** True for internal stores that must never be deleted. */
 export function isProtectedStore(name: string): boolean {
 	return name.startsWith('__') && name.endsWith('__');
+}
+
+/**
+ * Translate a Dexie-style keyPath config ('++id', 'id', '&code', 'a, b, ++id')
+ * into native createObjectStore options. Mirrors qoolie's IdbSchema.createSchema:
+ * native IDB rejects '++id' ("keyPath is not a valid key path") — the '++' prefix
+ * means autoIncrement on the bare field name.
+ */
+export function nativeStoreOptions(config: string | null | undefined): IDBObjectStoreParameters {
+	const fields = (config ?? '++id').split(',').map((f) => f.trim());
+	const incrementField = fields.find((f) => f.startsWith('++'))?.replace('++', '');
+	const declaredIndex  = fields.find((f) => f.startsWith('&'))?.replace('&', '');
+	const keyPath = incrementField || declaredIndex || fields[0];
+	return { keyPath, autoIncrement: Boolean(incrementField) };
 }
 
 /**
@@ -88,11 +110,16 @@ function detectStoreRenames(
 }
 
 /**
- * Perform IDB schema upgrade: create missing stores, delete orphans, persist hash.
+ * Perform IDB schema upgrade: handle store renames and deletions.
  * Called after detectSchemaDrift() returned a pending upgrade.
  *
+ * Qoolie now handles all store creation (including __schema_meta__) in its onupgradeneeded handler.
+ * This method only handles:
+ * - Store renames: copies data from old → new store when keyPath matches
+ * - Store deletions: removes orphaned stores (excluding protected stores)
+ * - Store creation: only for stores not created by Qoolie (fallback)
+ *
  * Edge cases handled:
- * - Fresh install: skips if no stores to delete (only creates)
  * - __outbox__ / internal stores: never deleted
  * - Rename detection: copies data from old → new store when keyPath matches
  */
@@ -102,7 +129,12 @@ export async function performIdbUpgrade(
 	upgrade: PendingIdbUpgrade,
 	effectiveModel: MachineModel,
 ): Promise<void> {
-	// Fresh install: no orphans to delete — qoolie handles creation via normal open
+	// Qoolie now handles all store creation in its onupgradeneeded handler,
+	// including __schema_meta__. This method only handles renames and deletions.
+	// Pure-creation case (toDelete empty): skip — qoolie's single open creates
+	// everything (business stores + __schema_meta__ + __outbox__ + indexes).
+	// Doing our own versioned open here would consume the version bump and
+	// starve qoolie's onupgradeneeded (same-version reopen never fires it).
 	if (upgrade.toCreate.length > 0 && upgrade.toDelete.length === 0) return;
 
 	await new Promise<void>((resolve, reject) => {
@@ -115,7 +147,7 @@ export async function performIdbUpgrade(
 			for (const { from, to, keyPath } of renames) {
 				if (!db.objectStoreNames.contains(from)) continue;
 				const oldStore = (db as unknown as IDBDatabase & { objectStore(name: string): IDBObjectStore }).objectStore(from);
-				const newStore = db.createObjectStore(to, { keyPath });
+				const newStore = db.createObjectStore(to, nativeStoreOptions(keyPath));
 				const cursor   = oldStore.openCursor();
 				cursor.onsuccess = () => {
 					const c = cursor.result;
@@ -133,20 +165,16 @@ export async function performIdbUpgrade(
 			const renamedTo = new Set(renames.map((r) => r.to));
 			for (const name of upgrade.toCreate) {
 				if (renamedTo.has(name) || db.objectStoreNames.contains(name)) continue;
-				const keyPath = effectiveModel[name]?.keyPath ?? '++id';
-				db.createObjectStore(name, { keyPath });
-			}
-
-			if (!db.objectStoreNames.contains('__schema_meta__')) {
-				db.createObjectStore('__schema_meta__', { keyPath: 'id' });
+				db.createObjectStore(name, nativeStoreOptions(effectiveModel[name]?.keyPath));
 			}
 		};
 		req.onsuccess = () => { req.result.close(); resolve(); };
 		req.onerror   = () => reject(req.error);
 	});
 
-	try { await storeSchemaHash(dbName, upgrade.expectedHash); }
-	catch (err) { console.warn('[idae-machine] Could not persist schema hash after upgrade (will retry on next start):', err); }
+	// NOTE: schema-hash persistence is intentionally NOT done here. __schema_meta__ is
+	// created by qoolie's versioned open, which runs AFTER this function in createStore().
+	// The caller (machine.createStore) persists the hash once qoolie is ready.
 }
 
 /**
@@ -159,6 +187,7 @@ export function computeSchemaHash(storeNames: string[]): string {
 /**
  * Opens IDB briefly to read actual object store names.
  * Excludes internal stores (__outbox__, __schema_meta__, __migrations__).
+ * Returns empty Set if database doesn't exist (to avoid creating it with no-version open).
  */
 export function getCurrentIdbStores(dbName: string): Promise<Set<string>> {
 	return new Promise((resolve, reject) => {
@@ -166,9 +195,21 @@ export function getCurrentIdbStores(dbName: string): Promise<Set<string>> {
 			resolve(new Set());
 			return;
 		}
+		
+		// Fix for D1: Avoid creating DB with no-version open.
+		// Check if database exists. If not, return empty Set.
+		// This prevents interfering with Qoolie's proper versioned creation.
 		const req = indexedDB.open(dbName);
 		req.onsuccess = (e) => {
 			const db = (e.target as IDBOpenDBRequest).result;
+			// Fix for D1: If version is 0, DB was just created by this no-version open.
+			// Return empty Set to avoid interfering with Qoolie's proper versioned creation.
+			if (db.version === 0) {
+				db.close();
+				resolve(new Set());
+				return;
+			}
+			
 			const stores = new Set<string>();
 			for (let i = 0; i < db.objectStoreNames.length; i++) {
 				const name = db.objectStoreNames.item(i);
@@ -177,13 +218,18 @@ export function getCurrentIdbStores(dbName: string): Promise<Set<string>> {
 			db.close();
 			resolve(stores);
 		};
-		req.onerror = () => reject(req.error);
+		req.onerror = () => {
+			// If we can't open the database, it likely doesn't exist
+			// Return empty Set instead of rejecting to avoid creating it
+			resolve(new Set());
+		};
 	});
 }
 
 /**
  * Returns the actual current version of the IDB database, or 0 if it doesn't exist.
  * Used to prevent version downgrade when re-opening after a drift-triggered increment.
+ * Returns 0 if database doesn't exist (to avoid creating it with no-version open).
  */
 export function getActualIdbVersion(dbName: string): Promise<number> {
 	return new Promise((resolve) => {
@@ -191,17 +237,29 @@ export function getActualIdbVersion(dbName: string): Promise<number> {
 		const req = indexedDB.open(dbName);
 		req.onsuccess = (e) => {
 			const db = (e.target as IDBOpenDBRequest).result;
+			// If version is 0, the database was just created by this open call
+			// In this case, return 0 to avoid interfering with proper creation
+			if (db.version === 0) {
+				db.close();
+				resolve(0);
+				return;
+			}
 			const version = db.version;
 			db.close();
 			resolve(version);
 		};
-		req.onerror = () => resolve(0);
+		req.onerror = () => {
+			// If we can't open the database, it likely doesn't exist
+			// Return 0 instead of rejecting to avoid creating it
+			resolve(0);
+		};
 	});
 }
 
 /**
  * Read the persisted schema hash from __schema_meta__ store.
  * Returns null if the store doesn't exist or no hash is stored.
+ * Returns null if database doesn't exist (to avoid creating it with no-version open).
  */
 export function getStoredSchemaHash(dbName: string): Promise<string | null> {
 	return new Promise((resolve) => {
@@ -209,9 +267,18 @@ export function getStoredSchemaHash(dbName: string): Promise<string | null> {
 			resolve(null);
 			return;
 		}
+		
 		const req = indexedDB.open(dbName);
 		req.onsuccess = (e) => {
 			const db = (e.target as IDBOpenDBRequest).result;
+			// If version is 0, the database was just created by this open call
+			// In this case, return null to avoid interfering with proper creation
+			if (db.version === 0) {
+				db.close();
+				resolve(null);
+				return;
+			}
+			
 			if (!db.objectStoreNames.contains('__schema_meta__')) {
 				db.close();
 				resolve(null);
@@ -229,7 +296,11 @@ export function getStoredSchemaHash(dbName: string): Promise<string | null> {
 				resolve(null);
 			};
 		};
-		req.onerror = () => resolve(null);
+		req.onerror = () => {
+			// If we can't open the database, it likely doesn't exist
+			// Return null instead of rejecting to avoid creating it
+			resolve(null);
+		};
 	});
 }
 

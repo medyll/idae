@@ -1,4 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+// @vitest-environment jsdom
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MachineRouter } from '../machine/MachineRouter.js';
 import { createRouter } from '@medyll/idae-router';
 
@@ -89,6 +90,37 @@ describe('MachineRouter', () => {
 			mockRouterInstance._before[0](to, {}, next);
 
 			expect(next).toHaveBeenCalledWith();
+		});
+	});
+
+	describe('waitForZone (deep-link cold boot)', () => {
+		afterEach(() => {
+			document.querySelectorAll('[data-target-zone]').forEach((el) => el.remove());
+		});
+
+		it('resolves immediately when the zone is already in the DOM', async () => {
+			const el = document.createElement('div');
+			el.setAttribute('data-target-zone', 'main');
+			document.body.appendChild(el);
+
+			const found = await (router as any).waitForZone('main', 100);
+			expect(found).toBe(el);
+		});
+
+		it('resolves when the zone is mounted after the dispatch', async () => {
+			const promise = (router as any).waitForZone('main', 2000);
+
+			const el = document.createElement('div');
+			el.setAttribute('data-target-zone', 'main');
+			setTimeout(() => document.body.appendChild(el), 20);
+
+			const found = await promise;
+			expect(found).toBe(el);
+		});
+
+		it('resolves null on timeout when the zone never mounts', async () => {
+			const found = await (router as any).waitForZone('ghost', 50);
+			expect(found).toBeNull();
 		});
 	});
 

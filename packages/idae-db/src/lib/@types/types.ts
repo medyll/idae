@@ -116,6 +116,20 @@ export interface IdaeDbAdapterInterface<T extends object> {
 	 * @returns A promise resolving to the transaction result.
 	 */
 	transaction<TResult>(callback: (session: unknown) => Promise<TResult>): Promise<TResult>;
+
+	/**
+	 * Finds a single document and updates it, or inserts if not found (upsert).
+	 * Returns the updated or inserted document.
+	 * @param query - The query to find the document.
+	 * @param update - The update data to apply.
+	 * @param options - Optional update options including returnDocument.
+	 * @returns A promise resolving to the updated or inserted document, or null.
+	 */
+	findOneAndUpdate(
+		query: unknown,
+		update: Partial<T>,
+		options?: unknown
+	): Promise<T | null>;
 }
 
 /**

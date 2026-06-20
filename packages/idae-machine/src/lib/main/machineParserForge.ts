@@ -2,11 +2,10 @@ import type {
 	TplCollectionName,
 	TplFieldRules,
 	TplFieldType,
-	TplFieldArgs,
 	TplFields,
+	MachineFieldDef,
 	IDbForge
 } from '$lib/types/index.js';
-type TplFieldRulesObject = TplFieldRules;
 import { MachineError } from './machine/MachineError.js';
 
 /**
@@ -34,7 +33,7 @@ export class MachineParserForge {
 	): Partial<IDbForge> | undefined {
 		// New world: object-based field rule
 		if (typeof fieldRule === 'object' && fieldRule !== null) {
-			return this.#fromObjectRule(what, fieldRule as TplFieldRulesObject);
+			return this.#fromObjectRule(what, fieldRule);
 		}
 		// Legacy: string-based field rule
 		const typeMappings = {
@@ -68,11 +67,9 @@ export class MachineParserForge {
 	 */
 	#fromObjectRule(
 		what: 'array' | 'object' | 'fk' | 'primitive',
-		rule: TplFieldRulesObject
+		rule: MachineFieldDef
 	): Partial<IDbForge> | undefined {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const r = rule as any;
-		const type = r.type as string;
+		const type = rule.type;
 		const isArray     = type.startsWith('array-of-');
 		const isObject    = type.startsWith('object-');
 		const isFk        = type.startsWith('fk-');
@@ -84,14 +81,14 @@ export class MachineParserForge {
 		if (!matches[what]) return undefined;
 
 		const fieldArgs = this.#argsFromObject(rule);
-		// Pass through any extra options (presets, preset, free, maxSize, etc.) generically.
-		// Known base keys are stripped; everything else is forwarded as-is to IDbForge.
-		const { type: _t, required: _req, readonly: _ro, private: _priv, ...extras } = r;
+		// Pass through any extra display/forge options (presets, preset, free, maxSize, etc.).
+		// `group` is scheme metadata, not part of IDbForge, so it's stripped along with the
+		// other known base keys.
+		const { type: _t, required: _req, readonly: _ro, private: _priv, group: _grp, ...extras } = rule;
 		return {
-			fieldType: type as TplFieldType,
+			fieldType: type,
 			fieldArgs,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			is:        what as any,
+			is:        what,
 			...extras,
 			...(type === 'image' ? { accept: 'image/*' } : {}),
 		};
@@ -100,13 +97,11 @@ export class MachineParserForge {
 	/**
 	 * Extract fieldArgs array from an object rule's boolean flags.
 	 */
-	#argsFromObject(rule: TplFieldRulesObject): string[] | undefined {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const r = rule as any;
+	#argsFromObject(rule: MachineFieldDef): string[] | undefined {
 		const args: string[] = [];
-		if (r.required) args.push('required');
-		if (r.readonly) args.push('readonly');
-		if (r.private)  args.push('private');
+		if (rule.required) args.push('required');
+		if (rule.readonly) args.push('readonly');
+		if (rule.private)  args.push('private');
 		return args.length ? args : undefined;
 	}
 
@@ -148,7 +143,7 @@ export class MachineParserForge {
 		 * @param source - The field rule string.
 		 * @returns Object with the main type (piece) and argument array (args).
 		 */
-		function extractArgs(source: string): { piece: string; args?: TplFieldArgs } {
+		function extractArgs(source: string): { piece: string; args?: string[] } {
 			const [piece, remaining] = source.split('(');
 			if (!remaining) return { piece: piece.trim() };
 			let central: string | undefined;
@@ -156,17 +151,17 @@ export class MachineParserForge {
 				[central] = remaining.split(')');
 			}
 			const args = central
-				? (central
+				? central
 						.split(' ')
 						.map((s) => s.trim())
-						.filter(Boolean) as unknown as TplFieldArgs)
+						.filter(Boolean)
 				: undefined;
 			return { piece: piece.trim(), args };
 		}
 
 		const extractedArgs = extractArgs(fieldRule);
 		let fieldType: TplFieldType | undefined;
-		const fieldArgs: TplFieldArgs | undefined = extractedArgs?.args;
+		const fieldArgs = extractedArgs?.args;
 		switch (type) {
 			case 'array':
 				fieldType = extractAfter('array-of-', fieldRule);
@@ -178,15 +173,13 @@ export class MachineParserForge {
 				fieldType = 'fk-' + extractAfter('fk-', fieldRule);
 				break;
 			case 'primitive':
-				fieldType = extractedArgs?.piece as unknown as TplFieldType | undefined;
+				fieldType = extractedArgs?.piece;
 				break;
 		}
 		const result: Partial<IDbForge> = {
-			fieldType: fieldType as TplFieldType | undefined,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			fieldArgs: fieldArgs as unknown as any,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			is:        type as any
+			fieldType,
+			fieldArgs,
+			is: type
 		};
 		return result;
 	}

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import DataListRelations from './DataListRelations.svelte';
-	let { collection, recordId, data, fk, showTitle, showToolbar, usePrefs, prefsScope, ...rest }:
+	let { collection, recordId, data, fk, showTitle, usePrefs, prefsScope, ...rest }:
 		{ collection: string; recordId?: string|number; data?: Record<string,unknown>|null; fk?: string;
-		  showTitle?: boolean; showToolbar?: boolean; usePrefs?: boolean; prefsScope?: string;
+		  showTitle?: boolean; usePrefs?: boolean; prefsScope?: string;
 		  [key: string]: unknown } = $props();
 </script>
-<DataListRelations direction="forward" {collection} {recordId} {data} {fk} {showTitle} {showToolbar} {usePrefs} {prefsScope} {...rest} />
+<DataListRelations direction="forward" {collection} {recordId} {data} {fk} {showTitle} {usePrefs} {prefsScope} {...rest} />

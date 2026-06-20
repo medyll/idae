@@ -18,7 +18,7 @@ function getOrg(req: Request): string {
 	return req.user?.org ?? getCurrentOrg();
 }
 
-export async function uploadFiles(req: Request, res: Response): Promise<void> {
+export async function uploadFiles(req: Request<{ collection: string; recordId: string }>, res: Response): Promise<void> {
 	try {
 		const { collection, recordId } = req.params;
 		const org = getOrg(req);
@@ -64,7 +64,7 @@ export async function uploadFiles(req: Request, res: Response): Promise<void> {
 	}
 }
 
-export async function listFilesForRecord(req: Request, res: Response): Promise<void> {
+export async function listFilesForRecord(req: Request<{ collection: string; recordId: string }>, res: Response): Promise<void> {
 	try {
 		const { collection, recordId } = req.params;
 		const org = getOrg(req);
@@ -82,7 +82,7 @@ export async function listFilesForRecord(req: Request, res: Response): Promise<v
 	}
 }
 
-export async function getFileMeta(req: Request, res: Response): Promise<void> {
+export async function getFileMeta(req: Request<{ fileId: string }>, res: Response): Promise<void> {
 	try {
 		const { fileId } = req.params;
 		const org = getOrg(req);
@@ -99,7 +99,7 @@ export async function getFileMeta(req: Request, res: Response): Promise<void> {
 	}
 }
 
-export async function downloadFile(req: Request, res: Response): Promise<void> {
+export async function downloadFile(req: Request<{ fileId: string }>, res: Response): Promise<void> {
 	try {
 		const { fileId } = req.params;
 		const org = getOrg(req);
@@ -119,7 +119,7 @@ export async function downloadFile(req: Request, res: Response): Promise<void> {
 	}
 }
 
-export async function deleteFile(req: Request, res: Response): Promise<void> {
+export async function deleteFile(req: Request<{ fileId: string }>, res: Response): Promise<void> {
 	try {
 		const { fileId } = req.params;
 		const org = getOrg(req);
@@ -150,7 +150,7 @@ export async function deleteFile(req: Request, res: Response): Promise<void> {
 	}
 }
 
-export async function updateImageFocus(req: Request, res: Response): Promise<void> {
+export async function updateImageFocus(req: Request<{ fileId: string }>, res: Response): Promise<void> {
 	try {
 		const { fileId } = req.params;
 		const org = getOrg(req);
@@ -178,7 +178,7 @@ export async function updateImageFocus(req: Request, res: Response): Promise<voi
 	}
 }
 
-export async function getImageVariant(req: Request, res: Response): Promise<void> {
+export async function getImageVariant(req: Request<{ fileId: string; variant: string }>, res: Response): Promise<void> {
 	try {
 		const { fileId, variant } = req.params;
 		const org = getOrg(req);

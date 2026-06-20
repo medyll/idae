@@ -1,17 +1,17 @@
-import { OutboxStore, OutboxEntry, IOutboxStore } from "./outbox/OutboxStore";
-import type { IDeliverer } from "./deliverer/IDeliverer";
-import type { OnConflictHook } from "./ConflictResolver";
-import { ConflictResolver } from "./ConflictResolver";
-import { WhereSerializer } from "./WhereSerializer";
-import { ensureUpdatedAt } from "./ensureUpdatedAt";
-import { SyncModeManager } from "./SyncModeManager";
-import { ServerFirstHandler } from "./ServerFirstHandler";
-import { RollbackManager } from "./RollbackManager";
-import type { SyncMode, SyncModeConfig, SyncEvent, SyncEventHandler } from "./SyncMode";
-import type { SyncHooks, DebugFn } from "./SyncHooks";
-import type { CanonicalApplyFn } from "./ServerFirstHandler";
-import { CircuitBreaker } from "./CircuitBreaker";
-import type { CircuitBreakerOptions } from "./CircuitBreaker";
+import { OutboxStore, OutboxEntry, IOutboxStore } from "./outbox/OutboxStore.js";
+import type { IDeliverer } from "./deliverer/IDeliverer.js";
+import type { OnConflictHook } from "./ConflictResolver.js";
+import { ConflictResolver } from "./ConflictResolver.js";
+import { WhereSerializer } from "./WhereSerializer.js";
+import { ensureUpdatedAt } from "./ensureUpdatedAt.js";
+import { SyncModeManager } from "./SyncModeManager.js";
+import { ServerFirstHandler } from "./ServerFirstHandler.js";
+import { RollbackManager } from "./RollbackManager.js";
+import type { SyncMode, SyncModeConfig, SyncEvent, SyncEventHandler } from "./SyncMode.js";
+import type { SyncHooks, DebugFn } from "./SyncHooks.js";
+import type { CanonicalApplyFn } from "./ServerFirstHandler.js";
+import { CircuitBreaker } from "./CircuitBreaker.js";
+import type { CircuitBreakerOptions } from "./CircuitBreaker.js";
 
 export type IdbqlEventPayload = {
   collection: string;

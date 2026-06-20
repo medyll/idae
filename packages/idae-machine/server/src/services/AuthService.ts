@@ -5,6 +5,8 @@ import { getConn } from '../middleware/dbRouter.js';
 import { getCurrentOrg } from '../middleware/orgContext.js';
 import { config } from '../config.js';
 import type { UserContext } from '../middleware/permission.js';
+import { isApiKeyToken, resolveApiKey } from './ApiKeyService.js';
+import { grantService } from './GrantService.js';
 
 interface JwtPayload {
 	userId:  string;
@@ -24,13 +26,17 @@ interface AppUserDoc {
 
 /**
  * Resolve the authenticated user from the request's Bearer token.
- * Returns null if token is missing, invalid, or expired.
+ * Accepts a signed JWT or a long-lived API key (`mk_<org>_<secret>`).
+ * Returns null if token is missing, invalid, expired, or revoked.
  */
 export async function resolveUser(req: Request): Promise<UserContext | null> {
 	const authHeader = req.headers.authorization;
 	if (!authHeader?.startsWith('Bearer ')) return null;
 
 	const token = authHeader.slice(7);
+
+	if (isApiKeyToken(token)) return resolveApiKey(token);
+
 	try {
 		const payload = jwt.verify(token, config.jwtSecret) as JwtPayload;
 		return {
@@ -51,7 +57,7 @@ export async function resolveUser(req: Request): Promise<UserContext | null> {
 export async function login(
 	login:    string,
 	password: string,
-): Promise<{ token: string; user: UserContext } | null> {
+): Promise<{ token: string; user: UserContext; grants: unknown[] } | null> {
 	const org  = getCurrentOrg();
 	const conn = await getConn(`${org}_machine_user`);
 	const doc  = await conn.collection('appuser').findOne({ login }) as AppUserDoc | null;
@@ -74,9 +80,15 @@ export async function login(
 
 	const token = jwt.sign(payload, config.jwtSecret, { expiresIn: config.jwtTtl as any });
 
+	// Hydrate the client's rights gate with the user's effective grants. Admins get
+	// the ADMIN override client-side and don't need them, but non-admins do — without
+	// these the client denies every read even though the server would allow it.
+	const grants = isAdmin ? [] : await grantService.listUserGrants(payload.userId);
+
 	return {
 		token,
 		user: { userId: payload.userId, login: payload.login, isAdmin, org },
+		grants,
 	};
 }
 

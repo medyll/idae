@@ -1,4 +1,4 @@
-import type { SyncMode, SyncModeConfig } from './SyncMode';
+import type { SyncMode, SyncModeConfig } from './SyncMode.js';
 
 export type SyncModePersistence = 'none' | 'localStorage' | 'sessionStorage';
 

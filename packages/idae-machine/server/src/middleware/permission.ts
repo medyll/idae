@@ -41,7 +41,7 @@ declare global {
  *   4. No grant  → 403
  */
 export function requireDroit(permission: Permission, table?: string) {
-	return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+	return async (req: Request<{ table: string }>, res: Response, next: NextFunction): Promise<void> => {
 		const targetTable = table ?? req.params.table;
 		const ctx = extractAuditContext(req);
 

@@ -24,19 +24,28 @@ export { default as DataRfk }    from '$lib/data-ui/data/DataRfk.svelte';
 export { default as DataField }     from '$lib/data-ui/field/DataField.svelte';
 export { default as DataFieldEdit } from '$lib/data-ui/field/DataFieldEdit.svelte';
 
-// UI — data controls
+// UI — data controls (toolbar layout + composable, prefs-aware controls)
 export { default as DataToolbar } from '$lib/data-ui/controls/DataToolbar.svelte';
+export { default as ButtonAction } from '$lib/data-ui/controls/ButtonAction.svelte';
+export { default as Sort }         from '$lib/data-ui/controls/Sort.svelte';
+export { default as Group }        from '$lib/data-ui/controls/Group.svelte';
+export { default as Find }         from '$lib/data-ui/controls/Find.svelte';
+export { default as ListMode }     from '$lib/data-ui/controls/ListMode.svelte';
 
-// UI — input atoms
-export { default as InputBoolean }  from '$lib/data-ui/input/InputBoolean.svelte';
-export { default as InputCurrency } from '$lib/data-ui/input/InputCurrency.svelte';
-export { default as InputEmail }    from '$lib/data-ui/input/InputEmail.svelte';
-export { default as InputSelect }   from '$lib/data-ui/input/InputSelect.svelte';
-export { default as InputTextarea } from '$lib/data-ui/input/InputTextarea.svelte';
+// UI — field atoms (show + edit, dispatched by DataField)
+export { default as FieldText }     from '$lib/data-ui/field/snippets/FieldText.svelte';
+export { default as FieldBoolean }  from '$lib/data-ui/field/snippets/FieldBoolean.svelte';
+export { default as FieldEmail }    from '$lib/data-ui/field/snippets/FieldEmail.svelte';
+export { default as FieldCurrency } from '$lib/data-ui/field/snippets/FieldCurrency.svelte';
+export { default as FieldTextarea } from '$lib/data-ui/field/snippets/FieldTextarea.svelte';
+export { default as FieldColor }    from '$lib/data-ui/field/snippets/FieldColor.svelte';
+export { default as FieldIcon }     from '$lib/data-ui/field/snippets/FieldIcon.svelte';
+export { default as FieldSelect }   from '$lib/data-ui/field/snippets/FieldSelect.svelte';
+export { default as FieldAiPrompt } from '$lib/data-ui/field/snippets/FieldAiPrompt.svelte';
 
 // UI — columner (Finder-style column navigation)
-export { default as Columner }              from '$lib/shell/columner/Columner.svelte';
-export type { ColumnId, ColumnerProps }     from '$lib/shell/columner/Columner.svelte';
+export { default as Columner }              from '$lib/shell/layout/Columner.svelte';
+export type { ColumnId, ColumnerProps }     from '$lib/shell/layout/Columner.svelte';
 
 // UI — layout
 export { default as TemplateShell }    from '$lib/shell/layout/TemplateShell.svelte';
@@ -60,3 +69,9 @@ export { authState } from '$lib/main/machine/authState.svelte.js';
 
 // Utils
 export * from '$lib/utils/logger.js';
+
+// AI — reusable streaming helper (no machine.* surface)
+export { streamIntoRecord } from '$lib/ai/streamIntoRecord.js';
+
+// AI — schema fragments and frame components
+export * from '$lib/ai/index.js';

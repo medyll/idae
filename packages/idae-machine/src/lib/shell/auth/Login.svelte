@@ -6,9 +6,7 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 +layout re-auths silently from the persisted token.
 -->
 <script lang="ts">
-	import { API_URL } from '$lib/config.js';
-
-	const ORGS = ['crfr', 'demo', 'idaenext', 'tactac', 'latent'] as const;
+	import { API_URL, ORGS } from '$lib/config.js';
 
 	const bootedOrg =
 		(typeof localStorage !== 'undefined' && localStorage.getItem('idae_org')) || 'demo';
@@ -38,13 +36,15 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 				return;
 			}
 
-			const { token, user } = (await res.json()) as {
+			const { token, user, grants } = (await res.json()) as {
 				token: string;
 				user: { userId: string; login: string; isAdmin: boolean };
+				grants?: unknown[];
 			};
 
 			localStorage.setItem('auth_token', token);
 			localStorage.setItem('auth_user', JSON.stringify(user));
+			localStorage.setItem('auth_grants', JSON.stringify(grants ?? []));
 			localStorage.setItem('idae_org', org);
 
 			// Always re-boot so the fresh boot carries the JWT in sync headers — the

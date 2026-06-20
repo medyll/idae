@@ -40,7 +40,7 @@ async function loginHandler(_service: unknown, _params: unknown, body: { login?:
 			status:       'success',
 		});
 
-		return { token: result.token, user: result.user };
+		return { token: result.token, user: result.user, grants: result.grants };
 	} catch (err) {
 		if (err instanceof HttpError) throw err;
 		logger.error('Login error:', err);

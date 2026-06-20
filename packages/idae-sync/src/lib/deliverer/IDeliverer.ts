@@ -1,4 +1,4 @@
-import type { OutboxEntry } from '../outbox/OutboxStore';
+import type { OutboxEntry } from '../outbox/OutboxStore.js';
 
 export type DeliverStatus = 'success' | 'retry' | 'permanent';
 

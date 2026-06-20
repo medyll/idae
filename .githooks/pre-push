@@ -1,0 +1,11 @@
+#!/bin/sh
+# Advisory gate — FABLE_2 §6 anti-loop, level 2.
+# Runs the idae-machine gate on push and REPORTS. Never blocks (always exit 0).
+# Red = loud warning, push proceeds. Disable: `git config --unset core.hooksPath`.
+echo "▶ idae-machine gate (advisory, non-blocking)…"
+if pnpm -C packages/idae-machine run gate; then
+	echo "✅ gate green"
+else
+	echo "⚠️  GATE RED — push proceeding anyway (advisory). Fix before release."
+fi
+exit 0

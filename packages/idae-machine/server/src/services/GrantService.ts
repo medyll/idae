@@ -115,6 +115,36 @@ class GrantService {
 	}
 
 	/**
+	 * List every active grant doc for a user (direct + group + type cascade), with no
+	 * collection filter. Used to hydrate the client's MachineRights after login so the
+	 * UI gate matches server enforcement. `schemeCode` is preserved flat per grant.
+	 */
+	async listUserGrants(userId: string): Promise<GrantDoc[]> {
+		const org = getCurrentOrg();
+		try {
+			const sources = await this.#loadSources(userId);
+			const conn    = await getConn(`${org}_machine_user`);
+
+			const orClauses: Record<string, unknown>[] = [
+				{ grantType: 'user', userId },
+			];
+			if (sources.groupIds.length) {
+				orClauses.push({ grantType: 'group', groupId: { $in: sources.groupIds } });
+			}
+			if (sources.typeIds.length) {
+				orClauses.push({ grantType: 'type', typeId: { $in: sources.typeIds } });
+			}
+
+			return await conn.collection('appuser_grant').find({
+				$or: orClauses,
+				revokedAt: { $in: [null, undefined] as any },
+			}).toArray() as unknown as GrantDoc[];
+		} catch {
+			return [];
+		}
+	}
+
+	/**
 	 * Boolean wrapper for resolveAccess — convenience for callers that don't need constraints.
 	 */
 	async checkGrant(

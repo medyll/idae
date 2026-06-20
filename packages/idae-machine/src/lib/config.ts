@@ -12,3 +12,9 @@ export const DEFAULT_API_PORT = 7842;
 
 export const API_URL =
 	(import.meta.env.PUBLIC_API_URL as string | undefined) ?? `http://localhost:${DEFAULT_API_PORT}`;
+
+/**
+ * Available organizations/tenants. Centralized here to avoid hardcoding in multiple places.
+ * This list should be kept in sync with the actual available organizations in the system.
+ */
+export const ORGS = ['crfr', 'demo', 'idaenext', 'tactac', 'latent'] as const;

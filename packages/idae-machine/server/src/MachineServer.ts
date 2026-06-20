@@ -11,23 +11,31 @@ import { registerMailRoutes } from './routes/mail.js';
 import { registerPermissionRoutes } from './middleware/permission.js';
 import { registerAuthRoutes } from './routes/auth.js';
 import { registerBootstrapRoutes } from './routes/bootstrap.js';
+import { AiRouter } from './ai/AiRouter.js';
+import { AgentRouter } from './ai/AgentRouter.js';
 import { initializeSocketIO, getSocketServer, type SocketServerOptions } from './socket/index.js';
 import { setupConflictHandling } from './socket/conflictHandler.js';
 import type { SocketIoServer } from '@medyll/idae-socket/server';
-import { publishModel as runPublishModel, seedEngineRegistries } from './bootstrap/publishModel.js';
-import { buildEngineModel } from './bootstrap/seed/engineModel.js';
+import { publishModel as runPublishModel, seedIdaeRegistries } from './bootstrap/publishModel.js';
+import { buildIdaeModel } from './bootstrap/seed/idaeModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import { orgContextMiddleware, getCurrentOrg } from './middleware/orgContext.js';
 import type { MachineModel } from '../../src/lib/types/machine-model.js';
-import type { ViewFields, ViewFieldDef } from '../../src/lib/types/schema-types.js';
+import type { ViewFields, ViewFieldDef } from '../../src/lib/types/entity-types.js';
 import { mcpServer } from './mcp/index.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
 
-
-const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type', 'appscheme_field_group', 'appscheme_view_type']);
+// Meta pointers auto-injected into every scheme's `fks` doc by publishModel
+// (schemeFksDoc base/schemeType). They exist on the raw appscheme rows so the
+// Explorer can group on `fks.appscheme_base`, but MUST be stripped from the
+// in-memory model — their `.code` points at a BASE name (e.g. 'machine_app'),
+// not a queryable collection, so DataList FK-grouping would store() a phantom
+// collection. appscheme_field_group/appscheme_view_type are real declared
+// relations — NOT in this set.
+const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
 
 class MachineServerClass {
 	static #instance: MachineServerClass | null = null;
@@ -112,11 +120,8 @@ class MachineServerClass {
 				};
 			}
 
-			// Solidify code/name: every collection exposes both. Mirror the present
-			// one onto the missing one so downstream (focus fallback, fk labels) can
-			// always rely on code AND name.
-			if (fields.code && !fields.name) fields.name = { ...fields.code };
-			else if (fields.name && !fields.code) fields.code = { ...fields.name };
+			// Note: code/name fields are now guaranteed at publish time by ensureCodeField()
+			// in publishModel.ts. No runtime mirroring needed.
 
 			const fks: MachineModel[string]['fks'] = {};
 			const schemeFks = (scheme.fks ?? {}) as Record<string, any>;
@@ -162,6 +167,7 @@ class MachineServerClass {
 				model:    {},
 				fields,
 				fks,
+				...(scheme.rights ? { rights: scheme.rights } : {}),
 				template: (scheme.template as Record<string, any>) ?? {},
 				_views,
 			};
@@ -175,8 +181,8 @@ class MachineServerClass {
 	async publishModel(model: MachineModel, opts?: { org?: string; mongoUri?: string }): Promise<void> {
 		const org      = opts?.org ?? config.org;
 		const mongoUri = opts?.mongoUri ?? config.mongodbUri;
-		await seedEngineRegistries({ org, mongoUri });
-		await runPublishModel(buildEngineModel(), { org, mongoUri });
+		await seedIdaeRegistries({ org, mongoUri });
+		await runPublishModel(buildIdaeModel(), { org, mongoUri });
 		await runPublishModel(model, { org, mongoUri });
 		invalidateBaseCache(undefined, org);
 		logger.info(`Model published for org="${org}"`);
@@ -207,6 +213,12 @@ class MachineServerClass {
 		// resolved to config.org regardless of the `?org=` query param.
 		idaeApi.app.use(orgContextMiddleware);
 
+		// Org-authoritative data routing: idae-api's data middleware resolves the target
+		// database via this hook instead of the URL, pinning every data request to the
+		// current org's database (`${org}_machine_app`). The URL can no longer select a
+		// different tenant's data, and there is no legacy default to fall back to.
+		idaeApi.app.locals.resolveDbName = () => `${getCurrentOrg()}_machine_app`;
+
 		// v3 RouteManager routes — must be added BEFORE start() so they're flushed to Express
 		// (cors/helmet/json get installed first inside start, then RouteManager flush appends routes after middleware)
 		registerSchemeRoutes();
@@ -229,8 +241,9 @@ class MachineServerClass {
 			payloadLimit: '1mb',
 			idaeDbOptions: {
 				dbType:           DbType.MONGODB,
-				dbScope:          config.org,
-				dbScopeSeparator: '_',
+				// No dbScope — the per-request db is resolved in full via app.locals.resolveDbName
+				// (`${org}_machine_app`). A static scope here can't express per-request org and
+				// would double-prefix the resolved name.
 				idaeModelOptions: {
 					autoIncrementFormat:       (_collection: string) => 'id',
 					autoIncrementDbCollection: 'auto_increment',
@@ -250,6 +263,10 @@ class MachineServerClass {
 		registerPermissionRoutes();
 		registerDataRoutes();
 		if (config.nodeEnv === 'development') registerBootstrapRoutes();
+        
+        // AI routes
+        idaeApi.app.use('/api/ai', AiRouter);
+        idaeApi.app.use('/api/ai/agent', AgentRouter);
 
 		const httpServer = (idaeApi as any).server;
 		if (httpServer) {

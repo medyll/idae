@@ -114,10 +114,10 @@
 			<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Relation diagram for {collection}">
 				<defs>
 					<marker id="arrow-fwd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-						<path d="M0,0 L0,6 L8,3 z" fill="var(--color-primary, #4f8ef7)" />
+						<path d="M0,0 L0,6 L8,3 z" fill="var(--color-primary)" />
 					</marker>
 					<marker id="arrow-rev" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-						<path d="M0,0 L0,6 L8,3 z" fill="var(--color-secondary, #9b59b6)" />
+						<path d="M0,0 L0,6 L8,3 z" fill="var(--color-secondary)" />
 					</marker>
 				</defs>
 
@@ -131,7 +131,7 @@
 						<line
 							x1={from.x} y1={from.y}
 							x2={to.x}   y2={to.y}
-							stroke={edge.direction === 'forward' ? 'var(--color-primary, #4f8ef7)' : 'var(--color-secondary, #9b59b6)'}
+							stroke={edge.direction === 'forward' ? 'var(--color-primary)' : 'var(--color-secondary)'}
 							stroke-width="1.5"
 							stroke-dasharray={edge.direction === 'reverse' ? '5 3' : undefined}
 							marker-end="url(#{edge.direction === 'forward' ? 'arrow-fwd' : 'arrow-rev'})"
@@ -156,8 +156,8 @@
 						<circle
 							cx={node.x} cy={node.y}
 							r={node.isRoot ? R_ROOT : R_NODE}
-							fill={node.isRoot ? 'var(--color-primary, #4f8ef7)' : 'var(--color-surface, #ffffff)'}
-							stroke={node.isRoot ? 'var(--color-primary-dark, #2563eb)' : 'var(--color-border, #cccccc)'}
+							fill={node.isRoot ? 'var(--color-primary)' : 'var(--color-surface)'}
+							stroke={node.isRoot ? 'var(--color-primary-hover)' : 'var(--color-border)'}
 							stroke-width="2"
 						/>
 						<text x={node.x} y={node.y + (node.isRoot ? R_ROOT : R_NODE) + 14} class="node-label">
@@ -197,18 +197,18 @@
 	}
 
 	.diagram-status {
-		padding: var(--pad-md, 1rem);
-		color: var(--color-text-muted, #888888);
+		padding: var(--pad-md);
+		color: var(--color-text-muted);
 	}
 
 	.diagram-status--error {
-		color: var(--color-error, #e53e3e);
+		color: var(--color-critical);
 	}
 
 	.node-label {
 		font-size: 11px;
 		text-anchor: middle;
-		fill: var(--color-text, #333333);
+		fill: var(--color-text);
 		pointer-events: none;
 		user-select: none;
 	}
@@ -216,7 +216,7 @@
 	.node-collection {
 		font-size: 9px;
 		text-anchor: middle;
-		fill: var(--color-text-muted, #888888);
+		fill: var(--color-text-muted);
 		pointer-events: none;
 		user-select: none;
 	}
@@ -224,7 +224,7 @@
 	.edge-label {
 		font-size: 9px;
 		text-anchor: middle;
-		fill: var(--color-text-muted, #888888);
+		fill: var(--color-text-muted);
 		pointer-events: none;
 		user-select: none;
 	}
@@ -233,9 +233,12 @@
 		cursor: pointer;
 	}
 
+	/* --color-primary-light/--color-primary-dark requested but not in css-base
+	   tokens — substituted with the closest seeded variants: -muted (lighter
+	   tint) and -hover (darker shade). */
 	.diagram-node--neighbor:hover circle,
 	.diagram-node--neighbor:focus circle {
-		fill: var(--color-primary-light, #eff6ff);
-		stroke: var(--color-primary, #4f8ef7);
+		fill: var(--color-primary-muted);
+		stroke: var(--color-primary);
 	}
 </style>

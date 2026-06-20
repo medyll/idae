@@ -2,8 +2,7 @@
   "name": "@medyll/idae-machine",
   "description": "SvelteKit based framework to build AI powered applications with ease.",
   "bin": {
-    "idae-machine": "./cli.cjs",
-    "add-skill": "./dist/cli/add-skill.js"
+    "idae-machine": "./cli.cjs"
   },
   "version": "0.136.0",
   "scripts": {
@@ -19,6 +18,7 @@
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
     "test:e2e": "playwright test --config src/e2e/playwright.config.ts",
+    "gate": "npm run check && npm run test && npm --prefix server run typecheck && npm --prefix server run test",
     "prepackage": "node scripts/package-pre.js"
   },
   "files": [
@@ -95,11 +95,11 @@
   "dependencies": {
     "@iconify-json/ph": "^1.2.2",
     "@iconify/svelte": "^5.2.1",
-    "@medyll/css-base": "link:D:/development/css-base",
+    "@medyll/css-base": "^0.7.10",
+    "@medyll/idae-api": "workspace:*",
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-idbql": "workspace:*",
     "@medyll/qoolie": "workspace:*",
-    "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
     "commander": "^14.0.3"
   }

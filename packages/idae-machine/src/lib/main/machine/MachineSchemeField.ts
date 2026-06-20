@@ -48,11 +48,29 @@ export class MachineSchemeField {
 
 	/**
 	 * Get the field rule for a given field name.
+	 *
+	 * Scalar fields live in `fields`. FK relations live in the structured `fks`
+	 * block (no scalar `fk-X` field) — synthesize a `fk-<code>.code` rule for them
+	 * so the forge resolves them as FK, mirroring `MachineSchemeValues.descriptor`.
+	 * Without this fallback, rendering an FK relation (e.g. a `view="fk"` field)
+	 * throws FIELD_NOT_FOUND.
+	 *
 	 * @role Field rule accessor
 	 * @param {keyof TplFields} fieldName The field name.
 	 * @return {TplFieldRules | undefined} The field rule or undefined.
 	 */
 	getFieldRule(fieldName: keyof TplFields) {
-		return (this.#collectionModel.fields ?? {})[String(fieldName)] as unknown as TplFieldRules | undefined;
+		const name   = String(fieldName);
+		const scalar = (this.#collectionModel.fields ?? {})[name];
+		if (scalar) return scalar as unknown as TplFieldRules;
+
+		const fkDef = (this.#collectionModel.fks ?? {})[name];
+		if (fkDef?.code) {
+			return {
+				type: `fk-${fkDef.code}.code`,
+				...(fkDef.required ? { required: true } : {})
+			} as unknown as TplFieldRules;
+		}
+		return undefined;
 	}
 }

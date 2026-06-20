@@ -7,7 +7,7 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import { untrack } from 'svelte';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
-	import Columner from '$lib/shell/columner/Columner.svelte';
+	import Columner from '$lib/shell/layout/Columner.svelte';
 	import type { SortBy, Where } from '$lib/types/index.js';
 
 	type ViewMode = 'list' | 'table' | 'grid' | 'column';

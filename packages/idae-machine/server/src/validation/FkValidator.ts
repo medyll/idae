@@ -1,4 +1,6 @@
 import { machineServer } from '../MachineServer.js';
+import { getDbForCollection } from '../middleware/dbRouter.js';
+import type { FkResolver } from './FkFolder.js';
 import type { MachineFkDef } from '../../../src/lib/types/machine-model.js';
 
 export interface FkValidationError { field: string; message: string; }
@@ -94,6 +96,25 @@ export async function validateFkEntries(
 	}
 
 	return { valid: errors.length === 0, errors };
+}
+
+/**
+ * FkResolver backed by Mongo: numeric scalar → lookup on `id`, otherwise on
+ * `code`. Shared by the pre:create/pre:update fold hooks and the MCP
+ * resolve_fks preview tool.
+ */
+export function makeMongoFkResolver(): FkResolver {
+	return async (targetCollection, scalarId) => {
+		const db  = await getDbForCollection(targetCollection);
+		const col = db.collection(targetCollection);
+		const numId = Number(scalarId);
+		const doc = !isNaN(numId)
+			? await col.findOne({ id: numId })
+			: await col.findOne({ code: String(scalarId) });
+		if (!doc) return null;
+		const { _id, ...rest } = doc as Record<string, unknown> & { _id: unknown };
+		return rest;
+	};
 }
 
 /**

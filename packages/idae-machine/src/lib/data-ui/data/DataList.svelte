@@ -30,12 +30,8 @@ Consumers can override via the item snippet.
 	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
 	import { getResultSet, type ResultSet } from '@medyll/qoolie';
-	import { useMachinePrefs } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
+	import { useMachinePrefs, dataListPrefsScope, dataListPrefsDefaults } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
 	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
-	import DataSort from '$lib/data-ui/controls/DataSort.svelte';
-	import DataGroup from '$lib/data-ui/controls/DataGroup.svelte';
-	import DataFind from '$lib/data-ui/controls/DataFind.svelte';
-	import DataToolbar from '$lib/data-ui/controls/DataToolbar.svelte';
 	import { parseLink, type LinkString } from '$lib/main/frame/linkParser.js';
 	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
 
@@ -62,14 +58,12 @@ Consumers can override via the item snippet.
 		linkTarget,
 		linkVars,
 		linkCollectionField,
-		showToolbar = false,
 		usePrefs = true,
 		prefsScope: prefsScopeProp,
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
-		footer: footerSnippet,
-		toolbar: toolbarSnippet
+		footer: footerSnippet
 	}: {
 		collection: string;
 		where?: Where<COL>;
@@ -87,8 +81,6 @@ Consumers can override via the item snippet.
 		linkVars?: Record<string, any>;
 		/** Field of the record to use as collection name for navigation (e.g. "code" for appscheme). */
 		linkCollectionField?: string;
-		/** Render the default toolbar (sort/group/find + mode switcher). */
-		showToolbar?: boolean;
 		/** Hydrate/persist appuser_prefs for this DataList instance. */
 		usePrefs?: boolean;
 		/** Override appuser_prefs scope key. Defaults to `datalist.{collection}`. */
@@ -97,27 +89,13 @@ Consumers can override via the item snippet.
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
-		/** Full toolbar override. Receives state + setters so consumer can compose any controls. */
-		toolbar?: Snippet<[{
-			collection: string;
-			sortBy: SortBy[];
-			setSortBy: (v: SortBy[]) => void;
-			groupBy: string | undefined;
-			setGroupBy: (v: string | undefined) => void;
-			findWhere: Record<string, unknown> | undefined;
-			setFindWhere: (v: Record<string, unknown> | undefined) => void;
-			mode: 'list' | 'table' | 'grid';
-			setMode: (v: 'list' | 'table' | 'grid') => void;
-		}]>;
 	} = $props();
 
-	const prefsScope = $derived(prefsScopeProp ?? `datalist.${collection}`);
+	// Toolbar controls (Sort/Group/Find/ListMode) are externalised — compose
+	// them as siblings around <DataList>, keyed by the same collection/prefsScope.
+	const prefsScope = $derived(dataListPrefsScope(collection, prefsScopeProp));
 
-	const prefs = useMachinePrefs(
-		() => prefsScope,
-		{ mode: null as 'list' | 'table' | 'grid' | null, sortBy: [] as SortBy[], groupBy: undefined as string | undefined, find: undefined as Record<string, unknown> | undefined },
-		() => usePrefs
-	);
+	const prefs = useMachinePrefs(() => prefsScope, dataListPrefsDefaults(), () => usePrefs);
 
 	let userMode      = $derived(prefs.slots.mode);
 	let userSortBy    = $derived(prefs.slots.sortBy);
@@ -149,11 +127,6 @@ Consumers can override via the item snippet.
 	);
 	const effectiveSort = $derived(userSortBy.length ? userSortBy : (sortBy ?? defaultSort));
 	const effectiveGroupBy = $derived(userGroupBy ?? groupBy);
-	const presentationFields = $derived(
-		collLogic?.template?.presentation
-			? (collLogic.template.presentation as string).split(/\s+/).filter(Boolean)
-			: undefined
-	);
 
 	const viewFields = useViewFields(() => collection, () => view ?? 'flat');
 	const tableColumns = $derived(
@@ -327,47 +300,6 @@ Consumers can override via the item snippet.
 	</svelte:element>
 {/snippet}
 
-{#snippet modeSwitcher()}
-	<div class="mode-switcher">
-		<button type="button" class="mode-btn" class:active={currentMode === 'list'}  onclick={() => prefs.set('mode', 'list')}>List</button>
-		<button type="button" class="mode-btn" class:active={currentMode === 'table'} onclick={() => prefs.set('mode', 'table')}>Table</button>
-		<button type="button" class="mode-btn" class:active={currentMode === 'grid'}  onclick={() => prefs.set('mode', 'grid')}>Grid</button>
-	</div>
-{/snippet}
-
-{#if toolbarSnippet}
-	{@render toolbarSnippet({
-		collection,
-		sortBy: userSortBy,
-		setSortBy: (v) => prefs.set('sortBy', v),
-		groupBy: userGroupBy,
-		setGroupBy: (v) => prefs.set('groupBy', v),
-		findWhere: userFindWhere,
-		setFindWhere: (v) => prefs.set('find', v),
-		mode: currentMode,
-		setMode: (v) => prefs.set('mode', v)
-	})}
-{:else if showToolbar}
-	<DataToolbar>
-		{#snippet find()}
-			<DataFind {collection} bind:where={prefs.slots.find} />
-		{/snippet}
-		{#snippet sort()}
-			{#if presentationFields?.length}
-				{#each presentationFields as f (f)}
-					<DataSort field={f} bind:sortBy={prefs.slots.sortBy} />
-				{/each}
-			{/if}
-		{/snippet}
-		{#snippet group()}
-			<DataGroup {collection} bind:groupBy={prefs.slots.groupBy} />
-		{/snippet}
-		{#snippet extras()}
-			{@render modeSwitcher()}
-		{/snippet}
-	</DataToolbar>
-{/if}
-
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
 {:else if currentMode === 'table'}
@@ -465,22 +397,6 @@ Consumers can override via the item snippet.
 
 <style>
 	@layer components {
-		.mode-switcher {
-			display: flex;
-			gap: 0.25rem;
-		}
-		.mode-btn {
-			padding: 0.25rem 0.75rem;
-			border: 1px solid var(--color-border);
-			background: var(--color-surface);
-			cursor: pointer;
-			border-radius: var(--radius-sm);
-		}
-		.mode-btn.active {
-			background: var(--color-primary);
-			color: var(--color-on-primary);
-			border-color: var(--color-primary);
-		}
 		.grid-list {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

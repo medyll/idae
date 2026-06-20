@@ -15,5 +15,9 @@ export default defineConfig({
 		include:          ['src/**/*.{test,spec}.{js,ts}'],
 		setupFiles:       ['src/__tests__/setup.ts'],
 		globalTeardown:   'src/__tests__/teardown.ts',
+		// FS-touching suites (files.test / image.test) share the org 'vitest' upload root;
+		// parallel file execution races on the same dirs → order-dependent flaky deletes.
+		// Serialize test files. Suite is ~8s, determinism > a few saved seconds for a gate.
+		fileParallelism:  false,
 	}
 });

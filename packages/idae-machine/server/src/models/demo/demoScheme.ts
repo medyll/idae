@@ -279,6 +279,7 @@ export const demoScheme: MachineModel = {
 		},
 		template: { presentation: 'title type priority status due_date' },
 	},
+
 };
 
 // ── Seed data ──────────────────────────────────────────────────────────────

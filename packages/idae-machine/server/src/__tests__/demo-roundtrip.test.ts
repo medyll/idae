@@ -12,10 +12,10 @@
 import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import mongoose from 'mongoose';
 import { config } from '../config.js';
-import { publishModel, seedEngineRegistries } from '../bootstrap/publishModel.js';
+import { publishModel, seedIdaeRegistries } from '../bootstrap/publishModel.js';
 import { machineServer } from '../MachineServer.js';
 import { demoScheme } from '../models/demo/demoScheme.js';
-import { idaeModelCore } from '../bootstrap/seed/idae-model-core.js';
+import { idaeModelCore } from '../idae/index.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
 
 const TEST_ORG = 'vitest_demo';
@@ -36,7 +36,7 @@ describe('demoScheme roundtrip: publishModel → getModel', () => {
 	beforeAll(async () => {
 		await mongoose.connect(config.mongodbUri);
 		(config as any).org = TEST_ORG;
-		await seedEngineRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
+		await seedIdaeRegistries({ org: TEST_ORG, mongoUri: config.mongodbUri });
 		await publishModel(demoScheme, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		model = await machineServer.getModel();
 	});
@@ -124,6 +124,25 @@ describe('demoScheme roundtrip: publishModel → getModel', () => {
 		expect(Object.keys(model2)).toEqual(expect.arrayContaining(COLLECTIONS));
 		expect(model2.vehicle.fields.license_plate.type).toBe('text');
 		expect(model2.rental.fks.vehicle.code).toBe('vehicle');
+	});
+
+	// ── META_FK_KEYS regression ──────────────────────────────────────────────────
+	// MachineServer.getModel() strips the universally auto-injected appscheme_base/
+	// appscheme_type from every scheme's `fks` doc. appscheme_field_group and
+	// appscheme_view_type are real DECLARED relations (idae-model-core.ts:
+	// appscheme_field.fks.appscheme_field_group, appscheme_view.fks.appscheme_view_type)
+	// that happen to share their name with meta-registry collections — they must
+	// survive, or DataField never resolves them as fk (no FieldSelect rendered).
+	it('publishing idaeModelCore keeps declared fks named like meta-registry collections', async () => {
+		await publishModel(idaeModelCore.collections as unknown as MachineModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
+		const metaModel = await machineServer.getModel();
+
+		expect(metaModel.appscheme_field.fks).toHaveProperty('appscheme_field_type');
+		expect(metaModel.appscheme_field.fks).toHaveProperty('appscheme_field_group');
+		expect(metaModel.appscheme_field.fks.appscheme_field_group).toMatchObject({ code: 'appscheme_field_group' });
+
+		expect(metaModel.appscheme_view.fks).toHaveProperty('appscheme_view_type');
+		expect(metaModel.appscheme_view.fks.appscheme_view_type).toMatchObject({ code: 'appscheme_view_type' });
 	});
 });
 

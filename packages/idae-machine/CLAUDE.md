@@ -23,6 +23,7 @@
 8. **Reads go through `machine.store` (reactive); `machine.collection` is imperative CRUD only.** Mixing them can hit different qoolie instances → stale/empty reads.
 9. A frame host that is **content-driven** (auto-sized, e.g. floating `Dialog`) must call `createHost(target, { fill: false })`. Default `fill:true` (absolute inset:0) only works inside a **sized** zone.
 10. `machine.store(name)` returns `{ records: ResultSet<T> }` — `records` is a **getter**, on purpose. **Never** "simplify" it to a bare value (`{ records: src.items }`), a returned array, or a Proxy. The underlying qoolie `$state` binding is *reassigned* on every change, and the read must happen inside the consumer's reactive frame to be tracked. Eager/flattened/Proxy variants silently break reactivity (a common LLM mis-refactor). Read = `machine.store`; `machine.collection` returns the same `ResultSet` API but **non-reactive** (imperative CRUD).
+11. **Never import a `src/` file via the package's own name** (`from '@medyll/idae-machine'`). Always use `$lib/...` or a relative path. A self-import resolves through `package.json` exports → `dist/`, so `svelte-check` (allowJs+checkJs) ends up type-checking the **compiled JS in dist**, producing dozens of phantom errors far from the offending source. Type imports too (`import type { MachineModel } from '$lib/types/index.js'`). Caught FABLE_2 2026-06-12: 7 `src/lib/ai/schema/*.ts` files self-imported → 32 `check` errors all pointing at `dist/main/machine.js`.
 
 ---
 
@@ -103,17 +104,16 @@ src/lib/
 ### Frame zones (`data-target-zone`)
 
 ```
-main        → primary zone (lists, forms)
-main.modal  → overlay modal
-main.window → floating window
-main.panel  → right-side panel
+main → primary zone (lists, forms) — only zone with a DOM target
 ```
+
+Floating/overlay content (dialogs, panels, windows) goes through `machine.framer.loadInDialog(...)`, not a named zone. `main.modal`/`main.window`/`main.panel` were documented but never implemented — abandoned, do not reintroduce.
 
 ### Frame host sizing — `createHost(getTarget, { fill })`
 
 `MachineFrameManager.createHost` mounts content into a `div.frame-content`. Sizing model depends on the **host**:
 
-- `fill: true` (default) → `position:absolute; inset:0`. Correct for **sized zones** (`main`, `panel`) — frame fills the zone. Used by `shell/Frame.svelte`.
+- `fill: true` (default) → `position:absolute; inset:0`. Correct for the **sized `main` zone** — frame fills the zone. Used by `shell/Frame.svelte`.
 - `fill: false` → `position:relative` (normal flow). Required for **content-driven hosts** (floating `Dialog`) — the host has no intrinsic height, so an absolute frame would collapse and clip its content. `Dialog.svelte` passes `{ fill: false }`.
 
 **Trap:** a dialog that hosts a frame with the default `fill:true` shows only the first line (host collapses to padding height, content overflows invisibly). If a floating/auto-sized host renders truncated content, check this first.
@@ -128,6 +128,8 @@ main.panel  → right-side panel
 'fiche.update'    → shell/layout/FicheUpdate.svelte
 'rbac.matrix'     → shell/frame/rbac/RbacMatrix.svelte
 'synthesis'       → shell/frame/synthesis/Synthesis.svelte
+'dashboard'       → shell/frame/dashboard/Dashboard.svelte  (accueil/Espace)
+'space'           → shell/frame/space/Space.svelte
 'login'           → shell/auth/Login.svelte
 ```
 
@@ -135,7 +137,7 @@ main.panel  → right-side panel
 
 | Prop | Usage |
 |------|-------|
-| `link` | `"loadFrame:explorer"` or `"loadIn:form@main.panel"` |
+| `link` | `"loadFrame:explorer"` or `"loadInDialog:form"` |
 | `linkCollectionField` | Field used as target collection name (e.g. `"code"` for appscheme) |
 | `linkVars` | Extra vars passed to framer |
 

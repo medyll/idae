@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { DataRecord, machine } from '$lib/index.js';
+	import { DataRecord } from '$lib/index.js';
+	import FicheToolbar from './FicheToolbar.svelte';
 	let {
 		collection,
 		collectionId
@@ -11,25 +12,15 @@
 
 <fiche-component>
 	<fiche-header>
-		<toolbar-component>
-			<button onclick={() => machine.framer.loadFrame('synthesis', collection, collectionId)}
-				>synthese</button
-			>
-			<button onclick={() => machine.framer.loadFrame('diagram', collection, collectionId)}
-				>diagram</button
-			>
-			<button onclick={() => machine.framer.loadInDialog('fiche.update', collection, collectionId)}
-				>update</button
-			>
-        <debug>{collection} {collectionId}</debug>
-		</toolbar-component>
+		<FicheToolbar {collection} {collectionId} />
 	</fiche-header>
 	<fiche-zone>
 		<sidebar-info>
+			<DataRecord {collection} {collectionId} showFields={['icon']} showLabel={false} />
         </sidebar-info>
 		<zone-main-half>
 			<div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div>
-			<info-bar-right>
+			<info-bar-right> 
 				<DataRecord {collection} {collectionId} view="fk" />
 			</info-bar-right>
 		</zone-main-half>

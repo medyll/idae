@@ -10,7 +10,8 @@ type Uri = string;
 type IdaeDbInstanceKey = `${DbType}:${Uri}`;
 export type IdaeDbOptions = {
 	dbType: DbType;
-	dbScope: string | undefined;
+	/** Optional db-name prefix. Omit to use db names verbatim (no scope prepended). */
+	dbScope?: string | undefined;
 	dbScopeSeparator?: string;
 	idaeModelOptions?: IdaeModelOptions;
 	dbEvents?: EventListeners<object>;

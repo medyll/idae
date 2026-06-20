@@ -385,4 +385,76 @@ describe('IdbCollection', () => {
 			await teardown(dbName);
 		});
 	});
+
+	// Hydration dedup: server records carry Mongo `_id` but the local keyPath is
+	// auto-increment. Repeated pulls of the same record must NOT duplicate.
+	describe('bulkUpsertSilent — natural-key reconcile (autoIncrement store)', () => {
+		const AI_STORE = 'records';
+		const AI_KEYPATH = 'id';
+
+		interface ServerRecord {
+			id?: number;
+			_id?: string;
+			name: string;
+		}
+
+		async function setupAi(dbName: string): Promise<IdbCollection<ServerRecord>> {
+			return new Promise((resolve, reject) => {
+				const req = indexedDB.open(dbName, 1);
+				req.onupgradeneeded = (e) => {
+					const db = (e.target as IDBOpenDBRequest).result;
+					if (!db.objectStoreNames.contains(AI_STORE)) {
+						db.createObjectStore(AI_STORE, { keyPath: AI_KEYPATH, autoIncrement: true });
+					}
+				};
+				req.onsuccess = () => {
+					req.result.close();
+					resolve(new IdbCollection<ServerRecord>(AI_STORE, `++${AI_KEYPATH}`, { dbName, version: 1 }));
+				};
+				req.onerror = () => reject(req.error);
+			});
+		}
+
+		it('should not duplicate when re-pulling records that carry _id but no id', async () => {
+			const dbName = getTestDbName();
+			const col = await setupAi(dbName);
+
+			// Server payload: Mongo natural key only, no local auto-increment id.
+			const payload = [
+				{ _id: 'a', name: 'Alpha' },
+				{ _id: 'b', name: 'Beta' },
+				{ _id: 'c', name: 'Gamma' }
+			];
+
+			await col.bulkUpsertSilent(payload);
+			expect(await col.count()).toBe(3);
+
+			// Second pull of the same server records (still no `id`).
+			await col.bulkUpsertSilent(payload.map((r) => ({ ...r })));
+			expect(await col.count()).toBe(3); // reconciled on _id, not duplicated
+
+			// Third pull, with a field change → overwrite in place, still 3.
+			await col.bulkUpsertSilent([{ _id: 'a', name: 'Alpha v2' }]);
+			expect(await col.count()).toBe(3);
+			const all = await col.getAll();
+			expect(all.find((r) => r._id === 'a')?.name).toBe('Alpha v2');
+
+			await teardown(dbName);
+		});
+
+		it('should remain idempotent when records already carry the keyPath value', async () => {
+			const dbName = getTestDbName();
+			const col = await setupAi(dbName);
+
+			const payload = [
+				{ id: 1, _id: 'a', name: 'Alpha' },
+				{ id: 2, _id: 'b', name: 'Beta' }
+			];
+			await col.bulkUpsertSilent(payload);
+			await col.bulkUpsertSilent(payload.map((r) => ({ ...r })));
+
+			expect(await col.count()).toBe(2);
+			await teardown(dbName);
+		});
+	});
 });

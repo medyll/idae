@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 /**
  * RBAC Matrix golden path
@@ -8,20 +8,43 @@ import { test, expect } from '@playwright/test';
  * - TaskBar: "⊞ Explorer" button + open frames + dev/settings/user icons
  * - RbacMatrix registered as 'rbac.matrix' in componentRegistry
  * - Hash router: machine.framer.loadFrame(componentKey, collection, collectionId?, vars?)
+ * - Login gating (multi-org ALS): the app shell only mounts once authed, so
+ *   every test logs in first (admin / admin123 on the demo org).
  *
  * Requires:
  * - MongoDB running (:27017)
  * - Backend server running (:7842) — `cd server && pnpm run dev`
+ * - Seeded demo org (server/src/bootstrap/bootstrap.ts demo)
  * - SvelteKit dev server auto-started by playwright.config.ts webServer
  */
 
+const ORG = 'demo';
+const USER = 'admin';
+const PASS = 'admin123';
+const BASE = 'http://localhost:5173/';
+
+/** Log in through the gating dialog if shown; otherwise reuse the persisted
+ *  session and just wait for the taskbar. Mirrors parcours.spec.ts. */
+async function ensureLoggedIn(page: Page): Promise<void> {
+	await page.goto(BASE);
+
+	const taskbar = page.locator('.taskbar');
+	const loginUser = page.locator('#login-user');
+
+	await expect(loginUser.or(taskbar)).toBeVisible({ timeout: 30_000 });
+
+	if (await loginUser.isVisible()) {
+		await page.locator('#login-org').selectOption(ORG);
+		await loginUser.fill(USER);
+		await page.locator('#login-pass').fill(PASS);
+		await page.locator('login-actions button[type="submit"]').click();
+		await expect(taskbar).toBeVisible({ timeout: 30_000 });
+	}
+}
+
 test.describe('RBAC Matrix — golden path', () => {
 	test.beforeEach(async ({ page }) => {
-		await page.goto('http://localhost:5173/');
-		// Wait for boot splash to disappear (machine.boot completes)
-		await expect(page.locator('.boot-splash')).not.toBeVisible({ timeout: 30_000 });
-		// Wait for taskbar to be visible (app loaded)
-		await expect(page.locator('.taskbar')).toBeVisible({ timeout: 10_000 });
+		await ensureLoggedIn(page);
 	});
 
 	test('app loads with taskbar', async ({ page }) => {
@@ -114,8 +137,10 @@ test.describe('RBAC Matrix — golden path', () => {
 			try { await (window as any).__machine?.sync?.flush?.(); } catch (_) {}
 		});
 
-		// Reload, navigate back, verify still toggled
-		await page.reload();
+		// Reload cleanly (BASE, no hash) so the app boots and mounts the `main`
+		// zone before we re-navigate to the frame — deep-linking the hash on a
+		// fresh load races the zone mount (router fires before the DOM zone exists).
+		await page.goto(BASE);
 		await expect(page.locator('.taskbar')).toBeVisible({ timeout: 30_000 });
 		await page.goto('http://localhost:5173/#/+main/rbac.matrix/appuser_group');
 		await page.waitForTimeout(2000);
