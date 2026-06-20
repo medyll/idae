@@ -1,4 +1,7 @@
 import { machine } from '$lib/main/machine.js';
+import type { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
+
+type FieldDescriptor = ReturnType<MachineSchemeValues<Record<string, unknown>>['descriptor']>;
 
 /**
  * Reactive field-list resolution for a (collection, view) pair.
@@ -42,6 +45,21 @@ export function useViewFields(
 		]
 	);
 
+	// kind: scalar|fk per field, projected from the scheme's `fks{}` block onto the
+	// view's field list — lets a consumer iterating fieldNames know FK-ness without
+	// re-deriving descriptor() itself. Read-only projection; MachineSchemeValues.descriptor()
+	// stays the single source of truth.
+	const fieldKinds = $derived.by(() => {
+		const name = collection();
+		const collLogic = name ? machine.logic.collectionOr(name, null) : null;
+		const out: Record<string, FieldDescriptor> = {};
+		if (!collLogic) return out;
+		for (const fieldName of fieldNames) {
+			out[fieldName] = collLogic.collectionValues.descriptor(fieldName);
+		}
+		return out;
+	});
+
 	// ── groupFieldBy axis → query appscheme_field ONLY when grouping is asked ───
 	const groupKey = $derived(groupFieldBy?.());
 	const fieldStore = $derived(
@@ -54,9 +72,10 @@ export function useViewFields(
 			? ((fieldStore.records as any).groupBy(`fks.${groupKey}.code`, true) as Record<string, any[]>)
 			: undefined
 	);
-$inspect({fieldNames})
+
 	return {
 		get fieldNames() { return fieldNames; },
+		get fieldKinds() { return fieldKinds; },
 		get groups()     { return groups; },
 	};
 }
