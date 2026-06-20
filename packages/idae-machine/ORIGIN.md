@@ -226,6 +226,72 @@ while ($arr_det = $rs->getNext()) {
 → "qui pointe vers moi ?" — les listes des fiches référençantes.
 Détection FK = bloc `grilleFK` structuré uniquement, jamais de fallback magic-string.
 
+### `get_grille_fk()` — ce que la grille FK contient vraiment
+`ClassApp::get_grille_fk($table)` lit `grilleFK` (array d'entrées `{table, uid,
+ordreTable, requiredInput}`) sur le doc `appscheme`, et **résout chaque entrée**
+en allant chercher le scheme cible. Retour indexé par `table_fk` :
+```php
+$out[$table_fk] = [
+    'base_fk'        => $db_fk['codeAppscheme_base'],   // base mongo de la cible
+    'collection_fk'  => $db_fk['codeAppscheme'],
+    'table_fk'       => $table_fk,
+    'idtable_fk'     => 'id' . $table_fk,               // ex 'idcategorie'
+    'nomtable_fk'    => 'nom' . ucfirst($table_fk),     // ex 'nomCategorie'
+    'nomAppscheme', 'iconAppscheme', 'colorAppscheme', 'icon_fk' ...
+];
+```
+La clé physique de la FK sur le doc hôte = `id<TableFk>` (l'id) ; le libellé
+affiché = `nom<TableFk>` / `code<TableFk>` (dénormalisés, cf. ci-dessous).
+
+### Automaticité avec les tables `has` (statut/type/categorie/group/groupe)
+Deux comportements liés, **opposés**, qu'il ne faut pas confondre :
+1. **Auto-création de FK** (`consolidate_app_scheme`) : si l'entité porte
+   `has{Statut|Type|Categorie|Group|Groupe}Scheme = 1`, le consolidateur
+   **crée automatiquement** le sous-scheme `<table>_<value>` (ex `produit_statut`)
+   puis l'inscrit dans `grilleFK` via `set_grille_fk(<table>_<value>)`. Les
+   tables `has` deviennent donc des FK **sans déclaration manuelle**.
+2. **Exclusion du rendu FK** (`get_grille_fk`) : à l'inverse, une cible qui est
+   elle-même `is{Statut|Type|…}Scheme` est **filtrée hors** de la grille FK
+   (`if ($db_fk['is'.$Value.'Scheme']) continue;`). Raison : un statut/type se
+   rend comme widget statut/type, pas comme colonne FK générique.
+> Résumé : `has*` ⇒ FK auto-câblée ; `is*Scheme` ⇒ exclue de la grille FK visuelle.
+
+### LE point clé — la FK est marquée AU NIVEAU DE LA VUE (columnModel)
+C'est l'info que la rationalisation `_app`↔data a perdue. Dans `json_scheme.php`
+(version `idae.api.lan`, `RsColumnModel`), chaque FK est **injectée comme une
+colonne synthétique** dont la *clé* ET le *descripteur* encodent la FK-ness :
+```php
+foreach ($GRILLE_FK as $fk):
+    $columnModel['GRILLE_FK.' . $fk['table_fk'] . '.nom' . ucfirst($fk['table_fk'])] = [
+        'viewFieldType'    => 'GRILLE_FK',          // <<< LE MARQUEUR
+        'field_name'       => 'nom' . ucfirst($fk['table_fk']),  // champ data à lire
+        'field_name_raw'   => $fk['table_fk'],
+        'field_type'       => 'text',
+        'className'        => 'fk',
+    ];
+// counts FK → viewFieldType 'GRILLE_COUNT', clé 'count_<rel>'
+```
+Le marqueur legacy par-colonne est donc **`GRILLE_FK.<table_fk>.nom<TableFk>`**
+(clé de colonne) + **`viewFieldType: 'GRILLE_FK'`** (descripteur). La version
+`idae-legacy` plus ancienne portait un marquage plus faible : `columnModel[] =
+['field_name'=>'nom'+Table_fk, 'className'=>'fk', ...]` — seul `className:'fk'`
+distinguait la colonne.
+Dans les deux cas, **le modèle de vue (columnModel) sait par colonne que c'est
+une FK** ; le renderer dispatche dessus. Sans ce flag par-champ-de-vue, le rendu
+FK est impossible — d'où le blocage actuel.
+
+### Dénormalisation au save (le « feeding » au post/put)
+`ClassApp` (~l.1582, boucle `foreach ($GRILLE_FK as $field)` dans le flux de
+sauvegarde) **recopie les champs de la cible FK dans le doc hôte** au moment du
+save : pour chaque FK résolue via `id<TableFk>`, il lit `code<TableFk>`,
+`nom<TableFk>`, `ordre<TableFk>` (+ `app_default_fields_add`) sur l'enregistrement
+lié et les écrit à plat sur l'hôte. C'est ce qui rend `produit.nomCategorie`
+directement lisible/queryable côté client et serveur, sans join. Le « tableau
+`fk` » de la nouvelle version est la même idée (dénorm au post) avec une autre
+forme de stockage — mais la **forme** change le `field_name` que la vue doit
+pointer (`nom<TableFk>` à plat ⟶ `fk.<table>.nom` imbriqué), et c'est cette
+correspondance vue→data qui doit être reportée dans `viewFieldType:'GRILLE_FK'`.
+
 ---
 
 ## 5. RBAC
