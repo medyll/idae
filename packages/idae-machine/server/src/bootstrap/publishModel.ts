@@ -278,12 +278,16 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
 			'standard';
 
-		const schemeFksDoc: Record<string, any> = {};
+		// `fks` = the appscheme record's OWN value-bag (resolved base/type pointers).
+		// `fkRelations` = the described collection's relation descriptors. The two were
+		// historically conflated in one `fks` doc; they are now split (RATIONALIZE #1).
+		const schemeFksDoc:      Record<string, any> = {};
+		const fkRelationsDoc:    Record<string, any> = {};
 
 		// Meta pointers — written as FK refs so the Explorer can group on
-		// `fks.appscheme_base`. getModel() strips them (META_FK_KEYS) before
-		// building the in-memory model: their `.code` is a base/type code, not a
-		// queryable collection. The pair (write here / strip there) is load-bearing.
+		// `fks.appscheme_base`. getModel() ignores them when building the in-memory
+		// model (relations come from `fkRelations`): their `.code` is a base/type code,
+		// not a queryable collection. The pair (write here / read there) is load-bearing.
 		schemeFksDoc[META.base] = await embedFk(col(META.base), baseCode, {
 			name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true
 		});
@@ -291,14 +295,14 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
 		});
 
-		// Business FKs: relation descriptor only ({ code, multiple, required }).
+		// Business FK relations: relation descriptor only ({ code, multiple, required }).
 		// A scheme FK names its TARGET COLLECTION by `code` — not a resolved data
 		// pointer, so it must NOT be embedFk'd (that would upsert a stub into the
 		// META connection and create phantom business collections there).
 		for (const [fkKey, fkDef] of Object.entries(fks)) {
 			if (fkKey === META.base) continue;
 			const fk = fkDef as MachineFkDef;
-			schemeFksDoc[fkKey] = {
+			fkRelationsDoc[fkKey] = {
 				code:     fk.code ?? fkKey,
 				multiple: fk.multiple ?? false,
 				required: !!fk.required,
@@ -332,7 +336,8 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 				...(isStatus ? { isStatus: true } : {}),
 				...(colDef.rights ? { rights: colDef.rights } : {}),
 				template,
-				fks: schemeFksDoc,
+				fks:         schemeFksDoc,
+				fkRelations: fkRelationsDoc,
 			}
 		);
 

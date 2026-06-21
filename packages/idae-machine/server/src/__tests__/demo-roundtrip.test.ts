@@ -127,12 +127,13 @@ describe('demoScheme roundtrip: publishModel → getModel', () => {
 	});
 
 	// ── META_FK_KEYS regression ──────────────────────────────────────────────────
-	// MachineServer.getModel() strips the universally auto-injected appscheme_base/
-	// appscheme_type from every scheme's `fks` doc. appscheme_field_group and
-	// appscheme_view_type are real DECLARED relations (idae-model-core.ts:
-	// appscheme_field.fks.appscheme_field_group, appscheme_view.fks.appscheme_view_type)
-	// that happen to share their name with meta-registry collections — they must
-	// survive, or DataField never resolves them as fk (no FieldSelect rendered).
+	// MachineServer.getModel() builds the in-memory model's `fks` from each scheme's
+	// `fkRelations` doc (the record's own `fks` value-bag of base/type pointers is not
+	// a relation source). appscheme_field_group and appscheme_view_type are real
+	// DECLARED relations (idae-model-core.ts: appscheme_field.fks.appscheme_field_group,
+	// appscheme_view.fks.appscheme_view_type) that happen to share their name with
+	// meta-registry collections — they must survive, or DataField never resolves them
+	// as fk (no FieldSelect rendered).
 	it('publishing idaeModelCore keeps declared fks named like meta-registry collections', async () => {
 		await publishModel(idaeModelCore.collections as unknown as MachineModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		const metaModel = await machineServer.getModel();

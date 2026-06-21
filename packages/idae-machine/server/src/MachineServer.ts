@@ -28,15 +28,6 @@ import { mcpServer } from './mcp/index.js';
 import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
 
-// Meta pointers auto-injected into every scheme's `fks` doc by publishModel
-// (schemeFksDoc base/schemeType). They exist on the raw appscheme rows so the
-// Explorer can group on `fks.appscheme_base`, but MUST be stripped from the
-// in-memory model — their `.code` points at a BASE name (e.g. 'machine_app'),
-// not a queryable collection, so DataList FK-grouping would store() a phantom
-// collection. appscheme_field_group/appscheme_view_type are real declared
-// relations — NOT in this set.
-const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
-
 class MachineServerClass {
 	static #instance: MachineServerClass | null = null;
 
@@ -123,10 +114,12 @@ class MachineServerClass {
 			// Note: code/name fields are now guaranteed at publish time by ensureCodeField()
 			// in publishModel.ts. No runtime mirroring needed.
 
+			// Relation descriptors live in `fkRelations` (split from the record's own
+			// `fks` value-bag of base/type pointers — RATIONALIZE #1). The in-memory
+			// model keeps the `fks` name; only the stored appscheme record was split.
 			const fks: MachineModel[string]['fks'] = {};
-			const schemeFks = (scheme.fks ?? {}) as Record<string, any>;
-			for (const [key, fkItem] of Object.entries(schemeFks)) {
-				if (META_FK_KEYS.has(key)) continue;
+			const schemeRels = (scheme.fkRelations ?? {}) as Record<string, any>;
+			for (const [key, fkItem] of Object.entries(schemeRels)) {
 				fks[key] = {
 					code:     fkItem.code ?? key,
 					multiple: fkItem.multiple ?? false,
