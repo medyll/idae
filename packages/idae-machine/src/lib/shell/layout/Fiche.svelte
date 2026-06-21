@@ -65,5 +65,10 @@
 			min-width: 0;
 			gap: var(--gutter-md);
 		}
+
+		:global(info-bar-right) {
+			flex: 0 0 16rem;
+			max-width: 16rem;
+		}
 	}
 </style>
