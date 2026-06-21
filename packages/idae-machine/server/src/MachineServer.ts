@@ -20,22 +20,13 @@ import { publishModel as runPublishModel, seedIdaeRegistries } from './bootstrap
 import { buildIdaeModel } from './bootstrap/seed/idaeModel.js';
 import { invalidateBaseCache } from './middleware/dbRouter.js';
 import { orgContextMiddleware, getCurrentOrg } from './middleware/orgContext.js';
-import type { MachineModel } from '../../src/lib/types/machine-model.js';
+import type { MachineModel, MachineFkDef } from '../../src/lib/types/machine-model.js';
 import type { ViewFields, ViewFieldDef } from '../../src/lib/types/entity-types.js';
 import { mcpServer } from './mcp/index.js';
 
 // Load domain actions — registers hooks for demo collections
 import './models/demo/actions.js';
 import { registerBuiltinHooks } from './hooks/builtins.js';
-
-// Meta pointers auto-injected into every scheme's `fks` doc by publishModel
-// (schemeFksDoc base/schemeType). They exist on the raw appscheme rows so the
-// Explorer can group on `fks.appscheme_base`, but MUST be stripped from the
-// in-memory model — their `.code` points at a BASE name (e.g. 'machine_app'),
-// not a queryable collection, so DataList FK-grouping would store() a phantom
-// collection. appscheme_field_group/appscheme_view_type are real declared
-// relations — NOT in this set.
-const META_FK_KEYS = new Set(['appscheme_base', 'appscheme_type']);
 
 class MachineServerClass {
 	static #instance: MachineServerClass | null = null;
@@ -55,6 +46,34 @@ class MachineServerClass {
 		const dbName = `${getCurrentOrg()}_machine_app`;
 		return mongooseConnectionManager.getConnection(dbName)
 			?? await mongooseConnectionManager.createConnection(config.mongodbUri, dbName, { dbName });
+	}
+
+	// ── getRelations — reads appscheme[col].fkRelations (source of truth) ─────
+
+	/**
+	 * FK relation definitions for one collection, read from
+	 * `appscheme[collection].fkRelations` (FKRELATIONS.md — relations live on the
+	 * appscheme record, never on the in-memory model).
+	 */
+	async getRelations(collection: string): Promise<Record<string, MachineFkDef>> {
+		const db  = await this.#getMetaDb();
+		const doc = await db.collection('appscheme').findOne(
+			{ code: collection },
+			{ projection: { fkRelations: 1 } },
+		);
+		return ((doc as any)?.fkRelations as Record<string, MachineFkDef>) ?? {};
+	}
+
+	/** All collections' relation defs, keyed by collection code. For reverse-FK scans. */
+	async getAllRelations(): Promise<Record<string, Record<string, MachineFkDef>>> {
+		const db   = await this.#getMetaDb();
+		const docs = await db.collection('appscheme')
+			.find({}, { projection: { code: 1, fkRelations: 1 } }).toArray();
+		const out: Record<string, Record<string, MachineFkDef>> = {};
+		for (const d of docs as any[]) {
+			if (d.code) out[d.code as string] = (d.fkRelations as Record<string, MachineFkDef>) ?? {};
+		}
+		return out;
 	}
 
 	// ── getModel — reads appscheme_* → MachineModel ───────────────────────────
@@ -123,10 +142,11 @@ class MachineServerClass {
 			// Note: code/name fields are now guaranteed at publish time by ensureCodeField()
 			// in publishModel.ts. No runtime mirroring needed.
 
+			// fkRelations live on the appscheme record (FKRELATIONS.md), projected here
+			// onto the in-memory model's `fks` key — getModel() consumers expect model[x].fks.
 			const fks: MachineModel[string]['fks'] = {};
-			const schemeFks = (scheme.fks ?? {}) as Record<string, any>;
-			for (const [key, fkItem] of Object.entries(schemeFks)) {
-				if (META_FK_KEYS.has(key)) continue;
+			const schemeRels = (scheme.fkRelations ?? {}) as Record<string, any>;
+			for (const [key, fkItem] of Object.entries(schemeRels)) {
 				fks[key] = {
 					code:     fkItem.code ?? key,
 					multiple: fkItem.multiple ?? false,

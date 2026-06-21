@@ -4,8 +4,10 @@
  * Uses a MachineModel that mimics getModel() output (scalar fields in `fields`,
  * FK relations exclusively in `fks` block — no fk-* typed scalar fields).
  */
-import { describe, it, expect } from 'vitest';
-import { MachineDb } from '../machineDb.js';
+import 'fake-indexeddb/auto';
+import { describe, it, expect, beforeAll } from 'vitest';
+import { bootWithRelations } from './_relationTestUtils.js';
+import type { MachineDb } from '../machineDb.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 // Simulates what machineServer.getModel() returns for demoScheme.
@@ -25,7 +27,7 @@ const modelFromServer: MachineModel = {
 			mileage:      { type: 'number' },
 			created_at:   { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			category:        { code: 'category',        multiple: false },
 			location_office: { code: 'location_office', multiple: false },
 		},
@@ -41,7 +43,7 @@ const modelFromServer: MachineModel = {
 			name:        { type: 'text',    required: true },
 			description: { type: 'text-lg' },
 		},
-		fks:      {},
+		fkRelations:      {},
 		template: { presentation: 'name' },
 	},
 	rental: {
@@ -56,7 +58,7 @@ const modelFromServer: MachineModel = {
 			total_price:  { type: 'number' },
 			status:       { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			vehicle:  { code: 'vehicle',  multiple: false, required: true },
 			customer: { code: 'customer', multiple: false, required: true },
 		},
@@ -73,7 +75,7 @@ const modelFromServer: MachineModel = {
 			email:      { type: 'email', required: true },
 			phone:      { type: 'text' },
 		},
-		fks:      {},
+		fkRelations:      {},
 		template: { presentation: 'first_name last_name email' },
 	},
 	location_office: {
@@ -87,13 +89,17 @@ const modelFromServer: MachineModel = {
 			city:    { type: 'text' },
 			country: { type: 'text' },
 		},
-		fks:      {},
+		fkRelations:      {},
 		template: { presentation: 'code city' },
 	},
 };
 
 describe('MachineDb constructed from getModel() output', () => {
-	const db = new MachineDb(modelFromServer);
+	let db: MachineDb;
+	beforeAll(async () => {
+		const m = await bootWithRelations('schema-from-model', modelFromServer);
+		db = m.logic;
+	});
 
 	it('collections() lists all collections', () => {
 		const names = db.collections().map((s) => s.name);
@@ -108,22 +114,22 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	describe('vehicle schema', () => {
-		const scheme = db.collection('vehicle');
+		const scheme = () => db.collection('vehicle');
 
 		it('index derived from keyPath (++id → id)', () => {
-			expect(scheme.index).toBe('id');
+			expect(scheme().index).toBe('id');
 		});
 
 		it('template.presentation preserved', () => {
-			expect(scheme.template.presentation).toBe('license_plate model brand year status');
+			expect(scheme().template.presentation).toBe('license_plate model brand year status');
 		});
 
 		it('field(license_plate).parse() resolves fieldType=text', () => {
-			expect(scheme.field('license_plate').parse()?.fieldType).toBe('text');
+			expect(scheme().field('license_plate').parse()?.fieldType).toBe('text');
 		});
 
 		it('parseFks() returns forward FK collections', () => {
-			const fks = scheme.parseFks();
+			const fks = scheme().parseFks();
 			expect(fks).toHaveProperty('category');
 			expect(fks).toHaveProperty('location_office');
 		});
@@ -131,13 +137,13 @@ describe('MachineDb constructed from getModel() output', () => {
 		it('field(category).parse() resolves FK relation from fks block (no FIELD_NOT_FOUND)', () => {
 			// category lives in `fks`, not `fields` — getFieldRule must synthesize
 			// a fk-<code>.code rule so DataField can render it (view="fk" path).
-			const f = scheme.field('category').parse();
+			const f = scheme().field('category').parse();
 			expect(f?.fieldType).toBe('fk-category.code');
 			expect(f?.is).toBe('fk');
 		});
 
 		it('no fk-* typed scalars in fields', () => {
-			const hasFkScalar = Object.values(scheme.fields).some(
+			const hasFkScalar = Object.values(scheme().fields).some(
 				(f: any) => (f?.type ?? '').startsWith('fk-')
 			);
 			expect(hasFkScalar).toBe(false);
@@ -145,16 +151,16 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	describe('rental schema', () => {
-		const scheme = db.collection('rental');
+		const scheme = () => db.collection('rental');
 
 		it('parseFks() has vehicle and customer', () => {
-			const fks = scheme.parseFks();
+			const fks = scheme().parseFks();
 			expect(fks).toHaveProperty('vehicle');
 			expect(fks).toHaveProperty('customer');
 		});
 
 		it('no fk-* typed scalars in fields', () => {
-			const hasFkScalar = Object.values(scheme.fields).some(
+			const hasFkScalar = Object.values(scheme().fields).some(
 				(f: any) => (f?.type ?? '').startsWith('fk-')
 			);
 			expect(hasFkScalar).toBe(false);
@@ -162,14 +168,14 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	describe('category schema (no fks)', () => {
-		const scheme = db.collection('category');
+		const scheme = () => db.collection('category');
 
 		it('parseFks() returns empty', () => {
-			expect(Object.keys(scheme.parseFks())).toHaveLength(0);
+			expect(Object.keys(scheme().parseFks())).toHaveLength(0);
 		});
 
 		it('field(description).parse() resolves fieldType with text', () => {
-			expect(scheme.field('description').parse()?.fieldType).toMatch(/text/);
+			expect(scheme().field('description').parse()?.fieldType).toMatch(/text/);
 		});
 	});
 

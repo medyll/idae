@@ -10,7 +10,7 @@ export const aiToolCallScheme: MachineModel = {
       result:        { type: 'json' },
       error:         { type: 'text' },
     },
-    fks: {
+    fkRelations: {
       ai_message:        { code: 'ai_message',        multiple: false, required: true },
       ai_tool:           { code: 'ai_tool',           multiple: false, required: true },
       ai_tool_call_status: { code: 'ai_tool_call_status', multiple: false, required: false },

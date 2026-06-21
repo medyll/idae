@@ -9,7 +9,7 @@ export * from './entity-types.js';
 // If you need the static-definition versions, import from '$lib/types/index.js' directly.
 export type {
 	SortBy, InputSize, ImageFieldDef, MachineFieldDef, MachineFkDef, MachineDisplayTemplate,
-	MachineRightsPolicy, MachineCollectionModel, MachineModel,
+	MachineRightsPolicy, MachineCollectionModel, MachineModel, FkRelations,
 	TplFieldType, TplFieldArgs, TplFieldRulesObject, TplFieldRules, TplFields, TplCollectionName,
 	Tpl, IdbqModel, IDbForge,
 	Where, Operator, OperatorType, SupportedOperator, ResultSet, ResultsetOptions,
@@ -17,3 +17,13 @@ export type {
 	DiagramNode, DiagramEdge, DiagramGraph,
 } from './machine-model.js';
 export { indexFromKeyPath } from './machine-model.js';
+
+// Storage adapters for multi-mode architecture
+export type {
+	StorageAdapter,
+	QueryOperator,
+	QueryCondition,
+} from '$lib/storage/StorageAdapter.js';
+export { MemoryStorageAdapter } from '$lib/storage/MemoryStorageAdapter.js';
+export { ApiStorageAdapter, type ApiClient } from '$lib/storage/ApiStorageAdapter.js';
+export { IdbStorageAdapter } from '$lib/storage/IdbStorageAdapter.js';

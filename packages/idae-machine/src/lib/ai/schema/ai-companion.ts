@@ -15,7 +15,7 @@ export const aiCompanionScheme: MachineModel = {
       avatar:        { type: 'text' },
       is_locked:     { type: 'boolean' },
     },
-    fks: {
+    fkRelations: {
       ai_model:          { code: 'ai_model',          multiple: false, required: true },
       appuser:           { code: 'appuser',           multiple: false, required: false },
       ai_mood:           { code: 'ai_mood',           multiple: false, required: false },

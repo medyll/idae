@@ -13,7 +13,7 @@ export const factoryScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -27,7 +27,7 @@ export const factoryScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -40,7 +40,7 @@ export const factoryScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -53,7 +53,7 @@ export const factoryScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -66,7 +66,7 @@ export const factoryScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -78,7 +78,7 @@ export const factoryScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code name' },
 	},
 
@@ -92,7 +92,7 @@ export const factoryScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -114,7 +114,7 @@ export const factoryScheme: MachineModel = {
 			lot_tracked:   { type: 'boolean' },
 			image:         { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			item_type: { code: 'item_type', required: true, multiple: false },
 			uom:       { code: 'uom',       required: true, multiple: false },
 		},
@@ -135,7 +135,7 @@ export const factoryScheme: MachineModel = {
 			country:      { type: 'text' },
 			lead_time_days:{ type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city lead_time_days' },
 	},
 
@@ -150,7 +150,7 @@ export const factoryScheme: MachineModel = {
 			lead_time_days:{ type: 'number' },
 			preferred:     { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			supplier: { code: 'supplier', required: true, multiple: false },
 			item:     { code: 'item',     required: true, multiple: false },
 		},
@@ -170,7 +170,7 @@ export const factoryScheme: MachineModel = {
 			is_active:   { type: 'boolean' },
 			notes:       { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			item: { code: 'item', required: true, multiple: false },
 			uom:  { code: 'uom',  required: true, multiple: false },
 		},
@@ -187,7 +187,7 @@ export const factoryScheme: MachineModel = {
 			ordre:        { type: 'number' },
 			notes:        { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			bom:           { code: 'bom',  required: true,  multiple: false },
 			component:     { code: 'item', required: true,  multiple: false },
 			component_bom: { code: 'bom',  required: false, multiple: false },
@@ -207,7 +207,7 @@ export const factoryScheme: MachineModel = {
 			hourly_rate:    { type: 'currency' },
 			capacity_hours_day:{ type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name hourly_rate capacity_hours_day' },
 	},
 
@@ -223,7 +223,7 @@ export const factoryScheme: MachineModel = {
 			last_maintenance:{ type: 'date' },
 			next_maintenance:{ type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			work_center:    { code: 'work_center',    required: true, multiple: false },
 			machine_status: { code: 'machine_status', required: true, multiple: false },
 		},
@@ -237,7 +237,7 @@ export const factoryScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			item: { code: 'item', required: true, multiple: false },
 		},
 		template: { presentation: 'item name' },
@@ -254,7 +254,7 @@ export const factoryScheme: MachineModel = {
 			run_minutes:   { type: 'number' },
 			instructions:  { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			routing:     { code: 'routing',     required: true, multiple: false },
 			work_center: { code: 'work_center', required: true, multiple: false },
 		},
@@ -279,7 +279,7 @@ export const factoryScheme: MachineModel = {
 			priority:     { type: 'number' },
 			notes:        { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			item:              { code: 'item',              required: true,  multiple: false },
 			bom:               { code: 'bom',               required: false, multiple: false },
 			routing:           { code: 'routing',           required: false, multiple: false },
@@ -299,7 +299,7 @@ export const factoryScheme: MachineModel = {
 			started_at:    { type: 'date' },
 			completed_at:  { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			work_order:  { code: 'work_order',  required: true,  multiple: false },
 			operation:   { code: 'operation',   required: false, multiple: false },
 			work_center: { code: 'work_center', required: true,  multiple: false },
@@ -317,7 +317,7 @@ export const factoryScheme: MachineModel = {
 			consumed_qty: { type: 'number' },
 			consumed_at:  { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			work_order: { code: 'work_order', required: true,  multiple: false },
 			item:       { code: 'item',       required: true,  multiple: false },
 			lot:        { code: 'lot',        required: false, multiple: false },
@@ -336,7 +336,7 @@ export const factoryScheme: MachineModel = {
 			address: { type: 'text' },
 			city:    { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city' },
 	},
 
@@ -349,7 +349,7 @@ export const factoryScheme: MachineModel = {
 			aisle:{ type: 'text' },
 			bin:  { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			warehouse: { code: 'warehouse', required: true, multiple: false },
 		},
 		template: { presentation: 'warehouse name aisle bin' },
@@ -365,7 +365,7 @@ export const factoryScheme: MachineModel = {
 			produced_at:  { type: 'date' },
 			expires_at:   { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			item:       { code: 'item',       required: true,  multiple: false },
 			lot_status: { code: 'lot_status', required: true,  multiple: false },
 			work_order: { code: 'work_order', required: false, multiple: false },
@@ -383,7 +383,7 @@ export const factoryScheme: MachineModel = {
 			moved_at:  { type: 'date',   required: true },
 			reference: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			item:          { code: 'item',           required: true,  multiple: false },
 			lot:           { code: 'lot',            required: false, multiple: false },
 			from_location: { code: 'stock_location', required: false, multiple: false },
@@ -407,7 +407,7 @@ export const factoryScheme: MachineModel = {
 			total:        { type: 'currency' },
 			notes:        { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			supplier:  { code: 'supplier',  required: true, multiple: false },
 			po_status: { code: 'po_status', required: true, multiple: false },
 		},
@@ -424,7 +424,7 @@ export const factoryScheme: MachineModel = {
 			unit_price:   { type: 'currency', required: true },
 			line_total:   { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			purchase_order: { code: 'purchase_order', required: true, multiple: false },
 			item:           { code: 'item',           required: true, multiple: false },
 		},
@@ -443,7 +443,7 @@ export const factoryScheme: MachineModel = {
 			measured_value:{ type: 'number' },
 			notes:       { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			lot:        { code: 'lot',        required: false, multiple: false },
 			work_order: { code: 'work_order', required: false, multiple: false },
 			item:       { code: 'item',       required: true,  multiple: false },

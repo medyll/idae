@@ -14,7 +14,7 @@ export const restauScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -28,7 +28,7 @@ export const restauScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -42,7 +42,7 @@ export const restauScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -55,7 +55,7 @@ export const restauScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -68,7 +68,7 @@ export const restauScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -81,7 +81,7 @@ export const restauScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'ordre name' },
 	},
 
@@ -94,7 +94,7 @@ export const restauScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -107,7 +107,7 @@ export const restauScheme: MachineModel = {
 			name:   { type: 'text', required: true },
 			active: { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -121,7 +121,7 @@ export const restauScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			floor:{ type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name floor' },
 	},
 
@@ -137,7 +137,7 @@ export const restauScheme: MachineModel = {
 			y_pos:    { type: 'number' },
 			shape:    { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			dining_room:  { code: 'dining_room',  required: true, multiple: false },
 			table_status: { code: 'table_status', required: true, multiple: false },
 		},
@@ -161,7 +161,7 @@ export const restauScheme: MachineModel = {
 			active:     { type: 'boolean' },
 			photo:      { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name role active' },
 	},
 
@@ -176,7 +176,7 @@ export const restauScheme: MachineModel = {
 			ordre: { type: 'number' },
 			image: { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			course_type: { code: 'course_type', required: false, multiple: false },
 		},
 		template: { presentation: 'ordre name course_type' },
@@ -199,7 +199,7 @@ export const restauScheme: MachineModel = {
 			available:    { type: 'boolean' },
 			image:        { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			menu_category: { code: 'menu_category', required: true,  multiple: false },
 			station:       { code: 'station',       required: false, multiple: false },
 		},
@@ -216,7 +216,7 @@ export const restauScheme: MachineModel = {
 			max_select:   { type: 'number' },
 			required:     { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name min_select max_select required' },
 	},
 
@@ -229,7 +229,7 @@ export const restauScheme: MachineModel = {
 			price_delta: { type: 'currency' },
 			ordre:       { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			modifier_group: { code: 'modifier_group', required: true, multiple: false },
 		},
 		template: { presentation: 'modifier_group name price_delta' },
@@ -241,7 +241,7 @@ export const restauScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			menu_item:      { code: 'menu_item',      required: true, multiple: false },
 			modifier_group: { code: 'modifier_group', required: true, multiple: false },
 		},
@@ -262,7 +262,7 @@ export const restauScheme: MachineModel = {
 			visit_count: { type: 'number' },
 			vip:         { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name phone vip' },
 	},
 
@@ -277,7 +277,7 @@ export const restauScheme: MachineModel = {
 			duration_min:{ type: 'number' },
 			notes:       { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			guest:              { code: 'guest',              required: false, multiple: false },
 			resto_table:        { code: 'resto_table',        required: false, multiple: false },
 			reservation_status: { code: 'reservation_status', required: true,  multiple: false },
@@ -303,7 +303,7 @@ export const restauScheme: MachineModel = {
 			total:       { type: 'currency' },
 			notes:       { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			resto_table:  { code: 'resto_table',  required: false, multiple: false },
 			server:       { code: 'staff',        required: true,  multiple: false },
 			order_status: { code: 'order_status', required: true,  multiple: false },
@@ -324,7 +324,7 @@ export const restauScheme: MachineModel = {
 			notes:       { type: 'text-lg' },
 			fired_at:    { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			resto_order:  { code: 'resto_order',  required: true,  multiple: false },
 			menu_item:    { code: 'menu_item',    required: true,  multiple: false },
 			course_type:  { code: 'course_type',  required: false, multiple: false },
@@ -340,7 +340,7 @@ export const restauScheme: MachineModel = {
 			code:        { type: 'text',     required: true },
 			price_delta: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			order_line: { code: 'order_line', required: true, multiple: false },
 			modifier:   { code: 'modifier',   required: true, multiple: false },
 		},
@@ -357,7 +357,7 @@ export const restauScheme: MachineModel = {
 			ready_at:    { type: 'date' },
 			bumped_at:   { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			resto_order:   { code: 'resto_order',   required: true, multiple: false },
 			station:       { code: 'station',       required: true, multiple: false },
 			ticket_status: { code: 'ticket_status', required: true, multiple: false },
@@ -378,7 +378,7 @@ export const restauScheme: MachineModel = {
 			tip:       { type: 'currency' },
 			total:     { type: 'currency', required: true },
 		},
-		fks: {
+		fkRelations: {
 			resto_order: { code: 'resto_order', required: true, multiple: false },
 		},
 		template: { presentation: 'resto_order name total' },
@@ -394,7 +394,7 @@ export const restauScheme: MachineModel = {
 			paid_at:   { type: 'date',     required: true },
 			reference: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			resto_order:    { code: 'resto_order',    required: true,  multiple: false },
 			check_split:    { code: 'check_split',    required: false, multiple: false },
 			payment_method: { code: 'payment_method', required: true,  multiple: false },
@@ -416,7 +416,7 @@ export const restauScheme: MachineModel = {
 			min_qty:   { type: 'number' },
 			cost:      { type: 'currency' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name stock_qty unit' },
 	},
 
@@ -428,7 +428,7 @@ export const restauScheme: MachineModel = {
 			quantity: { type: 'number', required: true },
 			unit:     { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			menu_item:  { code: 'menu_item',  required: true, multiple: false },
 			ingredient: { code: 'ingredient', required: true, multiple: false },
 		},

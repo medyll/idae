@@ -94,7 +94,8 @@ export async function seedBusinessData(opts: SeedBusinessOpts): Promise<void> {
 				(row.code === undefined || row.code === null || row.code === '') && row.id != null
 					? { ...row, code: String(row.id) }
 					: { ...row };
-			const { data: folded } = await foldFks(model, collectionName, withCode, resolver);
+			const fkDefs = model[collectionName]?.fkRelations ?? {};
+			const { data: folded } = await foldFks(fkDefs, withCode, resolver);
 			foldedRecords.push(folded);
 		}
 

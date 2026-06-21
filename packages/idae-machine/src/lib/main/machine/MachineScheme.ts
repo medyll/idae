@@ -8,6 +8,7 @@ import type {
 } from '$lib/types/index.js';
 import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
+import { getCollectionRelations } from '$lib/data-ui/utils/dataRelationUtils.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
 import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate.js';
@@ -54,7 +55,7 @@ export class MachineScheme {
 
 	/** Foreign key relations. */
 	get fks(): Record<string, MachineFkDef> {
-		return this.#collectionModel.fks ?? {};
+		return getCollectionRelations(this.collection) ?? {};
 	}
 
 	/** Primary key field name, derived from keyPath ('++id' → 'id'). */
@@ -190,15 +191,23 @@ export class MachineScheme {
 
 	parseReverseFks(): Record<string, Record<string, unknown>> {
 		const result: Record<string, Record<string, unknown>> = {};
-		Object.entries(this.#model).forEach(([collectionName, collectionModel]) => {
-			const fks = (collectionModel as MachineCollectionModel).fks ?? {};
-			Object.entries(fks).forEach(([fkName, fkConfig]) => {
+		
+		// Get all collection names from the model
+		const collectionNames = Object.keys(this.#model);
+		
+		// For each collection, get its relations and check if any point to this collection
+		for (const collectionName of collectionNames) {
+			const relations = getCollectionRelations(collectionName);
+			if (!relations) continue;
+			
+			Object.entries(relations).forEach(([fkName, fkConfig]) => {
 				if (fkConfig?.code === this.collection) {
 					if (!result[collectionName]) result[collectionName] = {};
 					result[collectionName][fkName] = fkConfig;
 				}
 			});
-		});
+		}
+		
 		return result;
 	}
 

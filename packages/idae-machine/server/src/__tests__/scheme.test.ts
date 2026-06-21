@@ -17,7 +17,7 @@ const testModel: any = {
 			name:       { type: 'text', required: true },
 			categoryId: { type: 'fk-category.id' },
 		},
-		fks: {
+		fkRelations: {
 			category: { code: 'category', multiple: false, required: false }
 		},
 		template: {

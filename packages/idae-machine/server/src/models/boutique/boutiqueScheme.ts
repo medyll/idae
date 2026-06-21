@@ -13,7 +13,7 @@ export const boutiqueScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -26,7 +26,7 @@ export const boutiqueScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -39,7 +39,7 @@ export const boutiqueScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -52,7 +52,7 @@ export const boutiqueScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -65,7 +65,7 @@ export const boutiqueScheme: MachineModel = {
 			name:   { type: 'text', required: true },
 			active: { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -78,7 +78,7 @@ export const boutiqueScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -91,7 +91,7 @@ export const boutiqueScheme: MachineModel = {
 			name:   { type: 'text', required: true },
 			symbol: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code symbol name' },
 	},
 
@@ -108,7 +108,7 @@ export const boutiqueScheme: MachineModel = {
 			logo:        { type: 'image' },
 			website:     { type: 'url' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name slug' },
 	},
 
@@ -123,7 +123,7 @@ export const boutiqueScheme: MachineModel = {
 			image:       { type: 'image' },
 			ordre:       { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			parent: { code: 'category', multiple: false },
 		},
 		template: { presentation: 'name slug' },
@@ -152,7 +152,7 @@ export const boutiqueScheme: MachineModel = {
 			featured:         { type: 'boolean' },
 			published_at:     { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			brand:          { code: 'brand',          required: false, multiple: false },
 			category:       { code: 'category',       required: false, multiple: false },
 			product_status: { code: 'product_status', required: true,  multiple: false },
@@ -176,7 +176,7 @@ export const boutiqueScheme: MachineModel = {
 			option_color: { type: 'text' },
 			image:        { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			product: { code: 'product', required: true, multiple: false },
 		},
 		template: { presentation: 'name sku price stock' },
@@ -191,7 +191,7 @@ export const boutiqueScheme: MachineModel = {
 			alt:   { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			product: { code: 'product', required: true, multiple: false },
 		},
 		template: { presentation: 'product alt ordre' },
@@ -213,7 +213,7 @@ export const boutiqueScheme: MachineModel = {
 			country:     { type: 'text', required: true },
 			comment:     { type: 'text-lg' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'street postal_code city country' },
 	},
 
@@ -224,7 +224,7 @@ export const boutiqueScheme: MachineModel = {
 			code:         { type: 'text',    required: true },
 			is_primary:   { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			customer:     { code: 'customer',     required: true, multiple: false },
 			address:      { code: 'address',      required: true, multiple: false },
 			address_type: { code: 'address_type', required: true, multiple: false },
@@ -249,7 +249,7 @@ export const boutiqueScheme: MachineModel = {
 			accepts_marketing: { type: 'boolean' },
 			created_at: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'last_name first_name email' },
 	},
 
@@ -265,7 +265,7 @@ export const boutiqueScheme: MachineModel = {
 			created_at: { type: 'date' },
 			updated_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			customer:    { code: 'customer',    required: false, multiple: false },
 			cart_status: { code: 'cart_status', required: true,  multiple: false },
 		},
@@ -281,7 +281,7 @@ export const boutiqueScheme: MachineModel = {
 			unit_price: { type: 'currency', required: true },
 			line_total: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			cart:    { code: 'cart',    required: true,  multiple: false },
 			product: { code: 'product', required: true,  multiple: false },
 			variant: { code: 'variant', required: false, multiple: false },
@@ -311,7 +311,7 @@ export const boutiqueScheme: MachineModel = {
 			delivered_at:      { type: 'date' },
 			cancelled_at:      { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			customer:         { code: 'customer',         required: true, multiple: false },
 			order_status:     { code: 'order_status',     required: true, multiple: false },
 			currency:         { code: 'currency',         required: true, multiple: false },
@@ -335,7 +335,7 @@ export const boutiqueScheme: MachineModel = {
 			line_total:   { type: 'currency', required: true },
 			tax:          { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			order:   { code: 'order',   required: true,  multiple: false },
 			product: { code: 'product', required: true,  multiple: false },
 			variant: { code: 'variant', required: false, multiple: false },
@@ -355,7 +355,7 @@ export const boutiqueScheme: MachineModel = {
 			paid_at:   { type: 'date' },
 			notes:     { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			order:          { code: 'order',          required: true, multiple: false },
 			payment_method: { code: 'payment_method', required: true, multiple: false },
 			payment_status: { code: 'payment_status', required: true, multiple: false },
@@ -376,7 +376,7 @@ export const boutiqueScheme: MachineModel = {
 			max_days:   { type: 'number' },
 			active:     { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name carrier base_cost' },
 	},
 
@@ -395,7 +395,7 @@ export const boutiqueScheme: MachineModel = {
 			used_count:      { type: 'number' },
 			active:          { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code discount_type discount_value valid_until active' },
 	},
 
@@ -414,7 +414,7 @@ export const boutiqueScheme: MachineModel = {
 			verified:     { type: 'boolean' },
 			created_at:   { type: 'date',    required: true },
 		},
-		fks: {
+		fkRelations: {
 			product:  { code: 'product',  required: true,  multiple: false },
 			customer: { code: 'customer', required: false, multiple: false },
 		},

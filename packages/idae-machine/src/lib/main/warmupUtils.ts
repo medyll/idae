@@ -3,10 +3,12 @@
  * Replaces hardcoded warmup arrays with model-driven collection selection
  */
 import type { MachineModel } from '$lib/types/index.js';
+import { getMetaCollectionResolver } from '$lib/machine/ext/hooks.js';
 
 /**
  * Get collections that are critical for schema hydration (warmup candidates).
  * These are collections with base='machine_app' that feed the shell UI.
+ * Delegates to the domain bridge if registered; falls back to inline implementation.
  *
  * @param model - The machine model to analyze
  * @param bases - Array of bases to include (default: ['machine_app'])
@@ -16,32 +18,16 @@ export function getSchemaCriticalCollections(
 	model: MachineModel,
 	bases: string[] = ['machine_app']
 ): string[] {
-	const criticalCollections: string[] = [];
+	const resolver = getMetaCollectionResolver();
+	if (resolver) return resolver.getSchemaCriticalCollections(bases);
 
+	const criticalCollections: string[] = [];
 	for (const [collectionName, collectionDef] of Object.entries(model)) {
-		// Include collections that are part of the specified bases
 		if (collectionDef.base && bases.includes(collectionDef.base)) {
 			criticalCollections.push(collectionName);
 		}
 	}
-
-	// Ensure we always include the core schema collections even if not explicitly in base
-	const coreSchemaCollections = [
-		'appscheme',
-		'appscheme_field', 
-		'appscheme_view',
-		'appscheme_view_type',
-		'appscheme_has_field'
-	];
-
-	// Add any core collections that might be missing
-	for (const coreCollection of coreSchemaCollections) {
-		if (!criticalCollections.includes(coreCollection)) {
-			criticalCollections.push(coreCollection);
-		}
-	}
-
-	return Array.from(new Set(criticalCollections)).sort(); // Deduplicate and sort
+	return Array.from(new Set(criticalCollections)).sort();
 }
 
 /**

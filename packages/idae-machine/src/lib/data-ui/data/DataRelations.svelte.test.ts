@@ -16,6 +16,17 @@ function nextDbName(prefix: string): string {
 }
 
 const testCore: MachineModel = {
+	appscheme: {
+		keyPath: '++id',
+		base: 'machine_app',
+		model: {},
+		fields: {
+			id: { type: 'id', readonly: true },
+			code: { type: 'text', required: true }
+		},
+		fkRelations: {},
+		template: { presentation: 'code' }
+	},
 	appuser_prefs: {
 		keyPath: '++id',
 		base: 'machine_user',
@@ -26,7 +37,7 @@ const testCore: MachineModel = {
 			name: { type: 'text' },
 			value: { type: 'text' }
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code' }
 	}
 };
@@ -59,6 +70,13 @@ async function seedCollection(name: keyof typeof demoSeed): Promise<void> {
 }
 
 async function seedDemoRelations(): Promise<void> {
+	// appscheme records carry each collection's fkRelations (source of truth — FKRELATIONS.md).
+	for (const [code, def] of Object.entries(demoScheme)) {
+		await machine.collection('appscheme').create({
+			code,
+			fkRelations: (def as any).fkRelations ?? {}
+		});
+	}
 	await seedCollection('category');
 	await seedCollection('location_office');
 	await seedCollection('vehicle');

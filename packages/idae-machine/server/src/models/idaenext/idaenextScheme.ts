@@ -13,7 +13,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				marque: { code: 'marque', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -36,7 +36,7 @@ export const idaenextScheme: MachineModel = {
 			totalHt: { type: 'currency' },
 			isoDateDebut: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -49,7 +49,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -68,7 +68,7 @@ export const idaenextScheme: MachineModel = {
 			login: { type: 'text' },
 			telephone2: { type: 'phone' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -84,7 +84,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			uniqid: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -100,7 +100,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			quantite: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -112,7 +112,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -124,7 +124,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -145,7 +145,7 @@ export const idaenextScheme: MachineModel = {
 			actifAgent: { type: 'text' },
 			petitNomAgent: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -157,7 +157,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			valeur: { type: 'number', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -168,7 +168,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -179,7 +179,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -191,7 +191,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			valeur: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -203,7 +203,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -214,7 +214,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -225,7 +225,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -238,7 +238,7 @@ export const idaenextScheme: MachineModel = {
 			date: { type: 'date' },
 			dateCreation: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -253,7 +253,7 @@ export const idaenextScheme: MachineModel = {
 			dateCreation: { type: 'date' },
 			heureCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -268,7 +268,7 @@ export const idaenextScheme: MachineModel = {
 			dateCreation: { type: 'date' },
 			heureCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -279,7 +279,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -308,7 +308,7 @@ export const idaenextScheme: MachineModel = {
 			email2: { type: 'email' },
 			identite: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				agence: { code: 'agence', multiple: false },
 				client_type: { code: 'client_type', multiple: false },
 				client_categorie: { code: 'client_categorie', multiple: false },
@@ -323,7 +323,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -337,7 +337,7 @@ export const idaenextScheme: MachineModel = {
 			description: { type: 'text-long' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -351,7 +351,7 @@ export const idaenextScheme: MachineModel = {
 			ordre: { type: 'number' },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -370,7 +370,7 @@ export const idaenextScheme: MachineModel = {
 			description: { type: 'text-long' },
 			totalHt: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -390,7 +390,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				commande: { code: 'commande', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -406,7 +406,7 @@ export const idaenextScheme: MachineModel = {
 			color: { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -429,7 +429,7 @@ export const idaenextScheme: MachineModel = {
 			petitNomAgent: { type: 'text' },
 			actifAgent: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				conge_type: { code: 'conge_type', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -448,7 +448,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -462,7 +462,7 @@ export const idaenextScheme: MachineModel = {
 			color: { type: 'text' },
 			duree: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -478,7 +478,7 @@ export const idaenextScheme: MachineModel = {
 			telephone: { type: 'phone' },
 			mobile: { type: 'phone' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -492,7 +492,7 @@ export const idaenextScheme: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -516,7 +516,7 @@ export const idaenextScheme: MachineModel = {
 			aa_partie_code: { type: 'text' },
 			aa_partie_site_n_id: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				contrat_statut: { code: 'contrat_statut', multiple: false },
 				contrat_type: { code: 'contrat_type', multiple: false },
@@ -534,7 +534,7 @@ export const idaenextScheme: MachineModel = {
 			ordre: { type: 'number' },
 			valeur: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 				contrat: { code: 'contrat', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -551,7 +551,7 @@ export const idaenextScheme: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -564,7 +564,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -580,7 +580,7 @@ export const idaenextScheme: MachineModel = {
 			adresse: { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -592,7 +592,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -606,7 +606,7 @@ export const idaenextScheme: MachineModel = {
 			dateDebut: { type: 'date' },
 			heureDebut: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -625,7 +625,7 @@ export const idaenextScheme: MachineModel = {
 			description: { type: 'text' },
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				document_type: { code: 'document_type', multiple: false },
 				document_extension: { code: 'document_extension', multiple: false },
@@ -640,7 +640,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -652,7 +652,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -663,7 +663,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -674,7 +674,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -685,7 +685,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -701,7 +701,7 @@ export const idaenextScheme: MachineModel = {
 			siren: { type: 'text' },
 			siret: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -718,7 +718,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			description: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				contrat: { code: 'contrat', multiple: false },
 			},
@@ -741,7 +741,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			description: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				facture: { code: 'facture', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -766,7 +766,7 @@ export const idaenextScheme: MachineModel = {
 			montantEchenace: { type: 'currency' },
 			N_ID: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				affaire: { code: 'affaire', multiple: false },
 				leaser: { code: 'leaser', multiple: false },
@@ -790,7 +790,7 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 			prix: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 				financement: { code: 'financement', multiple: false },
 				commande_ligne: { code: 'commande_ligne', multiple: false },
 			},
@@ -807,7 +807,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -818,7 +818,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -833,7 +833,7 @@ export const idaenextScheme: MachineModel = {
 			icon: { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -845,7 +845,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -859,7 +859,7 @@ export const idaenextScheme: MachineModel = {
 			ville: { type: 'text' },
 			fax: { type: 'phone' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -871,7 +871,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -895,7 +895,7 @@ export const idaenextScheme: MachineModel = {
 			dureeContrat: { type: 'text' },
 			description: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				produit: { code: 'produit', multiple: false },
 				client: { code: 'client', multiple: false },
 				contrat: { code: 'contrat', multiple: false },
@@ -917,7 +917,7 @@ export const idaenextScheme: MachineModel = {
 			vmmCouleurMateriel: { type: 'text' },
 			vmmNBMateriel: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				materiel: { code: 'materiel', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -935,7 +935,7 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 			valeur: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				materiel: { code: 'materiel', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -965,7 +965,7 @@ export const idaenextScheme: MachineModel = {
 			actifAgent: { type: 'text' },
 			ordreOpportunite_statut: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				opportunite_statut: { code: 'opportunite_statut', multiple: false },
 			},
@@ -981,7 +981,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			quantite: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 				opportunite: { code: 'opportunite', multiple: false },
 				produit: { code: 'produit', multiple: false },
 			},
@@ -998,7 +998,7 @@ export const idaenextScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1011,7 +1011,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1022,7 +1022,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1038,7 +1038,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			N_ID: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				marque: { code: 'marque', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -1052,7 +1052,7 @@ export const idaenextScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1074,7 +1074,7 @@ export const idaenextScheme: MachineModel = {
 			cp: { type: 'text' },
 			pays: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1090,7 +1090,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			commentaire: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				affaire: { code: 'affaire', multiple: false },
 			},
@@ -1109,7 +1109,7 @@ export const idaenextScheme: MachineModel = {
 			commentaire: { type: 'text' },
 			valeurArgus: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				rachat: { code: 'rachat', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -1129,7 +1129,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			duree: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 				prospect: { code: 'prospect', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -1146,7 +1146,7 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1158,7 +1158,7 @@ export const idaenextScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1178,7 +1178,7 @@ export const idaenextScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			resultat: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				prospect: { code: 'prospect', multiple: false },
 				tache_statut: { code: 'tache_statut', multiple: false },
 				tache_type: { code: 'tache_type', multiple: false },
@@ -1201,7 +1201,7 @@ export const idaenextScheme: MachineModel = {
 			valeur: { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1218,7 +1218,7 @@ export const idaenextScheme: MachineModel = {
 			commentaireType_tache: { type: 'text' },
 			commentaireType_suivi: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 };

@@ -3,6 +3,7 @@ import type { MachineModel, MachineCollectionModel } from '$lib/types/index.js';
 import type { MachineDb } from '../machineDb.js';
 import { MachineParserForge } from '../machineParserForge.js';
 import { MachineError } from './MachineError.js';
+import { getCollectionRelations } from '$lib/data-ui/utils/dataRelationUtils.js';
 
 export class MachineSchemeField {
 	#collection:      TplCollectionName;
@@ -64,7 +65,8 @@ export class MachineSchemeField {
 		const scalar = (this.#collectionModel.fields ?? {})[name];
 		if (scalar) return scalar as unknown as TplFieldRules;
 
-		const fkDef = (this.#collectionModel.fks ?? {})[name];
+		const relations = getCollectionRelations(this.#collection);
+		const fkDef = relations?.[name];
 		if (fkDef?.code) {
 			return {
 				type: `fk-${fkDef.code}.code`,

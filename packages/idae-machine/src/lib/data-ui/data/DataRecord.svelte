@@ -27,7 +27,8 @@ Iterates a record's fields and renders DataField for each.
 		groupFieldBy,
 		groupChildren,
 		inputForm,
-		showLabel = true
+		showLabel = true,
+		showGroupNames = true
 	}: {
 		collection: string;
 		collectionId?: string | number;
@@ -39,6 +40,7 @@ Iterates a record's fields and renders DataField for each.
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
 		showLabel?: boolean | string;
+		showGroupNames?: boolean;
 	} = $props();
 
 	const scheme = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
@@ -93,7 +95,7 @@ Iterates a record's fields and renders DataField for each.
 			{@render groupChildren({ key, fieldNames: groupFields.map((f) => f.code) })}
 		{:else}
 			<fieldset class="field-group">
-				<legend  >- {key}</legend>
+				{#if showGroupNames}<legend>- {key}</legend>{/if}
 				{#each groupFields as { code: fieldName } (fieldName)}
 					{#if (scheme?.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
 						<div class="field">

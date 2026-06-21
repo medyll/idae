@@ -14,7 +14,7 @@ export const medbookScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -27,7 +27,7 @@ export const medbookScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -40,7 +40,7 @@ export const medbookScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -55,7 +55,7 @@ export const medbookScheme: MachineModel = {
 			default_fee:  { type: 'currency' },
 			color:        { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code duration_min default_fee' },
 	},
 
@@ -67,7 +67,7 @@ export const medbookScheme: MachineModel = {
 			code:  { type: 'text', required: true },
 			name:  { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -80,7 +80,7 @@ export const medbookScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'ordre name code' },
 	},
 
@@ -94,7 +94,7 @@ export const medbookScheme: MachineModel = {
 			email:   { type: 'email' },
 			website: { type: 'url' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -110,7 +110,7 @@ export const medbookScheme: MachineModel = {
 			description: { type: 'text-lg' },
 			icon:        { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -124,7 +124,7 @@ export const medbookScheme: MachineModel = {
 			fee:          { type: 'currency' },
 			reimbursable: { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			specialty: { code: 'specialty', required: false, multiple: false },
 		},
 		template: { presentation: 'ngap_code name fee specialty' },
@@ -151,7 +151,7 @@ export const medbookScheme: MachineModel = {
 			logo:        { type: 'image' },
 			photo:       { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city postal_code phone' },
 	},
 
@@ -164,7 +164,7 @@ export const medbookScheme: MachineModel = {
 			floor:     { type: 'number' },
 			equipment: { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			clinic: { code: 'clinic', required: true, multiple: false },
 		},
 		template: { presentation: 'clinic name floor' },
@@ -193,7 +193,7 @@ export const medbookScheme: MachineModel = {
 			tier_1_sector:     { type: 'boolean' },
 			photo:             { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			primary_specialty: { code: 'specialty', required: true, multiple: false },
 		},
 		template: { presentation: 'honorific name primary_specialty rpps_number' },
@@ -208,7 +208,7 @@ export const medbookScheme: MachineModel = {
 			start_date: { type: 'date' },
 			end_date:   { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			practitioner: { code: 'practitioner', required: true, multiple: false },
 			clinic:       { code: 'clinic',       required: true, multiple: false },
 		},
@@ -221,7 +221,7 @@ export const medbookScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			practitioner: { code: 'practitioner', required: true, multiple: false },
 			specialty:    { code: 'specialty',    required: true, multiple: false },
 		},
@@ -242,7 +242,7 @@ export const medbookScheme: MachineModel = {
 			valid_from:  { type: 'date' },
 			valid_until: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			practitioner: { code: 'practitioner', required: true,  multiple: false },
 			clinic:       { code: 'clinic',       required: false, multiple: false },
 			day_of_week:  { code: 'day_of_week',  required: true,  multiple: false },
@@ -260,7 +260,7 @@ export const medbookScheme: MachineModel = {
 			end_date:   { type: 'date',   required: true },
 			reason:     { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			practitioner: { code: 'practitioner', required: true, multiple: false },
 		},
 		template: { presentation: 'practitioner start_date end_date reason' },
@@ -296,7 +296,7 @@ export const medbookScheme: MachineModel = {
 			photo:             { type: 'image' },
 			registered_at:     { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			insurance_provider: { code: 'insurance_provider', required: false, multiple: false },
 		},
 		template: { presentation: 'last_name first_name birth_date phone' },
@@ -315,7 +315,7 @@ export const medbookScheme: MachineModel = {
 			uploaded_at:  { type: 'date' },
 			notes:        { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			patient: { code: 'patient', required: true, multiple: false },
 		},
 		template: { presentation: 'patient name kind uploaded_at' },
@@ -340,7 +340,7 @@ export const medbookScheme: MachineModel = {
 			cancelled_at: { type: 'date' },
 			reminder_sent_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			patient:            { code: 'patient',            required: true,  multiple: false },
 			practitioner:       { code: 'practitioner',       required: true,  multiple: false },
 			clinic:             { code: 'clinic',             required: false, multiple: false },
@@ -368,7 +368,7 @@ export const medbookScheme: MachineModel = {
 			follow_up_date: { type: 'date' },
 			fee:            { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			patient:             { code: 'patient',             required: true,  multiple: false },
 			practitioner:        { code: 'practitioner',        required: true,  multiple: false },
 			appointment:         { code: 'appointment',         required: false, multiple: false },
@@ -394,7 +394,7 @@ export const medbookScheme: MachineModel = {
 			oxygen_saturation:{ type: 'number' },
 			notes:            { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			patient:      { code: 'patient',      required: true,  multiple: false },
 			consultation: { code: 'consultation', required: false, multiple: false },
 		},
@@ -411,7 +411,7 @@ export const medbookScheme: MachineModel = {
 			notes:       { type: 'text-lg' },
 			pdf_url:     { type: 'url' },
 		},
-		fks: {
+		fkRelations: {
 			consultation: { code: 'consultation', required: true,  multiple: false },
 			patient:      { code: 'patient',      required: true,  multiple: false },
 			practitioner: { code: 'practitioner', required: true,  multiple: false },
@@ -432,7 +432,7 @@ export const medbookScheme: MachineModel = {
 			quantity:     { type: 'number' },
 			instructions: { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			prescription: { code: 'prescription', required: true, multiple: false },
 		},
 		template: { presentation: 'prescription drug_name dosage frequency duration_days' },
@@ -446,7 +446,7 @@ export const medbookScheme: MachineModel = {
 			quantity: { type: 'number' },
 			fee:      { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			consultation: { code: 'consultation', required: true, multiple: false },
 			act:          { code: 'act',          required: true, multiple: false },
 		},
@@ -467,7 +467,7 @@ export const medbookScheme: MachineModel = {
 			paid_at:      { type: 'date' },
 			pdf_url:      { type: 'url' },
 		},
-		fks: {
+		fkRelations: {
 			consultation:   { code: 'consultation',   required: true, multiple: false },
 			patient:        { code: 'patient',        required: true, multiple: false },
 			payment_status: { code: 'payment_status', required: true, multiple: false },
@@ -487,7 +487,7 @@ export const medbookScheme: MachineModel = {
 			created_at: { type: 'date',   required: true },
 			verified:   { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			practitioner: { code: 'practitioner', required: true,  multiple: false },
 			patient:      { code: 'patient',      required: false, multiple: false },
 			appointment:  { code: 'appointment',  required: false, multiple: false },

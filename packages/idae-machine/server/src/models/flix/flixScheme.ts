@@ -13,7 +13,7 @@ export const flixScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -26,7 +26,7 @@ export const flixScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -40,7 +40,7 @@ export const flixScheme: MachineModel = {
 			min_age:    { type: 'number' },
 			ordre:      { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code name min_age' },
 	},
 
@@ -53,7 +53,7 @@ export const flixScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -68,7 +68,7 @@ export const flixScheme: MachineModel = {
 			height: { type: 'number' },
 			ordre:  { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code name height' },
 	},
 
@@ -80,7 +80,7 @@ export const flixScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			native_name: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code name' },
 	},
 
@@ -94,7 +94,7 @@ export const flixScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			slug: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name slug' },
 	},
 
@@ -110,7 +110,7 @@ export const flixScheme: MachineModel = {
 			logo:    { type: 'image' },
 			website: { type: 'url' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name country founded' },
 	},
 
@@ -127,7 +127,7 @@ export const flixScheme: MachineModel = {
 			birth_place:{ type: 'text' },
 			photo:      { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name birth_date' },
 	},
 
@@ -156,7 +156,7 @@ export const flixScheme: MachineModel = {
 			featured:     { type: 'boolean' },
 			published_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			title_type: { code: 'title_type', required: true,  multiple: false },
 			age_rating: { code: 'age_rating', required: false, multiple: false },
 		},
@@ -169,7 +169,7 @@ export const flixScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			title: { code: 'title', required: true, multiple: false },
 			genre: { code: 'genre', required: true, multiple: false },
 		},
@@ -183,7 +183,7 @@ export const flixScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			role: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			title:  { code: 'title',  required: true, multiple: false },
 			studio: { code: 'studio', required: true, multiple: false },
 		},
@@ -198,7 +198,7 @@ export const flixScheme: MachineModel = {
 			character_name: { type: 'text' },
 			ordre:          { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			title:     { code: 'title',     required: true, multiple: false },
 			person:    { code: 'person',    required: true, multiple: false },
 			role_type: { code: 'role_type', required: true, multiple: false },
@@ -217,7 +217,7 @@ export const flixScheme: MachineModel = {
 			release_year: { type: 'number' },
 			poster:       { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			title: { code: 'title', required: true, multiple: false },
 		},
 		template: { presentation: 'title number name release_year' },
@@ -235,7 +235,7 @@ export const flixScheme: MachineModel = {
 			air_date:     { type: 'date' },
 			still_image:  { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			season: { code: 'season', required: true, multiple: false },
 			title:  { code: 'title',  required: true, multiple: false },
 		},
@@ -257,7 +257,7 @@ export const flixScheme: MachineModel = {
 			duration_sec: { type: 'number' },
 			hdr:          { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			title:         { code: 'title',         required: false, multiple: false },
 			episode:       { code: 'episode',       required: false, multiple: false },
 			video_quality: { code: 'video_quality', required: true,  multiple: false },
@@ -273,7 +273,7 @@ export const flixScheme: MachineModel = {
 			kind:  { type: 'text' },
 			url:   { type: 'url' },
 		},
-		fks: {
+		fkRelations: {
 			video_asset: { code: 'video_asset', required: true, multiple: false },
 			language:    { code: 'language',    required: true, multiple: false },
 		},
@@ -290,7 +290,7 @@ export const flixScheme: MachineModel = {
 			forced: { type: 'boolean' },
 			sdh:    { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			video_asset: { code: 'video_asset', required: true, multiple: false },
 			language:    { code: 'language',    required: true, multiple: false },
 		},
@@ -313,7 +313,7 @@ export const flixScheme: MachineModel = {
 			download_allowed:{ type: 'boolean' },
 			active:         { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name price_monthly max_quality ad_supported' },
 	},
 
@@ -329,7 +329,7 @@ export const flixScheme: MachineModel = {
 			joined_at:  { type: 'date' },
 			last_login: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name email country joined_at' },
 	},
 
@@ -344,7 +344,7 @@ export const flixScheme: MachineModel = {
 			price:        { type: 'currency' },
 			billing_cycle:{ type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			viewer:              { code: 'viewer',              required: true, multiple: false },
 			plan:                { code: 'plan',                required: true, multiple: false },
 			subscription_status: { code: 'subscription_status', required: true, multiple: false },
@@ -363,7 +363,7 @@ export const flixScheme: MachineModel = {
 			pin:           { type: 'text' },
 			language_pref: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			viewer:            { code: 'viewer',     required: true,  multiple: false },
 			max_age_rating:    { code: 'age_rating', required: false, multiple: false },
 		},
@@ -379,7 +379,7 @@ export const flixScheme: MachineModel = {
 			code:     { type: 'text', required: true },
 			added_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			viewer_profile: { code: 'viewer_profile', required: true, multiple: false },
 			title:          { code: 'title',          required: true, multiple: false },
 		},
@@ -398,7 +398,7 @@ export const flixScheme: MachineModel = {
 			watched_at:   { type: 'date',    required: true },
 			device:       { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			viewer_profile: { code: 'viewer_profile', required: true,  multiple: false },
 			title:          { code: 'title',          required: false, multiple: false },
 			episode:        { code: 'episode',        required: false, multiple: false },
@@ -415,7 +415,7 @@ export const flixScheme: MachineModel = {
 			review:     { type: 'text-lg' },
 			created_at: { type: 'date',    required: true },
 		},
-		fks: {
+		fkRelations: {
 			viewer_profile: { code: 'viewer_profile', required: true, multiple: false },
 			title:          { code: 'title',          required: true, multiple: false },
 		},

@@ -1,16 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
 import { foldFks, type FkResolver } from '../validation/FkFolder.js';
-import type { MachineModel } from '../../../src/lib/types/machine-model.js';
+import type { MachineFkDef } from '../../../src/lib/types/machine-model.js';
 
-const travelModel: MachineModel = {
-	travel: {
-		keyPath: '++id',
-		fields:  {},
-		fks: {
-			destination: { code: 'destination', multiple: true,  required: false },
-			agency:      { code: 'agency',      multiple: false, required: true  },
-		},
-	},
+const travelFks: Record<string, MachineFkDef> = {
+	destination: { code: 'destination', multiple: true,  required: false },
+	agency:      { code: 'agency',      multiple: false, required: true  },
 };
 
 const parisRecord  = { id: 1,  code: '1',  name: 'Paris' };
@@ -25,7 +19,7 @@ describe('foldFks', () => {
 	it('builds flat fks.{name}_{id} snapshot from scalar', async () => {
 		const resolver = makeResolver({ agency: { 3: acmeRecord } });
 		const { data, errors } = await foldFks(
-			travelModel, 'travel',
+			travelFks,
 			{ agency: 3 },
 			resolver,
 		);
@@ -36,7 +30,7 @@ describe('foldFks', () => {
 	it('strips _id and nested fks from embedded snapshot', async () => {
 		const richTarget = { id: 3, name: 'ACME', _id: 'mongo_oid', fks: { sub_1: { id: 1 } } };
 		const resolver = makeResolver({ agency: { 3: richTarget as any } });
-		const { data } = await foldFks(travelModel, 'travel', { agency: 3 }, resolver);
+		const { data } = await foldFks(travelFks, { agency: 3 }, resolver);
 		const snap = (data.fks as any).agency_3;
 		expect(snap._id).toBeUndefined();
 		expect(snap.fks).toBeUndefined();
@@ -49,7 +43,7 @@ describe('foldFks', () => {
 			agency:      { 3: acmeRecord },
 		});
 		const { data, errors } = await foldFks(
-			travelModel, 'travel',
+			travelFks,
 			{ destination: [42, 1], agency: 3 },
 			resolver,
 		);
@@ -64,7 +58,7 @@ describe('foldFks', () => {
 	it('error when required FK absent', async () => {
 		const resolver = makeResolver({ agency: { 3: acmeRecord } });
 		const { errors } = await foldFks(
-			travelModel, 'travel',
+			travelFks,
 			{},  // no agency
 			resolver,
 		);
@@ -74,7 +68,7 @@ describe('foldFks', () => {
 	it('no error when optional FK absent', async () => {
 		const resolver = makeResolver({ agency: { 3: acmeRecord } });
 		const { errors } = await foldFks(
-			travelModel, 'travel',
+			travelFks,
 			{ agency: 3 },  // destination absent — optional
 			resolver,
 		);
@@ -84,7 +78,7 @@ describe('foldFks', () => {
 	it('error when target not found in resolver', async () => {
 		const resolver = makeResolver({ agency: {} });  // empty — not found
 		const { errors } = await foldFks(
-			travelModel, 'travel',
+			travelFks,
 			{ agency: 99 },
 			resolver,
 		);
@@ -94,7 +88,7 @@ describe('foldFks', () => {
 	it('preserves existing fks entries not touched by fold', async () => {
 		const resolver = makeResolver({ agency: { 3: acmeRecord } });
 		const { data, errors } = await foldFks(
-			travelModel, 'travel',
+			travelFks,
 			{ agency: 3, fks: { legacy_key: { id: 99 } } },
 			resolver,
 		);
@@ -103,20 +97,10 @@ describe('foldFks', () => {
 		expect((data.fks as any).agency_3).toMatchObject({ id: 3 });
 	});
 
-	it('returns data unchanged for unknown collection', async () => {
+	it('returns data unchanged when no fk defs', async () => {
 		const resolver = vi.fn();
 		const payload = { foo: 'bar' };
-		const { data, errors } = await foldFks(travelModel, 'unknown', payload, resolver as FkResolver);
-		expect(data).toBe(payload);
-		expect(errors).toEqual([]);
-		expect(resolver).not.toHaveBeenCalled();
-	});
-
-	it('returns data unchanged for collection with no fks', async () => {
-		const model: MachineModel = { category: { keyPath: '++id', fields: {}, fks: {} } };
-		const resolver = vi.fn();
-		const payload = { name: 'Sedan' };
-		const { data, errors } = await foldFks(model, 'category', payload, resolver as FkResolver);
+		const { data, errors } = await foldFks({}, payload, resolver as FkResolver);
 		expect(data).toBe(payload);
 		expect(errors).toEqual([]);
 		expect(resolver).not.toHaveBeenCalled();
@@ -124,7 +108,7 @@ describe('foldFks', () => {
 
 	it('uses target.id as key suffix when present', async () => {
 		const resolver = makeResolver({ agency: { 7: { id: 7, code: '7', name: 'X' } } });
-		const { data } = await foldFks(travelModel, 'travel', { agency: 7 }, resolver);
+		const { data } = await foldFks(travelFks, { agency: 7 }, resolver);
 		expect((data.fks as any)['agency_7']).toBeDefined();
 		expect((data.fks as any)['agency_7']).toMatchObject({ id: 7 });
 	});

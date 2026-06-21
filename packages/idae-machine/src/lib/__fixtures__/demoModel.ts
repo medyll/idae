@@ -39,7 +39,7 @@ export const demoScheme: MachineModel = {
 			mileage:         field('number'),
 			created_at:      field('date'),
 		},
-		fks: {
+		fkRelations: {
 			category:        { code: 'category',        multiple: false, required: false },
 			location_office: { code: 'location_office', multiple: false, required: false },
 		},
@@ -59,7 +59,7 @@ export const demoScheme: MachineModel = {
 			name:        field('text',      { required: true }),
 			description: field('text-lg'),
 		},
-		fks: {},
+		fkRelations: {},
 		template: {
 			presentation: 'name',
 		},
@@ -87,7 +87,7 @@ export const demoScheme: MachineModel = {
 			drivers_license: field('text'),
 			created_at:      field('date'),
 		},
-		fks: {},
+		fkRelations: {},
 		template: {
 			presentation: 'first_name last_name email',
 		},
@@ -115,7 +115,7 @@ export const demoScheme: MachineModel = {
 			total_price:   field('number'),
 			status:        field('text'),
 		},
-		fks: {
+		fkRelations: {
 			vehicle:  { code: 'vehicle',  required: true, multiple: false },
 			customer: { code: 'customer', required: true, multiple: false },
 		},
@@ -144,7 +144,7 @@ export const demoScheme: MachineModel = {
 			country: field('text'),
 			phone:   field('text'),
 		},
-		fks: {},
+		fkRelations: {},
 		template: {
 			presentation: 'code city address',
 		},
@@ -169,7 +169,7 @@ export const demoScheme: MachineModel = {
 			cost:    field('number'),
 			notes:   field('text-lg'),
 		},
-		fks: {
+		fkRelations: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },
 		},
 		template: {

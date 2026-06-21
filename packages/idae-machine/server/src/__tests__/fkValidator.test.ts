@@ -1,9 +1,15 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
-// Mock machineServer.getModel — FkValidator reads FK defs from it.
+// Mock machineServer — FkValidator reads FK defs via getRelations/getAllRelations.
 const getModel = vi.fn();
+const getRelations = vi.fn();
+const getAllRelations = vi.fn();
 vi.mock('../MachineServer.js', () => ({
-	machineServer: { getModel: (...args: unknown[]) => getModel(...args) },
+	machineServer: {
+		getModel:        (...args: unknown[]) => getModel(...args),
+		getRelations:    (...args: unknown[]) => getRelations(...args),
+		getAllRelations: (...args: unknown[]) => getAllRelations(...args),
+	},
 }));
 
 import {
@@ -32,8 +38,14 @@ const MODEL = {
 beforeEach(() => {
 	invalidateFkDefsCache();
 	getModel.mockReset();
+	getRelations.mockReset();
+	getAllRelations.mockReset();
 	// getModel(code?) → returns whole model (FkValidator reads model[collection])
 	getModel.mockImplementation(async () => MODEL);
+	getRelations.mockImplementation(async (collection: string) => (MODEL as any)[collection]?.fks ?? {});
+	getAllRelations.mockImplementation(async () =>
+		Object.fromEntries(Object.entries(MODEL).map(([code, def]) => [code, (def as any).fks ?? {}]))
+	);
 });
 
 describe('parseFkKey', () => {

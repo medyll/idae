@@ -127,12 +127,13 @@ describe('demoScheme roundtrip: publishModel → getModel', () => {
 	});
 
 	// ── META_FK_KEYS regression ──────────────────────────────────────────────────
-	// MachineServer.getModel() strips the universally auto-injected appscheme_base/
-	// appscheme_type from every scheme's `fks` doc. appscheme_field_group and
-	// appscheme_view_type are real DECLARED relations (idae-model-core.ts:
-	// appscheme_field.fks.appscheme_field_group, appscheme_view.fks.appscheme_view_type)
-	// that happen to share their name with meta-registry collections — they must
-	// survive, or DataField never resolves them as fk (no FieldSelect rendered).
+	// MachineServer.getModel() builds the in-memory model's `fks` from each scheme's
+	// `fkRelations` doc (the record's own `fks` value-bag of base/type pointers is not
+	// a relation source). appscheme_field_group and appscheme_view_type are real
+	// DECLARED relations (idae-model-core.ts: appscheme_field.fks.appscheme_field_group,
+	// appscheme_view.fks.appscheme_view_type) that happen to share their name with
+	// meta-registry collections — they must survive, or DataField never resolves them
+	// as fk (no FieldSelect rendered).
 	it('publishing idaeModelCore keeps declared fks named like meta-registry collections', async () => {
 		await publishModel(idaeModelCore.collections as unknown as MachineModel, { org: TEST_ORG, mongoUri: config.mongodbUri });
 		const metaModel = await machineServer.getModel();
@@ -157,7 +158,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(prefs.fields.id).toEqual({ required: true, readonly: true });
 		expect(prefs.fields.code).toEqual({ required: true, readonly: false });
 		expect(prefs.fields.value).toEqual({ required: false, readonly: false });
-		expect(prefs.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(prefs.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
 		expect(prefs.template.presentation).toBe('code value');
 	});
 
@@ -174,7 +175,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(activity.fields.collection_value).toEqual({ required: true, readonly: true });
 		expect(activity.fields.collection_vars).toEqual({ required: false, readonly: true });
 		expect(activity.fields.timestamp).toEqual({ required: true, readonly: true });
-		expect(activity.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(activity.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
 		expect(activity.template.presentation).toBe('code collection timestamp');
 	});
 
@@ -189,7 +190,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(history.fields.label).toEqual({ required: false, readonly: false });
 		expect(history.fields.count).toEqual({ required: true, readonly: false });
 		expect(history.fields.lastSeen).toEqual({ required: true, readonly: false });
-		expect(history.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(history.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
 		expect(history.template.presentation).toBe('collection label lastSeen');
 	});
 });

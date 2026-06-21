@@ -23,7 +23,7 @@ export const latentScheme: MachineModel = {
 			res_w: { type: 'number', required: true },
 			res_h: { type: 'number', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name fps' },
 	},
 
@@ -35,7 +35,7 @@ export const latentScheme: MachineModel = {
 			name:     { type: 'text', required: true },
 			voice_id: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name voice_id' },
 	},
 
@@ -48,7 +48,7 @@ export const latentScheme: MachineModel = {
 			context: { type: 'text' },
 			weight:  { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			character: { code: 'characters', multiple: false, required: true },
 		},
 		template: { presentation: 'context url weight' },
@@ -63,7 +63,7 @@ export const latentScheme: MachineModel = {
 			prompt: { type: 'text', required: true },
 			lora:   { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			character: { code: 'characters', multiple: false, required: true },
 		},
 		template: { presentation: 'name prompt' },
@@ -77,7 +77,7 @@ export const latentScheme: MachineModel = {
 			prompt: { type: 'text', required: true },
 			ref:    { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'prompt' },
 	},
 
@@ -89,7 +89,7 @@ export const latentScheme: MachineModel = {
 			url:   { type: 'text', required: true },
 			label: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'label url' },
 	},
 
@@ -102,7 +102,7 @@ export const latentScheme: MachineModel = {
 			duration: { type: 'number' },
 			notes:    { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			project: { code: 'project', multiple: false, required: true },
 		},
 		template: { presentation: 'time duration notes' },
@@ -133,7 +133,7 @@ export const latentScheme: MachineModel = {
 			audio_reactive_param:    { type: 'text' },
 			audio_reactive_strength: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			timeline: { code: 'timeline', multiple: false, required: true },
 		},
 		template: { presentation: 'prompt lighting_type' },
@@ -155,7 +155,7 @@ export const latentScheme: MachineModel = {
 			speech_lip_sync:  { type: 'boolean' },
 			speech_volume:    { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			frame:     { code: 'frame',      multiple: false, required: true },
 			character: { code: 'characters', multiple: false, required: true },
 		},
@@ -172,7 +172,7 @@ export const latentScheme: MachineModel = {
 			fade_in:  { type: 'number' },
 			loop:     { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			frame: { code: 'frame', multiple: false, required: true },
 			audio: { code: 'audio', multiple: false, required: true },
 		},
@@ -192,7 +192,7 @@ export const latentScheme: MachineModel = {
 			createdAt: { type: 'date',   required: true },
 			updatedAt: { type: 'date',   required: true },
 		},
-		fks: {
+		fkRelations: {
 			project: { code: 'project', multiple: false, required: false },
 		},
 		template: { presentation: 'type label time' },
@@ -209,7 +209,7 @@ export const latentScheme: MachineModel = {
 			tts_engine: { type: 'text' },
 			audioLanes: { type: 'text' },   // lane array — no lane schema in ARCH, kept as JSON text
 		},
-		fks: {
+		fkRelations: {
 			project: { code: 'project', multiple: false, required: false },
 		},
 		template: { presentation: 'checkpoint sampler tts_engine' },

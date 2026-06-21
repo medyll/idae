@@ -1,5 +1,6 @@
 import type { MachineScheme } from '$lib/main/machine/MachineScheme.js';
-import type { MachineFkDef, Where } from '$lib/types/index.js';
+import type { MachineFkDef, Where, FkRelations } from '$lib/types/index.js';
+import { getRelationResolver } from '$lib/machine/ext/hooks.js';
 
 export type RelationWhere = Where<Record<string, unknown>>;
 
@@ -191,4 +192,18 @@ export function resolveReverseRelations(
 	}
 
 	return { resolved, unresolved };
+}
+
+/**
+ * FK relations for a collection, read via the domain bridge.
+ * The domain layer (IdaeRelationPolicy) reads from the `appscheme[collection]` record
+ * (source of truth — FKRELATIONS.md). Relations are static schema data, so this
+ * is an imperative read against the appscheme qoolie collection rather than the
+ * reactive `machine.store` (which requires a Svelte reactive frame). Both read
+ * the same appscheme store; consumers never read the in-memory model.
+ */
+export function getCollectionRelations(collection: string): FkRelations | undefined {
+	const resolver = getRelationResolver();
+	if (!resolver) return undefined;
+	return resolver.getRelations(collection);
 }

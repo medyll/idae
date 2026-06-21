@@ -3,6 +3,9 @@
  */
 
 import { machineServer } from '../MachineServer.js';
+import { getConn } from '../middleware/dbRouter.js';
+import { getCurrentOrg } from '../middleware/orgContext.js';
+import { getCollectionRelations } from '../utils/relationUtils.js';
 
 /**
  * List all collections.
@@ -39,6 +42,7 @@ export async function getFields(collection: string): Promise<Record<string, any>
  * Get FKs for a collection.
  */
 export async function getFks(collection: string): Promise<Record<string, any>> {
-  const model = await machineServer.getModel(collection);
-  return model[collection]?.fks || {};
+  const metaConn = await getConn(`${getCurrentOrg()}_machine_app`);
+  const relations = metaConn.db ? await getCollectionRelations(metaConn.db, collection) : null;
+  return relations || {};
 }

@@ -14,7 +14,7 @@ export const hoteloScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -28,7 +28,7 @@ export const hoteloScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -41,7 +41,7 @@ export const hoteloScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -55,7 +55,7 @@ export const hoteloScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -68,7 +68,7 @@ export const hoteloScheme: MachineModel = {
 			name:     { type: 'text',   required: true },
 			capacity: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name capacity' },
 	},
 
@@ -81,7 +81,7 @@ export const hoteloScheme: MachineModel = {
 			name:            { type: 'text',   required: true },
 			commission_pct:  { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name commission_pct' },
 	},
 
@@ -94,7 +94,7 @@ export const hoteloScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			refundable: { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name refundable' },
 	},
 
@@ -122,7 +122,7 @@ export const hoteloScheme: MachineModel = {
 			logo:        { type: 'image' },
 			photo:       { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city stars' },
 	},
 
@@ -134,7 +134,7 @@ export const hoteloScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			icon: { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -150,7 +150,7 @@ export const hoteloScheme: MachineModel = {
 			size_sqm:      { type: 'number' },
 			photo:         { type: 'image' },
 		},
-		fks: {
+		fkRelations: {
 			property: { code: 'property', required: true,  multiple: false },
 			bed_type: { code: 'bed_type', required: false, multiple: false },
 		},
@@ -163,7 +163,7 @@ export const hoteloScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			room_type: { code: 'room_type', required: true, multiple: false },
 			amenity:   { code: 'amenity',   required: true, multiple: false },
 		},
@@ -180,7 +180,7 @@ export const hoteloScheme: MachineModel = {
 			floor:      { type: 'number' },
 			notes:      { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			property:            { code: 'property',            required: true, multiple: false },
 			room_type:           { code: 'room_type',           required: true, multiple: false },
 			room_status:         { code: 'room_status',         required: true, multiple: false },
@@ -200,7 +200,7 @@ export const hoteloScheme: MachineModel = {
 			description: { type: 'text-lg' },
 			cancellation_policy:{ type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			property:  { code: 'property',  required: true,  multiple: false },
 			rate_type: { code: 'rate_type', required: true,  multiple: false },
 		},
@@ -217,7 +217,7 @@ export const hoteloScheme: MachineModel = {
 			min_stay:      { type: 'number' },
 			closed:        { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			rate_plan: { code: 'rate_plan', required: true, multiple: false },
 			room_type: { code: 'room_type', required: true, multiple: false },
 		},
@@ -235,7 +235,7 @@ export const hoteloScheme: MachineModel = {
 			available_rooms:{ type: 'number' },
 			stop_sell:     { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			room_type: { code: 'room_type', required: true, multiple: false },
 		},
 		template: { presentation: 'room_type avail_date available_rooms stop_sell' },
@@ -262,7 +262,7 @@ export const hoteloScheme: MachineModel = {
 			loyalty_points:{ type: 'number' },
 			notes:        { type: 'text-lg' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'last_name first_name email vip' },
 	},
 
@@ -288,7 +288,7 @@ export const hoteloScheme: MachineModel = {
 			booked_at:       { type: 'date' },
 			special_requests:{ type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			property:       { code: 'property',       required: true,  multiple: false },
 			guest:          { code: 'guest',          required: true,  multiple: false },
 			booking_status: { code: 'booking_status', required: true,  multiple: false },
@@ -310,7 +310,7 @@ export const hoteloScheme: MachineModel = {
 			adults:      { type: 'number' },
 			children:    { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			booking:   { code: 'booking',   required: true,  multiple: false },
 			room_type: { code: 'room_type', required: true,  multiple: false },
 			room:      { code: 'room',      required: false, multiple: false },
@@ -329,7 +329,7 @@ export const hoteloScheme: MachineModel = {
 			key_cards:       { type: 'number' },
 			actual_check_out:{ type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			booking_room: { code: 'booking_room', required: true, multiple: false },
 			room:         { code: 'room',         required: true, multiple: false },
 		},
@@ -347,7 +347,7 @@ export const hoteloScheme: MachineModel = {
 			price: { type: 'currency' },
 			unit:  { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			property: { code: 'property', required: true, multiple: false },
 		},
 		template: { presentation: 'name price unit' },
@@ -364,7 +364,7 @@ export const hoteloScheme: MachineModel = {
 			amount:     { type: 'currency', required: true },
 			charged_at: { type: 'date',     required: true },
 		},
-		fks: {
+		fkRelations: {
 			booking: { code: 'booking', required: true,  multiple: false },
 			service: { code: 'service', required: false, multiple: false },
 		},
@@ -381,7 +381,7 @@ export const hoteloScheme: MachineModel = {
 			paid_at:   { type: 'date',     required: true },
 			reference: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			booking:        { code: 'booking',        required: true, multiple: false },
 			payment_status: { code: 'payment_status', required: true, multiple: false },
 		},
@@ -401,7 +401,7 @@ export const hoteloScheme: MachineModel = {
 			completed_at:{ type: 'date' },
 			notes:       { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			room:                { code: 'room',                required: true, multiple: false },
 			housekeeping_status: { code: 'housekeeping_status', required: true, multiple: false },
 		},
@@ -419,7 +419,7 @@ export const hoteloScheme: MachineModel = {
 			created_at: { type: 'date',   required: true },
 			response:   { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			property: { code: 'property', required: true,  multiple: false },
 			guest:    { code: 'guest',    required: false, multiple: false },
 			booking:  { code: 'booking',  required: false, multiple: false },

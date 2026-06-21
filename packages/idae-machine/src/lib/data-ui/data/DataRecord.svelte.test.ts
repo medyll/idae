@@ -14,19 +14,19 @@ function nextDbName(prefix: string): string {
 // Minimal appscheme_view/appscheme_field/appscheme_field_type core meta —
 // DataRecord resolves its field list through these (see useViewFields), no fallback.
 const testCore: MachineModel = {
-	appscheme:           { keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fks: {}, template: { presentation: 'code' } },
-	appscheme_view_type: { keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fks: {}, template: { presentation: 'code' } },
-	appscheme_field_type:{ keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fks: {}, template: { presentation: 'code' } },
+	appscheme:           { keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fkRelations: {}, template: { presentation: 'code' } },
+	appscheme_view_type: { keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fkRelations: {}, template: { presentation: 'code' } },
+	appscheme_field_type:{ keyPath: '++id', base: 'machine_app', model: {}, fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } }, fkRelations: {}, template: { presentation: 'code' } },
 	appscheme_field: {
 		keyPath: '++id', base: 'machine_app', model: {},
 		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
-		fks: { appscheme_field_type: { code: 'appscheme_field_type', multiple: false, required: true } },
+		fkRelations: { appscheme_field_type: { code: 'appscheme_field_type', multiple: false, required: true } },
 		template: { presentation: 'code' }
 	},
 	appscheme_view: {
 		keyPath: '++id', base: 'machine_app', model: {},
 		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
-		fks: {
+		fkRelations: {
 			appscheme:           { code: 'appscheme',           multiple: false, required: true },
 			appscheme_view_type: { code: 'appscheme_view_type', multiple: false, required: true },
 			appscheme_field:     { code: 'appscheme_field',     multiple: false, required: true }
@@ -38,7 +38,12 @@ const testCore: MachineModel = {
 const VEHICLE_FULL_VIEW_FIELDS = ['license_plate', 'model', 'brand', 'year', 'status'];
 
 async function seedViewFields(collectionCode: string, viewCode: string, fieldCodes: string[]): Promise<void> {
-	await machine.collection('appscheme').create({ code: collectionCode, fks: {} });
+	// appscheme record carries the collection's fkRelations (source of truth — FKRELATIONS.md).
+	await machine.collection('appscheme').create({
+		code: collectionCode,
+		fks: {},
+		fkRelations: (demoScheme as any)[collectionCode]?.fkRelations ?? {},
+	});
 	await machine.collection('appscheme_view_type').create({ code: viewCode, fks: {} });
 	await machine.collection('appscheme_field_type').create({ code: 'scalar', fks: {} });
 	for (const code of fieldCodes) {

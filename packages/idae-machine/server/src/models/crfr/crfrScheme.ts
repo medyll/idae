@@ -19,7 +19,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -30,7 +30,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -41,7 +41,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -52,7 +52,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -65,7 +65,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			conge_type:   { code: 'conge_type',   multiple: false },
 			conge_statut: { code: 'conge_statut', multiple: false },
 			appuser:      { code: 'appuser',       multiple: false },
@@ -81,7 +81,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -93,7 +93,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -104,7 +104,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -116,7 +116,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -129,7 +129,7 @@ export const crfrScheme: MachineModel = {
 			isActive: { type: 'boolean' },
 			text:     { type: 'text-long' },
 		},
-		fks: {
+		fkRelations: {
 			appuser: { code: 'appuser', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -149,7 +149,7 @@ export const crfrScheme: MachineModel = {
 			startTime:   { type: 'datetime' },
 			endTime:     { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 			client:       { code: 'client',       multiple: false },
 			tache_type:   { code: 'tache_type',   multiple: false },
 			tache_statut: { code: 'tache_statut', multiple: false },
@@ -168,7 +168,7 @@ export const crfrScheme: MachineModel = {
 			color: { type: 'text' },
 			icon:  { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -183,7 +183,7 @@ export const crfrScheme: MachineModel = {
 			color: { type: 'text' },
 			icon:  { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -194,7 +194,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -207,7 +207,7 @@ export const crfrScheme: MachineModel = {
 			shortName:   { type: 'text' },
 			description: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -219,7 +219,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			appuser: { code: 'appuser', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -232,7 +232,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			appuser: { code: 'appuser', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -245,7 +245,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			appuser: { code: 'appuser', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -259,7 +259,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			value: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			appuser: { code: 'appuser', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -276,7 +276,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text' },
 			zone:        { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -302,7 +302,7 @@ export const crfrScheme: MachineModel = {
 			gender:      { type: 'text' },
 			isClient:    { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			client_type: { code: 'client_type', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -317,7 +317,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			order: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -345,7 +345,7 @@ export const crfrScheme: MachineModel = {
 			gender:      { type: 'text' },
 			siteUrl:     { type: 'url' },
 		},
-		fks: {
+		fkRelations: {
 			client:              { code: 'client',              multiple: false },
 			fournisseur:         { code: 'fournisseur',         multiple: false },
 			hotel_gamme:         { code: 'hotel_gamme',         multiple: false },
@@ -370,7 +370,7 @@ export const crfrScheme: MachineModel = {
 			price: { type: 'currency' },
 			date:  { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			devis:              { code: 'devis',              multiple: false },
 			devis_acompte_type: { code: 'devis_acompte_type', multiple: false },
 		},
@@ -386,7 +386,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			order: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -397,7 +397,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			devis: { code: 'devis', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -410,7 +410,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -421,7 +421,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			devis: { code: 'devis', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -437,7 +437,7 @@ export const crfrScheme: MachineModel = {
 			order:         { type: 'number' },
 			purchasePrice: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			devis:            { code: 'devis',            multiple: false },
 			devis_marge_type: { code: 'devis_marge_type', multiple: false },
 		},
@@ -452,7 +452,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -466,7 +466,7 @@ export const crfrScheme: MachineModel = {
 			email:     { type: 'email' },
 			phone:     { type: 'phone' },
 		},
-		fks: {
+		fkRelations: {
 			devis:  { code: 'devis',  multiple: false },
 			client: { code: 'client', multiple: false },
 		},
@@ -485,7 +485,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text-long' },
 			total:       { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			devis: { code: 'devis', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -500,7 +500,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			order: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -515,7 +515,7 @@ export const crfrScheme: MachineModel = {
 			shortName:   { type: 'text' },
 			description: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -526,7 +526,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			devis: { code: 'devis', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -541,7 +541,7 @@ export const crfrScheme: MachineModel = {
 			number:        { type: 'text' },
 			dossierNumber: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			devis: { code: 'devis', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -562,7 +562,7 @@ export const crfrScheme: MachineModel = {
 			externalRef: { type: 'text' },
 			title:       { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			client:       { code: 'client',       multiple: false },
 			devis:        { code: 'devis',         multiple: false },
 			dossier_devis:{ code: 'dossier_devis', multiple: false },
@@ -578,7 +578,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			facture: { code: 'facture', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -592,7 +592,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -606,7 +606,7 @@ export const crfrScheme: MachineModel = {
 			mode:        { type: 'text' },
 			externalRef: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			devis:  { code: 'devis',  multiple: false },
 			client: { code: 'client', multiple: false },
 		},
@@ -628,7 +628,7 @@ export const crfrScheme: MachineModel = {
 			website:          { type: 'url' },
 			description:      { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -649,7 +649,7 @@ export const crfrScheme: MachineModel = {
 			content:        { type: 'text-long' },
 			previewContent: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -660,7 +660,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -675,7 +675,7 @@ export const crfrScheme: MachineModel = {
 			order:       { type: 'number' },
 			url:         { type: 'url' },
 		},
-		fks: {
+		fkRelations: {
 			newsletter: { code: 'newsletter', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -690,7 +690,7 @@ export const crfrScheme: MachineModel = {
 			name:     { type: 'text', required: true },
 			quantity: { type: 'number', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -702,7 +702,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -718,7 +718,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text-long' },
 			image:       { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -734,7 +734,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text' },
 			information: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			asavoir_type: { code: 'asavoir_type', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -752,7 +752,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text' },
 			information: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -774,7 +774,7 @@ export const crfrScheme: MachineModel = {
 			shortName:   { type: 'text' },
 			viewCount:   { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -802,7 +802,7 @@ export const crfrScheme: MachineModel = {
 			countryPrefix:     { type: 'text' },
 			viewCount:         { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			continent: { code: 'continent', multiple: false },
 			pays:      { code: 'pays',      multiple: false },
 			ville:     { code: 'ville',     multiple: false },
@@ -822,7 +822,7 @@ export const crfrScheme: MachineModel = {
 			order:       { type: 'number' },
 			url:         { type: 'url' },
 		},
-		fks: {
+		fkRelations: {
 			pays: { code: 'pays', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -836,7 +836,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -851,7 +851,7 @@ export const crfrScheme: MachineModel = {
 			shortName:   { type: 'text' },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -865,7 +865,7 @@ export const crfrScheme: MachineModel = {
 			order:           { type: 'number' },
 			descriptionHTML: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -877,7 +877,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -889,7 +889,7 @@ export const crfrScheme: MachineModel = {
 			name:        { type: 'text', required: true },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -902,7 +902,7 @@ export const crfrScheme: MachineModel = {
 			name:        { type: 'text', required: true },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -917,7 +917,7 @@ export const crfrScheme: MachineModel = {
 			plural:    { type: 'text' },
 			prefix:    { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			transport_type: { code: 'transport_type', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -933,7 +933,7 @@ export const crfrScheme: MachineModel = {
 			order:       { type: 'number' },
 			description: { type: 'text-long' },
 		},
-		fks: {
+		fkRelations: {
 			produit_type: { code: 'produit_type', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -954,7 +954,7 @@ export const crfrScheme: MachineModel = {
 			stars:       { type: 'text' },
 			viewCount:   { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			ville: { code: 'ville', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -968,7 +968,7 @@ export const crfrScheme: MachineModel = {
 			name:        { type: 'text', required: true },
 			description: { type: 'text-long' },
 		},
-		fks: {
+		fkRelations: {
 			hotel: { code: 'hotel', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -982,7 +982,7 @@ export const crfrScheme: MachineModel = {
 			name:       { type: 'text', required: true },
 			gammeOrder: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			gamme:        { code: 'gamme',        multiple: false },
 			hotel:        { code: 'hotel',        multiple: false },
 			produit_type: { code: 'produit_type', multiple: false },
@@ -1000,7 +1000,7 @@ export const crfrScheme: MachineModel = {
 			shortName:   { type: 'text' },
 			description: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1016,7 +1016,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text-long' },
 			viewCount:   { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			mer_type: { code: 'mer_type', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -1030,7 +1030,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1054,7 +1054,7 @@ export const crfrScheme: MachineModel = {
 			prefix:              { type: 'text' },
 			viewCount:           { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			continent:   { code: 'continent',   multiple: false },
 			destination: { code: 'destination', multiple: false },
 		},
@@ -1097,7 +1097,7 @@ export const crfrScheme: MachineModel = {
 			arrivalCityName:       { type: 'text' },
 			departureCityName:     { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			continent:      { code: 'continent',      multiple: false },
 			destination:    { code: 'destination',    multiple: false },
 			fournisseur:    { code: 'fournisseur',    multiple: false },
@@ -1124,7 +1124,7 @@ export const crfrScheme: MachineModel = {
 			startTime:   { type: 'datetime' },
 			endTime:     { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 			produit: { code: 'produit', multiple: false },
 			ville:   { code: 'ville',   multiple: false },
 		},
@@ -1140,7 +1140,7 @@ export const crfrScheme: MachineModel = {
 			isActive:    { type: 'boolean' },
 			description: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1157,7 +1157,7 @@ export const crfrScheme: MachineModel = {
 			monthFr:     { type: 'text' },
 			monthYearFr: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			produit: { code: 'produit', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -1173,7 +1173,7 @@ export const crfrScheme: MachineModel = {
 			price:      { type: 'currency' },
 			promoPrice: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			gamme:         { code: 'gamme',         multiple: false },
 			produit:       { code: 'produit',       multiple: false },
 			produit_tarif: { code: 'produit_tarif', multiple: false },
@@ -1189,7 +1189,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1212,7 +1212,7 @@ export const crfrScheme: MachineModel = {
 			webPlural:       { type: 'text' },
 			viewCount:       { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1224,7 +1224,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1241,7 +1241,7 @@ export const crfrScheme: MachineModel = {
 			information: { type: 'text' },
 			isActive:    { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			theme_type: { code: 'theme_type', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -1256,7 +1256,7 @@ export const crfrScheme: MachineModel = {
 			name:     { type: 'text', required: true },
 			isActive: { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1273,7 +1273,7 @@ export const crfrScheme: MachineModel = {
 			descriptionExt: { type: 'text' },
 			isFeatured:     { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			fournisseur:    { code: 'fournisseur',    multiple: false },
 			produit_type:   { code: 'produit_type',   multiple: false },
 			transport_type: { code: 'transport_type', multiple: false },
@@ -1290,7 +1290,7 @@ export const crfrScheme: MachineModel = {
 			order:       { type: 'number' },
 			description: { type: 'text-long' },
 		},
-		fks: {
+		fkRelations: {
 			transport:    { code: 'transport',    multiple: false },
 			gamme:        { code: 'gamme',        multiple: false },
 			produit_type: { code: 'produit_type', multiple: false },
@@ -1305,7 +1305,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1317,7 +1317,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			order: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1329,7 +1329,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1341,7 +1341,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1354,7 +1354,7 @@ export const crfrScheme: MachineModel = {
 			name:   { type: 'text', required: true },
 			plural: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1381,7 +1381,7 @@ export const crfrScheme: MachineModel = {
 			destinationPrefix:   { type: 'text' },
 			countryPrefix:       { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			continent:   { code: 'continent',   multiple: false },
 			destination: { code: 'destination', multiple: false },
 			pays:        { code: 'pays',         multiple: false },
@@ -1403,7 +1403,7 @@ export const crfrScheme: MachineModel = {
 			order:       { type: 'number' },
 			thumbnail:   { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			categorie: { code: 'categorie', multiple: false },
 			site:      { code: 'site',      multiple: false },
 		},
@@ -1418,7 +1418,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1431,7 +1431,7 @@ export const crfrScheme: MachineModel = {
 			description: { type: 'text' },
 			order:       { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			site: { code: 'site', multiple: false },
 		},
 		template: { presentation: 'name code' },
@@ -1450,7 +1450,7 @@ export const crfrScheme: MachineModel = {
 			intro:    { type: 'text-long' },
 			url:      { type: 'url' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1462,7 +1462,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1479,7 +1479,7 @@ export const crfrScheme: MachineModel = {
 			startTime: { type: 'datetime' },
 			time:      { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1493,7 +1493,7 @@ export const crfrScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			url:  { type: 'url' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1506,7 +1506,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			order: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1518,7 +1518,7 @@ export const crfrScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			order: { type: 'number', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1530,7 +1530,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1542,7 +1542,7 @@ export const crfrScheme: MachineModel = {
 			name:        { type: 'text', required: true },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1554,7 +1554,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1570,7 +1570,7 @@ export const crfrScheme: MachineModel = {
 			url:         { type: 'url' },
 			isActive:    { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1581,7 +1581,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1592,7 +1592,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1603,7 +1603,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1614,7 +1614,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1625,7 +1625,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1638,7 +1638,7 @@ export const crfrScheme: MachineModel = {
 			price:     { type: 'currency' },
 			startDate: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1649,7 +1649,7 @@ export const crfrScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 };

@@ -7,6 +7,7 @@
 import 'fake-indexeddb/auto';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Machine } from '../machine.js';
+import { bootWithRelations } from './_relationTestUtils.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 const model: MachineModel = {
@@ -20,7 +21,7 @@ const model: MachineModel = {
 			brand:         { type: 'text' },
 			categoryId:    { type: 'fk-category.id' },
 		},
-		fks: {
+		fkRelations: {
 			category: { code: 'category', multiple: false },
 		},
 		template: { presentation: 'license_plate brand' },
@@ -33,7 +34,7 @@ const model: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			name: { type: 'text', required: true },
 		},
-		fks:      {},
+		fkRelations:      {},
 		template: { presentation: 'name' },
 	},
 };
@@ -77,8 +78,9 @@ describe('Machine — init + boot (fake-indexeddb)', () => {
 	});
 
 	it('machine.logic.collection(vehicle).parseFks() returns category', async () => {
-		const m = new Machine('test_machine_fks', 1, model);
-		await m.boot();
+		// Relations live on appscheme records (FKRELATIONS.md) — boot the global
+		// machine and seed appscheme so the relation accessor can resolve them.
+		const m = await bootWithRelations('test_machine_fks', model);
 		const fks = m.logic.collection('vehicle').parseFks();
 		expect(fks).toHaveProperty('category');
 	});

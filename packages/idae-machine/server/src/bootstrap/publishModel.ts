@@ -268,7 +268,6 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 	for (const [collectionName, colDef] of Object.entries(model)) {
 		const template = colDef.template ?? {};
-		const fks      = colDef.fks      ?? {};
 		const fields   = colDef.fields   ?? {};
 		const baseCode = colDef.base     ?? DEFAULT_BASE;
 
@@ -278,12 +277,16 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			((colDef as any).isStatus ?? collectionName.endsWith('_status')) ? 'status' :
 			'standard';
 
-		const schemeFksDoc: Record<string, any> = {};
+		// `fks` = the appscheme record's OWN value-bag (resolved base/type pointers).
+		// `fkRelations` = the described collection's relation descriptors. The two were
+		// historically conflated in one `fks` doc; they are now split (RATIONALIZE #1).
+		const schemeFksDoc:      Record<string, any> = {};
+		const fkRelationsDoc:    Record<string, any> = {};
 
 		// Meta pointers — written as FK refs so the Explorer can group on
-		// `fks.appscheme_base`. getModel() strips them (META_FK_KEYS) before
-		// building the in-memory model: their `.code` is a base/type code, not a
-		// queryable collection. The pair (write here / strip there) is load-bearing.
+		// `fks.appscheme_base`. getModel() ignores them when building the in-memory
+		// model (relations come from `fkRelations`): their `.code` is a base/type code,
+		// not a queryable collection. The pair (write here / read there) is load-bearing.
 		schemeFksDoc[META.base] = await embedFk(col(META.base), baseCode, {
 			name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true
 		});
@@ -291,14 +294,13 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
 		});
 
-		// Business FKs: relation descriptor only ({ code, multiple, required }).
+		// Business FK relations: relation descriptor only ({ code, multiple, required }).
 		// A scheme FK names its TARGET COLLECTION by `code` — not a resolved data
 		// pointer, so it must NOT be embedFk'd (that would upsert a stub into the
 		// META connection and create phantom business collections there).
-		for (const [fkKey, fkDef] of Object.entries(fks)) {
-			if (fkKey === META.base) continue;
+		for (const [fkKey, fkDef] of Object.entries(colDef.fkRelations ?? {})) {
 			const fk = fkDef as MachineFkDef;
-			schemeFksDoc[fkKey] = {
+			fkRelationsDoc[fkKey] = {
 				code:     fk.code ?? fkKey,
 				multiple: fk.multiple ?? false,
 				required: !!fk.required,
@@ -311,7 +313,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
 
 		// Log declared FKs (from the model), not the auto-injected meta base/type.
-		const declaredFks = Object.entries(fks)
+		const declaredFks = Object.entries(colDef.fkRelations ?? {})
 			.map(([k, v]) => `${k}${(v as any).multiple ? '[]' : ''}${(v as any).required ? '*' : ''}`);
 		console.log(
 			`  [publishModel] ${collectionName.padEnd(28)} base=${baseCode.padEnd(14)} type=${typeCode.padEnd(9)} fks=[${declaredFks.join(', ')}]`,
@@ -332,7 +334,8 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 				...(isStatus ? { isStatus: true } : {}),
 				...(colDef.rights ? { rights: colDef.rights } : {}),
 				template,
-				fks: schemeFksDoc,
+				fks:         schemeFksDoc,
+				fkRelations: fkRelationsDoc,
 			}
 		);
 
@@ -409,7 +412,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		// ── FK relations → appscheme_field (no has_field — not scalar fields) ────
 		// Published so appscheme_view rows can FK-reference them by id.
 		// Excluded from has_field so getModel() doesn't add them to `fields`.
-		for (const [fkKey, fkDef] of Object.entries(fks)) {
+		for (const [fkKey, fkDef] of Object.entries(colDef.fkRelations ?? {})) {
 			if (fieldReg.has(fkKey)) continue;
 			const fk = fkDef as MachineFkDef;
 			const fieldGridFks = {
@@ -439,7 +442,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 		// ── META.view ─────────────────────────────────────────────────────────
 		const allFieldNames  = Object.keys(fields);
-		const fkRelNames     = Object.keys(fks);
+		const fkRelNames     = Object.keys(colDef.fkRelations ?? {});
 		const identFields    = allFieldNames.filter(
 			(n) => inferFieldGroup(n, (fields[n] as any)?.type ?? 'text') === 'identification',
 		);

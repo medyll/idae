@@ -255,8 +255,8 @@ export const dataTools: McpToolDef[] = [
 		},
 		run: async ({ collection, data }, auth) => {
 			await requirePerm(auth, collection, 'R');
-			const model = await machineServer.getModel(collection);
-			return foldFks(model, collection, data ?? {}, makeMongoFkResolver());
+			const fkDefs = await machineServer.getRelations(collection);
+			return foldFks(fkDefs, data ?? {}, makeMongoFkResolver());
 		},
 	},
 ];

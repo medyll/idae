@@ -12,7 +12,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -23,7 +23,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -55,7 +55,7 @@ export const tactacScheme: MachineModel = {
 			ordreAgent_groupe: { type: 'text' },
 			private_key: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				appuser_group: { code: 'appuser_group', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -71,7 +71,7 @@ export const tactacScheme: MachineModel = {
 			valeur: { type: 'number' },
 			heure: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -87,7 +87,7 @@ export const tactacScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			quantite: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -99,7 +99,7 @@ export const tactacScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -110,7 +110,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -125,7 +125,7 @@ export const tactacScheme: MachineModel = {
 			description: { type: 'text-long' },
 			petitNom: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -136,7 +136,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -147,7 +147,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -158,7 +158,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -173,7 +173,7 @@ export const tactacScheme: MachineModel = {
 			actifAgent: { type: 'text' },
 			petitNomAgent: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -185,7 +185,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -196,7 +196,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -207,7 +207,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -220,7 +220,7 @@ export const tactacScheme: MachineModel = {
 			date: { type: 'date' },
 			dateCreation: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -235,7 +235,7 @@ export const tactacScheme: MachineModel = {
 			dateCreation: { type: 'date' },
 			heureCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -250,7 +250,7 @@ export const tactacScheme: MachineModel = {
 			dateCreation: { type: 'date' },
 			heureCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -273,7 +273,7 @@ export const tactacScheme: MachineModel = {
 			last_time: { type: 'text' },
 			shop: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				secteur: { code: 'secteur', multiple: false },
 				shop: { code: 'shop', multiple: false },
 			},
@@ -289,7 +289,7 @@ export const tactacScheme: MachineModel = {
 			ordre: { type: 'number' },
 			slug: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -309,7 +309,7 @@ export const tactacScheme: MachineModel = {
 			ville: { type: 'text' },
 			fax: { type: 'phone' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -323,7 +323,7 @@ export const tactacScheme: MachineModel = {
 			description: { type: 'text-long' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -337,7 +337,7 @@ export const tactacScheme: MachineModel = {
 			ordre: { type: 'number' },
 			description: { type: 'text-long' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -348,7 +348,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -396,7 +396,7 @@ export const tactacScheme: MachineModel = {
 			ordreSecteur: { type: 'text' },
 			slot: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				client: { code: 'client', multiple: false },
 				shop: { code: 'shop', multiple: false },
 				secteur: { code: 'secteur', multiple: false },
@@ -427,7 +427,7 @@ export const tactacScheme: MachineModel = {
 			ordreCommande: { type: 'text' },
 			slugShop: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				shop: { code: 'shop', multiple: false },
 				commande: { code: 'commande', multiple: false },
 			},
@@ -450,7 +450,7 @@ export const tactacScheme: MachineModel = {
 			ordreCommande: { type: 'text' },
 			slugProduit: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				commande: { code: 'commande', multiple: false },
 				shop: { code: 'shop', multiple: false },
 				client: { code: 'client', multiple: false },
@@ -477,7 +477,7 @@ export const tactacScheme: MachineModel = {
 			actifLivreur: { type: 'text' },
 			isoDate: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				commande: { code: 'commande', multiple: false },
 				secteur: { code: 'secteur', multiple: false },
 				shop: { code: 'shop', multiple: false },
@@ -493,7 +493,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -504,7 +504,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -521,7 +521,7 @@ export const tactacScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -539,7 +539,7 @@ export const tactacScheme: MachineModel = {
 			Libelle_acheminement: { type: 'text' },
 			gps: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				ville: { code: 'ville', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -555,7 +555,7 @@ export const tactacScheme: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -566,7 +566,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -580,7 +580,7 @@ export const tactacScheme: MachineModel = {
 			dateDebut: { type: 'date' },
 			heureDebut: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -594,7 +594,7 @@ export const tactacScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -609,7 +609,7 @@ export const tactacScheme: MachineModel = {
 			totalTva: { type: 'currency' },
 			totalTtc: { type: 'currency' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -626,7 +626,7 @@ export const tactacScheme: MachineModel = {
 			totalTva: { type: 'currency' },
 			quantite: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -641,7 +641,7 @@ export const tactacScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -656,7 +656,7 @@ export const tactacScheme: MachineModel = {
 			heureDebut: { type: 'date' },
 			heureFin: { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -669,7 +669,7 @@ export const tactacScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -696,7 +696,7 @@ export const tactacScheme: MachineModel = {
 			slugSecteur: { type: 'text' },
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				secteur: { code: 'secteur', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -720,7 +720,7 @@ export const tactacScheme: MachineModel = {
 			isoDateFin: { type: 'datetime' },
 			slugSecteur: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				livreur: { code: 'livreur', multiple: false },
 				secteur: { code: 'secteur', multiple: false },
 			},
@@ -753,7 +753,7 @@ export const tactacScheme: MachineModel = {
 			prix_site: { type: 'url' },
 			isoDateDebut: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				shop: { code: 'shop', multiple: false },
 				produit_type: { code: 'produit_type', multiple: false },
 				produit_categorie: { code: 'produit_categorie', multiple: false },
@@ -771,7 +771,7 @@ export const tactacScheme: MachineModel = {
 			slug: { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -784,7 +784,7 @@ export const tactacScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -806,7 +806,7 @@ export const tactacScheme: MachineModel = {
 			gps_index: { type: 'text' },
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				ville: { code: 'ville', multiple: false },
 			},
 		template: { presentation: 'name code' },
@@ -826,7 +826,7 @@ export const tactacScheme: MachineModel = {
 			slugJours: { type: 'text' },
 			slugSecteur: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				secteur: { code: 'secteur', multiple: false },
 				jours: { code: 'jours', multiple: false },
 			},
@@ -863,7 +863,7 @@ export const tactacScheme: MachineModel = {
 			tempsAttente: { type: 'text' },
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 				shop_type: { code: 'shop_type', multiple: false },
 				ville: { code: 'ville', multiple: false },
 				secteur: { code: 'secteur', multiple: false },
@@ -882,7 +882,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -902,7 +902,7 @@ export const tactacScheme: MachineModel = {
 			// ── undeclared in registry, detected in _base — verify ──
 			isoDateCreation: { type: 'datetime' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -913,7 +913,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -925,7 +925,7 @@ export const tactacScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			valeur_texte: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -943,7 +943,7 @@ export const tactacScheme: MachineModel = {
 			ordreJours: { type: 'text' },
 			slugJours: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				jours: { code: 'jours', multiple: false },
 				shop: { code: 'shop', multiple: false },
 			},
@@ -966,7 +966,7 @@ export const tactacScheme: MachineModel = {
 			slugShop: { type: 'text' },
 			actifShop: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				shop_jours: { code: 'shop_jours', multiple: false },
 				shop: { code: 'shop', multiple: false },
 			},
@@ -989,7 +989,7 @@ export const tactacScheme: MachineModel = {
 			ordreShop_jours_shift: { type: 'text' },
 			actifShop_jours_shift: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 				shop: { code: 'shop', multiple: false },
 				shop_jours_shift: { code: 'shop_jours_shift', multiple: false },
 			},
@@ -1004,7 +1004,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1023,7 +1023,7 @@ export const tactacScheme: MachineModel = {
 			heureFin: { type: 'date' },
 			resultat: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1038,7 +1038,7 @@ export const tactacScheme: MachineModel = {
 			icon: { type: 'text' },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1050,7 +1050,7 @@ export const tactacScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -1063,7 +1063,7 @@ export const tactacScheme: MachineModel = {
 			slug: { type: 'text' },
 			gpsData: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 };

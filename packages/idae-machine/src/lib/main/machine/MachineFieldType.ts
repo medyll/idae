@@ -371,6 +371,9 @@ class MachineFieldType {
  * Example:
  *   MachineSchemeFieldType.registerFieldType({ id: 'custom', formatter: v => v, validator: v => true });
  *   const isValid = MachineSchemeFieldType.validate('foo', 'custom');
+ *
+ * The default catalogue (defaultFieldTypesDef) is auto-registered at module load.
+ * The domain layer (idae/fieldcatalog/) can re-init with an extended catalogue at boot.
  */
 export const MachineSchemeFieldType = new MachineFieldType();
 MachineSchemeFieldType.init(defaultFieldTypesDef);

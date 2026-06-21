@@ -1,4 +1,15 @@
 @layer components {
+	label {
+		font-weight: inherit;
+		color: inherit;
+		font-size: inherit;
+	}
+
+	button,
+	.btn {
+		font-weight: normal;
+	}
+
 	.app-shell {
 		display: flex;
 		flex-direction: column;
@@ -99,7 +110,8 @@
 
 	.taskbar {
 		gap: var(--gutter-xs);
-		padding: var(--pad-xs) var(--pad-sm);
+		height: var(--gutter-2xl);
+		padding: 0 var(--pad-xs);
 		background: var(--color-surface);
 		border-bottom: var(--border-width) solid var(--color-border);
 		overflow-x: auto;
@@ -122,7 +134,8 @@
 	}
 
 	.taskbar-btn {
-		padding: var(--pad-xs) var(--pad-md);
+		height: calc(var(--gutter-2xl) - var(--pad-xs));
+		padding: 0 var(--pad-md);
 		border: var(--border-width) solid var(--color-border);
 		background: transparent;
 		color: var(--color-text);
@@ -149,7 +162,8 @@
 	}
 
 	.taskbar-close {
-		padding: var(--pad-xs) var(--pad-sm);
+		height: calc(var(--gutter-2xl) - var(--pad-xs));
+		padding: 0 var(--pad-sm);
 		border: none;
 		background: transparent;
 		color: var(--color-text-muted);
@@ -171,7 +185,8 @@
 	}
 
 	.taskbar-icon {
-		padding: var(--pad-xs) var(--pad-sm);
+		height: calc(var(--gutter-2xl) - var(--pad-xs));
+		padding: 0 var(--pad-sm);
 		border: none;
 		background: transparent;
 		cursor: pointer;
