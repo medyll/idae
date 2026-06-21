@@ -114,7 +114,7 @@ function parseCollection(name: string, decl: any): CollectionNode {
 	}
 
 	// Parse FKs
-	for (const [fkKey, fkDecl] of Object.entries(decl.fks ?? {})) {
+	for (const [fkKey, fkDecl] of Object.entries(decl.fkRelations ?? {})) {
 		const fkd = fkDecl as { code?: string; multiple?: boolean; required?: boolean };
 		const targetCollection = fkd.code ?? fkKey;
 		fks[fkKey] = {

@@ -10,7 +10,7 @@ export const tagScheme: MachineModel = {
       color:       { type: 'text' },
       description: { type: 'text' },
     },
-    fks: {},
+    fkRelations: {},
     template: { presentation: 'name code' },
   },
 }

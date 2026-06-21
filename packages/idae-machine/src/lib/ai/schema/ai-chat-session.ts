@@ -15,7 +15,7 @@ export const aiChatSessionScheme: MachineModel = {
       context:       { type: 'json' },
       token_count:   { type: 'number' },
     },
-    fks: {
+    fkRelations: {
       ai_companion:           { code: 'ai_companion',           multiple: false, required: true },
       ai_model:               { code: 'ai_model',               multiple: false, required: false },
       ai_chat_session_status: { code: 'ai_chat_session_status', multiple: false, required: false },

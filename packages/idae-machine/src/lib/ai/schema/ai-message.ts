@@ -12,7 +12,7 @@ export const aiMessageScheme: MachineModel = {
       collection:    { type: 'text' },
       collectionId:  { type: 'text' },
     },
-    fks: {
+    fkRelations: {
       ai_chat_session: { code: 'ai_chat_session', multiple: false, required: true },
       ai_model:        { code: 'ai_model',        multiple: false, required: false },
       ai_message_status: { code: 'ai_message_status', multiple: false, required: false },

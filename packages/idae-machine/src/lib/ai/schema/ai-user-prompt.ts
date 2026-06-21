@@ -11,7 +11,7 @@ export const aiUserPromptScheme: MachineModel = {
       is_active:     { type: 'boolean' },
       is_system:     { type: 'boolean' },
     },
-    fks: {
+    fkRelations: {
       appuser: { code: 'appuser', multiple: false, required: false },
     },
     template: { presentation: 'name code is_active' },

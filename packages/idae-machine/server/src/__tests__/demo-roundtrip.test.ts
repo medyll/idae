@@ -158,7 +158,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(prefs.fields.id).toEqual({ required: true, readonly: true });
 		expect(prefs.fields.code).toEqual({ required: true, readonly: false });
 		expect(prefs.fields.value).toEqual({ required: false, readonly: false });
-		expect(prefs.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(prefs.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
 		expect(prefs.template.presentation).toBe('code value');
 	});
 
@@ -175,7 +175,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(activity.fields.collection_value).toEqual({ required: true, readonly: true });
 		expect(activity.fields.collection_vars).toEqual({ required: false, readonly: true });
 		expect(activity.fields.timestamp).toEqual({ required: true, readonly: true });
-		expect(activity.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(activity.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
 		expect(activity.template.presentation).toBe('code collection timestamp');
 	});
 
@@ -190,7 +190,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(history.fields.label).toEqual({ required: false, readonly: false });
 		expect(history.fields.count).toEqual({ required: true, readonly: false });
 		expect(history.fields.lastSeen).toEqual({ required: true, readonly: false });
-		expect(history.fks.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(history.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
 		expect(history.template.presentation).toBe('collection label lastSeen');
 	});
 });

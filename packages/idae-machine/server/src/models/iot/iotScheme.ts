@@ -14,7 +14,7 @@ export const iotScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -27,7 +27,7 @@ export const iotScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -41,7 +41,7 @@ export const iotScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -55,7 +55,7 @@ export const iotScheme: MachineModel = {
 			manufacturer: { type: 'text' },
 			ordre:        { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name manufacturer' },
 	},
 
@@ -70,7 +70,7 @@ export const iotScheme: MachineModel = {
 			min_value: { type: 'number' },
 			max_value: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name unit' },
 	},
 
@@ -83,7 +83,7 @@ export const iotScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -102,7 +102,7 @@ export const iotScheme: MachineModel = {
 			longitude: { type: 'number' },
 			timezone:  { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city country' },
 	},
 
@@ -115,7 +115,7 @@ export const iotScheme: MachineModel = {
 			description: { type: 'text-lg' },
 			floor:       { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			site:   { code: 'site', required: true,  multiple: false },
 			parent: { code: 'zone', required: false, multiple: false },
 		},
@@ -133,7 +133,7 @@ export const iotScheme: MachineModel = {
 			protocol:     { type: 'text' },
 			last_seen_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			site:          { code: 'site',          required: true, multiple: false },
 			device_status: { code: 'device_status', required: true, multiple: false },
 		},
@@ -155,7 +155,7 @@ export const iotScheme: MachineModel = {
 			released_at: { type: 'date' },
 			changelog:   { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			device_type: { code: 'device_type', required: true, multiple: false },
 		},
 		template: { presentation: 'device_type version released_at' },
@@ -178,7 +178,7 @@ export const iotScheme: MachineModel = {
 			latitude:       { type: 'number' },
 			longitude:      { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			device_type:      { code: 'device_type',   required: true,  multiple: false },
 			zone:             { code: 'zone',          required: false, multiple: false },
 			gateway:          { code: 'gateway',       required: false, multiple: false },
@@ -199,7 +199,7 @@ export const iotScheme: MachineModel = {
 			sampling_sec:   { type: 'number' },
 			active:         { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			device:      { code: 'device',      required: true, multiple: false },
 			sensor_type: { code: 'sensor_type', required: true, multiple: false },
 		},
@@ -217,7 +217,7 @@ export const iotScheme: MachineModel = {
 			recorded_at:  { type: 'date',   required: true },
 			quality:      { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			sensor: { code: 'sensor', required: true, multiple: false },
 			device: { code: 'device', required: true, multiple: false },
 		},
@@ -237,7 +237,7 @@ export const iotScheme: MachineModel = {
 			sum_value:   { type: 'number' },
 			sample_count:{ type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			sensor: { code: 'sensor', required: true, multiple: false },
 		},
 		template: { presentation: 'sensor bucket bucket_start avg_value sample_count' },
@@ -259,7 +259,7 @@ export const iotScheme: MachineModel = {
 			enabled:       { type: 'boolean' },
 			message_template:{ type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			sensor_type: { code: 'sensor_type', required: false, multiple: false },
 			sensor:      { code: 'sensor',      required: false, multiple: false },
 			device:      { code: 'device',      required: false, multiple: false },
@@ -280,7 +280,7 @@ export const iotScheme: MachineModel = {
 			acknowledged_at:{ type: 'date' },
 			resolved_at:    { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			alert_rule:   { code: 'alert_rule',   required: true,  multiple: false },
 			device:       { code: 'device',       required: true,  multiple: false },
 			sensor:       { code: 'sensor',       required: false, multiple: false },
@@ -303,7 +303,7 @@ export const iotScheme: MachineModel = {
 			sent_at:     { type: 'date' },
 			acked_at:    { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			device:         { code: 'device',         required: true, multiple: false },
 			command_status: { code: 'command_status', required: true, multiple: false },
 		},
@@ -321,7 +321,7 @@ export const iotScheme: MachineModel = {
 			performed_at:{ type: 'date',   required: true },
 			technician:  { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			device: { code: 'device', required: true, multiple: false },
 		},
 		template: { presentation: 'device kind performed_at technician' },

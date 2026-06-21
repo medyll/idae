@@ -14,7 +14,7 @@ export const ledgerScheme: MachineModel = {
 			normal_side:  { type: 'text', required: true },
 			ordre:        { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code name normal_side' },
 	},
 
@@ -27,7 +27,7 @@ export const ledgerScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -40,7 +40,7 @@ export const ledgerScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -53,7 +53,7 @@ export const ledgerScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -67,7 +67,7 @@ export const ledgerScheme: MachineModel = {
 			symbol:    { type: 'text' },
 			decimals:  { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code symbol name' },
 	},
 
@@ -80,7 +80,7 @@ export const ledgerScheme: MachineModel = {
 			name:    { type: 'text',   required: true },
 			rate_pct:{ type: 'number', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name rate_pct' },
 	},
 
@@ -98,7 +98,7 @@ export const ledgerScheme: MachineModel = {
 			is_active:    { type: 'boolean' },
 			is_reconcilable:{ type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			account_type: { code: 'account_type', required: true,  multiple: false },
 			parent:       { code: 'account',      required: false, multiple: false },
 			currency:     { code: 'currency',     required: true,  multiple: false },
@@ -116,7 +116,7 @@ export const ledgerScheme: MachineModel = {
 			end_date:   { type: 'date', required: true },
 			closed:     { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name start_date end_date closed' },
 	},
 
@@ -131,7 +131,7 @@ export const ledgerScheme: MachineModel = {
 			ordre:      { type: 'number' },
 			closed_at:  { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			fiscal_year:   { code: 'fiscal_year',   required: true, multiple: false },
 			period_status: { code: 'period_status', required: true, multiple: false },
 		},
@@ -146,7 +146,7 @@ export const ledgerScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			kind: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'code name kind' },
 	},
 
@@ -168,7 +168,7 @@ export const ledgerScheme: MachineModel = {
 			country:     { type: 'text' },
 			iban:        { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			receivable_account: { code: 'account', required: false, multiple: false },
 			payable_account:    { code: 'account', required: false, multiple: false },
 		},
@@ -192,7 +192,7 @@ export const ledgerScheme: MachineModel = {
 			posted_at:     { type: 'date' },
 			reversed:      { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			journal:      { code: 'journal',      required: true,  multiple: false },
 			period:       { code: 'period',       required: true,  multiple: false },
 			entry_status: { code: 'entry_status', required: true,  multiple: false },
@@ -213,7 +213,7 @@ export const ledgerScheme: MachineModel = {
 			description: { type: 'text-lg' },
 			reconciled:  { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			journal_entry: { code: 'journal_entry', required: true,  multiple: false },
 			account:       { code: 'account',       required: true,  multiple: false },
 			party:         { code: 'party',         required: false, multiple: false },
@@ -240,7 +240,7 @@ export const ledgerScheme: MachineModel = {
 			amount_paid:   { type: 'currency' },
 			notes:         { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			party:          { code: 'party',          required: true,  multiple: false },
 			invoice_status: { code: 'invoice_status', required: true,  multiple: false },
 			currency:       { code: 'currency',       required: true,  multiple: false },
@@ -260,7 +260,7 @@ export const ledgerScheme: MachineModel = {
 			line_total:  { type: 'currency', required: true },
 			tax_amount:  { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			invoice:  { code: 'invoice',  required: true,  multiple: false },
 			account:  { code: 'account',  required: false, multiple: false },
 			tax_rate: { code: 'tax_rate', required: false, multiple: false },
@@ -281,7 +281,7 @@ export const ledgerScheme: MachineModel = {
 			reference:   { type: 'text' },
 			memo:        { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			party:          { code: 'party',          required: true,  multiple: false },
 			invoice:        { code: 'invoice',        required: false, multiple: false },
 			bank_account:   { code: 'account',        required: true,  multiple: false },
@@ -301,7 +301,7 @@ export const ledgerScheme: MachineModel = {
 			opening_balance: { type: 'currency' },
 			closing_balance: { type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			bank_account: { code: 'account', required: true, multiple: false },
 		},
 		template: { presentation: 'bank_account statement_date closing_balance' },
@@ -317,7 +317,7 @@ export const ledgerScheme: MachineModel = {
 			amount:      { type: 'currency', required: true },
 			reconciled:  { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			bank_statement:  { code: 'bank_statement', required: true,  multiple: false },
 			matched_line:    { code: 'entry_line',     required: false, multiple: false },
 		},

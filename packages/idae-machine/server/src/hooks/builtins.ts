@@ -3,17 +3,16 @@ import { logAudit } from '../services/AuditService.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDomainActions } from '../models/domainActions.js';
 import * as ImagePresetRegistry from '../services/ImagePresetRegistry.js';
-import { findReverseFkHolders, makeMongoFkResolver, parseFkKey } from '../validation/FkValidator.js';
+import { findReverseFkHolders, getFkDefs, makeMongoFkResolver, parseFkKey } from '../validation/FkValidator.js';
 import { foldFks } from '../validation/FkFolder.js';
 import { getDbForCollection } from '../middleware/dbRouter.js';
-import { machineServer } from '../MachineServer.js';
 import { Schema } from 'mongoose';
 
 async function foldAndMutate(ctx: { collection: string; data?: unknown }): Promise<Array<{ fkName: string; message: string }>> {
 	if (!ctx.data || typeof ctx.data !== 'object') return [];
-	const model = await machineServer.getModel(ctx.collection);
+	const fkDefs = await getFkDefs(ctx.collection);
 	const { data: folded, errors } = await foldFks(
-		model, ctx.collection, ctx.data as Record<string, unknown>, makeMongoFkResolver(),
+		fkDefs, ctx.data as Record<string, unknown>, makeMongoFkResolver(),
 	);
 	Object.assign(ctx.data as Record<string, unknown>, folded);
 	return errors;

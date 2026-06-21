@@ -26,7 +26,7 @@ export const jobberScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -39,7 +39,7 @@ export const jobberScheme: MachineModel = {
 			name:   { type: 'text', required: true },
 			domain: { type: 'text' },                   // sender domain of the alert digest
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name domain' },
 	},
 
@@ -51,7 +51,7 @@ export const jobberScheme: MachineModel = {
 			code: { type: 'text', required: true },     // cdi | cdd | freelance | internship | apprenticeship | temp
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -64,7 +64,7 @@ export const jobberScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -76,7 +76,7 @@ export const jobberScheme: MachineModel = {
 			code: { type: 'text', required: true },     // ollama | embeddings | keyword
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -88,7 +88,7 @@ export const jobberScheme: MachineModel = {
 			code: { type: 'text', required: true },     // required | matched | missing | detected
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -100,7 +100,7 @@ export const jobberScheme: MachineModel = {
 			code: { type: 'text', required: true },     // status_change | note | applied | interview | follow_up | rejected | offer
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -115,7 +115,7 @@ export const jobberScheme: MachineModel = {
 			category: { type: 'text' },                 // language | framework | cloud | data | soft | ...
 			aliases:  { type: 'text-lg' },              // comma-separated variants for matcher
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name category' },
 	},
 
@@ -130,7 +130,7 @@ export const jobberScheme: MachineModel = {
 			location: { type: 'text' },
 			logo:     { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name location' },
 	},
 
@@ -157,7 +157,7 @@ export const jobberScheme: MachineModel = {
 			parsed_at:        { type: 'datetime' },
 			active:           { type: 'boolean' },                // the profile used for scoring
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'full_name headline email' },
 	},
 
@@ -169,7 +169,7 @@ export const jobberScheme: MachineModel = {
 			level: { type: 'number' },                  // optional self-rated 0-5
 			years: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			profile: { code: 'profile', required: true, multiple: false },
 			skill:   { code: 'skill',   required: true, multiple: false },
 		},
@@ -192,7 +192,7 @@ export const jobberScheme: MachineModel = {
 			processed:     { type: 'boolean' },                  // extractor has run on this msg
 			job_count:     { type: 'number' },                   // postings extracted from this digest
 		},
-		fks: {
+		fkRelations: {
 			job_source: { code: 'job_source', required: false, multiple: false },
 		},
 		template: { presentation: 'subject sender received_at' },
@@ -223,7 +223,7 @@ export const jobberScheme: MachineModel = {
 			favorite:      { type: 'boolean' },
 			notes:         { type: 'text-lg' },                  // user annotation
 		},
-		fks: {
+		fkRelations: {
 			company:       { code: 'company',       required: false, multiple: false },
 			job_source:    { code: 'job_source',    required: false, multiple: false },
 			contract_type: { code: 'contract_type', required: false, multiple: false },
@@ -246,7 +246,7 @@ export const jobberScheme: MachineModel = {
 			gaps:       { type: 'text-lg' },                     // bullet points
 			created_at: { type: 'datetime' },
 		},
-		fks: {
+		fkRelations: {
 			job:          { code: 'job',          required: true,  multiple: false },
 			profile:      { code: 'profile',      required: false, multiple: false },
 			match_method: { code: 'match_method', required: false, multiple: false },
@@ -260,7 +260,7 @@ export const jobberScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			job:        { code: 'job',        required: true,  multiple: false },
 			skill:      { code: 'skill',      required: true,  multiple: false },
 			skill_kind: { code: 'skill_kind', required: true,  multiple: false },  // required | matched | missing | detected
@@ -276,7 +276,7 @@ export const jobberScheme: MachineModel = {
 			at:         { type: 'datetime', required: true },
 			note:       { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			job:         { code: 'job',        required: true,  multiple: false },
 			event_type:  { code: 'event_type', required: true,  multiple: false },
 			new_status:  { code: 'job_status', required: false, multiple: false },  // for status_change events

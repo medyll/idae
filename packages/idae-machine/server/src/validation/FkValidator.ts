@@ -26,8 +26,8 @@ export function invalidateFkDefsCache(collection?: string): void {
 export async function getFkDefs(collection: string): Promise<Record<string, MachineFkDef>> {
 	if (fkDefsCache.has(collection)) return fkDefsCache.get(collection)!;
 	try {
-		const model = await machineServer.getModel(collection);
-		const defs = (model[collection] as any)?.fks ?? {};
+		// Source of truth: appscheme[collection].fkRelations (FKRELATIONS.md).
+		const defs = await machineServer.getRelations(collection);
 		fkDefsCache.set(collection, defs);
 		return defs;
 	} catch {
@@ -125,10 +125,11 @@ export async function findReverseFkHolders(
 	targetCollection: string,
 ): Promise<Record<string, string[]>> {
 	try {
-		const model = await machineServer.getModel();
+		// Relations read from appscheme records (FKRELATIONS.md), not the model.
+		const allRelations = await machineServer.getAllRelations();
 		const result: Record<string, string[]> = {};
-		for (const [colCode, colDef] of Object.entries(model)) {
-			const matches = Object.entries((colDef as any).fks ?? {})
+		for (const [colCode, defs] of Object.entries(allRelations)) {
+			const matches = Object.entries(defs ?? {})
 				.filter(([, def]) => (def as MachineFkDef).code === targetCollection)
 				.map(([fkName]) => fkName);
 			if (matches.length) result[colCode] = matches;

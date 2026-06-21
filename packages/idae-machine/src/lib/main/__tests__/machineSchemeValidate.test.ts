@@ -1,5 +1,7 @@
+import 'fake-indexeddb/auto';
 import { describe, it, expect, beforeEach } from 'vitest';
 import { MachineDb } from '../machineDb.js';
+import { bootWithRelations } from './_relationTestUtils.js';
 import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
 
 // Small test model
@@ -186,7 +188,7 @@ const vehicleModel = {
 			id:   'id (readonly)',
 			name: 'text (required)'
 		},
-		fks: {
+		fkRelations: {
 			category: { code: 'vehicle_category', required: true },
 			location_office: { code: 'office' }
 		},
@@ -195,12 +197,15 @@ const vehicleModel = {
 } as any;
 
 describe('MachineSchemeValidate - FK required', () => {
-	function createVehicleDb() {
-		return new MachineDb(vehicleModel);
+	// Relations live on appscheme records (FKRELATIONS.md): boot the global machine
+	// and seed appscheme so the validator can resolve relation defs.
+	async function createVehicleDb() {
+		const m = await bootWithRelations('scheme-validate-fk', vehicleModel);
+		return m.logic;
 	}
 
 	it('missing required FK fails in form', async () => {
-		const db = createVehicleDb();
+		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X' } as any);
 		expect(out.isValid).toBe(false);
@@ -209,14 +214,14 @@ describe('MachineSchemeValidate - FK required', () => {
 	});
 
 	it('non-required FK relation does not block form', async () => {
-		const db = createVehicleDb();
+		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X', category: 'compact' } as any);
 		expect(out.invalidFields).not.toContain('location_office');
 	});
 
 	it('flat scalar FK value satisfies required check', async () => {
-		const db = createVehicleDb();
+		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X', category: 'compact' } as any);
 		expect(out.isValid).toBe(true);
@@ -224,7 +229,7 @@ describe('MachineSchemeValidate - FK required', () => {
 	});
 
 	it('nested fks.{relation}_{id} value satisfies required check', async () => {
-		const db = createVehicleDb();
+		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X', fks: { category_42: {} } } as any);
 		expect(out.isValid).toBe(true);
@@ -232,7 +237,7 @@ describe('MachineSchemeValidate - FK required', () => {
 	});
 
 	it('nested fks.{relation} object value satisfies required check', async () => {
-		const db = createVehicleDb();
+		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X', fks: { category: { id: 7, code: 'compact' } } } as any);
 		expect(out.isValid).toBe(true);
@@ -240,7 +245,7 @@ describe('MachineSchemeValidate - FK required', () => {
 	});
 
 	it('ignoreFields skips required FK check', async () => {
-		const db = createVehicleDb();
+		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X' } as any, { ignoreFields: ['category'] });
 		expect(out.invalidFields).not.toContain('category');

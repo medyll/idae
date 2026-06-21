@@ -21,7 +21,7 @@ export const masterScheme: MachineModel = {
 			notes:         { type: 'text-lg' },
 			created_at:    { type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code status version' },
 	},
 
@@ -37,7 +37,7 @@ export const masterScheme: MachineModel = {
 			deployed_at:      { type: 'date' },
 			notes:            { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			org: { code: 'org', multiple: false, required: true },
 		},
 		template: { presentation: 'name version collection_count status' },
@@ -56,7 +56,7 @@ export const masterScheme: MachineModel = {
 			is_group:     { type: 'boolean' },
 			is_status:    { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			model: { code: 'model', multiple: false, required: true },
 		},
 		template: { presentation: 'code base field_count fk_count' },

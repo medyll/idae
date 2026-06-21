@@ -158,13 +158,13 @@ describe('MachineRights — loadPoliciesFromModel', () => {
 		vehicle: {
 			keyPath: '++id',
 			fields: { id: { type: 'id' } },
-			fks: {},
+			fkRelations: {},
 			rights: { ops: ['R', 'L'], default: ['R'] },
 		},
 		category: {
 			keyPath: '++id',
 			fields: { id: { type: 'id' } },
-			fks: {},
+			fkRelations: {},
 			// no rights
 		},
 	};

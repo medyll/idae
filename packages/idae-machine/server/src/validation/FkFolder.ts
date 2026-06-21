@@ -1,4 +1,4 @@
-import type { MachineModel } from '../../../src/lib/types/machine-model.js';
+import type { MachineFkDef } from '../../../src/lib/types/machine-model.js';
 
 export type FkResolver = (
 	targetCollection: string,
@@ -13,24 +13,21 @@ export interface FkFoldResult {
 /**
  * Build `fks.{relation}_{targetId}` entries from flat scalars in `data`.
  *
- * Pure — no I/O. Resolver is injected:
- *   - server hooks  → Mongo lookup via getDbForCollection
- *   - bootstrap seed → in-memory Map of already-inserted records
+ * Pure — no I/O. Both the relation definitions (`fkDefs`) and the resolver are
+ * injected. Relation defs are the source of truth from `appscheme[col].fkRelations`
+ * (FKRELATIONS.md), supplied by the caller:
+ *   - server hooks  → `getFkDefs(collection)` (meta-DB appscheme) + Mongo resolver
+ *   - bootstrap seed → `model[col].fkRelations` (in-memory) + in-memory Map resolver
  *
  * Scalars are retained (source of truth for offline/pre-sync).
  * Existing `fks.*` entries are preserved; only keys we resolve are written/overwritten.
  */
 export async function foldFks(
-	model:      MachineModel,
-	collection: string,
-	data:       Record<string, unknown>,
-	resolve:    FkResolver,
+	fkDefs:  Record<string, MachineFkDef>,
+	data:    Record<string, unknown>,
+	resolve: FkResolver,
 ): Promise<FkFoldResult> {
-	const colModel = model[collection];
-	if (!colModel) return { data, errors: [] };
-
-	const fkDefs = colModel.fks ?? {};
-	if (!Object.keys(fkDefs).length) return { data, errors: [] };
+	if (!fkDefs || !Object.keys(fkDefs).length) return { data, errors: [] };
 
 	const newFks: Record<string, unknown> = { ...((data.fks as Record<string, unknown>) ?? {}) };
 	const errors: Array<{ fkName: string; message: string }> = [];

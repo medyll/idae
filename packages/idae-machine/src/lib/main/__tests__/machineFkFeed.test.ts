@@ -5,31 +5,19 @@
  * the raw id. See plan: stabiliser le rendu des champs FK (Phase A).
  */
 import 'fake-indexeddb/auto';
-import { IDBFactory } from 'fake-indexeddb';
-import { describe, it, expect, beforeEach } from 'vitest';
-import { Machine } from '../machine.js';
+import { describe, it, expect } from 'vitest';
+import { bootWithRelations } from './_relationTestUtils.js';
 import { demoScheme } from '../../__fixtures__/demoModel.js';
 
-let _dbCounter = 0;
-function resetIndexedDB() {
-	(globalThis as any).indexedDB = new IDBFactory();
-}
-function uniqueDbName(base: string) {
-	return `${base}-${++_dbCounter}`;
-}
 async function createStartedMachine(dbName: string) {
-	const m = new Machine(dbName, 1, demoScheme);
-	await m.boot();
-	return m;
+	// Relations live on appscheme records (FKRELATIONS.md): boot the global machine
+	// and seed appscheme so the write-time FK fold can resolve relation defs.
+	return bootWithRelations(dbName, demoScheme);
 }
 
 describe('FK denorm feed on write (machine.collection)', () => {
-	beforeEach(() => {
-		resetIndexedDB();
-	});
-
 	it('create() folds the FK target snapshot into record.fks.<field>', async () => {
-		const m = await createStartedMachine(uniqueDbName('fk-feed-create'));
+		const m = await createStartedMachine('fk-feed-create');
 		const category = await m.collection('category').create({ code: 'compact', name: 'Compact' });
 
 		const vehicle = await m.collection('vehicle').create({
@@ -45,7 +33,7 @@ describe('FK denorm feed on write (machine.collection)', () => {
 	});
 
 	it('presentation() resolves the target template once fed', async () => {
-		const m = await createStartedMachine(uniqueDbName('fk-feed-presentation'));
+		const m = await createStartedMachine('fk-feed-presentation');
 		await m.collection('category').create({ code: 'compact', name: 'Compact' });
 		const vehicle = await m.collection('vehicle').create({
 			license_plate: 'CC-222-DD',
@@ -60,7 +48,7 @@ describe('FK denorm feed on write (machine.collection)', () => {
 	});
 
 	it('update() re-folds when the FK scalar changes', async () => {
-		const m = await createStartedMachine(uniqueDbName('fk-feed-update'));
+		const m = await createStartedMachine('fk-feed-update');
 		await m.collection('category').create({ code: 'compact', name: 'Compact' });
 		const suv = await m.collection('category').create({ code: 'suv', name: 'SUV' });
 
@@ -78,7 +66,7 @@ describe('FK denorm feed on write (machine.collection)', () => {
 	});
 
 	it('leaves non-FK collections untouched (no fks key added)', async () => {
-		const m = await createStartedMachine(uniqueDbName('fk-feed-noop'));
+		const m = await createStartedMachine('fk-feed-noop');
 		const category = await m.collection('category').create({ code: 'x', name: 'X' });
 		expect(category.fks).toBeUndefined();
 	});

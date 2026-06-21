@@ -1,5 +1,6 @@
 import type { MachineScheme } from '$lib/main/machine/MachineScheme.js';
-import type { MachineFkDef, Where } from '$lib/types/index.js';
+import type { MachineFkDef, Where, FkRelations } from '$lib/types/index.js';
+import { machine } from '$lib/main/machine.js';
 
 export type RelationWhere = Where<Record<string, unknown>>;
 
@@ -191,4 +192,27 @@ export function resolveReverseRelations(
 	}
 
 	return { resolved, unresolved };
+}
+
+/**
+ * FK relations for a collection, read from the `appscheme[collection]` record
+ * (source of truth — FKRELATIONS.md). Relations are static schema data, so this
+ * is an imperative read against the appscheme qoolie collection rather than the
+ * reactive `machine.store` (which requires a Svelte reactive frame). Both read
+ * the same appscheme store; consumers never read the in-memory model.
+ */
+export function getCollectionRelations(collection: string): FkRelations | undefined {
+	const q = machine._qoolie;
+	if (!q) return undefined;
+	// qoolie's collection proxy throws on an unknown name — tolerate a missing
+	// appscheme store (no relations) the way machine.store(...) did.
+	let col: { where(query: unknown): unknown } | undefined;
+	try {
+		col = q.collection?.['appscheme'];
+	} catch {
+		return undefined;
+	}
+	if (!col) return undefined;
+	const rows = col.where({ code: collection }) as Array<Record<string, unknown>> | undefined;
+	return rows?.[0]?.fkRelations as FkRelations | undefined;
 }

@@ -14,6 +14,7 @@ export const demoScheme: MachineModel = {
 			daily_rate_base: { type: 'number' },
 		},
 		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -30,6 +31,7 @@ export const demoScheme: MachineModel = {
 			manager: { type: 'text' },
 		},
 		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city code' },
 	},
 
@@ -47,6 +49,7 @@ export const demoScheme: MachineModel = {
 			country:      { type: 'text' },
 		},
 		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city type' },
 	},
 
@@ -61,7 +64,8 @@ export const demoScheme: MachineModel = {
 			status:          { type: 'text' },
 			hire_date:       { type: 'date' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			location_office: { code: 'location_office', multiple: false },
 		},
 		template: { presentation: 'first_name last_name email status' },
@@ -83,7 +87,8 @@ export const demoScheme: MachineModel = {
 			mileage:         { type: 'number' },
 			created_at:      { type: 'date' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			category:        { code: 'category',        multiple: false },
 			location_office: { code: 'location_office', multiple: false },
 		},
@@ -100,7 +105,8 @@ export const demoScheme: MachineModel = {
 			warranty_months:  { type: 'number' },
 			notes:            { type: 'text-lg' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			vehicle:  { code: 'vehicle',  multiple: false, required: true },
 			supplier: { code: 'supplier', multiple: false, required: true },
 		},
@@ -119,7 +125,8 @@ export const demoScheme: MachineModel = {
 			coverage_type:  { type: 'text' },
 			status:         { type: 'text' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			vehicle: { code: 'vehicle', multiple: false, required: true },
 		},
 		template: { presentation: 'provider policy_number expires_at status' },
@@ -136,7 +143,8 @@ export const demoScheme: MachineModel = {
 			notes:              { type: 'text-lg' },
 			status:             { type: 'text' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },
 		},
 		template: { presentation: 'date type status cost' },
@@ -152,7 +160,8 @@ export const demoScheme: MachineModel = {
 			mileage: { type: 'number' },
 			station: { type: 'text' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			vehicle: { code: 'vehicle', required: true, multiple: false },
 		},
 		template: { presentation: 'date liters cost mileage' },
@@ -175,6 +184,7 @@ export const demoScheme: MachineModel = {
 			created_at:      { type: 'date' },
 		},
 		fks: {},
+		fkRelations: {},
 		template: { presentation: 'last_name first_name email city' },
 	},
 
@@ -189,7 +199,8 @@ export const demoScheme: MachineModel = {
 			valid_from:    { type: 'date' },
 			valid_until:   { type: 'date' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			category: { code: 'category', required: true, multiple: false },
 		},
 		template: { presentation: 'season_code price_per_day category' },
@@ -210,7 +221,8 @@ export const demoScheme: MachineModel = {
 			status:          { type: 'text' },
 			notes:           { type: 'text-lg' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			vehicle:  { code: 'vehicle',  required: true, multiple: false },
 			customer: { code: 'customer', required: true, multiple: false },
 			seller:   { code: 'seller',   required: false, multiple: false },
@@ -230,7 +242,8 @@ export const demoScheme: MachineModel = {
 			charged_to_customer: { type: 'boolean' },
 			status:              { type: 'text' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			rental:  { code: 'rental',  required: true, multiple: false },
 			vehicle: { code: 'vehicle', required: true, multiple: false },
 		},
@@ -254,7 +267,8 @@ export const demoScheme: MachineModel = {
 			notes:      { type: 'text-lg' },
 			created_at: { type: 'date' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			seller: { code: 'seller', multiple: false },
 		},
 		template: { presentation: 'last_name first_name status source' },
@@ -272,7 +286,8 @@ export const demoScheme: MachineModel = {
 			status:       { type: 'text' },
 			notes:        { type: 'text-lg' },
 		},
-		fks: {
+		fks: {},
+		fkRelations: {
 			seller:   { code: 'seller',   required: true,  multiple: false },
 			lead:     { code: 'lead',     required: false, multiple: false },
 			customer: { code: 'customer', required: false, multiple: false },

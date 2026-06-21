@@ -13,7 +13,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -26,7 +26,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -40,7 +40,7 @@ export const agileScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -53,7 +53,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -66,7 +66,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -80,7 +80,7 @@ export const agileScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -94,7 +94,7 @@ export const agileScheme: MachineModel = {
 			ordre: { type: 'number' },
 			color: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -107,7 +107,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -120,7 +120,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -138,7 +138,7 @@ export const agileScheme: MachineModel = {
 			capacity_hours_week: { type: 'number' },
 			active:   { type: 'boolean' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name handle email' },
 	},
 
@@ -157,7 +157,7 @@ export const agileScheme: MachineModel = {
 			started_at:  { type: 'date' },
 			ended_at:    { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project_status: { code: 'project_status', required: true,  multiple: false },
 			lead:           { code: 'team_member',    required: false, multiple: false },
 		},
@@ -171,7 +171,7 @@ export const agileScheme: MachineModel = {
 			code:      { type: 'text', required: true },
 			joined_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project:     { code: 'project',     required: true, multiple: false },
 			team_member: { code: 'team_member', required: true, multiple: false },
 			member_role: { code: 'member_role', required: true, multiple: false },
@@ -187,7 +187,7 @@ export const agileScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			color: { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			project: { code: 'project', required: true, multiple: false },
 		},
 		template: { presentation: 'project name color' },
@@ -206,7 +206,7 @@ export const agileScheme: MachineModel = {
 			ordre:       { type: 'number' },
 			target_date: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project:      { code: 'project',      required: true,  multiple: false },
 			story_status: { code: 'story_status', required: true,  multiple: false },
 			owner:        { code: 'team_member',  required: false, multiple: false },
@@ -225,7 +225,7 @@ export const agileScheme: MachineModel = {
 			due_date:     { type: 'date',    required: true },
 			completed_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project:          { code: 'project',          required: true, multiple: false },
 			milestone_status: { code: 'milestone_status', required: true, multiple: false },
 		},
@@ -243,7 +243,7 @@ export const agileScheme: MachineModel = {
 			planned_at:    { type: 'date' },
 			released_at:   { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project: { code: 'project', required: true, multiple: false },
 		},
 		template: { presentation: 'project version released_at' },
@@ -263,7 +263,7 @@ export const agileScheme: MachineModel = {
 			end_date:   { type: 'date',    required: true },
 			capacity_points: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			project:       { code: 'project',       required: true, multiple: false },
 			sprint_status: { code: 'sprint_status', required: true, multiple: false },
 		},
@@ -289,7 +289,7 @@ export const agileScheme: MachineModel = {
 			completed_at:        { type: 'date' },
 			due_date:            { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project:      { code: 'project',      required: true,  multiple: false },
 			epic:         { code: 'epic',         required: false, multiple: false },
 			sprint:       { code: 'sprint',       required: false, multiple: false },
@@ -309,7 +309,7 @@ export const agileScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			story: { code: 'story', required: true, multiple: false },
 			label: { code: 'label', required: true, multiple: false },
 		},
@@ -330,7 +330,7 @@ export const agileScheme: MachineModel = {
 			due_date:       { type: 'date' },
 			completed_at:   { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			story:       { code: 'story',       required: true,  multiple: false },
 			task_status: { code: 'task_status', required: true,  multiple: false },
 			assignee:    { code: 'team_member', required: false, multiple: false },
@@ -355,7 +355,7 @@ export const agileScheme: MachineModel = {
 			reported_at:        { type: 'date',    required: true },
 			resolved_at:        { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			project:      { code: 'project',      required: true,  multiple: false },
 			bug_status:   { code: 'bug_status',   required: true,  multiple: false },
 			bug_severity: { code: 'bug_severity', required: true,  multiple: false },
@@ -379,7 +379,7 @@ export const agileScheme: MachineModel = {
 			work_date:   { type: 'date',    required: true },
 			description: { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			team_member: { code: 'team_member', required: true,  multiple: false },
 			story:       { code: 'story',       required: false, multiple: false },
 			task:        { code: 'task',        required: false, multiple: false },
@@ -397,7 +397,7 @@ export const agileScheme: MachineModel = {
 			created_at: { type: 'date',    required: true },
 			edited_at:  { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			team_member: { code: 'team_member', required: true,  multiple: false },
 			story:       { code: 'story',       required: false, multiple: false },
 			task:        { code: 'task',        required: false, multiple: false },
@@ -418,7 +418,7 @@ export const agileScheme: MachineModel = {
 			size_bytes:  { type: 'number' },
 			uploaded_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			team_member: { code: 'team_member', required: true,  multiple: false },
 			story:       { code: 'story',       required: false, multiple: false },
 			task:        { code: 'task',        required: false, multiple: false },

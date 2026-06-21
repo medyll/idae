@@ -1,6 +1,7 @@
-import { describe, expect, it } from 'vitest';
-import { MachineDb } from '../machineDb.js';
-import { buildEffectiveModel } from '../machineModelBuilder.js';
+import 'fake-indexeddb/auto';
+import { describe, expect, it, beforeAll } from 'vitest';
+import { bootWithRelations } from './_relationTestUtils.js';
+import type { MachineDb } from '../machineDb.js';
 import { demoScheme } from '../../__fixtures__/demoModel.js';
 import {
 	buildRelationWhere,
@@ -11,8 +12,11 @@ import {
 } from '../../data-ui/utils/dataRelationUtils.js';
 
 describe('Machine relation helpers', () => {
-	const effectiveModel = buildEffectiveModel(demoScheme);
-	const db = new MachineDb(effectiveModel);
+	let db: MachineDb;
+	beforeAll(async () => {
+		const m = await bootWithRelations('relation-helpers', demoScheme);
+		db = m.logic;
+	});
 
 	it('findFkField resolves the data field for a target collection', () => {
 		const vehicle = db.collection('vehicle');

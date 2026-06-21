@@ -54,6 +54,9 @@ export interface MachineFkDef {
 	required?: boolean;
 }
 
+// ── FK relations ──────────────────────────────────────────────────────────────
+export type FkRelations = Record<string, MachineFkDef>;
+
 // ── Display template ──────────────────────────────────────────────────────────
 /**
  * Display template for a collection — UI/runtime hint only, no data structure.
@@ -120,8 +123,10 @@ export interface MachineCollectionModel<T = any> {
 	ts?:         T;
 	/** Data field definitions. */
 	fields:      Record<string, MachineFieldDef>;
-	/** Foreign key relationships. */
-	fks:         Record<string, MachineFkDef>;
+	/** Foreign key relations — authoring declaration on the source scheme. Published to appscheme.fkRelations by publishModel. */
+	fkRelations?: Record<string, MachineFkDef>;
+	/** Resolved relations — getModel() output only, projected from appscheme.fkRelations. Never declare this on a source scheme; use `fkRelations`. */
+	fks?:        Record<string, MachineFkDef>;
 	/** Display template hint (presentation only). Optional. */
 	template?:   MachineDisplayTemplate;
 	/** Default sort applied by Explorer when no sortBy prop. Multiple = stable sort chain. */

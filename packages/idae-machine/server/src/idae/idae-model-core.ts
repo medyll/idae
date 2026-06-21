@@ -62,7 +62,7 @@ export const idaeModelCore = {
 				icon:  { required: true,  readonly: false },
 				order: { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name',
 			},
@@ -82,15 +82,9 @@ export const idaeModelCore = {
 				keyPath:  { required: false, readonly: true  },
 				isType:   { required: false, readonly: true  },
 				isGroup:  { required: false, readonly: true  },
-				isStatus: { required: false, readonly: true  },
-				// fkRelations: the described collection's relation descriptors
-				// ({code,multiple,required}). Stored on the appscheme document (written by
-				// publishModel, read by MachineServer.getModel → in-memory model.fks). NOT
-				// declared as a renderable scalar field here — it's an object map; declaring
-				// it makes DataRecord print "[object Object]". A proper relations-editor view
-				// is future work. _views likewise stays off the field list.
+				isStatus: { required: false, readonly: true  }
 			},
-			fks: {
+			fkRelations: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true  },
 				appscheme_type: { code: 'appscheme_type', order: 0, multiple: false, required: false },
 			},
@@ -113,7 +107,7 @@ export const idaeModelCore = {
 				readonly:      { required: false, readonly: false },
 				private:       { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme_field_type:  { code: 'appscheme_field_type',  order: 0, multiple: false, required: true  },
 				appscheme_field_group: { code: 'appscheme_field_group', order: 0, multiple: false, required: false },
 			},
@@ -134,7 +128,7 @@ export const idaeModelCore = {
 				icon:  { required: true, readonly: false },
 				order: { required: true, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -154,7 +148,7 @@ export const idaeModelCore = {
 				icon:  { required: true, readonly: false },
 				order: { required: true, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -176,7 +170,7 @@ export const idaeModelCore = {
 				required: { required: false, readonly: false },
 				readonly: { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme:       { code: 'appscheme',       order: 0, multiple: false, required: true },
 				appscheme_field: { code: 'appscheme_field', order: 0, multiple: false, required: true },
 			},
@@ -197,7 +191,7 @@ export const idaeModelCore = {
 				icon:  { required: true, readonly: false },
 				order: { required: true, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -218,7 +212,7 @@ export const idaeModelCore = {
 				order:       { required: true,  readonly: false },
 				description: { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -238,7 +232,7 @@ export const idaeModelCore = {
 				order:   { required: true,  readonly: false },
 				options: { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme:           { code: 'appscheme',           order: 0, multiple: false, required: true },
 				appscheme_view_type: { code: 'appscheme_view_type', order: 0, multiple: false, required: true },
 				appscheme_field:     { code: 'appscheme_field',     order: 0, multiple: false, required: true },
@@ -260,7 +254,7 @@ export const idaeModelCore = {
 				details:   { required: false, readonly: true },
 				changes:   { required: false, readonly: true },
 			},
-			fks: {
+			fkRelations: {
 				appscheme: { code: 'appscheme', order: 0, multiple: false, required: false },
 			},
 			template: {
@@ -291,7 +285,7 @@ export const idaeModelCore = {
 				mustChangePassword: { required: false, readonly: false },
 				appPermissions:     { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser_profile: { code: 'appuser_profile', order: 0, multiple: false, required: false },
 			},
 			template: {
@@ -316,7 +310,7 @@ export const idaeModelCore = {
 				timezone:    { required: false, readonly: false },
 				preferences: { required: false, readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'displayName firstName lastName',
 			},
@@ -336,7 +330,7 @@ export const idaeModelCore = {
 				description: { required: false, readonly: false },
 				isSystem:    { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -357,7 +351,7 @@ export const idaeModelCore = {
 				isSystem:    { required: true,  readonly: false },
 				typeLevel:   { required: false, readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -379,7 +373,7 @@ export const idaeModelCore = {
 				revokedAt:        { required: false, readonly: true  },
 				revocationReason: { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser:       { code: 'appuser',       order: 0, multiple: false, required: true  },
 				appuser_type:  { code: 'appuser_type',  order: 0, multiple: false, required: false },
 				appuser_group: { code: 'appuser_group', order: 0, multiple: false, required: false },
@@ -412,7 +406,7 @@ export const idaeModelCore = {
 				revocationReason: { required: false, readonly: false },
 				constraints:      { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appscheme:     { code: 'appscheme',     order: 0, multiple: false, required: true  },
 				appuser_type:  { code: 'appuser_type',  order: 0, multiple: false, required: false },
 				appuser_group: { code: 'appuser_group', order: 0, multiple: false, required: false },
@@ -440,7 +434,7 @@ export const idaeModelCore = {
 				revokedAt:        { required: false, readonly: true  },
 				revocationReason: { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -464,7 +458,7 @@ export const idaeModelCore = {
 				failureReason: { required: false, readonly: true },
 				performedAt:   { required: true,  readonly: true },
 			},
-			fks: {
+			fkRelations: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -490,7 +484,7 @@ export const idaeModelCore = {
 				auto:    { required: false, readonly: true  },
 				scope:   { required: false, readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -508,7 +502,7 @@ export const idaeModelCore = {
 				collection:       { required: false, readonly: false },
 				collection_value: { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -527,7 +521,7 @@ export const idaeModelCore = {
 				collection_vars:  { required: false, readonly: true },
 				timestamp:        { required: true,  readonly: true },
 			},
-			fks: {
+			fkRelations: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -546,7 +540,7 @@ export const idaeModelCore = {
 				count:            { required: true,  readonly: false },
 				lastSeen:         { required: true,  readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -570,7 +564,7 @@ export const idaeModelCore = {
 				endpoint: { required: false, readonly: false },
 				order:    { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -586,7 +580,7 @@ export const idaeModelCore = {
 				supports_tools: { required: false, readonly: false },   // gates Phase 1b agent loop eligibility
 				order:          { required: true,  readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				ai_provider: { code: 'ai_provider', order: 0, multiple: false, required: true },
 			},
 			template: {
@@ -605,7 +599,7 @@ export const idaeModelCore = {
 				hitl:        { required: false, readonly: false },   // human-in-the-loop confirmation required (§13)
 				order:       { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -620,7 +614,7 @@ export const idaeModelCore = {
 				name:  { required: true,  readonly: false },
 				order: { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -635,7 +629,7 @@ export const idaeModelCore = {
 				name:  { required: true,  readonly: false },
 				order: { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -650,7 +644,7 @@ export const idaeModelCore = {
 				name:  { required: true,  readonly: false },
 				order: { required: true,  readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name code',
 			},
@@ -687,7 +681,7 @@ export const idaeModelCore = {
 				hooks:          { required: false, readonly: false },   // string[] of hook codes
 				skills:         { required: false, readonly: false },   // string[] of skill codes
 			},
-			fks: {
+			fkRelations: {
 				ai_model: { code: 'ai_model', order: 0, multiple: false, required: true  },   // provider/model — never free-text
 				// absent = global template; set = user-owned instance/clone with overrides
 				appuser:  { code: 'appuser',  order: 1, multiple: false, required: false },
@@ -713,7 +707,7 @@ export const idaeModelCore = {
 				collection:    { required: false, readonly: false },
 				collectionId:  { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser:                 { code: 'appuser',                 order: 0, multiple: false, required: true  },
 				ai_companion:            { code: 'ai_companion',            order: 1, multiple: false, required: true  },
 				ai_chat_session_status:  { code: 'ai_chat_session_status',  order: 2, multiple: false, required: false },
@@ -751,7 +745,7 @@ export const idaeModelCore = {
 				collection:      { required: false, readonly: false },
 				collectionId:    { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser:           { code: 'appuser',           order: 0, multiple: false, required: true  },
 				ai_chat_session:   { code: 'ai_chat_session',   order: 1, multiple: false, required: true  },
 				ai_message_status: { code: 'ai_message_status', order: 2, multiple: false, required: false },
@@ -773,7 +767,7 @@ export const idaeModelCore = {
 				result: { required: false, readonly: false },   // JSON result returned by callTool()
 				error:  { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				ai_message:         { code: 'ai_message',         order: 0, multiple: false, required: true  },
 				ai_tool:            { code: 'ai_tool',            order: 1, multiple: false, required: true  },
 				ai_tool_call_status: { code: 'ai_tool_call_status', order: 2, multiple: false, required: false },
@@ -799,7 +793,7 @@ export const idaeModelCore = {
 				order:       { required: false, readonly: false },
 				description: { required: false, readonly: false },
 			},
-			fks: {},
+			fkRelations: {},
 			template: {
 				presentation: 'name',
 			},
@@ -818,7 +812,7 @@ export const idaeModelCore = {
 				is_active: { required: false, readonly: false },
 				locale:    { required: false, readonly: false },
 			},
-			fks: {
+			fkRelations: {
 				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
 			},
 			template: {

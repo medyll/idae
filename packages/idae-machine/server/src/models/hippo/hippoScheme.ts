@@ -13,7 +13,7 @@ export const hippoScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -26,7 +26,7 @@ export const hippoScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -39,7 +39,7 @@ export const hippoScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -51,7 +51,7 @@ export const hippoScheme: MachineModel = {
 			code:  { type: 'text', required: true },
 			name:  { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -64,7 +64,7 @@ export const hippoScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -77,7 +77,7 @@ export const hippoScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -90,7 +90,7 @@ export const hippoScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code ordre' },
 	},
 
@@ -102,7 +102,7 @@ export const hippoScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -122,7 +122,7 @@ export const hippoScheme: MachineModel = {
 			website:   { type: 'url' },
 			logo:      { type: 'image' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city country' },
 	},
 
@@ -135,7 +135,7 @@ export const hippoScheme: MachineModel = {
 			length_meters:{ type: 'number' },
 			direction:    { type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			racetrack:     { code: 'racetrack',     required: true, multiple: false },
 			track_surface: { code: 'track_surface', required: true, multiple: false },
 		},
@@ -152,7 +152,7 @@ export const hippoScheme: MachineModel = {
 			weather:      { type: 'text' },
 			temp_celsius: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			racetrack: { code: 'racetrack', required: true,  multiple: false },
 			going:     { code: 'going',     required: false, multiple: false },
 		},
@@ -174,7 +174,7 @@ export const hippoScheme: MachineModel = {
 			phone:    { type: 'phone' },
 			email:    { type: 'email' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name city country' },
 	},
 
@@ -192,7 +192,7 @@ export const hippoScheme: MachineModel = {
 			silks_image:  { type: 'image' },
 			country:      { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name silks_colors country' },
 	},
 
@@ -210,7 +210,7 @@ export const hippoScheme: MachineModel = {
 			photo:      { type: 'image' },
 			win_count:  { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			stable: { code: 'stable', required: false, multiple: false },
 		},
 		template: { presentation: 'name stable win_count' },
@@ -235,7 +235,7 @@ export const hippoScheme: MachineModel = {
 			career_wins:  { type: 'number' },
 			career_runs:  { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name weight_kg career_wins' },
 	},
 
@@ -258,7 +258,7 @@ export const hippoScheme: MachineModel = {
 			career_wins:   { type: 'number' },
 			career_earnings:{ type: 'currency' },
 		},
-		fks: {
+		fkRelations: {
 			horse_gender: { code: 'horse_gender', required: true,  multiple: false },
 			owner:        { code: 'owner',        required: false, multiple: false },
 			trainer:      { code: 'trainer',      required: false, multiple: false },
@@ -284,7 +284,7 @@ export const hippoScheme: MachineModel = {
 			conditions:      { type: 'text-lg' },
 			handicap:        { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			meeting:         { code: 'meeting',         required: true,  multiple: false },
 			track:           { code: 'track',           required: true,  multiple: false },
 			race_type:       { code: 'race_type',       required: true,  multiple: false },
@@ -307,7 +307,7 @@ export const hippoScheme: MachineModel = {
 			scratched:      { type: 'boolean' },
 			disqualified:   { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			race:    { code: 'race',    required: true,  multiple: false },
 			horse:   { code: 'horse',   required: true,  multiple: false },
 			jockey:  { code: 'jockey',  required: true,  multiple: false },
@@ -328,7 +328,7 @@ export const hippoScheme: MachineModel = {
 			prize_won:    { type: 'currency' },
 			comment:      { type: 'text-lg' },
 		},
-		fks: {
+		fkRelations: {
 			race:   { code: 'race',   required: true, multiple: false },
 			runner: { code: 'runner', required: true, multiple: false },
 		},
@@ -348,7 +348,7 @@ export const hippoScheme: MachineModel = {
 			balance: { type: 'currency' },
 			joined_at:{ type: 'date' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name balance joined_at' },
 	},
 
@@ -363,7 +363,7 @@ export const hippoScheme: MachineModel = {
 			settled_at:{ type: 'date' },
 			ticket_ref:{ type: 'text' },
 		},
-		fks: {
+		fkRelations: {
 			punter:     { code: 'punter',     required: true,  multiple: false },
 			race:       { code: 'race',       required: true,  multiple: false },
 			bet_type:   { code: 'bet_type',   required: true,  multiple: false },
@@ -379,7 +379,7 @@ export const hippoScheme: MachineModel = {
 			code:     { type: 'text',   required: true },
 			position: { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			bet:    { code: 'bet',    required: true, multiple: false },
 			runner: { code: 'runner', required: true, multiple: false },
 		},

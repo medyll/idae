@@ -13,7 +13,7 @@ export const blogcmsScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -26,7 +26,7 @@ export const blogcmsScheme: MachineModel = {
 			name:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -38,7 +38,7 @@ export const blogcmsScheme: MachineModel = {
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name code' },
 	},
 
@@ -54,7 +54,7 @@ export const blogcmsScheme: MachineModel = {
 			description: { type: 'text-lg' },
 			ordre:       { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			parent: { code: 'category', multiple: false },
 		},
 		template: { presentation: 'name slug' },
@@ -68,7 +68,7 @@ export const blogcmsScheme: MachineModel = {
 			name: { type: 'text', required: true },
 			slug: { type: 'text', required: true },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name slug' },
 	},
 
@@ -87,7 +87,7 @@ export const blogcmsScheme: MachineModel = {
 			website: { type: 'url' },
 			twitter: { type: 'text' },
 		},
-		fks: {},
+		fkRelations: {},
 		template: { presentation: 'name email' },
 	},
 
@@ -109,7 +109,7 @@ export const blogcmsScheme: MachineModel = {
 			caption:     { type: 'text-lg' },
 			uploaded_at: { type: 'date' },
 		},
-		fks: {
+		fkRelations: {
 			author: { code: 'author', multiple: false },
 		},
 		template: { presentation: 'filename mime size' },
@@ -135,7 +135,7 @@ export const blogcmsScheme: MachineModel = {
 			view_count:       { type: 'number' },
 			featured:         { type: 'boolean' },
 		},
-		fks: {
+		fkRelations: {
 			author:      { code: 'author',      required: true,  multiple: false },
 			category:    { code: 'category',    required: false, multiple: false },
 			post_status: { code: 'post_status', required: true,  multiple: false },
@@ -149,7 +149,7 @@ export const blogcmsScheme: MachineModel = {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
-		fks: {
+		fkRelations: {
 			post: { code: 'post', required: true, multiple: false },
 			tag:  { code: 'tag',  required: true, multiple: false },
 		},
@@ -170,7 +170,7 @@ export const blogcmsScheme: MachineModel = {
 			published_at:     { type: 'date' },
 			ordre:            { type: 'number' },
 		},
-		fks: {
+		fkRelations: {
 			author:        { code: 'author',        required: true,  multiple: false },
 			parent:        { code: 'page',          required: false, multiple: false },
 			page_template: { code: 'page_template', required: false, multiple: false },
@@ -193,7 +193,7 @@ export const blogcmsScheme: MachineModel = {
 			ip:           { type: 'text' },
 			created_at:   { type: 'date',    required: true },
 		},
-		fks: {
+		fkRelations: {
 			post:           { code: 'post',           required: true,  multiple: false },
 			parent:         { code: 'comment',        required: false, multiple: false },
 			comment_status: { code: 'comment_status', required: true,  multiple: false },
