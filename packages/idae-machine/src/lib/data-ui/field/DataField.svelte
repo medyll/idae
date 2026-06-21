@@ -86,6 +86,12 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     const fkScheme = $derived(fkCollection ? machine.logic.collectionOr(fkCollection, null) : null);
     const fkLabel  = $derived.by(() => {
         if (!fkCollection || internalValue == null) return '—';
+        // Prefer the denorm snapshot already fed onto the record (`fks.<field>` bare or
+        // `fks.<field>_<value>` suffixed — see MachineFkFold/server FkFolder). The raw
+        // scalar's type (id vs code) doesn't have to match fkIndexField for this to work,
+        // unlike the fkStore re-lookup below.
+        const snapshot = readFkSnapshot(data as Record<string, unknown> | null | undefined, String(fieldName), internalValue);
+        if (snapshot) return fkScheme?.collectionValues.presentation(snapshot) || String(internalValue);
         const item = fkItems.find(i => MachineRecordIdentity.recordMatchesIndex(i, fkIndexField, internalValue));
         if (!item) return String(internalValue);
         return fkScheme?.collectionValues.presentation(item) || String(internalValue);
@@ -129,6 +135,23 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     // FK raw value lookup — supports both canonical flat storage (`data[fieldName]` = code)
     // and legacy nested storage (`data.fks[fieldName]` = { code } or bare scalar), as seeded
     // by publishModel.ts for system appscheme_* collections.
+    // FK denorm snapshot lookup — bare `fks.<name>` (canonical single) or suffixed
+    // `fks.<name>_<value>` (server FkFolder convention, always suffixed/id-keyed).
+    // Falls back to scanning any `<name>_*` key when `value`'s type doesn't match the
+    // suffix verbatim (e.g. numeric id vs string), since this is a single relation.
+    function readFkSnapshot(rec: Record<string, unknown> | null | undefined, name: string, value: unknown): Record<string, unknown> | undefined {
+        const bag = rec?.fks as Record<string, unknown> | undefined;
+        if (!bag) return undefined;
+        if (bag[name] != null && typeof bag[name] === 'object') return bag[name] as Record<string, unknown>;
+        if (value != null) {
+            const suffixed = bag[`${name}_${value}`];
+            if (suffixed != null && typeof suffixed === 'object') return suffixed as Record<string, unknown>;
+        }
+        const prefix = `${name}_`;
+        const key = Object.keys(bag).find((k) => k.startsWith(prefix));
+        return key ? (bag[key] as Record<string, unknown>) : undefined;
+    }
+
     function readFkRaw(rec: Record<string, unknown> | null | undefined, name: string, indexField: string): unknown {
         if (!rec) return undefined;
         const flat = rec[name];
