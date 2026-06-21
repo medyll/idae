@@ -11,7 +11,11 @@
 
 ## 1. Split `fks`: model-def `fkRelations` vs record value-bag `fks`
 
-**Status:** 🟡 decided (useful + necessary) · NOT started · implement later.
+**Status:** ✅ DONE (scoped) — commit `f4110cce`, 2026-06-21. Shipped the **appscheme-record-only**
+split (per user narrowing): a stored `appscheme` doc now carries `fkRelations` (relation descriptors)
+separate from its own `fks` value-bag (base/type pointers). The **global** model-side rename
+(`MachineCollectionModel.fks` and all consumers) was **descoped** — in-memory model keeps `fks`.
+`order?` field + cascade **deferred** (user: "laisse tombé"). CSS cheap win below **not done**.
 
 ### What
 `fks` currently names two different things at two layers:
@@ -52,8 +56,10 @@ rationalization, so do it properly rather than keep the patch shape.
 in `DataField.svelte`. (`'fks.appscheme.code'`-style store queries read the record bag — keep.)
 
 ### Orthogonal cheap win (can do first, independently)
-The trigger bug was `DataField.svelte:310` `--field-label-w: 90px` truncating long relation names
-(e.g. `appscheme_view_type`). Pure CSS — adaptive/token-driven width + `title` tooltip. No split needed.
+✅ DONE 2026-06-21. `DataField.svelte` `.field-label`: was fixed `flex: 0 0 90px` truncating long
+relation names (e.g. `appscheme_view_type`). Now `flex: 0 1 auto` with `min/max-width` tokens
+(`--field-label-min-w`/`--field-label-max-w`) so short labels stay tight and long ones grow up to
+the cap before ellipsis; added `title={fieldLabel}` tooltip.
 
 **Effort:** L (split) · S (CSS) · **Risk:** M (guardrail = the two lists above; don't conflate sides).
 
@@ -61,7 +67,23 @@ The trigger bug was `DataField.svelte:310` `--field-label-w: 90px` truncating lo
 
 ## 2. `appscheme_*` string literals are a code smell
 
-**Status:** 🟡 noted · address opportunistically (and while doing #1).
+**Status:** 🟡 partially addressed 2026-06-21 · rest noted, opportunistic.
+
+### Done
+`src/lib/main/warmupUtils.ts#getSchemaCriticalCollections` carried a hardcoded
+`coreSchemaCollections` fallback list (`'appscheme'`, `'appscheme_field'`, …) "just in case" the
+base-filter missed them. It was dead weight: every model-core collection already declares
+`base: 'machine_app'` in `idae-model-core.ts`, so the base-filter alone covers them. Removed the
+fallback — now purely model-driven (no literal collection-name list to drift).
+
+### Remaining (architecturally harder, left as direction)
+`useViewFields.svelte.ts`, `DataField.svelte`, `Explorer.svelte` (`groupBy="fks.appscheme_base"`)
+still call `machine.store('appscheme_view', …)` / check `'appscheme' in model` with the literal
+name. This is different from the warmup case: querying `appscheme`/`appscheme_view` IS how you
+read the model in the first place (chicken-and-egg — there's no metadata to derive the name of the
+metadata-holding collection from). Not a quick win; would need a structural indirection (e.g. a
+well-known semantic role flag instead of a name match) — left for a future deliberate pass, not
+touched here.
 
 ### What
 The **only fixed naming rule is `machine_app`** (the app / namespace). The model-core tables are

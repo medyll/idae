@@ -16,32 +16,18 @@ export function getSchemaCriticalCollections(
 	model: MachineModel,
 	bases: string[] = ['machine_app']
 ): string[] {
+	// Model-driven only — no hardcoded appscheme_* fallback. Every model-core
+	// collection (appscheme, appscheme_field, …) declares base:'machine_app' in
+	// idae-model-core.ts, so the base-filter already covers them (RATIONALIZE #2).
 	const criticalCollections: string[] = [];
 
 	for (const [collectionName, collectionDef] of Object.entries(model)) {
-		// Include collections that are part of the specified bases
 		if (collectionDef.base && bases.includes(collectionDef.base)) {
 			criticalCollections.push(collectionName);
 		}
 	}
 
-	// Ensure we always include the core schema collections even if not explicitly in base
-	const coreSchemaCollections = [
-		'appscheme',
-		'appscheme_field', 
-		'appscheme_view',
-		'appscheme_view_type',
-		'appscheme_has_field'
-	];
-
-	// Add any core collections that might be missing
-	for (const coreCollection of coreSchemaCollections) {
-		if (!criticalCollections.includes(coreCollection)) {
-			criticalCollections.push(coreCollection);
-		}
-	}
-
-	return Array.from(new Set(criticalCollections)).sort(); // Deduplicate and sort
+	return Array.from(new Set(criticalCollections)).sort();
 }
 
 /**

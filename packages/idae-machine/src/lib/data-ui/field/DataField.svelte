@@ -170,7 +170,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     {#if !isPrivate}
         <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
             {#if showLabel}
-                <span class="field-label">{fieldLabel}</span>
+                <span class="field-label" title={fieldLabel}>{fieldLabel}</span>
             {/if}
             <div class="field-input" {...inputDataset}>
                 {#if fieldForge.fieldType === 'id'}
@@ -306,7 +306,11 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     }
 
     .field-label {
-        flex: 0 0 var(--field-label-w, 90px);
+        /* adaptive: grows to fit short labels, caps long ones (e.g. FK relation
+           names like 'appscheme_view_type') with ellipsis + title tooltip */
+        flex: 0 1 auto;
+        min-width: var(--field-label-min-w, 5rem);
+        max-width: var(--field-label-max-w, 14rem);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
