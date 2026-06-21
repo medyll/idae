@@ -11,14 +11,19 @@
  */
 
 import type { MachineModel } from '$lib/types/index.js';
+import { getCodeFieldConvention } from '$lib/machine/ext/hooks.js';
 import { field } from '$lib/main/machine/fieldBuilder.js';
 
 /**
  * Ensure every collection declares a `code` field (semantic key, sibling of `id`).
- * Pure: returns a new model; collections already declaring `code` are left untouched.
- * Injected `code` is placed right after `id` when present, otherwise appended.
+ * Delegates to the domain bridge if registered; falls back to inline implementation.
  */
 export function ensureCodeField(model: MachineModel): MachineModel {
+	const convention = getCodeFieldConvention();
+	if (convention) {
+		return convention.ensureCodeField(model) as MachineModel;
+	}
+	// Fallback: inline implementation (domain not yet registered)
 	const out: MachineModel = {};
 	for (const [name, col] of Object.entries(model)) {
 		const fields = col.fields ?? {};

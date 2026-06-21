@@ -11,6 +11,7 @@ import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVe
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { foldFksIntoRecord } from '$lib/main/machine/MachineFkFold.js';
+import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
@@ -263,8 +264,10 @@ export class Machine {
 					this._effectiveModel = buildEffectiveModel(this._core, this._business);
 					this._machineDb = new MachineDb(this._effectiveModel);
 					machineRights.loadPoliciesFromModel(this._effectiveModel);
+					initializeDomainPoliciesWithModel(this._effectiveModel);
 					await this._scheduleDrift();
 					await this.createStore(true);
+					initializeDomainPoliciesWithMachine(this);
 				}
 			}).catch((err) => {
 				if (!this._business) throw err;
@@ -276,6 +279,7 @@ export class Machine {
 		this._effectiveModel = buildEffectiveModel(this._core, this._business);
 		this._machineDb      = new MachineDb(this._effectiveModel);
 		machineRights.loadPoliciesFromModel(this._effectiveModel);
+		initializeDomainPoliciesWithModel(this._effectiveModel);
 
 		// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
 		// so a drift-triggered bump lands ABOVE the existing version. Reading it after
@@ -289,6 +293,8 @@ export class Machine {
 		if (actualVersion > this._version) this._version = actualVersion;
 		await this._scheduleDrift();
 		await this.createStore();
+		initializeDomainPoliciesWithMachine(this);
+		frameCatalog.registerFrames(componentRegistry as ComponentRegistry);
 
 		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
 		const syncMode = (this._syncOptions && typeof this._syncOptions === 'object')

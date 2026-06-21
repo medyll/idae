@@ -3,10 +3,12 @@
  * Replaces hardcoded warmup arrays with model-driven collection selection
  */
 import type { MachineModel } from '$lib/types/index.js';
+import { getMetaCollectionResolver } from '$lib/machine/ext/hooks.js';
 
 /**
  * Get collections that are critical for schema hydration (warmup candidates).
  * These are collections with base='machine_app' that feed the shell UI.
+ * Delegates to the domain bridge if registered; falls back to inline implementation.
  *
  * @param model - The machine model to analyze
  * @param bases - Array of bases to include (default: ['machine_app'])
@@ -16,17 +18,15 @@ export function getSchemaCriticalCollections(
 	model: MachineModel,
 	bases: string[] = ['machine_app']
 ): string[] {
-	// Model-driven only — no hardcoded appscheme_* fallback. Every model-core
-	// collection (appscheme, appscheme_field, …) declares base:'machine_app' in
-	// idae-model-core.ts, so the base-filter already covers them (RATIONALIZE #2).
-	const criticalCollections: string[] = [];
+	const resolver = getMetaCollectionResolver();
+	if (resolver) return resolver.getSchemaCriticalCollections(bases);
 
+	const criticalCollections: string[] = [];
 	for (const [collectionName, collectionDef] of Object.entries(model)) {
 		if (collectionDef.base && bases.includes(collectionDef.base)) {
 			criticalCollections.push(collectionName);
 		}
 	}
-
 	return Array.from(new Set(criticalCollections)).sort();
 }
 
