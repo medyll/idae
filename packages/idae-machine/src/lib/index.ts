@@ -75,3 +75,6 @@ export { streamIntoRecord } from '$lib/ai/streamIntoRecord.js';
 
 // AI — schema fragments and frame components
 export * from '$lib/ai/index.js';
+
+// Storage adapters for multi-mode architecture
+export * from '$lib/storage/index.js';

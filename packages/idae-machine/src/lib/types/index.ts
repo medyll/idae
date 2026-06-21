@@ -17,3 +17,13 @@ export type {
 	DiagramNode, DiagramEdge, DiagramGraph,
 } from './machine-model.js';
 export { indexFromKeyPath } from './machine-model.js';
+
+// Storage adapters for multi-mode architecture
+export type {
+	StorageAdapter,
+	QueryOperator,
+	QueryCondition,
+} from '$lib/storage/StorageAdapter.js';
+export { MemoryStorageAdapter } from '$lib/storage/MemoryStorageAdapter.js';
+export { ApiStorageAdapter, type ApiClient } from '$lib/storage/ApiStorageAdapter.js';
+export { IdbStorageAdapter } from '$lib/storage/IdbStorageAdapter.js';

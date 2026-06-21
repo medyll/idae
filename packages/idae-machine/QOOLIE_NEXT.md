@@ -4,6 +4,19 @@
 
 Après analyse approfondie du code existant, il apparaît que Qoolie peut effectivement évoluer vers une architecture multi-mode avec des modifications ciblées. Les briques nécessaires existent déjà et permettent une implémentation à moindre coût.
 
+## Stratégie de Développement Sans Branches
+
+**Contraintes du monorepo** :
+- Pas de branches longues (tout se fait sur main/dev)
+- Déploiement continu
+- Compatibilité ascendante absolue requise
+
+**Approche adoptée** :
+- Développement incrémental par petites commits atomiques
+- Feature flags pour les nouvelles fonctionnalités
+- Tests de non-régression avant chaque commit
+- Documentation des contrats d'API existants
+
 ## Architecture Actuelle
 
 ### Modes existants
@@ -219,39 +232,212 @@ class ApiStorageAdapter implements StorageAdapter {
 - Intégration avec d'autres services
 - Meilleure séparation des concerns
 
-## Roadmap d'Implémentation
+## Analyse de Risque et Compatibilité
 
-### Phase 1: Fondations (2-3 semaines)
-- [ ] Créer l'interface StorageAdapter
-- [ ] Implémenter MemoryStorageAdapter
-- [ ] Implémenter ApiStorageAdapter
-- [ ] Modifier l'initialisation de Qoolie
-- [ ] Tests unitaires des nouveaux adapters
+### Ce qui NE DOIT PAS être cassé 🚫
+1. **API publique de Qoolie**
+   - `createQoolie(options)`
+   - `qoolie.collection(name)`
+   - Toutes les méthodes CRUD existantes
+   - Comportement par défaut inchangé
 
-### Phase 2: Intégration Serveur (1-2 semaines)
-- [ ] Intégrer Idae-Socket dans Idae-API
-- [ ] Connecter les hooks DB aux WebSockets
-- [ ] Implémenter le broadcast des événements
-- [ ] Tests d'intégration
+2. **Modes existants**
+   - mobile-first (offline-first)
+   - server-first
+   - local-only (`sync: false`)
 
-### Phase 3: Réactivité et Optimisations (2 semaines)
-- [ ] Réactivité Svelte pour tous les modes
-- [ ] Gestion du cache et invalidation
-- [ ] Optimisation des performances
-- [ ] Tests de charge
+3. **Intégrations**
+   - Idae-API (sync)
+   - Idae-Socket (client)
+   - Tous les adapteurs framework
 
-### Phase 4: Documentation et Exemples (1 semaine)
-- [ ] Documentation des nouveaux modes
-- [ ] Exemples pour chaque cas d'usage
-- [ ] Migration guide
-- [ ] Benchmarks comparatifs
+### Stratégie de Non-Régression ✅
 
-## Coût Estimé
+```typescript
+// 1. Nouveaux fichiers uniquement
+src/lib/storage/ApiStorageAdapter.ts    // NOUVEAU
+src/lib/storage/MemoryStorageAdapter.ts // NOUVEAU
+src/lib/next/QoolieNext.ts             // NOUVEAU
 
-- **Effort** : 6-8 semaines de développement
-- **Complexité** : Moyenne (modifications ciblées)
-- **Risque** : Faible (briques existantes réutilisées)
-- **Bénéfice** : Élevé (flexibilité et performance)
+// 2. Modifications minimales
+src/lib/Qoolie.ts  // Ajout de 5 lignes max
+src/lib/types.ts   // Ajout de champs optionnels
+
+// 3. Compatibilité garantie
+if (options.mode === 'online-only') {
+  // Nouveau comportement
+} else {
+  // Comportement existant INCHANGÉ
+}
+```
+
+## Planification Sans Branches
+
+### Phase 0 : Préparation (1 semaine - main)
+```bash
+# Commit 1: Documentation
+git add QOOLIE_NEXT.md
+git commit -m "docs: architecture multi-mode pour Qoolie"
+
+# Commit 2: Structure
+mkdir -p src/lib/storage
+mkdir -p src/lib/next
+touch src/lib/storage/.gitkeep
+touch src/lib/next/.gitkeep
+git add src/lib/storage src/lib/next
+git commit -m "chore: structure pour nouveaux modes Qoolie"
+
+# Commit 3: Types étendus
+git add src/lib/types.ts
+git commit -m "types: ajout champs optionnels pour multi-mode"
+```
+
+### Phase 1 : Storage Adapters (2 semaines - main)
+```bash
+# Commit 4: ApiStorageAdapter
+git add src/lib/storage/ApiStorageAdapter.ts
+git commit -m "feat: ApiStorageAdapter pour mode online-only"
+
+# Commit 5: MemoryStorageAdapter
+git add src/lib/storage/MemoryStorageAdapter.ts
+git commit -m "feat: MemoryStorageAdapter pour cache mémoire"
+
+# Commit 6: Tests unitaires
+git add src/lib/storage/__tests__
+git commit -m "test: couverture des nouveaux storage adapters"
+```
+
+### Phase 2 : Intégration Qoolie (2 semaines - main)
+```bash
+# Commit 7: QoolieNext wrapper
+git add src/lib/next/QoolieNext.ts
+git commit -m "feat: QoolieNext avec support multi-mode"
+
+# Commit 8: Export conditionnel
+git add src/lib/index.ts
+git commit -m "feat: export conditionnel de QoolieNext"
+
+# Commit 9: Modification minimale Qoolie
+git add src/lib/Qoolie.ts
+git commit -m "feat: support mode online-only dans Qoolie"
+```
+
+### Phase 3 : Hooks Serveur (1 semaine - main)
+```bash
+# Commit 10: Intégration Idae-API
+git add packages/idae-api/src/lib/socketIntegration.ts
+git commit -m "feat: hooks DB → WebSocket dans Idae-API"
+
+# Commit 11: Broadcast événements
+git add packages/idae-api/src/lib/eventBroadcaster.ts
+git commit -m "feat: broadcast des événements CRUD"
+```
+
+### Phase 4 : Réactivité (1 semaine - main)
+```bash
+# Commit 12: Réactivité Svelte
+git add src/lib/reactive/svelteStores.ts
+git commit -m "feat: stores réactifs pour tous les modes"
+
+# Commit 13: Gestion cache
+git add src/lib/cache/cacheManager.ts
+git commit -m "feat: cache unifié avec invalidation"
+```
+
+### Phase 5 : Stabilisation (2 semaines - main)
+```bash
+# Commit 14: Tests de non-régression
+git add packages/qoolie/src/__tests__/compatibility.test.ts
+git commit -m "test: validation compatibilité ascendante"
+
+# Commit 15: Optimisations
+git add src/lib/optimizations
+git commit -m "perf: optimisations multi-mode"
+
+# Commit 16: Documentation
+git add docs/qoolie-multimode.md
+git commit -m "docs: guide complet multi-mode"
+```
+
+## Garanties de Non-Régression
+
+### 1. Tests Automatiques
+```bash
+# Avant chaque commit
+pnpm test > baseline.txt
+
+# Après commit
+pnpm test > current.txt
+
+# Validation
+diff baseline.txt current.txt | grep -v "PASS.*new" | should be empty
+```
+
+### 2. Feature Flags
+```typescript
+// Dans package.json
+"featureFlags": {
+  "online-only": false,  // Désactivé par défaut
+  "local-only": false    // Désactivé par défaut
+}
+
+// Activation progressive
+if (process.env.ENABLE_ONLINE_ONLY) {
+  // Nouveau code
+}
+```
+
+### 3. Déploiement Progressif
+```bash
+# Étape 1: Code inactif
+npm version patch
+npm publish
+
+# Étape 2: Activation optionnelle
+npm version minor --tag=next
+npm publish --tag=next
+
+# Étape 3: Activation par défaut
+npm version minor
+npm publish
+```
+
+## Estimation Réaliste
+
+| Phase | Durée | Commits | Risque |
+|-------|-------|---------|--------|
+| 0. Préparation | 1 sem | 3 | Très faible |
+| 1. Storage Adapters | 2 sem | 3 | Faible |
+| 2. Intégration Qoolie | 2 sem | 3 | Moyen |
+| 3. Hooks Serveur | 1 sem | 2 | Moyen |
+| 4. Réactivité | 1 sem | 2 | Faible |
+| 5. Stabilisation | 2 sem | 3 | Faible |
+| **Total** | **8-9 sem** | **16** | **Gérable** |
+
+**Points clés** :
+- 16 petites commits atomiques
+- Chaque commit < 200 lignes changées
+- Tests de non-régression entre chaque commit
+- Pas de rupture de compatibilité
+- Déploiement progressif possible
+
+## Conclusion
+
+**OUI, cette évolution est réalisable SANS branches** grâce à :
+
+1. ✅ **Approche incrémentale** (petites commits)
+2. ✅ **Nouveaux fichiers** (pas de modification destructive)
+3. ✅ **Feature flags** (activation progressive)
+4. ✅ **Tests exhaustifs** (non-régression garantie)
+5. ✅ **Compatibilité maintenue** (API inchangée par défaut)
+
+**Recommandation** :
+- Commencer par la Phase 0 (préparation)
+- Valider chaque commit avec les tests existants
+- Documenter chaque étape
+- Déployer progressivement
+
+Cette approche permet d'évoluer en toute sécurité tout en modernisant l'architecture comme prévu initialement.
 
 ## Conclusion
 
