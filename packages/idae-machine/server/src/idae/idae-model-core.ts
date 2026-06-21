@@ -84,12 +84,11 @@ export const idaeModelCore = {
 				isGroup:  { required: false, readonly: true  },
 				isStatus: { required: false, readonly: true  },
 				// fkRelations: the described collection's relation descriptors
-				// ({code,multiple,required}), split from the record's own `fks` value-bag
-				// (RATIONALIZE #1). Injected by publishModel, read by MachineServer.getModel.
-				fkRelations: { required: false, readonly: true },
-				// _views intentionally absent: stored directly on the appscheme document
-				// (injected by publishModel, read by MachineServer.getModel → ViewFields),
-				// never a user-facing schema field.
+				// ({code,multiple,required}). Stored on the appscheme document (written by
+				// publishModel, read by MachineServer.getModel → in-memory model.fks). NOT
+				// declared as a renderable scalar field here — it's an object map; declaring
+				// it makes DataRecord print "[object Object]". A proper relations-editor view
+				// is future work. _views likewise stays off the field list.
 			},
 			fks: {
 				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true  },
