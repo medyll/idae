@@ -102,13 +102,20 @@ dialog.idae-dialog {
 }
 
 @layer components {
-    :global(table.data-table) {
+    /* Plain stylesheet (imported via app.css) — no Svelte `:global()` here;
+       it is invalid in real CSS and silently drops the whole rule. */
+    table.data-table {
         width: 100%;
         border-collapse: collapse;
         position: relative;
         font-size: var(--text-sm, 0.875rem);
+        /* Don't let a flex parent (explorer-body) stretch the table to full
+           height — that would divide the height across the few rows and
+           balloon each row. Size to content, top-aligned. */
+        align-self: flex-start;
+        height: max-content;
     }
-    :global(table.data-table thead th) {
+    table.data-table thead th {
         color: var(--color-text, #333);
         height: 2.4em;
         line-height: 2.4em;
@@ -127,36 +134,37 @@ dialog.idae-dialog {
         text-transform: capitalize;
         font-weight: var(--font-medium, 500);
     }
-    :global(table.data-table thead th:hover) {
+    table.data-table thead th:hover {
         background-color: var(--color-surface-hover);
     }
-    :global(table.data-table thead th.sorted) {
+    table.data-table thead th.sorted {
         background-color: var(--color-surface-active);
     }
-    :global(table.data-table .sort-arrow) {
+    table.data-table .sort-arrow {
         font-size: 0.7em;
         opacity: 0.6;
         margin-left: 0.3em;
     }
-    :global(table.data-table tbody tr.clickable) {
+    table.data-table tbody tr.clickable {
         cursor: pointer;
     }
-    :global(table.data-table tbody td) {
+    table.data-table tbody td {
         white-space: nowrap;
         line-height: 22px;
-        min-height: 22px;
+        height: 22px;
         overflow: hidden;
         text-overflow: ellipsis;
         max-width: 200px;
         border-bottom: 1px solid var(--color-border, #ededed);
         padding: 0 0.5em;
+        vertical-align: middle;
         color: var(--color-text);
     }
-    :global(table.data-table tbody tr:hover td) {
+    table.data-table tbody tr:hover td {
         background-color: var(--color-surface-hover);
         box-shadow: 0 1px 0 0 var(--color-border) inset, 0 -1px 0 0 var(--color-border) inset;
     }
-    :global(table.data-table tbody tr:nth-child(5n+3) td) {
+    table.data-table tbody tr:nth-child(5n+3) td {
         background-color: var(--color-surface, #f5f5f5);
     }
 }
