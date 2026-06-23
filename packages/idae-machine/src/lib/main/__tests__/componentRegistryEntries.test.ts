@@ -56,12 +56,13 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('diagram')).toBe(true);
 	});
 
-	it('has exactly 14 entries', () => {
+	it('has exactly 16 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(15);
+		expect(keys).toHaveLength(16);
 		expect(keys.sort()).toEqual([
 			'ai.chat-session',
 			'columner',
+			'contextmenu',
 			'dashboard',
 			'diagram',
 			'explorer',
