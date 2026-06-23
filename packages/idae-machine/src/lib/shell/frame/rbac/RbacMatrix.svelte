@@ -29,9 +29,9 @@ Composes existing store API + FieldBoolean. No custom field logic.
 	const groupStore = machine.store('appuser_group');
 	const groups = $derived(groupStore.records as Array<Record<string, unknown>>);
 
-	const grantStore = machine.store('appuser_grant');
 	const grants = $derived.by(() => {
 		if (!selectedGroupId) return [] as Array<Record<string, unknown>>;
+		const grantStore = machine.store('appuser_grant');
 		return grantStore.records.filter(g => {
 			const fks = g.fks as Record<string, { id?: string }> | undefined;
 			return fks?.appuser_group?.id === selectedGroupId;
@@ -55,17 +55,15 @@ Composes existing store API + FieldBoolean. No custom field logic.
 
 	async function toggleCell(collectionCode: string, op: Op): Promise<void> {
 		if (!selectedGroupId) return;
-		const store = machine.collection('appuser_grant');
-		if (!store) return;
 
 		const existing = grantByCollection.get(collectionCode);
 		const newValue = !getOp(collectionCode, op);
 
 		if (existing) {
-			await store.update(existing.id as string, { [op]: newValue });
+			await machine.action('appuser_grant', { [op]: newValue }, { upsertOn: ['id'] });
 		} else {
 			const group = groups.find(gr => gr.id === selectedGroupId);
-			await store.create({
+			await machine.action('appuser_grant', {
 				code:      `${collectionCode}_${selectedGroupId}`,
 				grantType: 'group',
 				c: false, r: false, u: false, d: false, l: false, x: false,
@@ -76,7 +74,7 @@ Composes existing store API + FieldBoolean. No custom field logic.
 					appscheme:     { code: collectionCode },
 					appuser_group: { id: selectedGroupId, code: group?.code, name: group?.name },
 				},
-			} as Record<string, unknown>);
+			}, { upsertOn: ['appscheme', 'appuser_group'] });
 		}
 	}
 
