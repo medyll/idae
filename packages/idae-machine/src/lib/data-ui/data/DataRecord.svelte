@@ -4,7 +4,8 @@ Iterates a record's fields and renders DataField for each.
 @role data-record
 @prop {string} collection - Collection name
 @prop {Record<string,any>} data - Record data (bindable)
-@prop {'show'|'create'|'update'|'row'} [mode] - Display mode. 'row' emits <td> per field for use inside <tr> (no groupBy support in this mode).
+@prop {'show'|'create'|'update'} [mode] - CRUD state, independent of layout.
+@prop {'fields'|'row'} [as] - Layout wrapper. 'row' emits <td> per field for use inside <tr> (no groupBy support). Does not affect `mode`.
 @prop {string[]} [showFields] - Explicit field list, bypasses the view query entirely
 @prop {string} [view] - Named view (resolved via appscheme_view/appscheme_field query — see useViewFields)
 @prop {string} [groupFieldBy] - FK relation key on appscheme_field to group by (e.g. 'appscheme_field_type'); grouping runs on `fks.{groupFieldBy}.code` via native groupBy
@@ -22,6 +23,7 @@ Iterates a record's fields and renders DataField for each.
 		collectionId,
 		data = $bindable(),
 		mode = 'show',
+		as = 'fields',
 		showFields,
 		view = 'full',
 		groupFieldBy,
@@ -33,7 +35,8 @@ Iterates a record's fields and renders DataField for each.
 		collection: string;
 		collectionId?: string | number;
 		data?: Record<string, any>;
-		mode?: 'show' | 'create' | 'update' | 'row';
+		mode?: 'show' | 'create' | 'update';
+		as?: 'fields' | 'row';
 		showFields?: string[];
 		view?: string;
 		groupFieldBy?: string;
@@ -79,12 +82,16 @@ Iterates a record's fields and renders DataField for each.
  
 </script>
 
-{#if mode === 'row'}
+{#if as === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}
 		{#each fieldNames as fieldName (fieldName)}
 			{#if (scheme.fields?.[fieldName] || isFkField(fieldName)) && (fieldName in effectiveData || isFkField(fieldName))}
 				<td>
-					<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
+					{#if mode === 'show'}
+						<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
+					{:else if data !== undefined}
+						<DataField {collection} {fieldName} {mode} bind:data showLabel={false} />
+					{/if}
 				</td>
 			{/if}
 		{/each}

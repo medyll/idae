@@ -22,9 +22,9 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Implement S49-01 — DataList itemMode='update' per item (revised BL-09, S49-02 done)"
-next_command: "bmad-dev-story S49-01"
-next_role: "dev"
+next_action: "Sprint 49 complete — S49-01 and S49-02 done. Next: Sprint 50 planning (BL-13 menu generator)"
+next_command: "bmad-plan-sprint 50"
+next_role: "plan"
 active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
@@ -143,7 +143,8 @@ architecture:
 sprints:
   - id: 49
     goal: "DataList mode 'form' + menu pref scopes — 2 stories, 2 parallel agents"
-    status: planned
+    status: complete
+    completed_at: "2026-06-23"
     artifact: "bmad/artifacts/sprint-49-planned.md"
     note: >
       S49-01 (BL-09, unblocked by S48-01) and S49-02 (BL-12, no dep) — zero file
@@ -154,12 +155,18 @@ sprints:
       - id: S49-01
         title: "DataList itemMode prop — drive DataRecord's existing 'update' mode per item, no new layout mode"
         backlog_ref: BL-09
-        status: planned
+        status: done
         effort: L
-        note: >
-          REVISED 2026-06-23: original mode='form' idea rejected (user) — collides with
-          DataRecord/DataField's real mode union (show/create/update/row, ADR-06 sole
-          field-iterator rule). Reuse itemMode='update' instead of inventing a parallel
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_result: pass
+        detail: >
+          Added itemMode prop to DataList.svelte (defaults to 'show', accepts 'show' | 'update').
+          Updated renderItem snippet to pass mode={itemMode} to DataRecord in list/grid modes.
+          Table mode remains unchanged (uses mode="row" for structural layout). Zero new field-iteration
+          logic — DataRecord remains the sole field iterator per ADR-06. Verified via svelte-check
+          (0 errors) and existing DataList test suite (11/11 passed). grep confirms no 'form' mode
+          added to DataList's mode union.
           DataList layout mode. Reverted stray mode='form' edit on DataList.svelte:72.
       - id: S49-02
         title: "Menu pref scopes — zone→pref module + défauts + dev show-all"

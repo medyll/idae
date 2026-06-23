@@ -16,8 +16,9 @@ Consumers can override via the item snippet.
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
+@prop {'show'|'update'} [crudMode='show'] - CRUD state per record (show vs editable). Forwarded to DataRecord.
 @snippet item({ record, idx, fieldValues }) - Custom record rendering (list + grid only).
-  Ignored in table mode — table delegates to DataRecord mode="row" (structural layout).
+  Ignored in table mode — table delegates to DataRecord as="row" (structural layout), crudMode still applies.
 @snippet groupHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
@@ -60,6 +61,7 @@ Consumers can override via the item snippet.
 		linkCollectionField,
 		usePrefs = true,
 		prefsScope: prefsScopeProp,
+		crudMode = 'show',
 		item: itemSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
@@ -85,6 +87,8 @@ Consumers can override via the item snippet.
 		usePrefs?: boolean;
 		/** Override appuser_prefs scope key. Defaults to `datalist.{collection}`. */
 		prefsScope?: string;
+		/** CRUD state for DataRecord rendering per record ('show' | 'update'). Defaults to 'show'. */
+		crudMode?: 'show' | 'update';
 		item?: Snippet<[{ collection: TplCollectionName, collectionId: number, record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
@@ -287,7 +291,7 @@ Consumers can override via the item snippet.
 		data-contextual={`collection=${collection}&collectionId=${(record as Record<string, unknown>)[indexField]}`}
 	>
 		{#if currentMode === 'table'}
-			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />
+			<DataRecord {collection} data={record as Record<string, any>} mode={crudMode} as="row" {view} />
 		{:else if itemSnippet}
 			{@render itemSnippet({collection,collectionId:record?.id as number, record, idx, fieldValues })}
 		{:else}
@@ -295,7 +299,7 @@ Consumers can override via the item snippet.
 			{@const label = renderPresentation(rec)}
 			<button type="button" class="data-list-link"
 				onclick={() => parsedLink ? navigate(rec) : handleItemClick(record)}>
-				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode="show" />{/if}
+				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode={crudMode} />{/if}
 			</button>
 		{/if}
 	</svelte:element>
