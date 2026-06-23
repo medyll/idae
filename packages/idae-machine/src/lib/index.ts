@@ -32,6 +32,16 @@ export { default as Group }        from '$lib/data-ui/controls/Group.svelte';
 export { default as Find }         from '$lib/data-ui/controls/Find.svelte';
 export { default as ListMode }     from '$lib/data-ui/controls/ListMode.svelte';
 
+// UI — prefs helpers
+export {
+	MENU_ZONES,
+	menuPrefsScope,
+	menuPrefsPrefix,
+	isMenuCollectionVisible,
+	filterMenuCollections
+} from '$lib/data-ui/utils/menuPrefs.js';
+export type { MenuZone, MenuZonePrefix } from '$lib/data-ui/utils/menuPrefs.js';
+
 // UI — field atoms (show + edit, dispatched by DataField)
 export { default as FieldText }     from '$lib/data-ui/field/snippets/FieldText.svelte';
 export { default as FieldBoolean }  from '$lib/data-ui/field/snippets/FieldBoolean.svelte';
