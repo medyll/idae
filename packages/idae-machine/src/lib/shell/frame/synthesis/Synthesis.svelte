@@ -4,6 +4,7 @@
 	import DataListRfk from '$lib/data-ui/data/DataListRfk.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import FicheToolbar from '$lib/shell/layout/FicheToolbar.svelte';
 
 	let {
 		collection,
@@ -116,38 +117,11 @@
 			</group-info>
 		</synthesis-header>
 
-		<synthesis-tabs>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'sheet'}
-				onclick={() => (activeTab = 'sheet')}
-			>
-				Fiche
-			</button>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'synthesis'}
-				onclick={() => (activeTab = 'synthesis')}
-			>
-				Synthèse
-			</button>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'edit'}
-				onclick={() => (activeTab = 'edit')}
-			>
-				Modifier
-			</button>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'full'}
-				onclick={() => (activeTab = 'full')}
-			>
-				Vue complète
-			</button>
-		</synthesis-tabs>
+		<fiche-header>
+			<FicheToolbar {collection} {collectionId} />
+		</fiche-header>
 
-		<synthesis-toolbar>
+		<synthesis-tabs>
 			<button
 				class="action-home"
 				aria-label="Home"
@@ -161,7 +135,7 @@
 					{rfk.collection}
 				</button>
 			{/each}
-		</synthesis-toolbar>
+		</synthesis-tabs>
 
 		<synthesis-panes>
 			<synthesis-pane-left>
@@ -176,11 +150,11 @@
 					<DataRecord {collection} data={record} mode="show" />
 				{/if}
 			</synthesis-pane-left>
-			<synthesis-pane-right> {collectionId}
-				<DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk"  />
-				<!-- {#if record}
-					<DataListRfk {collection} recordId={collectionId} showTitle={true} ></DataListRfk>
-				{/if} -->
+			<synthesis-pane-right>
+				<DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk" />
+				{#if record}
+					<DataListRfk {collection} recordId={collectionId} showTitle={true} />
+				{/if}
 			</synthesis-pane-right>
 		</synthesis-panes>
 	</synthesis-main>
