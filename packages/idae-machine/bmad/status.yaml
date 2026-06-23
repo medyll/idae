@@ -22,9 +22,9 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 49 complete — S49-01 and S49-02 done. Next: Sprint 50 planning (BL-13 menu generator)"
-next_command: "bmad-plan-sprint 50"
-next_role: "plan"
+next_action: "S50-02 done — implement remaining S50-01 (menu generator, BL-13) to close Sprint 50."
+next_command: "bmad continue"
+next_role: "dev"
 active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
@@ -140,7 +140,110 @@ architecture:
         Ref stories: S42-01 (partiel), S43-01 (fix).
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
+# Epic MAIN-MENU full spec: bmad/artifacts/epic-main-menu.md (all stories BL-11..BL-19,
+# launch verbs, 2-agent sequencing, single-file contention rules). Sprints 51-55 below
+# drain it; all gate on S50-01 (BL-13 keystone) landing first.
 sprints:
+  - id: 53
+    goal: "MAIN-MENU — settings gear + ContextMenu record-data prep (epic-main-menu.md)"
+    status: planned
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50, 51, 52]
+    note: >
+      BL-18 (TaskBar gear) and BL-24 (ContextMenuContent useRecordData) — disjoint files.
+      BL-18 must NOT share a sprint with BL-15 (both touch TaskBar.svelte — BL-15 is in
+      sprint 52). BL-24 is first of the serialized ContextMenuContent trio (BL-24→BL-22→BL-17).
+    stories:
+      - id: S53-01
+        title: "BL-18 — Per-zone settings gear (replace mock, pref editor via machine.action)"
+        backlog_ref: BL-18
+        status: planned
+        effort: M
+      - id: S53-02
+        title: "BL-24 — Rune partagée useRecordData (ContextMenu record-data, prep for BL-22/BL-17)"
+        backlog_ref: BL-24
+        status: planned
+        effort: M
+
+  - id: 52
+    goal: "MAIN-MENU — recent-history panel + waffle/start overlay (epic-main-menu.md)"
+    status: planned
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50]
+    note: >
+      BL-19 (right-zone recent panel) and BL-15 (waffle overlay + TaskBar waffle button) —
+      disjoint files. BL-15 touches TaskBar.svelte → keep apart from BL-18 (sprint 53).
+      BL-19 touches TemplateShell right zone → kept apart from BL-14 sidebar zone (sprint 51).
+    stories:
+      - id: S52-01
+        title: "BL-19 — Right recent-history panel (appuser_history 30d/15, pref app_panel)"
+        backlog_ref: BL-19
+        status: planned
+        effort: M
+      - id: S52-02
+        title: "BL-15 — Waffle / start overlay (type→collection launch + launch_all)"
+        backlog_ref: BL-15
+        status: planned
+        effort: L
+
+  - id: 51
+    goal: "MAIN-MENU — sidebar tree + today dashboard (first visible zones, epic-main-menu.md)"
+    status: planned
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50]
+    note: >
+      Both consume the BL-13 generator (S50-01). BL-14 (TemplateShell sidebar zone, new
+      MenuTree) and BL-16 (new 'today' frame + registry) — disjoint files. Precondition:
+      confirm appscheme rows carry icon/color/label/type (epic §8) or add BL-25 seed audit
+      ahead of BL-14.
+    stories:
+      - id: S51-01
+        title: "BL-14 — Sidebar tree by appscheme_type (replaces flat DataList sidebar)"
+        backlog_ref: BL-14
+        status: planned
+        effort: M
+      - id: S51-02
+        title: "BL-16 — Today dashboard frame (quick-create + my-lists + échéancier)"
+        backlog_ref: BL-16
+        status: planned
+        effort: L
+
+  - id: 50
+    goal: "Menu generator (BL-13) + DataList groupBy fix (BL-20) — 2 stories, 2 parallel agents"
+    status: planned
+    artifact: "bmad/artifacts/sprint-50-planned.md"
+    note: >
+      S50-01 (BL-13, unblocked — BL-11+BL-12 both done) and S50-02 (BL-20, no dep) —
+      zero file overlap (new menu store/framer layer vs DataList group-rendering branches).
+      Flagged: BL-05/BL-23 still ADR-blocked; BL-22/BL-24 still same-file overlap; BL-21
+      ready but held for capacity, candidate for sprint 51.
+    stories:
+      - id: S50-01
+        title: "Menu generator (framer enrichi) — arbre réactif rights∩prefs∩appscheme"
+        backlog_ref: BL-13
+        status: planned
+        effort: M
+      - id: S50-02
+        title: "groupBy fonctionne pour TOUS les modes DataList (table + grid inclus)"
+        backlog_ref: BL-20
+        status: done
+        effort: M
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_output: "pnpm run check: 0 errors; pnpm run test: 69 files / 730 tests passed. New DataRelations.svelte.test.ts groupBy across modes: 4/4 passed."
+        test_result: pass
+        test_artifact: "bmad/artifacts/test-results-S50-02.md"
+        detail: >
+          Refactored DataList.svelte to apply effectiveGroupBy in all three modes.
+          Table: one <tbody> per group with a <th colspan> header row.
+          Grid: one .grid-list per group under a .data-list-group-header.
+          List: unchanged grouped behavior, now using shared renderGroupHeader snippet.
+          Added 4 component tests in DataRelations.svelte.test.ts covering list/table/grid
+          group rendering plus flat fallback. Extended testCore with appscheme_view meta and
+          added seedViewFields() helper so table/grid modes can resolve view fields.
+          Also fixed an uncommitted S50-01 module-load crash (machineMenuManager singleton
+          importing machine directly) that blocked all test imports.
+
   - id: 49
     goal: "DataList mode 'form' + menu pref scopes — 2 stories, 2 parallel agents"
     status: complete
@@ -161,13 +264,20 @@ sprints:
         tests_executed: true
         test_result: pass
         detail: >
-          Added itemMode prop to DataList.svelte (defaults to 'show', accepts 'show' | 'update').
-          Updated renderItem snippet to pass mode={itemMode} to DataRecord in list/grid modes.
-          Table mode remains unchanged (uses mode="row" for structural layout). Zero new field-iteration
-          logic — DataRecord remains the sole field iterator per ADR-06. Verified via svelte-check
-          (0 errors) and existing DataList test suite (11/11 passed). grep confirms no 'form' mode
-          added to DataList's mode union.
-          DataList layout mode. Reverted stray mode='form' edit on DataList.svelte:72.
+          CORRECTED 2026-06-23 (user caught a real bug mid-review — 'row' was a layout flag
+          masquerading as a CRUD state, and it silently discarded the real mode in DataRecord's
+          row branch). Final shape: DataList prop renamed itemMode→crudMode ('item' prefix
+          banned in this app's naming convention; crudMode also names the actual axis — CRUD
+          state, not layout). DataRecord.svelte split into two independent props: mode
+          ('show'|'create'|'update', the real CRUD state) and as ('fields'|'row', the layout
+          wrapper) — previously both were jammed into one 'mode' enum and the row branch
+          hardcoded literal mode="show" regardless of caller intent. Row branch now renders
+          DataField with the real {mode} (bind:data when not 'show'), mirroring the existing
+          fields-branch pattern. DataList's table-mode DataRecord call now passes
+          mode={crudMode} as="row" instead of the old mode="row" — table layout can finally
+          render editable cells. Verified: svelte-check 0 errors, full suite 717/717 (up from
+          702 — S49-02's 15 menuPrefs tests also landed). grep confirms 'row' no longer
+          appears anywhere in DataRecord/DataList's mode type union, only in the new `as` prop.
       - id: S49-02
         title: "Menu pref scopes — zone→pref module + défauts + dev show-all"
         backlog_ref: BL-12

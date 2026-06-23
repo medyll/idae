@@ -4,7 +4,7 @@ import { getGrantDecoder } from '$lib/machine/ext/hooks.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
 
-class MachineRights {
+export class MachineRights {
 	#currentUser: AppUser | null = null;
 	#grants: AppUserGrant[] = [];
 	#authEnabled = false;

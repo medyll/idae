@@ -27,6 +27,42 @@ const testCore: MachineModel = {
 		fkRelations: {},
 		template: { presentation: 'code' }
 	},
+	appscheme_view_type: {
+		keyPath: '++id',
+		base: 'machine_app',
+		model: {},
+		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
+		fkRelations: {},
+		template: { presentation: 'code' }
+	},
+	appscheme_field_type: {
+		keyPath: '++id',
+		base: 'machine_app',
+		model: {},
+		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
+		fkRelations: {},
+		template: { presentation: 'code' }
+	},
+	appscheme_field: {
+		keyPath: '++id',
+		base: 'machine_app',
+		model: {},
+		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
+		fkRelations: { appscheme_field_type: { code: 'appscheme_field_type', multiple: false, required: true } },
+		template: { presentation: 'code' }
+	},
+	appscheme_view: {
+		keyPath: '++id',
+		base: 'machine_app',
+		model: {},
+		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
+		fkRelations: {
+			appscheme: { code: 'appscheme', multiple: false, required: true },
+			appscheme_view_type: { code: 'appscheme_view_type', multiple: false, required: true },
+			appscheme_field: { code: 'appscheme_field', multiple: false, required: true }
+		},
+		template: { presentation: 'fks.appscheme.code fks.appscheme_view_type.code fks.appscheme_field.code' }
+	},
 	appuser_prefs: {
 		keyPath: '++id',
 		base: 'machine_user',
@@ -41,6 +77,30 @@ const testCore: MachineModel = {
 		template: { presentation: 'code' }
 	}
 };
+
+async function seedViewFields(collectionCode: string, viewCode: string, fieldCodes: string[]): Promise<void> {
+	await machine.collection('appscheme').create({
+		code: collectionCode,
+		fks: {},
+		fkRelations: (demoScheme as any)[collectionCode]?.fkRelations ?? {}
+	});
+	await machine.collection('appscheme_view_type').create({ code: viewCode, fks: {} });
+	await machine.collection('appscheme_field_type').create({ code: 'scalar', fks: {} });
+	for (const code of fieldCodes) {
+		await machine.collection('appscheme_field').create({
+			code,
+			fks: { appscheme_field_type: { code: 'scalar' } }
+		});
+		await machine.collection('appscheme_view').create({
+			code: `${collectionCode}.${viewCode}.${code}`,
+			fks: {
+				appscheme: { code: collectionCode },
+				appscheme_view_type: { code: viewCode },
+				appscheme_field: { code }
+			}
+		});
+	}
+}
 
 async function bootMachine(dbName: string): Promise<void> {
 	machine.destroy();
@@ -197,6 +257,56 @@ describe('DataList relation components', () => {
 			await seedFindPref('datalist.vehicle', { status: 'retired' });
 			render(DataListRfk, { collection: 'category', recordId: 1 });
 			expect(await screen.findByText(/AA-111-BB/)).not.toBeNull();
+		});
+	});
+
+	describe('DataList groupBy across modes', () => {
+		beforeEach(async () => {
+			await bootMachine(nextDbName('datalist-group'));
+			await seedDemoRelations();
+			await seedViewFields('vehicle', 'full', ['license_plate', 'model', 'brand', 'status']);
+		});
+
+		it('groups items in list mode', async () => {
+			render(DataList, { collection: 'vehicle', groupBy: 'brand', usePrefs: false });
+			const groups = document.querySelectorAll('.data-list-group');
+			expect(groups.length).toBeGreaterThanOrEqual(2);
+			const headers = document.querySelectorAll('.data-list-group-header');
+			const headerTexts = Array.from(headers).map((h) => h.textContent);
+			expect(headerTexts.some((t) => t?.includes('Renault'))).toBe(true);
+			expect(headerTexts.some((t) => t?.includes('Peugeot'))).toBe(true);
+		});
+
+		it('groups items in table mode', async () => {
+			render(DataList, { collection: 'vehicle', groupBy: 'brand', mode: 'table', usePrefs: false });
+			const table = await screen.findByRole('table');
+			expect(table).not.toBeNull();
+			const groupHeaders = table.querySelectorAll('.data-list-group-header');
+			expect(groupHeaders.length).toBeGreaterThanOrEqual(2);
+			const headerTexts = Array.from(groupHeaders).map((h) => h.textContent);
+			expect(headerTexts.some((t) => t?.includes('Renault'))).toBe(true);
+			expect(headerTexts.some((t) => t?.includes('Peugeot'))).toBe(true);
+		});
+
+		it('groups items in grid mode', async () => {
+			render(DataList, { collection: 'vehicle', groupBy: 'brand', mode: 'grid', usePrefs: false });
+			const groups = await waitFor(() => {
+				const g = document.querySelectorAll('.data-list-group');
+				if (g.length < 2) throw new Error('waiting for groups');
+				return g;
+			});
+			expect(groups.length).toBeGreaterThanOrEqual(2);
+			const grids = document.querySelectorAll('.grid-list');
+			expect(grids.length).toBeGreaterThanOrEqual(2);
+			const headerTexts = Array.from(document.querySelectorAll('.data-list-group-header')).map((h) => h.textContent);
+			expect(headerTexts.some((t) => t?.includes('Renault'))).toBe(true);
+			expect(headerTexts.some((t) => t?.includes('Peugeot'))).toBe(true);
+		});
+
+		it('falls back to flat rendering when groupBy is absent', async () => {
+			render(DataList, { collection: 'vehicle', mode: 'table', usePrefs: false });
+			const table = await screen.findByRole('table');
+			expect(table.querySelector('.data-list-group-header')).toBeNull();
 		});
 	});
 });

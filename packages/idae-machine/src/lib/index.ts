@@ -42,6 +42,15 @@ export {
 } from '$lib/data-ui/utils/menuPrefs.js';
 export type { MenuZone, MenuZonePrefix } from '$lib/data-ui/utils/menuPrefs.js';
 
+// Menu system
+export { MachineMenuManager, createDefaultLaunchVerbs } from '$lib/main/menu/MachineMenuManager.js';
+export type {
+	MenuTree,
+	MenuItem,
+	MenuLaunchVerb,
+	MenuLaunchVerbs
+} from '$lib/main/menu/MachineMenuManager.js';
+
 // UI — field atoms (show + edit, dispatched by DataField)
 export { default as FieldText }     from '$lib/data-ui/field/snippets/FieldText.svelte';
 export { default as FieldBoolean }  from '$lib/data-ui/field/snippets/FieldBoolean.svelte';

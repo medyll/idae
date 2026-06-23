@@ -10,8 +10,13 @@ import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
+import { MachineMenuManager } from '$lib/main/menu/MachineMenuManager.js';
 import { foldFksIntoRecord } from '$lib/main/machine/MachineFkFold.js';
+import { readable } from 'svelte/store';
 import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
+
+// Menu manager singleton — created lazily at boot
+let machineMenuManager: MachineMenuManager;
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
@@ -103,6 +108,9 @@ export class Machine {
 
 	/** Frame manager — handles dynamic frame registration and content loading */
 	private readonly _frameManager = machineFrameManager;
+
+	/** Menu manager — created during boot to avoid module-level machine dependency. */
+	private _menuManager?: MachineMenuManager;
 
 	/** Bound contextmenu listener — kept for removal in destroy(). */
 	private _contextMenuHandler?: (e: MouseEvent) => void;
@@ -353,11 +361,10 @@ export class Machine {
 				}
 			};
 
-			this._contextMenuHandler = handleContextMenu;
-			document.addEventListener('contextmenu', handleContextMenu);
-		}
+		this._contextMenuHandler = handleContextMenu;
+		document.addEventListener('contextmenu', handleContextMenu);
 	}
-
+}
 
 	/**
 	 * Get the IDbBase (schema logic) instance.
@@ -601,6 +608,14 @@ export class Machine {
 	/** Access to the frame manager singleton. */
 	get framer() {
 		return this._frameManager;
+	}
+
+	/** Access to the menu manager. Created lazily; reactive wiring is deferred to component consumption. */
+	get menu() {
+		if (!this._menuManager) {
+			this._menuManager = new MachineMenuManager(this._frameManager, this.rights);
+		}
+		return this._menuManager;
 	}
 
 	/** Access to the component registry singleton. */

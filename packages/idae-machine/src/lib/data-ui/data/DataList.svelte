@@ -282,6 +282,14 @@ Consumers can override via the item snippet.
  
 </script>
 
+{#snippet renderGroupHeader(key: string, count: number)}
+	{#if groupHeaderSnippet}
+		{@render groupHeaderSnippet({ key, count })}
+	{:else}
+		{key}<span class="data-list-group-count">{count}</span>
+	{/if}
+{/snippet}
+
 {#snippet renderItem(record: COL, idx: number)}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<svelte:element
@@ -333,45 +341,88 @@ Consumers can override via the item snippet.
 				{/each}
 			</tr>
 		</thead>
-		<tbody>
-			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
-				{@render renderItem(record as COL, idx)}
+		{#if groups}
+			{#each Array.from(groups) as [key, groupItems] (key)}
+				<tbody>
+					<tr>
+						<th colspan={tableColumns.length} class="data-list-group-header">
+							{@render renderGroupHeader(key, groupItems.length)}
+						</th>
+					</tr>
+					{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
+						{@render renderItem(record as COL, idx)}
+					{/each}
+				</tbody>
 			{/each}
-			{#if !paginatedItems.length}
-				<tr><td colspan={tableColumns.length}>
-					{#if emptySnippet}{@render emptySnippet()}{:else}—{/if}
-				</td></tr>
-			{/if}
-		</tbody>
+		{:else}
+			<tbody>
+				{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+					{@render renderItem(record as COL, idx)}
+				{/each}
+				{#if !paginatedItems.length}
+					<tr><td colspan={tableColumns.length}>
+						{#if emptySnippet}{@render emptySnippet()}{:else}—{/if}
+					</td></tr>
+				{/if}
+			</tbody>
+		{/if}
 	</table>
 {:else if currentMode === 'grid'}
-	<ul class="grid-list" role="list">
-		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
-			<li class="grid-item panel panel-bordered">
-				<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
-					<div class="grid-item-content">
-						<DataRecord
-							{collection}
-							data={record as Record<string, any>}
-							mode="show"
-							{view}
-						/>
-					</div>
-				</button>
-			</li>
+	{#if groups}
+		{#each Array.from(groups) as [key, groupItems] (key)}
+			<div class={groupClass ?? 'data-list-group'}>
+				<div class="data-list-group-header">
+					{@render renderGroupHeader(key, groupItems.length)}
+				</div>
+				<ul class="grid-list" role="list">
+					{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
+						<li class="grid-item panel panel-bordered">
+							<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
+								<div class="grid-item-content">
+									<DataRecord
+										{collection}
+										data={record as Record<string, any>}
+										mode="show"
+										{view}
+									/>
+								</div>
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
 		{/each}
-		{#if !paginatedItems.length}
-			{#if emptySnippet}
-				{@render emptySnippet()}
-			{:else}
-				<li class="data-list-empty">—</li>
+	{:else}
+		<ul class="grid-list" role="list">
+			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+				<li class="grid-item panel panel-bordered">
+					<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
+						<div class="grid-item-content">
+							<DataRecord
+								{collection}
+								data={record as Record<string, any>}
+								mode="show"
+								{view}
+							/>
+						</div>
+					</button>
+				</li>
+			{/each}
+			{#if !paginatedItems.length}
+				{#if emptySnippet}
+					{@render emptySnippet()}
+				{:else}
+					<li class="data-list-empty">—</li>
+				{/if}
 			{/if}
-		{/if}
-	</ul>
+		</ul>
+	{/if}
 {:else if groups}
 	{#each Array.from(groups) as [key, groupItems] (key)}
 		<div class={groupClass ?? 'data-list-group'}>
-			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{:else}<div class="data-list-group-header">{key}<span class="data-list-group-count">{groupItems.length}</span></div>{/if}
+			<div class="data-list-group-header">
+				{@render renderGroupHeader(key, groupItems.length)}
+			</div>
 			<ul class={resolvedListClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
 					{@render renderItem(record as COL, idx)}
@@ -435,6 +486,10 @@ Consumers can override via the item snippet.
 			letter-spacing: 0.03em;
 			color: var(--color-text-muted, #888);
 			border-bottom: 1px solid var(--color-border);
+		}
+		:global(.data-table .data-list-group-header) {
+			text-align: left;
+			background: var(--color-surface-raised, var(--color-surface, #f7f7f7));
 		}
 		:global(.data-list-group-count) {
 			font-weight: 400;
