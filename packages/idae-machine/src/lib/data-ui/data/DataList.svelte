@@ -284,6 +284,7 @@ Consumers can override via the item snippet.
 		this={currentMode === 'table' ? 'tr' : 'li'}
 		class:clickable={currentMode === 'table' && !!parsedLink}
 		onclick={currentMode === 'table' ? () => handleItemClick(record) : undefined}
+		data-contextual={`collection=${collection}&collectionId=${(record as Record<string, unknown>)[indexField]}`}
 	>
 		{#if currentMode === 'table'}
 			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />

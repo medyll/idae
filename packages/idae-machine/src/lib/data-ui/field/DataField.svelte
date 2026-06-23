@@ -168,9 +168,9 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
 
 {#if fieldForge}
     {#if !isPrivate}
-        <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
+        <div class="field-line {labelPosition} {inputSizeClass}">
             {#if showLabel}
-                <span class="field-label" title={fieldLabel}>{fieldLabel}</span>
+                <label class="field-label" for={String(fieldName)} title={fieldLabel}>{fieldLabel}</label>
             {/if}
             <div class="field-input" {...inputDataset}>
                 {#if fieldForge.fieldType === 'id'}
@@ -284,7 +284,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
                     <div class="error-message">{error}</div>
                 {/if}
             </div>
-        </label>
+        </div>
     {/if}
 {:else}
     <div class="error-message">Champ ou schéma non trouvé pour {fieldName}</div>

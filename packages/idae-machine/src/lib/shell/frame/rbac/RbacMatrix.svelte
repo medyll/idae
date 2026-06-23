@@ -93,15 +93,13 @@ Composes existing store API + FieldBoolean. No custom field logic.
 
 <div class="rbac-matrix">
 	<header class="rbac-toolbar">
-		<label>
-			Group:
-			<select bind:value={selectedGroupId}>
-				<option value="">— pick group —</option>
-				{#each groups as g (g.id)}
-					<option value={g.id}>{g.name ?? g.code}</option>
-				{/each}
-			</select>
-		</label>
+		<label for="rbac-group">Group:</label>
+		<select id="rbac-group" bind:value={selectedGroupId}>
+			<option value="">— pick group —</option>
+			{#each groups as g (g.id)}
+				<option value={g.id}>{g.name ?? g.code}</option>
+			{/each}
+		</select>
 		{#if initialTypeId}
 			<span class="note">type filter: {initialTypeId} (not yet wired)</span>
 		{/if}
