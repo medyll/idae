@@ -24,3 +24,8 @@ export { IdaeFrameCatalog } from '$lib/idae/frames/FrameCatalog.js';
 export { ensureCodeField, CODE_FIELD_NAME } from '$lib/idae/codefield/CodeFieldConvention.js';
 export { idaeFieldTypesDef } from '$lib/idae/fieldcatalog/defaultFieldTypesDef.js';
 export { registerDomainBridges } from '$lib/idae/bridge/register.js';
+
+export { IdaeMenuManager, createDefaultLaunchVerbs } from '$lib/idae/menu/IdaeMenuManager.js';
+export { buildMenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
+export type { MenuTree, MenuItem, MenuLaunchVerb, MenuLaunchVerbs } from '$lib/idae/menu/IdaeMenuManager.js';
+export type { IdaeMenuTreeSnapshot, AppschemeMenuEntry, AppschemeTypeMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';

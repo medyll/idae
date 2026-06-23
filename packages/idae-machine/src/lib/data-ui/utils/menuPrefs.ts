@@ -93,6 +93,26 @@ export function isMenuCollectionVisible(
 }
 
 /**
+ * Reduce raw appuser_prefs rows (`{ code: '{userId}:{scopeKey}', value }`) down to a
+ * `{ scopeKey: value }` map for the given user — the shape `isMenuCollectionVisible`/
+ * `filterMenuCollections` expect as `prefs`. Mirrors useMachinePrefs.svelte.ts's
+ * hydration prefix-strip so menu prefs read the same records the settings gear (BL-18)
+ * writes via machine.action.
+ */
+export function readMenuPrefsFromRecords(
+	records: Array<{ code?: unknown; value?: unknown }>,
+	userId: string | number
+): Record<string, unknown> {
+	const prefix = `${String(userId)}:`;
+	const prefs: Record<string, unknown> = {};
+	for (const record of records) {
+		if (typeof record.code !== 'string' || !record.code.startsWith(prefix)) continue;
+		prefs[record.code.slice(prefix.length)] = record.value;
+	}
+	return prefs;
+}
+
+/**
  * Filter a list of collections to those visible in a menu zone.
  *
  * @param zone                Menu zone being rendered.

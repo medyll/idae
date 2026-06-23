@@ -6,7 +6,7 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-23"
+last_updated: "2026-06-24"
 
 # ── Gate (measured, not asserted) ─────────────────────────────────────────────
 # Run `pnpm run gate` (check + client test + server typecheck + server test).
@@ -22,10 +22,10 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "S50-02 done — implement remaining S50-01 (menu generator, BL-13) to close Sprint 50."
+next_action: "Sprint 52 active — implement S52-01 BL-19 RecentPanel (right-zone, appuser_history 30d/15); then S52-02 BL-15 WaffleMenu."
 next_command: "bmad continue"
 next_role: "dev"
-active_role: "dev"
+active_role: "scrum"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -167,18 +167,19 @@ sprints:
 
   - id: 52
     goal: "MAIN-MENU — recent-history panel + waffle/start overlay (epic-main-menu.md)"
-    status: planned
-    artifact: "bmad/artifacts/epic-main-menu.md"
+    status: in_progress
+    artifact: "bmad/artifacts/sprint-52-planned.md"
     depends_on: [50]
     note: >
       BL-19 (right-zone recent panel) and BL-15 (waffle overlay + TaskBar waffle button) —
       disjoint files. BL-15 touches TaskBar.svelte → keep apart from BL-18 (sprint 53).
       BL-19 touches TemplateShell right zone → kept apart from BL-14 sidebar zone (sprint 51).
+      Sprint activated 2026-06-24; S52-01 has no TaskBar/ContextMenu overlap, start there.
     stories:
       - id: S52-01
         title: "BL-19 — Right recent-history panel (appuser_history 30d/15, pref app_panel)"
         backlog_ref: BL-19
-        status: planned
+        status: in_progress
         effort: M
       - id: S52-02
         title: "BL-15 — Waffle / start overlay (type→collection launch + launch_all)"
@@ -210,19 +211,53 @@ sprints:
 
   - id: 50
     goal: "Menu generator (BL-13) + DataList groupBy fix (BL-20) — 2 stories, 2 parallel agents"
-    status: planned
+    status: complete
+    completed_at: "2026-06-24"
     artifact: "bmad/artifacts/sprint-50-planned.md"
     note: >
       S50-01 (BL-13, unblocked — BL-11+BL-12 both done) and S50-02 (BL-20, no dep) —
       zero file overlap (new menu store/framer layer vs DataList group-rendering branches).
       Flagged: BL-05/BL-23 still ADR-blocked; BL-22/BL-24 still same-file overlap; BL-21
       ready but held for capacity, candidate for sprint 51.
+      User caught S50-01 was reported done while broken: MachineMenuManager.wireStores()
+      existed but was never called anywhere (machine.ts only constructed the manager) —
+      machine.menu would have silently returned empty trees in real use. Also flagged
+      drift: MachineMenuStore.ts used classic Svelte stores (derived/readable from
+      'svelte/store'), the only place in src/ doing so — inconsistent with the project's
+      runes-hook convention (useViewFields.svelte.ts/useMachinePrefs.svelte.ts).
+      Fixed 2026-06-24: MachineMenuStore.ts rewritten as a pure buildMenuTree(snapshot,
+      zone) function (no Svelte stores). MachineMenuManager dropped wireStores/Readable
+      stores; getTree/getFlatItems/isVisible now compute on demand via an injected
+      setSnapshotReader callback. machine.ts get menu() wires that reader on first access
+      (reads machine.store('appuser_prefs'/'appscheme'/'appscheme_type') + dead
+      `readable` import + dead module-level `machineMenuManager` var removed). New
+      useMenuTree.svelte.ts (runes hook, $derived.by) added as the reactive
+      component-facing API — this is what BL-14/16/19 should consume, not the manager.
+      Added readMenuPrefsFromRecords() to menuPrefs.ts (strips `{userId}:` prefix from
+      appuser_prefs rows). Tests rewritten for the new pure-function/manager API + new
+      readMenuPrefsFromRecords/useMenuTree coverage. Exported from src/lib/index.ts.
+      Verified: pnpm run check 0 errors, pnpm run test 739/739 (up from 730).
+      RENAMED 2026-06-24 (user flagged taxonomy): MachineMenuStore/MachineMenuManager were
+      domain code (appscheme/appscheme_type/appuser_prefs literals, launch verbs tied to
+      domain frame keys) wearing the engine `Machine*` prefix — violates NAMESPACE.md §0/§4
+      (machine/ = zero domain literals; D-bucket code belongs in idae/, named Idae*). Moved
+      src/lib/main/menu/ → src/lib/idae/menu/, classes renamed IdaeMenuStore/IdaeMenuManager
+      (matches existing idae/ convention: IdaeRelationPolicy, IdaeRightsPolicy, etc. — note
+      src/lib/idae/ already exists client-side with boot.ts/relations/rights/frames/userscope/
+      meta/capabilities/fieldcatalog/bridge, contradicting NAMESPACE.md's 2026-06-21 "absent"
+      annotation — the split has progressed since that doc was annotated). Exported from
+      idae/index.ts alongside the other Idae* policies, and from src/lib/index.ts. Re-verified
+      739/739 + 0 errors after rename.
     stories:
       - id: S50-01
         title: "Menu generator (framer enrichi) — arbre réactif rights∩prefs∩appscheme"
         backlog_ref: BL-13
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "pnpm run test: 739/739 (69 files). pnpm run check: 0 errors. IdaeMenuStore.test.ts (6 cases), IdaeMenuManager.test.ts (9 cases), menuPrefs.test.ts +3 readMenuPrefsFromRecords cases. Final location: src/lib/idae/menu/ (renamed from src/lib/main/menu/ per NAMESPACE.md — domain code, not engine)."
+        test_result: pass
       - id: S50-02
         title: "groupBy fonctionne pour TOUS les modes DataList (table + grid inclus)"
         backlog_ref: BL-20

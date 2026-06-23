@@ -1,13 +1,16 @@
 /**
- * MachineMenuManager — public facade for menu generation and navigation verbs.
- * Owns the reactive menu stores and provides launch actions for menu items.
+ * IdaeMenuManager — public facade for menu generation and navigation verbs.
+ * Imperative snapshot API (non-reactive) — for component-level reactivity, use
+ * useMenuTree.svelte.ts instead (same buildMenuTree core, wired to Svelte 5 runes).
+ *
+ * Domain code (NAMESPACE.md): launch verbs target domain frame registry keys
+ * ('explorer', 'form', 'fiche', ...) and the snapshot reads appuser_prefs/appscheme —
+ * lives under idae/, never under machine/.
  */
-import type { Readable } from 'svelte/store';
-import { createMachineMenuStores, type MachineMenuStoreSources } from './MachineMenuStore.js';
-import type { MenuTree, MenuItem } from './MachineMenuStore.js';
+import { buildMenuTree, type IdaeMenuTreeSnapshot, type MenuTree, type MenuItem } from './IdaeMenuStore.js';
+import type { MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
 import type { MachineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import type { MachineRights as MachineRightsType } from '$lib/main/machine/MachineRights.js';
-
 
 /** Menu launch verb — maps a collection to a navigation action. */
 export type MenuLaunchVerb = (
@@ -20,6 +23,9 @@ export type MenuLaunchVerb = (
 export interface MenuLaunchVerbs {
 	[collection: string]: MenuLaunchVerb | undefined;
 }
+
+/** Reads the live rights/prefs/appscheme snapshot needed to build a menu tree. */
+export type IdaeMenuSnapshotReader = () => Omit<IdaeMenuTreeSnapshot, 'allowedCollections'>;
 
 /**
  * Build default launch verbs bound to a frame manager.
@@ -48,13 +54,10 @@ export function createDefaultLaunchVerbs(framer: MachineFrameManager): MenuLaunc
 }
 
 /**
- * MachineMenuManager — public API for menu generation and navigation.
+ * IdaeMenuManager — public API for menu generation and navigation.
  * Exposed as `machine.menu`.
  */
-export class MachineMenuManager {
-	/** Reactive menu stores — one per zone. */
-	stores: Record<string, Readable<MenuTree>> = {};
-
+export class IdaeMenuManager {
 	/** Launch verbs registry — collection → navigation action. */
 	readonly verbs: MenuLaunchVerbs;
 
@@ -65,7 +68,15 @@ export class MachineMenuManager {
 	readonly rights: MachineRightsType;
 
 	/**
-	 * Create a MachineMenuManager instance.
+	 * Reads the live prefs/appscheme/appscheme_type/isDev snapshot. Injected by
+	 * machine.ts (reads machine.store(...) at call time) — set via `setSnapshotReader`
+	 * once qoolie is ready. Until set, tree queries return an empty tree rather than
+	 * throwing, so early calls (before boot finishes) degrade gracefully.
+	 */
+	#readSnapshot: IdaeMenuSnapshotReader | undefined;
+
+	/**
+	 * Create an IdaeMenuManager instance.
 	 * @param framer — MachineFrameManager instance (from machine.framer)
 	 * @param rights — MachineRights instance (from machine.rights)
 	 */
@@ -73,24 +84,14 @@ export class MachineMenuManager {
 		this.framer = framer;
 		this.rights = rights;
 		this.verbs = createDefaultLaunchVerbs(framer);
-
-		// Start with empty stores (will be wired later via wireStores)
-		this.stores = {} as Record<string, Readable<MenuTree>>;
 	}
 
 	/**
-	 * Wire the menu manager with reactive stores.
-	 * Called once at machine boot() after qoolie is ready.
+	 * Inject the live snapshot reader. Called once by machine.ts after boot (once
+	 * appuser_prefs/appscheme/appscheme_type stores exist).
 	 */
-	wireStores(sources: MachineMenuStoreSources): void {
-		// Create derived menu stores for all zones
-		this.stores = createMachineMenuStores({
-			rights: this.rights,
-			prefs: sources.prefs,
-			appscheme: sources.appscheme,
-			appscheme_type: sources.appscheme_type,
-			isDev: sources.isDev
-		});
+	setSnapshotReader(reader: IdaeMenuSnapshotReader): void {
+		this.#readSnapshot = reader;
 	}
 
 	/**
@@ -108,7 +109,7 @@ export class MachineMenuManager {
 	launch(collection: string, collectionId?: string | number, vars?: Record<string, string>): void {
 		const verb = this.verbs[collection] ?? this.verbs.explorer;
 		if (!verb) {
-			console.warn(`[MachineMenu] No launch verb for collection "${collection}", falling back to explorer`);
+			console.warn(`[IdaeMenu] No launch verb for collection "${collection}", falling back to explorer`);
 			this.verbs.explorer?.(collection);
 			return;
 		}
@@ -116,45 +117,34 @@ export class MachineMenuManager {
 	}
 
 	/**
-	 * Get the menu tree for a specific zone.
-	 * Returns the current value of the derived store.
+	 * Get the current menu tree for a zone. Non-reactive snapshot — for reactive
+	 * component rendering, use useMenuTree.svelte.ts instead.
 	 */
-	getTree(zone: string): MenuTree | undefined {
-		const store = this.stores[zone];
-		if (!store) return undefined;
-
-		let current: MenuTree | undefined;
-		store.subscribe((value) => { current = value; })();
-		return current;
+	getTree(zone: MenuZone): MenuTree {
+		if (!this.#readSnapshot) return { zone, groups: [] };
+		const snapshot = this.#readSnapshot();
+		return buildMenuTree(
+			{ ...snapshot, allowedCollections: this.rights.allowedCollections('L') },
+			zone
+		);
 	}
 
 	/**
 	 * Get a flat list of visible menu items for a zone.
 	 * Useful for search/filter UIs.
 	 */
-	getFlatItems(zone: string): MenuItem[] {
-		const tree = this.getTree(zone);
-		if (!tree) return [];
-
-		const items: MenuItem[] = [];
-		for (const group of tree.groups) {
-			items.push(...group.items);
-		}
-		return items;
+	getFlatItems(zone: MenuZone): MenuItem[] {
+		return this.getTree(zone).groups.flatMap((group) => group.items);
 	}
 
 	/**
 	 * Check if a collection is visible in a specific zone.
 	 * Respects rights, prefs, and dev mode.
 	 */
-	isVisible(collection: string, zone: string): boolean {
-		const items = this.getFlatItems(zone);
-		return items.some((item) => item.collection === collection && item.visible);
+	isVisible(collection: string, zone: MenuZone): boolean {
+		return this.getFlatItems(zone).some((item) => item.collection === collection && item.visible);
 	}
 }
 
 // Re-export menu store types for consumers.
 export type { MenuTree, MenuItem };
-
-
-

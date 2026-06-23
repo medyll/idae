@@ -10,13 +10,11 @@ import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
-import { MachineMenuManager } from '$lib/main/menu/MachineMenuManager.js';
+import { IdaeMenuManager } from '$lib/idae/menu/IdaeMenuManager.js';
+import type { AppschemeMenuEntry, AppschemeTypeMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';
+import { readMenuPrefsFromRecords } from '$lib/data-ui/utils/menuPrefs.js';
 import { foldFksIntoRecord } from '$lib/main/machine/MachineFkFold.js';
-import { readable } from 'svelte/store';
 import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
-
-// Menu manager singleton — created lazily at boot
-let machineMenuManager: MachineMenuManager;
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
@@ -110,7 +108,7 @@ export class Machine {
 	private readonly _frameManager = machineFrameManager;
 
 	/** Menu manager — created during boot to avoid module-level machine dependency. */
-	private _menuManager?: MachineMenuManager;
+	private _menuManager?: IdaeMenuManager;
 
 	/** Bound contextmenu listener — kept for removal in destroy(). */
 	private _contextMenuHandler?: (e: MouseEvent) => void;
@@ -610,10 +608,27 @@ export class Machine {
 		return this._frameManager;
 	}
 
-	/** Access to the menu manager. Created lazily; reactive wiring is deferred to component consumption. */
+	/**
+	 * Access to the menu manager. Created lazily. Snapshot reader wired on first
+	 * access so `getTree`/`getFlatItems`/`isVisible` read live appuser_prefs/
+	 * appscheme/appscheme_type via machine.store (reactive read layer) instead of
+	 * staying empty forever. Component-level reactivity belongs in
+	 * useMenuTree.svelte.ts, not here — this getter only guarantees the manager
+	 * is never wired to stale/empty data.
+	 */
 	get menu() {
 		if (!this._menuManager) {
-			this._menuManager = new MachineMenuManager(this._frameManager, this.rights);
+			this._menuManager = new IdaeMenuManager(this._frameManager, this.rights);
+			this._menuManager.setSnapshotReader(() => {
+				const userId = this.rights.currentUser?.id;
+				const prefsRecords = this.store('appuser_prefs').records as Array<{ code?: unknown; value?: unknown }>;
+				return {
+					prefs: userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {},
+					appscheme: this.store('appscheme').records as AppschemeMenuEntry[],
+					appscheme_type: this.store('appscheme_type').records as AppschemeTypeMenuEntry[],
+					isDev: import.meta.env.DEV
+				};
+			});
 		}
 		return this._menuManager;
 	}

@@ -38,18 +38,26 @@ export {
 	menuPrefsScope,
 	menuPrefsPrefix,
 	isMenuCollectionVisible,
-	filterMenuCollections
+	filterMenuCollections,
+	readMenuPrefsFromRecords
 } from '$lib/data-ui/utils/menuPrefs.js';
 export type { MenuZone, MenuZonePrefix } from '$lib/data-ui/utils/menuPrefs.js';
 
-// Menu system
-export { MachineMenuManager, createDefaultLaunchVerbs } from '$lib/main/menu/MachineMenuManager.js';
+// Menu system (idae domain — see NAMESPACE.md)
+export { IdaeMenuManager, createDefaultLaunchVerbs } from '$lib/idae/menu/IdaeMenuManager.js';
+export { buildMenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
+export { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
 export type {
 	MenuTree,
 	MenuItem,
 	MenuLaunchVerb,
 	MenuLaunchVerbs
-} from '$lib/main/menu/MachineMenuManager.js';
+} from '$lib/idae/menu/IdaeMenuManager.js';
+export type {
+	IdaeMenuTreeSnapshot,
+	AppschemeMenuEntry,
+	AppschemeTypeMenuEntry
+} from '$lib/idae/menu/IdaeMenuStore.js';
 
 // UI — field atoms (show + edit, dispatched by DataField)
 export { default as FieldText }     from '$lib/data-ui/field/snippets/FieldText.svelte';

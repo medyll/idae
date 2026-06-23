@@ -5,8 +5,32 @@ import {
 	menuPrefsPrefix,
 	isMenuCollectionVisible,
 	filterMenuCollections,
+	readMenuPrefsFromRecords,
 	type MenuZone
 } from '$lib/data-ui/utils/menuPrefs.js';
+
+describe('readMenuPrefsFromRecords', () => {
+	it('strips the {userId}: prefix and keeps only this user\'s rows', () => {
+		const records = [
+			{ code: '7:app_menu.vehicle', value: false },
+			{ code: '7:app_menu.category', value: true },
+			{ code: '9:app_menu.vehicle', value: true } // different user — must be excluded
+		];
+
+		expect(readMenuPrefsFromRecords(records, 7)).toEqual({
+			'app_menu.vehicle': false,
+			'app_menu.category': true
+		});
+	});
+
+	it('returns an empty object when no record matches the user', () => {
+		expect(readMenuPrefsFromRecords([{ code: '9:app_menu.vehicle', value: true }], 7)).toEqual({});
+	});
+
+	it('ignores malformed records (missing/non-string code)', () => {
+		expect(readMenuPrefsFromRecords([{ value: true }, { code: 42, value: true }], 7)).toEqual({});
+	});
+});
 
 describe('menuPrefs — zone mapping', () => {
 	it('maps zones to canonical appuser_prefs prefixes', () => {

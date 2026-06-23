@@ -72,7 +72,7 @@ leaf stories become eligible — sequence them by file-overlap, not by dependenc
 → typed tree grouped by type, with label/icon/color and launch verbs. Framer carries the
 menu model + launch verbs; the builder stays pure/reactive (don't bloat the singleton).
 
-**Files:** new `src/lib/main/menu/menuModel.svelte.ts` (or similar) + `MachineFrameManager.ts` enrichment.
+**Status: implemented (S50-01, 2026-06-24).** Files: `src/lib/idae/menu/IdaeMenuStore.ts` (pure `buildMenuTree`), `src/lib/idae/menu/IdaeMenuManager.ts` (`machine.menu` facade + launch verbs), `src/lib/data-ui/utils/useMenuTree.svelte.ts` (reactive runes hook — **this is what BL-14/15/16/19 should consume**, not the manager directly). Lives under `idae/`, not `machine/`, per NAMESPACE.md — domain literals (`appscheme`, `appuser_prefs`, launch-verb registry keys) disqualify it from the engine namespace.
 
 **Shape (target):**
 ```ts
