@@ -110,6 +110,21 @@ class MachineRights {
 
 		return false;
 	}
+
+	/**
+	 * Enumerate all collections the current user has access to for the given operation.
+	 * Returns an array of collection names where checkAccess(collection, op) returns true.
+	 * Used by menu generators and UI components that need to filter collections by rights.
+	 */
+	allowedCollections(operation: PermissionCode = 'R'): string[] {
+		const result: string[] = [];
+		for (const [name] of Object.entries(this.#policies)) {
+			if (this.checkAccess(name, operation)) {
+				result.push(name);
+			}
+		}
+		return result;
+	}
 }
 
 export const machineRights = new MachineRights();
