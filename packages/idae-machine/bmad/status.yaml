@@ -22,10 +22,10 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 49 planned 2026-06-23 (bmad/artifacts/sprint-49-planned.md): S49-01=BL-09 (DataList mode 'form', unblocked by S48-01, effort L) // S49-02=BL-12 (menu pref scopes, effort M), zero file overlap, 2 parallel agents. Flagged: BL-20 also touches DataList.svelte — not parallel with S49-01; BL-22/BL-24 still overlap ContextMenuContent.svelte; BL-05/BL-23 still ADR-blocked. After this sprint BL-13 (menu generator) becomes eligible. NEXT: bmad-run sprint 49."
-next_command: "bmad-run sprint 49"
+next_action: "Implement S49-01 — DataList itemMode='update' per item (revised BL-09, S49-02 done)"
+next_command: "bmad-dev-story S49-01"
 next_role: "dev"
-active_role: "scrum"
+active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -152,15 +152,34 @@ sprints:
       still same-file overlap, sequence separately. BL-05/BL-23 still ADR-blocked.
     stories:
       - id: S49-01
-        title: "DataList mode 'form' — render one DataForm per record"
+        title: "DataList itemMode prop — drive DataRecord's existing 'update' mode per item, no new layout mode"
         backlog_ref: BL-09
         status: planned
         effort: L
+        note: >
+          REVISED 2026-06-23: original mode='form' idea rejected (user) — collides with
+          DataRecord/DataField's real mode union (show/create/update/row, ADR-06 sole
+          field-iterator rule). Reuse itemMode='update' instead of inventing a parallel
+          DataList layout mode. Reverted stray mode='form' edit on DataList.svelte:72.
       - id: S49-02
         title: "Menu pref scopes — zone→pref module + défauts + dev show-all"
         backlog_ref: BL-12
-        status: planned
+        status: done
         effort: M
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_output: "src/lib/data-ui/utils/__tests__/menuPrefs.test.ts: 15/15 passed. Full suite: 717/717 passed."
+        test_result: pass
+        test_artifact: "bmad/artifacts/test-results-S49-02.md"
+        detail: >
+          Added src/lib/data-ui/utils/menuPrefs.ts — centralizes zone→pref scope mapping
+          (side/app_menu, start/app_menu_start, create/app_menu_create, panel/app_panel).
+          Exports menuPrefsScope, menuPrefsPrefix, isMenuCollectionVisible,
+          filterMenuCollections, plus MENU_ZONES / MenuZone / MenuZonePrefix types.
+          Default policy: empty prefs show all permitted collections; explicit false hides;
+          explicit true shows; missing pref defaults to visible. Dev mode bypasses filter.
+          Added 15 unit tests in src/lib/data-ui/utils/__tests__/menuPrefs.test.ts.
+          Exported from src/lib/index.ts. No changes to useMachinePrefs behavior.
 
   - id: 48
     goal: "RBAC write-path unification + menu rights foundation — 2 stories, 2 parallel agents"

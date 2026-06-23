@@ -6,16 +6,18 @@
 
 | ID | Backlog | Title | Effort | Files | Depends on |
 |----|---------|-------|--------|-------|------------|
-| S49-01 | BL-09 | DataList mode 'form' — render one DataForm per record | L | `src/lib/data-ui/data/DataList.svelte` | BL-08 (done) |
+| S49-01 | BL-09 | DataList per-item edit — drive DataRecord's existing `update` mode per record, no new layout mode | L | `src/lib/data-ui/data/DataList.svelte` | BL-08 (done) |
 | S49-02 | BL-12 | Menu pref scopes — zone→pref module + défauts + dev show-all | M | new module (zone→pref mapping), `useMachinePrefs.svelte.ts` | none |
 
 No file overlap: S49-01 touches DataList's mode dispatch; S49-02 touches the prefs-scope module. Safe parallel.
 
-## S49-01 detail (BL-09)
+## S49-01 detail (BL-09) — REVISED 2026-06-23
 
-Add `mode='form'` to DataList (currently only `list|table|grid`, DataList.svelte:72). Renders one DataForm per ResultSet record via componentRegistry `'form'`. Goal: RbacMatrix becomes `<DataList collection="appuser_grant" mode="form">` filtered by group, columns from appscheme schema — no manual `<table>`/`<select>`. Now unblocked: S48-01 made `machine.action` the write path DataForm already uses.
+**Correction:** original plan added `mode='form'` to DataList — wrong. DataRecord/DataField already define the real record-state vocabulary: `mode?: 'show' | 'create' | 'update' | 'row'` (DataRecord.svelte:36, DataField.svelte:40). Per ADR-06, DataRecord is the ONLY component allowed to iterate fields — DataList must never grow a parallel "form" concept that duplicates/collides with that enum.
 
-Acceptance: new mode renders DataForm per record, reuses existing form component (no duplicate field logic), test coverage for mode='form' rendering + write round-trip.
+Target: DataList gains a prop to select which DataRecord mode each item renders with (e.g. `itemMode?: 'show' | 'update'`, default `'show'`), in `list`/`table`/`grid` layout exactly as today — `mode` (the layout dimension: list/table/grid) stays untouched. Renders existing DataRecord with `mode={itemMode}` per record instead of the current hardcoded `'show'`/`'row'`. RbacMatrix becomes `<DataList collection="appuser_grant" itemMode="update" ...>` filtered by group — no manual `<table>`/`<select>`, no DataForm-per-record wrapper, no new componentRegistry entry. Writes already flow through `machine.action` (S48-01) so DataRecord mode='update' fields commit the same way.
+
+Acceptance: `itemMode` prop forwards to DataRecord per item in all 3 layouts without breaking existing `mode='row'` (table) path; zero new field-iteration logic outside DataRecord; test coverage for itemMode='update' rendering + write round-trip; grep confirms no `'form'` added to DataList's mode union.
 
 ## S49-02 detail (BL-12)
 
