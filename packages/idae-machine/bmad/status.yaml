@@ -6,7 +6,7 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-14"
+last_updated: "2026-06-23"
 
 # ── Gate (measured, not asserted) ─────────────────────────────────────────────
 # Run `pnpm run gate` (check + client test + server typecheck + server test).
@@ -22,8 +22,8 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Backlog groomé 2026-06-23 : epic RBAC-VIA-DATALIST ajouté (BL-08 action=write unique high / BL-09 DataList mode 'form' high / BL-10 DataForm saveMode auto|button medium). RbacMatrix.svelte écrit en dur via machine.collection, doit passer par machine.action + DataList + schéma global. NEXT: bmad sprint pour tirer BL-08 (préalable, sans dépendance)."
-next_command: "bmad sprint"
+next_action: "Sprint 48 verified and closed — plan Sprint 49 (BL-09 DataList mode 'form' + BL-12 menu pref scopes)"
+next_command: "bmad-sprint 49"
 next_role: "scrum"
 active_role: "scrum"
 
@@ -141,6 +141,54 @@ architecture:
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
 sprints:
+  - id: 48
+    goal: "RBAC write-path unification + menu rights foundation — 2 stories, 2 parallel agents"
+    status: complete
+    artifact: "bmad/artifacts/sprint-48-planned.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-48.md"
+    completed_at: "2026-06-23"
+    note: >
+      S48-01 (BL-08) and S48-02 (BL-11) completed in parallel — zero file overlap,
+      no dependency, no ADR blocker. Changes:
+      - DataForm.svelte: create/update via machine.action (lines 93, 96)
+      - RbacMatrix.svelte: toggleCell uses machine.action with upsertOn (lines 63, 66)
+      - MachineRights.ts: added allowedCollections(op) method (lines 118-125)
+      - Tests: 6 new tests in machineRights.test.ts (lines 210-273)
+      Verification: grep confirms 0 machine.collection(...).create/update in target files.
+      Tester verification: full suite 702/702 passed. Fixed stale
+      componentRegistryEntries.test.ts (expected 15 entries → 16, added contextmenu).
+      Unblocks: BL-09 (DataList mode 'form'), BL-12 (menu pref scopes) → BL-13 (menu generator).
+    stories:
+      - id: S48-01
+        title: "machine.action comme chemin d'écriture unique (DataForm + RbacMatrix)"
+        backlog_ref: BL-08
+        status: complete
+        effort: M
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_result: pass
+      - id: S48-02
+        title: "MachineRights enumeration — allowedCollections(op)"
+        backlog_ref: BL-11
+        status: done
+        effort: S
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_output: "src/lib/main/__tests__/machineRights.test.ts: 26/26 passed (6 new allowedCollections cases). Full suite after Tester fix: 702/702 passed. Stale componentRegistryEntries.test.ts updated to expect 16 entries (contextmenu added)."
+        test_result: pass
+        test_artifact: "bmad/artifacts/test-results-S48-02.md"
+        detail: >
+          Added MachineRights.allowedCollections(operation: PermissionCode = 'R'): string[]
+          in src/lib/main/machine/MachineRights.ts. Enumerates registered rights policies
+          and filters via existing checkAccess(), respecting ops/public/grants/admin/default
+          rules. Added 6 unit tests in src/lib/main/__tests__/machineRights.test.ts covering
+          open mode, operation filtering, structural deny, explicit grants, admin override,
+          and empty results.
+
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_result: pass
+
   - id: 47
     goal: "Backlog grooming — refresh shell/frame/index.ts barrel (BL-04)"
     status: complete
@@ -1303,14 +1351,18 @@ backlog:
   - id: BL-08
     title: "machine.action comme chemin d'écriture unique (DataForm + RbacMatrix)"
     priority: high
+    status: complete
+    completed_at: "2026-06-23"
     description: >
-      État actuel : DataForm écrit via machine.collection().create/update (DataForm.svelte:93-96) et
+      ✅ État actuel : DataForm écrit via machine.collection().create/update (DataForm.svelte:93-96) et
       RbacMatrix via machine.collection('appuser_grant').create/update en dur (RbacMatrix.svelte:58-80).
       Aucun ne passe par machine.action — pourtant invariant CLAUDE.md = "action = write dispatcher".
       Cible : tout submit data effectif via machine.action(collection, vars, { upsertOn, ... }).
       RBAC grant = upsert naturel sur ['appscheme','appuser_group'] → supprime la logique
       existing/create/update manuelle de toggleCell. Effort: M.
       Dépend de rien. Préalable à BL-09/BL-10.
+      Résolution: DataForm.svelte (lignes 93, 96) et RbacMatrix.svelte (lignes 63, 66) utilisent
+      désormais machine.action. Vérification: grep confirme 0 machine.collection(...).create/update.
 
   - id: BL-09
     title: "DataList mode 'form' — rendu form par record piloté schéma"
@@ -1332,6 +1384,177 @@ backlog:
       Mode 'auto' = cas RbacMatrix (toggle cellule = write immédiat) ; mode 'button' = formulaire
       classique. Form-par-record (BL-09) choisit son saveMode. Effort: M.
       Dépend de BL-08 + BL-09.
+
+  # EPIC MAIN-MENU (ajouté 2026-06-23) — menu global pref×right driven. Case: bmad/artifacts/case-main-menu.md
+  # Pièce perdue du legacy : générateur de menu = rights(L) ∩ prefs(app_menu_*) ∩ appscheme/appscheme_type.
+  # user_pref vides → besoin défauts + mode dev=tout visible. Hint user : framer à enrichir.
+  - id: BL-11
+    title: "MachineRights enumeration — allowedCollections(op)"
+    priority: high
+    status: complete
+    completed_at: "2026-06-23"
+    description: >
+      ✅ MachineRights.checkAccess(collection,op) répond pour UNE collection (MachineRights.ts:70).
+      Le menu a besoin de "toutes les collections où L=true" pour l'utilisateur. Ajouter
+      allowedCollections(op): string[] (ou itérer machine.logic.collections() × checkAccess
+      dans un $derived). Fondation du générateur de menu. Effort: S. Dépend de rien.
+      ADR candidat : où vit l'énumération (MachineRights vs store dérivé).
+      Résolution: Méthode allowedCollections(op) ajoutée à MachineRights.ts (lignes 118-125).
+      6 tests unitaires ajoutés (machineRights.test.ts:210-273) couvrant open mode, auth mode,
+      ops policy, grants, admin override. Décision: implémentation dans MachineRights (non dérivée).
+
+  - id: BL-12
+    title: "Menu pref scopes — module clés zone→pref centralisé + défauts + dev show-all"
+    priority: high
+    description: >
+      Aujourd'hui useMachinePrefs est datalist-scoped uniquement ; aucune notion de scope menu.
+      Centraliser le mapping zone→pref (app_menu / app_menu_start / app_menu_create / app_panel)
+      dans UN module — app*_ = convention PAS contrat (mémoire machine_app_naming), pas de
+      littéraux 'app_menu_'+table éparpillés. CRITIQUE user : user_pref vides → défaut = montrer
+      toutes les collections PERMISES quand aucune pref app_menu_* ; mode dev (import.meta.env.DEV)
+      = bypass filtre pref, tout visible. Ne PAS persister les défauts comme prefs ("unset" ≠
+      "masqué explicitement"). Granularité par zone préservée. Effort: M. Dépend de rien.
+
+  - id: BL-13
+    title: "Menu generator (framer enrichi) — arbre réactif rights∩prefs∩appscheme"
+    priority: high
+    description: >
+      Pièce perdue. Store $derived qui joint machine.rights (L), appuser_prefs (app_menu_* via
+      BL-12), appscheme + appscheme_type (label/icon/color/type) → arbre typé groupé par type.
+      Réactif : changement pref/right re-filtre. Hint user "framer à enrichir" : le framer porte
+      le modèle de menu + verbes de lancement (Espace=loadFrame explorer, Créer=loadInDialog form,
+      etc.) ; garder le builder pur/réactif, ne pas gonfler le singleton d'état UI. Effort: M.
+      Dépend de BL-11 + BL-12. ADR candidat : framer propriétaire du modèle de menu.
+
+  - id: BL-14
+    title: "Sidebar arbre par appscheme_type (remplace DataList plat)"
+    priority: high
+    description: >
+      Sidebar actuelle = <DataList collection="appscheme" linkCollectionField="code" /> : plate,
+      pas de tree par type, pas de filtre pref/right. Remplacer par l'arbre du générateur (BL-13)
+      groupé par appscheme_type, collapsible, icônes/couleurs. pseudo-html puis css-base avant
+      build (tags custom + display explicite). Effort: M. Dépend de BL-13.
+
+  - id: BL-15
+    title: "Waffle / start overlay — type→collection launch + launch_all"
+    priority: medium
+    description: >
+      Overlay waffle legacy (app_gui_start_menu.php, écran menu.production) : colonnes par
+      appscheme_type, launch d'une collection ou launch_all d'un type. Pref scope app_menu_start_*.
+      Consomme BL-13. Effort: L. Dépend de BL-13.
+
+  - id: BL-16
+    title: "Today dashboard frame — quick-create + mes listes + échéancier"
+    priority: medium
+    description: >
+      Dashboard "Aujourd'hui" (app_gui_today.php, écran today) : quick-create (pref
+      app_menu_create_*), accès rapide à mes listes (records possédés), timeline échéancier
+      (dateDebut/dateFin). Frame type chargé en zone main. Effort: L. Dépend de BL-13.
+
+  - id: BL-17
+    title: "Menu contextuel de lancement rights-gated (Créer/Espace/Recherche/Parcourir/Comparer/Trier/console/images)"
+    priority: medium
+    description: >
+      ContextMenu host existe déjà (framer.openContextMenu + ContextMenu.svelte) mais actions
+      ni rights-gated ni câblées aux verbes. Construire les entrées depuis R/C/U/D/L (table §3.2
+      MAIN_MENU.md) : C→Créer, L→Espace/Parcourir, R→Recherche/Comparer, ADMIN→Trier,
+      L+dateDebut+status→console, any→images. Effort: M. Dépend de BL-11 + BL-13.
+
+  - id: BL-18
+    title: "Gear paramètres par zone — éditeur de prefs (machine.action)"
+    priority: medium
+    description: >
+      Gear ⚙ TaskBar.svelte:61 = mock. Par zone, toggle quelles collections permises s'affichent ;
+      écrit appuser_prefs via machine.action (upsertOn par scope). Avertissement quand aucune pref
+      configurée (cf BL-12 défauts). Effort: M. Dépend de BL-12 + BL-13.
+
+  - id: BL-19
+    title: "Panneau historique récent (droite) — appuser_history 30j/15"
+    priority: medium
+    description: >
+      Panneau historique par collection (app_gui_panel_list.php), pref app_panel_*, appuser_history
+      30 jours limite 15. Données + machine.action existent (mémoire), UI à construire. Effort: M.
+      Dépend de BL-12 + BL-13.
+
+  # DataList polish (ajouté 2026-06-23)
+  - id: BL-20
+    title: "groupBy fonctionne pour TOUS les modes DataList (table + grid inclus)"
+    priority: high
+    description: >
+      Bug : le branch {:else if groups} (DataList.svelte:367) n'est atteint qu'en mode list.
+      {:else if currentMode === 'table'} (ligne 306) et {:else if grid} (343) court-circuitent
+      avant → groupBy ignoré en table et grid. Cible : effectiveGroupBy s'applique aux 3 modes.
+      Table = un <tbody> (ou section table) par groupe avec ligne d'en-tête de groupe (colspan) ;
+      grid = une grille par groupe sous le groupHeader. Factoriser le rendu groupé hors du
+      seul chemin list. Effort: M. Dépend de rien.
+
+  - id: BL-21
+    title: "Snippet DataList renommé 'dataRecord' avec les props de DataRecord (spread ...record)"
+    priority: medium
+    description: >
+      Aujourd'hui le snippet exposé est `item`, payload { collection, collectionId, record, idx,
+      fieldValues } (DataList.svelte:88, rendu :292). Cible : le renommer `dataRecord` et délivrer
+      directement les props de DataRecord (collection, data/...record spread, mode, view, idx) au
+      lieu de l'objet wrapper item+record+records. Le consommateur reçoit la forme DataRecord prête
+      à brancher, pas un wrapper à déballer. Mise à jour des appelants (Synthesis, etc.). Effort: M.
+      Dépend de rien. Note : breaking change d'API snippet → noter dans conventions.md.
+
+  - id: BL-22
+    title: "FicheToolbar → RecordToolbar + inclusion dans ContextMenu si collection+collectionId"
+    priority: medium
+    description: >
+      (1) Renommer FicheToolbar en RecordToolbar (logique : toolbar d'un record, pas d'une fiche).
+      MAJ 7 appelants (Fiche.svelte:15, Synthesis.svelte, FicheToolbar.svelte, parcours.spec.ts,
+      ARCH.html, FABLE*.md). Breaking → noter conventions.md.
+      (2) ContextMenuContent doit inclure <RecordToolbar {collection} {collectionId} /> quand
+      collection ET collectionId existent (en plus / au lieu des items View/Edit/Delete construits
+      en dur lignes 48-93). Le menu contextuel d'un record = toolbar du record. Effort: M.
+      Dépend de rien. Extension future prévue (le toolbar grossira). Note connexe : ContextMenuContent
+      utilise onMount + machine.collection().delete (lignes 32,77) — à migrer runes + machine.action
+      au passage (invariants CLAUDE.md), pas bloquant.
+
+  - id: BL-23
+    title: "Field type : source unique = catalogue FieldList (déprécier type inline business models)"
+    priority: high
+    description: >
+      Enquête : bmad/artifacts/investigate-field-type.md. Constat : core (idae-model-core)
+      n'inline jamais `type` (fields = {required,readonly}, type via relation appscheme_field_type) ;
+      les 21 business models inlinent `type:` sur chaque field (crfr 623, idaenext 492, tactac 479…).
+      Pourquoi : (1) BaseFieldDef.type requis (machine-model.ts:23) force l'inline sur tout modèle
+      annoté MachineModel ; core échappe via `as const`. (2) publishModel.ts:346 lit fd.type ?? 'text'
+      direct, pas FieldList[name].type → inline = source de fait. (3) syncFieldList aspire models→catalogue
+      (sens inverse de l'intention). La relation appscheme_field_type (plan core) est court-circuitée.
+      Pré-plan de correction phasé :
+      P0 ADR source unique = FieldList keyé par code (bmad-adr).
+      P1 BaseFieldDef.type → optionnel (S).
+      P2 publishModel résout catalogue-first, inline=override (M).
+      P3 inverser syncFieldList en vérificateur (M).
+      P4 codemod purge `type:` inline 21 models, réconcilier divergences (L).
+      P5 tests roundtrip + "aucun field business n'inline type" (S).
+      Ordre P0→P1→P2→P3→P5, P4 dernier. ADR candidat = P0.
+
+  - id: BL-24
+    title: "Rune partagée useRecordData — résolution data|collectionId factorisée (collectionId = data.id)"
+    priority: high
+    description: >
+      Mécanique dual-source : un composant reçoit soit (collection, collectionId) soit
+      (collection, data) ; cas data → collectionId = data.id (ou scheme.index). Aujourd'hui
+      implémentée inline dans DataRecord.svelte:48-67 (data ?? machine.store(collection,
+      buildWhere(index,id)).records[0]), au-dessus de MachineRecordIdentity (normalizeKey/
+      buildWhere/recordMatchesIndex, déjà la primitive bas niveau). Extraire en rune partagée
+      useRecordData(() => collection, () => ({ collectionId, data })) → { record, collectionId, scheme }
+      réactif, lecture via machine.store (jamais machine.collection — invariant CLAUDE.md 8).
+      Adopter dans : DataRecord (remplace l'inline), DataField (ajouter source collectionId, ne
+      prend que data aujourd'hui + dérive data?.id ad-hoc DataField.svelte:53), et surtout
+      ContextMenuContent.svelte:40 qui RÉIMPLÉMENTE DIVERGENT (records.find(r => r.id ==
+      collectionId) : == lâche, ignore scheme.index, non réactif). Autres consommateurs
+      collection+collectionId à brancher : Fiche, RecordToolbar (ex-FicheToolbar, cf BL-22),
+      Synthesis, ButtonAction. Effort: M. Dépend de rien (BL-22 touche les mêmes fichiers →
+      coordonner). Note : aligne le contrat DataRecord documenté dans CLAUDE.md §4.
+      Pattern hook déjà établi dans le projet (useViewFields.svelte.ts, useMachinePrefs.svelte.ts)
+      → useRecordData suit la même forme `use*().svelte.ts`. Idée connexe (user) : un hook useFieldView
+      dans la même famille pour factoriser la résolution de view/champs (aujourd'hui useViewFields
+      est consommé inline par DataRecord+DataField) — à étudier en même temps que useRecordData.
 
   - { id: BL-07,     priority: done, title: "DataList mode unification — implémenté S42" }
 
