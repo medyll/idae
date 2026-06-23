@@ -48,7 +48,7 @@ export { IdaeMenuManager, createDefaultLaunchVerbs } from '$lib/idae/menu/IdaeMe
 export { buildMenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
 export { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
 export type {
-	MenuTree,
+	MenuTree as MenuTreeShape,
 	MenuItem,
 	MenuLaunchVerb,
 	MenuLaunchVerbs
@@ -81,6 +81,7 @@ export { default as Login }            from '$lib/shell/auth/Login.svelte';
 export { default as TaskBar }          from '$lib/shell/layout/TaskBar.svelte';
 export { default as Breadcrumb }       from '$lib/shell/layout/Breadcrumb.svelte';
 export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.svelte';
+export { default as MenuTree }         from '$lib/shell/layout/MenuTree.svelte';
 
 // UI — fragments
 export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';

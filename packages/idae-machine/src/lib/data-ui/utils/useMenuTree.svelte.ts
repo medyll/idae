@@ -11,18 +11,27 @@ import { readMenuPrefsFromRecords, type MenuZone } from '$lib/data-ui/utils/menu
  *   menu.tree.groups → [{ key, label, items: [{ collection, label, icon, ... }] }]
  */
 export function useMenuTree(zone: () => MenuZone) {
+	// machine.store() registers a reactive subscription (Svelte 5 $effect under the
+	// hood) — it must be called ONCE per hook instance, at top level, never re-invoked
+	// inside $derived.by. Calling it fresh on every recompute (the original S50-01
+	// shape) re-registers a brand-new subscription each pass and the tree never
+	// converges (always reads the just-reset empty snapshot).
+	const prefsSrc = machine.store('appuser_prefs');
+	const appschemeSrc = machine.store('appscheme');
+	const appschemeTypeSrc = machine.store('appscheme_type');
+
 	const tree = $derived.by((): MenuTree => {
 		const z = zone();
 		const userId = machine.rights.currentUser?.id;
-		const prefsRecords = machine.store('appuser_prefs').records as Array<{ code?: unknown; value?: unknown }>;
+		const prefsRecords = prefsSrc.records as Array<{ code?: unknown; value?: unknown }>;
 		const prefs = userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {};
 
 		return buildMenuTree(
 			{
 				allowedCollections: machine.rights.allowedCollections('L'),
 				prefs,
-				appscheme: machine.store('appscheme').records as AppschemeMenuEntry[],
-				appscheme_type: machine.store('appscheme_type').records as AppschemeTypeMenuEntry[],
+				appscheme: appschemeSrc.records as AppschemeMenuEntry[],
+				appscheme_type: appschemeTypeSrc.records as AppschemeTypeMenuEntry[],
 				isDev: import.meta.env.DEV
 			},
 			z

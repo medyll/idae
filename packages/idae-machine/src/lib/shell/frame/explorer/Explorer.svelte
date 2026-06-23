@@ -6,18 +6,15 @@ zone (toggle, state preserved across collection switches).
 @role explorer
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
-	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import MenuTree from '$lib/shell/layout/MenuTree.svelte';
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
 	import { untrack } from 'svelte';
 	import { generateFrameId } from '$lib/main/frame/frameUtils.js';
-	import type { SortBy } from '$lib/types/index.js';
 
 	let {
-		collection,
-		sortBy
+		collection
 	}: {
 		collection: string;
-		sortBy?: SortBy;
 	} = $props();
 
 	const frameId = untrack(() => generateFrameId(collection));
@@ -25,6 +22,6 @@ zone (toggle, state preserved across collection switches).
 
 <TemplateShell zoneId={frameId} collection={collection}>
 	{#snippet leftbar()}
-		<DataList collection="appscheme" {sortBy} link="loadIn:explorer.content@{frameId}" linkCollectionField="code" groupBy="fks.appscheme_base" />
+		<MenuTree zone="side" link="loadIn:explorer.content@{frameId}" />
 	{/snippet}
 </TemplateShell>

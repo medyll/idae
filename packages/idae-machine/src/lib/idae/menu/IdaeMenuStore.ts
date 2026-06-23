@@ -10,18 +10,24 @@
  */
 import { filterMenuCollections, type MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
 
-/** Lightweight appscheme shape used by menu derivation — only reads label/icon/color/type. */
+/**
+ * Lightweight appscheme shape used by menu derivation — only reads name/icon/color/type.
+ * `name` is the real idae-model-core.ts field; `label` kept as a fallback for callers/tests
+ * passing a pre-labeled shape (the field does not exist on actual appscheme records).
+ */
 export type AppschemeMenuEntry = {
 	code: string;
+	name?: string;
 	label?: string;
 	icon?: string;
 	color?: string;
 	fks?: { appscheme_type?: { code?: string } };
 };
 
-/** Lightweight appscheme_type shape used by menu derivation. */
+/** Lightweight appscheme_type shape used by menu derivation. `name` is the real field; `label` is a fallback. */
 export type AppschemeTypeMenuEntry = {
 	code: string;
+	name?: string;
 	label?: string;
 };
 
@@ -89,7 +95,7 @@ export function buildMenuTree(snapshot: IdaeMenuTreeSnapshot, zone: MenuZone): M
 		items.push({
 			key: `${zone}:${collection}`,
 			collection,
-			label: scheme.label ? String(scheme.label) : collection,
+			label: scheme.name ? String(scheme.name) : scheme.label ? String(scheme.label) : collection,
 			icon: scheme.icon,
 			color: scheme.color,
 			type: typeCode,
@@ -102,8 +108,9 @@ export function buildMenuTree(snapshot: IdaeMenuTreeSnapshot, zone: MenuZone): M
 	const groups = new Map<string, { key: string; label: string; items: MenuItem[] }>();
 	for (const item of items) {
 		const groupKey = item.type ?? 'ungrouped';
+		const typeEntry = item.type ? appschemeTypeMap.get(item.type) : undefined;
 		const groupLabel = item.type
-			? String(appschemeTypeMap.get(item.type)?.label ?? groupKey)
+			? String(typeEntry?.name ?? typeEntry?.label ?? groupKey)
 			: 'Other';
 
 		if (!groups.has(groupKey)) {

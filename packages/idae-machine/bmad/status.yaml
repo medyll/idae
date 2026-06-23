@@ -189,20 +189,58 @@ sprints:
 
   - id: 51
     goal: "MAIN-MENU — sidebar tree + today dashboard (first visible zones, epic-main-menu.md)"
-    status: planned
+    status: in_progress
     artifact: "bmad/artifacts/epic-main-menu.md"
     depends_on: [50]
     note: >
       Both consume the BL-13 generator (S50-01). BL-14 (TemplateShell sidebar zone, new
-      MenuTree) and BL-16 (new 'today' frame + registry) — disjoint files. Precondition:
-      confirm appscheme rows carry icon/color/label/type (epic §8) or add BL-25 seed audit
-      ahead of BL-14.
+      MenuTree) and BL-16 (new 'today' frame + registry) — disjoint files. Precondition
+      confirmed: core appscheme/appscheme_type carry color/icon/order + fkRelations.appscheme_type
+      (server/src/idae/idae-model-core.ts) — no BL-25 seed audit needed.
+      Runs in parallel with Sprint 52 (S52-01 in_progress) — disjoint files (sidebar/explorer
+      vs right-zone panel), confirmed safe.
     stories:
       - id: S51-01
         title: "BL-14 — Sidebar tree by appscheme_type (replaces flat DataList sidebar)"
         backlog_ref: BL-14
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/MenuTree.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. pnpm run test: 743/743 (70 files, up from 739)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/MenuTree.svelte — collapsible sidebar tree grouped by
+          appscheme_type, consuming useMenuTree('side') (BL-13). Tags per pseudo-html skill:
+          <menu-tree-component> (root) > <menu-tree-group> (per-type zone, collapsible) >
+          native <button class="menu-tree-group-toggle"|"menu-tree-item"> atoms. Collapse
+          state persisted via machine.action('appuser_prefs', { code: '{userId}:menu_tree_open.
+          {zone}.{groupKey}', value }, { upsertOn: ['code'] }) — unset defaults to open
+          (mirrors menuPrefs "unset ≠ hidden" policy). Navigation reuses DataList's
+          parseLink/navigate contract (same link/linkVars prop shape). Wired into
+          src/lib/shell/frame/explorer/Explorer.svelte leftbar, replacing the flat
+          `<DataList collection="appscheme" linkCollectionField="code">` sidebar (dropped the
+          now-unused `sortBy` prop — MenuTree sorts by label internally per BL-13).
+          Exported from shell/layout/index.ts and src/lib/index.ts.
+          Bug found + fixed while writing the component test (real bug, not test-only):
+          useMenuTree.svelte.ts called `machine.store(...)` fresh on every $derived.by
+          recompute instead of once at hook setup — each call re-registers a brand-new
+          useQoolieCollection reactive subscription (fresh empty $state), so the tree never
+          converged past an empty snapshot in real usage, not just under test. Fixed by
+          hoisting the three machine.store() calls (appuser_prefs/appscheme/appscheme_type)
+          to the top of useMenuTree(), outside the $derived.by — same fix applied to
+          MenuTree.svelte's own openPrefs derived (it had the identical pattern). This was a
+          latent S50-01 defect that would have made every BL-14/15/16/19 consumer of
+          useMenuTree render blank.
+          Also fixed: IdaeMenuStore.ts read `scheme.label` / `appschemeType.label` for the
+          item/group labels, but the real appscheme/appscheme_type schema field is `name`
+          (server/src/idae/idae-model-core.ts) — `label` doesn't exist on real records, so
+          the sidebar would have rendered raw collection codes instead of labels. Fixed to
+          read `name` first, falling back to `label` (kept for the existing test fixtures that
+          use a pre-labeled shape).
+          index.ts barrel collision fixed: the new `MenuTree` component export collided with
+          the pre-existing `MenuTree` *type* re-exported from IdaeMenuManager.ts — aliased the
+          type export to `MenuTreeShape` (zero external consumers of the type yet).
       - id: S51-02
         title: "BL-16 — Today dashboard frame (quick-create + my-lists + échéancier)"
         backlog_ref: BL-16
