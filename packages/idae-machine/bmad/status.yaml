@@ -22,7 +22,7 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "FABLE_2 Phase 0' DONE 2026-06-13 (gate vert: self-imports ai/schema → $lib, sive orphan supprimé, @types/express unifié v5 workspace + handler params typés, bin add-skill retiré, pnpm run gate créé, flaky serveur files/image fixé via fileParallelism:false, hook-pre-push ADVISORY non-bloquant via .githooks/core.hooksPath). NEXT: FABLE_2 Phase 1' item 1 — trancher dual-source schéma AI (§3.1.1, recommandation: supprimer copies client)."
+next_action: "Backlog groomé 2026-06-23 : epic RBAC-VIA-DATALIST ajouté (BL-08 action=write unique high / BL-09 DataList mode 'form' high / BL-10 DataForm saveMode auto|button medium). RbacMatrix.svelte écrit en dur via machine.collection, doit passer par machine.action + DataList + schéma global. NEXT: bmad sprint pour tirer BL-08 (préalable, sans dépendance)."
 next_command: "bmad sprint"
 next_role: "scrum"
 active_role: "scrum"
@@ -1298,6 +1298,40 @@ backlog:
       → collections emerge from sync.
       > BLOCKED on ADR: architectural choice, defines runtime model ownership.
       Not eligible for sprint planning until an ADR is written (bmad-adr).
+
+  # EPIC RBAC-VIA-DATALIST (ajouté 2026-06-23) — RbacMatrix doit s'appuyer sur DataList + schéma global
+  - id: BL-08
+    title: "machine.action comme chemin d'écriture unique (DataForm + RbacMatrix)"
+    priority: high
+    description: >
+      État actuel : DataForm écrit via machine.collection().create/update (DataForm.svelte:93-96) et
+      RbacMatrix via machine.collection('appuser_grant').create/update en dur (RbacMatrix.svelte:58-80).
+      Aucun ne passe par machine.action — pourtant invariant CLAUDE.md = "action = write dispatcher".
+      Cible : tout submit data effectif via machine.action(collection, vars, { upsertOn, ... }).
+      RBAC grant = upsert naturel sur ['appscheme','appuser_group'] → supprime la logique
+      existing/create/update manuelle de toggleCell. Effort: M.
+      Dépend de rien. Préalable à BL-09/BL-10.
+
+  - id: BL-09
+    title: "DataList mode 'form' — rendu form par record piloté schéma"
+    priority: high
+    description: >
+      DataList n'expose que mode 'list'|'table'|'grid' (DataList.svelte:72). Ajouter mode 'form'
+      qui rend un DataForm par record du ResultSet (réutilise componentRegistry 'form'/DataForm,
+      pas de logique champ custom). But : RbacMatrix devient un <DataList collection="appuser_grant"
+      mode="form"> filtré par groupe, les colonnes CRUDLX viennent du schéma global appscheme,
+      plus de <table> ni <select> manuels. Effort: L.
+      Dépend de BL-08 (form doit écrire via action).
+
+  - id: BL-10
+    title: "DataForm : option save auto vs save bouton"
+    priority: medium
+    description: >
+      DataForm n'a qu'un submit bouton (type=submit, DataForm.svelte:163). Ajouter prop saveMode
+      'button' (défaut, actuel) | 'auto' (write au onchange/blur via machine.action, debounce).
+      Mode 'auto' = cas RbacMatrix (toggle cellule = write immédiat) ; mode 'button' = formulaire
+      classique. Form-par-record (BL-09) choisit son saveMode. Effort: M.
+      Dépend de BL-08 + BL-09.
 
   - { id: BL-07,     priority: done, title: "DataList mode unification — implémenté S42" }
 
