@@ -71,6 +71,7 @@ const DEFAULT_REGISTRY_ENTRIES = {
 	'space':            () => import('$lib/shell/frame/space/Space.svelte'),
 	'login':            () => import('$lib/shell/auth/Login.svelte'),
 	'ai.chat-session':  () => import('$lib/ai/frame/AiChatSession.svelte'),
+	'contextmenu':       () => import('$lib/data-ui/fragments/ContextMenuContent.svelte'),
 } satisfies Record<string, ComponentLoader>;
 
 export type RegistryKey = keyof typeof DEFAULT_REGISTRY_ENTRIES;

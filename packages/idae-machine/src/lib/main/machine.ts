@@ -104,6 +104,9 @@ export class Machine {
 	/** Frame manager — handles dynamic frame registration and content loading */
 	private readonly _frameManager = machineFrameManager;
 
+	/** Bound contextmenu listener — kept for removal in destroy(). */
+	private _contextMenuHandler?: (e: MouseEvent) => void;
+
 	/**
 	 * Promise that resolves when boot() has completed.
 	 * Use `await machine.ready` after createInstance() to ensure the machine is fully initialized.
@@ -304,6 +307,55 @@ export class Machine {
 			const { seed } = await import('$lib/main/machineSeed.js');
 			await seed(this._seed, { onlyIfEmpty: true });
 		}
+
+		// Initialize context menu global event listener
+		this.#setupContextMenu();
+	}
+
+	/**
+	 * Setup global context menu event listener
+	 */
+	#setupContextMenu(): void {
+		if (typeof document !== 'undefined') {
+			const handleContextMenu = (e: MouseEvent) => {
+				const target = (e.target as HTMLElement).closest('[data-contextual]');
+				if (!target) return;
+
+				e.preventDefault();
+
+				const contextualData = (target as HTMLElement).dataset.contextual;
+				if (!contextualData) return;
+
+				// Parse the data-contextual attribute
+				const parts: string[] = contextualData.split('&');
+				const params: Record<string, string> = {};
+
+				parts.forEach((part: string) => {
+					const [key, value] = part.split('=');
+					if (key && value) {
+						params[key] = decodeURIComponent(value);
+					}
+				});
+
+				const collection = params.collection || params.table;
+				const collectionId = params.collectionId || params.table_value;
+				const vars: Record<string, string> = {};
+
+				// Extract additional vars
+				Object.entries(params).forEach(([key, value]: [string, string]) => {
+					if (key !== 'collection' && key !== 'table' && key !== 'collectionId' && key !== 'table_value') {
+						vars[key] = value;
+					}
+				});
+
+				if (collection && collectionId !== undefined) {
+					this._frameManager.openContextMenu(collection, collectionId, vars, e.pageX, e.pageY);
+				}
+			};
+
+			this._contextMenuHandler = handleContextMenu;
+			document.addEventListener('contextmenu', handleContextMenu);
+		}
 	}
 
 
@@ -440,6 +492,10 @@ export class Machine {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
 		this._pendingIdbUpgrade = null;
+		if (this._contextMenuHandler && typeof document !== 'undefined') {
+			document.removeEventListener('contextmenu', this._contextMenuHandler);
+			this._contextMenuHandler = undefined;
+		}
 	}
 
 	/**

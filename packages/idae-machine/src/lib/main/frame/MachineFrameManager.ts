@@ -55,6 +55,7 @@ export class MachineFrameManager {
 	private _pushFn?: (url: string) => void;
 	private _onNavigate?: (e: NavigationEvent) => void;
 	private _labelResolver?: LabelResolver;
+	private _contextMenuMounted = false;
 
 	/** Injected by machine at init — enables URL-based navigation from framer. */
 	setRouter(pushFn: (url: string) => void): void {
@@ -161,6 +162,38 @@ export class MachineFrameManager {
 			},
 			destroy
 		};
+	}
+
+	/**
+	 * Open the global context menu for (collection, collectionId) at the given page position.
+	 * Mounts the singleton <ContextMenu> host into document.body on first use.
+	 */
+	openContextMenu(
+		collection: string,
+		collectionId: string | number,
+		vars: Record<string, string> = {},
+		x = 0,
+		y = 0
+	): void {
+		this.#ensureContextMenuMounted().then(() => {
+			import('$lib/data-ui/fragments/contextMenu.svelte.js').then(({ openContextMenu }) => {
+				openContextMenu(collection, collectionId, vars, x, y);
+			});
+		});
+	}
+
+	/** Close the global context menu, if open. */
+	closeContextMenu(): void {
+		import('$lib/data-ui/fragments/contextMenu.svelte.js').then(({ closeContextMenu }) => {
+			closeContextMenu();
+		});
+	}
+
+	async #ensureContextMenuMounted(): Promise<void> {
+		if (this._contextMenuMounted || typeof document === 'undefined') return;
+		this._contextMenuMounted = true;
+		const ContextMenu = (await import('$lib/data-ui/fragments/ContextMenu.svelte')).default;
+		mount(ContextMenu as Component<Record<string, unknown>>, { target: document.body });
 	}
 
 	/**

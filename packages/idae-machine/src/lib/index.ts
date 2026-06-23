@@ -60,6 +60,9 @@ export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
 export { default as Frame }         from '$lib/shell/Frame.svelte';
 export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
 export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';
+export { default as ContextMenu } from '$lib/data-ui/fragments/ContextMenu.svelte';
+export { default as ContextMenuContent } from '$lib/data-ui/fragments/ContextMenuContent.svelte';
+export { openContextMenu, closeContextMenu } from '$lib/data-ui/fragments/contextMenu.svelte.js';
 
 // MCP — client-side WebMCP tool registration
 export { registerMachineMcpTools } from '$lib/mcp/MachineMcpClient.js';
