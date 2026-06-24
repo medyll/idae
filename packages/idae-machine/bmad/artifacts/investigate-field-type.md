@@ -79,3 +79,32 @@ sourcé du catalogue ; ajouter test "aucun field business n'inline type". Effort
 
 Ordre : P0 → P1 → P2 → P3 → P5, P4 en dernier (gros, dépend de la réconciliation).
 ADR candidat = P0 (où vit le type de field).
+
+---
+
+## Suite — P0 décidé, P1 fait, P2 bloqué par l'audit de réconciliation (2026-06-24)
+
+- **P0** : `bmad/artifacts/docs/ADR-field-type-source.md` écrit. Pas un nouveau débat —
+  confirme/applique la décision déjà prise dans `ADR-fk-model-b.md` §7/§10/§11.
+- **P1** : `BaseFieldDef.type` → `type?: string` (`machine-model.ts:23`). Fallback
+  ajouté dans `machineParserForge.ts#fromObjectRule` (`rule.type ?? 'text'`, miroir de
+  `publishModel.ts:346`) — sinon `type.startsWith(...)` plantait sur `undefined`.
+  Zéro changement de comportement, `pnpm run check` 0 erreurs, server `typecheck` 0
+  erreurs (via `tsconfig.typecheck.json` — le `tsc -p tsconfig.json` direct donne des
+  faux positifs rootDir, normal, ignoré).
+- **P2 — STOP, ne pas faire en l'état.** Audit de réconciliation (script ad-hoc,
+  supprimé après lecture des résultats — `_auditFieldTypes.ts`) sur les 19 modèles
+  business (3847 fields inline-typés) :
+  - **888 mismatches** (inline ≠ catalogue) : la plupart par DESIGN, pas par erreur —
+    ex. `id` (PK, lu par le moteur comme readonly/index) → catalogue dit `number` ;
+    `phone`/`icon`/`currency`/`image`/`url` (types riches, UI dédiée) → catalogue dit
+    `text`/`number` (générique). **Le catalogue est plus pauvre que l'inline**, pas
+    plus juste. Basculer catalogue-first aujourd'hui dégraderait le rendu (id traité
+    comme number générique, téléphones/icônes/devises perdant leur widget dédié) sur
+    les 19 orgs.
+  - **1411 occurrences (803 noms uniques) absentes du catalogue.**
+  - Conclusion : le catalogue `FieldList` doit d'abord être **réparé et complété**
+    (rapprocher les 888 mismatches type par type, ajouter les 803 noms manquants)
+    avant qu'une bascule catalogue-first soit sûre. C'est un chantier à part, pas
+    inclus dans l'effort "M" initialement estimé pour P2 — à re-scoper.
+  - **P3/P4 restent différés** pour la même raison (dépendent d'un catalogue fiable).

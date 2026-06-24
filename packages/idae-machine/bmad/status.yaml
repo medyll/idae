@@ -22,7 +22,7 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 55 complete (S55-01 BL-17 rights-gated contextual verbs) — ContextMenuContent trio (BL-24→BL-22→BL-17) done. MAIN-MENU epic leaf stories BL-14..BL-19 all complete; remaining backlog: BL-20 (groupBy table/grid), BL-21 (DataList snippet rename), BL-05/BL-23 (ADR-blocked)."
+next_action: "BL-20/BL-21 closed (BL-20 was stale-already-done; BL-21 renamed item→dataRecord). BL-23 P0+P1 done (ADR-field-type-source.md), P2/P3/P4 STOPPED — FieldList catalog itself needs repair (888 mismatches + 803 missing names) before any catalog-first switch is safe; that's the real next step on BL-23, needs explicit scoping decision. BL-05 deprioritized — medyll skeptical, sensitive sync/IDB area broken repeatedly before; do not pick up without explicit relaunch."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "scrum"
@@ -1762,6 +1762,13 @@ backlog:
       → collections emerge from sync.
       > BLOCKED on ADR: architectural choice, defines runtime model ownership.
       Not eligible for sprint planning until an ADR is written (bmad-adr).
+    detail: >
+      2026-06-24 (medyll) : scepticisme exprimé — touche une zone sensible (sync/IDB/
+      qoolie dual-bus) déjà cassée plusieurs fois par le passé (cf mémoire
+      qoolie_dual_bus_alias, rbac_hydration_refonte deep-link race). Pas rejeté
+      formellement, mais déprioritisé tant que ce doute n'est pas levé — ne pas
+      proposer de sprint sur BL-05 sans relance explicite de medyll, même une fois
+      l'ADR hypothétiquement écrit.
 
   # EPIC RBAC-VIA-DATALIST (ajouté 2026-06-23) — RbacMatrix doit s'appuyer sur DataList + schéma global
   - id: BL-08
@@ -1968,6 +1975,19 @@ backlog:
   - id: BL-23
     title: "Field type : source unique = catalogue FieldList (déprécier type inline business models)"
     priority: high
+    status: in_progress
+    detail: >
+      2026-06-24 — P0 (ADR-field-type-source.md, confirme/applique ADR-fk-model-b.md
+      §7/§10/§11) + P1 (BaseFieldDef.type optionnel, machineParserForge.ts fallback
+      'text') livrés. pnpm run check 0 erreurs, server typecheck 0 erreurs, client
+      78/78, server (root project) 689/689, server package 307/307.
+      P2 STOPPÉ après audit de réconciliation : 3847 fields business inline-typés vs
+      FieldList → 888 mismatches + 1411 occurrences (803 noms) absentes du catalogue.
+      Le catalogue est plus PAUVRE que l'inline (id→number, phone/icon/currency/
+      image/url→text/number) — basculer catalogue-first aujourd'hui dégraderait le
+      rendu sur 19 orgs, pas un fix. P2/P3/P4 différés tant que FieldList n'est pas
+      réparé+complété (chantier séparé, hors scope "M" initial). Détail complet :
+      investigate-field-type.md §"Suite", ADR-field-type-source.md §"Mise à jour".
     description: >
       Enquête : bmad/artifacts/investigate-field-type.md. Constat : core (idae-model-core)
       n'inline jamais `type` (fields = {required,readonly}, type via relation appscheme_field_type) ;
