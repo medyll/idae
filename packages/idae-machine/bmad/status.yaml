@@ -22,7 +22,7 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 52 active — implement S52-01 BL-19 RecentPanel (right-zone, appuser_history 30d/15); then S52-02 BL-15 WaffleMenu."
+next_action: "Sprint 52 complete (S52-01 BL-19 RecentPanel + S52-02 BL-15 WaffleMenu) — Sprint 53 next: S53-01 BL-18 settings gear, S53-02 BL-24 useRecordData."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "scrum"
@@ -167,29 +167,73 @@ sprints:
 
   - id: 52
     goal: "MAIN-MENU — recent-history panel + waffle/start overlay (epic-main-menu.md)"
-    status: in_progress
+    status: complete
+    completed_at: "2026-06-24"
     artifact: "bmad/artifacts/sprint-52-planned.md"
     depends_on: [50]
     note: >
       BL-19 (right-zone recent panel) and BL-15 (waffle overlay + TaskBar waffle button) —
       disjoint files. BL-15 touches TaskBar.svelte → keep apart from BL-18 (sprint 53).
       BL-19 touches TemplateShell right zone → kept apart from BL-14 sidebar zone (sprint 51).
-      Sprint activated 2026-06-24; S52-01 has no TaskBar/ContextMenu overlap, start there.
+      Sprint activated 2026-06-24; S52-01 done first (no TaskBar/ContextMenu overlap), then S52-02.
     stories:
       - id: S52-01
         title: "BL-19 — Right recent-history panel (appuser_history 30d/15, pref app_panel)"
         backlog_ref: BL-19
-        status: in_progress
+        status: complete
         effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/RecentPanel.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. Full suite: server 689/689, client 66/67 (1 pre-existing unrelated failure, see detail)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/RecentPanel.svelte — reuses useMenuTree('panel') for the
+          rights/prefs/appscheme-grouped column structure (same pattern as BL-14's MenuTree),
+          then attaches appuser_history records per collection (30 day cutoff via lastSeen,
+          15 cap, sorted desc). appuser_history is a user-scoped collection (UserScopePolicy) so
+          machine.store('appuser_history') already returns only the current user's rows — no
+          extra userId join needed. Click navigates via machine.menu.verbs.fiche(collection, id)
+          (direct verb call, same IdaeMenuManager.launch() collection-vs-verb-name key mismatch
+          workaround used in BL-16/Today.svelte — not fixed, just avoided).
+          TemplateShell.svelte's right `<aside>` was previously always-rendered with
+          `aria-hidden="true"` and `.shell-right { display: none }` (dead placeholder since
+          Sprint <50). Changed to `{#if rightBar}` conditional render + `display: flex` so the
+          panel is both visible and reachable by a11y tools now that it has real interactive
+          content. Wired into Explorer.svelte's new `rightBar` snippet alongside the existing
+          `leftbar` (MenuTree) snippet — same TemplateShell instance, disjoint zones, confirmed
+          no merge conflict with Sprint 51's BL-14 sidebar work.
+          Pre-existing unrelated test failure found during full-suite run:
+          ContextMenuContent.svelte.test.ts "should show divider..." — reproduced identically on
+          a clean `git stash` of this branch, confirming it predates this work; not touched.
       - id: S52-02
         title: "BL-15 — Waffle / start overlay (type→collection launch + launch_all)"
         backlog_ref: BL-15
-        status: planned
+        status: complete
         effort: L
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/WaffleMenu.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. Full suite: server 689/689, client 66/67 (same pre-existing unrelated failure as S52-01)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/WaffleMenu.svelte — kept as a plain layout overlay (not a
+          framer frame type), decided per the story's open question: the overlay isn't
+          collection-scoped so framer's loadFrame/loadInDialog content-keyed model didn't fit
+          cleanly (loadInDialog requires a single collection+modulePath). Uses
+          $bindable open prop, toggled from a new waffle button in TaskBar.svelte
+          (taskbar-left, before the Explorer button). Columns from useMenuTree('start'),
+          fixed-position overlay (inset:0, --z-modal) with a backdrop button to close,
+          Escape key closes too. Single-item launch and launch_all both call
+          machine.menu.verbs.explorer(collection) directly (same verb-lookup workaround as
+          BL-16/BL-19) — launch_all iterates a column's group.items.
+          pseudo-html skill invoked for tag naming: waffle-menu-component (root, fixed grid),
+          waffle-menu-column (zone), button.waffle-menu-item / button.waffle-menu-launch-all
+          (atoms, native+class per taxonomy decision rule). All custom tags have explicit
+          display CSS.
 
   - id: 51
     goal: "MAIN-MENU — sidebar tree + today dashboard (first visible zones, epic-main-menu.md)"
-    status: in_progress
+    status: complete
+    completed_at: "2026-06-24"
     artifact: "bmad/artifacts/epic-main-menu.md"
     depends_on: [50]
     note: >
@@ -244,8 +288,35 @@ sprints:
       - id: S51-02
         title: "BL-16 — Today dashboard frame (quick-create + my-lists + échéancier)"
         backlog_ref: BL-16
-        status: planned
+        status: complete
         effort: L
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/frame/today/__tests__/Today.svelte.test.ts: 5/5 passed. pnpm run check: 0 errors. pnpm run test: 748/748 (71 files)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/frame/today/Today.svelte — three sections: <today-create>
+          (quick-create, consumes useMenuTree('create'), click fires machine.menu.verbs.create
+          directly — IdaeMenuManager.launch()'s collection-keyed fallback doesn't address the
+          verb-name-keyed default verbs map, so verbs.create(collection) is called explicitly
+          rather than through launch()); <today-my-lists> (records where fks.appuser.code ===
+          currentUser.code, capped 5/collection); <today-echeancier> (records with
+          dateDebut+dateFin fields, ongoing/upcoming first — dateFin == null or >= today,
+          capped 15 total). Owner/date-bearing collections enumerated once at component setup
+          via machine.logic.collections() (static post-boot schema) filtered by
+          rights.allowedCollections('L'); machine.store() called once per collection at setup,
+          never inside $derived (same qoolie-subscription rule as useMenuTree.svelte.ts).
+          Registered componentRegistry 'today' → Today.svelte; exported from
+          shell/frame/index.ts and src/lib/index.ts; componentRegistryEntries.test.ts count
+          16→17. Test-fixture bug found+fixed while writing tests: getCollectionRelations()
+          reads fkRelations from the appscheme record (not the static model) — the seeded
+          appscheme row for the test's 'widget' collection needed an explicit fkRelations.appuser
+          block, mirroring the project's appscheme-is-source-of-truth relation convention
+          (_relationTestUtils.ts). Also fixed a real test-pollution bug: spying on
+          machine.menu.verbs.create without mockImplementation let the real create verb open a
+          live dialog via machine.framer.loadInDialog, which isn't unmounted by
+          @testing-library's cleanup() (mounted outside the render root) and leaked into
+          subsequent tests.
 
   - id: 50
     goal: "Menu generator (BL-13) + DataList groupBy fix (BL-20) — 2 stories, 2 parallel agents"
@@ -1668,6 +1739,8 @@ backlog:
   - id: BL-15
     title: "Waffle / start overlay — type→collection launch + launch_all"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Overlay waffle legacy (app_gui_start_menu.php, écran menu.production) : colonnes par
       appscheme_type, launch d'une collection ou launch_all d'un type. Pref scope app_menu_start_*.
@@ -1676,6 +1749,8 @@ backlog:
   - id: BL-16
     title: "Today dashboard frame — quick-create + mes listes + échéancier"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Dashboard "Aujourd'hui" (app_gui_today.php, écran today) : quick-create (pref
       app_menu_create_*), accès rapide à mes listes (records possédés), timeline échéancier
@@ -1701,6 +1776,8 @@ backlog:
   - id: BL-19
     title: "Panneau historique récent (droite) — appuser_history 30j/15"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Panneau historique par collection (app_gui_panel_list.php), pref app_panel_*, appuser_history
       30 jours limite 15. Données + machine.action existent (mémoire), UI à construire. Effort: M.

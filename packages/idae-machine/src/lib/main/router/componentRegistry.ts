@@ -68,6 +68,7 @@ const DEFAULT_REGISTRY_ENTRIES = {
 	'synthesis':        () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
 	'diagram':          () => import('$lib/shell/frame/diagram/Diagram.svelte'),
 	'dashboard':        () => import('$lib/shell/frame/dashboard/Dashboard.svelte'),
+	'today':            () => import('$lib/shell/frame/today/Today.svelte'),
 	'space':            () => import('$lib/shell/frame/space/Space.svelte'),
 	'login':            () => import('$lib/shell/auth/Login.svelte'),
 	'ai.chat-session':  () => import('$lib/ai/frame/AiChatSession.svelte'),

@@ -89,7 +89,8 @@
 	}
 
 	.shell-right {
-		display: none;
+		display: flex;
+		flex-direction: column;
 		width: var(--right-bar-width, 320px);
 		height: 100%;
 		max-height: 100%;

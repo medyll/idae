@@ -7,6 +7,7 @@ zone (toggle, state preserved across collection switches).
 -->
 <script lang="ts" generics="COL = Record<string, unknown>">
 	import MenuTree from '$lib/shell/layout/MenuTree.svelte';
+	import RecentPanel from '$lib/shell/layout/RecentPanel.svelte';
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
 	import { untrack } from 'svelte';
 	import { generateFrameId } from '$lib/main/frame/frameUtils.js';
@@ -23,5 +24,8 @@ zone (toggle, state preserved across collection switches).
 <TemplateShell zoneId={frameId} collection={collection}>
 	{#snippet leftbar()}
 		<MenuTree zone="side" link="loadIn:explorer.content@{frameId}" />
+	{/snippet}
+	{#snippet rightBar()}
+		<RecentPanel zone="panel" />
 	{/snippet}
 </TemplateShell>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
+	import WaffleMenu from './WaffleMenu.svelte';
 	import type { Snippet } from 'svelte';
 
 	let { devSlot }: { devSlot?: Snippet } = $props();
@@ -10,6 +11,7 @@
 	);
 
 	let userMenuOpen = $state(false);
+	let waffleOpen = $state(false);
 
 	function openExplorer() {
 		machine.framer.loadFrame('explorer', 'vehicle');
@@ -32,6 +34,17 @@
 <div class="taskbar">
 	<!-- Left: nav actions -->
 	<div class="taskbar-left">
+		<button
+			type="button"
+			class="taskbar-icon"
+			title="Menu"
+			onclick={(e) => {
+				e.stopPropagation();
+				waffleOpen = !waffleOpen;
+			}}
+		>
+			⊟
+		</button>
 		<button type="button" class="taskbar-btn taskbar-btn--primary" onclick={openExplorer} title="Open Explorer">
 			⊞ Explorer
 		</button>
@@ -81,3 +94,5 @@
 		</div>
 	</div>
 </div>
+
+<WaffleMenu bind:open={waffleOpen} />

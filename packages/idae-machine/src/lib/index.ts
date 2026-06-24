@@ -6,6 +6,7 @@ export * from '$lib/main/index.js';
 // UI — explorer (collection level)
 export { default as Explorer }            from '$lib/shell/frame/explorer/Explorer.svelte';
 export { default as Diagram }             from '$lib/shell/frame/diagram/Diagram.svelte';
+export { default as Today }               from '$lib/shell/frame/today/Today.svelte';
 export { buildGraph }                     from '$lib/data-ui/utils/diagramUtils.js';
 export type { DiagramOptions }            from '$lib/data-ui/utils/diagramUtils.js';
 
@@ -82,6 +83,8 @@ export { default as TaskBar }          from '$lib/shell/layout/TaskBar.svelte';
 export { default as Breadcrumb }       from '$lib/shell/layout/Breadcrumb.svelte';
 export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.svelte';
 export { default as MenuTree }         from '$lib/shell/layout/MenuTree.svelte';
+export { default as RecentPanel }      from '$lib/shell/layout/RecentPanel.svelte';
+export { default as WaffleMenu }       from '$lib/shell/layout/WaffleMenu.svelte';
 
 // UI — fragments
 export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
