@@ -22,8 +22,8 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "BL-20/BL-21 closed (BL-20 was stale-already-done; BL-21 renamed item→dataRecord). BL-23 P0+P1 done (ADR-field-type-source.md), P2/P3/P4 STOPPED — FieldList catalog itself needs repair (888 mismatches + 803 missing names) before any catalog-first switch is safe; that's the real next step on BL-23, needs explicit scoping decision. BL-05 deprioritized — medyll skeptical, sensitive sync/IDB area broken repeatedly before; do not pick up without explicit relaunch."
-next_command: "bmad continue"
+next_action: "Next real task: BL-25 — repair/complete FieldList catalog (888 mismatches + 803 missing names, see investigate-field-type.md §Suite) — blocking prerequisite for BL-23 P2/P3/P4. Field-by-field judgment call, not automatable; await medyll's go before starting (no sprint assigned yet). BL-05 stays deprioritized (medyll skeptical, sensitive sync/IDB area broken repeatedly) — do not pick up without explicit relaunch."
+next_command: "bmad plan BL-25"
 next_role: "dev"
 active_role: "scrum"
 
@@ -2004,6 +2004,25 @@ backlog:
       P4 codemod purge `type:` inline 21 models, réconcilier divergences (L).
       P5 tests roundtrip + "aucun field business n'inline type" (S).
       Ordre P0→P1→P2→P3→P5, P4 dernier. ADR candidat = P0.
+
+  - id: BL-25
+    title: "Réparer/compléter FieldList (field-defs.ts) — préalable bloquant à BL-23 P2"
+    priority: high
+    description: >
+      Audit 2026-06-24 (voir investigate-field-type.md §"Suite", ADR-field-type-source.md
+      §"Mise à jour") : sur 3847 fields business inline-typés, 888 mismatches vs FieldList
+      (le catalogue est plus pauvre — id→number, phone/icon/currency/image/url→text/number)
+      et 1411 occurrences (803 noms uniques) absentes du catalogue. BL-23 P2 (publishModel
+      catalogue-first) ne peut PAS être activé sans casser le rendu sur 19 orgs tant que ceci
+      n'est pas corrigé.
+      Travail : (1) parcourir les 888 mismatches, décider field-name par field-name si le
+      catalogue doit adopter le type inline (cas riche : phone/icon/currency/image/url/id) ou
+      si l'inline est l'anomalie (rare, à vérifier au cas par cas) ; (2) ajouter les 803 noms
+      manquants au catalogue avec leur type réel (lu depuis l'inline business, pas deviné) ;
+      (3) une fois FieldList complet+correct, relancer BL-23 P2→P3→P4.
+      Risque : décision champ-par-champ, pas automatisable sans jugement (un même nom peut
+      légitimement avoir un type différent selon contexte — à vérifier avant fusion). Effort: L.
+      Dépend de: rien techniquement, mais bloque BL-23 P2+.
 
   - id: BL-24
     title: "Rune partagée useRecordData — résolution data|collectionId factorisée (collectionId = data.id)"
