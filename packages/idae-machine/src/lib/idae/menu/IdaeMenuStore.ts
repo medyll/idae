@@ -4,7 +4,7 @@
  * for imperative snapshots, useMenuTree.svelte.ts for reactive component consumption)
  * own how/when this gets re-invoked.
  *
- * Domain code (NAMESPACE.md): reads `appscheme`/`appscheme_type`/`appuser_prefs`
+ * Domain code (NAMESPACE.md): reads `appscheme`/`appscheme_base`/`appuser_prefs`
  * literals directly — lives under idae/, never under machine/ (engine, sealed,
  * zero domain literals).
  */
@@ -21,15 +21,18 @@ export type AppschemeMenuEntry = {
 	label?: string;
 	icon?: string;
 	color?: string;
-	fks?: { appscheme_type?: { code?: string } };
+	fks?: { appscheme_base?: { code?: string }; appscheme_type?: { code?: string } };
 };
 
-/** Lightweight appscheme_type shape used by menu derivation. `name` is the real field; `label` is a fallback. */
-export type AppschemeTypeMenuEntry = {
+/** Lightweight appscheme_base shape used by menu derivation. `name` is the real field; `label` is a fallback. */
+export type AppschemeBaseMenuEntry = {
 	code: string;
 	name?: string;
 	label?: string;
 };
+
+/** @deprecated grouping moved from appscheme_type to appscheme_base. Kept as a shape alias. */
+export type AppschemeTypeMenuEntry = AppschemeBaseMenuEntry;
 
 /** Menu item — typed tree node for UI rendering. */
 export interface MenuItem {
@@ -38,12 +41,12 @@ export interface MenuItem {
 	label: string;         // Human-readable label
 	icon?: string;          // Optional icon code
 	color?: string;        // Optional color code
-	type?: string;          // Optional type code (from appscheme_type)
+	base?: string;          // Optional base code (from appscheme_base) — grouping dimension
 	zone: MenuZone;        // Menu zone this item belongs to
 	visible: boolean;      // Whether this item should be visible
 }
 
-/** Menu tree — grouped by type, then sorted by label. */
+/** Menu tree — grouped by base, then sorted by label. */
 export interface MenuTree {
 	zone: MenuZone;
 	groups: Array<{
@@ -60,7 +63,7 @@ export interface IdaeMenuTreeSnapshot {
 	/** appuser_prefs slots, keyed by menuPrefsScope(zone, collection) (see menuPrefs.ts). */
 	prefs: Record<string, unknown>;
 	appscheme: Map<string, AppschemeMenuEntry> | AppschemeMenuEntry[];
-	appscheme_type: Map<string, AppschemeTypeMenuEntry> | AppschemeTypeMenuEntry[];
+	appscheme_base: Map<string, AppschemeBaseMenuEntry> | AppschemeBaseMenuEntry[];
 	isDev?: boolean;
 }
 
@@ -72,11 +75,11 @@ function toMap<T extends { code: string }>(input: Map<string, T> | T[]): Map<str
 /**
  * Build a menu tree for a zone from a plain snapshot of rights/prefs/appscheme data.
  * Joins rights (allowed collections), prefs (user visibility toggles), and appscheme
- * (labels/icons/colors/types) into a typed tree grouped by type, sorted by label.
+ * (labels/icons/colors) into a typed tree grouped by base, sorted by label.
  */
 export function buildMenuTree(snapshot: IdaeMenuTreeSnapshot, zone: MenuZone): MenuTree {
 	const appschemeMap = toMap(snapshot.appscheme);
-	const appschemeTypeMap = toMap(snapshot.appscheme_type);
+	const appschemeBaseMap = toMap(snapshot.appscheme_base);
 
 	// 1+2. Rights gate, then pref-filtered, respecting per-zone visibility + dev bypass.
 	const visibleCollections = filterMenuCollections(zone, snapshot.allowedCollections, {
@@ -90,7 +93,7 @@ export function buildMenuTree(snapshot: IdaeMenuTreeSnapshot, zone: MenuZone): M
 		const scheme = appschemeMap.get(collection);
 		if (!scheme) continue;
 
-		const typeCode = scheme.fks?.appscheme_type?.code;
+		const baseCode = scheme.fks?.appscheme_base?.code;
 
 		items.push({
 			key: `${zone}:${collection}`,
@@ -98,19 +101,19 @@ export function buildMenuTree(snapshot: IdaeMenuTreeSnapshot, zone: MenuZone): M
 			label: scheme.name ? String(scheme.name) : scheme.label ? String(scheme.label) : collection,
 			icon: scheme.icon,
 			color: scheme.color,
-			type: typeCode,
+			base: baseCode,
 			zone,
 			visible: true // already filtered above
 		});
 	}
 
-	// 4. Group by type.
+	// 4. Group by base (appscheme_base — company structure).
 	const groups = new Map<string, { key: string; label: string; items: MenuItem[] }>();
 	for (const item of items) {
-		const groupKey = item.type ?? 'ungrouped';
-		const typeEntry = item.type ? appschemeTypeMap.get(item.type) : undefined;
-		const groupLabel = item.type
-			? String(typeEntry?.name ?? typeEntry?.label ?? groupKey)
+		const groupKey = item.base ?? 'ungrouped';
+		const baseEntry = item.base ? appschemeBaseMap.get(item.base) : undefined;
+		const groupLabel = item.base
+			? String(baseEntry?.name ?? baseEntry?.label ?? groupKey)
 			: 'Other';
 
 		if (!groups.has(groupKey)) {

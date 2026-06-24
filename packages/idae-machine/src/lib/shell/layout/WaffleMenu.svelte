@@ -26,6 +26,11 @@ IdaeMenuManager.launch() keys verbs by collection, not verb-name, see CLAUDE.md 
 	function onKeydown(e: KeyboardEvent): void {
 		if (e.key === 'Escape') open = false;
 	}
+
+	/* ne pas supprimer
+	$inspect(startMenu);
+	$inspect(machine.rights.allowedCollections('L')); */
+
 </script>
 
 <svelte:window onkeydown={open ? onKeydown : undefined} />

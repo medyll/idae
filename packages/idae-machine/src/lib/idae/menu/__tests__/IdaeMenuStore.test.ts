@@ -6,11 +6,11 @@ import { buildMenuTree } from '../IdaeMenuStore.js';
 
 describe('buildMenuTree', () => {
 	const appscheme = new Map([
-		['users', { code: 'users', label: 'Users', icon: 'user', fks: { appscheme_type: { code: 'admin' } } }],
-		['products', { code: 'products', label: 'Products', icon: 'box', fks: { appscheme_type: { code: 'catalog' } } }],
-		['orders', { code: 'orders', label: 'Orders', icon: 'cart', fks: { appscheme_type: { code: 'sales' } } }]
+		['users', { code: 'users', label: 'Users', icon: 'user', fks: { appscheme_base: { code: 'admin' } } }],
+		['products', { code: 'products', label: 'Products', icon: 'box', fks: { appscheme_base: { code: 'catalog' } } }],
+		['orders', { code: 'orders', label: 'Orders', icon: 'cart', fks: { appscheme_base: { code: 'sales' } } }]
 	]);
-	const appschemeType = new Map([
+	const appschemeBase = new Map([
 		['admin', { code: 'admin', label: 'Administration' }],
 		['catalog', { code: 'catalog', label: 'Catalog' }],
 		['sales', { code: 'sales', label: 'Sales' }]
@@ -26,7 +26,7 @@ describe('buildMenuTree', () => {
 				allowedCollections: ['users', 'products', 'orders'],
 				prefs: {},
 				appscheme,
-				appscheme_type: appschemeType,
+				appscheme_base: appschemeBase,
 				isDev: false
 			},
 			'side'
@@ -36,13 +36,13 @@ describe('buildMenuTree', () => {
 		expect(Array.isArray(tree.groups)).toBe(true);
 	});
 
-	it('groups items by type and sorts them', () => {
+	it('groups items by base and sorts them', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users', 'products', 'orders'],
 				prefs: {},
 				appscheme,
-				appscheme_type: appschemeType,
+				appscheme_base: appschemeBase,
 				isDev: false
 			},
 			'side'
@@ -60,7 +60,7 @@ describe('buildMenuTree', () => {
 				allowedCollections: ['users', 'products'],
 				prefs: {},
 				appscheme,
-				appscheme_type: appschemeType,
+				appscheme_base: appschemeBase,
 				isDev: false
 			},
 			'side'
@@ -78,7 +78,7 @@ describe('buildMenuTree', () => {
 				allowedCollections: ['users', 'products', 'orders'],
 				prefs: { 'app_menu.users': false },
 				appscheme,
-				appscheme_type: appschemeType,
+				appscheme_base: appschemeBase,
 				isDev: false
 			},
 			'side'
@@ -95,7 +95,7 @@ describe('buildMenuTree', () => {
 				allowedCollections: ['users', 'products'],
 				prefs: { 'app_menu.users': false },
 				appscheme,
-				appscheme_type: appschemeType,
+				appscheme_base: appschemeBase,
 				isDev: true
 			},
 			'side'
@@ -105,13 +105,13 @@ describe('buildMenuTree', () => {
 		expect(allItems.some((i) => i.collection === 'users')).toBe(true);
 	});
 
-	it('accepts array inputs for appscheme/appscheme_type (not just Map)', () => {
+	it('accepts array inputs for appscheme/appscheme_base (not just Map)', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users'],
 				prefs: {},
 				appscheme: Array.from(appscheme.values()),
-				appscheme_type: Array.from(appschemeType.values()),
+				appscheme_base: Array.from(appschemeBase.values()),
 				isDev: false
 			},
 			'side'

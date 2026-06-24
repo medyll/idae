@@ -57,6 +57,7 @@ export type {
 export type {
 	IdaeMenuTreeSnapshot,
 	AppschemeMenuEntry,
+	AppschemeBaseMenuEntry,
 	AppschemeTypeMenuEntry
 } from '$lib/idae/menu/IdaeMenuStore.js';
 

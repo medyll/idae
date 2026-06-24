@@ -46,9 +46,15 @@ visible collections = (rights where L=true) ∩ (prefs where app_menu_*=true)
 | `gui_menu_visible` | side menu open/closed |
 | `cache_mode` | module caching (DEV) |
 
-3. **Grouping** — menu items grouped by `appscheme_type` (each type carries
-   `iconAppscheme_type`, `nomAppscheme_type`). Each collection carries
-   `iconAppscheme`, `colorAppscheme`, `nomAppscheme`.
+3. **Grouping** — menu items grouped by **`appscheme_base`** (the company's
+   structure / services). Each base carries `icon`, `color`, `name`, `order`;
+   each collection (`appscheme` record) carries `icon`, `color`, `name` and an
+   `fks.appscheme_base` pointing at its base.
+   > ⚠ Earlier drafts of this file (and the epic/case) said *grouped by
+   > `appscheme_type`* — that was wrong. `appscheme_type` is the scheme's
+   > **nature** (Group/Standard/Status/Type), not a menu grouping axis.
+   > Menu grouping = `appscheme.fks.appscheme_base.code`. Settled with the user
+   > 2026-06-25.
 
 ### Build algorithm (legacy `ARCH-SOURCE.md` §3.5)
 
@@ -62,7 +68,7 @@ async function buildMenu(idagent) {
       label: s.nomAppscheme,
       icon:  s.iconAppscheme,
       color: s.colorAppscheme,
-      type:  s.idappscheme_type,
+      base:  s.idappscheme_base,   // grouping axis (was mis-recovered as appscheme_type)
       path:  `/${s.codeAppscheme}`,
     }));
 }
@@ -80,6 +86,9 @@ $arr_sch_type  = appscheme.distinct('idappscheme_type', { idappscheme IN sch });
 $RS_TY         = appscheme_type.find({ id IN sch_type }).sort(nom);
 // then: per type → per scheme → Espace/Créer/Explorer (each droit-gated)
 ```
+> ⚠ This PHP block is verbatim legacy reverse-eng and groups by `appscheme_type`.
+> The **machine** target groups by `appscheme_base` (see §2.3). Read the grouping
+> axis here as `appscheme_base`, not `appscheme_type`.
 
 ---
 
@@ -88,15 +97,19 @@ $RS_TY         = appscheme_type.find({ id IN sch_type }).sort(nom);
 ```
 app_gui_main.php                          ← root container
 ├── TaskBar                               toggle, waffle, mail badge, agent, cache(DEV)
-├── gui_pane (waffle overlay)             app_gui_start.php
-│   ├── [left 50%] app_gui_start_menu     appscheme_type → appscheme (pref app_menu_start_*)
+├── gui_pane (waffle overlay)             app_gui_start.php — TWO internal panes
+│   ├── [left] app_gui_start_menu         appscheme grouped by appscheme_base (pref app_menu_start_*)
+│   │     │                               clic collection → loadIn the RIGHT pane (menu stays open)
 │   │     ├── launch (single collection)  Créer/Espace/Recherche/Parcourir/Comparer/Trier/console/images
-│   │     └── launch_all (whole type)     all collections of a type
-│   └── [right 50%] app_gui_today         dashboard "Aujourd'hui"
-│         ├── today_create                quick-create (pref app_menu_create_*)
-│         ├── today_link                  quick-access lists (owns records)
-│         └── today_echeancier            start/end date timeline
-├── gui_menu (collapsible sidebar)        app_gui_menu.php (pref app_menu_*, tree by type)
+│   │     └── launch_all (whole base)     all collections of a base
+│   └── [right] content zone (loadIn)     STATE-DRIVEN target zone:
+│         ├── HOME (no collection picked) → app_gui_today = mini-dashboard "Aujourd'hui"
+│         │     ├── today_create          quick-create (pref app_menu_create_*)
+│         │     ├── today_link            quick-access lists (owns records)
+│         │     └── today_echeancier      collections having dateDebut+dateFin (NOT yet in machine)
+│         └── COLLECTION picked           → that collection's records + actions/stats/recents
+│                                           (cf. idae.desktop.contrat.jpg)
+├── gui_menu (collapsible sidebar)        app_gui_menu.php (pref app_menu_*, tree by base)
 │         └── per scheme → Espace / Créer / Explorer (droit-gated)
 └── desktop                               widgets + right panel
     └── app_gui_panel_list                per-collection recent history (pref app_panel_*)
@@ -141,20 +154,19 @@ Settings gear (`app_gui_tile_user.php`) per zone lets the user edit the
 |--------|--------------|--------|
 | `agent_groupe_droit` + `droit_table()` | `machine.rights` (`MachineRights`) | exists |
 | `agent_pref` (`app_menu_*`) | `appuser_prefs` via `machine.action` / `useMachinePrefs` | exists |
-| `appscheme` / `appscheme_type` | `appscheme` collection (`fkRelations` to type) | exists |
-| `buildMenu()` filter | **MISSING** — pref×right menu generator | TODO |
-| `app_gui_menu.php` (sidebar tree) | shell sidebar (currently `<DataList collection="appscheme" linkCollectionField="code" />`) | partial |
-| `app_gui_start_menu.php` (waffle) | not built | TODO |
-| `app_gui_panel.php` (recent history) | `appuser_history` + `machine.action` | data exists, UI TODO |
+| `appscheme` / `appscheme_base` | `appscheme` collection (`fks.appscheme_base` = grouping) | exists |
+| `buildMenu()` filter | `IdaeMenuStore.buildMenuTree` + `useMenuTree` (rights ∩ prefs ∩ appscheme, grouped by base) | done |
+| `app_gui_menu.php` (sidebar tree) | `Explorer.svelte` leftbar = `<DataList collection="appscheme" groupBy="fks.appscheme_base" />`; `MenuTree.svelte` (zone `side`) | done |
+| `app_gui_start_menu.php` (waffle) | `WaffleMenu.svelte` (zone `start`) — still single-pane, NOT yet the 2-pane home/collection model | partial |
+| `app_gui_today.php` (home pane) | `Today.svelte` (frame `today`) — échéancier section needs dateDebut/dateFin support | partial |
+| `app_gui_panel.php` (recent history) | `RecentPanel.svelte` + `appuser_history` | done |
 | `data-contextual` row menu | not built | TODO |
 
 ### What's missing (the actual lost piece)
 
-1. **Menu generator** — a derived store that joins:
-   - `machine.rights` (collections where `L`),
-   - `appuser_prefs` (`app_menu_*` = true),
-   - `appscheme` + `appscheme_type` (label/icon/color/grouping),
-   and emits a typed tree. Reactive (`$derived`) so pref/right changes re-filter.
+1. **Menu generator** — ✅ built (`IdaeMenuStore.buildMenuTree` / `useMenuTree`).
+   Joins `machine.rights` (L) ∩ `appuser_prefs` (`app_menu_*`) ∩ `appscheme`
+   (label/icon/color + `fks.appscheme_base` for grouping). Reactive `$derived`.
 
 2. **Pref scopes** — settled `app_menu` / `app_menu_start` / `app_menu_create` /
    `app_panel` pref codes wired to `appuser_prefs` (`upsertOn: ['code','collection']`).
@@ -176,3 +188,31 @@ Settings gear (`app_gui_tile_user.php`) per zone lets the user edit the
   `css-base` before building the menu components.
 - The legacy menu had **per-zone** preference sets (same collection could show in
   sidebar but not waffle). Preserve that granularity — one pref code per zone.
+
+### Target shape of the waffle (settled 2026-06-25)
+
+The waffle/start menu is a **two-pane overlay**:
+- **Left** — `appscheme` list grouped by `appscheme_base`. Clicking a collection
+  `loadIn`s the right pane; the overlay **stays open** (today it opens a full
+  Explorer frame and closes — to change).
+- **Right** — a state-driven content zone: **HOME** (no collection picked) =
+  `Today` mini-dashboard; **COLLECTION picked** = that collection's records +
+  actions/stats/recents (cf. `idae.desktop.contrat.jpg`).
+
+### Piste — drive the menu list with `DataList` instead of a bespoke tree
+
+The pref×right filtering and the **rendering/grouping** are separable:
+- The hook (`useMenuTree` / a `usePref`-style hook) should return **just the list
+  of allowed `code`s** (rights ∩ prefs), not a pre-grouped tree — e.g. a flat
+  `string[]` after a `.map`.
+- The view is then a plain `<DataList collection="appscheme"
+  where={{ code: { $in: allowedCodes } }} groupBy="fks.appscheme_base" />`.
+  `DataList`/`DataGroup` own grouping + reactivity; no parallel tree builder.
+- This also sidesteps the `user_prefs` complexity that made a direct DataList
+  swap awkward: prefs only shape the `$in` set, DataList does the rest.
+
+### Today échéancier — not yet in machine
+
+Legacy `today_echeancier` = a **list of lists** of every collection that has both
+a `dateDebut` and a `dateFin`, on a timeline. No machine equivalent yet — assess
+feasibility later.

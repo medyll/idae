@@ -1,10 +1,10 @@
 import { machine } from '$lib/main/machine.js';
-import { buildMenuTree, type AppschemeMenuEntry, type AppschemeTypeMenuEntry, type MenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
+import { buildMenuTree, type AppschemeMenuEntry, type AppschemeBaseMenuEntry, type MenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
 import { readMenuPrefsFromRecords, type MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
 
 /**
  * Svelte 5 rune: reactive menu tree for a zone — rights(L) ∩ prefs ∩ appscheme/type.
- * Re-derives whenever appuser_prefs/appscheme/appscheme_type/current user changes.
+ * Re-derives whenever appuser_prefs/appscheme/appscheme_base/current user changes.
  *
  * Usage:
  *   const menu = useMenuTree(() => 'side');
@@ -18,20 +18,20 @@ export function useMenuTree(zone: () => MenuZone) {
 	// converges (always reads the just-reset empty snapshot).
 	const prefsSrc = machine.store('appuser_prefs');
 	const appschemeSrc = machine.store('appscheme');
-	const appschemeTypeSrc = machine.store('appscheme_type');
+	const appschemeBaseSrc = machine.store('appscheme_base');
 
 	const tree = $derived.by((): MenuTree => {
 		const z = zone();
 		const userId = machine.rights.currentUser?.id;
 		const prefsRecords = prefsSrc.records as Array<{ code?: unknown; value?: unknown }>;
 		const prefs = userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {};
-
+	 
 		return buildMenuTree(
 			{
 				allowedCollections: machine.rights.allowedCollections('L'),
 				prefs,
 				appscheme: appschemeSrc.records as AppschemeMenuEntry[],
-				appscheme_type: appschemeTypeSrc.records as AppschemeTypeMenuEntry[],
+				appscheme_base: appschemeBaseSrc.records as AppschemeBaseMenuEntry[],
 				isDev: import.meta.env.DEV
 			},
 			z

@@ -28,4 +28,4 @@ export { registerDomainBridges } from '$lib/idae/bridge/register.js';
 export { IdaeMenuManager, createDefaultLaunchVerbs } from '$lib/idae/menu/IdaeMenuManager.js';
 export { buildMenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
 export type { MenuTree, MenuItem, MenuLaunchVerb, MenuLaunchVerbs } from '$lib/idae/menu/IdaeMenuManager.js';
-export type { IdaeMenuTreeSnapshot, AppschemeMenuEntry, AppschemeTypeMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';
+export type { IdaeMenuTreeSnapshot, AppschemeMenuEntry, AppschemeBaseMenuEntry, AppschemeTypeMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';

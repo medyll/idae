@@ -1,5 +1,5 @@
 <!--
-MenuTree.svelte — BL-14. Sidebar tree grouped by appscheme_type, collapsible, icons/colors.
+MenuTree.svelte — BL-14. Sidebar tree grouped by appscheme_base, collapsible, icons/colors.
 Consumes useMenuTree(zone) (BL-13) — never re-joins rights/prefs/appscheme inline.
 Navigation: same link/linkVars contract as DataList (parseLink + machine.framer).
 Collapse state persisted per group via machine.action('appuser_prefs', ...) — code

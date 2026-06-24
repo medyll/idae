@@ -11,7 +11,7 @@ import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVe
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { IdaeMenuManager } from '$lib/idae/menu/IdaeMenuManager.js';
-import type { AppschemeMenuEntry, AppschemeTypeMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';
+import type { AppschemeMenuEntry, AppschemeBaseMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';
 import { readMenuPrefsFromRecords } from '$lib/data-ui/utils/menuPrefs.js';
 import { foldFksIntoRecord } from '$lib/main/machine/MachineFkFold.js';
 import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
@@ -625,7 +625,7 @@ export class Machine {
 				return {
 					prefs: userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {},
 					appscheme: this.store('appscheme').records as AppschemeMenuEntry[],
-					appscheme_type: this.store('appscheme_type').records as AppschemeTypeMenuEntry[],
+					appscheme_base: this.store('appscheme_base').records as AppschemeBaseMenuEntry[],
 					isDev: import.meta.env.DEV
 				};
 			});

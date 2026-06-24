@@ -22,10 +22,10 @@ const testCore: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' }
 		},
-		fkRelations: { appscheme_type: { code: 'appscheme_type', multiple: false, required: false } },
+		fkRelations: { appscheme_base: { code: 'appscheme_base', multiple: false, required: false } },
 		template: { presentation: 'name' }
 	},
-	appscheme_type: {
+	appscheme_base: {
 		keyPath: '++id',
 		base: 'machine_app',
 		model: {},
@@ -73,17 +73,17 @@ const businessScheme: MachineModel = {
 };
 
 async function seedMenuFixtures(): Promise<void> {
-	await machine.collection('appscheme_type').create({ code: 'tool', name: 'Tools', fks: {} });
+	await machine.collection('appscheme_base').create({ code: 'tool', name: 'Tools', fks: {} });
 	await machine.collection('appscheme').create({
 		code: 'widget',
 		name: 'Widget',
 		icon: '🔧',
-		fks: { appscheme_type: { code: 'tool' } }
+		fks: { appscheme_base: { code: 'tool' } }
 	});
 	await machine.collection('appscheme').create({
 		code: 'gadget',
 		name: 'Gadget',
-		fks: { appscheme_type: { code: 'tool' } }
+		fks: { appscheme_base: { code: 'tool' } }
 	});
 }
 
@@ -123,7 +123,7 @@ describe('WaffleMenu', () => {
 		expect(screen.queryByText('Widget')).not.toBeInTheDocument();
 	});
 
-	it('renders columns by appscheme_type when open', async () => {
+	it('renders columns by appscheme_base when open', async () => {
 		render(WaffleMenu, { props: { open: true } });
 
 		await waitFor(() => expect(screen.getByText('Tools')).toBeInTheDocument());

@@ -7,20 +7,27 @@
 
 ---
 
+> ⚠ **Correction 2026-06-25:** every "grouped by `appscheme_type`" in this epic is
+> wrong. Menu grouping = **`appscheme.fks.appscheme_base.code`** (company structure /
+> services). `appscheme_type` is the scheme's nature (Group/Standard/Status/Type),
+> not a menu axis. See `MAIN_MENU.md` §2.3. Read every "by type" below as "by base".
+> Status update: BL-13 generator, BL-14 sidebar, BL-19 panel are **done**; BL-15
+> waffle is partial (single-pane, not yet the 2-pane home/collection model).
+
 ## 1. The lost idea (one sentence)
 
 The global menu is **not** a static collection list — it is a per-user intersection,
-grouped by type, decorated, and reactive:
+grouped by **base**, decorated, and reactive:
 
 ```
-visible(zone) = rights(L=true) ∩ prefs(app_*_{table}=true) ∩ appscheme(label/icon/color/type)
+visible(zone) = rights(L=true) ∩ prefs(app_*_{table}=true) ∩ appscheme(label/icon/color/base)
 ```
 
 Four zones share the same intersection but different pref prefix:
 
 | Zone | Pref prefix | Story |
 |------|-------------|-------|
-| Side menu (tree by type) | `app_menu` | BL-14 |
+| Side menu (tree by base) | `app_menu` | BL-14 |
 | Waffle / start overlay | `app_menu_start` | BL-15 |
 | Today dashboard quick-create | `app_menu_create` | BL-16 |
 | Right recent-history panel | `app_panel` | BL-19 |
@@ -68,8 +75,8 @@ leaf stories become eligible — sequence them by file-overlap, not by dependenc
 
 ## 4. BL-13 — Menu generator (the keystone, planned S50-01)
 
-**Goal:** a reactive `$derived` store joining rights(L) ∩ prefs ∩ appscheme/appscheme_type
-→ typed tree grouped by type, with label/icon/color and launch verbs. Framer carries the
+**Goal:** a reactive `$derived` store joining rights(L) ∩ prefs ∩ appscheme/appscheme_base
+→ typed tree grouped by base, with label/icon/color and launch verbs. Framer carries the
 menu model + launch verbs; the builder stays pure/reactive (don't bloat the singleton).
 
 **Status: implemented (S50-01, 2026-06-24).** Files: `src/lib/idae/menu/IdaeMenuStore.ts` (pure `buildMenuTree`), `src/lib/idae/menu/IdaeMenuManager.ts` (`machine.menu` facade + launch verbs), `src/lib/data-ui/utils/useMenuTree.svelte.ts` (reactive runes hook — **this is what BL-14/15/16/19 should consume**, not the manager directly). Lives under `idae/`, not `machine/`, per NAMESPACE.md — domain literals (`appscheme`, `appuser_prefs`, launch-verb registry keys) disqualify it from the engine namespace.
@@ -80,7 +87,7 @@ type MenuNode = {
   collection: string;       // appscheme.code
   label: string;            // appscheme.name
   icon?: string; color?: string;
-  type: string;             // appscheme_type.code
+  base: string;             // appscheme_base.code (grouping axis)
   verbs: MenuVerb[];        // resolved launch actions, rights-gated
 };
 type MenuVerb = { id: 'espace'|'creer'|...; label: string; run(): void; right: 'R'|'C'|'U'|'D'|'L'|'ADMIN' };
@@ -108,10 +115,10 @@ verbs filtered by `allowedCollections`/registry presence. Unit tests, full suite
 
 ## 5. Leaf stories (BL-14 … BL-19)
 
-### BL-14 — Sidebar tree by appscheme_type — effort M — dep BL-13
+### BL-14 — Sidebar tree by appscheme_base — effort M — dep BL-13
 
 Replace the flat sidebar `<DataList collection="appscheme" linkCollectionField="code" />`
-with the generator tree (zone `side`), grouped by `appscheme_type`, collapsible,
+with the generator tree (zone `side`), grouped by `appscheme_base`, collapsible,
 icons/colors. Open/closed state persists (legacy `gui_menu_visible` pref).
 
 - **Files:** `src/lib/shell/layout/` — new `MenuTree.svelte` (+ `MenuTreeGroup`/`MenuTreeItem` if split); wire into `TemplateShell.svelte` sidebar zone. Remove the flat DataList sidebar usage.
@@ -122,7 +129,7 @@ icons/colors. Open/closed state persists (legacy `gui_menu_visible` pref).
 ### BL-15 — Waffle / start overlay — effort L — dep BL-13
 
 Legacy `app_gui_start_menu.php` / `menu.production` screen. Full-screen-ish overlay:
-columns per `appscheme_type`, each listing collections (zone `start`, pref `app_menu_start`).
+columns per `appscheme_base`, each listing collections (zone `start`, pref `app_menu_start`).
 Launch a single collection (its verbs) or `launch_all` for a whole type. Toggled from a
 TaskBar waffle button.
 
@@ -130,7 +137,7 @@ TaskBar waffle button.
 - **Consumes:** `useMenuTree('start')` + framer launch verbs; `launch_all` iterates a type's nodes.
 - **pseudo-html:** `waffle-overlay` / `waffle-column` / `waffle-launch` — confirm via skill.
 - **⚠ TaskBar overlap:** touches `TaskBar.svelte` (waffle button) — do NOT run in the same sprint as BL-18 (gear, also TaskBar).
-- **Acceptance:** overlay opens from TaskBar; columns by type; single + launch_all wire to framer verbs; pref/right filtered; dev/empty default policy. Component test.
+- **Acceptance:** overlay opens from TaskBar; columns by base; single + launch_all wire to framer verbs; pref/right filtered; dev/empty default policy. Component test.
 
 ### BL-16 — Today dashboard frame — effort L — dep BL-13
 
@@ -228,8 +235,8 @@ All leaf stories gate on S50-01 (BL-13). After it lands:
 
 ## 8. Decoration data risk (surface before BL-14)
 
-Menu tree needs `icon/color/label/type` per `appscheme` record (legacy `iconAppscheme`,
-`colorAppscheme`, `nomAppscheme`, `idappscheme_type`). Confirm every business collection's
-`appscheme` row carries these + a valid `appscheme_type` fk, or the tree renders blank.
+Menu tree needs `icon/color/label/base` per `appscheme` record (legacy `iconAppscheme`,
+`colorAppscheme`, `nomAppscheme`, `idappscheme_base`). Confirm every business collection's
+`appscheme` row carries these + a valid `appscheme_base` fk, or the tree renders blank.
 **Seed/migration check is a BL-13/BL-14 precondition** — if data is missing, add a story
 (BL-25 "appscheme menu-decoration seed audit") ahead of BL-14.

@@ -8,20 +8,24 @@
 
 ---
 
+> ⚠ **Correction 2026-06-25:** "grouped by `appscheme_type`" below is wrong. Menu
+> grouping = **`appscheme.fks.appscheme_base.code`** (company structure / services).
+> See `MAIN_MENU.md` §2.3. Read every "by type" as "by base".
+
 ## 1. What the legacy menu does (target)
 
 The global menu is **not** a static collection list. It is a per-user intersection:
 
 ```
 visible collections = (rights where L = true) ∩ (prefs where app_menu_*  = true)
-grouped by appscheme_type, decorated with icon/color/label.
+grouped by appscheme_base, decorated with icon/color/label.
 ```
 
 Three legacy zones, all fed by the same intersection but different pref prefix:
 
 | Zone | Legacy file | Pref prefix | Screenshot |
 |------|-------------|-------------|------------|
-| Side menu (collapsible tree by type) | `app_gui_menu.php` | `app_menu_{table}` | all 3 |
+| Side menu (collapsible tree by base) | `app_gui_menu.php` | `app_menu_{table}` | all 3 |
 | Waffle / start overlay (type → collection launch) | `app_gui_start_menu.php` | `app_menu_start_{table}` | `menu.production` |
 | Today dashboard (quick-create + my-lists + échéancier) | `app_gui_today.php` | `app_menu_create_{table}` | `today` |
 | Right recent-history panel | `app_gui_panel_list.php` | `app_panel_{table}` | — |
@@ -38,14 +42,14 @@ by a specific right (C / L / R / ADMIN).
 |------|---------------|-----|
 | Rights check | `machine.rights.checkAccess(collection, op)` — **single collection** (MachineRights.ts:70) | No enumeration: cannot list collections where `L=true`. Menu must iterate all collections × checkAccess. |
 | Prefs read/write | `useMachinePrefs` (datalist-scoped, key `{userId}:{scope}.{slot}`) + `machine.action('appuser_prefs', …)` | No **menu-zone** pref scope (`app_menu` / `app_menu_start` / `app_menu_create` / `app_panel`). Hook is list-centric. |
-| Collections + grouping | `appscheme` + `appscheme_type` (`fkRelations`), `machine.logic.collections()` | No join that yields a typed menu tree with icon/color/label. |
+| Collections + grouping | `appscheme` + `fks.appscheme_base` (`fkRelations`), `machine.logic.collections()` | No join that yields a typed menu tree with icon/color/label. |
 | Defaults when prefs empty | none | **User-critical**: prefs vides → menu vide. Need default policy + dev-mode "show all". |
 | Navigation | framer `loadFrame / loadIn / loadInDialog / createHost` | No menu builder; no rights-gated launch actions (Espace/Créer/…). **Hint: enrich framer.** |
 | Shell zones | `App.svelte` = TaskBar + `main` only. `TemplateShell` = sidebar+main+right. Sidebar = `<DataList collection="appscheme">` (flat, no type tree, no pref/right filter). TaskBar = hardcoded "Explorer→vehicle", mock ⚙. | Waffle overlay, today dashboard, type-tree sidebar, recent panel, per-zone settings gear = **not built**. |
 | Contextual row menu | `framer.openContextMenu()` + `ContextMenu.svelte` host exists | Actions not rights-gated, not wired to launch verbs (Créer/Espace/Recherche/Parcourir/Comparer/Trier/console/images). |
 
 **The actual lost piece** = the *menu generator*: a reactive `$derived` store joining
-rights(L) ∩ prefs(app_menu_*) ∩ appscheme/appscheme_type → typed tree. Everything else
+rights(L) ∩ prefs(app_menu_*) ∩ appscheme/appscheme_base → typed tree. Everything else
 (zones, panels) consumes it.
 
 ---
@@ -95,7 +99,7 @@ Dependency-ordered. BL-11 is the dependency-free foundation.
 | BL-11 | MachineRights enumeration — `allowedCollections(op)` | S | — |
 | BL-12 | Menu pref scopes module — centralized zone→pref keys + defaults + dev "show all" | M | — |
 | BL-13 | Menu generator (framer) — reactive tree: rights(L) ∩ prefs ∩ appscheme/type | M | BL-11, BL-12 |
-| BL-14 | Sidebar tree by appscheme_type (replaces flat `<DataList collection="appscheme">`) | M | BL-13 |
+| BL-14 | Sidebar tree by appscheme_base (replaces flat `<DataList collection="appscheme">`) | M | BL-13 |
 | BL-15 | Waffle/start overlay — type→collection launch + launch_all | L | BL-13 |
 | BL-16 | Today dashboard frame — quick-create + my-lists + échéancier | L | BL-13 |
 | BL-17 | Rights-gated contextual launch menu (Créer/Espace/Recherche/Parcourir/Comparer/Trier/console/images) | M | BL-11, BL-13 |

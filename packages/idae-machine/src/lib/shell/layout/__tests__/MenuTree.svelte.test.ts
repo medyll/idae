@@ -22,10 +22,10 @@ const testCore: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' }
 		},
-		fkRelations: { appscheme_type: { code: 'appscheme_type', multiple: false, required: false } },
+		fkRelations: { appscheme_base: { code: 'appscheme_base', multiple: false, required: false } },
 		template: { presentation: 'name' }
 	},
-	appscheme_type: {
+	appscheme_base: {
 		keyPath: '++id',
 		base: 'machine_app',
 		model: {},
@@ -73,18 +73,18 @@ const businessScheme: MachineModel = {
 };
 
 async function seedMenuFixtures(): Promise<void> {
-	await machine.collection('appscheme_type').create({ code: 'tool', name: 'Tools', fks: {} });
+	await machine.collection('appscheme_base').create({ code: 'tool', name: 'Tools', fks: {} });
 	await machine.collection('appscheme').create({
 		code: 'widget',
 		name: 'Widget',
 		icon: '🔧',
 		color: '#f00',
-		fks: { appscheme_type: { code: 'tool' } }
+		fks: { appscheme_base: { code: 'tool' } }
 	});
 	await machine.collection('appscheme').create({
 		code: 'gadget',
 		name: 'Gadget',
-		fks: { appscheme_type: { code: 'tool' } }
+		fks: { appscheme_base: { code: 'tool' } }
 	});
 }
 
@@ -124,7 +124,7 @@ describe('MenuTree', () => {
 		machine.destroy();
 	});
 
-	it('renders a collapsible tree grouped by appscheme_type', async () => {
+	it('renders a collapsible tree grouped by appscheme_base', async () => {
 		render(MenuTree, { props: { zone: 'side', link: 'loadIn:explorer.content@frame-1' } });
 
 		await waitFor(() => expect(screen.getByText('Tools')).toBeInTheDocument());

@@ -68,7 +68,7 @@ export class IdaeMenuManager {
 	readonly rights: MachineRightsType;
 
 	/**
-	 * Reads the live prefs/appscheme/appscheme_type/isDev snapshot. Injected by
+	 * Reads the live prefs/appscheme/appscheme_base/isDev snapshot. Injected by
 	 * machine.ts (reads machine.store(...) at call time) — set via `setSnapshotReader`
 	 * once qoolie is ready. Until set, tree queries return an empty tree rather than
 	 * throwing, so early calls (before boot finishes) degrade gracefully.
@@ -88,7 +88,7 @@ export class IdaeMenuManager {
 
 	/**
 	 * Inject the live snapshot reader. Called once by machine.ts after boot (once
-	 * appuser_prefs/appscheme/appscheme_type stores exist).
+	 * appuser_prefs/appscheme/appscheme_base stores exist).
 	 */
 	setSnapshotReader(reader: IdaeMenuSnapshotReader): void {
 		this.#readSnapshot = reader;
