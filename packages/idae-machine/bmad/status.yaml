@@ -22,7 +22,7 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 54 complete (S54-01 BL-22 RecordToolbar in ContextMenu) — Sprint 55 next: BL-17 rights-gated contextual menu (last of the serialized ContextMenuContent trio BL-24→BL-22→BL-17)."
+next_action: "Sprint 55 complete (S55-01 BL-17 rights-gated contextual verbs) — ContextMenuContent trio (BL-24→BL-22→BL-17) done. MAIN-MENU epic leaf stories BL-14..BL-19 all complete; remaining backlog: BL-20 (groupBy table/grid), BL-21 (DataList snippet rename), BL-05/BL-23 (ADR-blocked)."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "scrum"
@@ -144,6 +144,44 @@ architecture:
 # launch verbs, 2-agent sequencing, single-file contention rules). Sprints 51-55 below
 # drain it; all gate on S50-01 (BL-13 keystone) landing first.
 sprints:
+  - id: 55
+    goal: "MAIN-MENU — BL-17 rights-gated contextual launch menu (epic-main-menu.md §6 row 55, last of the trio)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50, 51, 52, 53, 54]
+    note: >
+      Last of the serialized ContextMenuContent.svelte trio (BL-24→BL-22→BL-17), single-file,
+      ran alone per the hard overlap rule (never parallel with BL-22/BL-24).
+    stories:
+      - id: S55-01
+        title: "BL-17 — Collection-level launch verbs (Créer/Espace/Parcourir) gated by C/L rights"
+        backlog_ref: BL-17
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "ContextMenuContent.svelte.test.ts: 8/8 passed (3 new BL-17 tests). pnpm run check: 0 errors. server 689/689, client 78/78 (full suite)."
+        test_result: pass
+        detail: >
+          Added Créer (C right) / Espace (L right) / Parcourir (L right) entries to
+          ContextMenuContent's menuItems, gated by machine.rights.checkAccess and dispatched
+          through machine.menu.verbs (create/space/explorer) — the BL-13 verb resolver, not
+          direct machine.framer calls, per the epic's "reuse BL-13 verb resolver" instruction.
+          Per the MAIN_MENU.md §2 table only the ✅-built verbs are exposed; Recherche
+          rapide/Comparer/Trier/console/images stay omitted (no frame yet) rather than stubbed
+          — "unbuilt verbs omitted" acceptance criterion. New section separated from the
+          existing record-level View/Edit/Delete/Duplicate items by its own divider
+          (divider-collection, distinct label from the existing customActions divider to avoid
+          a duplicate Svelte each-key when both appear).
+          Found+fixed a self-inflicted test-pollution bug while adding the rights-gating test:
+          a test calling vi.mocked(checkAccess).mockReturnValue(false) permanently flipped the
+          shared mock for every later test in the file (vi.clearAllMocks() in afterEach only
+          clears call history, not the implementation) — same family of bug as the
+          vi.restoreAllMocks() issue fixed in BL-24. Fixed by resetting
+          checkAccess.mockReturnValue(true) explicitly in beforeEach rather than relying on
+          vi.mock's factory (which, per BL-24's finding, does not actually re-run per test).
+
   - id: 54
     goal: "MAIN-MENU — BL-22 RecordToolbar in ContextMenu (epic-main-menu.md §6 row 54)"
     status: complete
@@ -1836,6 +1874,8 @@ backlog:
   - id: BL-17
     title: "Menu contextuel de lancement rights-gated (Créer/Espace/Recherche/Parcourir/Comparer/Trier/console/images)"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       ContextMenu host existe déjà (framer.openContextMenu + ContextMenu.svelte) mais actions
       ni rights-gated ni câblées aux verbes. Construire les entrées depuis R/C/U/D/L (table §3.2

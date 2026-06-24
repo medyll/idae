@@ -31,6 +31,7 @@ Dynamic context menu content that builds menu items based on permissions and col
   const canUpdate = $derived(machine.rights.checkAccess(collection, 'U'));
   const canDelete = $derived(machine.rights.checkAccess(collection, 'D'));
   const canCreate = $derived(machine.rights.checkAccess(collection, 'C'));
+  const canList   = $derived(machine.rights.checkAccess(collection, 'L'));
 
   type MenuItem = {
     label: string;
@@ -89,7 +90,45 @@ Dynamic context menu content that builds menu items based on permissions and col
       });
     }
 
-    if (vars.customActions && (canRead || canUpdate || canDelete || canCreate)) {
+    // BL-17 — collection-level launch verbs (MAIN_MENU.md §2 table), gated by C/L
+    // rights, reusing the BL-13 verb resolver (machine.menu.verbs) instead of calling
+    // machine.framer directly. Only the ✅-built verbs are exposed; "Recherche rapide"/
+    // "Comparer"/"Trier"/"console"/"images" stay TBD (no frame yet) — omitted, not stubbed.
+    const hasRecordActions = canRead || canUpdate || canDelete || canCreate;
+    const hasCollectionActions = canCreate || canList;
+
+    if (hasCollectionActions && hasRecordActions) {
+      items.push({ label: 'divider-collection', icon: 'divider', action: () => {}, divider: true });
+    }
+
+    if (canCreate) {
+      items.push({
+        label: 'Créer',
+        icon: 'plus',
+        action: () => {
+          machine.menu.verbs.create?.(collection);
+        }
+      });
+    }
+
+    if (canList) {
+      items.push({
+        label: 'Espace',
+        icon: 'layout',
+        action: () => {
+          machine.menu.verbs.space?.(collection);
+        }
+      });
+      items.push({
+        label: 'Parcourir',
+        icon: 'list',
+        action: () => {
+          machine.menu.verbs.explorer?.(collection);
+        }
+      });
+    }
+
+    if (vars.customActions && (hasRecordActions || hasCollectionActions)) {
       items.push({ label: 'divider', icon: 'divider', action: () => {}, divider: true });
     }
 

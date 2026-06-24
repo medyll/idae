@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, cleanup } from '@testing-library/svelte';
+import { render, cleanup, fireEvent } from '@testing-library/svelte';
 import ContextMenuContent from './ContextMenuContent.svelte';
+import { machine } from '$lib/main/machine.js';
 
 describe('ContextMenuContent', () => {
   beforeEach(() => {
@@ -18,6 +19,13 @@ describe('ContextMenuContent', () => {
         framer: {
           loadInDialog: vi.fn()
         },
+        menu: {
+          verbs: {
+            create: vi.fn(),
+            space: vi.fn(),
+            explorer: vi.fn()
+          }
+        },
         logic: {
           collectionOr: vi.fn().mockReturnValue(null)
         },
@@ -26,6 +34,10 @@ describe('ContextMenuContent', () => {
         })
       }
     }));
+    // vi.mock's factory only truly re-executes once (module caching) — explicitly
+    // reset per-test state here rather than relying on the factory rerunning, since
+    // a later test (e.g. the rights-gating one) mutates this via mockReturnValue.
+    vi.mocked(machine.rights.checkAccess).mockReturnValue(true);
   });
 
   afterEach(() => {
@@ -71,6 +83,51 @@ describe('ContextMenuContent', () => {
     const labels = Array.from(container.querySelectorAll('context-menu-toolbar .button-action'))
       .map((el) => el.textContent?.trim());
     expect(labels).toEqual(['synthese', 'diagram', 'update']);
+  });
+
+  it('should show collection-level verbs (BL-17) gated by C/L rights', () => {
+    const { container } = render(ContextMenuContent, {
+      props: { collection: 'test', collectionId: '123' }
+    });
+
+    const labels = Array.from(container.querySelectorAll('.context-menu-item'))
+      .map((item) => item.textContent?.trim());
+    expect(labels.some((l) => l?.includes('Créer'))).toBe(true);
+    expect(labels.some((l) => l?.includes('Espace'))).toBe(true);
+    expect(labels.some((l) => l?.includes('Parcourir'))).toBe(true);
+  });
+
+  it('omits Créer/Espace/Parcourir when the user lacks C/L rights', () => {
+    vi.mocked(machine.rights.checkAccess).mockReturnValue(false);
+
+    const { container } = render(ContextMenuContent, {
+      props: { collection: 'test', collectionId: '123' }
+    });
+
+    const labels = Array.from(container.querySelectorAll('.context-menu-item'))
+      .map((item) => item.textContent?.trim());
+    expect(labels.some((l) => l?.includes('Créer'))).toBe(false);
+    expect(labels.some((l) => l?.includes('Espace'))).toBe(false);
+    expect(labels.some((l) => l?.includes('Parcourir'))).toBe(false);
+  });
+
+  it('fires machine.menu.verbs.create/space/explorer when the matching item is clicked', async () => {
+    const { container } = render(ContextMenuContent, {
+      props: { collection: 'test', collectionId: '123' }
+    });
+
+    const items = Array.from(container.querySelectorAll('.context-menu-item'));
+    const click = (label: string) =>
+      fireEvent.click(items.find((el) => el.textContent?.includes(label))!);
+
+    await click('Créer');
+    expect(machine.menu.verbs.create).toHaveBeenCalledWith('test');
+
+    await click('Espace');
+    expect(machine.menu.verbs.space).toHaveBeenCalledWith('test');
+
+    await click('Parcourir');
+    expect(machine.menu.verbs.explorer).toHaveBeenCalledWith('test');
   });
 
   it('should handle custom actions from vars', () => {
