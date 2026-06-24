@@ -85,6 +85,8 @@ export { default as DevResetPanel }    from '$lib/shell/layout/DevResetPanel.sve
 export { default as MenuTree }         from '$lib/shell/layout/MenuTree.svelte';
 export { default as RecentPanel }      from '$lib/shell/layout/RecentPanel.svelte';
 export { default as WaffleMenu }       from '$lib/shell/layout/WaffleMenu.svelte';
+export { default as MenuSettings }     from '$lib/shell/layout/MenuSettings.svelte';
+export { useRecordData }               from '$lib/data-ui/utils/useRecordData.svelte.js';
 
 // UI — fragments
 export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';

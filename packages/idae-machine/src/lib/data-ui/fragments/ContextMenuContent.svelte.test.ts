@@ -18,6 +18,9 @@ describe('ContextMenuContent', () => {
         framer: {
           loadInDialog: vi.fn()
         },
+        logic: {
+          collectionOr: vi.fn().mockReturnValue(null)
+        },
         collection: vi.fn().mockReturnValue({
           delete: vi.fn().mockResolvedValue(true)
         })
@@ -27,7 +30,12 @@ describe('ContextMenuContent', () => {
 
   afterEach(() => {
     cleanup();
-    vi.restoreAllMocks();
+    // vi.restoreAllMocks() would strip the plain vi.fn().mockReturnValue(true) below
+    // (no "original" non-mocked implementation to restore to → becomes a no-op
+    // returning undefined after the first test) — this made every test after the
+    // first see checkAccess()=undefined, silently failing rights-gated assertions.
+    // clearAllMocks() resets call history without touching mock implementations.
+    vi.clearAllMocks();
   });
 
   it('should render menu items based on permissions', () => {

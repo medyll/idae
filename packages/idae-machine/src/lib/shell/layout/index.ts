@@ -7,3 +7,4 @@ export { default as TaskBar } from './TaskBar.svelte';
 export { default as MenuTree } from './MenuTree.svelte';
 export { default as RecentPanel } from './RecentPanel.svelte';
 export { default as WaffleMenu } from './WaffleMenu.svelte';
+export { default as MenuSettings } from './MenuSettings.svelte';

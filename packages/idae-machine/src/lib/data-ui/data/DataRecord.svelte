@@ -14,8 +14,8 @@ Iterates a record's fields and renders DataField for each.
 	import type { Snippet } from 'svelte';
 	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { MachineRecordIdentity } from '$lib/main/index.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
+	import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 	import { getContext } from 'svelte';
 
 	let {
@@ -46,28 +46,12 @@ Iterates a record's fields and renders DataField for each.
 		showGroupNames?: boolean;
 	} = $props();
 
-	const scheme = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
-
-	// Data source contract:
-	//  - `data` prop provided  → controlled (e.g. DataList store items). Use as-is.
-	//  - else `collectionId`   → reactive read via machine.store (NOT machine.collection;
-	//    store is the reactive read layer, collection is imperative CRUD). Same path
-	//    DataList uses, so it resolves the correct qoolie instance.
-	const queryId = $derived(MachineRecordIdentity.normalizeKey(collectionId));
-	const recordStore = $derived(
-		data === undefined && collection && queryId !== undefined
-			? machine.store(
-					collection,
-					MachineRecordIdentity.buildWhere(scheme?.index ?? 'id', queryId) as any
-				)
-			: null
-	);
-
-	$inspect(recordStore,groupFieldBy)
-
-	const fetchedData = $derived(recordStore?.records?.[0] as Record<string, any> | undefined);
-
-	const effectiveData = $derived(data ?? fetchedData);
+	// Data source contract (CLAUDE.md §4): `data` prop → controlled (e.g. DataList store
+	// items), used as-is; else `collectionId` → reactive read via machine.store (BL-24,
+	// useRecordData — NOT machine.collection; store is the reactive read layer).
+	const recordData = useRecordData(() => collection, () => ({ collectionId, data }));
+	const scheme = $derived(recordData.scheme);
+	const effectiveData = $derived(recordData.record);
 
 	// Field list: explicit `showFields` bypasses the view query; otherwise query-resolved
 	// via appscheme_view → appscheme_field (see useViewFields — no client-side heuristics).

@@ -2,6 +2,7 @@
 	import { machine } from '$lib/main/machine.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import WaffleMenu from './WaffleMenu.svelte';
+	import MenuSettings from './MenuSettings.svelte';
 	import type { Snippet } from 'svelte';
 
 	let { devSlot }: { devSlot?: Snippet } = $props();
@@ -12,6 +13,7 @@
 
 	let userMenuOpen = $state(false);
 	let waffleOpen = $state(false);
+	let settingsOpen = $state(false);
 
 	function openExplorer() {
 		machine.framer.loadFrame('explorer', 'vehicle');
@@ -71,7 +73,17 @@
 		{#if devSlot}
 			{@render devSlot()}
 		{/if}
-		<button type="button" class="taskbar-icon" title="Settings (mock)">⚙</button>
+		<button
+			type="button"
+			class="taskbar-icon"
+			title="Settings"
+			onclick={(e) => {
+				e.stopPropagation();
+				settingsOpen = !settingsOpen;
+			}}
+		>
+			⚙
+		</button>
 		<div class="taskbar-user">
 			<button
 				type="button"
@@ -96,3 +108,4 @@
 </div>
 
 <WaffleMenu bind:open={waffleOpen} />
+<MenuSettings bind:open={settingsOpen} />

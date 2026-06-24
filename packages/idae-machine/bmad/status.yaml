@@ -22,7 +22,7 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 52 complete (S52-01 BL-19 RecentPanel + S52-02 BL-15 WaffleMenu) — Sprint 53 next: S53-01 BL-18 settings gear, S53-02 BL-24 useRecordData."
+next_action: "Sprint 53 complete (S53-01 BL-18 MenuSettings gear + S53-02 BL-24 useRecordData) — Sprint 54 next: BL-22 RecordToolbar in ContextMenu (after BL-24, single-file serialized)."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "scrum"
@@ -146,7 +146,8 @@ architecture:
 sprints:
   - id: 53
     goal: "MAIN-MENU — settings gear + ContextMenu record-data prep (epic-main-menu.md)"
-    status: planned
+    status: complete
+    completed_at: "2026-06-24"
     artifact: "bmad/artifacts/epic-main-menu.md"
     depends_on: [50, 51, 52]
     note: >
@@ -157,13 +158,58 @@ sprints:
       - id: S53-01
         title: "BL-18 — Per-zone settings gear (replace mock, pref editor via machine.action)"
         backlog_ref: BL-18
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/MenuSettings.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. server 689/689, client 74/74 (full suite, all green)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/MenuSettings.svelte — replaces TaskBar.svelte's mock ⚙
+          button. Overlay (same fixed/backdrop pattern as BL-15's WaffleMenu) with zone tabs
+          (side/start/create/panel from MENU_ZONES) and one toggle list per zone, candidates =
+          machine.rights.allowedCollections('L') labeled via the appscheme store. Toggle writes
+          appuser_prefs via machine.action (code `{userId}:{menuPrefsScope(zone,collection)}`,
+          upsertOn ['code']) — "unset ≠ hidden" preserved since the default-visible state is
+          rendered correctly whether or not a pref row exists (isMenuCollectionVisible),
+          defaults are never deleted, only flipped. Warning banner shown when no pref row
+          exists yet for any candidate in the active zone (empty-pref default policy, BL-12).
+          Tags: menu-settings-component/menu-settings-tabs/menu-settings-zone (zones),
+          button.menu-settings-tab/button.menu-settings-toggle (atoms, native+class).
       - id: S53-02
         title: "BL-24 — Rune partagée useRecordData (ContextMenu record-data, prep for BL-22/BL-17)"
         backlog_ref: BL-24
-        status: planned
+        status: complete
         effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/data-ui/utils/__tests__/useRecordData.svelte.test.ts: 3/3 passed. ContextMenuContent.svelte.test.ts: 4/4 passed (was order-dependent flaky, see detail). DataRecord*.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. server 689/689, client 74/74."
+        test_result: pass
+        detail: >
+          New src/lib/data-ui/utils/useRecordData.svelte.ts — extracts DataRecord.svelte's
+          inline dual-source (data ?? machine.store(collection, buildWhere(scheme.index,
+          collectionId)).records[0]) resolution into a shared rune, on top of the existing
+          MachineRecordIdentity primitives (normalizeKey/buildWhere). Adopted in DataRecord
+          (replaces the inline block) and ContextMenuContent.svelte (the "surtout" target per
+          epic-main-menu.md §5 BL-17 note — its `records.find(r => r.id == collectionId)` used
+          loose `==`, ignored scheme.index, and never re-derived on store updates).
+          ContextMenuContent.svelte also migrated off onMount(async () => buildMenuItems())
+          to a synchronous $derived.by — this incidentally fixed a genuine PRE-EXISTING test
+          bug: ContextMenuContent.svelte.test.ts's afterEach called vi.restoreAllMocks(), which
+          for a bare vi.fn() (no original/non-mocked implementation) strips the
+          .mockReturnValue(true) after the first test runs, leaving checkAccess() returning
+          undefined for every subsequent test in the file — explains why only the 3rd test
+          ("divider") ever failed regardless of run order, and why it passed in isolation.
+          Fixed by swapping to vi.clearAllMocks() (clears call history, keeps implementations).
+          machine.collection(collection).delete(collectionId) kept as-is for the Delete action
+          (NOT migrated to machine.action, despite the epic note suggesting it) — MachineAction
+          (machine.action) has no delete primitive (create/upsert-only, see MachineAction.ts);
+          delete is imperative CRUD and machine.collection is the correct primitive per
+          CLAUDE.md invariant 8. DataField.svelte's collectionId source (epic's third adoption
+          target) deferred — `data` is a required+bindable prop consumed by every existing
+          caller for create/update flows; adding an alternate collectionId-only read path is
+          not yet needed by any caller and risks the bind:data contract. Left for whoever
+          actually needs it (e.g. a future Fiche/RecordToolbar show-only usage).
 
   - id: 52
     goal: "MAIN-MENU — recent-history panel + waffle/start overlay (epic-main-menu.md)"
@@ -1768,6 +1814,8 @@ backlog:
   - id: BL-18
     title: "Gear paramètres par zone — éditeur de prefs (machine.action)"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Gear ⚙ TaskBar.svelte:61 = mock. Par zone, toggle quelles collections permises s'affichent ;
       écrit appuser_prefs via machine.action (upsertOn par scope). Avertissement quand aucune pref
@@ -1843,6 +1891,8 @@ backlog:
   - id: BL-24
     title: "Rune partagée useRecordData — résolution data|collectionId factorisée (collectionId = data.id)"
     priority: high
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Mécanique dual-source : un composant reçoit soit (collection, collectionId) soit
       (collection, data) ; cas data → collectionId = data.id (ou scheme.index). Aujourd'hui

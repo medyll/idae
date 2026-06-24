@@ -9,8 +9,8 @@ Dynamic context menu content that builds menu items based on permissions and col
 <script lang="ts">
   import { machine } from '$lib/main/machine.js';
   import { closeContextMenu } from './contextMenu.svelte.js';
-  import { onMount } from 'svelte';
-  
+  import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
+
   let {
     collection,
     collectionId,
@@ -20,32 +20,28 @@ Dynamic context menu content that builds menu items based on permissions and col
     collectionId: string | number;
     vars?: Record<string, string>;
   } = $props();
-  
-  let menuItems = $state<{ 
-    label: string; 
-    icon?: string; 
-    action: () => void; 
-    disabled?: boolean; 
+
+  // BL-24: record resolution via the shared useRecordData hook (reactive machine.store
+  // read, scheme.index-aware) — replaces the previous inline `records.find(r => r.id ==
+  // collectionId)` (loose `==`, ignored scheme.index, never re-derived on store updates).
+  const recordData = useRecordData(() => collection, () => ({ collectionId }));
+
+  const canRead   = $derived(machine.rights.checkAccess(collection, 'R'));
+  const canUpdate = $derived(machine.rights.checkAccess(collection, 'U'));
+  const canDelete = $derived(machine.rights.checkAccess(collection, 'D'));
+  const canCreate = $derived(machine.rights.checkAccess(collection, 'C'));
+
+  type MenuItem = {
+    label: string;
+    icon?: string;
+    action: () => void;
+    disabled?: boolean;
     divider?: boolean;
-  }[]>([]);
-  
-  onMount(async () => {
-    await buildMenuItems();
-  });
-  
-  async function buildMenuItems(): Promise<void> {
-    const items: typeof menuItems = [];
-    
-    // Get the record data
-    const record = machine.store(collection)?.records?.find(r => r.id == collectionId);
-    
-    // Check permissions using machine.rights
-    const canRead = machine.rights.checkAccess(collection, 'R');
-    const canUpdate = machine.rights.checkAccess(collection, 'U');
-    const canDelete = machine.rights.checkAccess(collection, 'D');
-    const canCreate = machine.rights.checkAccess(collection, 'C');
-    
-    // View action
+  };
+
+  const menuItems = $derived.by((): MenuItem[] => {
+    const items: MenuItem[] = [];
+
     if (canRead) {
       items.push({
         label: 'View',
@@ -55,8 +51,7 @@ Dynamic context menu content that builds menu items based on permissions and col
         }
       });
     }
-    
-    // Edit action
+
     if (canUpdate) {
       items.push({
         label: 'Edit',
@@ -66,21 +61,22 @@ Dynamic context menu content that builds menu items based on permissions and col
         }
       });
     }
-    
-    // Delete action
+
     if (canDelete) {
       items.push({
         label: 'Delete',
         icon: 'trash',
-        action: async () => {
+        action: () => {
           if (confirm('Are you sure you want to delete this record?')) {
-            await machine.collection(collection).delete(collectionId);
+            // machine.action has no delete primitive (create/upsert only, see
+            // MachineAction.ts) — delete is imperative CRUD, machine.collection is correct
+            // here per CLAUDE.md invariant 8 (store = reactive read, collection = CRUD).
+            void machine.collection(collection).delete(collectionId);
           }
         }
       });
     }
-    
-    // Duplicate action
+
     if (canCreate) {
       items.push({
         label: 'Duplicate',
@@ -91,23 +87,20 @@ Dynamic context menu content that builds menu items based on permissions and col
         }
       });
     }
-    
-    // Add divider if we have both standard and custom actions
+
     if (vars.customActions && (canRead || canUpdate || canDelete || canCreate)) {
       items.push({ label: 'divider', icon: 'divider', action: () => {}, divider: true });
     }
-    
-    // Add custom actions from vars
+
     if (vars.customActions) {
       try {
         const customActions = JSON.parse(vars.customActions);
         if (Array.isArray(customActions)) {
-          items.push(...customActions.map(action => ({
+          items.push(...customActions.map((action) => ({
             label: action.label,
             icon: action.icon,
             action: () => {
               if (action.action) {
-                // Support both string actions (e.g., "loadInDialog:explorer") and function actions
                 if (typeof action.action === 'string') {
                   const [cmd, ...args] = action.action.split(':');
                   if (cmd === 'loadInDialog') {
@@ -125,11 +118,11 @@ Dynamic context menu content that builds menu items based on permissions and col
         console.warn('Failed to parse custom actions:', e);
       }
     }
-    
-    menuItems = items;
-  }
-  
-  function handleItemClick(item: typeof menuItems[number]): void {
+
+    return items;
+  });
+
+  function handleItemClick(item: MenuItem): void {
     if (!item.divider && !item.disabled) {
       item.action();
       closeContextMenu();
