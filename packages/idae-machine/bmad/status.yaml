@@ -22,7 +22,7 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Sprint 53 complete (S53-01 BL-18 MenuSettings gear + S53-02 BL-24 useRecordData) — Sprint 54 next: BL-22 RecordToolbar in ContextMenu (after BL-24, single-file serialized)."
+next_action: "Sprint 54 complete (S54-01 BL-22 RecordToolbar in ContextMenu) — Sprint 55 next: BL-17 rights-gated contextual menu (last of the serialized ContextMenuContent trio BL-24→BL-22→BL-17)."
 next_command: "bmad continue"
 next_role: "dev"
 active_role: "scrum"
@@ -144,7 +144,38 @@ architecture:
 # launch verbs, 2-agent sequencing, single-file contention rules). Sprints 51-55 below
 # drain it; all gate on S50-01 (BL-13 keystone) landing first.
 sprints:
-  - id: 53
+  - id: 54
+    goal: "MAIN-MENU — BL-22 RecordToolbar in ContextMenu (epic-main-menu.md §6 row 54)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50, 51, 52, 53]
+    note: >
+      BL-22 is single-file (ContextMenuContent.svelte), serialized after BL-24 (sprint 53).
+      Epic's suggested pairing (BL-21 snippet rename) skipped — not requested, BL-22 alone
+      is a complete, independently testable unit; no reason to force an unrelated pairing.
+    stories:
+      - id: S54-01
+        title: "BL-22 — FicheToolbar → RecordToolbar + inclusion in ContextMenuContent"
+        backlog_ref: BL-22
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "ContextMenuContent.svelte.test.ts: 5/5 passed (new toolbar-inclusion test). pnpm run check: 0 errors. server 689/689, client 75/75 (full suite)."
+        test_result: pass
+        detail: >
+          git mv FicheToolbar.svelte → RecordToolbar.svelte (toolbar of a record, not
+          Fiche-specific). Updated all real callers: Fiche.svelte, Synthesis.svelte, exported
+          from shell/layout/index.ts + src/lib/index.ts (was unexported before). Doc-only
+          mentions updated for consistency: parcours.spec.ts comment, ARCH.html. Historical
+          session logs (bmad/intake-sources/FABLE*.md) left untouched — append-only record.
+          Breaking rename documented in bmad/conventions.md.
+          ContextMenuContent.svelte now mounts <RecordToolbar {collection} {collectionId} />
+          (new context-menu-toolbar zone, above the existing items <ul>) — additive per the
+          backlog note ("le menu contextuel d'un record = toolbar du record", toolbar will
+          grow; View/Edit/Delete/Duplicate keep their own rights-gating for now, BL-17 will
+          fold that into the toolbar itself next sprint).
     goal: "MAIN-MENU — settings gear + ContextMenu record-data prep (epic-main-menu.md)"
     status: complete
     completed_at: "2026-06-24"
@@ -1857,6 +1888,8 @@ backlog:
   - id: BL-22
     title: "FicheToolbar → RecordToolbar + inclusion dans ContextMenu si collection+collectionId"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       (1) Renommer FicheToolbar en RecordToolbar (logique : toolbar d'un record, pas d'une fiche).
       MAJ 7 appelants (Fiche.svelte:15, Synthesis.svelte, FicheToolbar.svelte, parcours.spec.ts,

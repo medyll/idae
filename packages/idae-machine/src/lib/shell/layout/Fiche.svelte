@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DataRecord } from '$lib/index.js';
-	import FicheToolbar from './FicheToolbar.svelte';
+	import RecordToolbar from './RecordToolbar.svelte';
 	let {
 		collection,
 		collectionId
@@ -12,7 +12,7 @@
 
 <fiche-component>
 	<fiche-header>
-		<FicheToolbar {collection} {collectionId} />
+		<RecordToolbar {collection} {collectionId} />
 	</fiche-header>
 	<fiche-zone>
 		<sidebar-info>

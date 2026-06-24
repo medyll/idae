@@ -4,7 +4,7 @@ import { test, expect, type Page } from '@playwright/test';
  * Main parcours golden path: login → explorer → fiche → diagram.
  * Replaces the obsolete app.spec.ts (targeted a removed demo showcase page).
  *
- * Exercises the externalised Fiche toolbar (FicheToolbar → ButtonAction) by
+ * Exercises the externalised record toolbar (RecordToolbar → ButtonAction) by
  * jumping list → fiche → diagram through the record-level action buttons.
  *
  * Requires (same stack as rbac-matrix.spec.ts):

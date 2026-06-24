@@ -1,7 +1,7 @@
 <!--
-FicheToolbar.svelte
-Record-level action toolbar for Fiche. Composed of generic ButtonAction bricks.
-Replaces the previously inline hardcoded toolbar in Fiche.svelte.
+RecordToolbar.svelte (renamed from FicheToolbar — BL-22: toolbar of a record, not
+of a Fiche specifically; now also consumed by ContextMenuContent).
+Composed of generic ButtonAction bricks.
 
 @prop {string} collection
 @prop {string|number} collectionId

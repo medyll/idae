@@ -123,3 +123,12 @@ pnpm run lint    # Prettier check
 **Pitfall — scoped CSS:** styles applied via `listClass`/`groupClass` live on elements rendered by DataList, not by the parent. Svelte scopes parent CSS, so selectors like `.explorer-group` won't match. Use `:global(.explorer-group) { … }` in parent `<style>`, or move to `app.css`.
 
 **Old API (`children({ items, groups, pagination })`) removed.** Migrate by extracting the inner `<li>` markup into the `item` snippet and moving wrapper class to `listClass`.
+
+## FicheToolbar → RecordToolbar rename (BL-22 — 2026-06-24)
+
+`shell/layout/FicheToolbar.svelte` renamed to `RecordToolbar.svelte` — it's a record-level
+action toolbar (`{collection, collectionId}`), not specific to the Fiche frame. Now also
+mounted inside `ContextMenuContent.svelte`'s contextual menu (any consumer with a resolved
+`collection`+`collectionId` gets the same toolbar). Callers updated: `Fiche.svelte`,
+`Synthesis.svelte`, `ContextMenuContent.svelte`. The `<toolbar-component>` custom tag and its
+3 `ButtonAction` bricks (synthese/diagram/update) are unchanged — import path only.

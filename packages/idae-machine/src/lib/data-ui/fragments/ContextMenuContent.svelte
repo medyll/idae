@@ -10,6 +10,7 @@ Dynamic context menu content that builds menu items based on permissions and col
   import { machine } from '$lib/main/machine.js';
   import { closeContextMenu } from './contextMenu.svelte.js';
   import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
+  import RecordToolbar from '$lib/shell/layout/RecordToolbar.svelte';
 
   let {
     collection,
@@ -130,6 +131,15 @@ Dynamic context menu content that builds menu items based on permissions and col
   }
 </script>
 
+<!--
+  BL-22: the contextual menu of a record includes the record's own toolbar — additive
+  for now (View/Edit/Delete/Duplicate stay rights-gated as built above; BL-17 will fold
+  rights-gating into the toolbar itself). collection+collectionId are always present here.
+-->
+<context-menu-toolbar>
+  <RecordToolbar {collection} {collectionId} />
+</context-menu-toolbar>
+
 <ul class="context-menu-list">
   {#each menuItems as item (item.label)}
     {#if item.divider}
@@ -155,6 +165,13 @@ Dynamic context menu content that builds menu items based on permissions and col
 
 <style lang="postcss">
   @layer components {
+    context-menu-toolbar {
+      display: block;
+      padding: 0 var(--gutter-sm, 0.5rem) var(--gutter-xs, 0.25rem);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--gutter-xs, 0.25rem);
+    }
+
     .context-menu-list {
       list-style: none;
       padding: 0;

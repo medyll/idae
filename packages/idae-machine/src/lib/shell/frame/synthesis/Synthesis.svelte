@@ -4,7 +4,7 @@
 	import DataListRfk from '$lib/data-ui/data/DataListRfk.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
-	import FicheToolbar from '$lib/shell/layout/FicheToolbar.svelte';
+	import RecordToolbar from '$lib/shell/layout/RecordToolbar.svelte';
 
 	let {
 		collection,
@@ -118,7 +118,7 @@
 		</synthesis-header>
 
 		<fiche-header>
-			<FicheToolbar {collection} {collectionId} />
+			<RecordToolbar {collection} {collectionId} />
 		</fiche-header>
 
 		<synthesis-tabs>

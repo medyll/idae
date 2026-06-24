@@ -58,6 +58,21 @@ describe('ContextMenuContent', () => {
     expect(labels.some(l => l?.includes('Duplicate'))).toBe(true);
   });
 
+  it('should include the record toolbar (BL-22) alongside the built-in items', () => {
+    const { container } = render(ContextMenuContent, {
+      props: {
+        collection: 'test',
+        collectionId: '123'
+      }
+    });
+
+    const toolbar = container.querySelector('context-menu-toolbar .button-action');
+    expect(toolbar).toBeTruthy();
+    const labels = Array.from(container.querySelectorAll('context-menu-toolbar .button-action'))
+      .map((el) => el.textContent?.trim());
+    expect(labels).toEqual(['synthese', 'diagram', 'update']);
+  });
+
   it('should handle custom actions from vars', () => {
     const customActions = JSON.stringify([
       { label: 'Custom Action', icon: 'star', action: 'loadInDialog:explorer' }
