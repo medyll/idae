@@ -1906,6 +1906,8 @@ backlog:
   - id: BL-20
     title: "groupBy fonctionne pour TOUS les modes DataList (table + grid inclus)"
     priority: high
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Bug : le branch {:else if groups} (DataList.svelte:367) n'est atteint qu'en mode list.
       {:else if currentMode === 'table'} (ligne 306) et {:else if grid} (343) court-circuitent
@@ -1913,6 +1915,13 @@ backlog:
       Table = un <tbody> (ou section table) par groupe avec ligne d'en-tête de groupe (colspan) ;
       grid = une grille par groupe sous le groupHeader. Factoriser le rendu groupé hors du
       seul chemin list. Effort: M. Dépend de rien.
+      STALE — déjà implémenté en S50-02 (commit 1d31188e, avant ce backlog entry du
+      2026-06-23). Vérifié 2026-06-24 : DataList.svelte a bien {#if groups} à l'intérieur
+      des 3 branches table(344)/grid(371)/list(420), chacune avec son propre groupHeader +
+      wrapper (tbody par groupe / div.data-list-group / ul). Tests DataRelations.svelte.test.ts
+      "groups items in list/table/grid mode" déjà 3/3 verts (vus dans la full suite des
+      sprints 51-55, jamais en échec). Juste pas marqué complete dans ce backlog — aucun code
+      à écrire.
 
   - id: BL-21
     title: "Snippet DataList renommé 'dataRecord' avec les props de DataRecord (spread ...record)"
