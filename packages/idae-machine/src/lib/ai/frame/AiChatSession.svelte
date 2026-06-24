@@ -48,8 +48,8 @@ AI chat session frame - thin shell around DataList + DataField
             sortBy={{ field: 'dateCreated', direction: 'asc' }}
             infiniteScroll
         >
-            {#snippet item({ record })}
-                {@const msg = record as Record<string, any>}
+            {#snippet dataRecord({ data })}
+                {@const msg = data as Record<string, any>}
                 <ai-chat-session-message data-role={msg.role} data-status={msg.ai_message_status}>
                     <DataRecord collection="ai_message" data={msg} mode="show" showFields={['content']} showLabel={false} />
 
@@ -57,8 +57,8 @@ AI chat session frame - thin shell around DataList + DataField
                         <!-- Tool-execution log (S45-00 ai_tool_call) — status-driven styling via data-status -->
                         <ai-chat-session-message-tool>
                             <DataList collection="ai_tool_call" where={{ code: msg.ai_tool_call }} infiniteScroll={false}>
-                                {#snippet item({ record: toolCallRecord })}
-                                    {@const toolCall = toolCallRecord as Record<string, any>}
+                                {#snippet dataRecord({ data: toolCallData })}
+                                    {@const toolCall = toolCallData as Record<string, any>}
                                     <DataRecord
                                         collection="ai_tool_call"
                                         data={toolCall}

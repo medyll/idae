@@ -115,10 +115,19 @@ pnpm run lint    # Prettier check
 - `groupClass?` → CSS class on group wrapper `<div>`
 
 **Snippets:**
-- `item({ record, idx, fieldValues })` — REQUIRED. Renders one `<li>` per record.
+- `dataRecord?({ collection, collectionId, data, mode, view, idx })` — optional override
+  (list + grid only, ignored in table mode). Payload IS DataRecord's prop set — spread
+  straight into `<DataRecord {...props} />` rather than unwrapping a wrapper object.
+  Omit it and DataList renders autonomously via `DataRecord` (template.presentation fields).
 - `groupHeader?({ key, count })` — group section header (when `groupBy` set).
 - `empty?()` — empty state placeholder.
 - `footer?({ pagination })` — pagination/footer block.
+
+**Rename (BL-21 — 2026-06-24):** the snippet was `item({ record, idx, fieldValues })`
+(a wrapper to unwrap) — renamed `dataRecord` with DataRecord's own props as payload
+(`data` instead of `record`, no `fieldValues` — it was unused dead weight, the renamed
+`{@const}` local was always destructuring `record` directly anyway). Callers updated:
+`AiChatSession.svelte` (2 usages, message list + tool-call list).
 
 **Pitfall — scoped CSS:** styles applied via `listClass`/`groupClass` live on elements rendered by DataList, not by the parent. Svelte scopes parent CSS, so selectors like `.explorer-group` won't match. Use `:global(.explorer-group) { … }` in parent `<style>`, or move to `app.css`.
 

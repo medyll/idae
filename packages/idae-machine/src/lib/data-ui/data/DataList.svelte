@@ -2,7 +2,7 @@
 DataList.svelte
 Data provider + renderer — fetches, sorts, groups, paginates, iterates.
 Autonomous by default: renders DataRecord (template.presentation fields) when no snippet provided.
-Consumers can override via the item snippet.
+Consumers can override via the dataRecord snippet.
 
 @prop {string} collection
 @prop {Where<COL>} [where]
@@ -17,8 +17,11 @@ Consumers can override via the item snippet.
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
 @prop {'show'|'update'} [crudMode='show'] - CRUD state per record (show vs editable). Forwarded to DataRecord.
-@snippet item({ record, idx, fieldValues }) - Custom record rendering (list + grid only).
-  Ignored in table mode — table delegates to DataRecord as="row" (structural layout), crudMode still applies.
+@snippet dataRecord({ collection, data, mode, view, idx, collectionId }) - Custom record
+  rendering (list + grid only; ignored in table mode — table delegates to DataRecord
+  as="row" structural layout, crudMode still applies). Payload IS DataRecord's prop set
+  (BL-21) — spread straight into `<DataRecord {...props} />` rather than unwrapping an
+  `{ item, record, records }` wrapper.
 @snippet groupHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
@@ -62,7 +65,7 @@ Consumers can override via the item snippet.
 		usePrefs = true,
 		prefsScope: prefsScopeProp,
 		crudMode = 'show',
-		item: itemSnippet,
+		dataRecord: dataRecordSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
 		footer: footerSnippet
@@ -89,7 +92,14 @@ Consumers can override via the item snippet.
 		prefsScope?: string;
 		/** CRUD state for DataRecord rendering per record ('show' | 'update'). Defaults to 'show'. */
 		crudMode?: 'show' | 'update';
-		item?: Snippet<[{ collection: TplCollectionName, collectionId: number, record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
+		dataRecord?: Snippet<[{
+			collection: TplCollectionName;
+			collectionId: number;
+			data: COL;
+			mode: 'show' | 'update';
+			view: string;
+			idx: number;
+		}]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
@@ -125,7 +135,6 @@ Consumers can override via the item snippet.
 	);
 	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 	const indexField = 'id';
-	const fieldValues = $derived(collLogic?.collectionValues ?? {});
 	const defaultSort = $derived(
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
 	);
@@ -300,8 +309,15 @@ Consumers can override via the item snippet.
 	>
 		{#if currentMode === 'table'}
 			<DataRecord {collection} data={record as Record<string, any>} mode={crudMode} as="row" {view} />
-		{:else if itemSnippet}
-			{@render itemSnippet({collection,collectionId:record?.id as number, record, idx, fieldValues })}
+		{:else if dataRecordSnippet}
+			{@render dataRecordSnippet({
+				collection,
+				collectionId: record?.id as number,
+				data: record as COL,
+				mode: crudMode,
+				view,
+				idx
+			})}
 		{:else}
 			{@const rec = record as Record<string, unknown>}
 			{@const label = renderPresentation(rec)}

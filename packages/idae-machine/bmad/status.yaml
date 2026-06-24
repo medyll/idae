@@ -1926,6 +1926,8 @@ backlog:
   - id: BL-21
     title: "Snippet DataList renommé 'dataRecord' avec les props de DataRecord (spread ...record)"
     priority: medium
+    status: complete
+    completed_at: "2026-06-24"
     description: >
       Aujourd'hui le snippet exposé est `item`, payload { collection, collectionId, record, idx,
       fieldValues } (DataList.svelte:88, rendu :292). Cible : le renommer `dataRecord` et délivrer
@@ -1933,6 +1935,19 @@ backlog:
       lieu de l'objet wrapper item+record+records. Le consommateur reçoit la forme DataRecord prête
       à brancher, pas un wrapper à déballer. Mise à jour des appelants (Synthesis, etc.). Effort: M.
       Dépend de rien. Note : breaking change d'API snippet → noter dans conventions.md.
+    detail: >
+      DataList.svelte: prop item→dataRecord; payload { collection, collectionId, data, mode,
+      view, idx } (data = record, mode = crudMode) instead of { collection, collectionId,
+      record, idx, fieldValues }. `fieldValues` derived var was dead (no consumer ever read
+      it — confirmed via grep before removing) so dropped outright rather than carried into
+      the new payload. Only real caller in src/ was AiChatSession.svelte (2 usages: message
+      list + nested tool-call list) — updated both ({ record }) → ({ data }). Synthesis.svelte
+      (named in the original backlog note) does NOT use the item snippet at all — renders
+      DataList autonomously; no change needed there, note was stale. conventions.md's DataList
+      snippet API section updated with the new payload + a rename note.
+    tests_executed: true
+    test_output: "pnpm run check: 0 errors. server 689/689, client 78/78 (full suite, no DataList item-snippet test existed to update)."
+    test_result: pass
 
   - id: BL-22
     title: "FicheToolbar → RecordToolbar + inclusion dans ContextMenu si collection+collectionId"
