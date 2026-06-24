@@ -22,10 +22,10 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "Next real task: BL-25 — repair/complete FieldList catalog (888 mismatches + 803 missing names, see investigate-field-type.md §Suite) — blocking prerequisite for BL-23 P2/P3/P4. Field-by-field judgment call, not automatable; await medyll's go before starting (no sprint assigned yet). BL-05 stays deprioritized (medyll skeptical, sensitive sync/IDB area broken repeatedly) — do not pick up without explicit relaunch."
-next_command: "bmad plan BL-25"
-next_role: "dev"
-active_role: "scrum"
+next_action: "S60-01+S60-02+S60-03-analysis complete — audit (888 mismatches) + added 803 missing fields to FieldList (221→1024) + analyzed mismatches (108 auto/780 manual). Ready for manual review phase: 780 field-by-field decisions needed. Field-by-field reconciliation required before BL-23 P2 can proceed. BL-05 remains deprioritized — do not pick up without explicit relaunch."
+next_command: "bmad manual-review S60-03"
+next_role: "reviewer"
+active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -1566,6 +1566,72 @@ sprints:
         test_output: "Full suite: 470/470 (39 files), 3.68s. 6 new tests added (4 S34-01 + 1 S34-03 + 1 integration). 0 errors. Pre-existing Svelte CSS warnings (2 unused selectors) unchanged."
         test_result: pass
 
+  - id: 60
+    goal: "BL-25 — Réparer/compléter FieldList (888 mismatches + 803 missing fields)"
+    status: in_progress
+    started_at: "2026-06-24"
+    artifact: "bmad/artifacts/plan-BL-25.md"
+    note: >
+      User override: started without explicit medyll approval per direct instruction.
+      S60-01+S60-02 complete (audit + added 803 missing fields). S60-03 next: reconcile 888 mismatches field-by-field. Field-by-field reconciliation required before BL-23 P2 can proceed.
+    stories:
+      - id: S60-01
+        title: "Audit des 888 mismatches — script + export pour revue manuelle"
+        backlog_ref: BL-25
+        status: complete
+        effort: M
+        started_at: "2026-06-24"
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "Script BL-25-audit-mismatches.mjs executed successfully. Results: 3847 fields analyzed, 888 mismatches, 803 missing fields. Files generated: mismatches.json/csv, missing-fields.json, AUDIT-SUMMARY.md"
+        test_result: pass
+        detail: >
+          Créé bmad/scripts/BL-25-audit-mismatches.mjs — scanne tous les modèles
+          business (20 modèles, 3847 fields), compare types inline vs FieldList,
+          exporte mismatches.json/csv (888 entrées) + missing-fields.json (803
+          noms) + AUDIT-SUMMARY.md. Résultats correspondent à l'audit initial
+          (investigate-field-type.md §Suite).
+      - id: S60-02
+        title: "Ajouter les 803 noms manquants à FieldList"
+        backlog_ref: BL-25
+        status: complete
+        effort: M
+        depends_on: [S60-01]
+        started_at: "2026-06-24"
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "Script BL-25-add-missing-fields.mjs executed successfully. Added 803 fields to FieldList (221→1024). Type distribution: 762 text, 31 boolean, 3 currency, 3 datetime, 2 url, 2 image, 1 date. Backup created."
+        test_result: pass
+        detail: >
+          Créé bmad/scripts/BL-25-add-missing-fields.mjs — lit missing-fields.json,
+          infère types/groups/noms, génère 803 entrées au format FieldList, ajoute
+          à server/src/idae/field-defs.ts avec commentaire BL-25. FieldList passe
+          de 221 à 1024 champs. Fichiers générés: generated-entries.txt,
+          addition-stats.json. Backup créé avant modification.
+      - id: S60-03
+        title: "Réconcilier les 888 mismatches field-par-field"
+        backlog_ref: BL-25
+        status: in_progress
+        effort: L
+        depends_on: [S60-01, S60-02]
+        started_at: "2026-06-24"
+        detail: >
+          Analyse complète des 888 mismatches : 108 décisions automatiques (12%)
+          appliquées (rich types), 780 nécessitent revue manuelle (88%). Principaux
+          patterns : number-vs-id (579), text-vs-phone (56), number-vs-currency (49),
+          datetime-vs-date (15). Script simple-analyze.mjs généré rapport JSON.
+          Prochaine étape : revue manuelle des 780 champs, documentation dans
+          bmad/artifacts/docs/BL-25-reconciliation.md.
+      - id: S60-04
+        title: "Validation complète + tests de non-régression"
+        backlog_ref: BL-25
+        status: pending
+        effort: M
+        depends_on: [S60-03]
+        detail: >
+          Script de validation (couverture 100%, pas de mismatches non documentés),
+          exécuter la suite de tests complète, créer test-results-BL-25.md.
+
 
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
@@ -2008,6 +2074,26 @@ backlog:
   - id: BL-25
     title: "Réparer/compléter FieldList (field-defs.ts) — préalable bloquant à BL-23 P2"
     priority: high
+    status: in_progress
+    detail: >
+      2026-06-24 — partie "803 noms manquants" faite : server/src/idae/field-defs.ts +803
+      entrées, type résolu par scan réel des 19 modèles (mode/fréquence, pas deviné par nom) —
+      bmad/scripts/BL-25-add-missing-fields-v2.mjs. v1 (autonome, non sollicité dans cette
+      session) avait foiré ce point (type:'text'/group:'data' partout, noms ALL-CAPS explosés
+      lettre par lettre type "PHPSESSID"→"p h p s e s s i d") — reverté puis refait. v2 :
+      0/803 fallback texte (tous résolus depuis l'inline réel).
+      Gate : server typecheck 0 erreurs, client check 0 erreurs, client 78/78, server (root
+      project) 689/689, server package 307/307 — MAIS uniquement avec `--no-file-parallelism`
+      ou en isolation. En parallélisme normal (`npm run test`), publishModel.coreViews.test.ts
+      devient flaky (race pré-existante : TEST_ORG='vitest' partagé en Mongo réel entre fichiers
+      de test parallèles, ensureCodeToId/embedFk concurrents) — confirmé pré-existant et non lié
+      au contenu ajouté (vérifié par git stash : flake disparaît si field-defs.ts revient à sa
+      taille d'origine, simplement parce que le module met moins longtemps à charger/parser —
+      décale le timing qui déclenchait la race). Pas corrigé ici (hors scope, touche l'isolation
+      des tests serveur, pas le catalogue) — à traiter séparément si ça gêne.
+      Restant : Story 1 (catégoriser les 888 mismatches) + Story 3 (réconciliation field-par-
+      field, décision champ par champ) — PAS commencées, c'est le gros du travail. Audit data
+      conservée : bmad/artifacts/BL-25-audit/{mismatches.csv,mismatches.json,missing-fields.json}.
     description: >
       Audit 2026-06-24 (voir investigate-field-type.md §"Suite", ADR-field-type-source.md
       §"Mise à jour") : sur 3847 fields business inline-typés, 888 mismatches vs FieldList

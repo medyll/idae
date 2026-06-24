@@ -1,0 +1,7994 @@
+[
+  {
+    "model": "agileScheme",
+    "collection": "project_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "sprint_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "story_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "task_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "bug_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "bug_severity",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "priority",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "member_role",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "milestone_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "team_member",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "team_member",
+    "field": "avatar",
+    "inlineType": "image",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "project",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "project",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "project",
+    "field": "icon",
+    "inlineType": "image",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "project_member",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "label",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "epic",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "epic",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "milestone",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "milestone",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "release",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "release",
+    "field": "version",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "sprint",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "story",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "story",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "story_label",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "task",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "task",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "bug",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "bug",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "worklog",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "worklog",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "agileScheme",
+    "collection": "comment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "agileScheme",
+    "collection": "attachment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "post_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "comment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "page_template",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "category",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "category",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "tag",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "author",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "author",
+    "field": "avatar",
+    "inlineType": "image",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "media",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "post",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "post_tag",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "page",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "blogcmsScheme",
+    "collection": "comment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "order_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "payment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "product_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "cart_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "payment_method",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "address_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "currency",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "brand",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "brand",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "category",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "category",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "product",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "product",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "variant",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "product_image",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "product_image",
+    "field": "url",
+    "inlineType": "image",
+    "catalogType": "url",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "address",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "customer_address",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "customer",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "customer",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "cart",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "cart_item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "order",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "order",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "order_item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "payment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "shipping_method",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "coupon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "boutiqueScheme",
+    "collection": "review",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "page_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "issue_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "credit_role",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "panel_shape",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "bubble_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "genre",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "publisher",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "creator",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "series",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "series_genre",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "character",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "location",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "location",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "comixScheme",
+    "collection": "issue",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "issue_credit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "script",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "page",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "panel",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "panel",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "comixScheme",
+    "collection": "panel_character",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "bubble",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "asset",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "comixScheme",
+    "collection": "revision",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "app_conf",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "app_daemon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "app_version",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "app_version_file",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "conge",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "conge_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "conge_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "document_extension",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "document_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "note",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "tache",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "tache",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "tache_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "tache_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "tache_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "tache_type",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "todo",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "type_activite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "type_activite",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "user_list",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "user_note",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "user_table",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "user_tuile",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "vacance",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "vacance",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "client",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "client",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "client_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_acompte",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_acompte_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_annotation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_envie",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_mail",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_marge",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_marge_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_passager",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_passager",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_prestation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_prestation",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_prestation",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "devis_type",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "document",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "dossier_devis",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "facture",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "facture",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "facture_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "facture_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "paiement",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "prestataire",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "prestataire",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "prestataire",
+    "field": "fax",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "prestataire",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter",
+    "field": "content",
+    "inlineType": "text-long",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter_block",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter_item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter_item",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter_item_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "newsletter_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "aeroport",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "aeroport",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "aeroport",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "asavoir",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "asavoir",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "asavoir_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "asavoir_type",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "continent",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "continent",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "destination",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "destination",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fleuve",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fleuve",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fleuve",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fleuve_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_clause",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_clause_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_presentation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_presentation",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_presentation_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_presentation_type",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "fournisseur_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "gamme",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "gamme",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "gamme",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel_clause",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel_clause",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel_gamme",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "hotel_type",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "mer",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "mer",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "mer",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "mer_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "pays",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "pays",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "pays",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_etape",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_etape",
+    "field": "image",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_etape",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_selection",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_selection",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_tarif",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_tarif_gamme",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_tarif_gamme_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_type",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "produit_type_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "theme",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "theme",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "theme_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_cabine",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_cabine",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_gamme",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_pont",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_presentation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_presentation_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "transport_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "ville",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "ville",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "ville",
+    "field": "latitude",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "ville",
+    "field": "longitude",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "article",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "article",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "article",
+    "field": "content",
+    "inlineType": "text-long",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "article",
+    "field": "thumbnail",
+    "inlineType": "text",
+    "catalogType": "image",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "article_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "categorie",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "categorie",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "site",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "site_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "daemon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite_page",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite_page_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite_page_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite_template",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite_template",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "appsite_template_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "feed_header",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "feed_header",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_conf",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_cruise",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_destination",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_itinerary",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_job",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_price",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "crfrScheme",
+    "collection": "xml_ville",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "category",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "category",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "location_office",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "location_office",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "supplier",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "supplier",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "seller",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "seller",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "seller",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "vehicle",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "vehicle",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "vehicle_acquisition",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "insurance",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "insurance",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "maintenance",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "maintenance",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "fuel_log",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "customer",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "customer",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "pricing_rule",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "rental",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "rental",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "damage_report",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "damage_report",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "damage_report",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "lead",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "lead",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "lead",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "demoScheme",
+    "collection": "sale_task",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "demoScheme",
+    "collection": "sale_task",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "item_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "work_order_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "po_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "lot_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "qc_result",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "uom",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "machine_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "item",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "supplier",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "supplier",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "supplier_item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "bom",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "bom",
+    "field": "version",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "bom_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "work_center",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "machine",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "routing",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "operation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "work_order",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "wo_operation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "material_consumption",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "warehouse",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "stock_location",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "lot",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "stock_move",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "purchase_order",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "purchase_order",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "po_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "factoryScheme",
+    "collection": "quality_check",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "title_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "role_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "age_rating",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "subscription_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "video_quality",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "language",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "genre",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "studio",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "person",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "title",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "title_genre",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "title_studio",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "credit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "season",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "episode",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "video_asset",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "audio_track",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "subtitle",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "plan",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "viewer",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "viewer",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "flixScheme",
+    "collection": "subscription",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "viewer_profile",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "viewer_profile",
+    "field": "avatar",
+    "inlineType": "image",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "flixScheme",
+    "collection": "watchlist",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "watch_history",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "flixScheme",
+    "collection": "rating",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "race_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "race_discipline",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "race_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "track_surface",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "going",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "bet_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "bet_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "horse_gender",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "racetrack",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "track",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "meeting",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "stable",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "stable",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "owner",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "owner",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "trainer",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "trainer",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "jockey",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "jockey",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "horse",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "race",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "runner",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "race_result",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "punter",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "punter",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "bet",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hippoScheme",
+    "collection": "bet_selection",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "booking_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "room_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "payment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "housekeeping_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "bed_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "channel",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "rate_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "property",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "property",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "amenity",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "amenity",
+    "field": "icon",
+    "inlineType": "image",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "room_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "room_type",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "room_type_amenity",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "room",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "rate_plan",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "rate_plan",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "daily_rate",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "availability",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "guest",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "guest",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "booking",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "booking",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "booking_room",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "stay",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "service",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "folio_charge",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "folio_charge",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "payment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "housekeeping_task",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "hoteloScheme",
+    "collection": "review",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "accessoire",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "montantHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "totalTva",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "affaire",
+    "field": "totalHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agence",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent",
+    "field": "telephone2",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_activite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_activite",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_history",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_history",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_liste",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_liste_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_note",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_note",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_note",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_note",
+    "field": "valeur",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_pref",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_recherche",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_table",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_tuile",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "agent_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_conf",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_daemon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version_file",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version_file",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version_file",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version_file_preprod",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version_file_preprod",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "app_version_file_preprod",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "categorie_produit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "telephone2",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "mobile2",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client",
+    "field": "fax",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client_activite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client_categorie",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client_categorie",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "client_type",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "totalMarge",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "totalTva",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande",
+    "field": "totalHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande_ligne",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande_ligne",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "commande_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "conge",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "conge",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "conge_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "conge_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "conge_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contact",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contact",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contact",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contact_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contact_type",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contrat",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contrat",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contrat_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contrat_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contrat_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "contrat_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "cron",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "cron_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "daemon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "daemon",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "document",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "document",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "document",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "document_extension",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "document_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "email",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "email_mime",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "emailbox",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "entite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture",
+    "field": "totalHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture",
+    "field": "totalTva",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture_ligne",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture_ligne",
+    "field": "totalHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture_ligne",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture_ligne",
+    "field": "totalTva",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "facture_ligne",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement",
+    "field": "montantEcheance",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement",
+    "field": "taux",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement",
+    "field": "montant",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement_ligne",
+    "field": "montantEcheance",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement_ligne",
+    "field": "montant",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement_ligne",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement_ligne",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "financement_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "ged_bin",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "intervention_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "intervention_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "intervention_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "leaser",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "leaser",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "leaser",
+    "field": "fax",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "marque",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "marque",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel",
+    "field": "compteurNB",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel",
+    "field": "compteurCouleur",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel_compteur",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel_volume",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel_volume",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "materiel_volume",
+    "field": "valeur",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite",
+    "field": "rang",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite",
+    "field": "montant",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite",
+    "field": "montantRachat",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite",
+    "field": "marge",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "opportunite_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "prestataire",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "produit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "produit",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "produit",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "produit_gamme",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "prospect",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "prospect",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "prospect",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "rachat",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "rachat",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "rachat",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "rachat",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "rachat_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "ressource",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "ressource",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "secteur",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "site_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache_statut",
+    "field": "valeur",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "idaenextScheme",
+    "collection": "tache_type",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "iotScheme",
+    "collection": "device_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "alert_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "severity",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "device_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "sensor_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "command_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "site",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "zone",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "zone",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "iotScheme",
+    "collection": "gateway",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "firmware",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "firmware",
+    "field": "version",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "iotScheme",
+    "collection": "device",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "sensor",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "reading",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "reading",
+    "field": "value",
+    "inlineType": "number",
+    "catalogType": "text",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "iotScheme",
+    "collection": "reading",
+    "field": "quality",
+    "inlineType": "number",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "iotScheme",
+    "collection": "reading_rollup",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "alert_rule",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "alert",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "command",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "maintenance_log",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "iotScheme",
+    "collection": "maintenance_log",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "job_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "job_source",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "contract_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "seniority",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "match_method",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "skill_kind",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "event_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "skill",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "company",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "profile",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "profile",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "profile_skill",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "email_message",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "job",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "job",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "match_result",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "job_skill",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "jobberScheme",
+    "collection": "job_event",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "project",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "characters",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "character_reference",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "character_reference",
+    "field": "url",
+    "inlineType": "text",
+    "catalogType": "url",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "latentScheme",
+    "collection": "outfit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "environments",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "audio",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "audio",
+    "field": "url",
+    "inlineType": "text",
+    "catalogType": "url",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "latentScheme",
+    "collection": "timeline",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "frame",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "actor",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "frame_audio_track",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "markers",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "latentScheme",
+    "collection": "config",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "account_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "entry_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "period_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "invoice_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "currency",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "tax_rate",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "account",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "account",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "fiscal_year",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "period",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "journal",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "party",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "party",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "journal_entry",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "entry_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "entry_line",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "invoice",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "invoice",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "invoice_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "invoice_line",
+    "field": "description",
+    "inlineType": "text",
+    "catalogType": "text-block",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "payment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "bank_statement",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "ledgerScheme",
+    "collection": "statement_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "masterScheme",
+    "collection": "org",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "masterScheme",
+    "collection": "org",
+    "field": "version",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "masterScheme",
+    "collection": "org",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "masterScheme",
+    "collection": "model",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "masterScheme",
+    "collection": "model",
+    "field": "version",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "masterScheme",
+    "collection": "model",
+    "field": "status",
+    "inlineType": "text",
+    "catalogType": "status",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "masterScheme",
+    "collection": "model_collection",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "appointment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "consultation_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "payment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "appointment_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "consultation_motive",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "day_of_week",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "insurance_provider",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "insurance_provider",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "specialty",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "specialty",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "specialty",
+    "field": "icon",
+    "inlineType": "image",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "act",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "clinic",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "clinic",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "room",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "practitioner",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "practitioner",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "practitioner_clinic",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "practitioner_specialty",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "availability_slot",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "leave_period",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "patient",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "patient",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "patient_document",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "appointment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "consultation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "vital_record",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "prescription",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "prescription_item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "consultation_act",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "invoice",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "medbookScheme",
+    "collection": "review",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "table_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "order_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "ticket_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "payment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "reservation_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "course_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "station",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "payment_method",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "dining_room",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "resto_table",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "staff",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "staff",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "restauScheme",
+    "collection": "menu_category",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "menu_item",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "menu_item",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "restauScheme",
+    "collection": "modifier_group",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "modifier",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "item_modifier_group",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "guest",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "guest",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "restauScheme",
+    "collection": "reservation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "resto_order",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "resto_order",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "restauScheme",
+    "collection": "order_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "order_line_modifier",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "kitchen_ticket",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "check_split",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "check_split",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "restauScheme",
+    "collection": "payment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "ingredient",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "restauScheme",
+    "collection": "recipe_line",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "user_role",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "attendance_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "assignment_status",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "absence_reason",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "period_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "relation_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "day_of_week",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "school",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "school",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "school_year",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "term",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "room",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "subject",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "subject",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "subject",
+    "field": "icon",
+    "inlineType": "image",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "grade_level",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "class_group",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "staff",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "staff",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "teacher",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "teacher",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "student",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "student",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "guardian",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "guardian",
+    "field": "phone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "student_guardian",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "course",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "schedule_slot",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "lesson",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "lesson",
+    "field": "content",
+    "inlineType": "text-lg",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "attendance",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "absence",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "assignment",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "assignment",
+    "field": "description",
+    "inlineType": "text-lg",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "grade",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "report_card",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "schoolScheme",
+    "collection": "message",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "adresse_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agence",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent",
+    "field": "telephone2",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent",
+    "field": "password",
+    "inlineType": "text",
+    "catalogType": "password",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent",
+    "field": "mailPassword",
+    "inlineType": "email",
+    "catalogType": "password",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_activite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_activite",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_history",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_history",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_liste",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_liste_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_note",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_note",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_note",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_pref",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_recherche",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_table",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_tuile",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "agent_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_conf",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_daemon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version_file",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version_file",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version_file",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version_file_preprod",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version_file_preprod",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "app_version_file_preprod",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "cart",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "cart",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "categorie_produit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client",
+    "field": "fax",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client_categorie",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client_categorie",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "client_type",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "comande_history",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande",
+    "field": "rang",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_facture",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_facture",
+    "field": "marge",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_facture",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_facture",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_ligne",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_ligne",
+    "field": "total",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_ligne",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_proposition",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_proposition",
+    "field": "dateCreation",
+    "inlineType": "date",
+    "catalogType": "datetime",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_proposition",
+    "field": "heure",
+    "inlineType": "datetime",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_slot",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_slot_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commande_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "commune",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "contact_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "contact_type",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "cron",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "daemon",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "daemon",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "entite",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture",
+    "field": "totalHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture",
+    "field": "totalTva",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture_ligne",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture_ligne",
+    "field": "totalHt",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture_ligne",
+    "field": "totalTtc",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "facture_ligne",
+    "field": "totalTva",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "jours",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livraison",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livraison",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livraison",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livraison_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livreur",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livreur",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livreur",
+    "field": "password",
+    "inlineType": "text",
+    "catalogType": "password",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livreur_affectation",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livreur_affectation",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "livreur_affectation",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "produit",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "produit",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "produit",
+    "field": "prix",
+    "inlineType": "currency",
+    "catalogType": "number",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "produit_categorie",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "produit_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "secteur",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "secteur",
+    "field": "latitude",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "secteur",
+    "field": "longitude",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "secteur_jours_shift",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "secteur_jours_shift",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "secteur_jours_shift",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": true,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop",
+    "field": "password",
+    "inlineType": "text",
+    "catalogType": "password",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop",
+    "field": "latitude",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop",
+    "field": "longitude",
+    "inlineType": "text",
+    "catalogType": "number",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_categorie",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_client",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_client",
+    "field": "telephone",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_client",
+    "field": "mobile",
+    "inlineType": "phone",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_configuration",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_configuration_ligne",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours_shift",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours_shift",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours_shift",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours_shift_run",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours_shift_run",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_jours_shift_run",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "shop_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache",
+    "field": "description",
+    "inlineType": "text-long",
+    "catalogType": "text-block",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache",
+    "field": "heureDebut",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache",
+    "field": "heureFin",
+    "inlineType": "date",
+    "catalogType": "text",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache_statut",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache_statut",
+    "field": "icon",
+    "inlineType": "text",
+    "catalogType": "icon",
+    "required": false,
+    "readonly": false
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "tache_type",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  },
+  {
+    "model": "tactacScheme",
+    "collection": "ville",
+    "field": "id",
+    "inlineType": "id",
+    "catalogType": "number",
+    "required": false,
+    "readonly": true
+  }
+]
