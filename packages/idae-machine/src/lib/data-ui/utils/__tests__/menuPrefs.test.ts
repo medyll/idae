@@ -54,9 +54,9 @@ describe('menuPrefs — zone mapping', () => {
 });
 
 describe('menuPrefs — isMenuCollectionVisible', () => {
-	it('shows all collections when prefs are empty', () => {
-		expect(isMenuCollectionVisible('side', 'vehicle', {})).toBe(true);
-		expect(isMenuCollectionVisible('side', 'vehicle', undefined as unknown as Record<string, unknown>)).toBe(true);
+	it('hides all collections when prefs are empty (new policy: unset = hidden)', () => {
+		expect(isMenuCollectionVisible('side', 'vehicle', {})).toBe(false);
+		expect(isMenuCollectionVisible('side', 'vehicle', undefined as unknown as Record<string, unknown>)).toBe(false);
 	});
 
 	it('shows all collections in dev mode even with explicit false prefs', () => {
@@ -74,9 +74,27 @@ describe('menuPrefs — isMenuCollectionVisible', () => {
 		expect(isMenuCollectionVisible('side', 'vehicle', prefs)).toBe(false);
 	});
 
-	it('shows collection when pref is unset (default policy)', () => {
+	it('hides collection when pref is unset (new policy: explicit true required)', () => {
 		const prefs = { 'app_menu.category': true };
-		expect(isMenuCollectionVisible('side', 'vehicle', prefs)).toBe(true);
+		expect(isMenuCollectionVisible('side', 'vehicle', prefs)).toBe(false);
+	});
+
+	it('falls back to baseline when no user override exists (override ?? baseline ?? false)', () => {
+		const baseline = { 'app_menu.vehicle': true };
+		expect(isMenuCollectionVisible('side', 'vehicle', {}, false, baseline)).toBe(true);
+		expect(isMenuCollectionVisible('side', 'category', {}, false, baseline)).toBe(false);
+	});
+
+	it('user override wins over baseline — explicit false hides a baseline-visible collection', () => {
+		const prefs = { 'app_menu.vehicle': false };
+		const baseline = { 'app_menu.vehicle': true };
+		expect(isMenuCollectionVisible('side', 'vehicle', prefs, false, baseline)).toBe(false);
+	});
+
+	it('user override wins over baseline — explicit true shows a baseline-hidden collection', () => {
+		const prefs = { 'app_menu.vehicle': true };
+		const baseline = { 'app_menu.vehicle': false };
+		expect(isMenuCollectionVisible('side', 'vehicle', prefs, false, baseline)).toBe(true);
 	});
 
 	it('coerces non-boolean pref values', () => {
@@ -88,10 +106,10 @@ describe('menuPrefs — isMenuCollectionVisible', () => {
 });
 
 describe('menuPrefs — filterMenuCollections', () => {
-	it('returns all collections when prefs are empty', () => {
+	it('returns no collections when prefs are empty (new policy: unset = hidden)', () => {
 		const cols = ['vehicle', 'category', 'rental'];
-		expect(filterMenuCollections('side', cols)).toEqual(cols);
-		expect(filterMenuCollections('side', cols, { prefs: {} })).toEqual(cols);
+		expect(filterMenuCollections('side', cols)).toEqual([]);
+		expect(filterMenuCollections('side', cols, { prefs: {} })).toEqual([]);
 	});
 
 	it('returns all collections in dev mode', () => {
@@ -100,19 +118,33 @@ describe('menuPrefs — filterMenuCollections', () => {
 		expect(filterMenuCollections('side', cols, { prefs, isDev: true })).toEqual(cols);
 	});
 
-	it('applies explicit false prefs', () => {
+	it('applies explicit false prefs (unset others also hidden)', () => {
 		const cols = ['vehicle', 'category', 'rental'];
 		const prefs = {
 			'app_menu.vehicle': false,
 			'app_menu.category': true
 		};
-		expect(filterMenuCollections('side', cols, { prefs })).toEqual(['category', 'rental']);
+		expect(filterMenuCollections('side', cols, { prefs })).toEqual(['category']);
+	});
+
+	it('includes baseline-visible collections without a user override', () => {
+		const cols = ['vehicle', 'category', 'rental'];
+		const baseline = { 'app_menu.vehicle': true, 'app_menu.rental': true };
+		expect(filterMenuCollections('side', cols, { baseline })).toEqual(['vehicle', 'rental']);
+	});
+
+	it('user override false suppresses a baseline-visible collection', () => {
+		const cols = ['vehicle', 'category'];
+		const prefs = { 'app_menu.vehicle': false };
+		const baseline = { 'app_menu.vehicle': true, 'app_menu.category': true };
+		expect(filterMenuCollections('side', cols, { prefs, baseline })).toEqual(['category']);
 	});
 
 	it('intersects with permittedCollections when provided', () => {
 		const cols = ['vehicle', 'category', 'rental'];
 		const permitted = ['vehicle', 'rental'];
-		expect(filterMenuCollections('side', cols, { permittedCollections: permitted })).toEqual([
+		const prefs = { 'app_menu.vehicle': true, 'app_menu.rental': true };
+		expect(filterMenuCollections('side', cols, { permittedCollections: permitted, prefs })).toEqual([
 			'vehicle',
 			'rental'
 		]);
@@ -121,7 +153,7 @@ describe('menuPrefs — filterMenuCollections', () => {
 	it('applies pref filter after permittedCollections intersection', () => {
 		const cols = ['vehicle', 'category', 'rental'];
 		const permitted = ['vehicle', 'category'];
-		const prefs = { 'app_menu.vehicle': false };
+		const prefs = { 'app_menu.vehicle': false, 'app_menu.category': true };
 		expect(filterMenuCollections('side', cols, { permittedCollections: permitted, prefs })).toEqual([
 			'category'
 		]);

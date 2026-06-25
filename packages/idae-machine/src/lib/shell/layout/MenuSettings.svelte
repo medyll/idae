@@ -86,7 +86,7 @@ keeps the row, matching the simplest machine.action upsert contract).
 		</menu-settings-tabs>
 
 		{#if !hasPrefsForZone}
-			<p class="menu-settings-warning">Aucune préférence configurée pour cette zone — tout est visible par défaut.</p>
+			<p class="menu-settings-warning">Aucune préférence configurée pour cette zone — toutes les collections sont masquées.</p>
 		{/if}
 
 		<menu-settings-zone>

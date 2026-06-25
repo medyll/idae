@@ -22,10 +22,10 @@ const testCore: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' }
 		},
-		fkRelations: { appscheme_type: { code: 'appscheme_type', multiple: false, required: false } },
+		fkRelations: { appscheme_base: { code: 'appscheme_base', multiple: false, required: false } },
 		template: { presentation: 'name' }
 	},
-	appscheme_type: {
+	appscheme_base: {
 		keyPath: '++id',
 		base: 'machine_app',
 		model: {},
@@ -78,14 +78,16 @@ const businessScheme: MachineModel = {
 	} as never
 };
 
-async function seedMenuFixtures(): Promise<void> {
-	await machine.collection('appscheme_type').create({ code: 'tool', name: 'Tools', fks: {} });
+async function seedMenuFixtures(userId: string): Promise<void> {
+	await machine.collection('appscheme_base').create({ code: 'tool', name: 'Tools', fks: {} });
 	await machine.collection('appscheme').create({
 		code: 'widget',
 		name: 'Widget',
 		icon: '🔧',
-		fks: { appscheme_type: { code: 'tool' } }
+		fks: { appscheme_base: { code: 'tool' } }
 	});
+	// Seed panel pref so widget appears in the panel zone menu (new policy: unset = hidden)
+	await machine.collection('appuser_prefs').create({ code: `${userId}:app_panel.widget`, value: true });
 }
 
 async function bootMachine(dbName: string): Promise<string> {
@@ -102,7 +104,7 @@ async function bootMachine(dbName: string): Promise<string> {
 		isLocked: false,
 		appPermissions: {}
 	} as never);
-	await seedMenuFixtures();
+	await seedMenuFixtures(userId);
 	return userId;
 }
 
@@ -125,7 +127,7 @@ describe('RecentPanel', () => {
 		await waitFor(() => expect(screen.getByText('—')).toBeInTheDocument());
 	});
 
-	it('lists a recent widget visit grouped under its appscheme_type label', async () => {
+	it('lists a recent widget visit grouped under its appscheme_base label', async () => {
 		await machine.collection('appuser_history').create({
 			collection: 'widget',
 			collection_value: 'w1',

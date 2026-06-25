@@ -60,8 +60,10 @@ export interface MenuTree {
 export interface IdaeMenuTreeSnapshot {
 	/** Collections where the current user has the given right (typically 'L'). */
 	allowedCollections: string[];
-	/** appuser_prefs slots, keyed by menuPrefsScope(zone, collection) (see menuPrefs.ts). */
+	/** appuser_prefs slots (per-user overrides), keyed by menuPrefsScope(zone, collection). */
 	prefs: Record<string, unknown>;
+	/** Role-derived visibility baseline (server-resolved at login), same key shape as `prefs`. */
+	baseline?: Record<string, unknown>;
 	appscheme: Map<string, AppschemeMenuEntry> | AppschemeMenuEntry[];
 	appscheme_base: Map<string, AppschemeBaseMenuEntry> | AppschemeBaseMenuEntry[];
 	isDev?: boolean;
@@ -84,6 +86,7 @@ export function buildMenuTree(snapshot: IdaeMenuTreeSnapshot, zone: MenuZone): M
 	// 1+2. Rights gate, then pref-filtered, respecting per-zone visibility + dev bypass.
 	const visibleCollections = filterMenuCollections(zone, snapshot.allowedCollections, {
 		prefs: snapshot.prefs,
+		baseline: snapshot.baseline,
 		isDev: snapshot.isDev
 	});
 

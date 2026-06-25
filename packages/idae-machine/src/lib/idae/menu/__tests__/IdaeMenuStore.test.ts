@@ -24,7 +24,7 @@ describe('buildMenuTree', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users', 'products', 'orders'],
-				prefs: {},
+				prefs: { 'app_menu.users': true, 'app_menu.products': true, 'app_menu.orders': true },
 				appscheme,
 				appscheme_base: appschemeBase,
 				isDev: false
@@ -40,7 +40,7 @@ describe('buildMenuTree', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users', 'products', 'orders'],
-				prefs: {},
+				prefs: { 'app_menu.users': true, 'app_menu.products': true, 'app_menu.orders': true },
 				appscheme,
 				appscheme_base: appschemeBase,
 				isDev: false
@@ -58,7 +58,7 @@ describe('buildMenuTree', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users', 'products'],
-				prefs: {},
+				prefs: { 'app_menu.users': true, 'app_menu.products': true },
 				appscheme,
 				appscheme_base: appschemeBase,
 				isDev: false
@@ -76,7 +76,7 @@ describe('buildMenuTree', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users', 'products', 'orders'],
-				prefs: { 'app_menu.users': false },
+				prefs: { 'app_menu.users': false, 'app_menu.products': true, 'app_menu.orders': true },
 				appscheme,
 				appscheme_base: appschemeBase,
 				isDev: false
@@ -109,7 +109,7 @@ describe('buildMenuTree', () => {
 		const tree = buildMenuTree(
 			{
 				allowedCollections: ['users'],
-				prefs: {},
+				prefs: { 'app_menu.users': true },
 				appscheme: Array.from(appscheme.values()),
 				appscheme_base: Array.from(appschemeBase.values()),
 				isDev: false
@@ -118,5 +118,21 @@ describe('buildMenuTree', () => {
 		);
 
 		expect(tree.groups[0].items[0].collection).toBe('users');
+	});
+
+	it('empty prefs hides all collections (new policy: unset = hidden)', () => {
+		const tree = buildMenuTree(
+			{
+				allowedCollections: ['users', 'products', 'orders'],
+				prefs: {},
+				appscheme,
+				appscheme_base: appschemeBase,
+				isDev: false
+			},
+			'side'
+		);
+
+		const allItems = tree.groups.flatMap((g) => g.items);
+		expect(allItems.length).toBe(0);
 	});
 });

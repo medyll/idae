@@ -98,7 +98,7 @@ describe('IdaeMenuManager', () => {
 		);
 
 		manager.setSnapshotReader(() => ({
-			prefs: {},
+			prefs: { 'app_menu.users': true },
 			appscheme: [{ code: 'users', label: 'Users', fks: { appscheme_base: { code: 'admin' } } }],
 			appscheme_base: [{ code: 'admin', label: 'Administration' }],
 			isDev: false
@@ -116,7 +116,7 @@ describe('IdaeMenuManager', () => {
 		);
 
 		manager.setSnapshotReader(() => ({
-			prefs: {},
+			prefs: { 'app_menu.users': true, 'app_menu.products': true },
 			appscheme: [
 				{ code: 'users', label: 'Users', fks: { appscheme_base: { code: 'admin' } } },
 				{ code: 'products', label: 'Products', fks: { appscheme_base: { code: 'catalog' } } }
@@ -138,7 +138,7 @@ describe('IdaeMenuManager', () => {
 		);
 
 		manager.setSnapshotReader(() => ({
-			prefs: {},
+			prefs: { 'app_menu.users': true },
 			appscheme: [
 				{ code: 'users', label: 'Users', fks: { appscheme_base: { code: 'admin' } } },
 				{ code: 'orders', label: 'Orders', fks: { appscheme_base: { code: 'sales' } } }

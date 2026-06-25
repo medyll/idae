@@ -26,6 +26,7 @@
 		localStorage.removeItem('auth_token');
 		localStorage.removeItem('auth_user');
 		localStorage.removeItem('auth_grants');
+		localStorage.removeItem('auth_menu_baseline');
 		window.location.reload();
 	}
 </script>

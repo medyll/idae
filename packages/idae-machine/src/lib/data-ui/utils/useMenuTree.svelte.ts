@@ -30,6 +30,7 @@ export function useMenuTree(zone: () => MenuZone) {
 			{
 				allowedCollections: machine.rights.allowedCollections('L'),
 				prefs,
+				baseline: machine.rights.menuBaseline,
 				appscheme: appschemeSrc.records as AppschemeMenuEntry[],
 				appscheme_base: appschemeBaseSrc.records as AppschemeBaseMenuEntry[],
 				isDev: import.meta.env.DEV

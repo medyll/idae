@@ -624,6 +624,7 @@ export class Machine {
 				const prefsRecords = this.store('appuser_prefs').records as Array<{ code?: unknown; value?: unknown }>;
 				return {
 					prefs: userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {},
+					baseline: this.rights.menuBaseline,
 					appscheme: this.store('appscheme').records as AppschemeMenuEntry[],
 					appscheme_base: this.store('appscheme_base').records as AppschemeBaseMenuEntry[],
 					isDev: import.meta.env.DEV

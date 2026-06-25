@@ -90,26 +90,27 @@ describe('MenuSettings', () => {
 		expect(screen.queryByText('Widget')).not.toBeInTheDocument();
 	});
 
-	it('shows the warning and the default-visible toggle when no prefs are configured', async () => {
+	it('shows the warning and the default-hidden toggle when no prefs are configured', async () => {
 		render(MenuSettings, { props: { open: true } });
 
 		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
 		expect(screen.getByText(/Aucune préférence configurée/)).toBeInTheDocument();
-		expect(screen.getByText('Widget').closest('button')).toHaveAttribute('aria-pressed', 'true');
+		expect(screen.getByText('Widget').closest('button')).toHaveAttribute('aria-pressed', 'false');
 	});
 
-	it('toggling a collection writes appuser_prefs via machine.action and flips the checkbox', async () => {
+	it('toggling a hidden collection writes appuser_prefs via machine.action and shows it', async () => {
 		render(MenuSettings, { props: { open: true } });
 
 		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
 		const toggle = screen.getByText('Widget').closest('button')!;
+		expect(toggle).toHaveAttribute('aria-pressed', 'false');
 		await fireEvent.click(toggle);
 
-		await waitFor(() => expect(toggle).toHaveAttribute('aria-pressed', 'false'));
+		await waitFor(() => expect(toggle).toHaveAttribute('aria-pressed', 'true'));
 
 		const prefs = (await machine.collection('appuser_prefs').where({})) as Array<{ code: string; value: unknown }>;
 		const pref = prefs.find((p) => p.code === `${userId}:app_menu.widget`);
-		expect(pref?.value).toBe(false);
+		expect(pref?.value).toBe(true);
 	});
 
 	it('switches zones via tabs', async () => {

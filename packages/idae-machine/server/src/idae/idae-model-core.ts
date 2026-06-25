@@ -503,7 +503,8 @@ export const idaeModelCore = {
 				collection_value: { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+				// required:false — role-owned preset rows (code 'role:{typeCode}:...') carry no appuser.
+				appuser: { code: 'appuser', order: 0, multiple: false, required: false },
 			},
 			template: {
 				presentation: 'code value',

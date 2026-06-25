@@ -8,7 +8,7 @@
  * lives under idae/, never under machine/.
  */
 import { buildMenuTree, type IdaeMenuTreeSnapshot, type MenuTree, type MenuItem } from './IdaeMenuStore.js';
-import type { MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
+import { type MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
 import type { MachineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import type { MachineRights as MachineRightsType } from '$lib/main/machine/MachineRights.js';
 

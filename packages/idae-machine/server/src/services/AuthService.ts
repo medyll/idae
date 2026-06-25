@@ -7,6 +7,7 @@ import { config } from '../config.js';
 import type { UserContext } from '../middleware/permission.js';
 import { isApiKeyToken, resolveApiKey } from './ApiKeyService.js';
 import { grantService } from './GrantService.js';
+import { resolveMenuBaseline } from './MenuPresetService.js';
 
 interface JwtPayload {
 	userId:  string;
@@ -57,7 +58,7 @@ export async function resolveUser(req: Request): Promise<UserContext | null> {
 export async function login(
 	login:    string,
 	password: string,
-): Promise<{ token: string; user: UserContext; grants: unknown[] } | null> {
+): Promise<{ token: string; user: UserContext; grants: unknown[]; menuBaseline: Record<string, boolean> } | null> {
 	const org  = getCurrentOrg();
 	const conn = await getConn(`${org}_machine_user`);
 	const doc  = await conn.collection('appuser').findOne({ login }) as AppUserDoc | null;
@@ -85,10 +86,16 @@ export async function login(
 	// these the client denies every read even though the server would allow it.
 	const grants = isAdmin ? [] : await grantService.listUserGrants(payload.userId);
 
+	// Resolve the OR'd menu visibility baseline from the user's role presets. Computed
+	// fresh per login (like grants) — role codes stay server-side; the client receives
+	// only the flat effect and overlays its own per-user overrides on top.
+	const menuBaseline = await resolveMenuBaseline(payload.userId);
+
 	return {
 		token,
 		user: { userId: payload.userId, login: payload.login, isAdmin, org },
 		grants,
+		menuBaseline,
 	};
 }
 

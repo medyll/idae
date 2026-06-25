@@ -10,9 +10,12 @@
  * The `app_*` prefixes are a convention, not a contract: consumers must never
  * build `'app_menu_' + table` literals. Use `menuPrefsScope(zone, collection)`.
  *
- * Default policy: when a user has no menu prefs, all permitted collections are
- * visible. Defaults are never persisted. In dev mode the pref filter is bypassed
- * entirely so the UI is usable while `appuser_prefs` is empty.
+ * Default policy: a collection is visible only when an explicit `value: true` exists
+ * for that zone+collection key — either a per-user override row (`'{userId}:{key}'`)
+ * or, failing that, the role-derived `baseline` resolved server-side at login. The
+ * precedence is `userOverride ?? baseline ?? false`: a user's explicit row (incl. an
+ * explicit `false`) always wins; otherwise the role baseline decides; unset = hidden.
+ * In dev mode the filter is bypassed entirely.
  */
 
 /** Known menu zones and their canonical appuser_prefs scope prefixes. */
@@ -68,28 +71,26 @@ export function menuPrefsPrefix(zone: MenuZone): MenuZonePrefix {
 /**
  * Check whether a collection should be visible in a menu zone.
  *
- * Resolution:
+ * Resolution (`userOverride ?? baseline ?? false`):
  * 1. Dev mode (`isDev === true`) → always visible.
- * 2. No prefs provided, or prefs object is empty → visible (default policy).
- * 3. Explicit pref for this collection exists → its boolean value.
- * 4. Otherwise → visible (default for unset collections).
+ * 2. User override present (`key in prefs`) → use it (explicit `false` hides).
+ * 3. Else role baseline (`baseline[key]`) → visible when truthy.
+ * 4. Else hidden.
  *
- * This intentionally keeps "unset" distinct from "explicitly hidden": defaults
- * are never persisted, and a missing pref does not hide the collection.
+ * `baseline` is the role-derived map delivered by the server at login (OR'd across
+ * the user's roles); `prefs` are the user's own override rows. "Unset" = hidden.
  */
 export function isMenuCollectionVisible(
 	zone: MenuZone,
 	collection: string,
 	prefs: Record<string, unknown> = {},
-	isDev?: boolean
+	isDev?: boolean,
+	baseline: Record<string, unknown> = {}
 ): boolean {
 	if (getIsDev(isDev)) return true;
-	if (!prefs || Object.keys(prefs).length === 0) return true;
-
 	const key = menuPrefsScope(zone, collection);
-	if (!(key in prefs)) return true;
-
-	return Boolean(prefs[key]);
+	if (key in prefs) return Boolean(prefs[key]);
+	return Boolean(baseline[key]);
 }
 
 /**
@@ -120,6 +121,7 @@ export function readMenuPrefsFromRecords(
  * @param options.prefs       Map of `menuPrefsScope(zone, collection)` → boolean.
  * @param options.permittedCollections  Optional whitelist (e.g. `machine.rights.allowedCollections('L')`).
  *                                      When provided, the result is intersected with it.
+ * @param options.baseline   Role-derived visibility map (server-resolved at login).
  * @param options.isDev       Force dev-mode bypass (defaults to `import.meta.env.DEV`).
  */
 export function filterMenuCollections(
@@ -127,18 +129,18 @@ export function filterMenuCollections(
 	collections: string[],
 	options: {
 		prefs?: Record<string, unknown>;
+		baseline?: Record<string, unknown>;
 		permittedCollections?: string[];
 		isDev?: boolean;
 	} = {}
 ): string[] {
-	const { prefs = {}, permittedCollections, isDev } = options;
+	const { prefs = {}, baseline = {}, permittedCollections, isDev } = options;
 
 	const base = permittedCollections?.length
 		? collections.filter((c) => permittedCollections.includes(c))
 		: [...collections];
 
 	if (getIsDev(isDev)) return base;
-	if (!prefs || Object.keys(prefs).length === 0) return base;
 
-	return base.filter((c) => isMenuCollectionVisible(zone, c, prefs, false));
+	return base.filter((c) => isMenuCollectionVisible(zone, c, prefs, false, baseline));
 }

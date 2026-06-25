@@ -7,6 +7,7 @@ const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
 export class MachineRights {
 	#currentUser: AppUser | null = null;
 	#grants: AppUserGrant[] = [];
+	#menuBaseline: Record<string, boolean> = {};
 	#authEnabled = false;
 	#policies: Record<string, MachineRightsPolicy> = {};
 
@@ -32,10 +33,15 @@ export class MachineRights {
 	 * Enable auth and set the current user + their grants.
 	 * Once called, open mode is disabled — all access goes through checkAccess().
 	 */
-	setCurrentUser(user: AppUser | null, grants: AppUserGrant[] = []): void {
+	setCurrentUser(
+		user: AppUser | null,
+		grants: AppUserGrant[] = [],
+		menuBaseline: Record<string, boolean> = {}
+	): void {
 		this.#authEnabled = true;
 		this.#currentUser = user;
 		this.#grants = grants;
+		this.#menuBaseline = menuBaseline;
 	}
 
 	/** Disable auth and return to open mode (all access allowed). */
@@ -43,10 +49,20 @@ export class MachineRights {
 		this.#authEnabled = false;
 		this.#currentUser = null;
 		this.#grants = [];
+		this.#menuBaseline = {};
 	}
 
 	get currentUser(): AppUser | null {
 		return this.#currentUser;
+	}
+
+	/**
+	 * Role-derived menu visibility baseline (scopeKey → bool), resolved server-side at
+	 * login by OR-ing the user's role presets. The menu reads `override ?? baseline ??
+	 * false`; role codes are never exposed client-side — only this flat effect.
+	 */
+	get menuBaseline(): Record<string, boolean> {
+		return this.#menuBaseline;
 	}
 
 	get isAuthEnabled(): boolean {

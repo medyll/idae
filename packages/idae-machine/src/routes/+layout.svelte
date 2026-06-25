@@ -99,6 +99,11 @@
 			// every read by the client rights gate even though the server allows it.
 			const rawGrants = localStorage.getItem('auth_grants');
 			const grants = rawGrants ? (JSON.parse(rawGrants) as AppUserGrant[]) : [];
+			// Menu baseline (role-derived visibility) is persisted at login alongside grants —
+			// the menu reads `override ?? baseline ?? false`, so without it every collection
+			// would be hidden until the user sets explicit per-collection prefs.
+			const rawBaseline = localStorage.getItem('auth_menu_baseline');
+			const menuBaseline = rawBaseline ? (JSON.parse(rawBaseline) as Record<string, boolean>) : {};
 			machine.rights.setCurrentUser(
 				{
 					id: user.userId,
@@ -107,7 +112,8 @@
 					isLocked: false,
 					appPermissions: { ADMIN: user.isAdmin }
 				} as unknown as AppUser,
-				grants
+				grants,
+				menuBaseline
 			);
 			authState.authed = true;
 		} catch {
