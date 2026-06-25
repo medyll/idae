@@ -123,37 +123,32 @@ describe('MainMenu', () => {
 		expect(screen.queryByText('Widget')).not.toBeInTheDocument();
 	});
 
-	it('renders columns by appscheme_base when open', async () => {
+	it('renders a vertical dock with grouped collections when open', async () => {
 		render(MainMenu, { props: { open: true } });
-		await waitFor(() => expect(screen.getByText('Tools')).toBeInTheDocument());
-		expect(screen.getByText('Widget')).toBeInTheDocument();
-		expect(screen.getByText('Gadget')).toBeInTheDocument();
+		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
+		expect(screen.getByText('gadget')).toBeInTheDocument();
+		expect(screen.getByText("Aujourd'hui")).toBeInTheDocument();
 	});
 
-	it('fires the explorer launch verb when a single item is clicked', async () => {
-		const explorerSpy = vi
-			.spyOn(machine.menu.verbs as Record<string, (collection: string) => void>, 'explorer')
+	it('selects a collection and shows its detail in the content zone', async () => {
+		render(MainMenu, { props: { open: true } });
+		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
+		await fireEvent.click(screen.getByText('widget').closest('button')!);
+		await waitFor(() => expect(screen.getByText('WIDGET')).toBeInTheDocument());
+		expect(screen.getByText(/Créer widget/)).toBeInTheDocument();
+	});
+
+	it('fires the create launch verb from the collection detail', async () => {
+		const createSpy = vi
+			.spyOn(machine.menu.verbs as Record<string, (collection: string) => void>, 'create')
 			.mockImplementation(() => {});
 
 		render(MainMenu, { props: { open: true } });
-		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
-		await fireEvent.click(screen.getByText('Widget').closest('button')!);
+		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
+		await fireEvent.click(screen.getByText('widget').closest('button')!);
+		await waitFor(() => expect(screen.getByText(/Créer widget/)).toBeInTheDocument());
+		await fireEvent.click(screen.getByText(/Créer widget/).closest('button')!);
 
-		expect(explorerSpy).toHaveBeenCalledWith('widget');
-	});
-
-	it('launch_all fires the explorer verb for every item in a column', async () => {
-		const explorerSpy = vi
-			.spyOn(machine.menu.verbs as Record<string, (collection: string) => void>, 'explorer')
-			.mockImplementation(() => {});
-
-		render(MainMenu, { props: { open: true } });
-
-		await waitFor(() => expect(screen.getByText('Tout ouvrir')).toBeInTheDocument());
-		await fireEvent.click(screen.getByText('Tout ouvrir'));
-
-		expect(explorerSpy).toHaveBeenCalledWith('widget');
-		expect(explorerSpy).toHaveBeenCalledWith('gadget');
-		expect(explorerSpy).toHaveBeenCalledTimes(2);
+		expect(createSpy).toHaveBeenCalledWith('widget');
 	});
 });
