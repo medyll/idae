@@ -7,6 +7,7 @@ MainMenu.svelte — global start overlay. Two-zone layout:
 Toggled from TaskBar's menu button via bind:open.
 -->
 <script lang="ts">
+	import Icon from '@iconify/svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
 	import type { MenuItem } from '$lib/idae/menu/IdaeMenuStore.js';
@@ -35,10 +36,21 @@ Toggled from TaskBar's menu button via bind:open.
 		if (e.key === 'Escape') open = false;
 	}
 
-	// Mock icon alternating by group index — the source icon field may contain
-	// text tokens like "table", so we render a safe emoji instead for now.
-	function mockIcon(groupIndex: number): string {
-		return groupIndex % 2 === 0 ? '📁' : '📂';
+	/**
+	 * Normalize an appscheme icon value for Iconify.
+	 * The stored value may be a bare glyph name (e.g. "user") or already prefixed
+	 * (e.g. "mdi:close"). Bare names are treated as Typicons to match FieldIcon.
+	 * Invalid/fallback values that are not icon codes are replaced with a safe default.
+	 */
+	function normalizeIcon(icon: string | undefined, fallback = 'typcn:folder'): string {
+		if (!icon) return fallback;
+		const trimmed = icon.trim();
+		if (!trimmed) return fallback;
+		// Reject values that look like free text rather than icon codes.
+		if (/^\d+$/.test(trimmed)) return fallback;
+		if (/\s/.test(trimmed)) return fallback;
+		if (trimmed.includes(':')) return trimmed;
+		return `typcn:${trimmed}`;
 	}
 </script>
 
@@ -60,7 +72,7 @@ Toggled from TaskBar's menu button via bind:open.
 				aria-label="Close menu"
 				onclick={() => (open = false)}
 			>
-				×
+				<Icon icon="mdi:close" />
 			</button>
 
 			<main-menu-dock>
@@ -73,7 +85,9 @@ Toggled from TaskBar's menu button via bind:open.
 								aria-pressed={selected?.collection === item.collection}
 								onclick={() => select(item)}
 							>
-								<span class="main-menu-dock-item-icon">{mockIcon(groupIndex)}</span>
+								<span class="main-menu-dock-item-icon">
+									<Icon icon={normalizeIcon(item.icon)} />
+								</span>
 								<span class="main-menu-dock-item-label">{item.collection}</span>
 								<span class="main-menu-dock-item-caret">▸</span>
 							</button>
@@ -103,11 +117,15 @@ Toggled from TaskBar's menu button via bind:open.
 							class="main-menu-tile"
 							onclick={() => launchExplorer(collection)}
 						>
-							<span class="main-menu-tile-icon">📄</span>
+							<span class="main-menu-tile-icon">
+								<Icon icon="typcn:document" />
+							</span>
 							<span class="main-menu-tile-label">Espace {collection}</span>
 						</button>
 						<button type="button" class="main-menu-tile">
-							<span class="main-menu-tile-icon">🔍</span>
+							<span class="main-menu-tile-icon">
+								<Icon icon="typcn:zoom" />
+							</span>
 							<span class="main-menu-tile-label">Recherche rapide</span>
 						</button>
 					</main-menu-collection-actions>
@@ -190,8 +208,16 @@ Toggled from TaskBar's menu button via bind:open.
 			font-size: 1.25rem;
 			line-height: 1;
 		}
+		.main-menu-close :global(svg) {
+			font-size: 1.25rem;
+		}
 		.main-menu-close:hover {
 			background: var(--color-surface-elevated, #d1d5db);
+		}
+		.main-menu-dock-item-icon :global(svg),
+		.main-menu-tile-icon :global(svg) {
+			font-size: 1.25em;
+			vertical-align: middle;
 		}
 		main-menu-dock {
 			display: flex;
