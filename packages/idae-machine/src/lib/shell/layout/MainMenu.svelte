@@ -3,20 +3,44 @@ MainMenu.svelte — global start overlay. Two-zone layout:
   - main-menu-dock (left): vertical list of permitted+pref collections grouped by
     appscheme_base. Group labels are hidden.
   - main-menu-content (right): home (Today-like) when no collection selected;
-    collection detail when a collection is selected.
+    collection detail + embedded explorer frame when a collection is selected.
 Toggled from TaskBar's menu button via bind:open.
 -->
 <script lang="ts">
 	import Icon from '@iconify/svelte';
+	import { mount, type Component } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
+	import Frame from '$lib/shell/Frame.svelte';
 	import type { MenuItem } from '$lib/idae/menu/IdaeMenuStore.js';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
 	const startMenu = useMenuTree(() => 'start');
+	const CONTENT_ZONE = 'main-menu-content';
 
 	let selected = $state<MenuItem | undefined>(undefined);
+	let contentZoneEl = $state<HTMLDivElement | undefined>(undefined);
+	let loadedCollection = $state<string | undefined>(undefined);
+
+	function loadCollection(collection: string): void {
+		if (!contentZoneEl) return;
+		const frameId = `${CONTENT_ZONE}:explorer`;
+		void machine.framer.load(frameId, 'explorer', collection, undefined, {}, async () => {
+			mount(Frame as Component<Record<string, unknown>>, {
+				target: contentZoneEl as HTMLDivElement,
+				props: { id: frameId, taskbar: false }
+			});
+		});
+		loadedCollection = collection;
+	}
+
+	$effect(() => {
+		const collection = selected?.collection;
+		if (collection && contentZoneEl && loadedCollection !== collection) {
+			loadCollection(collection);
+		}
+	});
 
 	function select(item: MenuItem): void {
 		selected = item;
@@ -39,14 +63,13 @@ Toggled from TaskBar's menu button via bind:open.
 	/**
 	 * Normalize an appscheme icon value for Iconify.
 	 * The stored value may be a bare glyph name (e.g. "user") or already prefixed
-	 * (e.g. "mdi:close"). Bare names are treated as Typicons to match FieldIcon.
-	 * Invalid/fallback values that are not icon codes are replaced with a safe default.
+	 * (e.g. "typcn:user"). Bare names are treated as Typicons to match FieldIcon.
+	 * Invalid/fallback values that look like free text are replaced with a safe default.
 	 */
 	function normalizeIcon(icon: string | undefined, fallback = 'typcn:folder'): string {
 		if (!icon) return fallback;
 		const trimmed = icon.trim();
 		if (!trimmed) return fallback;
-		// Reject values that look like free text rather than icon codes.
 		if (/^\d+$/.test(trimmed)) return fallback;
 		if (/\s/.test(trimmed)) return fallback;
 		if (trimmed.includes(':')) return trimmed;
@@ -72,11 +95,11 @@ Toggled from TaskBar's menu button via bind:open.
 				aria-label="Close menu"
 				onclick={() => (open = false)}
 			>
-				<Icon icon="mdi:close" />
+				<Icon icon="typcn:close" />
 			</button>
 
 			<main-menu-dock>
-				{#each startMenu.tree.groups as group, groupIndex (group.key)}
+				{#each startMenu.tree.groups as group (group.key)}
 					<main-menu-group>
 						{#each group.items as item (item.key)}
 							<button
@@ -130,23 +153,10 @@ Toggled from TaskBar's menu button via bind:open.
 						</button>
 					</main-menu-collection-actions>
 
-					<main-menu-collection-links>
-						<button type="button" class="main-menu-link">Parcourir</button>
-						<button type="button" class="main-menu-link">Comparer</button>
-						<button type="button" class="main-menu-link">Trier</button>
-					</main-menu-collection-links>
-
-					<main-menu-status-list>
-						<div class="main-menu-status-row">
-							<span class="main-menu-status-label">Total</span>
-							<span class="main-menu-status-count">0</span>
-						</div>
-					</main-menu-status-list>
-
-					<main-menu-recent-list>
-						<h4>{collection.toUpperCase()}</h4>
-						<span class="main-menu-empty">Aucun enregistrement récent</span>
-					</main-menu-recent-list>
+					<main-menu-frame-zone
+						bind:this={contentZoneEl}
+						data-target-zone={CONTENT_ZONE}
+					></main-menu-frame-zone>
 				{:else}
 					<main-menu-home>
 						<h3>Aujourd'hui</h3>
@@ -281,19 +291,15 @@ Toggled from TaskBar's menu button via bind:open.
 			gap: var(--gutter-md, 1rem);
 			flex-wrap: wrap;
 		}
-		main-menu-collection-links {
-			display: flex;
-			gap: var(--gutter-md, 1rem);
-		}
-		main-menu-status-list {
+		main-menu-frame-zone {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-xs, 0.25rem);
-		}
-		main-menu-recent-list {
-			display: flex;
-			flex-direction: column;
-			gap: var(--gutter-sm, 0.5rem);
+			flex: 1;
+			min-height: 0;
+			position: relative;
+			border: 1px solid var(--color-border);
+			border-radius: var(--radius-md, 8px);
+			overflow: hidden;
 		}
 		main-menu-home {
 			display: flex;
@@ -327,24 +333,6 @@ Toggled from TaskBar's menu button via bind:open.
 		}
 		.main-menu-tile-icon {
 			font-size: 1.5rem;
-		}
-		.main-menu-link {
-			all: unset;
-			cursor: pointer;
-			padding: 0.25rem 0.5rem;
-			border-radius: var(--radius-sm, 4px);
-		}
-		.main-menu-link:hover {
-			background: var(--color-surface-alt);
-		}
-		.main-menu-status-row {
-			display: flex;
-			justify-content: space-between;
-			padding: 0.25rem 0.5rem;
-			border-radius: var(--radius-sm, 4px);
-		}
-		.main-menu-status-row:hover {
-			background: var(--color-surface-alt);
 		}
 		.main-menu-empty {
 			color: var(--color-text-muted, #888);

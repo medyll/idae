@@ -77,7 +77,7 @@ async function seedMenuFixtures(): Promise<void> {
 	await machine.collection('appscheme').create({
 		code: 'widget',
 		name: 'Widget',
-		icon: '🔧',
+		icon: 'wrench',
 		fks: { appscheme_base: { code: 'tool' } }
 	});
 	await machine.collection('appscheme').create({
@@ -120,7 +120,7 @@ describe('MainMenu', () => {
 
 	it('renders nothing when closed', () => {
 		render(MainMenu, { props: { open: false } });
-		expect(screen.queryByText('Widget')).not.toBeInTheDocument();
+		expect(screen.queryByText('widget')).not.toBeInTheDocument();
 	});
 
 	it('renders a vertical dock with grouped collections when open', async () => {
@@ -130,12 +130,24 @@ describe('MainMenu', () => {
 		expect(screen.getByText("Aujourd'hui")).toBeInTheDocument();
 	});
 
-	it('selects a collection and shows its detail in the content zone', async () => {
+	it('selects a collection and loads an Explorer frame into the content zone', async () => {
+		const loadSpy = vi.spyOn(machine.framer, 'load').mockResolvedValue(undefined);
+
 		render(MainMenu, { props: { open: true } });
 		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
 		await fireEvent.click(screen.getByText('widget').closest('button')!);
-		await waitFor(() => expect(screen.getByText('WIDGET')).toBeInTheDocument());
-		expect(screen.getByText(/Créer widget/)).toBeInTheDocument();
+
+		await waitFor(() =>
+			expect(loadSpy).toHaveBeenCalledWith(
+				'main-menu-content:explorer',
+				'explorer',
+				'widget',
+				undefined,
+				{},
+				expect.any(Function)
+			)
+		);
+		expect(document.querySelector('[data-target-zone="main-menu-content"]')).toBeInTheDocument();
 	});
 
 	it('fires the create launch verb from the collection detail', async () => {
