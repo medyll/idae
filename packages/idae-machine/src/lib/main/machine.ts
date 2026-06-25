@@ -19,6 +19,23 @@ import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
 
+/**
+ * Race a promise against a timeout so a silently-hung IndexedDB open (e.g. an Edge
+ * tab where another connection blocks the versioned upgrade) rejects instead of
+ * leaving the app stuck on the boot splash forever. The rejection bubbles to the
+ * caller's boot try/catch → recovery screen, turning an invisible hang into a real error.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+	let timer: ReturnType<typeof setTimeout>;
+	const timeout = new Promise<never>((_, reject) => {
+		timer = setTimeout(
+			() => reject(new Error(`[idae-machine] ${label} timed out after ${ms}ms — IndexedDB likely blocked (another tab open) or sync stalled. Close other tabs and reload.`)),
+			ms
+		);
+	});
+	return Promise.race([promise, timeout]).finally(() => clearTimeout(timer)) as Promise<T>;
+}
+
 export type MachineComponentRegistry = Readonly<Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>>;
 
 const machineComponentRegistry: MachineComponentRegistry = Object.freeze({
@@ -204,7 +221,7 @@ export class Machine {
 		// Doing this inside performIdbUpgrade (which runs before createQoolie) fails
 		// with "__schema_meta__ store not found" — the store does not exist yet.
 		if (pending) {
-			await this._qoolie.ready();
+			await withTimeout(this._qoolie.ready(), 20000, 'qoolie.ready');
 			await storeSchemaHash(this._dbName, pending.expectedHash).catch((err) => {
 				console.warn('[idae-machine] Could not persist schema hash after store creation (will retry next boot):', err);
 			});
@@ -275,7 +292,7 @@ export class Machine {
 					machineRights.loadPoliciesFromModel(this._effectiveModel);
 					initializeDomainPoliciesWithModel(this._effectiveModel);
 					await this._scheduleDrift();
-					await this.createStore(true);
+					await withTimeout(this.createStore(true), 20000, 'createStore (schema drift)');
 					initializeDomainPoliciesWithMachine(this);
 				}
 			}).catch((err) => {
@@ -301,7 +318,7 @@ export class Machine {
 		});
 		if (actualVersion > this._version) this._version = actualVersion;
 		await this._scheduleDrift();
-		await this.createStore();
+		await withTimeout(this.createStore(), 20000, 'createStore');
 		initializeDomainPoliciesWithMachine(this);
 		frameCatalog.registerFrames(componentRegistry as ComponentRegistry);
 
@@ -512,16 +529,44 @@ export class Machine {
 	 *                      If not provided, derives the list from the model (collections with base='machine_app').
 	 */
 	async warmup(collections?: string[]): Promise<void> {
-		if (!this._qoolie) return;
+		console.log('[idae-machine] warmup started');
+		if (!this._qoolie) {
+			console.log('[idae-machine] warmup: no qoolie instance');
+			return;
+		}
 		
 		// If no explicit collections provided, derive from model
 		let collectionsToWarm = collections;
 		if (!collectionsToWarm || collectionsToWarm.length === 0) {
+			console.log('[idae-machine] warmup: deriving collections from model');
 			const { getSchemaCriticalCollections } = await import('$lib/main/warmupUtils.js');
 			collectionsToWarm = getSchemaCriticalCollections(this._effectiveModel);
+			console.log('[idae-machine] warmup: collections to warm:', collectionsToWarm);
 		}
 		
-		await (this._qoolie as any).hydrateAll?.(collectionsToWarm);
+		console.log('[idae-machine] warmup: calling hydrateAll');
+		
+		// Add timeout to prevent infinite blocking
+		const hydratePromise = (this._qoolie as any).hydrateAll?.(collectionsToWarm);
+		if (hydratePromise) {
+			try {
+				// Wait for hydrateAll with a timeout of 30 seconds
+				const timeoutPromise = new Promise((_, reject) => {
+					setTimeout(() => {
+						console.error('[idae-machine] warmup: hydrateAll timed out after 30 seconds');
+						reject(new Error('hydrateAll timeout'));
+					}, 30000);
+				});
+				
+				await Promise.race([hydratePromise, timeoutPromise]);
+				console.log('[idae-machine] warmup: hydrateAll completed');
+			} catch (err) {
+				console.error('[idae-machine] warmup: hydrateAll failed:', err);
+				// Continue even if warmup fails to avoid blocking the app
+			}
+		} else {
+			console.log('[idae-machine] warmup: hydrateAll not available');
+		}
 	}
 
 	async resetClientData(): Promise<void> {

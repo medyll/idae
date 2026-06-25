@@ -170,6 +170,10 @@ export async function performIdbUpgrade(
 		};
 		req.onsuccess = () => { req.result.close(); resolve(); };
 		req.onerror   = () => reject(req.error);
+		// Versioned open blocks when another connection holds the DB at a lower version
+		// (e.g. a second app tab in Edge). Without this handler the open never settles →
+		// boot hangs forever on the splash. Reject so the caller surfaces a real error.
+		req.onblocked = () => reject(new Error('IndexedDB upgrade blocked — another tab holds the database open. Close other tabs and reload.'));
 	});
 
 	// NOTE: schema-hash persistence is intentionally NOT done here. __schema_meta__ is
@@ -223,6 +227,8 @@ export function getCurrentIdbStores(dbName: string): Promise<Set<string>> {
 			// Return empty Set instead of rejecting to avoid creating it
 			resolve(new Set());
 		};
+		// Blocked (rare for a no-version open) → degrade to empty rather than hang.
+		req.onblocked = () => resolve(new Set());
 	});
 }
 
@@ -253,6 +259,7 @@ export function getActualIdbVersion(dbName: string): Promise<number> {
 			// Return 0 instead of rejecting to avoid creating it
 			resolve(0);
 		};
+		req.onblocked = () => resolve(0);
 	});
 }
 
@@ -301,6 +308,7 @@ export function getStoredSchemaHash(dbName: string): Promise<string | null> {
 			// Return null instead of rejecting to avoid creating it
 			resolve(null);
 		};
+		req.onblocked = () => resolve(null);
 	});
 }
 
@@ -336,6 +344,7 @@ export function storeSchemaHash(dbName: string, hash: string): Promise<void> {
 			};
 		};
 		req.onerror = () => reject(req.error);
+		req.onblocked = () => reject(new Error('IndexedDB blocked while persisting schema hash — close other tabs.'));
 	});
 }
 

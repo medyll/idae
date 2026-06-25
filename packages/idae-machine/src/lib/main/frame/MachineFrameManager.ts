@@ -249,14 +249,19 @@ export class MachineFrameManager {
 		// Already open → focus the existing dialog, don't reload/duplicate.
 		const existing = this.registry.get(frameId);
 		if (existing) {
+			console.log(`[FrameManager] loadInDialog: focusing existing dialog`);
 			existing.show();
 			existing.focus?.();
 			return;
 		}
+		console.log(`[FrameManager] loadInDialog: loading new dialog`);
 		await this.load(frameId, modulePath, collection, collectionId, vars, async (id) => {
+			console.log(`[FrameManager] loadInDialog: opening dialog ${id}`);
 			const { openDialog } = await import('$lib/data-ui/fragments/dialog/dialog.svelte.js');
 			openDialog({ id, ...opts });
+			console.log(`[FrameManager] loadInDialog: dialog opened`);
 		});
+		console.log(`[FrameManager] loadInDialog: completed`);
 	}
 
 	/**

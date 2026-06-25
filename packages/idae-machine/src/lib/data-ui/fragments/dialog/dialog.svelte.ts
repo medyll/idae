@@ -26,11 +26,13 @@ export interface DialogHandle {
  * Prefer `machine.framer.loadInDialog(...)` over calling this directly.
  */
 export function openDialog(options: OpenDialogOptions): DialogHandle {
+	console.log('[Dialog] openDialog called with id:', options.id);
 	const { target = document.body, onClose, ...props } = options;
 
 	let instance: Record<string, unknown> | undefined;
 
 	const dispose = () => {
+		console.log('[Dialog] dispose called');
 		if (!instance) return;
 		const ref = instance;
 		instance = undefined;
@@ -38,15 +40,23 @@ export function openDialog(options: OpenDialogOptions): DialogHandle {
 		onClose?.();
 	};
 
-	instance = mount(Dialog, {
-		target,
-		props: {
-			...props,
-			open: true,
-			removeOnClose: true,
-			onClose: dispose
-		}
-	}) as Record<string, unknown>;
+	try {
+		console.log('[Dialog] mounting Dialog component');
+		instance = mount(Dialog, {
+			target,
+			props: {
+				...props,
+				open: true,
+				removeOnClose: true,
+				onClose: dispose
+			}
+		}) as Record<string, unknown>;
+		console.log('[Dialog] Dialog mounted successfully');
+	} catch (err) {
+		console.error('[Dialog] Error mounting Dialog:', err);
+		throw err;
+	}
 
+	console.log('[Dialog] returning handle');
 	return { close: dispose };
 }
