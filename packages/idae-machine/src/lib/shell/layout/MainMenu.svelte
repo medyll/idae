@@ -1,9 +1,9 @@
 <!--
-WaffleMenu.svelte — BL-15. Full-screen-ish overlay: columns per appscheme_type, each
-listing collections (zone 'start', pref app_menu_start). Toggled from TaskBar's waffle
-button via bind:open. Consumes useMenuTree('start') — no inline rights/prefs joins.
-Launch verbs resolved via machine.menu.verbs directly (same workaround as Today.svelte —
-IdaeMenuManager.launch() keys verbs by collection, not verb-name, see CLAUDE.md note).
+MainMenu.svelte — global start overlay. Columns per appscheme_base, each listing
+permitted+pref collections (zone 'start', pref app_menu_start). Toggled from TaskBar's
+menu button via bind:open. Consumes useMenuTree('start') — no inline rights/prefs joins.
+Launch verbs resolved via machine.menu.verbs directly (IdaeMenuManager.launch() keys
+verbs by collection, not verb-name, see CLAUDE.md note).
 -->
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
@@ -26,49 +26,44 @@ IdaeMenuManager.launch() keys verbs by collection, not verb-name, see CLAUDE.md 
 	function onKeydown(e: KeyboardEvent): void {
 		if (e.key === 'Escape') open = false;
 	}
-
-	/* ne pas supprimer
-	$inspect(startMenu);
-	$inspect(machine.rights.allowedCollections('L')); */
-
 </script>
 
 <svelte:window onkeydown={open ? onKeydown : undefined} />
 
 {#if open}
-	<waffle-menu-component role="dialog" aria-modal="true">
+	<main-menu-component role="dialog" aria-modal="true">
 		<button
 			type="button"
-			class="waffle-menu-backdrop"
+			class="main-menu-backdrop"
 			aria-label="Close"
 			onclick={() => (open = false)}
 		></button>
 		{#each startMenu.tree.groups as group (group.key)}
-			<waffle-menu-column>
+			<main-menu-column>
 				<h3>{group.label}</h3>
 				<button
 					type="button"
-					class="waffle-menu-launch-all"
+					class="main-menu-launch-all"
 					onclick={() => launchAll(group.items)}
 				>
 					Tout ouvrir
 				</button>
 				{#each group.items as item (item.key)}
-					<button type="button" class="waffle-menu-item" onclick={() => launch(item.collection)}>
-						{#if item.icon}<span class="waffle-menu-item-icon">{item.icon}</span>{/if}
+					<button type="button" class="main-menu-item" onclick={() => launch(item.collection)}>
+						{#if item.icon}<span class="main-menu-item-icon">{item.icon}</span>{/if}
 						{item.label}
 					</button>
 				{/each}
-			</waffle-menu-column>
+			</main-menu-column>
 		{:else}
-			<span class="waffle-menu-empty">—</span>
+			<span class="main-menu-empty">—</span>
 		{/each}
-	</waffle-menu-component>
+	</main-menu-component>
 {/if}
 
 <style>
 	@layer components {
-		waffle-menu-component {
+		main-menu-component {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
 			gap: var(--gutter-lg, 1.5rem);
@@ -79,26 +74,26 @@ IdaeMenuManager.launch() keys verbs by collection, not verb-name, see CLAUDE.md 
 			background: var(--color-surface);
 			overflow-y: auto;
 		}
-		.waffle-menu-backdrop {
+		.main-menu-backdrop {
 			all: unset;
 			position: absolute;
 			inset: 0;
 			z-index: -1;
 			cursor: pointer;
 		}
-		waffle-menu-column {
+		main-menu-column {
 			display: flex;
 			flex-direction: column;
 			gap: var(--gutter-sm, 0.5rem);
 		}
-		.waffle-menu-launch-all {
+		.main-menu-launch-all {
 			all: unset;
 			cursor: pointer;
 			font-size: 0.8125rem;
 			color: var(--color-text-muted, #888);
 			padding: 0.125rem 0;
 		}
-		.waffle-menu-item {
+		.main-menu-item {
 			all: unset;
 			display: flex;
 			align-items: center;
@@ -107,13 +102,13 @@ IdaeMenuManager.launch() keys verbs by collection, not verb-name, see CLAUDE.md 
 			padding: 0.25rem 0.5rem;
 			border-radius: var(--radius-sm, 4px);
 		}
-		.waffle-menu-item:hover {
+		.main-menu-item:hover {
 			background: var(--color-surface-alt);
 		}
-		.waffle-menu-item-icon {
+		.main-menu-item-icon {
 			display: inline-block;
 		}
-		.waffle-menu-empty {
+		.main-menu-empty {
 			color: var(--color-text-muted, #888);
 		}
 	}

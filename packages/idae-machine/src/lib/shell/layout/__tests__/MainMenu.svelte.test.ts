@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type { MachineModel } from '$lib/types/index.js';
-import MenuTree from '../MenuTree.svelte';
+import MainMenu from '../MainMenu.svelte';
 import { machine } from '$lib/main/machine.js';
 
 let dbCounter = 0;
@@ -78,7 +78,6 @@ async function seedMenuFixtures(): Promise<void> {
 		code: 'widget',
 		name: 'Widget',
 		icon: '🔧',
-		color: '#f00',
 		fks: { appscheme_base: { code: 'tool' } }
 	});
 	await machine.collection('appscheme').create({
@@ -89,10 +88,6 @@ async function seedMenuFixtures(): Promise<void> {
 }
 
 async function bootMachine(dbName: string): Promise<string> {
-	// idbEventBus.dataState is a module-level singleton keyed by collection name only
-	// (not per Machine instance) — a fresh dbName per test does not isolate
-	// appuser_prefs rows written by a previous test. Use a per-test userId so pref
-	// keys (`{userId}:...`) never collide across tests in this file.
 	const userId = `user-${dbName}`;
 	machine.destroy();
 	machine.rights.clearCurrentUser();
@@ -110,13 +105,12 @@ async function bootMachine(dbName: string): Promise<string> {
 	return userId;
 }
 
-describe('MenuTree', () => {
+describe('MainMenu', () => {
 	let dbName: string;
-	let userId: string;
 
 	beforeEach(async () => {
-		dbName = nextDbName('menu-tree');
-		userId = await bootMachine(dbName);
+		dbName = nextDbName('main-menu');
+		await bootMachine(dbName);
 	});
 
 	afterEach(() => {
@@ -124,62 +118,42 @@ describe('MenuTree', () => {
 		machine.destroy();
 	});
 
-	it('renders a collapsible tree grouped by appscheme_base', async () => {
-		render(MenuTree, { props: { zone: 'side', link: 'loadIn:explorer.content@frame-1' } });
+	it('renders nothing when closed', () => {
+		render(MainMenu, { props: { open: false } });
+		expect(screen.queryByText('Widget')).not.toBeInTheDocument();
+	});
 
+	it('renders columns by appscheme_base when open', async () => {
+		render(MainMenu, { props: { open: true } });
 		await waitFor(() => expect(screen.getByText('Tools')).toBeInTheDocument());
 		expect(screen.getByText('Widget')).toBeInTheDocument();
 		expect(screen.getByText('Gadget')).toBeInTheDocument();
 	});
 
-	it('collapses and re-expands a group, persisting the open state via machine.action', async () => {
-		render(MenuTree, { props: { zone: 'side', link: 'loadIn:explorer.content@frame-1' } });
+	it('fires the explorer launch verb when a single item is clicked', async () => {
+		const explorerSpy = vi
+			.spyOn(machine.menu.verbs as Record<string, (collection: string) => void>, 'explorer')
+			.mockImplementation(() => {});
 
-		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
-
-		const toggle = screen.getByText('Tools').closest('button')!;
-		await fireEvent.click(toggle);
-
-		await waitFor(() => expect(screen.queryByText('Widget')).not.toBeInTheDocument());
-
-		await waitFor(async () => {
-			const prefs = (await machine.collection('appuser_prefs').where({})) as Array<{ code: string; value: unknown }>;
-			const pref = prefs.find((p) => p.code === `${userId}:menu_tree_open.side.tool`);
-			expect(pref?.value).toBe(false);
-		});
-
-		await fireEvent.click(toggle);
-		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
-	});
-
-	it('navigates via machine.framer.loadIn when an item is clicked', async () => {
-		const loadInSpy = vi.spyOn(machine.framer, 'loadIn').mockImplementation(() => {});
-
-		render(MenuTree, { props: { zone: 'side', link: 'loadIn:explorer.content@frame-1' } });
-
+		render(MainMenu, { props: { open: true } });
 		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
 		await fireEvent.click(screen.getByText('Widget').closest('button')!);
 
-		expect(loadInSpy).toHaveBeenCalledWith('frame-1', 'explorer.content', 'widget', undefined, undefined);
+		expect(explorerSpy).toHaveBeenCalledWith('widget');
 	});
 
-	it('shows an empty placeholder when no collections are visible', async () => {
-		machine.destroy();
-		dbName = nextDbName('menu-tree-empty');
-		machine.rights.clearCurrentUser();
-		machine.init({ dbName, version: 1, core: testCore, business: {}, sync: false });
-		await machine.boot();
-		machine.rights.setCurrentUser({
-			id: 'user-2',
-			code: 'user-2',
-			name: 'User Two',
-			isActive: true,
-			isLocked: false,
-			appPermissions: {}
-		} as never);
+	it('launch_all fires the explorer verb for every item in a column', async () => {
+		const explorerSpy = vi
+			.spyOn(machine.menu.verbs as Record<string, (collection: string) => void>, 'explorer')
+			.mockImplementation(() => {});
 
-		render(MenuTree, { props: { zone: 'side', link: 'loadIn:explorer.content@frame-1' } });
+		render(MainMenu, { props: { open: true } });
 
-		await waitFor(() => expect(screen.getByText('—')).toBeInTheDocument());
+		await waitFor(() => expect(screen.getByText('Tout ouvrir')).toBeInTheDocument());
+		await fireEvent.click(screen.getByText('Tout ouvrir'));
+
+		expect(explorerSpy).toHaveBeenCalledWith('widget');
+		expect(explorerSpy).toHaveBeenCalledWith('gadget');
+		expect(explorerSpy).toHaveBeenCalledTimes(2);
 	});
 });

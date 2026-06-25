@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
-	import WaffleMenu from './WaffleMenu.svelte';
+	import MainMenu from './MainMenu.svelte';
 	import MenuSettings from './MenuSettings.svelte';
 	import type { Snippet } from 'svelte';
 
@@ -12,7 +12,7 @@
 	);
 
 	let userMenuOpen = $state(false);
-	let waffleOpen = $state(false);
+	let mainMenuOpen = $state(false);
 	let settingsOpen = $state(false);
 
 	function openExplorer() {
@@ -43,7 +43,7 @@
 			title="Menu"
 			onclick={(e) => {
 				e.stopPropagation();
-				waffleOpen = !waffleOpen;
+				mainMenuOpen = !mainMenuOpen;
 			}}
 		>
 			⊟
@@ -108,5 +108,5 @@
 	</div>
 </div>
 
-<WaffleMenu bind:open={waffleOpen} />
+<MainMenu bind:open={mainMenuOpen} />
 <MenuSettings bind:open={settingsOpen} />
