@@ -56,9 +56,9 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('diagram')).toBe(true);
 	});
 
-	it('has exactly 17 entries', () => {
+	it('has exactly 18 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(17);
+		expect(keys).toHaveLength(18);
 		expect(keys.sort()).toEqual([
 			'ai.chat-session',
 			'columner',
@@ -72,11 +72,12 @@ describe('Global componentRegistry entries', () => {
 			'form',
 			'list',
 			'login',
+			'main-menu-content',
 			'rbac.matrix',
 			'record',
 			'space',
 			'synthesis',
-			'today',
+			'today'
 		]);
 	});
 });

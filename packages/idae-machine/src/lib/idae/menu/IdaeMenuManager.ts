@@ -7,7 +7,12 @@
  * ('explorer', 'form', 'fiche', ...) and the snapshot reads appuser_prefs/appscheme —
  * lives under idae/, never under machine/.
  */
-import { buildMenuTree, type IdaeMenuTreeSnapshot, type MenuTree, type MenuItem } from './IdaeMenuStore.js';
+import {
+	buildMenuTree,
+	type IdaeMenuTreeSnapshot,
+	type MenuTree,
+	type MenuItem
+} from './IdaeMenuStore.js';
 import { type MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
 import type { MachineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import type { MachineRights as MachineRightsType } from '$lib/main/machine/MachineRights.js';
@@ -29,26 +34,18 @@ export type IdaeMenuSnapshotReader = () => Omit<IdaeMenuTreeSnapshot, 'allowedCo
 
 /**
  * Build default launch verbs bound to a frame manager.
- * Kept as a factory to avoid importing the machine singleton at module load.
+ * This is a thin facade over framer.loadFrame / framer.loadInDialog; it exists so
+ * callers (ContextMenu, Today, MainMenu) can invoke navigation without importing
+ * framer directly or repeating the target frame keys ('explorer', 'form', 'space',
+ * 'fiche', 'fiche.update', 'dashboard') everywhere.
  */
 export function createDefaultLaunchVerbs(framer: MachineFrameManager): MenuLaunchVerbs {
 	return {
-		// Explorer = loadFrame explorer (list view)
 		explorer: (collection) => framer.loadFrame('explorer', collection),
-
-		// Create = loadInDialog form (create mode)
 		create: (collection) => framer.loadInDialog('form', collection, undefined, { mode: 'create' }),
-
-		// Dashboard = loadFrame dashboard (home view)
 		dashboard: (collection) => framer.loadFrame('dashboard', collection),
-
-		// Space = loadFrame space (workspace view)
 		space: (collection) => framer.loadFrame('space', collection),
-
-		// Fiche = loadInDialog fiche (detail view)
 		fiche: (collection, id) => framer.loadInDialog('fiche', collection, id),
-
-		// Update = loadInDialog fiche.update (edit view)
 		update: (collection, id) => framer.loadInDialog('fiche.update', collection, id)
 	};
 }
@@ -109,8 +106,10 @@ export class IdaeMenuManager {
 	launch(collection: string, collectionId?: string | number, vars?: Record<string, string>): void {
 		const verb = this.verbs[collection] ?? this.verbs.explorer;
 		if (!verb) {
-			console.warn(`[IdaeMenu] No launch verb for collection "${collection}", falling back to explorer`);
-			this.verbs.explorer?.(collection);
+			console.warn(
+				`[IdaeMenu] No launch verb for collection "${collection}", falling back to explorer`
+			);
+			this.framer.loadFrame('explorer', collection);
 			return;
 		}
 		verb(collection, collectionId, vars);

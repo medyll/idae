@@ -1,6 +1,38 @@
 import { machine } from '$lib/main/machine.js';
 import { buildMenuTree, type AppschemeMenuEntry, type AppschemeBaseMenuEntry, type MenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
-import { readMenuPrefsFromRecords, type MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
+import { filterMenuCollections, readMenuPrefsFromRecords, type MenuZone } from '$lib/data-ui/utils/menuPrefs.js';
+
+/**
+ * Svelte 5 rune: reactive list of allowed collection codes for a zone — the access
+ * half of {@link useMenuTree} (rights('L') ∩ prefs ∩ baseline ∩ dev), without the
+ * appscheme/appscheme_base metadata join or grouping.
+ *
+ * Use when a consumer renders the metadata itself (e.g. `DataList collection="appscheme"
+ * where={{ code: { $in: codes } }}`) — the labels/icons/grouping then come from the
+ * appscheme collection instead of being re-derived here. Only subscribes to
+ * appuser_prefs, not appscheme/appscheme_base.
+ */
+export function useMenuCodes(zone: () => MenuZone) {
+	const prefsSrc = machine.store('appuser_prefs');
+
+	const codes = $derived.by((): string[] => {
+		const userId = machine.rights.currentUser?.id;
+		const prefsRecords = prefsSrc.records as Array<{ code?: unknown; value?: unknown }>;
+		const prefs = userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {};
+
+		return filterMenuCollections(zone(), machine.rights.allowedCollections('L'), {
+			prefs,
+			baseline: machine.rights.menuBaseline,
+			isDev: import.meta.env.DEV
+		});
+	});
+
+	return {
+		get codes() {
+			return codes;
+		}
+	};
+}
 
 /**
  * Svelte 5 rune: reactive menu tree for a zone — rights(L) ∩ prefs ∩ appscheme/type.

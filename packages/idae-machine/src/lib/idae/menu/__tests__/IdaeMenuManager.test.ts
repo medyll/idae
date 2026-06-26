@@ -74,12 +74,9 @@ describe('IdaeMenuManager', () => {
 			mockRights as MachineRightsType
 		);
 
-		const mockExplorer = vi.fn();
-		manager.verbs.explorer = mockExplorer;
-
 		manager.launch('unknown');
 
-		expect(mockExplorer).toHaveBeenCalledWith('unknown', undefined, undefined);
+		expect(mockFramer.loadFrame).toHaveBeenCalledWith('explorer', 'unknown');
 	});
 
 	it('getTree returns an empty tree before a snapshot reader is wired', () => {
@@ -128,7 +125,12 @@ describe('IdaeMenuManager', () => {
 			isDev: false
 		}));
 
-		expect(manager.getFlatItems('side').map((i) => i.collection).sort()).toEqual(['products', 'users']);
+		expect(
+			manager
+				.getFlatItems('side')
+				.map((i) => i.collection)
+				.sort()
+		).toEqual(['products', 'users']);
 	});
 
 	it('isVisible respects rights — collections outside allowedCollections are absent', () => {

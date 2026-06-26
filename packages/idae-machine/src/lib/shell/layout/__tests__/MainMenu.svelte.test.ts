@@ -120,47 +120,33 @@ describe('MainMenu', () => {
 
 	it('renders nothing when closed', () => {
 		render(MainMenu, { props: { open: false } });
-		expect(screen.queryByText('widget')).not.toBeInTheDocument();
+		expect(screen.queryByText('Widget')).not.toBeInTheDocument();
 	});
 
-	it('renders a vertical dock with grouped collections when open', async () => {
+	it('renders a vertical dock of permitted collections when open', async () => {
 		render(MainMenu, { props: { open: true } });
-		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
-		expect(screen.getByText('gadget')).toBeInTheDocument();
+		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
+		expect(screen.getByText('Gadget')).toBeInTheDocument();
 		expect(screen.getByText("Aujourd'hui")).toBeInTheDocument();
 	});
 
-	it('selects a collection and loads an Explorer frame into the content zone', async () => {
-		const loadSpy = vi.spyOn(machine.framer, 'load').mockResolvedValue(undefined);
+	it('selects a collection and loads main-menu-content into the right zone via loadIn', async () => {
+		const loadInSpy = vi.spyOn(machine.framer, 'loadIn').mockResolvedValue(undefined);
 
 		render(MainMenu, { props: { open: true } });
-		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
-		await fireEvent.click(screen.getByText('widget').closest('button')!);
+		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
+		await fireEvent.click(screen.getByText('Widget').closest('button')!);
 
 		await waitFor(() =>
-			expect(loadSpy).toHaveBeenCalledWith(
-				'explorer:main-menu-content',
-				'explorer',
-				'widget',
-				undefined,
-				{},
-				expect.any(Function)
-			)
+			expect(loadInSpy).toHaveBeenCalledWith('main-menu-content', 'main-menu-content', 'widget')
 		);
 		expect(document.querySelector('[data-target-zone="main-menu-content"]')).toBeInTheDocument();
 	});
 
-	it('fires the create launch verb from the collection detail', async () => {
-		const createSpy = vi
-			.spyOn(machine.menu.verbs as Record<string, (collection: string) => void>, 'create')
-			.mockImplementation(() => {});
-
+	it('closes on Escape', async () => {
 		render(MainMenu, { props: { open: true } });
-		await waitFor(() => expect(screen.getByText('widget')).toBeInTheDocument());
-		await fireEvent.click(screen.getByText('widget').closest('button')!);
-		await waitFor(() => expect(screen.getByText(/Créer widget/)).toBeInTheDocument());
-		await fireEvent.click(screen.getByText(/Créer widget/).closest('button')!);
-
-		expect(createSpy).toHaveBeenCalledWith('widget');
+		await waitFor(() => expect(screen.getByText('Widget')).toBeInTheDocument());
+		await fireEvent.keyDown(window, { key: 'Escape' });
+		await waitFor(() => expect(screen.queryByText('Widget')).not.toBeInTheDocument());
 	});
 });

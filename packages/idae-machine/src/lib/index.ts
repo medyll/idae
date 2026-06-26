@@ -47,7 +47,7 @@ export type { MenuZone, MenuZonePrefix } from '$lib/data-ui/utils/menuPrefs.js';
 // Menu system (idae domain — see NAMESPACE.md)
 export { IdaeMenuManager, createDefaultLaunchVerbs } from '$lib/idae/menu/IdaeMenuManager.js';
 export { buildMenuTree } from '$lib/idae/menu/IdaeMenuStore.js';
-export { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
+export { useMenuTree, useMenuCodes } from '$lib/data-ui/utils/useMenuTree.svelte.js';
 export type {
 	MenuTree as MenuTreeShape,
 	MenuItem,

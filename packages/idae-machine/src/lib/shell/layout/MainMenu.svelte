@@ -3,57 +3,36 @@ MainMenu.svelte — global start overlay. Two-zone layout:
   - main-menu-dock (left): vertical list of permitted+pref collections grouped by
     appscheme_base. Group labels are hidden.
   - main-menu-content (right): home (Today-like) when no collection selected;
-    collection detail + embedded explorer frame when a collection is selected.
+    collection detail + embedded main-menu-dock frame when a collection is selected.
 Toggled from TaskBar's menu button via bind:open.
 -->
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	import { mount, type Component } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
-	import Frame from '$lib/shell/Frame.svelte';
-	import type { MenuItem } from '$lib/idae/menu/IdaeMenuStore.js';
+	import { useMenuCodes } from '$lib/data-ui/utils/useMenuTree.svelte.js';
+	import DataList from '$lib/data-ui/data/DataList.svelte';
 
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
-	const startMenu = useMenuTree(() => 'start');
+	const startMenu = useMenuCodes(() => 'start');
 	const CONTENT_ZONE = 'main-menu-content';
 
-	let selected = $state<MenuItem | undefined>(undefined);
+	let selected = $state<string | undefined>(undefined);
 	let contentZoneEl = $state<HTMLDivElement | undefined>(undefined);
-	let loadedCollection = $state<string | undefined>(undefined);
 
-	function loadCollection(collection: string): void {
-		if (!contentZoneEl) return;
-		const frameId = `explorer:${CONTENT_ZONE}`;
-		void machine.framer.load(frameId, 'explorer', collection, undefined, {}, async () => {
-			mount(Frame as Component<Record<string, unknown>>, {
-				target: contentZoneEl as HTMLDivElement,
-				props: { id: frameId, taskbar: false }
-			});
-		});
-		loadedCollection = collection;
+	function loadContent(collection: string): void {
+		machine.framer.loadIn('main-menu-content', 'main-menu-content', collection);
 	}
 
 	$effect(() => {
-		const collection = selected?.collection;
-		if (collection && contentZoneEl && loadedCollection !== collection) {
-			loadCollection(collection);
+		const collection = selected;
+		if (collection) {
+			loadContent(collection);
 		}
 	});
 
-	function select(item: MenuItem): void {
-		selected = item;
-	}
-
-	function launchExplorer(collection: string): void {
-		machine.menu.verbs.explorer?.(collection);
-		open = false;
-	}
-
-	function launchCreate(collection: string): void {
-		machine.menu.verbs.create?.(collection);
-		open = false;
+	function select(collection: string): void {
+		selected = collection;
 	}
 
 	function onKeydown(e: KeyboardEvent): void {
@@ -99,60 +78,34 @@ Toggled from TaskBar's menu button via bind:open.
 			</button>
 
 			<main-menu-dock>
-				{#each startMenu.tree.groups as group (group.key)}
-					<main-menu-group>
-						{#each group.items as item (item.key)}
-							<button
-								type="button"
-								class="main-menu-dock-item"
-								aria-pressed={selected?.collection === item.collection}
-								onclick={() => select(item)}
-							>
-								<span class="main-menu-dock-item-icon">
-									<Icon icon={normalizeIcon(item.icon)} />
-								</span>
-								<span class="main-menu-dock-item-label">{item.collection}</span>
-								<span class="main-menu-dock-item-caret">▸</span>
-							</button>
-						{/each}
-					</main-menu-group>
-				{:else}
-					<span class="main-menu-empty">—</span>
-				{/each}
+				<DataList
+					collection="appscheme"
+					where={{ code: { $in: startMenu.codes } }}
+					usePrefs={false}
+				>
+					{#snippet dataRecord({ data })}
+						{@const scheme = data as { code: string; name?: string; icon?: string }}
+						<button
+							type="button"
+							class="main-menu-dock-item"
+							aria-pressed={selected === scheme.code}
+							onclick={() => select(scheme.code)}
+						>
+							<span class="main-menu-dock-item-icon">
+								<Icon icon={normalizeIcon(scheme.icon)} />
+							</span>
+							<span class="main-menu-dock-item-label">{scheme.name ?? scheme.code}</span>
+							<span class="main-menu-dock-item-caret">▸</span>
+						</button>
+					{/snippet}
+					{#snippet empty()}
+						<span class="main-menu-empty">—</span>
+					{/snippet}
+				</DataList>
 			</main-menu-dock>
 
 			<main-menu-content>
 				{#if selected}
-					{@const collection = selected.collection}
-					<main-menu-collection-header>
-						<button
-							type="button"
-							class="main-menu-action main-menu-action--primary"
-							onclick={() => launchCreate(collection)}
-						>
-							Créer {collection}
-						</button>
-					</main-menu-collection-header>
-
-					<main-menu-collection-actions>
-						<button
-							type="button"
-							class="main-menu-tile"
-							onclick={() => launchExplorer(collection)}
-						>
-							<span class="main-menu-tile-icon">
-								<Icon icon="typcn:document" />
-							</span>
-							<span class="main-menu-tile-label">Espace {collection}</span>
-						</button>
-						<button type="button" class="main-menu-tile">
-							<span class="main-menu-tile-icon">
-								<Icon icon="typcn:zoom" />
-							</span>
-							<span class="main-menu-tile-label">Recherche rapide</span>
-						</button>
-					</main-menu-collection-actions>
-
 					<main-menu-frame-zone
 						bind:this={contentZoneEl}
 						data-target-zone={CONTENT_ZONE}
@@ -224,8 +177,7 @@ Toggled from TaskBar's menu button via bind:open.
 		.main-menu-close:hover {
 			background: var(--color-surface-elevated, #d1d5db);
 		}
-		.main-menu-dock-item-icon :global(svg),
-		.main-menu-tile-icon :global(svg) {
+		.main-menu-dock-item-icon :global(svg) {
 			font-size: 1.25em;
 			vertical-align: middle;
 		}
@@ -240,11 +192,6 @@ Toggled from TaskBar's menu button via bind:open.
 			padding: var(--gutter-md, 1rem);
 			padding-top: 2.5rem;
 			overflow-y: auto;
-		}
-		main-menu-group {
-			display: flex;
-			flex-direction: column;
-			gap: var(--gutter-xs, 0.25rem);
 		}
 		.main-menu-dock-item {
 			all: unset;
@@ -283,56 +230,10 @@ Toggled from TaskBar's menu button via bind:open.
 			background: var(--color-surface, #ffffff);
 			color: var(--color-text, #111827);
 		}
-		main-menu-collection-header {
-			display: flex;
-		}
-		main-menu-collection-actions {
-			display: flex;
-			gap: var(--gutter-md, 1rem);
-			flex-wrap: wrap;
-		}
-		main-menu-frame-zone {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-			min-height: 0;
-			position: relative;
-			border: 1px solid var(--color-border);
-			border-radius: var(--radius-md, 8px);
-			overflow: hidden;
-		}
 		main-menu-home {
 			display: flex;
 			flex-direction: column;
 			gap: var(--gutter-sm, 0.5rem);
-		}
-		.main-menu-action {
-			all: unset;
-			cursor: pointer;
-			padding: 0.5rem 1rem;
-			border-radius: var(--radius-sm, 4px);
-			background: var(--color-surface-elevated);
-			border: 1px solid var(--color-border);
-		}
-		.main-menu-action--primary {
-			background: var(--color-primary, #3b82f6);
-			color: var(--color-text-on-primary, #fff);
-			border-color: transparent;
-		}
-		.main-menu-tile {
-			all: unset;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: var(--gutter-sm, 0.5rem);
-			cursor: pointer;
-			padding: 1rem 1.5rem;
-			border-radius: var(--radius-md, 8px);
-			border: 1px solid var(--color-border);
-			min-width: 8rem;
-		}
-		.main-menu-tile-icon {
-			font-size: 1.5rem;
 		}
 		.main-menu-empty {
 			color: var(--color-text-muted, #888);
