@@ -237,6 +237,39 @@ export class Machine {
 	}
 
 	/**
+	 * Shared model-rebuild sequence for both the initial boot path and the onDrift
+	 * schema-reload path. Keeps the two callers in sync without duplication.
+	 *
+	 * replaceExisting=false  → initial boot: read actual IDB version first (never downgrade).
+	 * replaceExisting=true   → schema drift reload: skip version check (already managed).
+	 */
+	private async _applyModel(replaceExisting: boolean): Promise<void> {
+		this._effectiveModel = buildEffectiveModel(this._core, this._business);
+		this._machineDb      = new MachineDb(this._effectiveModel);
+		machineRights.loadPoliciesFromModel(this._effectiveModel);
+		initializeDomainPoliciesWithModel(this._effectiveModel);
+		if (!replaceExisting) {
+			// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
+			// so a drift-triggered bump lands ABOVE the existing version. Reading it after
+			// drift would clobber the bump (this._version = actual >= newVersion) and qoolie
+			// would reopen at the same version → onupgradeneeded never fires → stores from a
+			// corrupt/partial prior boot are never (re)created.
+			const actualVersion = await getActualIdbVersion(this._dbName).catch((err) => {
+				console.warn('[idae-machine] Could not read actual IDB version, defaulting to 0:', err);
+				return 0;
+			});
+			if (actualVersion > this._version) this._version = actualVersion;
+		}
+		await this._scheduleDrift();
+		await withTimeout(
+			this.createStore(replaceExisting),
+			20000,
+			replaceExisting ? 'createStore (schema drift)' : 'createStore'
+		);
+		initializeDomainPoliciesWithMachine(this);
+	}
+
+	/**
 	 * @framework-bootstrap — called automatically during boot().
 	 * Not for application code. Detects IDB drift and upgrades stores immediately.
 	 */
@@ -282,19 +315,9 @@ export class Machine {
 			const url = dbHost.replace(/\/+$/, '') + '/api/scheme' + orgQs;
 			const { loadSchema } = await import('$lib/main/machineSchemaLoader.js');
 			await loadSchema(url, {
-				onModel: (model) => {
-					this._business = model;
-				},
+				onModel: (model) => { this._business = model; },
 				onStart: () => {},
-				onDrift: async () => {
-					this._effectiveModel = buildEffectiveModel(this._core, this._business);
-					this._machineDb = new MachineDb(this._effectiveModel);
-					machineRights.loadPoliciesFromModel(this._effectiveModel);
-					initializeDomainPoliciesWithModel(this._effectiveModel);
-					await this._scheduleDrift();
-					await withTimeout(this.createStore(true), 20000, 'createStore (schema drift)');
-					initializeDomainPoliciesWithMachine(this);
-				}
+				onDrift: async () => { await this._applyModel(true); }
 			}).catch((err) => {
 				if (!this._business) throw err;
 				// Server unreachable but local model available — continue with local
@@ -302,24 +325,7 @@ export class Machine {
 			});
 		}
 
-		this._effectiveModel = buildEffectiveModel(this._core, this._business);
-		this._machineDb      = new MachineDb(this._effectiveModel);
-		machineRights.loadPoliciesFromModel(this._effectiveModel);
-		initializeDomainPoliciesWithModel(this._effectiveModel);
-
-		// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
-		// so a drift-triggered bump lands ABOVE the existing version. Reading it after
-		// drift would clobber the bump (this._version = actual >= newVersion) and qoolie
-		// would reopen at the same version → onupgradeneeded never fires → stores from a
-		// corrupt/partial prior boot are never (re)created.
-		const actualVersion = await getActualIdbVersion(this._dbName).catch((err) => {
-			console.warn('[idae-machine] Could not read actual IDB version, defaulting to 0:', err);
-			return 0;
-		});
-		if (actualVersion > this._version) this._version = actualVersion;
-		await this._scheduleDrift();
-		await withTimeout(this.createStore(), 20000, 'createStore');
-		initializeDomainPoliciesWithMachine(this);
+		await this._applyModel(false);
 		frameCatalog.registerFrames(componentRegistry as ComponentRegistry);
 
 		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
