@@ -5,11 +5,8 @@ type NavHookHost = { setNavigationHook(fn: (e: NavigationEvent) => void): void }
 type RenderLabelFn = (collection: string, collectionId: string | number) => Promise<string | undefined>;
 
 /**
- * Wire activity + history writes onto framer navigation events.
- * Extracted from machine.ts._buildRouter nav hook.
- *
- * Kept separate from _buildRouter so the tracking concern is testable in isolation
- * and machine.ts stays free of write-path logic.
+ * Wire appuser_activity + appuser_history writes onto framer navigation events.
+ * Domain concern (appuser_* literals) — lives in idae/userscope, not machine/.
  */
 export function setupNavigationTracking(framer: NavHookHost, renderLabel: RenderLabelFn): void {
 	framer.setNavigationHook(({ collection, collectionId, vars }) => {

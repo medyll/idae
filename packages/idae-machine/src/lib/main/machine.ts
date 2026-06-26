@@ -4,7 +4,7 @@ import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
-import { setupNavigationTracking } from '$lib/main/machine/navTracking.js';
+import { setupNavigationTracking } from '$lib/idae/userscope/navTracking.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
