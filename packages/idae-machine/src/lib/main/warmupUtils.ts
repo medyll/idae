@@ -55,6 +55,36 @@ export function getComprehensiveWarmupCollections(model: MachineModel): string[]
 	return collections;
 }
 
+/** Minimal interface — hydrateAll is a qoolie extension, not in the public type. */
+type HydratableQoolie = { hydrateAll?: (collections: string[]) => Promise<void> };
+
+/**
+ * Pre-fetch collections into IDB. Derives the list from the model when not provided.
+ * Swallows errors so a warmup failure never blocks the app.
+ */
+export async function warmup(
+	qoolie: HydratableQoolie,
+	model: MachineModel,
+	collections?: string[]
+): Promise<void> {
+	const collectionsToWarm = (collections && collections.length > 0)
+		? collections
+		: getSchemaCriticalCollections(model);
+
+	const hydratePromise = qoolie.hydrateAll?.(collectionsToWarm);
+	if (!hydratePromise) return;
+
+	const timeout = new Promise<never>((_, reject) =>
+		setTimeout(() => reject(new Error('[idae-machine] warmup timed out after 30s')), 30000)
+	);
+
+	try {
+		await Promise.race([hydratePromise, timeout]);
+	} catch (err) {
+		console.warn('[idae-machine] warmup failed (non-blocking):', err);
+	}
+}
+
 /**
  * Get all base names used in the model
  *

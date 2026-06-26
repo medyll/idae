@@ -526,53 +526,11 @@ export class Machine {
 		}
 	}
 
-	/**
-	 * Pre-fetch specific collections into IDB before UI renders.
-	 * Use for schema-critical collections (e.g. 'appscheme') that must be present
-	 * before component mount. Data collections remain on-demand.
-	 * 
-	 * @param collections - Optional explicit list of collections to warm up.
-	 *                      If not provided, derives the list from the model (collections with base='machine_app').
-	 */
+	/** Pre-fetch collections into IDB before UI renders. Derives list from model when not provided. */
 	async warmup(collections?: string[]): Promise<void> {
-		console.log('[idae-machine] warmup started');
-		if (!this._qoolie) {
-			console.log('[idae-machine] warmup: no qoolie instance');
-			return;
-		}
-		
-		// If no explicit collections provided, derive from model
-		let collectionsToWarm = collections;
-		if (!collectionsToWarm || collectionsToWarm.length === 0) {
-			console.log('[idae-machine] warmup: deriving collections from model');
-			const { getSchemaCriticalCollections } = await import('$lib/main/warmupUtils.js');
-			collectionsToWarm = getSchemaCriticalCollections(this._effectiveModel);
-			console.log('[idae-machine] warmup: collections to warm:', collectionsToWarm);
-		}
-		
-		console.log('[idae-machine] warmup: calling hydrateAll');
-		
-		// Add timeout to prevent infinite blocking
-		const hydratePromise = (this._qoolie as any).hydrateAll?.(collectionsToWarm);
-		if (hydratePromise) {
-			try {
-				// Wait for hydrateAll with a timeout of 30 seconds
-				const timeoutPromise = new Promise((_, reject) => {
-					setTimeout(() => {
-						console.error('[idae-machine] warmup: hydrateAll timed out after 30 seconds');
-						reject(new Error('hydrateAll timeout'));
-					}, 30000);
-				});
-				
-				await Promise.race([hydratePromise, timeoutPromise]);
-				console.log('[idae-machine] warmup: hydrateAll completed');
-			} catch (err) {
-				console.error('[idae-machine] warmup: hydrateAll failed:', err);
-				// Continue even if warmup fails to avoid blocking the app
-			}
-		} else {
-			console.log('[idae-machine] warmup: hydrateAll not available');
-		}
+		if (!this._qoolie) return;
+		const { warmup: doWarmup } = await import('$lib/main/warmupUtils.js');
+		await doWarmup(this._qoolie as any, this._effectiveModel, collections);
 	}
 
 	async resetClientData(): Promise<void> {
