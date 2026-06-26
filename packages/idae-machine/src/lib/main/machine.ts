@@ -11,9 +11,8 @@ import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
-import { IdaeMenuManager } from '$lib/idae/menu/IdaeMenuManager.js';
-import type { AppschemeMenuEntry, AppschemeBaseMenuEntry } from '$lib/idae/menu/IdaeMenuStore.js';
-import { readMenuPrefsFromRecords } from '$lib/data-ui/utils/menuPrefs.js';
+import { createMenuManager } from '$lib/idae/menu/menuSnapshot.js';
+import type { IdaeMenuManager } from '$lib/idae/menu/IdaeMenuManager.js';
 import { wrapCollectionFkFold } from '$lib/main/machine/MachineFkFold.js';
 import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
 import type { MachineModel } from '$lib/types/index.js';
@@ -503,18 +502,7 @@ export class Machine {
 	 */
 	get menu() {
 		if (!this._menuManager) {
-			this._menuManager = new IdaeMenuManager(this._frameManager, this.rights);
-			this._menuManager.setSnapshotReader(() => {
-				const userId = this.rights.currentUser?.id;
-				const prefsRecords = this.store('appuser_prefs').records as Array<{ code?: unknown; value?: unknown }>;
-				return {
-					prefs: userId != null ? readMenuPrefsFromRecords(prefsRecords, userId) : {},
-					baseline: this.rights.menuBaseline,
-					appscheme: this.store('appscheme').records as AppschemeMenuEntry[],
-					appscheme_base: this.store('appscheme_base').records as AppschemeBaseMenuEntry[],
-					isDev: import.meta.env.DEV
-				};
-			});
+			this._menuManager = createMenuManager(this._frameManager, this.rights, this);
 		}
 		return this._menuManager;
 	}
