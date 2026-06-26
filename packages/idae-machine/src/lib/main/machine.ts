@@ -127,8 +127,8 @@ export class Machine {
 	/** Menu manager — created during boot to avoid module-level machine dependency. */
 	private _menuManager?: IdaeMenuManager;
 
-	/** Bound contextmenu listener — kept for removal in destroy(). */
-	private _contextMenuHandler?: (e: MouseEvent) => void;
+	/** Cleanup fn returned by setupContextMenuListener — called in destroy(). */
+	private _contextMenuCleanup?: () => void;
 
 	/**
 	 * Promise that resolves when boot() has completed.
@@ -337,55 +337,9 @@ export class Machine {
 			await seed(this._seed, { onlyIfEmpty: true });
 		}
 
-		// Initialize context menu global event listener
-		this.#setupContextMenu();
+		const { setupContextMenuListener } = await import('$lib/main/frame/contextMenuSetup.js');
+		this._contextMenuCleanup = setupContextMenuListener(this._frameManager);
 	}
-
-	/**
-	 * Setup global context menu event listener
-	 */
-	#setupContextMenu(): void {
-		if (typeof document !== 'undefined') {
-			const handleContextMenu = (e: MouseEvent) => {
-				const target = (e.target as HTMLElement).closest('[data-contextual]');
-				if (!target) return;
-
-				e.preventDefault();
-
-				const contextualData = (target as HTMLElement).dataset.contextual;
-				if (!contextualData) return;
-
-				// Parse the data-contextual attribute
-				const parts: string[] = contextualData.split('&');
-				const params: Record<string, string> = {};
-
-				parts.forEach((part: string) => {
-					const [key, value] = part.split('=');
-					if (key && value) {
-						params[key] = decodeURIComponent(value);
-					}
-				});
-
-				const collection = params.collection || params.table;
-				const collectionId = params.collectionId || params.table_value;
-				const vars: Record<string, string> = {};
-
-				// Extract additional vars
-				Object.entries(params).forEach(([key, value]: [string, string]) => {
-					if (key !== 'collection' && key !== 'table' && key !== 'collectionId' && key !== 'table_value') {
-						vars[key] = value;
-					}
-				});
-
-				if (collection && collectionId !== undefined) {
-					this._frameManager.openContextMenu(collection, collectionId, vars, e.pageX, e.pageY);
-				}
-			};
-
-		this._contextMenuHandler = handleContextMenu;
-		document.addEventListener('contextmenu', handleContextMenu);
-	}
-}
 
 	/**
 	 * Get the IDbBase (schema logic) instance.
@@ -520,10 +474,8 @@ export class Machine {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
 		this._pendingIdbUpgrade = null;
-		if (this._contextMenuHandler && typeof document !== 'undefined') {
-			document.removeEventListener('contextmenu', this._contextMenuHandler);
-			this._contextMenuHandler = undefined;
-		}
+		this._contextMenuCleanup?.();
+		this._contextMenuCleanup = undefined;
 	}
 
 	/** Pre-fetch collections into IDB before UI renders. Derives list from model when not provided. */
