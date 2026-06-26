@@ -139,7 +139,7 @@ describe('MainMenu', () => {
 
 		await waitFor(() =>
 			expect(loadSpy).toHaveBeenCalledWith(
-				'main-menu-content:explorer',
+				'explorer:main-menu-content',
 				'explorer',
 				'widget',
 				undefined,

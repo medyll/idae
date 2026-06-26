@@ -25,7 +25,7 @@ Toggled from TaskBar's menu button via bind:open.
 
 	function loadCollection(collection: string): void {
 		if (!contentZoneEl) return;
-		const frameId = `${CONTENT_ZONE}:explorer`;
+		const frameId = `explorer:${CONTENT_ZONE}`;
 		void machine.framer.load(frameId, 'explorer', collection, undefined, {}, async () => {
 			mount(Frame as Component<Record<string, unknown>>, {
 				target: contentZoneEl as HTMLDivElement,
