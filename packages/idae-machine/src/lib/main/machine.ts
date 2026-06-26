@@ -4,6 +4,7 @@ import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
+import { setupNavigationTracking } from '$lib/main/machine/navTracking.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
@@ -472,56 +473,19 @@ export class Machine {
 		const r = new MachineRouter(config);
 		r.init();
 		this._frameManager.setRouter((url) => r.push(url));
-		this._frameManager.setNavigationHook(({ collection, collectionId, vars }) => {
-			void machineActionCallable('appuser_activity', {
-				code:             'VIEW',
-				collection,
-				collection_value: collectionId ?? '',
-				collection_vars:  vars
-			}, { touch: 'timestamp' });
-
-			if (collectionId !== undefined && collectionId !== '') {
-				void this._renderLabel(collection, collectionId).then((label) => {
-					void machineActionCallable('appuser_history', {
-						collection,
-						collection_value: collectionId,
-						label
-					}, {
-						upsertOn: ['collection', 'collection_value'],
-						bump:     'count',
-						touch:    'lastSeen'
-					});
-				});
-			}
-		});
+		setupNavigationTracking(this._frameManager, (col, id) => this._renderLabel(col, id));
 		return r;
 	}
 
-	/** Compute a record label from `template.presentation`. Used by navigation history writes and dialog titles. @internal */
+	/** Compute a record label from `template.presentation`. Used by nav history writes and dialog titles. @internal */
 	async _renderLabel(collection: string, collectionId: string | number): Promise<string | undefined> {
-		try {
-			const scheme = this._machineDb?.collection(collection);
-			const presentation = (scheme as { template?: { presentation?: string } } | null | undefined)
-				?.template?.presentation;
-			if (!presentation) return undefined;
-			const id = isNaN(Number(collectionId)) ? collectionId : Number(collectionId);
-			const rec = await this.collection(collection).get(id) as Record<string, unknown> | undefined;
-			if (!rec) return undefined;
-			const label = presentation.split(/\s+/).filter(Boolean)
-				.map((tok) => {
-					let cur: unknown = rec;
-					for (const seg of tok.split('.')) {
-						if (cur == null) return '';
-						cur = (cur as Record<string, unknown>)[seg];
-					}
-					return cur == null ? '' : String(cur);
-				})
-				.filter(Boolean).join(' ');
-			return label || undefined;
-		} catch (err) {
-			console.warn('[machine] label render failed:', err);
-			return undefined;
-		}
+		const { renderLabel } = await import('$lib/main/machine/machineLabel.js');
+		return renderLabel(
+			this._machineDb,
+			async (col, id) => this.collection(col).get(id) as Promise<Record<string, unknown> | undefined>,
+			collection,
+			collectionId,
+		);
 	}
 
 	/** Access to the frame manager singleton. */
