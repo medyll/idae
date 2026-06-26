@@ -1,13 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, beforeAll } from 'vitest';
 import { MachineDb } from '../machineDb.js';
 import { buildEffectiveModel } from '../machineModelBuilder.js';
 import { demoScheme } from '../../__fixtures__/demoModel.js';
+import { IdaeRelationPolicy } from '$lib/idae/relations/RelationPolicy.js';
+import { registerRelationResolver } from '$lib/machine/ext/hooks.js';
 
 /**
  * rental.template.presentation = 'fks.vehicle.license_plate fks.customer.last_name start_date status'
  * Verifies the presentation resolver reads both legacy bare `fks.<base>` and the
  * suffixed `fks.<base>_<id>` convention, joining multiple suffixed entries.
  */
+beforeAll(() => {
+	registerRelationResolver(new IdaeRelationPolicy());
+});
+
 describe('presentation token — FK suffix awareness', () => {
 	const db = new MachineDb(buildEffectiveModel(demoScheme));
 	const rentalValues = db.collection('rental').collectionValues;

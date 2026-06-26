@@ -1,5 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { componentRegistry } from '../router/componentRegistry.js';
+import { IdaeFrameCatalog } from '$lib/idae/frames/FrameCatalog.js';
+
+beforeAll(() => {
+	new IdaeFrameCatalog().registerFrames(componentRegistry);
+});
 
 describe('Global componentRegistry entries', () => {
 	it('has "explorer" registered', () => {

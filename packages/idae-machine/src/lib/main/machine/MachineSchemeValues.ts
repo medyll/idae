@@ -3,6 +3,7 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
+import { getRelationResolver } from '$lib/machine/ext/hooks.js';
 
 /** Walk a plain dot-path into an object (no FK awareness). */
 function walkPath(root: unknown, segments: string[]): unknown {
@@ -14,37 +15,17 @@ function walkPath(root: unknown, segments: string[]): unknown {
 
 /**
  * Resolve a presentation token against a record.
- *
- * Plain paths ('name', 'address.city') walk directly. FK paths ('fks.firm.name')
- * are suffix-aware: the segment after `fks` is an FK base name that may be stored
- * either as a legacy bare key (`fks.firm`) or as suffixed entries (`fks.firm_<id>`).
- * Multiple suffixed entries → their resolved values joined with ', '.
+ * Delegates to the domain bridge first; falls back to built-in bag walk.
  */
 function resolvePresentationToken(data: Record<string, unknown>, token: string): unknown {
 	const segments = token.split('.');
-	if (segments[0] !== 'fks' || segments.length < 2) {
-		return walkPath(data, segments);
+	const resolver = getRelationResolver();
+	if (resolver?.resolvePresentationToken && segments.length >= 2) {
+		const resolved = resolver.resolvePresentationToken(data, segments);
+		if (resolved !== undefined) return resolved;
 	}
-
-	const bag = data.fks;
-	if (!bag || typeof bag !== 'object') return undefined;
-	const base = segments[1];
-	const rest = segments.slice(2);
-	const bagObj = bag as Record<string, unknown>;
-
-	// Legacy bare key first (backward-compat).
-	if (bagObj[base] != null) return walkPath(bagObj[base], rest);
-
-	// Suffixed convention: `fks.<base>_<id>` → flat snapshot. Collect all entries for this base.
-	const values: string[] = [];
-	for (const key of Object.keys(bagObj)) {
-		const pos = key.lastIndexOf('_');
-		if (pos < 1) continue;
-		if (key.slice(0, pos) !== base) continue;
-		const resolved = walkPath(bagObj[key], rest);
-		if (resolved != null) values.push(String(resolved));
-	}
-	return values.length ? values.join(', ') : undefined;
+	// Fallback: plain path walk (also handles bare fks.<base>.<field> for tests without domain)
+	return walkPath(data, segments);
 }
 
 /**

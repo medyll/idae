@@ -1,17 +1,18 @@
 /**
  * machineSeed.ts
- * Unified seed mechanism — same call for core and business data.
- * No distinction between system collections (appscheme) and business collections (vehicle).
+ * Unified seed mechanism — same call for any collection.
  */
 
 import { machine } from '$lib/main/machine.js';
+import { getCodeFieldConvention } from '$lib/machine/ext/hooks.js';
 
-/** Auto-construct `code = String(id)` when a row has an id but no code (honors the code invariant). */
+/** Auto-fill the semantic code field when a row has an id but no code. */
 function withCode(row: unknown): unknown {
 	if (row && typeof row === 'object') {
 		const r = row as Record<string, unknown>;
-		if ((r.code === undefined || r.code === null || r.code === '') && r.id != null) {
-			return { ...r, code: String(r.id) };
+		const codeField = getCodeFieldConvention()?.codeFieldName ?? 'code';
+		if ((r[codeField] === undefined || r[codeField] === null || r[codeField] === '') && r.id != null) {
+			return { ...r, [codeField]: String(r.id) };
 		}
 	}
 	return row;
@@ -19,7 +20,7 @@ function withCode(row: unknown): unknown {
 
 /**
  * Seed collections with initial data.
- * Works for any collection — core (appscheme, appuser…) or business (vehicle, reservation…).
+ * Works for any collection — core or business (vehicle, reservation…).
  *
  * @param data - Map of collection name → rows to insert.
  * @param options.onlyIfEmpty - When true, skips collections that already have data (idempotent).

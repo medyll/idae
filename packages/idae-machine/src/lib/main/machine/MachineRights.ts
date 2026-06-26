@@ -114,8 +114,7 @@ export class MachineRights {
 			const decoder = getGrantDecoder();
 			const schemeCode = decoder
 				? decoder.decodeSchemeCode(grant as unknown as Record<string, unknown>)
-				: ((grant as Record<string, unknown>).schemeCode as string | undefined) ??
-					((grant.fks as Record<string, Record<string, unknown>>)?.appscheme?.code as string | undefined);
+				: undefined;
 			if (schemeCode && schemeCode !== collection && schemeCode !== '*') return false;
 			return grant[permField] === true;
 		});

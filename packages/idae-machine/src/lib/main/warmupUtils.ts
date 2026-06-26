@@ -40,11 +40,7 @@ export function getSchemaCriticalCollections(
 export function getComprehensiveWarmupCollections(model: MachineModel): string[] {
 	const collections = getSchemaCriticalCollections(model, ['machine_app', 'machine_user', 'machine_ai']);
 
-	// Add other high-priority collections that are frequently accessed
-	const additionalCollections: string[] = [
-		// Add any other collections that should be warmed up
-		// e.g., 'appuser', 'appuser_prefs', etc.
-	];
+	const additionalCollections: string[] = [];
 
 	for (const collection of additionalCollections) {
 		if (model[collection] && !collections.includes(collection)) {

@@ -96,6 +96,33 @@ export class IdaeRelationPolicy implements RelationPolicy, RelationResolver {
 		return false;
 	}
 
+	resolvePresentationToken(data: Record<string, unknown>, segments: string[]): unknown {
+		// FK bag paths start with 'fks'; plain paths like 'address.city' are not ours.
+		if (segments[0] !== 'fks' || segments.length < 2) return undefined;
+		const bag = data.fks;
+		if (!bag || typeof bag !== 'object') return undefined;
+		const base = segments[1];
+		const rest = segments.slice(2);
+		const bagObj = bag as Record<string, unknown>;
+		if (bagObj[base] != null) return this.#walkPath(bagObj[base], rest);
+		const values: string[] = [];
+		for (const key of Object.keys(bagObj)) {
+			const pos = key.lastIndexOf('_');
+			if (pos < 1) continue;
+			if (key.slice(0, pos) !== base) continue;
+			const resolved = this.#walkPath(bagObj[key], rest);
+			if (resolved != null) values.push(String(resolved));
+		}
+		return values.length ? values.join(', ') : undefined;
+	}
+
+	#walkPath(root: unknown, segments: string[]): unknown {
+		return segments.reduce<unknown>(
+			(acc, key) => (acc != null && typeof acc === 'object') ? (acc as Record<string, unknown>)[key] : undefined,
+			root,
+		);
+	}
+
 	async foldRelations(collection: string, record: Record<string, unknown>): Promise<Record<string, unknown>> {
 		const relations = this.relations(collection);
 		const fkKeys = Object.keys(relations);

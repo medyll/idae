@@ -1,4 +1,5 @@
 import type { MachineFkDef } from '$lib/types/index.js';
+import { getRelationResolver } from '$lib/machine/ext/hooks.js';
 
 /** Minimal schema bridge — avoids importing MachineDb (cycle risk). */
 type FkSchemaBridge = {
@@ -78,21 +79,29 @@ export function wrapCollectionFkFold<C extends object>(
 	name: string,
 	col: C,
 ): C {
-	const fks = machineDb.collection(name)?.fks ?? {};
-	if (!Object.keys(fks).length) return col;
+	const resolver = getRelationResolver();
 
-	const resolveFkTarget: FkTargetResolver = async (fkCollection, fkIndexField, value) => {
-		const targetCol = qoolie.collection?.[fkCollection];
-		if (!targetCol) return undefined;
-		try {
-			const docs = await Promise.resolve(targetCol.where({ [fkIndexField]: value }));
-			return (docs as Record<string, unknown>[] | undefined)?.[0];
-		} catch {
-			return undefined;
-		}
-	};
+	let fold: (data: Record<string, unknown>) => Promise<Record<string, unknown>>;
 
-	const fold = (data: Record<string, unknown>) => foldFksIntoRecord(fks, data, resolveFkTarget);
+	if (resolver?.foldRelations) {
+		fold = (data) => resolver.foldRelations!(name, data);
+	} else {
+		// Fallback: inline fold when domain bridge not registered (tests, early boot)
+		const fks = machineDb.collection(name)?.fks ?? {};
+		if (!Object.keys(fks).length) return col;
+
+		const resolveFkTarget: FkTargetResolver = async (fkCollection, fkIndexField, value) => {
+			const targetCol = qoolie.collection?.[fkCollection];
+			if (!targetCol) return undefined;
+			try {
+				const docs = await Promise.resolve(targetCol.where({ [fkIndexField]: value }));
+				return (docs as Record<string, unknown>[] | undefined)?.[0];
+			} catch {
+				return undefined;
+			}
+		};
+		fold = (data) => foldFksIntoRecord(fks, data, resolveFkTarget);
+	}
 
 	const overrides: Record<string, unknown> = {
 		create:      async (data: Record<string, unknown>) =>

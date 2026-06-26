@@ -9,6 +9,7 @@ import type {
 import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { getCollectionRelations } from '$lib/data-ui/utils/dataRelationUtils.js';
+import { getRelationResolver } from '$lib/machine/ext/hooks.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
 import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate.js';
@@ -142,16 +143,7 @@ export class MachineScheme {
 	}
 
 	findFkField(targetCollection: string): { fieldName: string; targetIndex: string } | null {
-		// FK relations live in the structured `fks` block (MachineFkDef). The relation
-		// key IS the source field name; the join index is always the semantic `code`
-		// (canonical, backend-agnostic). The legacy synthesized `fk-X.code` fieldType
-		// is deprecated — see SCHEMA-CONVENTIONS.md §FK resolution.
-		for (const [fkKey, fkDef] of Object.entries(this.fks)) {
-			if (fkDef?.code === targetCollection) {
-				return { fieldName: fkKey, targetIndex: 'code' };
-			}
-		}
-		return null;
+		return getRelationResolver()?.findRelationField?.(this.collection, targetCollection) ?? null;
 	}
 
 	/**
@@ -162,31 +154,7 @@ export class MachineScheme {
 	 * `MachineFkDef.required`.
 	 */
 	hasFkValue(record: Record<string, unknown>, relationKey: string): boolean {
-		const fkDef = this.fks[relationKey];
-		if (!fkDef) return false;
-
-		const bag = record.fks;
-		if (bag && typeof bag === 'object') {
-			for (const key of Object.keys(bag as Record<string, unknown>)) {
-				const pos = key.lastIndexOf('_');
-				const baseName = pos < 1 ? key : key.slice(0, pos);
-				const refId = pos < 1 ? '' : key.slice(pos + 1);
-				if (baseName === relationKey && refId) return true;
-			}
-			const nested = (bag as Record<string, unknown>)[relationKey];
-			if (nested && typeof nested === 'object' && !Array.isArray(nested)) {
-				const obj = nested as Record<string, unknown>;
-				if (obj['id'] != null || obj['code'] != null) return true;
-			}
-		}
-
-		const fieldInfo = this.findFkField(fkDef.code);
-		if (fieldInfo) {
-			const value = record[fieldInfo.fieldName];
-			if (value != null && !(Array.isArray(value) && value.length === 0)) return true;
-		}
-
-		return false;
+		return getRelationResolver()?.hasRelationValue?.(this.collection, record, relationKey) ?? false;
 	}
 
 	parseReverseFks(): Record<string, Record<string, unknown>> {

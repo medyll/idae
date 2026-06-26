@@ -7,6 +7,11 @@ import type { MachineFkDef, FkRelations } from '$lib/types/index.js';
 export interface RelationResolver {
 	getRelations(collection: string): FkRelations | undefined;
 	getAllCollections(): string[];
+	foldRelations?(collection: string, record: Record<string, unknown>): Promise<Record<string, unknown>>;
+	findRelationField?(collection: string, target: string): { fieldName: string; targetIndex: string } | null;
+	hasRelationValue?(collection: string, record: Record<string, unknown>, relationKey: string): boolean;
+	/** Resolve a FK presentation-path token (e.g. 'fks.firm.name') against a data record. */
+	resolvePresentationToken?(data: Record<string, unknown>, segments: string[]): unknown;
 }
 
 export interface MetaCollectionResolver {
