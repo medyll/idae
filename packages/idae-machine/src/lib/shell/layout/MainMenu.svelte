@@ -126,7 +126,7 @@ Toggled from TaskBar's menu button via bind:open.
 		main-menu-component {
 			display: flex;
 			align-items: flex-start;
-			justify-content: center;
+			justify-content: flex-start;
 			position: fixed;
 			inset: 0;
 			z-index: var(--z-modal, 1000);
