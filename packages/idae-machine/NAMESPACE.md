@@ -42,7 +42,7 @@ début       tout dans  idae/
 **Décisions inventées, désormais NULLES :**
 
 - ❌ Renommer `main/` → `machine/` (ou `machine/core/`). **NON.** Le moteur s'appelle `main/`. Définitif.
-- ❌ Un dossier `src/lib/machine/` à la racine de `lib/`. **NON.** `machine/` (les 4 fichiers `machine/ext/`) est replié dans `main/`. (repli = chantier code, pas fait dans cette passe doc.)
+- ❌ Un dossier `src/lib/machine/` à la racine de `lib/`. **NON.** Replié dans `main/` le 2026-06-27 : `machine/ext/` → `main/ext/` (interfaces des points d'extension = moteur), les 6 dossiers vides frères supprimés. `src/lib/machine/` n'existe plus.
 - ❌ Les annotations croisées multi-LLM (« Mistral Vibe », « Qwen », etc.) qui débattaient l'archi. Supprimées. Une loi ne se débat pas en commentaire.
 
 **Leçon (vaut pour toute session future) :** un LLM ne décide pas l'architecture. Il l'applique. Une phrase utilisateur courte (« namespace idae ») n'autorise PAS un renommage massif, une dissolution de dossier, ni un split moteur/domaine inventé. En cas de vide, **confronter l'utilisateur, pas combler.** (cf. [[feedback_llm_no_unrequested_architecture]])
@@ -81,5 +81,6 @@ Le moteur ne connaît que des types abstraits (`RelationDef`, field kind `refere
 ## 4. État & chantier différé
 
 - `idae/` existe et est peuplé (relations, meta, userscope, rights, capabilities, fieldcatalog, frames, menu, boot).
-- `machine/ext/` (4 fichiers, 17 importeurs) doit être replié dans `main/`. **Chantier code, non fait ici.**
+- `machine/` replié dans `main/` (2026-06-27) : `main/ext/` porte les points d'extension. ✅ Fait.
+- Garde mécanique active : `npm run lint:arch` (branché `gate`) refuse `main → idae` et le self-import.
 - Migration du domaine résiduel hors `main/` vers `idae/` : différée, classe par classe, du plus isolé au plus couplé. **Pas un prérequis.** La loi (frontière + direction) prime ; le déplacement suit.
