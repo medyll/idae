@@ -4,7 +4,7 @@
  */
 
 import { machine } from '$lib/main/machine.js';
-import { getCodeFieldConvention } from '$lib/machine/ext/hooks.js';
+import { getCodeFieldConvention } from '$lib/main/ext/hooks.js';
 
 /** Auto-fill the semantic code field when a row has an id but no code. */
 function withCode(row: unknown): unknown {

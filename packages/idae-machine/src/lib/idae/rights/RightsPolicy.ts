@@ -2,8 +2,8 @@
 // Domain implementation of RightsPolicy + GrantDecoder bridge.
 // Decodes grant.fks/appscheme/code → neutral NormalizedGrant form.
 
-import type { RightsPolicy, NormalizedGrant, AppUser, PermissionCode } from '$lib/machine/ext/interfaces.js';
-import type { GrantDecoder } from '$lib/machine/ext/hooks.js';
+import type { RightsPolicy, NormalizedGrant, AppUser, PermissionCode } from '$lib/main/ext/interfaces.js';
+import type { GrantDecoder } from '$lib/main/ext/hooks.js';
 import type { AppUserGrant, MachineModel, MachineRightsPolicy } from '$lib/types/index.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];

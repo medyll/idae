@@ -1,4 +1,4 @@
-// machine/ext/__tests__/hooks.test.ts
+// main/ext/__tests__/hooks.test.ts
 // Unit tests for engine domain bridge hooks
 
 import { describe, it, expect, beforeEach } from 'vitest';
@@ -11,8 +11,8 @@ import {
 	getMetaCollectionResolver,
 	getCodeFieldConvention,
 	getGrantDecoder
-} from '$lib/machine/ext/hooks.js';
-import type { RelationResolver, MetaCollectionResolver, CodeFieldConvention, GrantDecoder } from '$lib/machine/ext/hooks.js';
+} from '$lib/main/ext/hooks.js';
+import type { RelationResolver, MetaCollectionResolver, CodeFieldConvention, GrantDecoder } from '$lib/main/ext/hooks.js';
 
 describe('Engine domain bridge hooks', () => {
 	beforeEach(() => {

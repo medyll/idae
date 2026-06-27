@@ -1,7 +1,7 @@
 // idae/frames/FrameCatalog.ts
 // Domain implementation of FrameCatalog — registers domain-specific frame types.
 
-import type { FrameCatalog, ComponentRegistry } from '$lib/machine/ext/interfaces.js';
+import type { FrameCatalog, ComponentRegistry } from '$lib/main/ext/interfaces.js';
 
 export class IdaeFrameCatalog implements FrameCatalog {
 	registerFrames(registry: ComponentRegistry): void {

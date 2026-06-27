@@ -2,8 +2,8 @@
 // Domain implementation of RelationPolicy + RelationResolver bridge.
 // All FK relation logic lives here — engine delegates via the bridge.
 
-import type { RelationPolicy, MachineFkDef } from '$lib/machine/ext/interfaces.js';
-import type { RelationResolver } from '$lib/machine/ext/hooks.js';
+import type { RelationPolicy, MachineFkDef } from '$lib/main/ext/interfaces.js';
+import type { RelationResolver } from '$lib/main/ext/hooks.js';
 import type { FkRelations } from '$lib/types/index.js';
 
 const FK_INDEX_FIELD = 'code';

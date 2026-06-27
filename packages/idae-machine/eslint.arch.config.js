@@ -30,7 +30,10 @@ export default tseslint.config(
 	// directives inline `eslint-disable @typescript-eslint/...` des sources se résolvent.
 	{
 		languageOptions: { parser: tseslint.parser },
-		plugins: { '@typescript-eslint': tseslint.plugin }
+		plugins: { '@typescript-eslint': tseslint.plugin },
+		// ce config n'active QUE no-restricted-imports ; ne pas juger les directives
+		// eslint-disable des sources (qui visent des règles de style non chargées ici).
+		linterOptions: { reportUnusedDisableDirectives: 'off' }
 	},
 
 	// Loi 2 : self-import interdit partout dans src

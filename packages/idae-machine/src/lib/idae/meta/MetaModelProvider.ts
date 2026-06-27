@@ -2,8 +2,8 @@
 // Domain implementation of MetaModelProvider + MetaCollectionResolver bridge.
 // appscheme = data, not in-memory model.
 
-import type { MetaModelProvider, CollectionSchema } from '$lib/machine/ext/interfaces.js';
-import type { MetaCollectionResolver } from '$lib/machine/ext/hooks.js';
+import type { MetaModelProvider, CollectionSchema } from '$lib/main/ext/interfaces.js';
+import type { MetaCollectionResolver } from '$lib/main/ext/hooks.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 const META_BASES: Record<string, string[]> = {

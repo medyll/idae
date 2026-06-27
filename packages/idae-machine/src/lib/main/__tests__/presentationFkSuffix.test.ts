@@ -3,7 +3,7 @@ import { MachineDb } from '../machineDb.js';
 import { buildEffectiveModel } from '../machineModelBuilder.js';
 import { demoScheme } from '../../__fixtures__/demoModel.js';
 import { IdaeRelationPolicy } from '$lib/idae/relations/RelationPolicy.js';
-import { registerRelationResolver } from '$lib/machine/ext/hooks.js';
+import { registerRelationResolver } from '$lib/main/ext/hooks.js';
 
 /**
  * rental.template.presentation = 'fks.vehicle.license_plate fks.customer.last_name start_date status'

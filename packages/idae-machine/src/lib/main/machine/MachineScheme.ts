@@ -9,7 +9,7 @@ import type {
 import { indexFromKeyPath } from '$lib/types/index.js';
 import { MachineDb } from '$lib/main/machineDb.js';
 import { getCollectionRelations } from '$lib/data-ui/utils/dataRelationUtils.js';
-import { getRelationResolver } from '$lib/machine/ext/hooks.js';
+import { getRelationResolver } from '$lib/main/ext/hooks.js';
 import { MachineSchemeFieldForge } from '$lib/main/machine/MachineSchemeFieldForge.js';
 import { MachineSchemeValues } from '$lib/main/machine/MachineSchemeValues.js';
 import { MachineSchemeValidate } from '$lib/main/machine/MachineSchemeValidate.js';

@@ -1,7 +1,7 @@
 // idae/userscope/UserScopePolicy.ts — domain implementation of UserScopePolicy
 // This file contains the concrete implementation of user-scoped collections and their natural keys
 
-import type { UserScopePolicy } from '$lib/machine/ext/interfaces.js';
+import type { UserScopePolicy } from '$lib/main/ext/interfaces.js';
 
 export class IdaeUserScopePolicy implements UserScopePolicy {
   private machine: any = null;

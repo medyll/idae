@@ -3,7 +3,7 @@
  * Replaces hardcoded warmup arrays with model-driven collection selection
  */
 import type { MachineModel } from '$lib/types/index.js';
-import { getMetaCollectionResolver } from '$lib/machine/ext/hooks.js';
+import { getMetaCollectionResolver } from '$lib/main/ext/hooks.js';
 
 /**
  * Get collections that are critical for schema hydration (warmup candidates).

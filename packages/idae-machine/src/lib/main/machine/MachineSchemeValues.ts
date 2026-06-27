@@ -3,7 +3,7 @@ import { MachineDb } from '$lib/main/machineDb.js';
 import { MachineError } from '$lib/main/machine/MachineError.js';
 import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 import { MachineSchemeFieldType } from '$lib/main/machine/MachineFieldType.js';
-import { getRelationResolver } from '$lib/machine/ext/hooks.js';
+import { getRelationResolver } from '$lib/main/ext/hooks.js';
 
 /** Walk a plain dot-path into an object (no FK awareness). */
 function walkPath(root: unknown, segments: string[]): unknown {

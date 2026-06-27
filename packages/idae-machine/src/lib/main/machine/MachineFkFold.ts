@@ -1,5 +1,5 @@
 import type { MachineFkDef } from '$lib/types/index.js';
-import { getRelationResolver } from '$lib/machine/ext/hooks.js';
+import { getRelationResolver } from '$lib/main/ext/hooks.js';
 
 /** Minimal schema bridge — avoids importing MachineDb (cycle risk). */
 type FkSchemaBridge = {
