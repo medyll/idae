@@ -81,6 +81,7 @@ Toggled from TaskBar's menu button via bind:open.
 				<DataList
 					collection="appscheme"
 					where={{ code: { $in: startMenu.codes } }}
+					groupBy="fks.appscheme_base.code"
 					usePrefs={false}
 				>
 					{#snippet dataRecord({ data })}
@@ -182,6 +183,7 @@ Toggled from TaskBar's menu button via bind:open.
 			font-size: 1.25em;
 			vertical-align: middle;
 		}
+			main-menu-dock :global(.data-list-group-header) { display: none; }
 		main-menu-dock {
 			display: flex;
 			flex-direction: column;
