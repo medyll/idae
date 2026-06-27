@@ -17,8 +17,7 @@ Toggled from TaskBar's menu button via bind:open.
 	const startMenu = useMenuCodes(() => 'start');
 	const CONTENT_ZONE = 'main-menu-content';
 
-	let selected = $state<string | undefined>(undefined);
-	let contentZoneEl = $state<HTMLDivElement | undefined>(undefined);
+	let selected = $state<string | undefined>(undefined); 
 
 	function loadContent(collection: string): void {
 		machine.framer.loadIn('main-menu-content', 'main-menu-content', collection);
@@ -107,9 +106,10 @@ Toggled from TaskBar's menu button via bind:open.
 			<main-menu-content>
 				{#if selected}
 					<main-menu-frame-zone
-						bind:this={contentZoneEl}
 						data-target-zone={CONTENT_ZONE}
-					></main-menu-frame-zone>
+						data-taskbar="false"
+					>
+					</main-menu-frame-zone>
 				{:else}
 					<main-menu-home>
 						<h3>Aujourd'hui</h3>
@@ -237,6 +237,13 @@ Toggled from TaskBar's menu button via bind:open.
 		}
 		.main-menu-empty {
 			color: var(--color-text-muted, #888);
+		}
+
+		main-menu-frame-zone {
+			display:block;
+			position:relative;
+			height:100%;
+			width:100%;
 		}
 	}
 </style>
