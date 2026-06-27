@@ -15,10 +15,12 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "format": "prettier --write .",
     "lint": "prettier --check .",
+    "lint:arch": "eslint --config eslint.arch.config.js src",
+    "conventions": "node scripts/scan-conventions.mjs",
     "test:unit": "vitest",
     "test": "npm run test:unit -- --run",
     "test:e2e": "playwright test --config src/e2e/playwright.config.ts",
-    "gate": "npm run check && npm run test && npm --prefix server run typecheck && npm --prefix server run test",
+    "gate": "npm run lint:arch && npm run check && npm run test && npm --prefix server run typecheck && npm --prefix server run test",
     "prepackage": "node scripts/package-pre.js"
   },
   "files": [
