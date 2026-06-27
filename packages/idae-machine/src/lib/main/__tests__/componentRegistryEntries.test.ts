@@ -77,7 +77,7 @@ describe('Global componentRegistry entries', () => {
 			'form',
 			'list',
 			'login',
-			'main-menu-content',
+			'main-menu.content',
 			'rbac.matrix',
 			'record',
 			'space',

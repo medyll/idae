@@ -15,12 +15,13 @@ Toggled from TaskBar's menu button via bind:open.
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
 	const startMenu = useMenuCodes(() => 'start');
-	const CONTENT_ZONE = 'main-menu-content';
+	const CONTENT_ZONE = 'main-menu-content';        // DOM target zone
+	const CONTENT_FRAME = 'main-menu.content';       // registry key → MainMenuContent.svelte
 
-	let selected = $state<string | undefined>(undefined); 
+	let selected = $state<string | undefined>(undefined);
 
 	function loadContent(collection: string): void {
-		machine.framer.loadIn('main-menu-content', 'main-menu-content', collection);
+		machine.framer.loadIn(CONTENT_ZONE, CONTENT_FRAME, collection);
 	}
 
 	$effect(() => {

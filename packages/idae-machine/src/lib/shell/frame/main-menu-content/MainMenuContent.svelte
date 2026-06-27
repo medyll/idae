@@ -1,7 +1,7 @@
 <!--
 MainMenuContent.svelte
 Right-hand content of the global start menu.
-Loaded via machine.framer.loadIn('main-menu-content', 'main-menu-content', collection).
+Loaded via machine.framer.loadIn('main-menu-content' /* zone */, 'main-menu.content' /* frame key */, collection).
 
 @prop {string} collection - currently selected collection
 -->

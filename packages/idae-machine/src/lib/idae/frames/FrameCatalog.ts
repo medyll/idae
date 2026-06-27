@@ -23,7 +23,7 @@ export class IdaeFrameCatalog implements FrameCatalog {
 			'ai.chat-session':  () => import('$lib/ai/frame/AiChatSession.svelte'),
 			'today':            () => import('$lib/shell/frame/today/Today.svelte'),
 			'contextmenu':      () => import('$lib/data-ui/fragments/ContextMenuContent.svelte'),
-			'main-menu-content': () => import('$lib/shell/frame/main-menu-content/MainMenuContent.svelte'),
+			'main-menu.content': () => import('$lib/shell/frame/main-menu-content/MainMenuContent.svelte'),
 		});
 	}
 }
