@@ -156,8 +156,8 @@ Settings gear (`app_gui_tile_user.php`) per zone lets the user edit the
 | `agent_pref` (`app_menu_*`) | `appuser_prefs` via `machine.action` / `useMachinePrefs` | exists |
 | `appscheme` / `appscheme_base` | `appscheme` collection (`fks.appscheme_base` = grouping) | exists |
 | `buildMenu()` filter | `IdaeMenuStore.buildMenuTree` + `useMenuTree` (rights ∩ prefs ∩ appscheme, grouped by base) | done |
-| `app_gui_menu.php` (sidebar tree) | `Explorer.svelte` leftbar = `<DataList collection="appscheme" groupBy="fks.appscheme_base" />`; `MenuTree.svelte` (zone `side`) | done |
-| `app_gui_start_menu.php` (waffle) | `WaffleMenu.svelte` (zone `start`) — still single-pane, NOT yet the 2-pane home/collection model | partial |
+| `app_gui_menu.php` (sidebar tree) | `Explorer.svelte` leftbar = `<DataList collection="appscheme" groupBy="fks.appscheme_base" />` | done |
+| `app_gui_start_menu.php` (waffle) | `MainMenu.svelte` (two-pane: appscheme list left, Explorer frame loaded into right pane via framer) — replaced the old `WaffleMenu`/`MenuTree` (removed) | built, currently NOT working — see debug session 2026-06-27 |
 | `app_gui_today.php` (home pane) | `Today.svelte` (frame `today`) — échéancier section needs dateDebut/dateFin support | partial |
 | `app_gui_panel.php` (recent history) | `RecentPanel.svelte` + `appuser_history` | done |
 | `data-contextual` row menu | not built | TODO |
