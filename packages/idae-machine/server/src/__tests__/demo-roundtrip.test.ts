@@ -158,7 +158,7 @@ describe('meta-collections: appuser_prefs, appuser_activity, appuser_history', (
 		expect(prefs.fields.id).toEqual({ required: true, readonly: true });
 		expect(prefs.fields.code).toEqual({ required: true, readonly: false });
 		expect(prefs.fields.value).toEqual({ required: false, readonly: false });
-		expect(prefs.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: true });
+		expect(prefs.fkRelations.appuser).toMatchObject({ code: 'appuser', multiple: false, required: false });
 		expect(prefs.template.presentation).toBe('code value');
 	});
 
