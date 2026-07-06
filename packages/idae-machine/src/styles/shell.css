@@ -5,9 +5,20 @@
 		font-size: inherit;
 	}
 
+	/* css-base defaults every <button>/.btn to justify-content:center +
+	   font-weight:medium. Project default = plain text button reads left,
+	   normal weight (legacy look). Icon/primary variants stay centered. */
 	button,
 	.btn {
 		font-weight: normal;
+		justify-content: flex-start;
+		text-align: left;
+	}
+
+	.btn-icon,
+	.btn-primary {
+		justify-content: center;
+		text-align: center;
 	}
 
 	.app-shell {

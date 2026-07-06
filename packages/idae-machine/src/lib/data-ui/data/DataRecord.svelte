@@ -17,6 +17,7 @@ Iterates a record's fields and renders DataField for each.
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
 	import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 	import { getContext } from 'svelte';
+	import type { ViewTypeCode } from '$lib/types/index.js';
 
 	let {
 		collection = getContext('collection'),
@@ -38,7 +39,7 @@ Iterates a record's fields and renders DataField for each.
 		mode?: 'show' | 'create' | 'update';
 		as?: 'fields' | 'row';
 		showFields?: string[];
-		view?: string;
+		view?: ViewTypeCode;
 		groupFieldBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
@@ -129,23 +130,27 @@ Iterates a record's fields and renders DataField for each.
 {/if}
 
 <style>
-	.form {
+	/* flex-wrap (legacy .fiche_field_group: flex_h flex_wrap) — each DataField's
+	   `.field-line` carries its own flex-basis (~320px, legacy min-width:40%) and
+	   fixed-width label, so values line up without a rigid grid forcing uneven
+	   rows to match height. */
+	.form,
+	fieldset.field-group {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
 		align-items: flex-start;
+	}
+	fieldset.field-group {
+		border: none;
+		padding: 0;
 	}
 	.field {
 		display: contents;
 	}
-	fieldset.field-group {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
-		align-items: flex-start;
-		border: none;
-	}
 	legend {
-		padding: var(--space-2, 0.5rem)
+		width: 100%;
+		padding: var(--pad-sm) 0 var(--pad-xs);
+		font-weight: var(--font-medium);
+		color: var(--color-text-muted);
 	}
 </style>

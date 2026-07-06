@@ -85,7 +85,6 @@ export { default as Breadcrumb } from '$lib/shell/layout/Breadcrumb.svelte';
 export { default as DevResetPanel } from '$lib/shell/layout/DevResetPanel.svelte';
 export { default as MenuSettings } from '$lib/shell/layout/MenuSettings.svelte';
 export { default as MainMenu } from '$lib/shell/layout/MainMenu.svelte';
-export { default as RecentPanel } from '$lib/shell/layout/RecentPanel.svelte';
 export { default as RecordToolbar } from '$lib/shell/layout/RecordToolbar.svelte';
 export { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 

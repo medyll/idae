@@ -29,7 +29,7 @@ Consumers can override via the dataRecord snippet.
 <script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { Snippet } from 'svelte';
 	import { untrack } from 'svelte';
-	import type { SortBy, TplCollectionName, Where } from '$lib/types/index.js';
+	import type { SortBy, TplCollectionName, ViewTypeCode, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
 	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
@@ -75,7 +75,7 @@ Consumers can override via the dataRecord snippet.
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		mode?: 'list' | 'table' | 'grid';
-		view?: string;
+		view?: ViewTypeCode;
 		pageSize?: number;
 		page?: number;
 		infiniteScroll?: boolean;
