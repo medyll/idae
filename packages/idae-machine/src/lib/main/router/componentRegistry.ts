@@ -54,4 +54,17 @@ export class ComponentRegistry {
 export const componentRegistry = new ComponentRegistry();
 
 export type ComponentLoaderFn = ComponentLoader;
-export type RegistryKey = string;
+
+/**
+ * Augmentable by domain code — main/ (engine) can't hardcode literal frame keys
+ * (FrameCatalog is a pluggable ext-point, see machine.ts composition root), but
+ * doesn't have to fall back to bare `string` either. Domain layer (idae/frames/
+ * FrameCatalog.ts) declares `interface FrameKeyRegistry extends Record<...>`
+ * for this same module specifier; TS merges it in at compile time (ambient
+ * declaration merging, no runtime import — main→idae law untouched). Falls
+ * back to `string` only if nothing augments it (e.g. a different domain swaps
+ * in its own FrameCatalog without augmenting this interface).
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface FrameKeyRegistry {}
+export type RegistryKey = keyof FrameKeyRegistry extends never ? string : keyof FrameKeyRegistry;

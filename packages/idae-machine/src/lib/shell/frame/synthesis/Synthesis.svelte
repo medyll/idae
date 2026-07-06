@@ -155,7 +155,7 @@
 				<span class="icon-home"></span>
 			</button>
 			{#each rfkEntries as rfk (rfk.collection)}
-				<button class="action-navigate" onclick={() => machine.framer.loadInDialog('', rfk.collection)}>
+				<button class="action-navigate" onclick={() => machine.framer.loadInDialog('fiche.update', rfk.collection)}>
 					<span class="icon-appscheme"></span>
 					{rfk.collection}
 				</button>
@@ -166,19 +166,7 @@
 			<synthesis-pane-left>
 				<DataRecord {collection} data={record} mode="show" view="flat"/>
 				<hr />
-				<DataRecord {collection} data={record} mode="show" view="fk"/>
-				<!-- {#if !record}
-					<div class="empty-state">
-						<div class="empty-state-icon">⏳</div>
-						<p class="empty-state-title">Chargement…</p>
-					</div>
-				{:else if activeTab === 'edit'}
-					<DataForm {collection} dataId={collectionId} mode="update" />
-				{:else if activeTab === 'full'}
-					<DataRecord {collection} data={record} mode="show" showFields={allFields} />
-				{:else}
-					<DataRecord {collection} data={record} mode="show" />
-				{/if} -->
+				<DataRecord {collection} data={record} mode="show" view="fk"  />
 			</synthesis-pane-left>
 			<synthesis-pane-right>
 				<!-- <DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk" /> -->
