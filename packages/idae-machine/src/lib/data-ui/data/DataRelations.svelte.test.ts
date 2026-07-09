@@ -213,13 +213,13 @@ describe('DataList relation components', () => {
 		});
 
 		it('renders forward related collections for a source record', async () => {
-			render(DataListFk, { collection: 'vehicle', recordId: 1 });
+			render(DataListFk, { collection: 'vehicle', collectionId: 1 });
 			expect(await screen.findByText('Compact')).not.toBeNull();
 			expect(await screen.findByText(/PAR-01/)).not.toBeNull();
 		});
 
 		it('filters to a single FK relation', async () => {
-			render(DataListFk, { collection: 'vehicle', recordId: 1, fk: 'category' });
+			render(DataListFk, { collection: 'vehicle', collectionId: 1, fk: 'category' });
 			expect(await screen.findByText('Compact')).not.toBeNull();
 			await waitFor(() => {
 				expect(screen.queryByText(/PAR-01/)).toBeNull();
@@ -228,7 +228,7 @@ describe('DataList relation components', () => {
 
 		it('does not inherit persisted target prefs by default', async () => {
 			await seedFindPref('datalist.category', { name: 'Missing category' });
-			render(DataListFk, { collection: 'vehicle', recordId: 1, fk: 'category' });
+			render(DataListFk, { collection: 'vehicle', collectionId: 1, fk: 'category' });
 			expect(await screen.findByText('Compact')).not.toBeNull();
 		});
 	});
@@ -240,13 +240,13 @@ describe('DataList relation components', () => {
 		});
 
 		it('renders reverse related collections for a source record', async () => {
-			render(DataListRfk, { collection: 'category', recordId: 1 });
+			render(DataListRfk, { collection: 'category', collectionId: 1 });
 			expect(await screen.findByText(/AA-111-BB/)).not.toBeNull();
 			expect(await screen.findByText(/CC-222-DD/)).not.toBeNull();
 		});
 
 		it('filters to a single reverse relation', async () => {
-			render(DataListRfk, { collection: 'vehicle', recordId: 2, fk: 'rental' });
+			render(DataListRfk, { collection: 'vehicle', collectionId: 2, fk: 'rental' });
 			expect(await screen.findByText(/completed/)).not.toBeNull();
 			await waitFor(() => {
 				expect(screen.queryByText(/oil change/)).toBeNull();
@@ -255,7 +255,7 @@ describe('DataList relation components', () => {
 
 		it('does not inherit persisted reverse-target prefs by default', async () => {
 			await seedFindPref('datalist.vehicle', { status: 'retired' });
-			render(DataListRfk, { collection: 'category', recordId: 1 });
+			render(DataListRfk, { collection: 'category', collectionId: 1 });
 			expect(await screen.findByText(/AA-111-BB/)).not.toBeNull();
 		});
 	});

@@ -171,7 +171,7 @@
 			<synthesis-pane-right>
 				<!-- <DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk" /> -->
 				{#if record}
-					<DataListRfk {collection} recordId={collectionId} showTitle={true} />
+					<DataListRfk {collection} {collectionId} showTitle={true} />
 				{/if}
 			</synthesis-pane-right>
 		</synthesis-panes>

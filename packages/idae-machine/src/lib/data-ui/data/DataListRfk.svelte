@@ -2,7 +2,7 @@
 DataListRfk.svelte
 Renders reverse FK relations for a record as DataList sections.
 @prop {string} collection - Source collection name
-@prop {string|number} [recordId] - Source record id (if data not provided)
+@prop {string|number} [collectionId] - Source record id (if data not provided)
 @prop {Record<string,unknown>|null} [data] - Source record (controlled)
 @prop {string} [fk] - Filter to a single FK key
 @prop {boolean} [showTitle] - Show section title (default: true)
@@ -16,7 +16,7 @@ Renders reverse FK relations for a record as DataList sections.
 
 	let {
 		collection,
-		recordId,
+		collectionId,
 		data = undefined,
 		fk,
 		showTitle  = true,
@@ -25,7 +25,7 @@ Renders reverse FK relations for a record as DataList sections.
 		...dataListProps
 	}: {
 		collection:  string;
-		recordId?:   string | number;
+		collectionId?: string | number;
 		data?:       Record<string, unknown> | null;
 		fk?:         string;
 		showTitle?:  boolean;
@@ -38,21 +38,21 @@ Renders reverse FK relations for a record as DataList sections.
 	const scheme      = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 
 	const storeRecord = $derived.by(() => {
-		if (recordId == null) return null;
-		return sourceStore.records.find((item) => String(item.id) === String(recordId)) ?? null;
+		if (collectionId == null) return null;
+		return sourceStore.records.find((item) => String(item.id) === String(collectionId)) ?? null;
 	});
 
 	let fetchedRecord = $state<Record<string, unknown> | null>(null);
 	let lookupDone    = $state(false);
 	$effect(() => {
-		if (data != null || recordId == null || storeRecord != null) {
+		if (data != null || collectionId == null || storeRecord != null) {
 			lookupDone = true;
 			return;
 		}
 		lookupDone = false;
 		fetchedRecord = null;
 		let cancelled = false;
-		Promise.resolve(machine.collection(collection).get(recordId)).then((rec) => {
+		Promise.resolve(machine.collection(collection).get(collectionId)).then((rec) => {
 			if (cancelled) return;
 			fetchedRecord = (rec as Record<string, unknown> | undefined) ?? null;
 			lookupDone = true;
@@ -62,13 +62,13 @@ Renders reverse FK relations for a record as DataList sections.
 
 	const record = $derived.by(() => {
 		if (data) return data;
-		if (recordId == null) return null;
+		if (collectionId == null) return null;
 		return storeRecord ?? fetchedRecord;
 	});
 
 	const recordState = $derived.by(() => {
 		if (record) return 'found';
-		if (data != null || recordId == null) return 'absent';
+		if (data != null || collectionId == null) return 'absent';
 		return lookupDone ? 'absent' : 'loading';
 	});
 
