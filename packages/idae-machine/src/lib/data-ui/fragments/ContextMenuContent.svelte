@@ -6,6 +6,14 @@ Dynamic context menu content that builds menu items based on permissions and col
 @prop {string|number} collectionId - Record ID
 @prop {Record<string, string>} [vars] - Additional variables for custom actions
 -->
+<script module lang="ts">
+  export interface ContextMenuContentProps {
+    collection: string;
+    collectionId: string | number;
+    vars?: Record<string, string>;
+  }
+</script>
+
 <script lang="ts">
   import { machine } from '$lib/main/machine.js';
   import { closeContextMenu } from './contextMenu.svelte.js';
@@ -16,11 +24,7 @@ Dynamic context menu content that builds menu items based on permissions and col
     collection,
     collectionId,
     vars = {}
-  }: {
-    collection: string;
-    collectionId: string | number;
-    vars?: Record<string, string>;
-  } = $props();
+  }: ContextMenuContentProps = $props();
 
   // BL-24: record resolution via the shared useRecordData hook (reactive machine.store
   // read, scheme.index-aware) — replaces the previous inline `records.find(r => r.id ==

@@ -7,6 +7,19 @@ Handles both show (formatted display) and edit (typed input) via `mode`.
 @prop {string} [display] - Canonical formatted string (from scheme) for show mode
 @prop {string} [type] - HTML input type for edit mode
 -->
+<script module lang="ts">
+	export interface FieldTextProps {
+		value?: unknown;
+		display?: string;
+		mode?: 'show' | 'create' | 'update';
+		type?: string;
+		id?: string;
+		name?: string;
+		form?: string;
+		disabled?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	let {
 		value = $bindable(),
@@ -17,16 +30,7 @@ Handles both show (formatted display) and edit (typed input) via `mode`.
 		name,
 		form,
 		disabled = false
-	} = $props<{
-		value?: unknown;
-		display?: string;
-		mode?: 'show' | 'create' | 'update';
-		type?: string;
-		id?: string;
-		name?: string;
-		form?: string;
-		disabled?: boolean;
-	}>();
+	}: FieldTextProps = $props();
 </script>
 
 {#if mode === 'show'}

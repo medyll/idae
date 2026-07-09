@@ -7,18 +7,22 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 @prop {string} [title] - Display label (defaults to field)
 @prop {SortBy[]} sortBy - Bindable array. Entry is upserted/removed for this field.
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { SortBy } from '$lib/types/index.js';
 
+	export interface DataSortProps {
+		field: string;
+		title?: string;
+		sortBy?: SortBy[];
+	}
+</script>
+
+<script lang="ts">
 	let {
 		field,
 		title,
 		sortBy = $bindable([])
-	}: {
-		field: string;
-		title?: string;
-		sortBy?: SortBy[];
-	} = $props();
+	}: DataSortProps = $props();
 
 	const current = $derived(sortBy.find(s => s.field === field)?.direction ?? 'none');
 

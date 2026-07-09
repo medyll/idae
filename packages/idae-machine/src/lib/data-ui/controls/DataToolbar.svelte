@@ -9,22 +9,26 @@ No data logic — composition only. Lives in data-ui so data-ui/data stays layer
 @snippet extras - free area (mode switcher, custom buttons…)
 @snippet default - if provided, replaces all named slots
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
 
+	export interface DataToolbarProps {
+		sort?: Snippet;
+		group?: Snippet;
+		find?: Snippet;
+		extras?: Snippet;
+		children?: Snippet;
+	}
+</script>
+
+<script lang="ts">
 	let {
 		sort,
 		group,
 		find,
 		extras,
 		children
-	}: {
-		sort?: Snippet;
-		group?: Snippet;
-		find?: Snippet;
-		extras?: Snippet;
-		children?: Snippet;
-	} = $props();
+	}: DataToolbarProps = $props();
 </script>
 
 <div class="data-toolbar">

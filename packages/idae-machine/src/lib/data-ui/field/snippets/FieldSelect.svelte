@@ -8,6 +8,21 @@ FK-aware select field atom. Show mode renders the resolved FK label
 @prop {string} collection - Target collection name (from fk-collection.field)
 @prop {string} [targetField] - Target field written as option value. Defaults to scheme index.
 -->
+<script module lang="ts">
+	export interface FieldSelectProps {
+		value?: unknown;
+		display?: string;
+		mode?: 'show' | 'create' | 'update';
+		collection: string;
+		targetField?: string;
+		id?: string;
+		name?: string;
+		form?: string;
+		disabled?: boolean;
+		multiple?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 
@@ -22,18 +37,7 @@ FK-aware select field atom. Show mode renders the resolved FK label
 		form,
 		disabled = false,
 		multiple = false
-	} = $props<{
-		value?: unknown;
-		display?: string;
-		mode?: 'show' | 'create' | 'update';
-		collection: string;
-		targetField?: string;
-		id?: string;
-		name?: string;
-		form?: string;
-		disabled?: boolean;
-		multiple?: boolean;
-	}>();
+	}: FieldSelectProps = $props();
 
 	const scheme     = $derived(machine.logic.collectionOr(collection, null));
 	const indexField = $derived(targetField ?? scheme?.index ?? 'id');

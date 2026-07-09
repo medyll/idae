@@ -4,14 +4,10 @@ A dialog IS a frame: it registers in machine.framer and mounts its content via t
 shared host (componentRegistry). Rendered floating instead of filling a static zone.
 Draggable by the header bar. Stacking via css-base --z-modal.
 -->
-<script lang="ts">
-	import Icon from '@iconify/svelte';
-	import { untrack, type Snippet } from 'svelte';
-	import { machine } from '$lib/main/machine.js';
-	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
-	import { draggable, centerInViewport } from '$lib/data-ui/utils/draggable.js';
+<script module lang="ts">
+	import type { Snippet } from 'svelte';
 
-	type Props = {
+	export interface DialogProps {
 		open?: boolean;
 		id: string;
 		modulePath?: string;
@@ -29,7 +25,15 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		header?: Snippet;
 		footer?: Snippet;
 		children?: Snippet;
-	};
+	}
+</script>
+
+<script lang="ts">
+	import Icon from '@iconify/svelte';
+	import { untrack } from 'svelte';
+	import { machine } from '$lib/main/machine.js';
+	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
+	import { draggable, centerInViewport } from '$lib/data-ui/utils/draggable.js';
 
 	let {
 		open = $bindable(true),
@@ -47,7 +51,7 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		header,
 		footer,
 		children
-	}: Props = $props();
+	}: DialogProps = $props();
 
 	let element = $state<HTMLDialogElement>();
 	let bodyEl = $state<HTMLDivElement>();

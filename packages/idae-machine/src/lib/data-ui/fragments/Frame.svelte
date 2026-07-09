@@ -7,8 +7,18 @@ Layout frame with optional left navigation panel
 @snippet leftNav - Left navigation snippet
 @snippet children - Main content snippet
 -->
-<script lang="ts">
+<script module lang="ts">
   import type { Snippet } from 'svelte';
+
+  export interface FrameProps {
+    showPanel?: boolean;
+    panelMode?: 'expanded' | 'reduced';
+    leftNav?: Snippet;
+    children?: Snippet;
+  }
+</script>
+
+<script lang="ts">
   import { slide } from 'svelte/transition';
 
   let {
@@ -16,12 +26,7 @@ Layout frame with optional left navigation panel
     panelMode = 'expanded',
     leftNav,
     children
-  }: {
-    showPanel?: boolean;
-    panelMode?: 'expanded' | 'reduced';
-    leftNav?: Snippet;
-    children?: Snippet;
-  } = $props();
+  }: FrameProps = $props();
 </script>
 
 <div class="relative flex h-full gap-4">

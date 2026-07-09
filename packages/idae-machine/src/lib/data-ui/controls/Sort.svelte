@@ -7,6 +7,14 @@ same collection/prefsScope; both bind the same shared prefs store (mediator) and
 @prop {string} [prefsScope] - override scope (must match the DataList's)
 @prop {boolean} [usePrefs=true]
 -->
+<script module lang="ts">
+	export interface SortProps {
+		collection: string;
+		prefsScope?: string;
+		usePrefs?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import {
@@ -20,7 +28,7 @@ same collection/prefsScope; both bind the same shared prefs store (mediator) and
 		collection,
 		prefsScope,
 		usePrefs = true
-	}: { collection: string; prefsScope?: string; usePrefs?: boolean } = $props();
+	}: SortProps = $props();
 
 	const scope = $derived(dataListPrefsScope(collection, prefsScope));
 	const prefs = useMachinePrefs(() => scope, dataListPrefsDefaults(), () => usePrefs);

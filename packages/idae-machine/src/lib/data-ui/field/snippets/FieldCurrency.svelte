@@ -5,20 +5,8 @@ Currency field atom — formatted display in show mode, formatted input in edit.
 @prop {number|string} value - Current value (bindable)
 @prop {string} [display] - Pre-formatted display string (from scheme)
 -->
-<script lang="ts">
-	import { untrack } from 'svelte';
-	let {
-		value = $bindable(),
-		display = undefined as string | undefined,
-		mode = 'show',
-		error = null as string | null,
-		currencySymbol = '$',
-		decimalPlaces = 2,
-		disabled = false,
-		id = undefined as string | undefined,
-		name = undefined as string | undefined,
-		form = undefined as string | undefined
-	} = $props<{
+<script module lang="ts">
+	export interface FieldCurrencyProps {
 		value?: number | string;
 		display?: string;
 		mode?: 'show' | 'create' | 'update';
@@ -29,15 +17,32 @@ Currency field atom — formatted display in show mode, formatted input in edit.
 		id?: string;
 		name?: string;
 		form?: string;
-	}>();
+	}
+</script>
+
+<script lang="ts">
+	import { untrack } from 'svelte';
+	let {
+		value = $bindable<number | string | undefined>(),
+		display = undefined as string | undefined,
+		mode = 'show',
+		error = null as string | null,
+		currencySymbol = '$',
+		decimalPlaces = 2,
+		disabled = false,
+		id = undefined as string | undefined,
+		name = undefined as string | undefined,
+		form = undefined as string | undefined
+	}: FieldCurrencyProps = $props();
 
 	let inputValue = $state<string>('');
 
 	$effect(() => {
-		if (typeof value === 'number') {
-			untrack(() => { inputValue = value.toFixed(decimalPlaces); });
+		const currentValue = value;
+		if (typeof currentValue === 'number') {
+			untrack(() => { inputValue = currentValue.toFixed(decimalPlaces); });
 		} else {
-			untrack(() => { inputValue = String(value ?? ''); });
+			untrack(() => { inputValue = String(currentValue ?? ''); });
 		}
 	});
 

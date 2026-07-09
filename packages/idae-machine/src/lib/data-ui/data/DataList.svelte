@@ -26,50 +26,19 @@ Consumers can override via the dataRecord snippet.
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
 -->
-<script lang="ts" generics="COL extends Record<string, unknown>">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
-	import { untrack } from 'svelte';
 	import type { SortBy, TplCollectionName, ViewTypeCode, Where } from '$lib/types/index.js';
-	import { machine } from '$lib/main/machine.js';
-	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
-	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
-	import { getResultSet, type ResultSet } from '@medyll/qoolie';
-	import { useMachinePrefs, dataListPrefsScope, dataListPrefsDefaults } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
-	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
-	import { parseLink, type LinkString } from '$lib/main/frame/linkParser.js';
-	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
+	import type { LinkString } from '$lib/main/frame/linkParser.js';
 
-	interface PaginationInfo {
+	export interface PaginationInfo {
 		page: number;
 		pageSize: number;
 		total: number;
 		totalPages: number;
 	}
 
-	let {
-		collection,
-		where,
-		sortBy,
-		groupBy,
-		mode: modeProp = 'list',
-		view = 'full',
-		pageSize = 0,
-		page = 1,
-		infiniteScroll = true,
-		listClass,
-		groupClass,
-		link,
-		linkTarget,
-		linkVars,
-		linkCollectionField,
-		usePrefs = true,
-		prefsScope: prefsScopeProp,
-		crudMode = 'show',
-		dataRecord: dataRecordSnippet,
-		groupHeader: groupHeaderSnippet,
-		empty: emptySnippet,
-		footer: footerSnippet
-	}: {
+	export interface DataListProps<COL extends Record<string, unknown> = Record<string, unknown>> {
 		collection: string;
 		where?: Where<COL>;
 		sortBy?: SortBy | SortBy[];
@@ -103,7 +72,44 @@ Consumers can override via the dataRecord snippet.
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
-	} = $props();
+	}
+</script>
+
+<script lang="ts" generics="COL extends Record<string, unknown>">
+	import { untrack } from 'svelte';
+	import { machine } from '$lib/main/machine.js';
+	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
+	import { getResultSet, type ResultSet } from '@medyll/qoolie';
+	import { useMachinePrefs, dataListPrefsScope, dataListPrefsDefaults } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
+	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
+	import { parseLink } from '$lib/main/frame/linkParser.js';
+	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
+
+	let {
+		collection,
+		where,
+		sortBy,
+		groupBy,
+		mode: modeProp = 'list',
+		view = 'full',
+		pageSize = 0,
+		page = 1,
+		infiniteScroll = true,
+		listClass,
+		groupClass,
+		link,
+		linkTarget,
+		linkVars,
+		linkCollectionField,
+		usePrefs = true,
+		prefsScope: prefsScopeProp,
+		crudMode = 'show',
+		dataRecord: dataRecordSnippet,
+		groupHeader: groupHeaderSnippet,
+		empty: emptySnippet,
+		footer: footerSnippet
+	}: DataListProps<COL> = $props();
 
 	// Toolbar controls (Sort/Group/Find/ListMode) are externalised — compose
 	// them as siblings around <DataList>, keyed by the same collection/prefsScope.

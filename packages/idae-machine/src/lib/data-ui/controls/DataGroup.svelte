@@ -6,16 +6,20 @@ Click sets/clears groupBy.
 @prop {string} collection - Source collection name
 @prop {string|undefined} groupBy - Bindable group field name (FK field key)
 -->
+<script module lang="ts">
+	export interface DataGroupProps {
+		collection: string;
+		groupBy?: string | undefined;
+	}
+</script>
+
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 
 	let {
 		collection,
 		groupBy = $bindable(undefined)
-	}: {
-		collection: string;
-		groupBy?: string | undefined;
-	} = $props();
+	}: DataGroupProps = $props();
 
 	let open = $state(false);
 

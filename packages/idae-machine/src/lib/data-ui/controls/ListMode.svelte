@@ -8,6 +8,15 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 @prop {boolean} [usePrefs=true]
 @prop {Array<'list'|'table'|'grid'>} [modes] - which modes to offer
 -->
+<script module lang="ts">
+	export interface ListModeProps {
+		collection: string;
+		prefsScope?: string;
+		usePrefs?: boolean;
+		modes?: Array<'list' | 'table' | 'grid'>;
+	}
+</script>
+
 <script lang="ts">
 	import {
 		useMachinePrefs,
@@ -20,12 +29,7 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 		prefsScope,
 		usePrefs = true,
 		modes = ['list', 'table', 'grid']
-	}: {
-		collection: string;
-		prefsScope?: string;
-		usePrefs?: boolean;
-		modes?: Array<'list' | 'table' | 'grid'>;
-	} = $props();
+	}: ListModeProps = $props();
 
 	const scope = $derived(dataListPrefsScope(collection, prefsScope));
 	const prefs = useMachinePrefs(() => scope, dataListPrefsDefaults(), () => usePrefs);

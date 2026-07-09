@@ -15,11 +15,28 @@ Composable brick for toolbars (Fiche, lists…), main-menu tiles, and dock actio
 @prop {() => void} [afterRun] - callback fired after the framer dispatch
 @snippet children - custom button content (overrides label/icon)
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
+
+	export interface ButtonActionProps {
+		collection: string;
+		collectionId?: string | number;
+		frame: RegistryKey;
+		action?: 'loadFrame' | 'loadInDialog';
+		label?: string;
+		title?: string;
+		icon?: string;
+		vars?: Record<string, string>;
+		variant?: 'default' | 'primary' | 'tile';
+		afterRun?: () => void;
+		children?: Snippet;
+	}
+</script>
+
+<script lang="ts">
 	import Icon from '@iconify/svelte';
 	import { machine } from '$lib/main/machine.js';
-	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 	let {
 		collection,
@@ -33,19 +50,7 @@ Composable brick for toolbars (Fiche, lists…), main-menu tiles, and dock actio
 		variant = 'default',
 		afterRun,
 		children
-	}: {
-		collection: string;
-		collectionId?: string | number;
-		frame: RegistryKey;
-		action?: 'loadFrame' | 'loadInDialog';
-		label?: string;
-		title?: string;
-		icon?: string;
-		vars?: Record<string, string>;
-		variant?: 'default' | 'primary' | 'tile';
-		afterRun?: () => void;
-		children?: Snippet;
-	} = $props();
+	}: ButtonActionProps = $props();
 
 	function normalizeIcon(value: string | undefined, fallback = 'typcn:folder'): string {
 		if (!value) return fallback;

@@ -5,6 +5,20 @@ Email field atom. Show mode renders a mailto link.
 @prop {string} value - Current value (bindable)
 @prop {string} [error] - Error message
 -->
+<script module lang="ts">
+	export interface FieldEmailProps {
+		value?: string;
+		mode?: 'show' | 'create' | 'update';
+		error?: string | null;
+		required?: boolean;
+		disabled?: boolean;
+		id?: string;
+		name?: string;
+		form?: string;
+		oninput?: (e: Event) => void;
+	}
+</script>
+
 <script lang="ts">
 	let {
 		value = $bindable(),
@@ -16,17 +30,7 @@ Email field atom. Show mode renders a mailto link.
 		name = undefined as string | undefined,
 		form = undefined as string | undefined,
 		oninput = undefined as ((e: Event) => void) | undefined
-	} = $props<{
-		value?: string;
-		mode?: 'show' | 'create' | 'update';
-		error?: string | null;
-		required?: boolean;
-		disabled?: boolean;
-		id?: string;
-		name?: string;
-		form?: string;
-		oninput?: (e: Event) => void;
-	}>();
+	}: FieldEmailProps = $props();
 
 	function validateEmail(email: string): boolean {
 		if (!email && !required) return true;

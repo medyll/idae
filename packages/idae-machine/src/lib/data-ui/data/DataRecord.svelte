@@ -10,14 +10,32 @@ Iterates a record's fields and renders DataField for each.
 @prop {string} [view] - Named view (resolved via appscheme_view/appscheme_field query — see useViewFields)
 @prop {string} [groupFieldBy] - FK relation key on appscheme_field to group by (e.g. 'appscheme_field_type'); grouping runs on `fks.{groupFieldBy}.code` via native groupBy
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ViewTypeCode } from '$lib/types/index.js';
+
+	export interface DataRecordProps {
+		collection: string;
+		collectionId?: string | number;
+		data?: Record<string, any>;
+		mode?: 'show' | 'create' | 'update';
+		as?: 'fields' | 'row';
+		showFields?: string[];
+		view?: ViewTypeCode;
+		groupFieldBy?: string;
+		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
+		inputForm?: string;
+		showLabel?: boolean | string;
+		showGroupNames?: boolean;
+	}
+</script>
+
+<script lang="ts">
 	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
 	import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 	import { getContext } from 'svelte';
-	import type { ViewTypeCode } from '$lib/types/index.js';
 
 	let {
 		collection = getContext('collection'),
@@ -32,20 +50,7 @@ Iterates a record's fields and renders DataField for each.
 		inputForm,
 		showLabel = true,
 		showGroupNames = true
-	}: {
-		collection: string;
-		collectionId?: string | number;
-		data?: Record<string, any>;
-		mode?: 'show' | 'create' | 'update';
-		as?: 'fields' | 'row';
-		showFields?: string[];
-		view?: ViewTypeCode;
-		groupFieldBy?: string;
-		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
-		inputForm?: string;
-		showLabel?: boolean | string;
-		showGroupNames?: boolean;
-	} = $props();
+	}: DataRecordProps = $props();
 
 	// Data source contract (CLAUDE.md §4): `data` prop → controlled (e.g. DataList store
 	// items), used as-is; else `collectionId` → reactive read via machine.store (BL-24,

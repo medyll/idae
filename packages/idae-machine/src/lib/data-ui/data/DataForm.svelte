@@ -10,7 +10,19 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 @prop {string} [groupFieldBy] - FK relation key on appscheme_field to group fields by (e.g. 'appscheme_field_type')
 @prop {(payload: {mode: string; data: Record<string,unknown>}) => void} [onsubmit] - Submit callback
 -->
-<script lang="ts" generics="COL = Record<string, unknown>">
+<script module lang="ts">
+	export interface DataFormProps {
+		onsubmit?: (payload: { mode: string; data: Record<string, unknown> }) => void;
+		mode?: 'show' | 'create' | 'update';
+		collection: string;
+		data?: Record<string, unknown>;
+		dataId?: string | number;
+		withData?: Record<string, unknown>;
+		groupFieldBy?: string;
+	}
+</script>
+
+<script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 	import DataRecord from './DataRecord.svelte';
@@ -23,15 +35,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		dataId,
 		withData,
 		groupFieldBy
-	}: {
-		onsubmit?: (payload: { mode: string; data: Record<string, unknown> }) => void;
-		mode?: 'show' | 'create' | 'update';
-		collection: string;
-		data?: Record<string, unknown>;
-		dataId?: string | number;
-		withData?: Record<string, unknown>;
-		groupFieldBy?: string;
-	} = $props();
+	}: DataFormProps = $props();
 
 	const store = $derived(collection ? machine.collection(collection) : undefined);
 	const collLogic = $derived(collection ? safeCollection(collection) : null);

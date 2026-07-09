@@ -5,6 +5,17 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 @prop {string} value - Current value (bindable, iconify name)
 @prop {'xs'|'sm'|'md'|'lg'} [size] - Glyph size preset (maps to --icon-size-* tokens). Default 'sm'.
 -->
+<script module lang="ts">
+	export interface FieldIconProps {
+		value?: string;
+		mode?: 'show' | 'create' | 'update';
+		size?: 'xs' | 'sm' | 'md' | 'lg';
+		id?: string;
+		name?: string;
+		form?: string;
+	}
+</script>
+
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
@@ -15,14 +26,7 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 		id,
 		name,
 		form
-	}: {
-		value?: string;
-		mode?: 'show' | 'create' | 'update';
-		size?: 'xs' | 'sm' | 'md' | 'lg';
-		id?: string;
-		name?: string;
-		form?: string;
-	} = $props();
+	}: FieldIconProps = $props();
 </script>
 
 {#if mode === 'show'}

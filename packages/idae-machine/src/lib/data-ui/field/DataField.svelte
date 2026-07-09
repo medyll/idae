@@ -9,8 +9,21 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
 @prop {string} [inputForm] - Form id
 @prop {boolean|string} [showLabel] - Label visibility/position
 -->
-<script lang="ts" generics="COL extends Record<string,unknown>">
+<script module lang="ts">
     import type { TplCollectionName } from '$lib/types/index.js';
+
+    export interface DataFieldProps<COL extends Record<string, unknown> = Record<string, unknown>> {
+        collection?: TplCollectionName;
+        fieldName: keyof COL;
+        data: COL;
+        mode?: 'show' | 'create' | 'update';
+        // TODO: editInPlace — legacy app_field_update feature, planned for reimplementation
+        inputForm?: string;
+        showLabel?: boolean | string
+    }
+</script>
+
+<script lang="ts" generics="COL extends Record<string,unknown>">
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
     import { MachineRecordIdentity } from '$lib/main/index.js';
@@ -33,15 +46,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
         mode = 'show',
         inputForm,
         showLabel = true
-    }:{
-        collection?: TplCollectionName;
-        fieldName: keyof COL;
-        data: COL;
-        mode?: 'show' | 'create' | 'update';
-        // TODO: editInPlace — legacy app_field_update feature, planned for reimplementation
-        inputForm?: string;
-        showLabel?: boolean | string
-    } = $props();
+    }: DataFieldProps<COL> = $props();
 
     const scheme            = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
     const fieldForge        = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);

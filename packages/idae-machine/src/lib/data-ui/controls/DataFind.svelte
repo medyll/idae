@@ -9,6 +9,16 @@ v1: single field (defaultField). `advanced` flag reserved for later field picker
 @prop {boolean} [advanced=false] - Reserved: expose field picker + exact/partial mode toggle (TODO)
 @prop {number} [debounceMs=250] - Debounce delay for input → where
 -->
+<script module lang="ts">
+	export interface DataFindProps {
+		collection: string;
+		defaultField?: string;
+		where?: Record<string, unknown> | undefined;
+		advanced?: boolean;
+		debounceMs?: number;
+	}
+</script>
+
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import { machine } from '$lib/main/machine.js';
@@ -19,13 +29,7 @@ v1: single field (defaultField). `advanced` flag reserved for later field picker
 		where = $bindable(undefined),
 		advanced = false,
 		debounceMs = 250
-	}: {
-		collection: string;
-		defaultField?: string;
-		where?: Record<string, unknown> | undefined;
-		advanced?: boolean;
-		debounceMs?: number;
-	} = $props();
+	}: DataFindProps = $props();
 
 	let value = $state('');
 

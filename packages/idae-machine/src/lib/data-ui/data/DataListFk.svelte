@@ -9,6 +9,19 @@ Renders forward FK relations for a record as DataList sections.
 @prop {boolean} [usePrefs] - Use persisted user prefs (default: false)
 @prop {string} [prefsScope] - Custom prefs scope
 -->
+<script module lang="ts">
+	export interface DataListFkProps {
+		collection:  string;
+		collectionId?: string | number;
+		data?:       Record<string, unknown> | null;
+		fk?:         string;
+		showTitle?:  boolean;
+		usePrefs?:   boolean;
+		prefsScope?: string;
+		[key: string]: unknown;
+	}
+</script>
+
 <script lang="ts">
 	import DataList from './DataList.svelte';
 	import { machine } from '$lib/main/machine.js';
@@ -23,16 +36,7 @@ Renders forward FK relations for a record as DataList sections.
 		usePrefs   = false,
 		prefsScope,
 		...dataListProps
-	}: {
-		collection:  string;
-		collectionId?: string | number;
-		data?:       Record<string, unknown> | null;
-		fk?:         string;
-		showTitle?:  boolean;
-		usePrefs?:   boolean;
-		prefsScope?: string;
-		[key: string]: unknown;
-	} = $props();
+	}: DataListFkProps = $props();
 
 	const sourceStore = $derived(collection ? machine.store<Record<string, unknown>>(collection) : { records: [] as Record<string, unknown>[] });
 	const scheme      = $derived(collection ? machine.logic.collectionOr(collection, null) : null);

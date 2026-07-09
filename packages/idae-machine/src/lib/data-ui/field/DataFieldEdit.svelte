@@ -13,9 +13,23 @@ Svelte 5 in-place field edit/confirm
 @event confirm - Emitted on confirm
 @event cancel - Emitted on cancel
 -->
+<script module lang="ts">
+    import type { Snippet } from 'svelte';
+
+    export interface DataFieldEditProps {
+        collection: string;
+        field: string;
+        validate: () => void;
+        message?: string;
+        initial?: Snippet;
+        children?: Snippet;
+        confirm?: Snippet<[string]>;
+        cancel?: Snippet;
+    }
+</script>
+
 <script lang="ts">
     import Icon from '@iconify/svelte';
-    import type { Snippet } from 'svelte';
 
     // Destructuring props with default snippet values
     let {
@@ -28,16 +42,7 @@ Svelte 5 in-place field edit/confirm
         children,
         confirm,
         cancel
-    } = $props<{
-        collection: string;
-        field: string;
-        validate: () => void;
-        message?: string;
-        initial?: Snippet;
-        children?: Snippet;
-        confirm?: Snippet<[string]>;
-        cancel?: Snippet;
-    }>();
+    }: DataFieldEditProps = $props();
 
     let status = $state<'default' | 'show_confirm'>('default');
 

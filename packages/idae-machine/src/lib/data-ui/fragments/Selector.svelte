@@ -7,19 +7,24 @@ Selection list that renders items via snippet prop
 @prop {Snippet} item - Snippet for rendering an item (item, active)
 @snippet selectorFallback - Fallback snippet when values empty
 -->
-<script lang="ts">
+<script module lang="ts">
   import type { Snippet } from 'svelte';
+
+  export interface SelectorProps {
+    values?: unknown[];
+    value?: unknown;
+    item?: Snippet<[unknown, boolean]>;
+    selectorFallback?: Snippet;
+  }
+</script>
+
+<script lang="ts">
   let {
     values = [],
     value,
     item,
     selectorFallback
-  }: {
-    values?: unknown[];
-    value?: unknown;
-    item?: Snippet<[unknown, boolean]>;
-    selectorFallback?: Snippet;
-  } = $props();
+  }: SelectorProps = $props();
 </script>
 
 {#each values as valueO ((valueO as Record<string, unknown>)?.id ?? valueO)}
