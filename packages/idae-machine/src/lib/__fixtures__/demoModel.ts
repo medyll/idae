@@ -40,8 +40,8 @@ export const demoScheme: MachineModel = {
 			created_at:      field('date'),
 		},
 		fkRelations: {
-			category:        { code: 'category',        multiple: false, required: false },
-			location_office: { code: 'location_office', multiple: false, required: false },
+			category:        { code: 'category', required: false },
+			location_office: { code: 'location_office', required: false },
 		},
 		template: {
 			presentation: 'license_plate model brand year status',
@@ -116,8 +116,8 @@ export const demoScheme: MachineModel = {
 			status:        field('text'),
 		},
 		fkRelations: {
-			vehicle:  { code: 'vehicle',  required: true, multiple: false },
-			customer: { code: 'customer', required: true, multiple: false },
+			vehicle:  { code: 'vehicle',  required: true },
+			customer: { code: 'customer', required: true },
 		},
 		template: {
 			presentation: 'fks.vehicle.license_plate fks.customer.last_name start_date status',
@@ -170,7 +170,7 @@ export const demoScheme: MachineModel = {
 			notes:   field('text-lg'),
 		},
 		fkRelations: {
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: {
 			presentation: 'fks.vehicle.license_plate date type cost',

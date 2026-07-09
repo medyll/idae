@@ -170,8 +170,8 @@ export const jobberScheme: MachineModel = {
 			years: { type: 'number' },
 		},
 		fkRelations: {
-			profile: { code: 'profile', required: true, multiple: false },
-			skill:   { code: 'skill',   required: true, multiple: false },
+			profile: { code: 'profile', required: true },
+			skill:   { code: 'skill',   required: true },
 		},
 		template: { presentation: 'profile skill level' },
 	},
@@ -193,7 +193,7 @@ export const jobberScheme: MachineModel = {
 			job_count:     { type: 'number' },                   // postings extracted from this digest
 		},
 		fkRelations: {
-			job_source: { code: 'job_source', required: false, multiple: false },
+			job_source: { code: 'job_source', required: false },
 		},
 		template: { presentation: 'subject sender received_at' },
 	},
@@ -224,12 +224,12 @@ export const jobberScheme: MachineModel = {
 			notes:         { type: 'text-lg' },                  // user annotation
 		},
 		fkRelations: {
-			company:       { code: 'company',       required: false, multiple: false },
-			job_source:    { code: 'job_source',    required: false, multiple: false },
-			contract_type: { code: 'contract_type', required: false, multiple: false },
-			seniority:     { code: 'seniority',     required: false, multiple: false },
-			job_status:    { code: 'job_status',    required: true,  multiple: false },
-			email_message: { code: 'email_message', required: false, multiple: false },
+			company:       { code: 'company',       required: false },
+			job_source:    { code: 'job_source',    required: false },
+			contract_type: { code: 'contract_type', required: false },
+			seniority:     { code: 'seniority',     required: false },
+			job_status:    { code: 'job_status',    required: true },
+			email_message: { code: 'email_message', required: false },
 		},
 		template: { presentation: 'title company score job_status' },
 	},
@@ -247,9 +247,9 @@ export const jobberScheme: MachineModel = {
 			created_at: { type: 'datetime' },
 		},
 		fkRelations: {
-			job:          { code: 'job',          required: true,  multiple: false },
-			profile:      { code: 'profile',      required: false, multiple: false },
-			match_method: { code: 'match_method', required: false, multiple: false },
+			job:          { code: 'job',          required: true },
+			profile:      { code: 'profile',      required: false },
+			match_method: { code: 'match_method', required: false },
 		},
 		template: { presentation: 'job score match_method created_at' },
 	},
@@ -261,9 +261,9 @@ export const jobberScheme: MachineModel = {
 			code: { type: 'text', required: true },
 		},
 		fkRelations: {
-			job:        { code: 'job',        required: true,  multiple: false },
-			skill:      { code: 'skill',      required: true,  multiple: false },
-			skill_kind: { code: 'skill_kind', required: true,  multiple: false },  // required | matched | missing | detected
+			job:        { code: 'job',        required: true },
+			skill:      { code: 'skill',      required: true },
+			skill_kind: { code: 'skill_kind', required: true },  // required | matched | missing | detected
 		},
 		template: { presentation: 'job skill skill_kind' },
 	},
@@ -277,9 +277,9 @@ export const jobberScheme: MachineModel = {
 			note:       { type: 'text-lg' },
 		},
 		fkRelations: {
-			job:         { code: 'job',        required: true,  multiple: false },
-			event_type:  { code: 'event_type', required: true,  multiple: false },
-			new_status:  { code: 'job_status', required: false, multiple: false },  // for status_change events
+			job:         { code: 'job',        required: true },
+			event_type:  { code: 'event_type', required: true },
+			new_status:  { code: 'job_status', required: false },  // for status_change events
 		},
 		template: { presentation: 'at event_type job' },
 	},

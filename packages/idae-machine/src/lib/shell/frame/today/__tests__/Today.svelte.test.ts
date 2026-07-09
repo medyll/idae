@@ -22,7 +22,7 @@ const testCore: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' }
 		},
-		fkRelations: { appscheme_base: { code: 'appscheme_base', multiple: false, required: false } },
+		fkRelations: { appscheme_base: { code: 'appscheme_base', required: false } },
 		template: { presentation: 'name' }
 	},
 	appscheme_base: {
@@ -62,7 +62,7 @@ const businessScheme: MachineModel = {
 			dateDebut: { type: 'date' },
 			dateFin: { type: 'date' }
 		},
-		fkRelations: { appuser: { code: 'appuser', multiple: false, required: false } },
+		fkRelations: { appuser: { code: 'appuser', required: false } },
 		template: { presentation: 'code' },
 		rights: { public: ['L'] }
 	} as never
@@ -75,7 +75,7 @@ async function seedMenuFixtures(userId: string): Promise<void> {
 		name: 'Widget',
 		icon: '🔧',
 		fks: { appscheme_base: { code: 'tool' } },
-		fkRelations: { appuser: { code: 'appuser', multiple: false, required: false } }
+		fkRelations: { appuser: { code: 'appuser', required: false } }
 	});
 	// Seed create-zone pref so widget appears in Today's quick-create menu (new policy: unset = hidden)
 	await machine.collection('appuser_prefs').create({ code: `${userId}:app_menu_create.widget`, value: true });

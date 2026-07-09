@@ -28,8 +28,8 @@ const modelFromServer: MachineModel = {
 			created_at:   { type: 'date' },
 		},
 		fkRelations: {
-			category:        { code: 'category',        multiple: false },
-			location_office: { code: 'location_office', multiple: false },
+			category:        { code: 'category' },
+			location_office: { code: 'location_office' },
 		},
 		template: { presentation: 'license_plate model brand year status' },
 	},
@@ -59,8 +59,8 @@ const modelFromServer: MachineModel = {
 			status:       { type: 'text' },
 		},
 		fkRelations: {
-			vehicle:  { code: 'vehicle',  multiple: false, required: true },
-			customer: { code: 'customer', multiple: false, required: true },
+			vehicle:  { code: 'vehicle', required: true },
+			customer: { code: 'customer', required: true },
 		},
 		template: { presentation: 'fks.vehicle.license_plate fks.customer.last_name start_date status' },
 	},

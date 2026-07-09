@@ -66,7 +66,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			location_office: { code: 'location_office', multiple: false },
+			location_office: { code: 'location_office' },
 		},
 		template: { presentation: 'first_name last_name email status' },
 	},
@@ -89,8 +89,8 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			category:        { code: 'category',        multiple: false },
-			location_office: { code: 'location_office', multiple: false },
+			category:        { code: 'category' },
+			location_office: { code: 'location_office' },
 		},
 		template: { presentation: 'license_plate brand model year status' },
 	},
@@ -107,8 +107,8 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle:  { code: 'vehicle',  multiple: false, required: true },
-			supplier: { code: 'supplier', multiple: false, required: true },
+			vehicle:  { code: 'vehicle', required: true },
+			supplier: { code: 'supplier', required: true },
 		},
 		template: { presentation: 'acquisition_date purchase_price invoice_ref' },
 	},
@@ -127,7 +127,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle: { code: 'vehicle', multiple: false, required: true },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'provider policy_number expires_at status' },
 	},
@@ -145,7 +145,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'date type status cost' },
 	},
@@ -162,7 +162,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'date liters cost mileage' },
 	},
@@ -201,7 +201,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			category: { code: 'category', required: true, multiple: false },
+			category: { code: 'category', required: true },
 		},
 		template: { presentation: 'season_code price_per_day category' },
 	},
@@ -223,9 +223,9 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle:  { code: 'vehicle',  required: true, multiple: false },
-			customer: { code: 'customer', required: true, multiple: false },
-			seller:   { code: 'seller',   required: false, multiple: false },
+			vehicle:  { code: 'vehicle',  required: true },
+			customer: { code: 'customer', required: true },
+			seller:   { code: 'seller',   required: false },
 		},
 		template: { presentation: 'start_date status price_per_day total_price' },
 	},
@@ -244,8 +244,8 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			rental:  { code: 'rental',  required: true, multiple: false },
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			rental:  { code: 'rental',  required: true },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'reported_at status estimated_cost description' },
 	},
@@ -269,7 +269,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			seller: { code: 'seller', multiple: false },
+			seller: { code: 'seller' },
 		},
 		template: { presentation: 'last_name first_name status source' },
 	},
@@ -288,9 +288,9 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			seller:   { code: 'seller',   required: true,  multiple: false },
-			lead:     { code: 'lead',     required: false, multiple: false },
-			customer: { code: 'customer', required: false, multiple: false },
+			seller:   { code: 'seller',   required: true },
+			lead:     { code: 'lead',     required: false },
+			customer: { code: 'customer', required: false },
 		},
 		template: { presentation: 'title type priority status due_date' },
 	},

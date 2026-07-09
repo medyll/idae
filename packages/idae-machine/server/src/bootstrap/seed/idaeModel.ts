@@ -43,12 +43,11 @@ function buildCollection(decl: Record<string, unknown>): MachineCollectionModel 
 		fields[name] = buildField(name, rules);
 	}
 
-	const declFks = (decl.fkRelations ?? {}) as Record<string, { code?: string; multiple?: boolean; required?: boolean }>;
+	const declFks = (decl.fkRelations ?? {}) as Record<string, { code?: string; required?: boolean }>;
 	const fkRelations: Record<string, MachineFkDef> = {};
 	for (const [fkKey, fkDef] of Object.entries(declFks)) {
 		fkRelations[fkKey] = {
 			code:     fkDef.code ?? fkKey,
-			multiple: fkDef.multiple ?? false,
 			required: !!fkDef.required,
 		};
 	}

@@ -26,7 +26,7 @@ export const aiCatalogScheme: MachineModel = {
       is_active:      { type: 'boolean' },
     },
     fkRelations: {
-      ai_provider: { code: 'ai_provider', multiple: false, required: true },
+      ai_provider: { code: 'ai_provider', required: true },
     },
     template: { presentation: 'name ai_provider supports_tools' },
   },

@@ -13,10 +13,9 @@ export const aiMessageScheme: MachineModel = {
       collectionId:  { type: 'text' },
     },
     fkRelations: {
-      ai_chat_session: { code: 'ai_chat_session', multiple: false, required: true },
-      ai_model:        { code: 'ai_model',        multiple: false, required: false },
-      ai_message_status: { code: 'ai_message_status', multiple: false, required: false },
-      ai_tool_call:    { code: 'ai_tool_call',    multiple: true,  required: false },
+      ai_chat_session: { code: 'ai_chat_session', required: true },
+      ai_model:        { code: 'ai_model', required: false },
+      ai_message_status: { code: 'ai_message_status', required: false },
     },
     template: { presentation: 'role content ai_message_status' },
   },

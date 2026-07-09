@@ -60,7 +60,7 @@ describe('Machine Error Paths', () => {
 							fk_field: 'fk-missing_collection.id' // Collection doesn't exist
 						},
 					fks: {
-							missing_collection: { code: 'missing_collection', multiple: false }
+							missing_collection: { code: 'missing_collection' }
 						},
 					template: { presentation: 'fk_field' }
 				}

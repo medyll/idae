@@ -1,6 +1,5 @@
 export type { SortBy } from '$lib/types/index.js';
 import type { SortBy } from '$lib/types/index.js';
-import { parseFkKey } from '$lib/data-ui/utils/dataRelationUtils.js';
 
 export function sortItems<T extends Record<string, unknown>>(
 	items: T[],
@@ -82,12 +81,8 @@ function fkEntryLabel(o: Record<string, unknown>): string {
 }
 
 /**
- * Label for an FK relation stored as a nested object on the record under `fks`.
- *
- * Supports two storage shapes:
- *   - legacy bare key:   `fks.<key>      = { id, code, name }`
- *   - suffixed key(s):   `fks.<key>_<id> = { id, code, name }` (one per reference;
- *                        multiple references → labels joined with ', ')
+ * Label for a FK relation stored as a nested object on the record under `fks`.
+ * A FK is always single (UNMULTIPLE.md) — the bag key is the bare field name.
  *
  * Returns undefined when the relation is not stored as a nested object
  * (e.g. flat code values that need a store lookup).
@@ -96,17 +91,7 @@ export function fkObjectLabel(item: Record<string, unknown>, fkKey: string): str
 	const bag = item.fks as Record<string, unknown> | undefined;
 	if (!bag || typeof bag !== 'object') return undefined;
 
-	// Legacy bare key first (backward-compat).
-	const bare = bag[fkKey];
-	if (bare && typeof bare === 'object') return fkEntryLabel(bare as Record<string, unknown>);
-
-	// Suffixed convention: collect every flat `fks.<fkKey>_<id>` snapshot.
-	const labels: string[] = [];
-	for (const key of Object.keys(bag)) {
-		const { baseName, refId } = parseFkKey(key);
-		if (!refId || baseName !== fkKey) continue;
-		const entry = bag[key];
-		if (entry && typeof entry === 'object') labels.push(fkEntryLabel(entry as Record<string, unknown>));
-	}
-	return labels.length ? labels.join(', ') : undefined;
+	const entry = bag[fkKey];
+	if (entry && typeof entry === 'object') return fkEntryLabel(entry as Record<string, unknown>);
+	return undefined;
 }

@@ -11,9 +11,9 @@ export const aiToolCallScheme: MachineModel = {
       error:         { type: 'text' },
     },
     fkRelations: {
-      ai_message:        { code: 'ai_message',        multiple: false, required: true },
-      ai_tool:           { code: 'ai_tool',           multiple: false, required: true },
-      ai_tool_call_status: { code: 'ai_tool_call_status', multiple: false, required: false },
+      ai_message:        { code: 'ai_message', required: true },
+      ai_tool:           { code: 'ai_tool', required: true },
+      ai_tool_call_status: { code: 'ai_tool_call_status', required: false },
     },
     template: { presentation: 'ai_tool ai_tool_call_status' },
   },

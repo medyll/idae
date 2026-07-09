@@ -20,16 +20,16 @@ const testCore: MachineModel = {
 	appscheme_field: {
 		keyPath: '++id', base: 'machine_app', model: {},
 		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
-		fkRelations: { appscheme_field_type: { code: 'appscheme_field_type', multiple: false, required: true } },
+		fkRelations: { appscheme_field_type: { code: 'appscheme_field_type', required: true } },
 		template: { presentation: 'code' }
 	},
 	appscheme_view: {
 		keyPath: '++id', base: 'machine_app', model: {},
 		fields: { id: { type: 'id', readonly: true }, code: { type: 'text', required: true } },
 		fkRelations: {
-			appscheme:           { code: 'appscheme',           multiple: false, required: true },
-			appscheme_view_type: { code: 'appscheme_view_type', multiple: false, required: true },
-			appscheme_field:     { code: 'appscheme_field',     multiple: false, required: true }
+			appscheme:           { code: 'appscheme', required: true },
+			appscheme_view_type: { code: 'appscheme_view_type', required: true },
+			appscheme_field:     { code: 'appscheme_field', required: true }
 		},
 		template: { presentation: 'fks.appscheme.code fks.appscheme_view_type.code fks.appscheme_field.code' }
 	}

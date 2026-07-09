@@ -38,7 +38,7 @@ export const masterScheme: MachineModel = {
 			notes:            { type: 'text-lg' },
 		},
 		fkRelations: {
-			org: { code: 'org', multiple: false, required: true },
+			org: { code: 'org', required: true },
 		},
 		template: { presentation: 'name version collection_count status' },
 	},
@@ -57,7 +57,7 @@ export const masterScheme: MachineModel = {
 			is_status:    { type: 'boolean' },
 		},
 		fkRelations: {
-			model: { code: 'model', multiple: false, required: true },
+			model: { code: 'model', required: true },
 		},
 		template: { presentation: 'code base field_count fk_count' },
 	},

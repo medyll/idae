@@ -16,11 +16,22 @@ export const aiChatSessionScheme: MachineModel = {
       token_count:   { type: 'number' },
     },
     fkRelations: {
-      ai_companion:           { code: 'ai_companion',           multiple: false, required: true },
-      ai_model:               { code: 'ai_model',               multiple: false, required: false },
-      ai_chat_session_status: { code: 'ai_chat_session_status', multiple: false, required: false },
-      tag:                    { code: 'tag',                    multiple: true,  required: false },
+      ai_companion:           { code: 'ai_companion', required: true },
+      ai_model:               { code: 'ai_model', required: false },
+      ai_chat_session_status: { code: 'ai_chat_session_status', required: false },
     },
     template: { presentation: 'title ai_chat_session_status code' },
+  },
+  ai_chat_session_has_tag: {
+    keyPath: '++id', base: 'machine_ai',
+    fields: {
+      id:   { type: 'id', readonly: true },
+      code: { type: 'text', required: true },
+    },
+    fkRelations: {
+      ai_chat_session: { code: 'ai_chat_session', required: true },
+      tag:             { code: 'tag', required: true },
+    },
+    template: { presentation: 'fks.ai_chat_session.code fks.tag.code' },
   },
 }

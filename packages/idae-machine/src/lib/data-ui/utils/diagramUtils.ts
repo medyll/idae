@@ -129,7 +129,6 @@ export async function buildGraph(
 					relationKey: rel.key,
 					direction:   dir,
 					fieldName:   rel.fieldName,
-					multiple:    rel.fkDef.multiple,
 				});
 
 				if (!visited.has(nodeId)) {

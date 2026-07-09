@@ -49,11 +49,11 @@ export interface ImageFieldDef extends BaseFieldDef {
 export type MachineFieldDef = BaseFieldDef | ImageFieldDef;
 
 // ── FK definition ─────────────────────────────────────────────────────────────
+// A FK is always single (UNMULTIPLE.md, 2026-07-06 — user law). N-N needs a
+// junction collection (`X_has_Y`, two single FKs), never a `multiple` flag.
 export interface MachineFkDef {
 	/** Target collection code */
 	code:      string;
-	/** Allow selecting multiple records */
-	multiple:  boolean;
 	required?: boolean;
 }
 
@@ -228,7 +228,6 @@ export interface DiagramEdge {
 	relationKey: string;
 	direction:   'forward' | 'reverse';
 	fieldName:   string;
-	multiple:    boolean;
 }
 
 export interface DiagramGraph {

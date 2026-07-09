@@ -22,7 +22,7 @@ const model: MachineModel = {
 			categoryId:    { type: 'fk-category.id' },
 		},
 		fkRelations: {
-			category: { code: 'category', multiple: false },
+			category: { code: 'category' },
 		},
 		template: { presentation: 'license_plate brand' },
 	},

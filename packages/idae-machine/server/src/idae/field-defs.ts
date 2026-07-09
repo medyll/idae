@@ -7225,7 +7225,6 @@ export interface FkRef {
 	icon:     string;
 	color:    string;
 	order:    number;
-	multiple: boolean;
 	required: boolean;
 }
 
@@ -7241,7 +7240,6 @@ export function buildFkRef(overrides: { id: number; code: string; name: string }
 		icon:     overrides.icon ?? 'link',
 		color:    overrides.color ?? '#888',
 		order:    overrides.order ?? 0,
-		multiple: overrides.multiple ?? false,
 		required: overrides.required ?? false,
 	};
 }

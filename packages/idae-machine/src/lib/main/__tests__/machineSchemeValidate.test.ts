@@ -228,12 +228,12 @@ describe('MachineSchemeValidate - FK required', () => {
 		expect(out.invalidFields).not.toContain('category');
 	});
 
-	it('nested fks.{relation}_{id} value satisfies required check', async () => {
+	it('legacy suffixed fks.{relation}_{id} key does not satisfy required check — FK is always single', async () => {
 		const db = await createVehicleDb();
 		const validator = db.collection('vehicle').validator;
 		const out = await validator.validateForm({ name: 'X', fks: { category_42: {} } } as any);
-		expect(out.isValid).toBe(true);
-		expect(out.invalidFields).not.toContain('category');
+		expect(out.isValid).toBe(false);
+		expect(out.invalidFields).toContain('category');
 	});
 
 	it('nested fks.{relation} object value satisfies required check', async () => {

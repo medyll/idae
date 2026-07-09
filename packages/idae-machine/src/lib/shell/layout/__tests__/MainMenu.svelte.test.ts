@@ -22,7 +22,7 @@ const testCore: MachineModel = {
 			color: { type: 'text' },
 			icon: { type: 'text' }
 		},
-		fkRelations: { appscheme_base: { code: 'appscheme_base', multiple: false, required: false } },
+		fkRelations: { appscheme_base: { code: 'appscheme_base', required: false } },
 		template: { presentation: 'name' }
 	},
 	appscheme_base: {
