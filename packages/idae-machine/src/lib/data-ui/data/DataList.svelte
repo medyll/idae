@@ -8,7 +8,7 @@ Consumers can override via the dataRecord snippet.
 @prop {Where<COL>} [where]
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
-@prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
+@prop {'list'|'table'|'grid'|'accordion'} [mode='list'] - Visual layout mode. Accordion: header = template.presentation, collapsible body = DataRecord ({view}).
 @prop {string} [view='full'] - Named view driving the field list (resolved query-side via appscheme_view/appscheme_field)
 @prop {string} [linkTarget] - Zone / frameId to target for navigation (overrides zone from link)
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
@@ -22,7 +22,7 @@ Consumers can override via the dataRecord snippet.
   as="row" structural layout, crudMode still applies). Payload IS DataRecord's prop set
   (BL-21) — spread straight into `<DataRecord {...props} />` rather than unwrapping an
   `{ item, record, records }` wrapper.
-@snippet groupHeader({ key, count }) - renders group section header (optional)
+@snippet dataListHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
 -->
@@ -43,7 +43,7 @@ Consumers can override via the dataRecord snippet.
 		where?: Where<COL>;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
-		mode?: 'list' | 'table' | 'grid';
+		mode?: 'list' | 'table' | 'grid' | 'accordion';
 		view?: ViewTypeCode;
 		pageSize?: number;
 		page?: number;
@@ -69,7 +69,7 @@ Consumers can override via the dataRecord snippet.
 			view: string;
 			idx: number;
 		}]>;
-		groupHeader?: Snippet<[{ key: string; count: number }]>;
+		dataListHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
 	}
@@ -106,7 +106,7 @@ Consumers can override via the dataRecord snippet.
 		prefsScope: prefsScopeProp,
 		crudMode = 'show',
 		dataRecord: dataRecordSnippet,
-		groupHeader: groupHeaderSnippet,
+		dataListHeader: groupHeaderSnippet,
 		empty: emptySnippet,
 		footer: footerSnippet
 	}: DataListProps<COL> = $props();
@@ -157,7 +157,7 @@ Consumers can override via the dataRecord snippet.
 
 	const parsedLink = $derived(link ? parseLink(link) : null);
 
-	function normalizeListClass(currentMode: 'list' | 'table' | 'grid', customClass?: string): string | undefined {
+	function normalizeListClass(currentMode: 'list' | 'table' | 'grid' | 'accordion', customClass?: string): string | undefined {
 		if (currentMode !== 'list') return customClass;
 		if (!customClass) return 'list list-stack';
 		const classes = customClass.split(/\s+/).filter(Boolean);
@@ -335,8 +335,62 @@ Consumers can override via the dataRecord snippet.
 	</svelte:element>
 {/snippet}
 
+{#snippet renderAccordionItem(record: COL, idx: number)}
+	{@const rec = record as Record<string, unknown>}
+	<li data-contextual={`collection=${collection}&collectionId=${rec[indexField]}`}>
+		<details class="accordion-item">
+			<summary class="accordion-summary">
+				<span class="accordion-title">{renderPresentation(rec) || String(rec[indexField] ?? '—')}</span>
+				<span class="accordion-chevron" aria-hidden="true">⌄</span>
+			</summary>
+			<div class="accordion-body">
+				{#if dataRecordSnippet}
+					{@render dataRecordSnippet({
+						collection,
+						collectionId: record?.id as number,
+						data: record as COL,
+						mode: crudMode,
+						view,
+						idx
+					})}
+				{:else}
+					<DataRecord {collection} data={rec} mode={crudMode} {view} />
+				{/if}
+			</div>
+		</details>
+	</li>
+{/snippet}
+
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
+{:else if currentMode === 'accordion'}
+	{#if groups}
+		{#each Array.from(groups) as [key, groupItems] (key)}
+			<div class={groupClass ?? 'data-list-group'}>
+				<div class="data-list-group-header">
+					{@render renderGroupHeader(key, groupItems.length)}
+				</div>
+				<ul class="accordion-list" role="list">
+					{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
+						{@render renderAccordionItem(record as COL, idx)}
+					{/each}
+				</ul>
+			</div>
+		{/each}
+	{:else}
+		<ul class="accordion-list" role="list">
+			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+				{@render renderAccordionItem(record as COL, idx)}
+			{/each}
+			{#if !paginatedItems.length}
+				{#if emptySnippet}
+					{@render emptySnippet()}
+				{:else}
+					<li class="data-list-empty">—</li>
+				{/if}
+			{/if}
+		</ul>
+	{/if}
 {:else if currentMode === 'table'}
 	<table class="data-table">
 		<thead>
@@ -488,6 +542,52 @@ Consumers can override via the dataRecord snippet.
 			display: block;
 			width: 100%;
 			cursor: pointer;
+		}
+		.accordion-list {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-sm);
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		.accordion-item {
+			background: var(--color-surface-raised);
+			border: var(--border-width) solid var(--color-border);
+			border-radius: var(--radius-md);
+			overflow: hidden;
+
+			& > .accordion-summary {
+				display: flex;
+				align-items: center;
+				gap: var(--gutter-sm);
+				padding: var(--pad-md);
+				cursor: pointer;
+				list-style: none;
+				user-select: none;
+
+				&::-webkit-details-marker { display: none; }
+				&:hover { background: var(--color-surface-hover); }
+				&:focus-visible { outline: var(--border-width) solid var(--color-primary); outline-offset: calc(-1 * var(--border-width)); }
+			}
+			& .accordion-title {
+				flex: 1;
+				min-width: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			& .accordion-chevron {
+				color: var(--color-text-muted);
+				transition: var(--transition-normal);
+			}
+			&[open] > .accordion-summary .accordion-chevron {
+				rotate: 180deg;
+			}
+			& .accordion-body {
+				padding: var(--pad-md);
+				border-top: var(--border-width) solid var(--color-border);
+			}
 		}
 		:global(.data-list-sentinel) {
 			height: 1px;

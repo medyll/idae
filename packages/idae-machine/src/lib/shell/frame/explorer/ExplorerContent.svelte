@@ -10,7 +10,16 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 	import Columner from '$lib/shell/layout/Columner.svelte';
 	import type { SortBy, Where } from '$lib/types/index.js';
 
-	type ViewMode = 'list' | 'table' | 'grid' | 'column';
+	type ViewMode = 'list' | 'table' | 'grid' | 'column' | 'accordion';
+	type ViewModeOption = { mode: ViewMode; icon: string; title: string };
+
+	const viewModes: ViewModeOption[] = [
+		{ mode: 'list', icon: '☰', title: 'List' },
+		{ mode: 'table', icon: '⊞', title: 'Table' },
+		{ mode: 'grid', icon: '⊟', title: 'Grid' },
+		{ mode: 'column', icon: '⫴', title: 'Column' },
+		{ mode: 'accordion', icon: '⫴', title: 'Accordion' }
+	];
 
 	let {
 		collection,
@@ -33,17 +42,24 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 
 <explorer-content>
 	<explorer-toolbar>
-		<button class:active={viewMode === 'list'}   onclick={() => (viewMode = 'list')}   title="List">☰</button>
-		<button class:active={viewMode === 'table'}  onclick={() => (viewMode = 'table')}  title="Table">⊞</button>
-		<button class:active={viewMode === 'grid'}   onclick={() => (viewMode = 'grid')}   title="Grid">⊟</button>
-		<button class:active={viewMode === 'column'} onclick={() => (viewMode = 'column')} title="Column">⫴</button>
+		{#each viewModes as view}
+			<button
+				class:active={view.mode === viewMode}
+				onclick={() => (viewMode = view.mode)}
+				title={view.title}>{view.icon}</button
+			>
+		{/each}
 	</explorer-toolbar>
 
 	<explorer-body>
 		{#if viewMode === 'column'}
 			<Columner
 				{collection}
-				componentProps={{ link: 'loadIn:record', listClass: 'list list-grid', groupClass: 'explorer-group' }}
+				componentProps={{
+					link: 'loadIn:record',
+					listClass: 'list list-grid',
+					groupClass: 'explorer-group'
+				}}
 			/>
 		{:else}
 			<DataList
@@ -57,7 +73,7 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 				listClass="list list-grid"
 				groupClass="explorer-group"
 			>
-				{#snippet groupHeader({ key })}
+				{#snippet dataListHeader({ key })}
 					<header class="section-header section-header-bordered">
 						<h3>{key}</h3>
 					</header>
@@ -80,7 +96,7 @@ Loadable into an Explorer zone via loadIn (sidebar collection click).
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		overflow: hidden;
+		overflow: auto;
 	}
 
 	explorer-toolbar {

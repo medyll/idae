@@ -6,14 +6,14 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 @prop {string} collection
 @prop {string} [prefsScope] - override scope (must match the DataList's)
 @prop {boolean} [usePrefs=true]
-@prop {Array<'list'|'table'|'grid'>} [modes] - which modes to offer
+@prop {Array<'list'|'table'|'grid'|'accordion'>} [modes] - which modes to offer
 -->
 <script module lang="ts">
 	export interface ListModeProps {
 		collection: string;
 		prefsScope?: string;
 		usePrefs?: boolean;
-		modes?: Array<'list' | 'table' | 'grid'>;
+		modes?: Array<'list' | 'table' | 'grid' | 'accordion'>;
 	}
 </script>
 
@@ -28,7 +28,7 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 		collection,
 		prefsScope,
 		usePrefs = true,
-		modes = ['list', 'table', 'grid']
+		modes = ['list', 'table', 'grid', 'accordion']
 	}: ListModeProps = $props();
 
 	const scope = $derived(dataListPrefsScope(collection, prefsScope));

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import "../app.css";
 	import { machine } from '$lib/main/machine.js';
+	import { frameCatalog } from '$lib/idae/boot.js';
 	import { App } from '$lib/shell/layout/index.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import { API_URL } from '$lib/config.js';
@@ -28,6 +29,9 @@
 		// login dialog handle org selection. The reload after login will carry idae_org.
 		if (!org) {
 			console.log('[idae-machine] No org, skipping boot');
+			// Login dialog still needs the frame registry (loadInDialog('login', ...))
+			// even though full boot() — which normally does this — never runs here.
+			frameCatalog.registerFrames(machine.componentRegistry);
 			booted = true;
 			return;
 		}
