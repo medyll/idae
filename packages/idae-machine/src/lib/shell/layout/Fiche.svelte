@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DataRecord } from '$lib/index.js';
-	import FicheToolbar from './FicheToolbar.svelte';
+	import RecordToolbar from './RecordToolbar.svelte';
 	let {
 		collection,
 		collectionId
@@ -12,15 +12,15 @@
 
 <fiche-component>
 	<fiche-header>
-		<FicheToolbar {collection} {collectionId} />
+		<RecordToolbar {collection} {collectionId} />
 	</fiche-header>
 	<fiche-zone>
 		<sidebar-info>
 			<DataRecord {collection} {collectionId} showFields={['icon']} showLabel={false} />
         </sidebar-info>
 		<zone-main-half>
-			<div><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></div>
-			<info-bar-right> 
+			<zone-main-fields><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></zone-main-fields>
+			<info-bar-right>
 				<DataRecord {collection} {collectionId} view="fk" />
 			</info-bar-right>
 		</zone-main-half>
@@ -64,6 +64,15 @@
 			flex: 1;
 			min-width: 0;
 			gap: var(--gutter-md);
+		}
+
+		/* was a bare <div> with no flex-grow — zone-main-half's flex children
+		   default to shrink-to-fit, so the grouped fields never stretched,
+		   leaving a dead gap before info-bar-right. */
+		:global(zone-main-fields) {
+			display: block;
+			flex: 1;
+			min-width: 0;
 		}
 
 		:global(info-bar-right) {

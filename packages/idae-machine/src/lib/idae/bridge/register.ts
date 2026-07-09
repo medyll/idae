@@ -8,7 +8,7 @@ import {
 	registerMetaCollectionResolver,
 	registerCodeFieldConvention,
 	registerGrantDecoder
-} from '$lib/machine/ext/hooks.js';
+} from '$lib/main/ext/hooks.js';
 import type { IdaeRelationPolicy } from '$lib/idae/relations/RelationPolicy.js';
 import type { IdaeMetaModelProvider } from '$lib/idae/meta/MetaModelProvider.js';
 import type { IdaeRightsPolicy } from '$lib/idae/rights/RightsPolicy.js';

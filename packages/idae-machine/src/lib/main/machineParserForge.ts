@@ -69,7 +69,10 @@ export class MachineParserForge {
 		what: 'array' | 'object' | 'fk' | 'primitive',
 		rule: MachineFieldDef
 	): Partial<IDbForge> | undefined {
-		const type = rule.type;
+		// Fallback mirrors publishModel.ts's `fd.type ?? 'text'` — type is resolved
+		// catalog-first server-side (FieldList, ADR-field-type-source.md); a bare
+		// `{ required, readonly }` field (core convention) has no type here either.
+		const type = rule.type ?? 'text';
 		const isArray     = type.startsWith('array-of-');
 		const isObject    = type.startsWith('object-');
 		const isFk        = type.startsWith('fk-');

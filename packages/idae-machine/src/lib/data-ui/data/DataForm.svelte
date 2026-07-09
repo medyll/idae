@@ -90,10 +90,10 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		try {
 			let writtenId: unknown = dataId;
 			if (mode === 'create' && !dataId) {
-				const created = await store?.create({ ...snapshot, ...withData }) as Record<string, unknown> | undefined;
+				const created = await machine.action(collection, { ...snapshot, ...withData });
 				writtenId = created?.id ?? (snapshot as Record<string, unknown>).id;
 			} else if (mode === 'update' && dataId) {
-				await store?.update(dataId, snapshot);
+				await machine.action(collection, snapshot, { upsertOn: ['id'] });
 			}
 
 			void machine.action('appuser_activity', {

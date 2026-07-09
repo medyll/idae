@@ -5,4 +5,5 @@ export { default as Synthesis } from './synthesis/Synthesis.svelte';
 export { default as RbacMatrix } from './rbac/RbacMatrix.svelte';
 export { default as Diagram } from './diagram/Diagram.svelte';
 export { default as Dashboard } from './dashboard/Dashboard.svelte';
+export { default as Today } from './today/Today.svelte';
 export { default as Space } from './space/Space.svelte';

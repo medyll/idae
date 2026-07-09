@@ -55,6 +55,7 @@ export class MachineFrameManager {
 	private _pushFn?: (url: string) => void;
 	private _onNavigate?: (e: NavigationEvent) => void;
 	private _labelResolver?: LabelResolver;
+	private _contextMenuMounted = false;
 
 	/** Injected by machine at init — enables URL-based navigation from framer. */
 	setRouter(pushFn: (url: string) => void): void {
@@ -164,6 +165,38 @@ export class MachineFrameManager {
 	}
 
 	/**
+	 * Open the global context menu for (collection, collectionId) at the given page position.
+	 * Mounts the singleton <ContextMenu> host into document.body on first use.
+	 */
+	openContextMenu(
+		collection: string,
+		collectionId: string | number,
+		vars: Record<string, string> = {},
+		x = 0,
+		y = 0
+	): void {
+		this.#ensureContextMenuMounted().then(() => {
+			import('$lib/data-ui/fragments/contextMenu.svelte.js').then(({ openContextMenu }) => {
+				openContextMenu(collection, collectionId, vars, x, y);
+			});
+		});
+	}
+
+	/** Close the global context menu, if open. */
+	closeContextMenu(): void {
+		import('$lib/data-ui/fragments/contextMenu.svelte.js').then(({ closeContextMenu }) => {
+			closeContextMenu();
+		});
+	}
+
+	async #ensureContextMenuMounted(): Promise<void> {
+		if (this._contextMenuMounted || typeof document === 'undefined') return;
+		this._contextMenuMounted = true;
+		const ContextMenu = (await import('$lib/data-ui/fragments/ContextMenu.svelte')).default;
+		mount(ContextMenu as Component<Record<string, unknown>>, { target: document.body });
+	}
+
+	/**
 	 * URL-based navigation — pushes hash URL via router.
 	 * Back/forward, deep links, refresh all work by construction.
 	 */
@@ -216,14 +249,19 @@ export class MachineFrameManager {
 		// Already open → focus the existing dialog, don't reload/duplicate.
 		const existing = this.registry.get(frameId);
 		if (existing) {
+			console.log(`[FrameManager] loadInDialog: focusing existing dialog`);
 			existing.show();
 			existing.focus?.();
 			return;
 		}
+		console.log(`[FrameManager] loadInDialog: loading new dialog`);
 		await this.load(frameId, modulePath, collection, collectionId, vars, async (id) => {
+			console.log(`[FrameManager] loadInDialog: opening dialog ${id}`);
 			const { openDialog } = await import('$lib/data-ui/fragments/dialog/dialog.svelte.js');
 			openDialog({ id, ...opts });
+			console.log(`[FrameManager] loadInDialog: dialog opened`);
 		});
+		console.log(`[FrameManager] loadInDialog: completed`);
 	}
 
 	/**

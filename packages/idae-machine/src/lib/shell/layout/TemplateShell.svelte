@@ -38,9 +38,11 @@
 		</div>
 	</main>
 
-	<!-- Right bar  -->
-	<aside class="shell-right" aria-hidden="true"  data-collection={collection} data-collection-id={collectionId}>
-			{@render rightBar?.()}
-	</aside>
+	<!-- Right bar (optional) -->
+	{#if rightBar}
+		<aside class="shell-right" data-collection={collection} data-collection-id={collectionId}>
+			{@render rightBar()}
+		</aside>
+	{/if}
 
 </div>

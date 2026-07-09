@@ -4,6 +4,8 @@
 	import DataListRfk from '$lib/data-ui/data/DataListRfk.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import RecordToolbar from '$lib/shell/layout/RecordToolbar.svelte';
+	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
 
 	let {
 		collection,
@@ -23,7 +25,7 @@
 	}
 
 	const store = $derived(machine.store<Record<string, unknown>>(collection));
-	const record = $derived(store.records.find((r) => String(r.id) === String(collectionId)) ?? null);
+	const record = $derived(store.records.find((r) => String(r.id) === String(collectionId)) ?? {});
 	const scheme = $derived(safeScheme(collection));
 	const presentation = $derived(
 		(scheme as { template?: { presentation?: string } } | null)?.template?.presentation ?? ''
@@ -55,8 +57,19 @@
 		}))
 	);
 
-	let activeTab = $state<'sheet' | 'synthesis' | 'edit' | 'full'>('sheet');
+	let activeTab = $state<'sheet' | 'edit' | 'full'>('sheet');
 	let isFavorite = $state(false);
+
+	// "Vue complète" = every declared scheme field, bypassing the named view.
+	const allFields = $derived(
+		scheme ? Object.keys((scheme as { fields?: Record<string, unknown> }).fields ?? {}) : []
+	);
+
+	const modeTabs = [
+		{ id: 'sheet', label: 'Fiche' },
+		{ id: 'edit', label: 'Modifier' },
+		{ id: 'full', label: 'Vue complète' }
+	] as const;
 
 	function toggleFavorite() {
 		isFavorite = !isFavorite;
@@ -82,30 +95,32 @@
 	}
 </script>
 
-<synthesis-component>
-	<synthesis-sidebar>
-		<button
-			class="action-favorite"
-			aria-label="Favorite"
-			class:is-active={isFavorite}
-			onclick={toggleFavorite}
-		>
-			☆
-		</button>
-		<synthesis-sidebar-info>
-			<span class="record-type">{scheme?.collection ?? collection}</span>
-			<span class="record-id">{collectionId}</span>
-			<span class="record-label">{recordLabel}</span>
-		</synthesis-sidebar-info>
-		<synthesis-sidebar-actions>
-			{#each rfkEntries as rfk (rfk.collection)}
-				<button class="action-create" onclick={() => handleCreateRfk(rfk.collection)}>
-					<span class="icon-appscheme"></span>
-					créer {rfk.collection}
-				</button>
-			{/each}
-		</synthesis-sidebar-actions>
-	</synthesis-sidebar>
+<TemplateShell {collection} {collectionId}>
+	{#snippet leftbar()}
+		<synthesis-sidebar>
+			<button
+				class="action-favorite"
+				aria-label="Favorite"
+				class:is-active={isFavorite}
+				onclick={toggleFavorite}
+			>
+				☆
+			</button>
+			<synthesis-sidebar-info>
+				<span class="record-type">{scheme?.collection ?? collection}</span>
+				<span class="record-id">{collectionId}</span>
+				<span class="record-label">{recordLabel}</span>
+			</synthesis-sidebar-info>
+			<synthesis-sidebar-actions>
+				{#each rfkEntries as rfk (rfk.collection)}
+					<button class="action-create" onclick={() => handleCreateRfk(rfk.collection)}>
+						<span class="icon-appscheme"></span>
+						créer {rfk.collection}
+					</button>
+				{/each}
+			</synthesis-sidebar-actions>
+		</synthesis-sidebar>
+	{/snippet}
 
 	<synthesis-main>
 		<synthesis-header>
@@ -116,38 +131,22 @@
 			</group-info>
 		</synthesis-header>
 
-		<synthesis-tabs>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'sheet'}
-				onclick={() => (activeTab = 'sheet')}
-			>
-				Fiche
-			</button>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'synthesis'}
-				onclick={() => (activeTab = 'synthesis')}
-			>
-				Synthèse
-			</button>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'edit'}
-				onclick={() => (activeTab = 'edit')}
-			>
-				Modifier
-			</button>
-			<button
-				class="tab-item"
-				class:is-active={activeTab === 'full'}
-				onclick={() => (activeTab = 'full')}
-			>
-				Vue complète
-			</button>
-		</synthesis-tabs>
+		<fiche-header>
+			<synthesis-modes>
+				{#each modeTabs as tab (tab.id)}
+					<button
+						class="tab-item"
+						class:is-active={activeTab === tab.id}
+						onclick={() => (activeTab = tab.id)}
+					>
+						{tab.label}
+					</button>
+				{/each}
+			</synthesis-modes>
+			<RecordToolbar {collection} {collectionId} />
+		</fiche-header>
 
-		<synthesis-toolbar>
+		<synthesis-tabs>
 			<button
 				class="action-home"
 				aria-label="Home"
@@ -156,51 +155,42 @@
 				<span class="icon-home"></span>
 			</button>
 			{#each rfkEntries as rfk (rfk.collection)}
-				<button class="action-navigate" onclick={() => handleNavRfk(rfk.collection)}>
+				<button class="action-navigate" onclick={() => machine.framer.loadInDialog('fiche.update', rfk.collection)}>
 					<span class="icon-appscheme"></span>
 					{rfk.collection}
 				</button>
 			{/each}
-		</synthesis-toolbar>
+		</synthesis-tabs>
 
 		<synthesis-panes>
 			<synthesis-pane-left>
-				{#if !record}
-					<div class="empty-state">
-						<div class="empty-state-icon">⏳</div>
-						<p class="empty-state-title">Chargement…</p>
-					</div>
-				{:else if activeTab === 'edit'}
-					<DataForm {collection} dataId={collectionId} mode="update" />
-				{:else}
-					<DataRecord {collection} data={record} mode="show" />
-				{/if}
+				<DataRecord {collection} data={record} mode="show" view="flat"/>
+				<hr />
+				<DataRecord {collection} data={record} mode="show" view="fk"  />
 			</synthesis-pane-left>
-			<synthesis-pane-right> {collectionId}
-				<DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk"  />
-				<!-- {#if record}
-					<DataListRfk {collection} recordId={collectionId} showTitle={true} ></DataListRfk>
-				{/if} -->
+			<synthesis-pane-right>
+				<!-- <DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk" /> -->
+				{#if record}
+					<DataListRfk {collection} recordId={collectionId} showTitle={true} />
+				{/if}
 			</synthesis-pane-right>
 		</synthesis-panes>
 	</synthesis-main>
-</synthesis-component>
+</TemplateShell>
 
 <style>
 	@layer components {
-		synthesis-component {
-			display: flex;
-			height: 100%;
-			width: 100%;
-			overflow: hidden;
-		}
+		/* Root is TemplateShell now (.template-shell = flex row, height:100%,
+		   provided globally by shell.css) — no local wrapper needed. */
 
+		/* Fills TemplateShell's aside.shell-sidebar (which already carries
+		   border-right/height from shell.css) — width + distinct background only. */
 		synthesis-sidebar {
 			display: flex;
 			flex-direction: column;
+			height: 100%;
 			width: 240px;
 			background: var(--color-surface-alt);
-			border-right: var(--border-width) solid var(--color-border);
 		}
 
 		synthesis-sidebar-info {
@@ -240,20 +230,25 @@
 			gap: var(--gutter-xs);
 		}
 
+		fiche-header {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: var(--gutter-md);
+			padding: 0 var(--pad-md);
+			border-bottom: var(--border-width) solid var(--color-border);
+		}
+
+		synthesis-modes {
+			display: flex;
+			gap: var(--gutter-xs);
+		}
+
 		synthesis-tabs {
 			display: flex;
 			gap: var(--gutter-xs);
 			padding: var(--pad-sm) var(--pad-md);
 			border-bottom: var(--border-width) solid var(--color-border);
-		}
-
-		synthesis-toolbar {
-			display: flex;
-			align-items: center;
-			gap: var(--gutter-sm);
-			padding: var(--pad-sm) var(--pad-md);
-			border-bottom: var(--border-width) solid var(--color-border);
-			overflow-x: auto;
 		}
 
 		synthesis-panes {
@@ -275,7 +270,7 @@
 		synthesis-pane-right {
 			display: flex;
 			flex-direction: column;
-			flex: 2;
+			flex: 1;
 			min-width: 0;
 			overflow: auto;
 			padding: var(--pad-md);

@@ -8,7 +8,7 @@ import type {
 	RightsPolicy,
 	Capabilities,
 	FrameCatalog
-} from '$lib/machine/ext/interfaces.js';
+} from '$lib/main/ext/interfaces.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 import { IdaeRelationPolicy } from './relations/RelationPolicy.js';

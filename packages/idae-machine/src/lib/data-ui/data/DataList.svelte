@@ -2,7 +2,7 @@
 DataList.svelte
 Data provider + renderer — fetches, sorts, groups, paginates, iterates.
 Autonomous by default: renders DataRecord (template.presentation fields) when no snippet provided.
-Consumers can override via the item snippet.
+Consumers can override via the dataRecord snippet.
 
 @prop {string} collection
 @prop {Where<COL>} [where]
@@ -16,8 +16,12 @@ Consumers can override via the item snippet.
 @prop {boolean} [infiniteScroll=true] - append items as user scrolls (uses IntersectionObserver on sentinel)
 @prop {string} [listClass] - CSS class for <ul>
 @prop {string} [groupClass] - CSS class for group wrapper <div>
-@snippet item({ record, idx, fieldValues }) - Custom record rendering (list + grid only).
-  Ignored in table mode — table delegates to DataRecord mode="row" (structural layout).
+@prop {'show'|'update'} [crudMode='show'] - CRUD state per record (show vs editable). Forwarded to DataRecord.
+@snippet dataRecord({ collection, data, mode, view, idx, collectionId }) - Custom record
+  rendering (list + grid only; ignored in table mode — table delegates to DataRecord
+  as="row" structural layout, crudMode still applies). Payload IS DataRecord's prop set
+  (BL-21) — spread straight into `<DataRecord {...props} />` rather than unwrapping an
+  `{ item, record, records }` wrapper.
 @snippet groupHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
@@ -25,7 +29,7 @@ Consumers can override via the item snippet.
 <script lang="ts" generics="COL extends Record<string, unknown>">
 	import type { Snippet } from 'svelte';
 	import { untrack } from 'svelte';
-	import type { SortBy, TplCollectionName, Where } from '$lib/types/index.js';
+	import type { SortBy, TplCollectionName, ViewTypeCode, Where } from '$lib/types/index.js';
 	import { machine } from '$lib/main/machine.js';
 	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
@@ -60,7 +64,8 @@ Consumers can override via the item snippet.
 		linkCollectionField,
 		usePrefs = true,
 		prefsScope: prefsScopeProp,
-		item: itemSnippet,
+		crudMode = 'show',
+		dataRecord: dataRecordSnippet,
 		groupHeader: groupHeaderSnippet,
 		empty: emptySnippet,
 		footer: footerSnippet
@@ -70,7 +75,7 @@ Consumers can override via the item snippet.
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		mode?: 'list' | 'table' | 'grid';
-		view?: string;
+		view?: ViewTypeCode;
 		pageSize?: number;
 		page?: number;
 		infiniteScroll?: boolean;
@@ -85,7 +90,16 @@ Consumers can override via the item snippet.
 		usePrefs?: boolean;
 		/** Override appuser_prefs scope key. Defaults to `datalist.{collection}`. */
 		prefsScope?: string;
-		item?: Snippet<[{ collection: TplCollectionName, collectionId: number, record: COL; idx: number; fieldValues: Record<string, unknown> }]>;
+		/** CRUD state for DataRecord rendering per record ('show' | 'update'). Defaults to 'show'. */
+		crudMode?: 'show' | 'update';
+		dataRecord?: Snippet<[{
+			collection: TplCollectionName;
+			collectionId: number;
+			data: COL;
+			mode: 'show' | 'update';
+			view: string;
+			idx: number;
+		}]>;
 		groupHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
@@ -121,7 +135,6 @@ Consumers can override via the item snippet.
 	);
 	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
 	const indexField = 'id';
-	const fieldValues = $derived(collLogic?.collectionValues ?? {});
 	const defaultSort = $derived(
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
 	);
@@ -278,23 +291,39 @@ Consumers can override via the item snippet.
  
 </script>
 
+{#snippet renderGroupHeader(key: string, count: number)}
+	{#if groupHeaderSnippet}
+		{@render groupHeaderSnippet({ key, count })}
+	{:else}
+		{key}<span class="data-list-group-count">{count}</span>
+	{/if}
+{/snippet}
+
 {#snippet renderItem(record: COL, idx: number)}
 	<!-- svelte-ignore a11y_no_static_element_interactions -->
 	<svelte:element
 		this={currentMode === 'table' ? 'tr' : 'li'}
 		class:clickable={currentMode === 'table' && !!parsedLink}
 		onclick={currentMode === 'table' ? () => handleItemClick(record) : undefined}
+		data-contextual={`collection=${collection}&collectionId=${(record as Record<string, unknown>)[indexField]}`}
 	>
 		{#if currentMode === 'table'}
-			<DataRecord {collection} data={record as Record<string, any>}  mode="row" {view} />
-		{:else if itemSnippet}
-			{@render itemSnippet({collection,collectionId:record?.id as number, record, idx, fieldValues })}
+			<DataRecord {collection} data={record as Record<string, any>} mode={crudMode} as="row" {view} />
+		{:else if dataRecordSnippet}
+			{@render dataRecordSnippet({
+				collection,
+				collectionId: record?.id as number,
+				data: record as COL,
+				mode: crudMode,
+				view,
+				idx
+			})}
 		{:else}
 			{@const rec = record as Record<string, unknown>}
 			{@const label = renderPresentation(rec)}
 			<button type="button" class="data-list-link"
 				onclick={() => parsedLink ? navigate(rec) : handleItemClick(record)}>
-				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode="show" />{/if}
+				{#if label}{label}{:else}<DataRecord {collection} data={rec} mode={crudMode} />{/if}
 			</button>
 		{/if}
 	</svelte:element>
@@ -328,45 +357,88 @@ Consumers can override via the item snippet.
 				{/each}
 			</tr>
 		</thead>
-		<tbody>
-			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
-				{@render renderItem(record as COL, idx)}
+		{#if groups}
+			{#each Array.from(groups) as [key, groupItems] (key)}
+				<tbody>
+					<tr>
+						<th colspan={tableColumns.length} class="data-list-group-header">
+							{@render renderGroupHeader(key, groupItems.length)}
+						</th>
+					</tr>
+					{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
+						{@render renderItem(record as COL, idx)}
+					{/each}
+				</tbody>
 			{/each}
-			{#if !paginatedItems.length}
-				<tr><td colspan={tableColumns.length}>
-					{#if emptySnippet}{@render emptySnippet()}{:else}—{/if}
-				</td></tr>
-			{/if}
-		</tbody>
+		{:else}
+			<tbody>
+				{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+					{@render renderItem(record as COL, idx)}
+				{/each}
+				{#if !paginatedItems.length}
+					<tr><td colspan={tableColumns.length}>
+						{#if emptySnippet}{@render emptySnippet()}{:else}—{/if}
+					</td></tr>
+				{/if}
+			</tbody>
+		{/if}
 	</table>
 {:else if currentMode === 'grid'}
-	<ul class="grid-list" role="list">
-		{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
-			<li class="grid-item panel panel-bordered">
-				<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
-					<div class="grid-item-content">
-						<DataRecord
-							{collection}
-							data={record as Record<string, any>}
-							mode="show"
-							{view}
-						/>
-					</div>
-				</button>
-			</li>
+	{#if groups}
+		{#each Array.from(groups) as [key, groupItems] (key)}
+			<div class={groupClass ?? 'data-list-group'}>
+				<div class="data-list-group-header">
+					{@render renderGroupHeader(key, groupItems.length)}
+				</div>
+				<ul class="grid-list" role="list">
+					{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
+						<li class="grid-item panel panel-bordered">
+							<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
+								<div class="grid-item-content">
+									<DataRecord
+										{collection}
+										data={record as Record<string, any>}
+										mode="show"
+										{view}
+									/>
+								</div>
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
 		{/each}
-		{#if !paginatedItems.length}
-			{#if emptySnippet}
-				{@render emptySnippet()}
-			{:else}
-				<li class="data-list-empty">—</li>
+	{:else}
+		<ul class="grid-list" role="list">
+			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+				<li class="grid-item panel panel-bordered">
+					<button type="button" class="grid-item-button" onclick={() => handleItemClick(record as COL)}>
+						<div class="grid-item-content">
+							<DataRecord
+								{collection}
+								data={record as Record<string, any>}
+								mode="show"
+								{view}
+							/>
+						</div>
+					</button>
+				</li>
+			{/each}
+			{#if !paginatedItems.length}
+				{#if emptySnippet}
+					{@render emptySnippet()}
+				{:else}
+					<li class="data-list-empty">—</li>
+				{/if}
 			{/if}
-		{/if}
-	</ul>
+		</ul>
+	{/if}
 {:else if groups}
 	{#each Array.from(groups) as [key, groupItems] (key)}
 		<div class={groupClass ?? 'data-list-group'}>
-			{#if groupHeaderSnippet}{@render groupHeaderSnippet({ key, count: groupItems.length })}{:else}<div class="data-list-group-header">{key}<span class="data-list-group-count">{groupItems.length}</span></div>{/if}
+			<div class="data-list-group-header">
+				{@render renderGroupHeader(key, groupItems.length)}
+			</div>
 			<ul class={resolvedListClass} role="list">
 				{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
 					{@render renderItem(record as COL, idx)}
@@ -430,6 +502,10 @@ Consumers can override via the item snippet.
 			letter-spacing: 0.03em;
 			color: var(--color-text-muted, #888);
 			border-bottom: 1px solid var(--color-border);
+		}
+		:global(.data-table .data-list-group-header) {
+			text-align: left;
+			background: var(--color-surface-raised, var(--color-surface, #f7f7f7));
 		}
 		:global(.data-list-group-count) {
 			font-weight: 400;

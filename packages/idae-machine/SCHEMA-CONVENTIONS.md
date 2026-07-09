@@ -203,6 +203,36 @@ FK-detection path in `findFkField`, `descriptor`, and `useViewFields` — there 
 no string-fallback (`fieldType.startsWith('fk-')`). Do **not** reintroduce a
 synthesized `fk-X.code` field or any magic-string FK detection.
 
+## 6ter. FK storage — `fks` vs `fkRelations` split
+
+**RATIONALIZE #1 (2026-06-21):** The stored `appscheme` document now splits two
+kinds of data that were historically conflated in one `fks` field:
+
+1. **`fks`** — the record's own value-bag of resolved meta pointers (base/type)
+   - Used by Explorer for groupBy on `fks.appscheme_base`
+   - Contains embedFk'd references to meta collections
+   - Example: `fks.appscheme_base`, `fks.appscheme_type`
+
+2. **`fkRelations`** — the described collection's business relation descriptors
+   - Contains `{ code, multiple, required }` for each FK relation
+   - Example: `fkRelations.category: { code: 'vehicle_category', multiple: false, required: true }`
+   - **Source of truth** for FK resolution at runtime
+
+### Flow
+
+```
+Publish (bootstrap)
+  model[col].fkRelations → appscheme[col].fkRelations (stored)
+  model[col].fks (meta) → appscheme[col].fks (stored)
+
+Read (MachineServer.getModel)
+  appscheme[col].fkRelations → model[col].fks (in-memory)
+  appscheme[col].fks → ignored (meta pointers, not business relations)
+```
+
+**Rule:** Never read business FK relations from `appscheme[col].fks` — that field
+carries meta pointers only. Always read `fkRelations` for relation descriptors.
+
 ---
 
 ## 6ter. FK `required` validation

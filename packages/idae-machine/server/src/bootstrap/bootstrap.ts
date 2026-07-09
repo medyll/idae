@@ -20,6 +20,7 @@ dotenv({ path: serverEnv });
 import { clearCollections, seedIdaeRegistries, publishModel } from './publishModel.js';
 import { buildIdaeModel } from './seed/idaeModel.js';
 import { seedUsers } from './seedUsers.js';
+import { seedMenuPresets } from './seedMenuPresets.js';
 import { seedBusinessData } from './seedBusinessData.js';
 import { idaeSeed } from './seed/idaeSeed.js';
 import type { MachineModel } from '../../../src/lib/types/machine-model.js';
@@ -57,6 +58,9 @@ console.log(`[5/6] Seeding users into ${org}_machine_user`);
 const userConn = mongoose.createConnection(mongoUri, { dbName: `${org}_machine_user` });
 await userConn.asPromise();
 await seedUsers(userConn);
+
+console.log(`[5c/6] Seeding role-based menu presets into ${org}_machine_user`);
+await seedMenuPresets(userConn, Object.keys(scheme));
 await userConn.close();
 
 if (seed) {

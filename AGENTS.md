@@ -8,7 +8,7 @@ High-performance monorepo: data management, storage, and UI with advanced reacti
 - **Package manager**: pnpm v10 (NOT npm/yarn)
 - **Setup**: `pnpm install && pnpm run package`
 
-## Commands
+## Commands ok
 
 ```bash
 # Root

@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
+	import MainMenu from './MainMenu.svelte';
+	import MenuSettings from './MenuSettings.svelte';
 	import type { Snippet } from 'svelte';
 
 	let { devSlot }: { devSlot?: Snippet } = $props();
@@ -10,6 +12,8 @@
 	);
 
 	let userMenuOpen = $state(false);
+	let mainMenuOpen = $state(false);
+	let settingsOpen = $state(false);
 
 	function openExplorer() {
 		machine.framer.loadFrame('explorer', 'vehicle');
@@ -22,6 +26,7 @@
 		localStorage.removeItem('auth_token');
 		localStorage.removeItem('auth_user');
 		localStorage.removeItem('auth_grants');
+		localStorage.removeItem('auth_menu_baseline');
 		window.location.reload();
 	}
 </script>
@@ -32,6 +37,17 @@
 <div class="taskbar">
 	<!-- Left: nav actions -->
 	<div class="taskbar-left">
+		<button
+			type="button"
+			class="taskbar-icon"
+			title="Menu"
+			onclick={(e) => {
+				e.stopPropagation();
+				mainMenuOpen = !mainMenuOpen;
+			}}
+		>
+			⊟
+		</button>
 		<button type="button" class="taskbar-btn taskbar-btn--primary" onclick={openExplorer} title="Open Explorer">
 			⊞ Explorer
 		</button>
@@ -58,7 +74,17 @@
 		{#if devSlot}
 			{@render devSlot()}
 		{/if}
-		<button type="button" class="taskbar-icon" title="Settings (mock)">⚙</button>
+		<button
+			type="button"
+			class="taskbar-icon"
+			title="Settings"
+			onclick={(e) => {
+				e.stopPropagation();
+				settingsOpen = !settingsOpen;
+			}}
+		>
+			⚙
+		</button>
 		<div class="taskbar-user">
 			<button
 				type="button"
@@ -81,3 +107,6 @@
 		</div>
 	</div>
 </div>
+
+<MainMenu bind:open={mainMenuOpen} />
+<MenuSettings bind:open={settingsOpen} />

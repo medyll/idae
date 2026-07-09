@@ -20,7 +20,10 @@ export type InputSize = 'xs' | 'sm' | 'md' | 'lg' | 'full';
 
 // ── Field definition ──────────────────────────────────────────────────────────
 interface BaseFieldDef {
-	type:        string;
+	/** Resolved catalog-first from FieldList (server/src/idae/field-defs.ts) by field
+	 *  name — see ADR-field-type-source.md. Inline here is an explicit override, not
+	 *  the primary declaration; omit it and let the catalog resolve. */
+	type?:       string;
 	required?:   boolean;
 	readonly?:   boolean;
 	private?:    boolean;

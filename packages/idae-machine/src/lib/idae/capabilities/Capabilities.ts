@@ -2,7 +2,7 @@
 // Domain implementation of Capabilities — workflow semantics.
 // Knows about status/type/group field conventions and workflow ordering.
 
-import type { Capabilities as CapabilitiesInterface } from '$lib/machine/ext/interfaces.js';
+import type { Capabilities as CapabilitiesInterface } from '$lib/main/ext/interfaces.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 const STATUS_FIELD_CANDIDATES = ['status', 'state', 'etat', 'statut'];

@@ -4,17 +4,37 @@ import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
+import { setupNavigationTracking } from '$lib/idae/userscope/navTracking.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
 import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
 import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
-import { foldFksIntoRecord } from '$lib/main/machine/MachineFkFold.js';
+import { createMenuManager } from '$lib/idae/menu/menuSnapshot.js';
+import type { IdaeMenuManager } from '$lib/idae/menu/IdaeMenuManager.js';
+import { wrapCollectionFkFold } from '$lib/main/machine/MachineFkFold.js';
 import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
+
+/**
+ * Race a promise against a timeout so a silently-hung IndexedDB open (e.g. an Edge
+ * tab where another connection blocks the versioned upgrade) rejects instead of
+ * leaving the app stuck on the boot splash forever. The rejection bubbles to the
+ * caller's boot try/catch → recovery screen, turning an invisible hang into a real error.
+ */
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+	let timer: ReturnType<typeof setTimeout>;
+	const timeout = new Promise<never>((_, reject) => {
+		timer = setTimeout(
+			() => reject(new Error(`[idae-machine] ${label} timed out after ${ms}ms — IndexedDB likely blocked (another tab open) or sync stalled. Close other tabs and reload.`)),
+			ms
+		);
+	});
+	return Promise.race([promise, timeout]).finally(() => clearTimeout(timer)) as Promise<T>;
+}
 
 export type MachineComponentRegistry = Readonly<Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>>;
 
@@ -103,6 +123,12 @@ export class Machine {
 
 	/** Frame manager — handles dynamic frame registration and content loading */
 	private readonly _frameManager = machineFrameManager;
+
+	/** Menu manager — created during boot to avoid module-level machine dependency. */
+	private _menuManager?: IdaeMenuManager;
+
+	/** Cleanup fn returned by setupContextMenuListener — called in destroy(). */
+	private _contextMenuCleanup?: () => void;
 
 	/**
 	 * Promise that resolves when boot() has completed.
@@ -195,7 +221,7 @@ export class Machine {
 		// Doing this inside performIdbUpgrade (which runs before createQoolie) fails
 		// with "__schema_meta__ store not found" — the store does not exist yet.
 		if (pending) {
-			await this._qoolie.ready();
+			await withTimeout(this._qoolie.ready(), 20000, 'qoolie.ready');
 			await storeSchemaHash(this._dbName, pending.expectedHash).catch((err) => {
 				console.warn('[idae-machine] Could not persist schema hash after store creation (will retry next boot):', err);
 			});
@@ -208,6 +234,39 @@ export class Machine {
 			this._version = drift.newVersion;
 			this._pendingIdbUpgrade = drift;
 		}
+	}
+
+	/**
+	 * Shared model-rebuild sequence for both the initial boot path and the onDrift
+	 * schema-reload path. Keeps the two callers in sync without duplication.
+	 *
+	 * replaceExisting=false  → initial boot: read actual IDB version first (never downgrade).
+	 * replaceExisting=true   → schema drift reload: skip version check (already managed).
+	 */
+	private async _applyModel(replaceExisting: boolean): Promise<void> {
+		this._effectiveModel = buildEffectiveModel(this._core, this._business);
+		this._machineDb      = new MachineDb(this._effectiveModel);
+		machineRights.loadPoliciesFromModel(this._effectiveModel);
+		initializeDomainPoliciesWithModel(this._effectiveModel);
+		if (!replaceExisting) {
+			// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
+			// so a drift-triggered bump lands ABOVE the existing version. Reading it after
+			// drift would clobber the bump (this._version = actual >= newVersion) and qoolie
+			// would reopen at the same version → onupgradeneeded never fires → stores from a
+			// corrupt/partial prior boot are never (re)created.
+			const actualVersion = await getActualIdbVersion(this._dbName).catch((err) => {
+				console.warn('[idae-machine] Could not read actual IDB version, defaulting to 0:', err);
+				return 0;
+			});
+			if (actualVersion > this._version) this._version = actualVersion;
+		}
+		await this._scheduleDrift();
+		await withTimeout(
+			this.createStore(replaceExisting),
+			20000,
+			replaceExisting ? 'createStore (schema drift)' : 'createStore'
+		);
+		initializeDomainPoliciesWithMachine(this);
 	}
 
 	/**
@@ -256,19 +315,9 @@ export class Machine {
 			const url = dbHost.replace(/\/+$/, '') + '/api/scheme' + orgQs;
 			const { loadSchema } = await import('$lib/main/machineSchemaLoader.js');
 			await loadSchema(url, {
-				onModel: (model) => {
-					this._business = model;
-				},
+				onModel: (model) => { this._business = model; },
 				onStart: () => {},
-				onDrift: async () => {
-					this._effectiveModel = buildEffectiveModel(this._core, this._business);
-					this._machineDb = new MachineDb(this._effectiveModel);
-					machineRights.loadPoliciesFromModel(this._effectiveModel);
-					initializeDomainPoliciesWithModel(this._effectiveModel);
-					await this._scheduleDrift();
-					await this.createStore(true);
-					initializeDomainPoliciesWithMachine(this);
-				}
+				onDrift: async () => { await this._applyModel(true); }
 			}).catch((err) => {
 				if (!this._business) throw err;
 				// Server unreachable but local model available — continue with local
@@ -276,24 +325,7 @@ export class Machine {
 			});
 		}
 
-		this._effectiveModel = buildEffectiveModel(this._core, this._business);
-		this._machineDb      = new MachineDb(this._effectiveModel);
-		machineRights.loadPoliciesFromModel(this._effectiveModel);
-		initializeDomainPoliciesWithModel(this._effectiveModel);
-
-		// Never downgrade IDB — adopt the actual on-disk version BEFORE drift detection
-		// so a drift-triggered bump lands ABOVE the existing version. Reading it after
-		// drift would clobber the bump (this._version = actual >= newVersion) and qoolie
-		// would reopen at the same version → onupgradeneeded never fires → stores from a
-		// corrupt/partial prior boot are never (re)created.
-		const actualVersion = await getActualIdbVersion(this._dbName).catch((err) => {
-			console.warn('[idae-machine] Could not read actual IDB version, defaulting to 0:', err);
-			return 0;
-		});
-		if (actualVersion > this._version) this._version = actualVersion;
-		await this._scheduleDrift();
-		await this.createStore();
-		initializeDomainPoliciesWithMachine(this);
+		await this._applyModel(false);
 		frameCatalog.registerFrames(componentRegistry as ComponentRegistry);
 
 		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
@@ -304,8 +336,10 @@ export class Machine {
 			const { seed } = await import('$lib/main/machineSeed.js');
 			await seed(this._seed, { onlyIfEmpty: true });
 		}
-	}
 
+		const { setupContextMenuListener } = await import('$lib/main/frame/contextMenuSetup.js');
+		this._contextMenuCleanup = setupContextMenuListener(this._frameManager);
+	}
 
 	/**
 	 * Get the IDbBase (schema logic) instance.
@@ -353,47 +387,7 @@ export class Machine {
 	collection(name: string) {
 		const col = this._qoolie?.collection?.[name];
 		if (!col) throw new Error(`Collection "${name}" not found. Did you call boot()?`);
-		return this.#wrapCollectionFkFold(name, col);
-	}
-
-	/** Resolve an FK target record by its index field, via the underlying qoolie collection. */
-	async #resolveFkTarget(fkCollection: string, fkIndexField: string, value: unknown): Promise<Record<string, unknown> | undefined> {
-		const targetCol = this._qoolie?.collection?.[fkCollection];
-		if (!targetCol) return undefined;
-		try {
-			const docs = await Promise.resolve(targetCol.where({ [fkIndexField]: value }));
-			return (docs as Record<string, unknown>[] | undefined)?.[0];
-		} catch {
-			return undefined;
-		}
-	}
-
-	#wrapCollectionFkFold<C extends object>(name: string, col: C): C {
-		const fks = this._machineDb?.collection(name)?.fks ?? {};
-		if (!Object.keys(fks).length) return col;
-
-		const fold = (data: Record<string, unknown>) =>
-			foldFksIntoRecord(fks, data, this.#resolveFkTarget.bind(this));
-
-		const overrides: Record<string, unknown> = {
-			create: async (data: Record<string, unknown>) =>
-				(col as Record<string, (...args: unknown[]) => unknown>).create(await fold(data)),
-			update: async (id: unknown, data: Record<string, unknown>) =>
-				(col as Record<string, (...args: unknown[]) => unknown>).update(id, await fold(data)),
-			updateWhere: async (query: unknown, data: Record<string, unknown>) =>
-				(col as Record<string, (...args: unknown[]) => unknown>).updateWhere(query, await fold(data)),
-		};
-
-		// Proxy forwards every other method (where/get/getAll/...) to the real
-		// instance with correct `this` binding — `{...col}` would silently drop
-		// prototype methods (qoolie's QoolieCollection is a class, not a plain object).
-		return new Proxy(col, {
-			get(target, prop, receiver) {
-				if (typeof prop === 'string' && prop in overrides) return overrides[prop];
-				const value = Reflect.get(target, prop, receiver);
-				return typeof value === 'function' ? value.bind(target) : value;
-			},
-		});
+		return wrapCollectionFkFold(this._machineDb, this._qoolie as any, name, col);
 	}
 
 	/** Access rights manager — checkAccess, setCurrentUser, setPolicies, etc. */
@@ -440,27 +434,15 @@ export class Machine {
 		this._qoolie?.destroy();
 		this._qoolie = undefined;
 		this._pendingIdbUpgrade = null;
+		this._contextMenuCleanup?.();
+		this._contextMenuCleanup = undefined;
 	}
 
-	/**
-	 * Pre-fetch specific collections into IDB before UI renders.
-	 * Use for schema-critical collections (e.g. 'appscheme') that must be present
-	 * before component mount. Data collections remain on-demand.
-	 * 
-	 * @param collections - Optional explicit list of collections to warm up.
-	 *                      If not provided, derives the list from the model (collections with base='machine_app').
-	 */
+	/** Pre-fetch collections into IDB before UI renders. Derives list from model when not provided. */
 	async warmup(collections?: string[]): Promise<void> {
 		if (!this._qoolie) return;
-		
-		// If no explicit collections provided, derive from model
-		let collectionsToWarm = collections;
-		if (!collectionsToWarm || collectionsToWarm.length === 0) {
-			const { getSchemaCriticalCollections } = await import('$lib/main/warmupUtils.js');
-			collectionsToWarm = getSchemaCriticalCollections(this._effectiveModel);
-		}
-		
-		await (this._qoolie as any).hydrateAll?.(collectionsToWarm);
+		const { warmup: doWarmup } = await import('$lib/main/warmupUtils.js');
+		await doWarmup(this._qoolie as any, this._effectiveModel, collections);
 	}
 
 	async resetClientData(): Promise<void> {
@@ -490,61 +472,39 @@ export class Machine {
 		const r = new MachineRouter(config);
 		r.init();
 		this._frameManager.setRouter((url) => r.push(url));
-		this._frameManager.setNavigationHook(({ collection, collectionId, vars }) => {
-			void machineActionCallable('appuser_activity', {
-				code:             'VIEW',
-				collection,
-				collection_value: collectionId ?? '',
-				collection_vars:  vars
-			}, { touch: 'timestamp' });
-
-			if (collectionId !== undefined && collectionId !== '') {
-				void this._renderLabel(collection, collectionId).then((label) => {
-					void machineActionCallable('appuser_history', {
-						collection,
-						collection_value: collectionId,
-						label
-					}, {
-						upsertOn: ['collection', 'collection_value'],
-						bump:     'count',
-						touch:    'lastSeen'
-					});
-				});
-			}
-		});
+		setupNavigationTracking(this._frameManager, (col, id) => this._renderLabel(col, id));
 		return r;
 	}
 
-	/** Compute a record label from `template.presentation`. Used by navigation history writes and dialog titles. @internal */
+	/** Compute a record label from `template.presentation`. Used by nav history writes and dialog titles. @internal */
 	async _renderLabel(collection: string, collectionId: string | number): Promise<string | undefined> {
-		try {
-			const scheme = this._machineDb?.collection(collection);
-			const presentation = (scheme as { template?: { presentation?: string } } | null | undefined)
-				?.template?.presentation;
-			if (!presentation) return undefined;
-			const id = isNaN(Number(collectionId)) ? collectionId : Number(collectionId);
-			const rec = await this.collection(collection).get(id) as Record<string, unknown> | undefined;
-			if (!rec) return undefined;
-			const label = presentation.split(/\s+/).filter(Boolean)
-				.map((tok) => {
-					let cur: unknown = rec;
-					for (const seg of tok.split('.')) {
-						if (cur == null) return '';
-						cur = (cur as Record<string, unknown>)[seg];
-					}
-					return cur == null ? '' : String(cur);
-				})
-				.filter(Boolean).join(' ');
-			return label || undefined;
-		} catch (err) {
-			console.warn('[machine] label render failed:', err);
-			return undefined;
-		}
+		const { renderLabel } = await import('$lib/main/machine/machineLabel.js');
+		return renderLabel(
+			this._machineDb,
+			async (col, id) => this.collection(col).get(id) as Promise<Record<string, unknown> | undefined>,
+			collection,
+			collectionId,
+		);
 	}
 
 	/** Access to the frame manager singleton. */
 	get framer() {
 		return this._frameManager;
+	}
+
+	/**
+	 * Access to the menu manager. Created lazily. Snapshot reader wired on first
+	 * access so `getTree`/`getFlatItems`/`isVisible` read live appuser_prefs/
+	 * appscheme/appscheme_type via machine.store (reactive read layer) instead of
+	 * staying empty forever. Component-level reactivity belongs in
+	 * useMenuTree.svelte.ts, not here — this getter only guarantees the manager
+	 * is never wired to stale/empty data.
+	 */
+	get menu() {
+		if (!this._menuManager) {
+			this._menuManager = createMenuManager(this._frameManager, this.rights, this);
+		}
+		return this._menuManager;
 	}
 
 	/** Access to the component registry singleton. */

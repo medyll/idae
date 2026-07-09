@@ -6,7 +6,7 @@
 project: "idae-machine"
 phase: release
 progress: 100
-last_updated: "2026-06-14"
+last_updated: "2026-06-24"
 
 # ── Gate (measured, not asserted) ─────────────────────────────────────────────
 # Run `pnpm run gate` (check + client test + server typecheck + server test).
@@ -22,10 +22,10 @@ gate:
   build_publint: "0 errors — css-base link: résolu (version publiée), publint All good"
 
 # ── Chain Protocol ────────────────────────────────────────────────────────────
-next_action: "FABLE_2 Phase 0' DONE 2026-06-13 (gate vert: self-imports ai/schema → $lib, sive orphan supprimé, @types/express unifié v5 workspace + handler params typés, bin add-skill retiré, pnpm run gate créé, flaky serveur files/image fixé via fileParallelism:false, hook-pre-push ADVISORY non-bloquant via .githooks/core.hooksPath). NEXT: FABLE_2 Phase 1' item 1 — trancher dual-source schéma AI (§3.1.1, recommandation: supprimer copies client)."
-next_command: "bmad sprint"
-next_role: "scrum"
-active_role: "scrum"
+next_action: "S60-01+S60-02+S60-03-analysis complete — audit (888 mismatches) + added 803 missing fields to FieldList (221→1024) + analyzed mismatches (108 auto/780 manual). Ready for manual review phase: 780 field-by-field decisions needed. Field-by-field reconciliation required before BL-23 P2 can proceed. BL-05 remains deprioritized — do not pick up without explicit relaunch."
+next_command: "bmad manual-review S60-03"
+next_role: "reviewer"
+active_role: "dev"
 
 # ── Deprecated removal backlog ────────────────────────────────────────────────
 # Source: SOLIDIFICATION.md — I6. CLOSED 2026-05-29: audit confirmed every symbol
@@ -140,7 +140,471 @@ architecture:
         Ref stories: S42-01 (partiel), S43-01 (fix).
 
 # ── Sprints ───────────────────────────────────────────────────────────────────
+# Epic MAIN-MENU full spec: bmad/artifacts/epic-main-menu.md (all stories BL-11..BL-19,
+# launch verbs, 2-agent sequencing, single-file contention rules). Sprints 51-55 below
+# drain it; all gate on S50-01 (BL-13 keystone) landing first.
 sprints:
+  - id: 55
+    goal: "MAIN-MENU — BL-17 rights-gated contextual launch menu (epic-main-menu.md §6 row 55, last of the trio)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50, 51, 52, 53, 54]
+    note: >
+      Last of the serialized ContextMenuContent.svelte trio (BL-24→BL-22→BL-17), single-file,
+      ran alone per the hard overlap rule (never parallel with BL-22/BL-24).
+    stories:
+      - id: S55-01
+        title: "BL-17 — Collection-level launch verbs (Créer/Espace/Parcourir) gated by C/L rights"
+        backlog_ref: BL-17
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "ContextMenuContent.svelte.test.ts: 8/8 passed (3 new BL-17 tests). pnpm run check: 0 errors. server 689/689, client 78/78 (full suite)."
+        test_result: pass
+        detail: >
+          Added Créer (C right) / Espace (L right) / Parcourir (L right) entries to
+          ContextMenuContent's menuItems, gated by machine.rights.checkAccess and dispatched
+          through machine.menu.verbs (create/space/explorer) — the BL-13 verb resolver, not
+          direct machine.framer calls, per the epic's "reuse BL-13 verb resolver" instruction.
+          Per the MAIN_MENU.md §2 table only the ✅-built verbs are exposed; Recherche
+          rapide/Comparer/Trier/console/images stay omitted (no frame yet) rather than stubbed
+          — "unbuilt verbs omitted" acceptance criterion. New section separated from the
+          existing record-level View/Edit/Delete/Duplicate items by its own divider
+          (divider-collection, distinct label from the existing customActions divider to avoid
+          a duplicate Svelte each-key when both appear).
+          Found+fixed a self-inflicted test-pollution bug while adding the rights-gating test:
+          a test calling vi.mocked(checkAccess).mockReturnValue(false) permanently flipped the
+          shared mock for every later test in the file (vi.clearAllMocks() in afterEach only
+          clears call history, not the implementation) — same family of bug as the
+          vi.restoreAllMocks() issue fixed in BL-24. Fixed by resetting
+          checkAccess.mockReturnValue(true) explicitly in beforeEach rather than relying on
+          vi.mock's factory (which, per BL-24's finding, does not actually re-run per test).
+
+  - id: 54
+    goal: "MAIN-MENU — BL-22 RecordToolbar in ContextMenu (epic-main-menu.md §6 row 54)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50, 51, 52, 53]
+    note: >
+      BL-22 is single-file (ContextMenuContent.svelte), serialized after BL-24 (sprint 53).
+      Epic's suggested pairing (BL-21 snippet rename) skipped — not requested, BL-22 alone
+      is a complete, independently testable unit; no reason to force an unrelated pairing.
+    stories:
+      - id: S54-01
+        title: "BL-22 — FicheToolbar → RecordToolbar + inclusion in ContextMenuContent"
+        backlog_ref: BL-22
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "ContextMenuContent.svelte.test.ts: 5/5 passed (new toolbar-inclusion test). pnpm run check: 0 errors. server 689/689, client 75/75 (full suite)."
+        test_result: pass
+        detail: >
+          git mv FicheToolbar.svelte → RecordToolbar.svelte (toolbar of a record, not
+          Fiche-specific). Updated all real callers: Fiche.svelte, Synthesis.svelte, exported
+          from shell/layout/index.ts + src/lib/index.ts (was unexported before). Doc-only
+          mentions updated for consistency: parcours.spec.ts comment, ARCH.html. Historical
+          session logs (bmad/intake-sources/FABLE*.md) left untouched — append-only record.
+          Breaking rename documented in bmad/conventions.md.
+          ContextMenuContent.svelte now mounts <RecordToolbar {collection} {collectionId} />
+          (new context-menu-toolbar zone, above the existing items <ul>) — additive per the
+          backlog note ("le menu contextuel d'un record = toolbar du record", toolbar will
+          grow; View/Edit/Delete/Duplicate keep their own rights-gating for now, BL-17 will
+          fold that into the toolbar itself next sprint).
+    goal: "MAIN-MENU — settings gear + ContextMenu record-data prep (epic-main-menu.md)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50, 51, 52]
+    note: >
+      BL-18 (TaskBar gear) and BL-24 (ContextMenuContent useRecordData) — disjoint files.
+      BL-18 must NOT share a sprint with BL-15 (both touch TaskBar.svelte — BL-15 is in
+      sprint 52). BL-24 is first of the serialized ContextMenuContent trio (BL-24→BL-22→BL-17).
+    stories:
+      - id: S53-01
+        title: "BL-18 — Per-zone settings gear (replace mock, pref editor via machine.action)"
+        backlog_ref: BL-18
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/MenuSettings.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. server 689/689, client 74/74 (full suite, all green)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/MenuSettings.svelte — replaces TaskBar.svelte's mock ⚙
+          button. Overlay (same fixed/backdrop pattern as BL-15's WaffleMenu) with zone tabs
+          (side/start/create/panel from MENU_ZONES) and one toggle list per zone, candidates =
+          machine.rights.allowedCollections('L') labeled via the appscheme store. Toggle writes
+          appuser_prefs via machine.action (code `{userId}:{menuPrefsScope(zone,collection)}`,
+          upsertOn ['code']) — "unset ≠ hidden" preserved since the default-visible state is
+          rendered correctly whether or not a pref row exists (isMenuCollectionVisible),
+          defaults are never deleted, only flipped. Warning banner shown when no pref row
+          exists yet for any candidate in the active zone (empty-pref default policy, BL-12).
+          Tags: menu-settings-component/menu-settings-tabs/menu-settings-zone (zones),
+          button.menu-settings-tab/button.menu-settings-toggle (atoms, native+class).
+      - id: S53-02
+        title: "BL-24 — Rune partagée useRecordData (ContextMenu record-data, prep for BL-22/BL-17)"
+        backlog_ref: BL-24
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/data-ui/utils/__tests__/useRecordData.svelte.test.ts: 3/3 passed. ContextMenuContent.svelte.test.ts: 4/4 passed (was order-dependent flaky, see detail). DataRecord*.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. server 689/689, client 74/74."
+        test_result: pass
+        detail: >
+          New src/lib/data-ui/utils/useRecordData.svelte.ts — extracts DataRecord.svelte's
+          inline dual-source (data ?? machine.store(collection, buildWhere(scheme.index,
+          collectionId)).records[0]) resolution into a shared rune, on top of the existing
+          MachineRecordIdentity primitives (normalizeKey/buildWhere). Adopted in DataRecord
+          (replaces the inline block) and ContextMenuContent.svelte (the "surtout" target per
+          epic-main-menu.md §5 BL-17 note — its `records.find(r => r.id == collectionId)` used
+          loose `==`, ignored scheme.index, and never re-derived on store updates).
+          ContextMenuContent.svelte also migrated off onMount(async () => buildMenuItems())
+          to a synchronous $derived.by — this incidentally fixed a genuine PRE-EXISTING test
+          bug: ContextMenuContent.svelte.test.ts's afterEach called vi.restoreAllMocks(), which
+          for a bare vi.fn() (no original/non-mocked implementation) strips the
+          .mockReturnValue(true) after the first test runs, leaving checkAccess() returning
+          undefined for every subsequent test in the file — explains why only the 3rd test
+          ("divider") ever failed regardless of run order, and why it passed in isolation.
+          Fixed by swapping to vi.clearAllMocks() (clears call history, keeps implementations).
+          machine.collection(collection).delete(collectionId) kept as-is for the Delete action
+          (NOT migrated to machine.action, despite the epic note suggesting it) — MachineAction
+          (machine.action) has no delete primitive (create/upsert-only, see MachineAction.ts);
+          delete is imperative CRUD and machine.collection is the correct primitive per
+          CLAUDE.md invariant 8. DataField.svelte's collectionId source (epic's third adoption
+          target) deferred — `data` is a required+bindable prop consumed by every existing
+          caller for create/update flows; adding an alternate collectionId-only read path is
+          not yet needed by any caller and risks the bind:data contract. Left for whoever
+          actually needs it (e.g. a future Fiche/RecordToolbar show-only usage).
+
+  - id: 52
+    goal: "MAIN-MENU — recent-history panel + waffle/start overlay (epic-main-menu.md)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/sprint-52-planned.md"
+    depends_on: [50]
+    note: >
+      BL-19 (right-zone recent panel) and BL-15 (waffle overlay + TaskBar waffle button) —
+      disjoint files. BL-15 touches TaskBar.svelte → keep apart from BL-18 (sprint 53).
+      BL-19 touches TemplateShell right zone → kept apart from BL-14 sidebar zone (sprint 51).
+      Sprint activated 2026-06-24; S52-01 done first (no TaskBar/ContextMenu overlap), then S52-02.
+    stories:
+      - id: S52-01
+        title: "BL-19 — Right recent-history panel (appuser_history 30d/15, pref app_panel)"
+        backlog_ref: BL-19
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/RecentPanel.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. Full suite: server 689/689, client 66/67 (1 pre-existing unrelated failure, see detail)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/RecentPanel.svelte — reuses useMenuTree('panel') for the
+          rights/prefs/appscheme-grouped column structure (same pattern as BL-14's MenuTree),
+          then attaches appuser_history records per collection (30 day cutoff via lastSeen,
+          15 cap, sorted desc). appuser_history is a user-scoped collection (UserScopePolicy) so
+          machine.store('appuser_history') already returns only the current user's rows — no
+          extra userId join needed. Click navigates via machine.menu.verbs.fiche(collection, id)
+          (direct verb call, same IdaeMenuManager.launch() collection-vs-verb-name key mismatch
+          workaround used in BL-16/Today.svelte — not fixed, just avoided).
+          TemplateShell.svelte's right `<aside>` was previously always-rendered with
+          `aria-hidden="true"` and `.shell-right { display: none }` (dead placeholder since
+          Sprint <50). Changed to `{#if rightBar}` conditional render + `display: flex` so the
+          panel is both visible and reachable by a11y tools now that it has real interactive
+          content. Wired into Explorer.svelte's new `rightBar` snippet alongside the existing
+          `leftbar` (MenuTree) snippet — same TemplateShell instance, disjoint zones, confirmed
+          no merge conflict with Sprint 51's BL-14 sidebar work.
+          Pre-existing unrelated test failure found during full-suite run:
+          ContextMenuContent.svelte.test.ts "should show divider..." — reproduced identically on
+          a clean `git stash` of this branch, confirming it predates this work; not touched.
+      - id: S52-02
+        title: "BL-15 — Waffle / start overlay (type→collection launch + launch_all)"
+        backlog_ref: BL-15
+        status: complete
+        effort: L
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/WaffleMenu.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. Full suite: server 689/689, client 66/67 (same pre-existing unrelated failure as S52-01)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/WaffleMenu.svelte — kept as a plain layout overlay (not a
+          framer frame type), decided per the story's open question: the overlay isn't
+          collection-scoped so framer's loadFrame/loadInDialog content-keyed model didn't fit
+          cleanly (loadInDialog requires a single collection+modulePath). Uses
+          $bindable open prop, toggled from a new waffle button in TaskBar.svelte
+          (taskbar-left, before the Explorer button). Columns from useMenuTree('start'),
+          fixed-position overlay (inset:0, --z-modal) with a backdrop button to close,
+          Escape key closes too. Single-item launch and launch_all both call
+          machine.menu.verbs.explorer(collection) directly (same verb-lookup workaround as
+          BL-16/BL-19) — launch_all iterates a column's group.items.
+          pseudo-html skill invoked for tag naming: waffle-menu-component (root, fixed grid),
+          waffle-menu-column (zone), button.waffle-menu-item / button.waffle-menu-launch-all
+          (atoms, native+class per taxonomy decision rule). All custom tags have explicit
+          display CSS.
+
+  - id: 51
+    goal: "MAIN-MENU — sidebar tree + today dashboard (first visible zones, epic-main-menu.md)"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/epic-main-menu.md"
+    depends_on: [50]
+    note: >
+      Both consume the BL-13 generator (S50-01). BL-14 (TemplateShell sidebar zone, new
+      MenuTree) and BL-16 (new 'today' frame + registry) — disjoint files. Precondition
+      confirmed: core appscheme/appscheme_type carry color/icon/order + fkRelations.appscheme_type
+      (server/src/idae/idae-model-core.ts) — no BL-25 seed audit needed.
+      Runs in parallel with Sprint 52 (S52-01 in_progress) — disjoint files (sidebar/explorer
+      vs right-zone panel), confirmed safe.
+    stories:
+      - id: S51-01
+        title: "BL-14 — Sidebar tree by appscheme_type (replaces flat DataList sidebar)"
+        backlog_ref: BL-14
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/layout/__tests__/MenuTree.svelte.test.ts: 4/4 passed. pnpm run check: 0 errors. pnpm run test: 743/743 (70 files, up from 739)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/layout/MenuTree.svelte — collapsible sidebar tree grouped by
+          appscheme_type, consuming useMenuTree('side') (BL-13). Tags per pseudo-html skill:
+          <menu-tree-component> (root) > <menu-tree-group> (per-type zone, collapsible) >
+          native <button class="menu-tree-group-toggle"|"menu-tree-item"> atoms. Collapse
+          state persisted via machine.action('appuser_prefs', { code: '{userId}:menu_tree_open.
+          {zone}.{groupKey}', value }, { upsertOn: ['code'] }) — unset defaults to open
+          (mirrors menuPrefs "unset ≠ hidden" policy). Navigation reuses DataList's
+          parseLink/navigate contract (same link/linkVars prop shape). Wired into
+          src/lib/shell/frame/explorer/Explorer.svelte leftbar, replacing the flat
+          `<DataList collection="appscheme" linkCollectionField="code">` sidebar (dropped the
+          now-unused `sortBy` prop — MenuTree sorts by label internally per BL-13).
+          Exported from shell/layout/index.ts and src/lib/index.ts.
+          Bug found + fixed while writing the component test (real bug, not test-only):
+          useMenuTree.svelte.ts called `machine.store(...)` fresh on every $derived.by
+          recompute instead of once at hook setup — each call re-registers a brand-new
+          useQoolieCollection reactive subscription (fresh empty $state), so the tree never
+          converged past an empty snapshot in real usage, not just under test. Fixed by
+          hoisting the three machine.store() calls (appuser_prefs/appscheme/appscheme_type)
+          to the top of useMenuTree(), outside the $derived.by — same fix applied to
+          MenuTree.svelte's own openPrefs derived (it had the identical pattern). This was a
+          latent S50-01 defect that would have made every BL-14/15/16/19 consumer of
+          useMenuTree render blank.
+          Also fixed: IdaeMenuStore.ts read `scheme.label` / `appschemeType.label` for the
+          item/group labels, but the real appscheme/appscheme_type schema field is `name`
+          (server/src/idae/idae-model-core.ts) — `label` doesn't exist on real records, so
+          the sidebar would have rendered raw collection codes instead of labels. Fixed to
+          read `name` first, falling back to `label` (kept for the existing test fixtures that
+          use a pre-labeled shape).
+          index.ts barrel collision fixed: the new `MenuTree` component export collided with
+          the pre-existing `MenuTree` *type* re-exported from IdaeMenuManager.ts — aliased the
+          type export to `MenuTreeShape` (zero external consumers of the type yet).
+      - id: S51-02
+        title: "BL-16 — Today dashboard frame (quick-create + my-lists + échéancier)"
+        backlog_ref: BL-16
+        status: complete
+        effort: L
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "src/lib/shell/frame/today/__tests__/Today.svelte.test.ts: 5/5 passed. pnpm run check: 0 errors. pnpm run test: 748/748 (71 files)."
+        test_result: pass
+        detail: >
+          New src/lib/shell/frame/today/Today.svelte — three sections: <today-create>
+          (quick-create, consumes useMenuTree('create'), click fires machine.menu.verbs.create
+          directly — IdaeMenuManager.launch()'s collection-keyed fallback doesn't address the
+          verb-name-keyed default verbs map, so verbs.create(collection) is called explicitly
+          rather than through launch()); <today-my-lists> (records where fks.appuser.code ===
+          currentUser.code, capped 5/collection); <today-echeancier> (records with
+          dateDebut+dateFin fields, ongoing/upcoming first — dateFin == null or >= today,
+          capped 15 total). Owner/date-bearing collections enumerated once at component setup
+          via machine.logic.collections() (static post-boot schema) filtered by
+          rights.allowedCollections('L'); machine.store() called once per collection at setup,
+          never inside $derived (same qoolie-subscription rule as useMenuTree.svelte.ts).
+          Registered componentRegistry 'today' → Today.svelte; exported from
+          shell/frame/index.ts and src/lib/index.ts; componentRegistryEntries.test.ts count
+          16→17. Test-fixture bug found+fixed while writing tests: getCollectionRelations()
+          reads fkRelations from the appscheme record (not the static model) — the seeded
+          appscheme row for the test's 'widget' collection needed an explicit fkRelations.appuser
+          block, mirroring the project's appscheme-is-source-of-truth relation convention
+          (_relationTestUtils.ts). Also fixed a real test-pollution bug: spying on
+          machine.menu.verbs.create without mockImplementation let the real create verb open a
+          live dialog via machine.framer.loadInDialog, which isn't unmounted by
+          @testing-library's cleanup() (mounted outside the render root) and leaked into
+          subsequent tests.
+
+  - id: 50
+    goal: "Menu generator (BL-13) + DataList groupBy fix (BL-20) — 2 stories, 2 parallel agents"
+    status: complete
+    completed_at: "2026-06-24"
+    artifact: "bmad/artifacts/sprint-50-planned.md"
+    note: >
+      S50-01 (BL-13, unblocked — BL-11+BL-12 both done) and S50-02 (BL-20, no dep) —
+      zero file overlap (new menu store/framer layer vs DataList group-rendering branches).
+      Flagged: BL-05/BL-23 still ADR-blocked; BL-22/BL-24 still same-file overlap; BL-21
+      ready but held for capacity, candidate for sprint 51.
+      User caught S50-01 was reported done while broken: MachineMenuManager.wireStores()
+      existed but was never called anywhere (machine.ts only constructed the manager) —
+      machine.menu would have silently returned empty trees in real use. Also flagged
+      drift: MachineMenuStore.ts used classic Svelte stores (derived/readable from
+      'svelte/store'), the only place in src/ doing so — inconsistent with the project's
+      runes-hook convention (useViewFields.svelte.ts/useMachinePrefs.svelte.ts).
+      Fixed 2026-06-24: MachineMenuStore.ts rewritten as a pure buildMenuTree(snapshot,
+      zone) function (no Svelte stores). MachineMenuManager dropped wireStores/Readable
+      stores; getTree/getFlatItems/isVisible now compute on demand via an injected
+      setSnapshotReader callback. machine.ts get menu() wires that reader on first access
+      (reads machine.store('appuser_prefs'/'appscheme'/'appscheme_type') + dead
+      `readable` import + dead module-level `machineMenuManager` var removed). New
+      useMenuTree.svelte.ts (runes hook, $derived.by) added as the reactive
+      component-facing API — this is what BL-14/16/19 should consume, not the manager.
+      Added readMenuPrefsFromRecords() to menuPrefs.ts (strips `{userId}:` prefix from
+      appuser_prefs rows). Tests rewritten for the new pure-function/manager API + new
+      readMenuPrefsFromRecords/useMenuTree coverage. Exported from src/lib/index.ts.
+      Verified: pnpm run check 0 errors, pnpm run test 739/739 (up from 730).
+      RENAMED 2026-06-24 (user flagged taxonomy): MachineMenuStore/MachineMenuManager were
+      domain code (appscheme/appscheme_type/appuser_prefs literals, launch verbs tied to
+      domain frame keys) wearing the engine `Machine*` prefix — violates NAMESPACE.md §0/§4
+      (machine/ = zero domain literals; D-bucket code belongs in idae/, named Idae*). Moved
+      src/lib/main/menu/ → src/lib/idae/menu/, classes renamed IdaeMenuStore/IdaeMenuManager
+      (matches existing idae/ convention: IdaeRelationPolicy, IdaeRightsPolicy, etc. — note
+      src/lib/idae/ already exists client-side with boot.ts/relations/rights/frames/userscope/
+      meta/capabilities/fieldcatalog/bridge, contradicting NAMESPACE.md's 2026-06-21 "absent"
+      annotation — the split has progressed since that doc was annotated). Exported from
+      idae/index.ts alongside the other Idae* policies, and from src/lib/index.ts. Re-verified
+      739/739 + 0 errors after rename.
+    stories:
+      - id: S50-01
+        title: "Menu generator (framer enrichi) — arbre réactif rights∩prefs∩appscheme"
+        backlog_ref: BL-13
+        status: complete
+        effort: M
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "pnpm run test: 739/739 (69 files). pnpm run check: 0 errors. IdaeMenuStore.test.ts (6 cases), IdaeMenuManager.test.ts (9 cases), menuPrefs.test.ts +3 readMenuPrefsFromRecords cases. Final location: src/lib/idae/menu/ (renamed from src/lib/main/menu/ per NAMESPACE.md — domain code, not engine)."
+        test_result: pass
+      - id: S50-02
+        title: "groupBy fonctionne pour TOUS les modes DataList (table + grid inclus)"
+        backlog_ref: BL-20
+        status: done
+        effort: M
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_output: "pnpm run check: 0 errors; pnpm run test: 69 files / 730 tests passed. New DataRelations.svelte.test.ts groupBy across modes: 4/4 passed."
+        test_result: pass
+        test_artifact: "bmad/artifacts/test-results-S50-02.md"
+        detail: >
+          Refactored DataList.svelte to apply effectiveGroupBy in all three modes.
+          Table: one <tbody> per group with a <th colspan> header row.
+          Grid: one .grid-list per group under a .data-list-group-header.
+          List: unchanged grouped behavior, now using shared renderGroupHeader snippet.
+          Added 4 component tests in DataRelations.svelte.test.ts covering list/table/grid
+          group rendering plus flat fallback. Extended testCore with appscheme_view meta and
+          added seedViewFields() helper so table/grid modes can resolve view fields.
+          Also fixed an uncommitted S50-01 module-load crash (machineMenuManager singleton
+          importing machine directly) that blocked all test imports.
+
+  - id: 49
+    goal: "DataList mode 'form' + menu pref scopes — 2 stories, 2 parallel agents"
+    status: complete
+    completed_at: "2026-06-23"
+    artifact: "bmad/artifacts/sprint-49-planned.md"
+    note: >
+      S49-01 (BL-09, unblocked by S48-01) and S49-02 (BL-12, no dep) — zero file
+      overlap. Together they unblock BL-13 (menu generator). Flagged: BL-20 also
+      touches DataList.svelte — do not run alongside S49-01 this sprint. BL-22/BL-24
+      still same-file overlap, sequence separately. BL-05/BL-23 still ADR-blocked.
+    stories:
+      - id: S49-01
+        title: "DataList itemMode prop — drive DataRecord's existing 'update' mode per item, no new layout mode"
+        backlog_ref: BL-09
+        status: done
+        effort: L
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_result: pass
+        detail: >
+          CORRECTED 2026-06-23 (user caught a real bug mid-review — 'row' was a layout flag
+          masquerading as a CRUD state, and it silently discarded the real mode in DataRecord's
+          row branch). Final shape: DataList prop renamed itemMode→crudMode ('item' prefix
+          banned in this app's naming convention; crudMode also names the actual axis — CRUD
+          state, not layout). DataRecord.svelte split into two independent props: mode
+          ('show'|'create'|'update', the real CRUD state) and as ('fields'|'row', the layout
+          wrapper) — previously both were jammed into one 'mode' enum and the row branch
+          hardcoded literal mode="show" regardless of caller intent. Row branch now renders
+          DataField with the real {mode} (bind:data when not 'show'), mirroring the existing
+          fields-branch pattern. DataList's table-mode DataRecord call now passes
+          mode={crudMode} as="row" instead of the old mode="row" — table layout can finally
+          render editable cells. Verified: svelte-check 0 errors, full suite 717/717 (up from
+          702 — S49-02's 15 menuPrefs tests also landed). grep confirms 'row' no longer
+          appears anywhere in DataRecord/DataList's mode type union, only in the new `as` prop.
+      - id: S49-02
+        title: "Menu pref scopes — zone→pref module + défauts + dev show-all"
+        backlog_ref: BL-12
+        status: done
+        effort: M
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_output: "src/lib/data-ui/utils/__tests__/menuPrefs.test.ts: 15/15 passed. Full suite: 717/717 passed."
+        test_result: pass
+        test_artifact: "bmad/artifacts/test-results-S49-02.md"
+        detail: >
+          Added src/lib/data-ui/utils/menuPrefs.ts — centralizes zone→pref scope mapping
+          (side/app_menu, start/app_menu_start, create/app_menu_create, panel/app_panel).
+          Exports menuPrefsScope, menuPrefsPrefix, isMenuCollectionVisible,
+          filterMenuCollections, plus MENU_ZONES / MenuZone / MenuZonePrefix types.
+          Default policy: empty prefs show all permitted collections; explicit false hides;
+          explicit true shows; missing pref defaults to visible. Dev mode bypasses filter.
+          Added 15 unit tests in src/lib/data-ui/utils/__tests__/menuPrefs.test.ts.
+          Exported from src/lib/index.ts. No changes to useMachinePrefs behavior.
+
+  - id: 48
+    goal: "RBAC write-path unification + menu rights foundation — 2 stories, 2 parallel agents"
+    status: complete
+    artifact: "bmad/artifacts/sprint-48-planned.md"
+    test_artifact: "bmad/artifacts/test-results-sprint-48.md"
+    completed_at: "2026-06-23"
+    note: >
+      S48-01 (BL-08) and S48-02 (BL-11) completed in parallel — zero file overlap,
+      no dependency, no ADR blocker. Changes:
+      - DataForm.svelte: create/update via machine.action (lines 93, 96)
+      - RbacMatrix.svelte: toggleCell uses machine.action with upsertOn (lines 63, 66)
+      - MachineRights.ts: added allowedCollections(op) method (lines 118-125)
+      - Tests: 6 new tests in machineRights.test.ts (lines 210-273)
+      Verification: grep confirms 0 machine.collection(...).create/update in target files.
+      Tester verification: full suite 702/702 passed. Fixed stale
+      componentRegistryEntries.test.ts (expected 15 entries → 16, added contextmenu).
+      Unblocks: BL-09 (DataList mode 'form'), BL-12 (menu pref scopes) → BL-13 (menu generator).
+    stories:
+      - id: S48-01
+        title: "machine.action comme chemin d'écriture unique (DataForm + RbacMatrix)"
+        backlog_ref: BL-08
+        status: complete
+        effort: M
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_result: pass
+      - id: S48-02
+        title: "MachineRights enumeration — allowedCollections(op)"
+        backlog_ref: BL-11
+        status: done
+        effort: S
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_output: "src/lib/main/__tests__/machineRights.test.ts: 26/26 passed (6 new allowedCollections cases). Full suite after Tester fix: 702/702 passed. Stale componentRegistryEntries.test.ts updated to expect 16 entries (contextmenu added)."
+        test_result: pass
+        test_artifact: "bmad/artifacts/test-results-S48-02.md"
+        detail: >
+          Added MachineRights.allowedCollections(operation: PermissionCode = 'R'): string[]
+          in src/lib/main/machine/MachineRights.ts. Enumerates registered rights policies
+          and filters via existing checkAccess(), respecting ops/public/grants/admin/default
+          rules. Added 6 unit tests in src/lib/main/__tests__/machineRights.test.ts covering
+          open mode, operation filtering, structural deny, explicit grants, admin override,
+          and empty results.
+
+        completed_at: "2026-06-23"
+        tests_executed: true
+        test_result: pass
+
   - id: 47
     goal: "Backlog grooming — refresh shell/frame/index.ts barrel (BL-04)"
     status: complete
@@ -1102,6 +1566,72 @@ sprints:
         test_output: "Full suite: 470/470 (39 files), 3.68s. 6 new tests added (4 S34-01 + 1 S34-03 + 1 integration). 0 errors. Pre-existing Svelte CSS warnings (2 unused selectors) unchanged."
         test_result: pass
 
+  - id: 60
+    goal: "BL-25 — Réparer/compléter FieldList (888 mismatches + 803 missing fields)"
+    status: in_progress
+    started_at: "2026-06-24"
+    artifact: "bmad/artifacts/plan-BL-25.md"
+    note: >
+      User override: started without explicit medyll approval per direct instruction.
+      S60-01+S60-02 complete (audit + added 803 missing fields). S60-03 next: reconcile 888 mismatches field-by-field. Field-by-field reconciliation required before BL-23 P2 can proceed.
+    stories:
+      - id: S60-01
+        title: "Audit des 888 mismatches — script + export pour revue manuelle"
+        backlog_ref: BL-25
+        status: complete
+        effort: M
+        started_at: "2026-06-24"
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "Script BL-25-audit-mismatches.mjs executed successfully. Results: 3847 fields analyzed, 888 mismatches, 803 missing fields. Files generated: mismatches.json/csv, missing-fields.json, AUDIT-SUMMARY.md"
+        test_result: pass
+        detail: >
+          Créé bmad/scripts/BL-25-audit-mismatches.mjs — scanne tous les modèles
+          business (20 modèles, 3847 fields), compare types inline vs FieldList,
+          exporte mismatches.json/csv (888 entrées) + missing-fields.json (803
+          noms) + AUDIT-SUMMARY.md. Résultats correspondent à l'audit initial
+          (investigate-field-type.md §Suite).
+      - id: S60-02
+        title: "Ajouter les 803 noms manquants à FieldList"
+        backlog_ref: BL-25
+        status: complete
+        effort: M
+        depends_on: [S60-01]
+        started_at: "2026-06-24"
+        completed_at: "2026-06-24"
+        tests_executed: true
+        test_output: "Script BL-25-add-missing-fields.mjs executed successfully. Added 803 fields to FieldList (221→1024). Type distribution: 762 text, 31 boolean, 3 currency, 3 datetime, 2 url, 2 image, 1 date. Backup created."
+        test_result: pass
+        detail: >
+          Créé bmad/scripts/BL-25-add-missing-fields.mjs — lit missing-fields.json,
+          infère types/groups/noms, génère 803 entrées au format FieldList, ajoute
+          à server/src/idae/field-defs.ts avec commentaire BL-25. FieldList passe
+          de 221 à 1024 champs. Fichiers générés: generated-entries.txt,
+          addition-stats.json. Backup créé avant modification.
+      - id: S60-03
+        title: "Réconcilier les 888 mismatches field-par-field"
+        backlog_ref: BL-25
+        status: in_progress
+        effort: L
+        depends_on: [S60-01, S60-02]
+        started_at: "2026-06-24"
+        detail: >
+          Analyse complète des 888 mismatches : 108 décisions automatiques (12%)
+          appliquées (rich types), 780 nécessitent revue manuelle (88%). Principaux
+          patterns : number-vs-id (579), text-vs-phone (56), number-vs-currency (49),
+          datetime-vs-date (15). Script simple-analyze.mjs généré rapport JSON.
+          Prochaine étape : revue manuelle des 780 champs, documentation dans
+          bmad/artifacts/docs/BL-25-reconciliation.md.
+      - id: S60-04
+        title: "Validation complète + tests de non-régression"
+        backlog_ref: BL-25
+        status: pending
+        effort: M
+        depends_on: [S60-03]
+        detail: >
+          Script de validation (couverture 100%, pas de mismatches non documentés),
+          exécuter la suite de tests complète, créer test-results-BL-25.md.
+
 
 # ── QA / Bugs ─────────────────────────────────────────────────────────────────
 qa:
@@ -1298,6 +1828,312 @@ backlog:
       → collections emerge from sync.
       > BLOCKED on ADR: architectural choice, defines runtime model ownership.
       Not eligible for sprint planning until an ADR is written (bmad-adr).
+    detail: >
+      2026-06-24 (medyll) : scepticisme exprimé — touche une zone sensible (sync/IDB/
+      qoolie dual-bus) déjà cassée plusieurs fois par le passé (cf mémoire
+      qoolie_dual_bus_alias, rbac_hydration_refonte deep-link race). Pas rejeté
+      formellement, mais déprioritisé tant que ce doute n'est pas levé — ne pas
+      proposer de sprint sur BL-05 sans relance explicite de medyll, même une fois
+      l'ADR hypothétiquement écrit.
+
+  # EPIC RBAC-VIA-DATALIST (ajouté 2026-06-23) — RbacMatrix doit s'appuyer sur DataList + schéma global
+  - id: BL-08
+    title: "machine.action comme chemin d'écriture unique (DataForm + RbacMatrix)"
+    priority: high
+    status: complete
+    completed_at: "2026-06-23"
+    description: >
+      ✅ État actuel : DataForm écrit via machine.collection().create/update (DataForm.svelte:93-96) et
+      RbacMatrix via machine.collection('appuser_grant').create/update en dur (RbacMatrix.svelte:58-80).
+      Aucun ne passe par machine.action — pourtant invariant CLAUDE.md = "action = write dispatcher".
+      Cible : tout submit data effectif via machine.action(collection, vars, { upsertOn, ... }).
+      RBAC grant = upsert naturel sur ['appscheme','appuser_group'] → supprime la logique
+      existing/create/update manuelle de toggleCell. Effort: M.
+      Dépend de rien. Préalable à BL-09/BL-10.
+      Résolution: DataForm.svelte (lignes 93, 96) et RbacMatrix.svelte (lignes 63, 66) utilisent
+      désormais machine.action. Vérification: grep confirme 0 machine.collection(...).create/update.
+
+  - id: BL-09
+    title: "DataList mode 'form' — rendu form par record piloté schéma"
+    priority: high
+    description: >
+      DataList n'expose que mode 'list'|'table'|'grid' (DataList.svelte:72). Ajouter mode 'form'
+      qui rend un DataForm par record du ResultSet (réutilise componentRegistry 'form'/DataForm,
+      pas de logique champ custom). But : RbacMatrix devient un <DataList collection="appuser_grant"
+      mode="form"> filtré par groupe, les colonnes CRUDLX viennent du schéma global appscheme,
+      plus de <table> ni <select> manuels. Effort: L.
+      Dépend de BL-08 (form doit écrire via action).
+
+  - id: BL-10
+    title: "DataForm : option save auto vs save bouton"
+    priority: medium
+    description: >
+      DataForm n'a qu'un submit bouton (type=submit, DataForm.svelte:163). Ajouter prop saveMode
+      'button' (défaut, actuel) | 'auto' (write au onchange/blur via machine.action, debounce).
+      Mode 'auto' = cas RbacMatrix (toggle cellule = write immédiat) ; mode 'button' = formulaire
+      classique. Form-par-record (BL-09) choisit son saveMode. Effort: M.
+      Dépend de BL-08 + BL-09.
+
+  # EPIC MAIN-MENU (ajouté 2026-06-23) — menu global pref×right driven. Case: bmad/artifacts/case-main-menu.md
+  # Pièce perdue du legacy : générateur de menu = rights(L) ∩ prefs(app_menu_*) ∩ appscheme/appscheme_type.
+  # user_pref vides → besoin défauts + mode dev=tout visible. Hint user : framer à enrichir.
+  - id: BL-11
+    title: "MachineRights enumeration — allowedCollections(op)"
+    priority: high
+    status: complete
+    completed_at: "2026-06-23"
+    description: >
+      ✅ MachineRights.checkAccess(collection,op) répond pour UNE collection (MachineRights.ts:70).
+      Le menu a besoin de "toutes les collections où L=true" pour l'utilisateur. Ajouter
+      allowedCollections(op): string[] (ou itérer machine.logic.collections() × checkAccess
+      dans un $derived). Fondation du générateur de menu. Effort: S. Dépend de rien.
+      ADR candidat : où vit l'énumération (MachineRights vs store dérivé).
+      Résolution: Méthode allowedCollections(op) ajoutée à MachineRights.ts (lignes 118-125).
+      6 tests unitaires ajoutés (machineRights.test.ts:210-273) couvrant open mode, auth mode,
+      ops policy, grants, admin override. Décision: implémentation dans MachineRights (non dérivée).
+
+  - id: BL-12
+    title: "Menu pref scopes — module clés zone→pref centralisé + défauts + dev show-all"
+    priority: high
+    description: >
+      Aujourd'hui useMachinePrefs est datalist-scoped uniquement ; aucune notion de scope menu.
+      Centraliser le mapping zone→pref (app_menu / app_menu_start / app_menu_create / app_panel)
+      dans UN module — app*_ = convention PAS contrat (mémoire machine_app_naming), pas de
+      littéraux 'app_menu_'+table éparpillés. CRITIQUE user : user_pref vides → défaut = montrer
+      toutes les collections PERMISES quand aucune pref app_menu_* ; mode dev (import.meta.env.DEV)
+      = bypass filtre pref, tout visible. Ne PAS persister les défauts comme prefs ("unset" ≠
+      "masqué explicitement"). Granularité par zone préservée. Effort: M. Dépend de rien.
+
+  - id: BL-13
+    title: "Menu generator (framer enrichi) — arbre réactif rights∩prefs∩appscheme"
+    priority: high
+    description: >
+      Pièce perdue. Store $derived qui joint machine.rights (L), appuser_prefs (app_menu_* via
+      BL-12), appscheme + appscheme_type (label/icon/color/type) → arbre typé groupé par type.
+      Réactif : changement pref/right re-filtre. Hint user "framer à enrichir" : le framer porte
+      le modèle de menu + verbes de lancement (Espace=loadFrame explorer, Créer=loadInDialog form,
+      etc.) ; garder le builder pur/réactif, ne pas gonfler le singleton d'état UI. Effort: M.
+      Dépend de BL-11 + BL-12. ADR candidat : framer propriétaire du modèle de menu.
+
+  - id: BL-14
+    title: "Sidebar arbre par appscheme_type (remplace DataList plat)"
+    priority: high
+    description: >
+      Sidebar actuelle = <DataList collection="appscheme" linkCollectionField="code" /> : plate,
+      pas de tree par type, pas de filtre pref/right. Remplacer par l'arbre du générateur (BL-13)
+      groupé par appscheme_type, collapsible, icônes/couleurs. pseudo-html puis css-base avant
+      build (tags custom + display explicite). Effort: M. Dépend de BL-13.
+
+  - id: BL-15
+    title: "Waffle / start overlay — type→collection launch + launch_all"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Overlay waffle legacy (app_gui_start_menu.php, écran menu.production) : colonnes par
+      appscheme_type, launch d'une collection ou launch_all d'un type. Pref scope app_menu_start_*.
+      Consomme BL-13. Effort: L. Dépend de BL-13.
+
+  - id: BL-16
+    title: "Today dashboard frame — quick-create + mes listes + échéancier"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Dashboard "Aujourd'hui" (app_gui_today.php, écran today) : quick-create (pref
+      app_menu_create_*), accès rapide à mes listes (records possédés), timeline échéancier
+      (dateDebut/dateFin). Frame type chargé en zone main. Effort: L. Dépend de BL-13.
+
+  - id: BL-17
+    title: "Menu contextuel de lancement rights-gated (Créer/Espace/Recherche/Parcourir/Comparer/Trier/console/images)"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      ContextMenu host existe déjà (framer.openContextMenu + ContextMenu.svelte) mais actions
+      ni rights-gated ni câblées aux verbes. Construire les entrées depuis R/C/U/D/L (table §3.2
+      MAIN_MENU.md) : C→Créer, L→Espace/Parcourir, R→Recherche/Comparer, ADMIN→Trier,
+      L+dateDebut+status→console, any→images. Effort: M. Dépend de BL-11 + BL-13.
+
+  - id: BL-18
+    title: "Gear paramètres par zone — éditeur de prefs (machine.action)"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Gear ⚙ TaskBar.svelte:61 = mock. Par zone, toggle quelles collections permises s'affichent ;
+      écrit appuser_prefs via machine.action (upsertOn par scope). Avertissement quand aucune pref
+      configurée (cf BL-12 défauts). Effort: M. Dépend de BL-12 + BL-13.
+
+  - id: BL-19
+    title: "Panneau historique récent (droite) — appuser_history 30j/15"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Panneau historique par collection (app_gui_panel_list.php), pref app_panel_*, appuser_history
+      30 jours limite 15. Données + machine.action existent (mémoire), UI à construire. Effort: M.
+      Dépend de BL-12 + BL-13.
+
+  # DataList polish (ajouté 2026-06-23)
+  - id: BL-20
+    title: "groupBy fonctionne pour TOUS les modes DataList (table + grid inclus)"
+    priority: high
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Bug : le branch {:else if groups} (DataList.svelte:367) n'est atteint qu'en mode list.
+      {:else if currentMode === 'table'} (ligne 306) et {:else if grid} (343) court-circuitent
+      avant → groupBy ignoré en table et grid. Cible : effectiveGroupBy s'applique aux 3 modes.
+      Table = un <tbody> (ou section table) par groupe avec ligne d'en-tête de groupe (colspan) ;
+      grid = une grille par groupe sous le groupHeader. Factoriser le rendu groupé hors du
+      seul chemin list. Effort: M. Dépend de rien.
+      STALE — déjà implémenté en S50-02 (commit 1d31188e, avant ce backlog entry du
+      2026-06-23). Vérifié 2026-06-24 : DataList.svelte a bien {#if groups} à l'intérieur
+      des 3 branches table(344)/grid(371)/list(420), chacune avec son propre groupHeader +
+      wrapper (tbody par groupe / div.data-list-group / ul). Tests DataRelations.svelte.test.ts
+      "groups items in list/table/grid mode" déjà 3/3 verts (vus dans la full suite des
+      sprints 51-55, jamais en échec). Juste pas marqué complete dans ce backlog — aucun code
+      à écrire.
+
+  - id: BL-21
+    title: "Snippet DataList renommé 'dataRecord' avec les props de DataRecord (spread ...record)"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Aujourd'hui le snippet exposé est `item`, payload { collection, collectionId, record, idx,
+      fieldValues } (DataList.svelte:88, rendu :292). Cible : le renommer `dataRecord` et délivrer
+      directement les props de DataRecord (collection, data/...record spread, mode, view, idx) au
+      lieu de l'objet wrapper item+record+records. Le consommateur reçoit la forme DataRecord prête
+      à brancher, pas un wrapper à déballer. Mise à jour des appelants (Synthesis, etc.). Effort: M.
+      Dépend de rien. Note : breaking change d'API snippet → noter dans conventions.md.
+    detail: >
+      DataList.svelte: prop item→dataRecord; payload { collection, collectionId, data, mode,
+      view, idx } (data = record, mode = crudMode) instead of { collection, collectionId,
+      record, idx, fieldValues }. `fieldValues` derived var was dead (no consumer ever read
+      it — confirmed via grep before removing) so dropped outright rather than carried into
+      the new payload. Only real caller in src/ was AiChatSession.svelte (2 usages: message
+      list + nested tool-call list) — updated both ({ record }) → ({ data }). Synthesis.svelte
+      (named in the original backlog note) does NOT use the item snippet at all — renders
+      DataList autonomously; no change needed there, note was stale. conventions.md's DataList
+      snippet API section updated with the new payload + a rename note.
+    tests_executed: true
+    test_output: "pnpm run check: 0 errors. server 689/689, client 78/78 (full suite, no DataList item-snippet test existed to update)."
+    test_result: pass
+
+  - id: BL-22
+    title: "FicheToolbar → RecordToolbar + inclusion dans ContextMenu si collection+collectionId"
+    priority: medium
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      (1) Renommer FicheToolbar en RecordToolbar (logique : toolbar d'un record, pas d'une fiche).
+      MAJ 7 appelants (Fiche.svelte:15, Synthesis.svelte, FicheToolbar.svelte, parcours.spec.ts,
+      ARCH.html, FABLE*.md). Breaking → noter conventions.md.
+      (2) ContextMenuContent doit inclure <RecordToolbar {collection} {collectionId} /> quand
+      collection ET collectionId existent (en plus / au lieu des items View/Edit/Delete construits
+      en dur lignes 48-93). Le menu contextuel d'un record = toolbar du record. Effort: M.
+      Dépend de rien. Extension future prévue (le toolbar grossira). Note connexe : ContextMenuContent
+      utilise onMount + machine.collection().delete (lignes 32,77) — à migrer runes + machine.action
+      au passage (invariants CLAUDE.md), pas bloquant.
+
+  - id: BL-23
+    title: "Field type : source unique = catalogue FieldList (déprécier type inline business models)"
+    priority: high
+    status: in_progress
+    detail: >
+      2026-06-24 — P0 (ADR-field-type-source.md, confirme/applique ADR-fk-model-b.md
+      §7/§10/§11) + P1 (BaseFieldDef.type optionnel, machineParserForge.ts fallback
+      'text') livrés. pnpm run check 0 erreurs, server typecheck 0 erreurs, client
+      78/78, server (root project) 689/689, server package 307/307.
+      P2 STOPPÉ après audit de réconciliation : 3847 fields business inline-typés vs
+      FieldList → 888 mismatches + 1411 occurrences (803 noms) absentes du catalogue.
+      Le catalogue est plus PAUVRE que l'inline (id→number, phone/icon/currency/
+      image/url→text/number) — basculer catalogue-first aujourd'hui dégraderait le
+      rendu sur 19 orgs, pas un fix. P2/P3/P4 différés tant que FieldList n'est pas
+      réparé+complété (chantier séparé, hors scope "M" initial). Détail complet :
+      investigate-field-type.md §"Suite", ADR-field-type-source.md §"Mise à jour".
+    description: >
+      Enquête : bmad/artifacts/investigate-field-type.md. Constat : core (idae-model-core)
+      n'inline jamais `type` (fields = {required,readonly}, type via relation appscheme_field_type) ;
+      les 21 business models inlinent `type:` sur chaque field (crfr 623, idaenext 492, tactac 479…).
+      Pourquoi : (1) BaseFieldDef.type requis (machine-model.ts:23) force l'inline sur tout modèle
+      annoté MachineModel ; core échappe via `as const`. (2) publishModel.ts:346 lit fd.type ?? 'text'
+      direct, pas FieldList[name].type → inline = source de fait. (3) syncFieldList aspire models→catalogue
+      (sens inverse de l'intention). La relation appscheme_field_type (plan core) est court-circuitée.
+      Pré-plan de correction phasé :
+      P0 ADR source unique = FieldList keyé par code (bmad-adr).
+      P1 BaseFieldDef.type → optionnel (S).
+      P2 publishModel résout catalogue-first, inline=override (M).
+      P3 inverser syncFieldList en vérificateur (M).
+      P4 codemod purge `type:` inline 21 models, réconcilier divergences (L).
+      P5 tests roundtrip + "aucun field business n'inline type" (S).
+      Ordre P0→P1→P2→P3→P5, P4 dernier. ADR candidat = P0.
+
+  - id: BL-25
+    title: "Réparer/compléter FieldList (field-defs.ts) — préalable bloquant à BL-23 P2"
+    priority: high
+    status: in_progress
+    detail: >
+      2026-06-24 — partie "803 noms manquants" faite : server/src/idae/field-defs.ts +803
+      entrées, type résolu par scan réel des 19 modèles (mode/fréquence, pas deviné par nom) —
+      bmad/scripts/BL-25-add-missing-fields-v2.mjs. v1 (autonome, non sollicité dans cette
+      session) avait foiré ce point (type:'text'/group:'data' partout, noms ALL-CAPS explosés
+      lettre par lettre type "PHPSESSID"→"p h p s e s s i d") — reverté puis refait. v2 :
+      0/803 fallback texte (tous résolus depuis l'inline réel).
+      Gate : server typecheck 0 erreurs, client check 0 erreurs, client 78/78, server (root
+      project) 689/689, server package 307/307 — MAIS uniquement avec `--no-file-parallelism`
+      ou en isolation. En parallélisme normal (`npm run test`), publishModel.coreViews.test.ts
+      devient flaky (race pré-existante : TEST_ORG='vitest' partagé en Mongo réel entre fichiers
+      de test parallèles, ensureCodeToId/embedFk concurrents) — confirmé pré-existant et non lié
+      au contenu ajouté (vérifié par git stash : flake disparaît si field-defs.ts revient à sa
+      taille d'origine, simplement parce que le module met moins longtemps à charger/parser —
+      décale le timing qui déclenchait la race). Pas corrigé ici (hors scope, touche l'isolation
+      des tests serveur, pas le catalogue) — à traiter séparément si ça gêne.
+      Restant : Story 1 (catégoriser les 888 mismatches) + Story 3 (réconciliation field-par-
+      field, décision champ par champ) — PAS commencées, c'est le gros du travail. Audit data
+      conservée : bmad/artifacts/BL-25-audit/{mismatches.csv,mismatches.json,missing-fields.json}.
+    description: >
+      Audit 2026-06-24 (voir investigate-field-type.md §"Suite", ADR-field-type-source.md
+      §"Mise à jour") : sur 3847 fields business inline-typés, 888 mismatches vs FieldList
+      (le catalogue est plus pauvre — id→number, phone/icon/currency/image/url→text/number)
+      et 1411 occurrences (803 noms uniques) absentes du catalogue. BL-23 P2 (publishModel
+      catalogue-first) ne peut PAS être activé sans casser le rendu sur 19 orgs tant que ceci
+      n'est pas corrigé.
+      Travail : (1) parcourir les 888 mismatches, décider field-name par field-name si le
+      catalogue doit adopter le type inline (cas riche : phone/icon/currency/image/url/id) ou
+      si l'inline est l'anomalie (rare, à vérifier au cas par cas) ; (2) ajouter les 803 noms
+      manquants au catalogue avec leur type réel (lu depuis l'inline business, pas deviné) ;
+      (3) une fois FieldList complet+correct, relancer BL-23 P2→P3→P4.
+      Risque : décision champ-par-champ, pas automatisable sans jugement (un même nom peut
+      légitimement avoir un type différent selon contexte — à vérifier avant fusion). Effort: L.
+      Dépend de: rien techniquement, mais bloque BL-23 P2+.
+
+  - id: BL-24
+    title: "Rune partagée useRecordData — résolution data|collectionId factorisée (collectionId = data.id)"
+    priority: high
+    status: complete
+    completed_at: "2026-06-24"
+    description: >
+      Mécanique dual-source : un composant reçoit soit (collection, collectionId) soit
+      (collection, data) ; cas data → collectionId = data.id (ou scheme.index). Aujourd'hui
+      implémentée inline dans DataRecord.svelte:48-67 (data ?? machine.store(collection,
+      buildWhere(index,id)).records[0]), au-dessus de MachineRecordIdentity (normalizeKey/
+      buildWhere/recordMatchesIndex, déjà la primitive bas niveau). Extraire en rune partagée
+      useRecordData(() => collection, () => ({ collectionId, data })) → { record, collectionId, scheme }
+      réactif, lecture via machine.store (jamais machine.collection — invariant CLAUDE.md 8).
+      Adopter dans : DataRecord (remplace l'inline), DataField (ajouter source collectionId, ne
+      prend que data aujourd'hui + dérive data?.id ad-hoc DataField.svelte:53), et surtout
+      ContextMenuContent.svelte:40 qui RÉIMPLÉMENTE DIVERGENT (records.find(r => r.id ==
+      collectionId) : == lâche, ignore scheme.index, non réactif). Autres consommateurs
+      collection+collectionId à brancher : Fiche, RecordToolbar (ex-FicheToolbar, cf BL-22),
+      Synthesis, ButtonAction. Effort: M. Dépend de rien (BL-22 touche les mêmes fichiers →
+      coordonner). Note : aligne le contrat DataRecord documenté dans CLAUDE.md §4.
+      Pattern hook déjà établi dans le projet (useViewFields.svelte.ts, useMachinePrefs.svelte.ts)
+      → useRecordData suit la même forme `use*().svelte.ts`. Idée connexe (user) : un hook useFieldView
+      dans la même famille pour factoriser la résolution de view/champs (aujourd'hui useViewFields
+      est consommé inline par DataRecord+DataField) — à étudier en même temps que useRecordData.
 
   - { id: BL-07,     priority: done, title: "DataList mode unification — implémenté S42" }
 

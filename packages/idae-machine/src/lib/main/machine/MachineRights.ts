@@ -1,12 +1,13 @@
 import type { AppUser, AppUserGrant, PermissionCode } from '$lib/types/entity-types.js';
 import type { MachineModel, MachineRightsPolicy } from '$lib/types/index.js';
-import { getGrantDecoder } from '$lib/machine/ext/hooks.js';
+import { getGrantDecoder } from '$lib/main/ext/hooks.js';
 
 const ALL_OPS: PermissionCode[] = ['C', 'R', 'U', 'D', 'L', 'X'];
 
-class MachineRights {
+export class MachineRights {
 	#currentUser: AppUser | null = null;
 	#grants: AppUserGrant[] = [];
+	#menuBaseline: Record<string, boolean> = {};
 	#authEnabled = false;
 	#policies: Record<string, MachineRightsPolicy> = {};
 
@@ -32,10 +33,15 @@ class MachineRights {
 	 * Enable auth and set the current user + their grants.
 	 * Once called, open mode is disabled — all access goes through checkAccess().
 	 */
-	setCurrentUser(user: AppUser | null, grants: AppUserGrant[] = []): void {
+	setCurrentUser(
+		user: AppUser | null,
+		grants: AppUserGrant[] = [],
+		menuBaseline: Record<string, boolean> = {}
+	): void {
 		this.#authEnabled = true;
 		this.#currentUser = user;
 		this.#grants = grants;
+		this.#menuBaseline = menuBaseline;
 	}
 
 	/** Disable auth and return to open mode (all access allowed). */
@@ -43,10 +49,20 @@ class MachineRights {
 		this.#authEnabled = false;
 		this.#currentUser = null;
 		this.#grants = [];
+		this.#menuBaseline = {};
 	}
 
 	get currentUser(): AppUser | null {
 		return this.#currentUser;
+	}
+
+	/**
+	 * Role-derived menu visibility baseline (scopeKey → bool), resolved server-side at
+	 * login by OR-ing the user's role presets. The menu reads `override ?? baseline ??
+	 * false`; role codes are never exposed client-side — only this flat effect.
+	 */
+	get menuBaseline(): Record<string, boolean> {
+		return this.#menuBaseline;
 	}
 
 	get isAuthEnabled(): boolean {
@@ -98,8 +114,7 @@ class MachineRights {
 			const decoder = getGrantDecoder();
 			const schemeCode = decoder
 				? decoder.decodeSchemeCode(grant as unknown as Record<string, unknown>)
-				: ((grant as Record<string, unknown>).schemeCode as string | undefined) ??
-					((grant.fks as Record<string, Record<string, unknown>>)?.appscheme?.code as string | undefined);
+				: undefined;
 			if (schemeCode && schemeCode !== collection && schemeCode !== '*') return false;
 			return grant[permField] === true;
 		});
@@ -109,6 +124,21 @@ class MachineRights {
 		if (policy?.default?.includes(operation)) return true;
 
 		return false;
+	}
+
+	/**
+	 * Enumerate all collections the current user has access to for the given operation.
+	 * Returns an array of collection names where checkAccess(collection, op) returns true.
+	 * Used by menu generators and UI components that need to filter collections by rights.
+	 */
+	allowedCollections(operation: PermissionCode = 'R'): string[] {
+		const result: string[] = [];
+		for (const [name] of Object.entries(this.#policies)) {
+			if (this.checkAccess(name, operation)) {
+				result.push(name);
+			}
+		}
+		return result;
 	}
 }
 

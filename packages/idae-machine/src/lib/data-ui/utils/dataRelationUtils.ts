@@ -1,6 +1,6 @@
 import type { MachineScheme } from '$lib/main/machine/MachineScheme.js';
 import type { MachineFkDef, Where, FkRelations } from '$lib/types/index.js';
-import { getRelationResolver } from '$lib/machine/ext/hooks.js';
+import { getRelationResolver } from '$lib/main/ext/hooks.js';
 
 export type RelationWhere = Where<Record<string, unknown>>;
 

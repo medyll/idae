@@ -11,7 +11,7 @@
  */
 
 import type { MachineModel } from '$lib/types/index.js';
-import { getCodeFieldConvention } from '$lib/machine/ext/hooks.js';
+import { getCodeFieldConvention } from '$lib/main/ext/hooks.js';
 import { field } from '$lib/main/machine/fieldBuilder.js';
 
 /**

@@ -1,4 +1,15 @@
 import type { MachineFkDef } from '$lib/types/index.js';
+import { getRelationResolver } from '$lib/main/ext/hooks.js';
+
+/** Minimal schema bridge — avoids importing MachineDb (cycle risk). */
+type FkSchemaBridge = {
+	collection(name: string): { fks?: Record<string, MachineFkDef> } | null | undefined;
+};
+
+/** Minimal qoolie bridge — only the where() accessor is needed for FK resolution. */
+type QoolieBridge = {
+	collection?: Record<string, { where(q: Record<string, unknown>): unknown }>;
+};
 
 /**
  * MachineFkFold
@@ -53,4 +64,61 @@ export async function foldFksIntoRecord(
 
 	out.fks = fksBag;
 	return out;
+}
+
+/**
+ * Wrap a QoolieCollection so create/update/updateWhere denormalize FK snapshots
+ * into `record.fks.<field>` before persisting. All other methods forward untouched.
+ *
+ * Extracted from machine.ts (#resolveFkTarget + #wrapCollectionFkFold).
+ * machine.collection() is the single call-site.
+ */
+export function wrapCollectionFkFold<C extends object>(
+	machineDb: FkSchemaBridge,
+	qoolie: QoolieBridge,
+	name: string,
+	col: C,
+): C {
+	const resolver = getRelationResolver();
+
+	let fold: (data: Record<string, unknown>) => Promise<Record<string, unknown>>;
+
+	if (resolver?.foldRelations) {
+		fold = (data) => resolver.foldRelations!(name, data);
+	} else {
+		// Fallback: inline fold when domain bridge not registered (tests, early boot)
+		const fks = machineDb.collection(name)?.fks ?? {};
+		if (!Object.keys(fks).length) return col;
+
+		const resolveFkTarget: FkTargetResolver = async (fkCollection, fkIndexField, value) => {
+			const targetCol = qoolie.collection?.[fkCollection];
+			if (!targetCol) return undefined;
+			try {
+				const docs = await Promise.resolve(targetCol.where({ [fkIndexField]: value }));
+				return (docs as Record<string, unknown>[] | undefined)?.[0];
+			} catch {
+				return undefined;
+			}
+		};
+		fold = (data) => foldFksIntoRecord(fks, data, resolveFkTarget);
+	}
+
+	const overrides: Record<string, unknown> = {
+		create:      async (data: Record<string, unknown>) =>
+			(col as Record<string, (...args: unknown[]) => unknown>).create(await fold(data)),
+		update:      async (id: unknown, data: Record<string, unknown>) =>
+			(col as Record<string, (...args: unknown[]) => unknown>).update(id, await fold(data)),
+		updateWhere: async (query: unknown, data: Record<string, unknown>) =>
+			(col as Record<string, (...args: unknown[]) => unknown>).updateWhere(query, await fold(data)),
+	};
+
+	// Proxy forwards every other method (where/get/getAll/…) to the real instance
+	// with correct `this` binding — spreading would silently drop prototype methods.
+	return new Proxy(col, {
+		get(target, prop, receiver) {
+			if (typeof prop === 'string' && prop in overrides) return overrides[prop];
+			const val = Reflect.get(target, prop, receiver);
+			return typeof val === 'function' ? val.bind(target) : val;
+		},
+	});
 }

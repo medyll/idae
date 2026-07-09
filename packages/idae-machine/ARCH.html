@@ -615,7 +615,7 @@
 								<strong>Déclarations de modèle</strong>
 								<small>engineModel.ts · idae-model-core.ts · demoScheme</small>
 							</flow-node>
-							<flow-rail data-label="MachineModel (fields · fks · template · _views)"></flow-rail>
+							<flow-rail data-label="MachineModel (fields · fkRelations · template · _views)"></flow-rail>
 
 							<flow-node>
 								<strong>Server bootstrap</strong>
@@ -775,7 +775,7 @@
 								la metadata du schéma et rend records, forms, lists, relations FK/RFK et navigation
 								sans code par collection. Atomes de champ show+edit unifiés sous
 								<code>field/snippets/</code> (dispatch par <code>mode</code>) ; toolbars
-								externalisées (<code>FicheToolbar · ButtonAction · Sort/Group</code>, médiateur
+								externalisées (<code>RecordToolbar · ButtonAction · Sort/Group</code>, médiateur
 								<code>useMachinePrefs</code>).
 							</p>
 							<group-chip>
@@ -1232,7 +1232,7 @@
 								<tr>
 									<td>Engine model</td>
 									<td><code>types/engineModel.ts</code>, <code>idae-model-core.ts</code></td>
-									<td>Description déclarative des collections machine + fields/fks/template</td>
+									<td>Description déclarative des collections machine + fields/fkRelations/template</td>
 									<td>Le boot runtime</td>
 								</tr>
 								<tr>

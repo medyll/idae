@@ -145,6 +145,14 @@ class GrantService {
 	}
 
 	/**
+	 * Resolved active type ids for a user (role assignments). Reuses the cached
+	 * source resolution — used to map a user to their role-owned menu presets.
+	 */
+	async listUserTypeIds(userId: string): Promise<string[]> {
+		return (await this.#loadSources(userId)).typeIds;
+	}
+
+	/**
 	 * Boolean wrapper for resolveAccess — convenience for callers that don't need constraints.
 	 */
 	async checkGrant(

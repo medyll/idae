@@ -205,3 +205,84 @@ describe('MachineRights — clearCurrentUser', () => {
 		expect(machineRights.checkAccess('vehicle', 'D')).toBe(true);
 	});
 });
+
+describe('MachineRights — allowedCollections', () => {
+	it('returns all collections in open mode', () => {
+		machineRights.setPolicies({ vehicle: {}, category: {}, rental: {} });
+		const result = machineRights.allowedCollections('R');
+		expect(result).toEqual(['vehicle', 'category', 'rental']);
+	});
+
+	it('filters collections by operation in auth mode', () => {
+		machineRights.setPolicies({
+			vehicle: { default: ['R'] },
+			category: { default: ['R', 'C'] },
+			rental: { default: ['C'] }
+		});
+		const user = makeUser();
+		machineRights.setCurrentUser(user, []);
+
+		const readAllowed = machineRights.allowedCollections('R');
+		expect(readAllowed).toContain('vehicle');
+		expect(readAllowed).toContain('category');
+		expect(readAllowed).not.toContain('rental');
+
+		const createAllowed = machineRights.allowedCollections('C');
+		expect(createAllowed).toContain('category');
+		expect(createAllowed).toContain('rental');
+		expect(createAllowed).not.toContain('vehicle');
+	});
+
+	it('respects ops policy structural deny', () => {
+		machineRights.setPolicies({
+			vehicle: { ops: ['R', 'L'], default: ['R'] },
+			category: { ops: ['C', 'R'], default: ['C'] }
+		});
+		const user = makeUser();
+		machineRights.setCurrentUser(user, []);
+
+		// vehicle doesn't allow 'C' in ops
+		const createAllowed = machineRights.allowedCollections('C');
+		expect(createAllowed).toContain('category');
+		expect(createAllowed).not.toContain('vehicle');
+	});
+
+	it('includes collections with explicit grants', () => {
+		machineRights.setPolicies({
+			vehicle: {},
+			category: { default: ['R'] }
+		});
+		const user = makeUser();
+		machineRights.setCurrentUser(user, [
+			makeGrant('vehicle', { r: true })
+		]);
+
+		const result = machineRights.allowedCollections('R');
+		expect(result).toContain('vehicle');
+		expect(result).toContain('category'); // category has default R
+	});
+
+	it('includes collections with admin override', () => {
+		machineRights.setPolicies({
+			vehicle: {},
+			category: {}
+		});
+		const admin = makeUser({ appPermissions: { ADMIN: true } } as never);
+		machineRights.setCurrentUser(admin, []);
+
+		const result = machineRights.allowedCollections('R');
+		expect(result).toEqual(['vehicle', 'category']);
+	});
+
+	it('returns empty array when no collections match', () => {
+		machineRights.setPolicies({
+			vehicle: {},
+			category: {}
+		});
+		const user = makeUser();
+		machineRights.setCurrentUser(user, []);
+
+		const result = machineRights.allowedCollections('X');
+		expect(result).toEqual([]);
+	});
+});

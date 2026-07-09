@@ -11,6 +11,24 @@
 
 ---
 
+## 1bis. Architecture law & LLM conduct (read before any structural change)
+
+**Namespace law (frozen 2026-06-27, user decision — see `NAMESPACE.md`):**
+- `src/lib/main/` = **ENGINE** (generic, no domain literals). `src/lib/idae/` = **DOMAIN** (`Idae*` prefix).
+- One-way dependency: `idae → main`. `main/` **never** imports `idae/` (only seam exempted: composition root `main/machine.ts`).
+- Mechanically guarded: `npm run lint:arch` (wired into `gate`) fails on `main → idae` and on self-imports. Engine ext-points live in `main/ext/`. There is **no** `src/lib/machine/` folder — it was folded into `main/`.
+- Where does new code go? relation/FK/rbac/appscheme/appuser/workflow → `idae/`; store/frame/field-type-validation/router/lifecycle → `main/`.
+
+**LLM conduct (the project's worst failure mode was AI inventing architecture):**
+1. **The AI applies architecture, it does not decide it.** Renaming a folder/file, creating a namespace, splitting engine/domain, introducing a cross-cutting abstraction = **user decision**. A short user phrase does NOT authorize a broad structural change. On ambiguity: **confront, propose options, wait — never fill the gap by default.**
+2. **Stay in scope.** Task = X → do not rename/move/delete/refactor Y in passing. No unrequested "convenience" files. Touch the minimum.
+3. **Do not edit a neighbouring component** (e.g. Explorer) because you're working on another (e.g. MainMenu), unless explicitly asked.
+4. **An architecture doc is a user law, not an LLM draft.** Do not self-annotate it, do not let multiple models debate inside it, do not "refactor" it. Correct it only on explicit user decision.
+
+(Skill `idae-guard` enforces this behaviorally; `lint:arch` enforces the boundary mechanically. `npm run conventions` regenerates `CONVENTIONS.generated.md` = house writing rules derived from the components + golden component per family.)
+
+---
+
 ## 2. Invariants (breaking these breaks the app)
 
 1. `machine.init(opts)` then `await machine.boot()` before any store/logic access.

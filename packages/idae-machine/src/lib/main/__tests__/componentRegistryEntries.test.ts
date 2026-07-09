@@ -1,5 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll } from 'vitest';
 import { componentRegistry } from '../router/componentRegistry.js';
+import { IdaeFrameCatalog } from '$lib/idae/frames/FrameCatalog.js';
+
+beforeAll(() => {
+	new IdaeFrameCatalog().registerFrames(componentRegistry);
+});
 
 describe('Global componentRegistry entries', () => {
 	it('has "explorer" registered', () => {
@@ -56,12 +61,13 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('diagram')).toBe(true);
 	});
 
-	it('has exactly 14 entries', () => {
+	it('has exactly 18 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(15);
+		expect(keys).toHaveLength(18);
 		expect(keys.sort()).toEqual([
 			'ai.chat-session',
 			'columner',
+			'contextmenu',
 			'dashboard',
 			'diagram',
 			'explorer',
@@ -71,10 +77,12 @@ describe('Global componentRegistry entries', () => {
 			'form',
 			'list',
 			'login',
+			'main-menu.content',
 			'rbac.matrix',
 			'record',
 			'space',
 			'synthesis',
+			'today'
 		]);
 	});
 });

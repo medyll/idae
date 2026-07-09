@@ -55,25 +55,16 @@ export const componentRegistry = new ComponentRegistry();
 
 export type ComponentLoaderFn = ComponentLoader;
 
-const DEFAULT_REGISTRY_ENTRIES = {
-	'explorer':         () => import('$lib/shell/frame/explorer/Explorer.svelte'),
-	'explorer.content': () => import('$lib/shell/frame/explorer/ExplorerContent.svelte'),
-	'form':             () => import('$lib/data-ui/data/DataForm.svelte'),
-	'list':             () => import('$lib/data-ui/data/DataList.svelte'),
-	'record':           () => import('$lib/data-ui/data/DataRecord.svelte'),
-	'columner':         () => import('$lib/shell/layout/Columner.svelte'),
-	'fiche':            () => import('$lib/shell/layout/Fiche.svelte'),
-	'fiche.update':     () => import('$lib/shell/layout/FicheUpdate.svelte'),
-	'rbac.matrix':      () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
-	'synthesis':        () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
-	'diagram':          () => import('$lib/shell/frame/diagram/Diagram.svelte'),
-	'dashboard':        () => import('$lib/shell/frame/dashboard/Dashboard.svelte'),
-	'space':            () => import('$lib/shell/frame/space/Space.svelte'),
-	'login':            () => import('$lib/shell/auth/Login.svelte'),
-	'ai.chat-session':  () => import('$lib/ai/frame/AiChatSession.svelte'),
-} satisfies Record<string, ComponentLoader>;
-
-export type RegistryKey = keyof typeof DEFAULT_REGISTRY_ENTRIES;
-
-componentRegistry.registerMany(DEFAULT_REGISTRY_ENTRIES);
-
+/**
+ * Augmentable by domain code — main/ (engine) can't hardcode literal frame keys
+ * (FrameCatalog is a pluggable ext-point, see machine.ts composition root), but
+ * doesn't have to fall back to bare `string` either. Domain layer (idae/frames/
+ * FrameCatalog.ts) declares `interface FrameKeyRegistry extends Record<...>`
+ * for this same module specifier; TS merges it in at compile time (ambient
+ * declaration merging, no runtime import — main→idae law untouched). Falls
+ * back to `string` only if nothing augments it (e.g. a different domain swaps
+ * in its own FrameCatalog without augmenting this interface).
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export interface FrameKeyRegistry {}
+export type RegistryKey = keyof FrameKeyRegistry extends never ? string : keyof FrameKeyRegistry;

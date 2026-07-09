@@ -3,7 +3,7 @@
  * Replaces hardcoded warmup arrays with model-driven collection selection
  */
 import type { MachineModel } from '$lib/types/index.js';
-import { getMetaCollectionResolver } from '$lib/machine/ext/hooks.js';
+import { getMetaCollectionResolver } from '$lib/main/ext/hooks.js';
 
 /**
  * Get collections that are critical for schema hydration (warmup candidates).
@@ -40,11 +40,7 @@ export function getSchemaCriticalCollections(
 export function getComprehensiveWarmupCollections(model: MachineModel): string[] {
 	const collections = getSchemaCriticalCollections(model, ['machine_app', 'machine_user', 'machine_ai']);
 
-	// Add other high-priority collections that are frequently accessed
-	const additionalCollections: string[] = [
-		// Add any other collections that should be warmed up
-		// e.g., 'appuser', 'appuser_prefs', etc.
-	];
+	const additionalCollections: string[] = [];
 
 	for (const collection of additionalCollections) {
 		if (model[collection] && !collections.includes(collection)) {
@@ -53,6 +49,36 @@ export function getComprehensiveWarmupCollections(model: MachineModel): string[]
 	}
 
 	return collections;
+}
+
+/** Minimal interface — hydrateAll is a qoolie extension, not in the public type. */
+type HydratableQoolie = { hydrateAll?: (collections: string[]) => Promise<void> };
+
+/**
+ * Pre-fetch collections into IDB. Derives the list from the model when not provided.
+ * Swallows errors so a warmup failure never blocks the app.
+ */
+export async function warmup(
+	qoolie: HydratableQoolie,
+	model: MachineModel,
+	collections?: string[]
+): Promise<void> {
+	const collectionsToWarm = (collections && collections.length > 0)
+		? collections
+		: getSchemaCriticalCollections(model);
+
+	const hydratePromise = qoolie.hydrateAll?.(collectionsToWarm);
+	if (!hydratePromise) return;
+
+	const timeout = new Promise<never>((_, reject) =>
+		setTimeout(() => reject(new Error('[idae-machine] warmup timed out after 30s')), 30000)
+	);
+
+	try {
+		await Promise.race([hydratePromise, timeout]);
+	} catch (err) {
+		console.warn('[idae-machine] warmup failed (non-blocking):', err);
+	}
 }
 
 /**

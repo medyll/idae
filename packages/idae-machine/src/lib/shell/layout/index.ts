@@ -4,3 +4,6 @@ export { default as TemplateShell } from './TemplateShell.svelte';
 export { default as Breadcrumb } from './Breadcrumb.svelte';
 export { default as DevResetPanel } from './DevResetPanel.svelte';
 export { default as TaskBar } from './TaskBar.svelte';
+export { default as MainMenu } from './MainMenu.svelte';
+export { default as MenuSettings } from './MenuSettings.svelte';
+export { default as RecordToolbar } from './RecordToolbar.svelte';

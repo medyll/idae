@@ -4,7 +4,8 @@ Iterates a record's fields and renders DataField for each.
 @role data-record
 @prop {string} collection - Collection name
 @prop {Record<string,any>} data - Record data (bindable)
-@prop {'show'|'create'|'update'|'row'} [mode] - Display mode. 'row' emits <td> per field for use inside <tr> (no groupBy support in this mode).
+@prop {'show'|'create'|'update'} [mode] - CRUD state, independent of layout.
+@prop {'fields'|'row'} [as] - Layout wrapper. 'row' emits <td> per field for use inside <tr> (no groupBy support). Does not affect `mode`.
 @prop {string[]} [showFields] - Explicit field list, bypasses the view query entirely
 @prop {string} [view] - Named view (resolved via appscheme_view/appscheme_field query — see useViewFields)
 @prop {string} [groupFieldBy] - FK relation key on appscheme_field to group by (e.g. 'appscheme_field_type'); grouping runs on `fks.{groupFieldBy}.code` via native groupBy
@@ -13,15 +14,17 @@ Iterates a record's fields and renders DataField for each.
 	import type { Snippet } from 'svelte';
 	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import { machine } from '$lib/main/machine.js';
-	import { MachineRecordIdentity } from '$lib/main/index.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
+	import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 	import { getContext } from 'svelte';
+	import type { ViewTypeCode } from '$lib/types/index.js';
 
 	let {
 		collection = getContext('collection'),
 		collectionId,
 		data = $bindable(),
 		mode = 'show',
+		as = 'fields',
 		showFields,
 		view = 'full',
 		groupFieldBy,
@@ -33,9 +36,10 @@ Iterates a record's fields and renders DataField for each.
 		collection: string;
 		collectionId?: string | number;
 		data?: Record<string, any>;
-		mode?: 'show' | 'create' | 'update' | 'row';
+		mode?: 'show' | 'create' | 'update';
+		as?: 'fields' | 'row';
 		showFields?: string[];
-		view?: string;
+		view?: ViewTypeCode;
 		groupFieldBy?: string;
 		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
 		inputForm?: string;
@@ -43,28 +47,12 @@ Iterates a record's fields and renders DataField for each.
 		showGroupNames?: boolean;
 	} = $props();
 
-	const scheme = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
-
-	// Data source contract:
-	//  - `data` prop provided  → controlled (e.g. DataList store items). Use as-is.
-	//  - else `collectionId`   → reactive read via machine.store (NOT machine.collection;
-	//    store is the reactive read layer, collection is imperative CRUD). Same path
-	//    DataList uses, so it resolves the correct qoolie instance.
-	const queryId = $derived(MachineRecordIdentity.normalizeKey(collectionId));
-	const recordStore = $derived(
-		data === undefined && collection && queryId !== undefined
-			? machine.store(
-					collection,
-					MachineRecordIdentity.buildWhere(scheme?.index ?? 'id', queryId) as any
-				)
-			: null
-	);
-
-	$inspect(recordStore,groupFieldBy)
-
-	const fetchedData = $derived(recordStore?.records?.[0] as Record<string, any> | undefined);
-
-	const effectiveData = $derived(data ?? fetchedData);
+	// Data source contract (CLAUDE.md §4): `data` prop → controlled (e.g. DataList store
+	// items), used as-is; else `collectionId` → reactive read via machine.store (BL-24,
+	// useRecordData — NOT machine.collection; store is the reactive read layer).
+	const recordData = useRecordData(() => collection, () => ({ collectionId, data }));
+	const scheme = $derived(recordData.scheme);
+	const effectiveData = $derived(recordData.record);
 
 	// Field list: explicit `showFields` bypasses the view query; otherwise query-resolved
 	// via appscheme_view → appscheme_field (see useViewFields — no client-side heuristics).
@@ -79,12 +67,16 @@ Iterates a record's fields and renders DataField for each.
  
 </script>
 
-{#if mode === 'row'}
+{#if as === 'row'}
 	{#if scheme && fieldNames.length && effectiveData != null}
 		{#each fieldNames as fieldName (fieldName)}
 			{#if (scheme.fields?.[fieldName] || isFkField(fieldName)) && (fieldName in effectiveData || isFkField(fieldName))}
 				<td>
-					<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
+					{#if mode === 'show'}
+						<DataField {collection} {fieldName} mode="show" data={effectiveData} showLabel={false} />
+					{:else if data !== undefined}
+						<DataField {collection} {fieldName} {mode} bind:data showLabel={false} />
+					{/if}
 				</td>
 			{/if}
 		{/each}
@@ -138,23 +130,27 @@ Iterates a record's fields and renders DataField for each.
 {/if}
 
 <style>
-	.form {
+	/* flex-wrap (legacy .fiche_field_group: flex_h flex_wrap) — each DataField's
+	   `.field-line` carries its own flex-basis (~320px, legacy min-width:40%) and
+	   fixed-width label, so values line up without a rigid grid forcing uneven
+	   rows to match height. */
+	.form,
+	fieldset.field-group {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
 		align-items: flex-start;
+	}
+	fieldset.field-group {
+		border: none;
+		padding: 0;
 	}
 	.field {
 		display: contents;
 	}
-	fieldset.field-group {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--space-2, 0.5rem) var(--space-3, 0.75rem);
-		align-items: flex-start;
-		border: none;
-	}
 	legend {
-		padding: var(--space-2, 0.5rem)
+		width: 100%;
+		padding: var(--pad-sm) 0 var(--pad-xs);
+		font-weight: var(--font-medium);
+		color: var(--color-text-muted);
 	}
 </style>

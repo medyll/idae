@@ -168,9 +168,9 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
 
 {#if fieldForge}
     {#if !isPrivate}
-        <label form={inputForm} for={String(fieldName)} class="field-line {labelPosition} {inputSizeClass}">
+        <div class="field-line {labelPosition} {inputSizeClass}">
             {#if showLabel}
-                <span class="field-label" title={fieldLabel}>{fieldLabel}</span>
+                <label class="field-label" for={String(fieldName)} title={fieldLabel}>{fieldLabel}</label>
             {/if}
             <div class="field-input" {...inputDataset}>
                 {#if fieldForge.fieldType === 'id'}
@@ -284,7 +284,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
                     <div class="error-message">{error}</div>
                 {/if}
             </div>
-        </label>
+        </div>
     {/if}
 {:else}
     <div class="error-message">Champ ou schéma non trouvé pour {fieldName}</div>
@@ -296,8 +296,9 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
         display: flex;
         flex-direction: row;
         align-items: baseline;
-        gap: var(--space-1, 0.25rem);
-        flex: 0 0 auto; /* sized by content: label + input */
+        gap: var(--gutter-sm);
+        padding: var(--pad-xs) var(--pad-sm) var(--pad-xs) 0;
+        flex: 1 1 320px; /* ~legacy .fiche_field min-width:40% — wraps 2-up, full width when narrow */
     }
     .field-line.input-size-full {
         flex: 1 1 100%;
@@ -306,16 +307,18 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     }
 
     .field-label {
-        /* adaptive: grows to fit short labels, caps long ones (e.g. FK relation
-           names like 'appscheme_view_type') with ellipsis + title tooltip */
-        flex: 0 1 auto;
-        min-width: var(--field-label-min-w, 5rem);
-        max-width: var(--field-label-max-w, 14rem);
+        /* fixed width (legacy .label_field: width:100px) — alignment comes from a
+           constant label column, not from an elastic min/max range.
+           NB: --field-label-w (not css-base's --field-label-width, which is a
+           different token — grid label column for .form/.field, default max-content). */
+        flex: 0 0 var(--field-label-w, 7rem);
+        width: var(--field-label-w, 7rem);
+        color: var(--color-text-muted);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .field-line.input-size-full .field-label { flex: 0 0 auto; }
+    .field-line.input-size-full .field-label { flex: 0 0 auto; width: auto; }
 
     /* inputSize presets — constrain the INPUT, not the field wrapper */
     .field-input { min-width: 0; }
