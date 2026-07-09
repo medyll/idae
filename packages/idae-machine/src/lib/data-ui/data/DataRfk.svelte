@@ -32,7 +32,7 @@ Reverse FK relation viewer — shows collections that point to this record.
 
 	let { collection, showTitle = false, component, componentProps = {}, sortBy, groupBy, children }: DataRfkProps = $props();
 
-	const reverseFks = $derived(machine.logic.collection(collection).parseReverseFks());
+	const reverseFks = $derived(machine.logic.collection(collection)?.parseReverseFks() ?? {});
 
 	const rfkEntries = $derived(
 		Object.entries(reverseFks).map(([key, def]) => ({ key, ...(def as Record<string, unknown>) }))

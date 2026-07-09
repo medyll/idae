@@ -66,14 +66,14 @@ describe('Machine — init + boot (fake-indexeddb)', () => {
 		await m.boot();
 		const scheme = m.logic.collection('vehicle');
 		expect(scheme).toBeDefined();
-		expect(scheme.index).toBe('id');
-		expect(scheme.template.presentation).toBe('license_plate brand');
+		expect(scheme!.index).toBe('id');
+		expect(scheme!.template.presentation).toBe('license_plate brand');
 	});
 
 	it('machine.logic.collection(vehicle).field(license_plate) parses type', async () => {
 		const m = new Machine('test_machine_field', 1, model);
 		await m.boot();
-		const f = m.logic.collection('vehicle').field('license_plate').parse();
+		const f = m.logic.collection('vehicle')!.field('license_plate').parse();
 		expect(f?.fieldType).toBe('text');
 	});
 
@@ -81,14 +81,14 @@ describe('Machine — init + boot (fake-indexeddb)', () => {
 		// Relations live on appscheme records (FKRELATIONS.md) — boot the global
 		// machine and seed appscheme so the relation accessor can resolve them.
 		const m = await bootWithRelations('test_machine_fks', model);
-		const fks = m.logic.collection('vehicle').parseFks();
+		const fks = m.logic.collection('vehicle')!.parseFks();
 		expect(fks).toHaveProperty('category');
 	});
 
-	it('unknown collection throws MachineError', async () => {
+	it('unknown collection returns null', async () => {
 		const m = new Machine('test_machine_err', 1, model);
 		await m.boot();
-		expect(() => m.logic.collection('nonexistent')).toThrow();
+		expect(m.logic.collection('nonexistent')).toBeNull();
 	});
 });
 
@@ -132,7 +132,7 @@ describe('Machine — boot with remote schema (mocked fetch)', () => {
 		m.init({ org: 'test', domain: 'fetchschema3', version: 1, sync: { databaseHost: 'http://localhost:3000' } });
 		await m.boot();
 
-		const scheme = m.logic.collection('vehicle');
+		const scheme = m.logic.collection('vehicle')!;
 		expect(scheme.index).toBe('id');
 		expect(scheme.template.presentation).toBe('license_plate brand');
 	});

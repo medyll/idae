@@ -114,7 +114,7 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	describe('vehicle schema', () => {
-		const scheme = () => db.collection('vehicle');
+		const scheme = () => db.collection('vehicle')!;
 
 		it('index derived from keyPath (++id → id)', () => {
 			expect(scheme().index).toBe('id');
@@ -151,7 +151,7 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	describe('rental schema', () => {
-		const scheme = () => db.collection('rental');
+		const scheme = () => db.collection('rental')!;
 
 		it('parseFks() has vehicle and customer', () => {
 			const fks = scheme().parseFks();
@@ -168,7 +168,7 @@ describe('MachineDb constructed from getModel() output', () => {
 	});
 
 	describe('category schema (no fks)', () => {
-		const scheme = () => db.collection('category');
+		const scheme = () => db.collection('category')!;
 
 		it('parseFks() returns empty', () => {
 			expect(Object.keys(scheme().parseFks())).toHaveLength(0);
@@ -179,7 +179,7 @@ describe('MachineDb constructed from getModel() output', () => {
 		});
 	});
 
-	it('unknown collection throws', () => {
-		expect(() => db.collection('nonexistent')).toThrow();
+	it('unknown collection returns null', () => {
+		expect(db.collection('nonexistent')).toBeNull();
 	});
 });

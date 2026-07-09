@@ -17,7 +17,7 @@ describe('Machine relation helpers', () => {
 	});
 
 	it('findFkField resolves the data field for a target collection', () => {
-		const vehicle = db.collection('vehicle');
+		const vehicle = db.collection('vehicle')!;
 		expect(vehicle.findFkField('category')).toEqual({
 			fieldName: 'category',
 			targetIndex: 'code'
@@ -29,7 +29,7 @@ describe('Machine relation helpers', () => {
 	});
 
 	it('parseReverseFkFields enriches reverse FK metadata with field names', () => {
-		const vehicle = db.collection('vehicle');
+		const vehicle = db.collection('vehicle')!;
 		expect(vehicle.parseReverseFkFields()).toMatchObject({
 			rental: {
 				vehicle: {
@@ -55,7 +55,7 @@ describe('Machine relation helpers', () => {
 	});
 
 	it('resolveForwardRelations builds where clauses from schema introspection', () => {
-		const vehicle = db.collection('vehicle');
+		const vehicle = db.collection('vehicle')!;
 		const relations = resolveForwardRelations(vehicle, {
 			id: 1,
 			category: '2',
@@ -81,7 +81,7 @@ describe('Machine relation helpers', () => {
 	});
 
 	it('resolveForwardRelations reads the nested fks.{name} object (single FK, bare key)', () => {
-		const vehicle = db.collection('vehicle');
+		const vehicle = db.collection('vehicle')!;
 		const relations = resolveForwardRelations(vehicle, {
 			id: 1,
 			fks: { category: { id: 2, code: 'compact' } }
@@ -99,7 +99,7 @@ describe('Machine relation helpers', () => {
 	});
 
 	it('resolveReverseRelations builds reverse where clauses from schema helpers', () => {
-		const category = db.collection('category');
+		const category = db.collection('category')!;
 		const relations = resolveReverseRelations(category, { id: 1, code: 'compact', name: 'Compact' });
 		expect(relations.resolved).toMatchObject([
 			{

@@ -33,7 +33,7 @@ export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
 	 */
 	public getForge(fieldName: keyof T): IDbForge | undefined {
 		return this.#collectionValues.machine
-			.collection(this.#collection)
+			.collection(this.#collection)!
 			.field(String(fieldName))
 			.parse();
 	}
@@ -59,7 +59,7 @@ export class MachineSchemeFieldValues<T extends Record<string, unknown>> {
 	 */
 	format(fieldName: keyof T): string | string[] | unknown[] {
 		const fieldInfo = this.#collectionValues.machine
-			.collection(this.#collection)
+			.collection(this.#collection)!
 			.field(String(fieldName))
 			.parse();
 		if (fieldInfo?.is === 'array') {

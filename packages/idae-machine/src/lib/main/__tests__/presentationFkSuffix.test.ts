@@ -17,7 +17,7 @@ beforeAll(() => {
 
 describe('presentation token — single FK bag', () => {
 	const db = new MachineDb(buildEffectiveModel(demoScheme));
-	const rentalValues = db.collection('rental').collectionValues;
+	const rentalValues = db.collection('rental')!.collectionValues;
 
 	it('resolves fks.<collection>.<field>', () => {
 		const rec = {

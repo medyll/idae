@@ -119,22 +119,15 @@ describe('DataList data operations', () => {
 	});
 
 	describe('error handling', () => {
-		it('throws for unknown collection', () => {
-			expect(() => m.logic.collection('nonexistent')).toThrow();
-		});
-
-		it('safeCollection returns null for unknown collection', () => {
-			function safeCollection(name: string) {
-				try { return m.logic.collection(name); } catch { return null; }
-			}
-			expect(safeCollection('nonexistent')).toBeNull();
-			expect(safeCollection('vehicle')).not.toBeNull();
+		it('returns null for unknown collection', () => {
+			expect(m.logic.collection('nonexistent')).toBeNull();
+			expect(m.logic.collection('vehicle')).not.toBeNull();
 		});
 	});
 
 	describe('defaultSort', () => {
 		it('infers defaultSort from schema', () => {
-			const collLogic = m.logic.collection('vehicle');
+			const collLogic = m.logic.collection('vehicle')!;
 			const ds = collLogic.defaultSort;
 			expect(Array.isArray(ds)).toBe(true);
 			expect(ds.length).toBeGreaterThan(0);

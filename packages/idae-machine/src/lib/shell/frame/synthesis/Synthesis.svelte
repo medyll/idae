@@ -16,17 +16,9 @@
 		dataId?: string;
 	} = $props();
 
-	function safeScheme(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
-	}
-
 	const store = $derived(machine.store<Record<string, unknown>>(collection));
 	const record = $derived(store.records.find((r) => String(r.id) === String(collectionId)) ?? {});
-	const scheme = $derived(safeScheme(collection));
+	const scheme = $derived(machine.logic.collection(collection));
 	const presentation = $derived(
 		(scheme as { template?: { presentation?: string } } | null)?.template?.presentation ?? ''
 	);

@@ -48,7 +48,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
         showLabel = true
     }: DataFieldProps<COL> = $props();
 
-    const scheme            = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+    const scheme            = $derived(collection ? machine.logic.collection(collection) : null);
     const fieldForge        = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
     const schemeFieldValues = $derived(scheme?.collectionValues ?? null);
     const inputDataset      = $derived.by(() => {
@@ -88,7 +88,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     // FK store — guard prevents machine.store('') phantom subscription on non-FK fields
     const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { records: [] as Record<string, unknown>[] });
     const fkItems  = $derived(fkStore.records as Record<string, unknown>[]);
-    const fkScheme = $derived(fkCollection ? machine.logic.collectionOr(fkCollection, null) : null);
+    const fkScheme = $derived(fkCollection ? machine.logic.collection(fkCollection) : null);
     const fkLabel  = $derived.by(() => {
         if (!fkCollection || internalValue == null) return '—';
         // Prefer the denorm snapshot already fed onto the record (`fks.<field>` bare or

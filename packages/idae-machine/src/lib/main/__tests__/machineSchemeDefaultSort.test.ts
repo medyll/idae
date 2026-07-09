@@ -20,7 +20,7 @@ describe('MachineScheme.defaultSort', () => {
 				],
 			},
 		});
-		const scheme = db.collection('vehicles');
+		const scheme = db.collection('vehicles')!;
 		expect(scheme.defaultSort).toEqual([
 			{ field: 'status', direction: 'asc' },
 			{ field: 'name', direction: 'asc' },
@@ -35,7 +35,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('items');
+		const scheme = db.collection('items')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'ordre', direction: 'asc' }]);
 	});
 
@@ -47,7 +47,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('items');
+		const scheme = db.collection('items')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'order', direction: 'asc' }]);
 	});
 
@@ -59,7 +59,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('users');
+		const scheme = db.collection('users')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'name', direction: 'asc' }]);
 	});
 
@@ -71,7 +71,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('products');
+		const scheme = db.collection('products')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'code', direction: 'asc' }]);
 	});
 
@@ -83,7 +83,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('clients');
+		const scheme = db.collection('clients')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'nom', direction: 'asc' }]);
 	});
 
@@ -95,7 +95,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('logs');
+		const scheme = db.collection('logs')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'updatedAt', direction: 'desc' }]);
 	});
 
@@ -107,7 +107,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('entries');
+		const scheme = db.collection('entries')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'dateModification', direction: 'desc' }]);
 	});
 
@@ -119,7 +119,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('events');
+		const scheme = db.collection('events')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'createdAt', direction: 'desc' }]);
 	});
 
@@ -131,7 +131,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('records');
+		const scheme = db.collection('records')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'dateCreation', direction: 'desc' }]);
 	});
 
@@ -147,7 +147,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('schedules');
+		const scheme = db.collection('schedules')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'startDate', direction: 'desc' }]);
 	});
 
@@ -159,7 +159,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('misc');
+		const scheme = db.collection('misc')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'id', direction: 'asc' }]);
 	});
 
@@ -171,7 +171,7 @@ describe('MachineScheme.defaultSort', () => {
 				fks: {},
 			},
 		});
-		const scheme = db.collection('tags');
+		const scheme = db.collection('tags')!;
 		expect(scheme.defaultSort).toEqual([{ field: 'tagId', direction: 'asc' }]);
 	});
 });

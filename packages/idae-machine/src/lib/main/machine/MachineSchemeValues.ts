@@ -65,7 +65,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	presentation(data: Record<string, unknown>): string {
 		try {
-			const scheme       = this.machine.collection(this.collectionName);
+			const scheme       = this.machine.collection(this.collectionName)!;
 			const presentation = scheme.template?.presentation;
 			this.#checkError(!presentation, 'Presentation template not found', 'TEMPLATE_NOT_FOUND');
 
@@ -103,7 +103,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	indexValue(data: Record<string, unknown>): unknown | null {
 		try {
-			const indexName = this.machine.collection(this.collectionName).index;
+			const indexName = this.machine.collection(this.collectionName)!.index;
 			this.#checkError(!indexName, 'Index not found for collection', 'INDEX_NOT_FOUND');
 			this.#checkError(
 				!(indexName in data),
@@ -138,7 +138,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 				'FIELD_NOT_FOUND'
 			);
 			const fieldInfo = this.machine
-				.collection(this.collectionName)
+				.collection(this.collectionName)!
 				.field(String(fieldName))
 				.parse();
 			this.#checkError(
@@ -177,11 +177,11 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		`data-${'collection' | 'collection-id' | 'fieldName' | 'fieldType' | 'fieldArgs' | 'inputSize'}`,
 		string
 	> {
-		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
+		const fieldInfo = this.machine.collection(this.collectionName)!.field(fieldName).parse();
 		const fieldType  = fieldInfo?.fieldType ?? '';
 		const fieldArgs  = fieldInfo?.fieldArgs?.join(' ') ?? '';
 		const inputSize  = fieldInfo?.inputSize ?? '';
-		const indexName  = this.machine.collection(this.collectionName).index;
+		const indexName  = this.machine.collection(this.collectionName)!.index;
 
 		return {
 			'data-collection':    this.collectionName,
@@ -210,7 +210,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 */
 	// NOTE: Return type is Array<Record<string, unknown>> to match actual runtime type from parser
 	iterateArrayField(fieldName: keyof TplFields, data: unknown[]): Array<Record<string, unknown>> {
-		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
+		const fieldInfo = this.machine.collection(this.collectionName)!.field(fieldName).parse();
 		if (fieldInfo?.is !== 'array' || !Array.isArray(data)) {
 			return [];
 		}
@@ -238,7 +238,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		fieldName: keyof TplFields,
 		data: Record<string, unknown>
 	): Array<Record<string, unknown>> {
-		const fieldInfo = this.machine.collection(this.collectionName).field(fieldName).parse();
+		const fieldInfo = this.machine.collection(this.collectionName)!.field(fieldName).parse();
 		if (fieldInfo?.is !== 'object' || typeof data !== 'object' || data === null) {
 			return [];
 		}
@@ -286,7 +286,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 		fkIndexField?:  string;
 	} | null {
 		try {
-			const scheme = this.machine.collection(this.collectionName);
+			const scheme = this.machine.collection(this.collectionName)!;
 
 			// FK detection from the structured `fks` block (canonical). The relation key
 			// is the field name; the join index is the semantic `code`. No magic-string
@@ -352,7 +352,7 @@ export class MachineSchemeValues<T extends Record<string, unknown>> {
 	 * @returns {Record<string, unknown>} An object with default values for each field in the collection.
 	 */
 	getDefaults(): Record<string, unknown> {
-		const fields = Object.keys(this.machine.collection(this.collectionName).fields || {});
+		const fields = Object.keys(this.machine.collection(this.collectionName)!.fields || {});
 		return SchemeFieldDefaultValues.getDefaults(fields, this.collectionName);
 	}
 }

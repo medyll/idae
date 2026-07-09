@@ -39,7 +39,7 @@ Renders forward FK relations for a record as DataList sections.
 	}: DataListFkProps = $props();
 
 	const sourceStore = $derived(collection ? machine.store<Record<string, unknown>>(collection) : { records: [] as Record<string, unknown>[] });
-	const scheme      = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+	const scheme      = $derived(collection ? machine.logic.collection(collection) : null);
 
 	const storeRecord = $derived.by(() => {
 		if (collectionId == null) return null;

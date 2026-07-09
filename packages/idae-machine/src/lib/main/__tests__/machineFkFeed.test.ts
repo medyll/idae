@@ -43,7 +43,7 @@ describe('FK denorm feed on write (machine.collection)', () => {
 			category:      'compact',
 		});
 
-		const presentation = m.logic.collection('vehicle').collectionValues.presentation(vehicle);
+		const presentation = m.logic.collection('vehicle')!.collectionValues.presentation(vehicle);
 		expect(presentation).toContain('CC-222-DD');
 	});
 

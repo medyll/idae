@@ -39,7 +39,7 @@ FK-aware select field atom. Show mode renders the resolved FK label
 		multiple = false
 	}: FieldSelectProps = $props();
 
-	const scheme     = $derived(machine.logic.collectionOr(collection, null));
+	const scheme     = $derived(machine.logic.collection(collection));
 	const indexField = $derived(targetField ?? scheme?.index ?? 'id');
 	const store      = $derived(machine.store(collection));
 	const items      = $derived(store.records ?? []);

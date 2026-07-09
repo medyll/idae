@@ -26,7 +26,7 @@ Click sets/clears groupBy.
 	// Any field or FK relation can be a grouping axis. Plain fields group on
 	// their raw value; FK fields resolve their label via DataList (parseFkGroupKey).
 	const groupableFields = $derived.by(() => {
-		const collLogic = safeCollection(collection);
+		const collLogic = machine.logic.collection(collection);
 		if (!collLogic) return [] as { field: string; label: string }[];
 		const fields = (collLogic.fields ?? {}) as Record<string, { type?: string }>;
 		const fks    = (collLogic.fks ?? {}) as Record<string, unknown>;
@@ -46,14 +46,6 @@ Click sets/clears groupBy.
 		}
 		return out;
 	});
-
-	function safeCollection(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
-	}
 
 	function pick(field: string | undefined): void {
 		groupBy = field;

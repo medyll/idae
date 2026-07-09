@@ -36,7 +36,7 @@ same collection/prefsScope; both bind the same shared prefs store (mediator) and
 	let open = $state(false);
 
 	const fields = $derived.by(() => {
-		const logic = machine.logic.collectionOr(collection, null);
+		const logic = machine.logic.collection(collection);
 		const pres = logic?.template?.presentation as string | undefined;
 		if (pres) return pres.split(/\s+/).filter(Boolean);
 		return Object.keys(logic?.fields ?? {}).filter((f) => !f.startsWith('_'));

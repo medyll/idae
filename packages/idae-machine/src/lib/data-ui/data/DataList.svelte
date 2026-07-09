@@ -139,7 +139,7 @@ Consumers can override via the dataRecord snippet.
 				: machine.store<COL>(collection)
 			: { records: [] as unknown as COL[] }
 	);
-	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+	const collLogic = $derived(collection ? machine.logic.collection(collection) : null);
 	const indexField = 'id';
 	const defaultSort = $derived(
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
@@ -264,7 +264,7 @@ Consumers can override via the dataRecord snippet.
 			const fkCollection = collLogic?.fks?.[fkKey]?.code ?? null;
 			const labelMap = new Map<unknown, string>();
 			if (fkCollection) {
-				const fkScheme     = machine.logic.collectionOr(fkCollection, null);
+				const fkScheme     = machine.logic.collection(fkCollection);
 				const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
 				const fkItems      = machine.store(fkCollection).records as Record<string, unknown>[];
 				for (const item of fkItems) {
@@ -288,7 +288,7 @@ Consumers can override via the dataRecord snippet.
 	let errorMessage = $state<string | null>(null);
 
 	$effect(() => {
-		if (!machine.logic.collectionOr(collection, null)) {
+		if (!machine.logic.collection(collection)) {
 			errorMessage = `Collection '${collection}' not found in schema.`;
 		} else {
 			errorMessage = null;

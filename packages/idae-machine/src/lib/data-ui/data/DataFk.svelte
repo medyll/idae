@@ -25,7 +25,7 @@ Forward FK relation viewer — shows collections this record points to.
 
 	let { collection, sortBy, groupBy, children }: DataFkProps = $props();
 
-	const fks = $derived(machine.logic.collection(collection).parseFks());
+	const fks = $derived(machine.logic.collection(collection)?.parseFks() ?? {});
 
 	const fkEntries = $derived(
 		Object.entries(fks).map(([key, def]) => ({ key, ...(def as Record<string, unknown>) }))

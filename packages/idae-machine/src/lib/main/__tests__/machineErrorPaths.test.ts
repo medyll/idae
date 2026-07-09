@@ -42,7 +42,7 @@ describe('Machine Error Paths', () => {
 			} as any;
 
 			const db = new MachineDb(schema);
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 
 			// Validation should handle unknown type gracefully
 			const result = await validator.validateField('value', 'test');
@@ -157,7 +157,7 @@ describe('Machine Error Paths', () => {
 		});
 
 		it('should provide error message for missing required field', async () => {
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 			const result = await validator.validateField('name', '');
 			expect(result.isValid).toBe(false);
 			// Result has error or other properties indicating validation failure
@@ -165,20 +165,20 @@ describe('Machine Error Paths', () => {
 		});
 
 		it('should provide error message for invalid type', async () => {
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 			const result = await validator.validateField('age', 'not-a-number' as any);
 			expect(result.isValid).toBe(false);
 		});
 
 		it('should provide error message for invalid date', async () => {
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 			const invalidDate = new Date('invalid');
 			const result = await validator.validateField('created', invalidDate);
 			expect(result.isValid).toBe(false);
 		});
 
 		it('should have consistent error structure across field types', async () => {
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 
 			const result1 = await validator.validateField('name', '');
 			const result2 = await validator.validateField('age', 'invalid');
@@ -213,24 +213,20 @@ describe('Machine Error Paths', () => {
 		});
 
 		it('should handle accessing non-existent collection', () => {
-			expect(() => {
-				db.collection('non_existent');
-			}).toThrow();
+			expect(db.collection('non_existent')).toBeNull();
 		});
 
 		it('should handle getting field from non-existent collection', () => {
-			expect(() => {
-				db.collection('non_existent').field('name');
-			}).toThrow();
+			expect(db.collection('non_existent')).toBeNull();
 		});
 
 		it('should access valid fields in collection', () => {
-			const field = db.collection('users').field('name');
+			const field = db.collection('users')!.field('name');
 			expect(field).toBeDefined();
 		});
 
 		it('should handle validator access consistently', () => {
-			const scheme = db.collection('users');
+			const scheme = db.collection('users')!;
 			const validator1 = scheme.validator;
 			const validator2 = scheme.validator;
 
@@ -257,7 +253,7 @@ describe('Machine Error Paths', () => {
 			} as any;
 
 			const db = new MachineDb(schema);
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 
 			// First validation fails
 			const result1 = await validator.validateField('value', '');
@@ -288,7 +284,7 @@ describe('Machine Error Paths', () => {
 			} as any;
 
 			const db = new MachineDb(schema);
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 
 			// Invalid type
 			const result1 = await validator.validateField('count', 'invalid' as any);
@@ -321,7 +317,7 @@ describe('Machine Error Paths', () => {
 			} as any;
 
 			const db = new MachineDb(schema);
-			const validator = db.collection('test').validator;
+			const validator = db.collection('test')!.validator;
 
 			// Validation error (bad data)
 			const validationResult = await validator.validateField('name', '');

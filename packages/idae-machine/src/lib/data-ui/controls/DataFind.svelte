@@ -35,18 +35,10 @@ v1: single field (defaultField). `advanced` flag reserved for later field picker
 
 	const effectiveField = $derived.by(() => {
 		if (defaultField) return defaultField;
-		const collLogic = safeCollection(collection);
+		const collLogic = machine.logic.collection(collection);
 		const presentation = collLogic?.template?.presentation as string | undefined;
 		return presentation?.split(/\s+/).filter(Boolean)[0];
 	});
-
-	function safeCollection(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
-	}
 
 	let timer: ReturnType<typeof setTimeout> | null = null;
 

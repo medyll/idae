@@ -38,7 +38,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 	}: DataFormProps = $props();
 
 	const store = $derived(collection ? machine.collection(collection) : undefined);
-	const collLogic = $derived(collection ? safeCollection(collection) : null);
+	const collLogic = $derived(collection ? machine.logic.collection(collection) : null);
 	const formFields = $derived(collLogic?.parse() ?? {});
 	const validator = $derived(collLogic?.validator);
 	const indexName = $derived(collLogic?.index);
@@ -116,14 +116,10 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		}
 	}
 
-	function safeCollection(name: string) {
-		try { return machine.logic.collection(name); } catch { return null; }
-	}
-
 	let errorMessage = $state<string | null>(null);
 
 	$effect(() => {
-		if (!safeCollection(collection)) {
+		if (!machine.logic.collection(collection)) {
 			errorMessage = `Collection '${collection}' non trouvée dans le schéma.`;
 		} else {
 			errorMessage = null;
