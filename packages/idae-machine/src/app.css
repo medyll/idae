@@ -10,4 +10,13 @@
 
   /* --color-bg maps to css-base surface-sunken */
   --color-bg: var(--color-surface-sunken);
+
+  /* Dark ambiance: soften css-base's near-pure-black dark (0.1/0.14/0.18) into
+     lifted, faintly cool-tinted greys. Seed overrides only — every computed
+     --color-surface-* derives from these, so the base/alt/raised hierarchy and
+     light-dark() theme switching stay intact (css-base rule: override seeds,
+     never computed tokens). Light seeds are left at css-base defaults. */
+  --default-color-surface-dark:        oklch(0.185 0.008 265); /* page base */
+  --default-color-surface-dark-alt:    oklch(0.215 0.008 265); /* sidebar, header */
+  --default-color-surface-dark-raised: oklch(0.245 0.008 265); /* cards, panels, dialogs */
 }

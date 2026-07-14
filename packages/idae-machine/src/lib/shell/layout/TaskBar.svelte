@@ -3,6 +3,7 @@
 	import { authState } from '$lib/main/machine/authState.svelte.js';
 	import MainMenu from './MainMenu.svelte';
 	import MenuSettings from './MenuSettings.svelte';
+	import ThemeToggle from './ThemeToggle.svelte';
 	import type { Snippet } from 'svelte';
 
 	let { devSlot }: { devSlot?: Snippet } = $props();
@@ -74,6 +75,7 @@
 		{#if devSlot}
 			{@render devSlot()}
 		{/if}
+		<ThemeToggle />
 		<button
 			type="button"
 			class="taskbar-icon"

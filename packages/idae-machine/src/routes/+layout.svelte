@@ -25,10 +25,13 @@
 		console.log('[idae-machine] org:', org);
 		console.log('[idae-machine] token:', token ? 'present' : 'missing');
 
-		// No org yet = first visit or logged out. Skip boot entirely and let the
-		// login dialog handle org selection. The reload after login will carry idae_org.
-		if (!org) {
-			console.log('[idae-machine] No org, skipping boot');
+		// No org, or org but no token yet (first visit / logged out) = not authenticated.
+		// Skip boot entirely: boot()'s warmup fetches auth-gated collections, so running
+		// it before login fires unauthenticated requests that 401. Let the login dialog
+		// run first; the reload after login carries the token and re-enters doBoot to
+		// boot for real.
+		if (!org || !token) {
+			console.log('[idae-machine] Not authenticated (org:', org, 'token:', token ? 'present' : 'missing', ') — skipping boot until login');
 			// Login dialog still needs the frame registry (loadInDialog('login', ...))
 			// even though full boot() — which normally does this — never runs here.
 			frameCatalog.registerFrames(machine.componentRegistry);

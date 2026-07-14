@@ -88,25 +88,29 @@ Iterates a record's fields and renders DataField for each.
 	{/if}
 {:else if groups}
 	{#each Object.entries(groups) as [key, groupFields] (key)}
+		{@const visibleFields = groupFields.filter(
+			({ code: fieldName }) =>
+				(scheme?.fields?.[fieldName] || isFkField(fieldName)) &&
+				(mode !== 'show' ||
+					(effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))
+		)}
 		{#if groupChildren}
 			{@render groupChildren({ key, fieldNames: groupFields.map((f) => f.code) })}
-		{:else}
+		{:else if visibleFields.length}
 			<fieldset class="field-group">
 				{#if showGroupNames}<legend>- {key}</legend>{/if}
-				{#each groupFields as { code: fieldName } (fieldName)}
-					{#if (scheme?.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
-						<div class="field">
-							{#if mode === 'show'}
-								<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
-							{:else if data !== undefined}<DataField
-									{collection}
-									{fieldName}
-									{mode}
-									bind:data
-									{inputForm}
-								/>{/if}
-						</div>
-					{/if}
+				{#each visibleFields as { code: fieldName } (fieldName)}
+					<div class="field">
+						{#if mode === 'show'}
+							<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
+						{:else if data !== undefined}<DataField
+								{collection}
+								{fieldName}
+								{mode}
+								bind:data
+								{inputForm}
+							/>{/if}
+					</div>
 				{/each}
 			</fieldset>
 		{/if}

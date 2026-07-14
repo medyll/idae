@@ -132,7 +132,9 @@ export function resolveReverseRelations(
 				continue;
 			}
 
-			// Source value = this record's value at the FK's declared target index (id or code)
+			// Source value = this record's value at the FK's declared target index (code —
+			// FK_INDEX_FIELD). The source scalar on the related collection is normalized to
+			// that same code at seed time, so a plain equality where resolves the relation.
 			const sourceValue = record[fkDef.targetIndex];
 			if (sourceValue == null) continue;
 

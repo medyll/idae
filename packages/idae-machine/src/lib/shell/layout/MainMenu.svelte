@@ -81,7 +81,7 @@ Toggled from TaskBar's menu button via bind:open.
 				<DataList
 					collection="appscheme"
 					where={{ code: { $in: startMenu.codes } }}
-					groupBy="fks.appscheme_base.code"
+					groupBy="fks.appscheme_type.code"
 					usePrefs={false}
 				>
 					{#snippet dataRecord({ data })}
