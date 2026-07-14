@@ -38,7 +38,7 @@ declare module '$lib/main/router/componentRegistry.js' {
 }
 
 export class IdaeFrameCatalog implements FrameCatalog {
-	registerFrames(registry: ComponentRegistry): void {
+	registerFrames(registry: Pick<ComponentRegistry, 'registerMany'>): void {
 		registry.registerMany(IDAE_FRAME_ENTRIES);
 	}
 }

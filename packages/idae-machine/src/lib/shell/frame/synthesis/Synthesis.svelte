@@ -364,24 +364,5 @@
 		.tab-item:hover {
 			color: var(--color-text);
 		}
-
-		.empty-state {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			gap: var(--gutter-sm);
-			padding: var(--pad-xl);
-			color: var(--color-text-muted);
-		}
-
-		.empty-state-icon {
-			font-size: var(--text-3xl);
-		}
-
-		.empty-state-title {
-			font-size: var(--text-lg);
-			font-weight: var(--font-medium);
-		}
 	}
 </style>

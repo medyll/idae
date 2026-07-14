@@ -326,7 +326,7 @@ export class Machine {
 		}
 
 		await this._applyModel(false);
-		frameCatalog.registerFrames(componentRegistry as ComponentRegistry);
+		frameCatalog.registerFrames(componentRegistry);
 
 		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
 		const syncMode = (this._syncOptions && typeof this._syncOptions === 'object')
