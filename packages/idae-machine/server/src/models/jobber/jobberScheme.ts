@@ -19,6 +19,7 @@ export const jobberScheme: MachineModel = {
 
 	job_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +33,7 @@ export const jobberScheme: MachineModel = {
 
 	job_source: {
 		base: 'machine_base',
+		icon: 'rss',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -45,6 +47,7 @@ export const jobberScheme: MachineModel = {
 
 	contract_type: {
 		base: 'machine_base',
+		icon: 'file-text',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -57,6 +60,7 @@ export const jobberScheme: MachineModel = {
 
 	seniority: {
 		base: 'machine_base',
+		icon: 'chart-line-up',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -70,6 +74,7 @@ export const jobberScheme: MachineModel = {
 
 	match_method: {
 		base: 'machine_base',
+		icon: 'target',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -82,6 +87,7 @@ export const jobberScheme: MachineModel = {
 
 	skill_kind: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -94,6 +100,7 @@ export const jobberScheme: MachineModel = {
 
 	event_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -108,6 +115,7 @@ export const jobberScheme: MachineModel = {
 
 	skill: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:       { type: 'id',   readonly: true },
 			code:     { type: 'text', required: true }, // canonical slug, e.g. "typescript"
@@ -121,6 +129,7 @@ export const jobberScheme: MachineModel = {
 
 	company: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:       { type: 'id',   readonly: true },
 			code:     { type: 'text', required: true },
@@ -138,6 +147,7 @@ export const jobberScheme: MachineModel = {
 
 	profile: {
 		base: 'machine_base',
+		icon: 'user-circle',
 		fields: {
 			id:               { type: 'id',      readonly: true },
 			code:             { type: 'text',    required: true },
@@ -163,6 +173,7 @@ export const jobberScheme: MachineModel = {
 
 	profile_skill: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
@@ -180,6 +191,7 @@ export const jobberScheme: MachineModel = {
 
 	email_message: {
 		base: 'machine_base',
+		icon: 'envelope',
 		fields: {
 			id:            { type: 'id',      readonly: true },
 			code:          { type: 'text',    required: true },  // = message_id (dedupe key)
@@ -202,6 +214,7 @@ export const jobberScheme: MachineModel = {
 
 	job: {
 		base: 'machine_base',
+		icon: 'briefcase',
 		fields: {
 			id:            { type: 'id',      readonly: true },
 			code:          { type: 'text',    required: true },  // stable key (link hash / board id)
@@ -236,6 +249,7 @@ export const jobberScheme: MachineModel = {
 
 	match_result: {
 		base: 'machine_base',
+		icon: 'target',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -256,6 +270,7 @@ export const jobberScheme: MachineModel = {
 
 	job_skill: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -270,6 +285,7 @@ export const jobberScheme: MachineModel = {
 
 	job_event: {
 		base: 'machine_base',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },

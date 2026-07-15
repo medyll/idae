@@ -6,6 +6,7 @@ export const restauScheme: MachineModel = {
 
 	table_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const restauScheme: MachineModel = {
 
 	order_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -34,6 +36,7 @@ export const restauScheme: MachineModel = {
 
 	ticket_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -48,6 +51,7 @@ export const restauScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -61,6 +65,7 @@ export const restauScheme: MachineModel = {
 
 	reservation_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -74,6 +79,7 @@ export const restauScheme: MachineModel = {
 
 	course_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -87,6 +93,7 @@ export const restauScheme: MachineModel = {
 
 	station: {
 		base: 'machine_base',
+		icon: 'cooking-pot',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -100,6 +107,7 @@ export const restauScheme: MachineModel = {
 
 	payment_method: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -115,6 +123,7 @@ export const restauScheme: MachineModel = {
 
 	dining_room: {
 		base: 'machine_base',
+		icon: 'armchair',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -127,6 +136,7 @@ export const restauScheme: MachineModel = {
 
 	resto_table: {
 		base: 'machine_base',
+		icon: 'table',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },
@@ -148,6 +158,7 @@ export const restauScheme: MachineModel = {
 
 	staff: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -169,6 +180,7 @@ export const restauScheme: MachineModel = {
 
 	menu_category: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:    { type: 'id',     readonly: true },
 			code:  { type: 'text',   required: true },
@@ -184,6 +196,7 @@ export const restauScheme: MachineModel = {
 
 	menu_item: {
 		base: 'machine_base',
+		icon: 'hamburger',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -208,6 +221,7 @@ export const restauScheme: MachineModel = {
 
 	modifier_group: {
 		base: 'machine_base',
+		icon: 'stack',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -222,6 +236,7 @@ export const restauScheme: MachineModel = {
 
 	modifier: {
 		base: 'machine_base',
+		icon: 'sliders',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -237,6 +252,7 @@ export const restauScheme: MachineModel = {
 
 	item_modifier_group: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -252,6 +268,7 @@ export const restauScheme: MachineModel = {
 
 	guest: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:          { type: 'id',    readonly: true },
 			code:        { type: 'text',  required: true },
@@ -268,6 +285,7 @@ export const restauScheme: MachineModel = {
 
 	reservation: {
 		base: 'machine_base',
+		icon: 'calendar-plus',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -289,6 +307,7 @@ export const restauScheme: MachineModel = {
 
 	resto_order: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -314,6 +333,7 @@ export const restauScheme: MachineModel = {
 
 	order_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -335,6 +355,7 @@ export const restauScheme: MachineModel = {
 
 	order_line_modifier: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -349,6 +370,7 @@ export const restauScheme: MachineModel = {
 
 	kitchen_ticket: {
 		base: 'machine_base',
+		icon: 'ticket',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -369,6 +391,7 @@ export const restauScheme: MachineModel = {
 
 	check_split: {
 		base: 'machine_base',
+		icon: 'calculator',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -386,6 +409,7 @@ export const restauScheme: MachineModel = {
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -407,6 +431,7 @@ export const restauScheme: MachineModel = {
 
 	ingredient: {
 		base: 'machine_base',
+		icon: 'cooking-pot',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -422,6 +447,7 @@ export const restauScheme: MachineModel = {
 
 	recipe_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },

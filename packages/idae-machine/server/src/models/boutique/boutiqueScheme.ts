@@ -6,6 +6,7 @@ export const boutiqueScheme: MachineModel = {
 
 	order_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const boutiqueScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const boutiqueScheme: MachineModel = {
 
 	product_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -45,6 +48,7 @@ export const boutiqueScheme: MachineModel = {
 
 	cart_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -58,6 +62,7 @@ export const boutiqueScheme: MachineModel = {
 
 	payment_method: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -71,6 +76,7 @@ export const boutiqueScheme: MachineModel = {
 
 	address_type: {
 		base: 'machine_base',
+		icon: 'envelope',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -84,6 +90,7 @@ export const boutiqueScheme: MachineModel = {
 
 	currency: {
 		base: 'machine_base',
+		icon: 'coin',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -99,6 +106,7 @@ export const boutiqueScheme: MachineModel = {
 
 	brand: {
 		base: 'machine_base',
+		icon: 'trademark-registered',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -114,6 +122,7 @@ export const boutiqueScheme: MachineModel = {
 
 	category: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -131,6 +140,7 @@ export const boutiqueScheme: MachineModel = {
 
 	product: {
 		base: 'machine_base',
+		icon: 'package',
 		fields: {
 			id:               { type: 'id',       readonly: true },
 			code:             { type: 'text',     required: true },
@@ -162,6 +172,7 @@ export const boutiqueScheme: MachineModel = {
 
 	variant: {
 		base: 'machine_base',
+		icon: 'stack',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -184,6 +195,7 @@ export const boutiqueScheme: MachineModel = {
 
 	product_image: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:    { type: 'id',     readonly: true },
 			code:  { type: 'text',   required: true },
@@ -201,6 +213,7 @@ export const boutiqueScheme: MachineModel = {
 
 	address: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:          { type: 'id',   readonly: true },
 			code:        { type: 'text', required: true },
@@ -219,6 +232,7 @@ export const boutiqueScheme: MachineModel = {
 
 	customer_address: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -236,6 +250,7 @@ export const boutiqueScheme: MachineModel = {
 
 	customer: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -257,6 +272,7 @@ export const boutiqueScheme: MachineModel = {
 
 	cart: {
 		base: 'machine_base',
+		icon: 'shopping-cart',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -274,6 +290,7 @@ export const boutiqueScheme: MachineModel = {
 
 	cart_item: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -293,6 +310,7 @@ export const boutiqueScheme: MachineModel = {
 
 	order: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:                { type: 'id',       readonly: true },
 			code:              { type: 'text',     required: true },
@@ -325,6 +343,7 @@ export const boutiqueScheme: MachineModel = {
 
 	order_item: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -347,6 +366,7 @@ export const boutiqueScheme: MachineModel = {
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -366,6 +386,7 @@ export const boutiqueScheme: MachineModel = {
 
 	shipping_method: {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -382,6 +403,7 @@ export const boutiqueScheme: MachineModel = {
 
 	coupon: {
 		base: 'machine_base',
+		icon: 'ticket',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -403,6 +425,7 @@ export const boutiqueScheme: MachineModel = {
 
 	review: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },

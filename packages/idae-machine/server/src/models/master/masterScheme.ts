@@ -9,6 +9,7 @@ export const masterScheme: MachineModel = {
 
 	org: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:            { type: 'id',    readonly: true },
 			code:          { type: 'text',  required: true },
@@ -27,6 +28,7 @@ export const masterScheme: MachineModel = {
 
 	model: {
 		base: 'machine_base',
+		icon: 'database',
 		fields: {
 			id:               { type: 'id',     readonly: true },
 			code:             { type: 'text',   required: true },
@@ -45,6 +47,7 @@ export const masterScheme: MachineModel = {
 
 	model_collection: {
 		base: 'machine_base',
+		icon: 'table',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },

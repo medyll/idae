@@ -6,6 +6,7 @@ export const factoryScheme: MachineModel = {
 
 	item_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const factoryScheme: MachineModel = {
 
 	work_order_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const factoryScheme: MachineModel = {
 
 	po_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const factoryScheme: MachineModel = {
 
 	lot_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const factoryScheme: MachineModel = {
 
 	qc_result: {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -72,6 +77,7 @@ export const factoryScheme: MachineModel = {
 
 	uom: {
 		base: 'machine_base',
+		icon: 'scales',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -84,6 +90,7 @@ export const factoryScheme: MachineModel = {
 
 	machine_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -100,6 +107,7 @@ export const factoryScheme: MachineModel = {
 
 	item: {
 		base: 'machine_base',
+		icon: 'package',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -123,6 +131,7 @@ export const factoryScheme: MachineModel = {
 
 	supplier: {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -141,6 +150,7 @@ export const factoryScheme: MachineModel = {
 
 	supplier_item: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -161,6 +171,7 @@ export const factoryScheme: MachineModel = {
 
 	bom: {
 		base: 'machine_base',
+		icon: 'tree-structure',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -179,6 +190,7 @@ export const factoryScheme: MachineModel = {
 
 	bom_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -200,6 +212,7 @@ export const factoryScheme: MachineModel = {
 
 	work_center: {
 		base: 'machine_base',
+		icon: 'factory',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			code:           { type: 'text',     required: true },
@@ -213,6 +226,7 @@ export const factoryScheme: MachineModel = {
 
 	machine: {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:              { type: 'id',     readonly: true },
 			code:            { type: 'text',   required: true },
@@ -232,6 +246,7 @@ export const factoryScheme: MachineModel = {
 
 	routing: {
 		base: 'machine_base',
+		icon: 'tree-structure',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -245,6 +260,7 @@ export const factoryScheme: MachineModel = {
 
 	operation: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -265,6 +281,7 @@ export const factoryScheme: MachineModel = {
 
 	work_order: {
 		base: 'machine_base',
+		icon: 'clipboard',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -290,6 +307,7 @@ export const factoryScheme: MachineModel = {
 
 	wo_operation: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -310,6 +328,7 @@ export const factoryScheme: MachineModel = {
 
 	material_consumption: {
 		base: 'machine_base',
+		icon: 'chart-line',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -329,6 +348,7 @@ export const factoryScheme: MachineModel = {
 
 	warehouse: {
 		base: 'machine_base',
+		icon: 'warehouse',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -342,6 +362,7 @@ export const factoryScheme: MachineModel = {
 
 	stock_location: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -357,6 +378,7 @@ export const factoryScheme: MachineModel = {
 
 	lot: {
 		base: 'machine_base',
+		icon: 'barcode',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -375,6 +397,7 @@ export const factoryScheme: MachineModel = {
 
 	stock_move: {
 		base: 'machine_base',
+		icon: 'arrows-left-right',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -397,6 +420,7 @@ export const factoryScheme: MachineModel = {
 
 	purchase_order: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -416,6 +440,7 @@ export const factoryScheme: MachineModel = {
 
 	po_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -435,6 +460,7 @@ export const factoryScheme: MachineModel = {
 
 	quality_check: {
 		base: 'machine_base',
+		icon: 'shield-check',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },

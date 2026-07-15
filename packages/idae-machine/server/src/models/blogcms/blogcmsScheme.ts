@@ -6,6 +6,7 @@ export const blogcmsScheme: MachineModel = {
 
 	post_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const blogcmsScheme: MachineModel = {
 
 	comment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const blogcmsScheme: MachineModel = {
 
 	page_template: {
 		base: 'machine_base',
+		icon: 'layout',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const blogcmsScheme: MachineModel = {
 
 	category: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -62,6 +66,7 @@ export const blogcmsScheme: MachineModel = {
 
 	tag: {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -76,6 +81,7 @@ export const blogcmsScheme: MachineModel = {
 
 	author: {
 		base: 'machine_base',
+		icon: 'pen-nib',
 		fields: {
 			id:      { type: 'id',      readonly: true },
 			code:    { type: 'text',    required: true },
@@ -95,6 +101,7 @@ export const blogcmsScheme: MachineModel = {
 
 	media: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -119,6 +126,7 @@ export const blogcmsScheme: MachineModel = {
 
 	post: {
 		base: 'machine_base',
+		icon: 'article',
 		fields: {
 			id:               { type: 'id',      readonly: true },
 			code:             { type: 'text',    required: true },
@@ -145,6 +153,7 @@ export const blogcmsScheme: MachineModel = {
 
 	post_tag: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -158,6 +167,7 @@ export const blogcmsScheme: MachineModel = {
 
 	page: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:               { type: 'id',      readonly: true },
 			code:             { type: 'text',    required: true },
@@ -183,6 +193,7 @@ export const blogcmsScheme: MachineModel = {
 
 	comment: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },

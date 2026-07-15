@@ -14,6 +14,7 @@ export const crfrScheme: MachineModel = {
 
 	"app_conf": {
 		base: 'machine_base',
+		icon: 'file-code',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -25,6 +26,7 @@ export const crfrScheme: MachineModel = {
 
 	"app_daemon": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -36,6 +38,7 @@ export const crfrScheme: MachineModel = {
 
 	"app_version": {
 		base: 'machine_base',
+		icon: 'git-branch',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -47,6 +50,7 @@ export const crfrScheme: MachineModel = {
 
 	"app_version_file": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -58,6 +62,7 @@ export const crfrScheme: MachineModel = {
 
 	"conge": {
 		base: 'machine_base',
+		icon: 'anchor',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -75,6 +80,7 @@ export const crfrScheme: MachineModel = {
 
 	"conge_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -87,6 +93,7 @@ export const crfrScheme: MachineModel = {
 
 	"conge_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -99,6 +106,7 @@ export const crfrScheme: MachineModel = {
 
 	"document_extension": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -110,6 +118,7 @@ export const crfrScheme: MachineModel = {
 
 	"document_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -122,6 +131,7 @@ export const crfrScheme: MachineModel = {
 
 	"note": {
 		base: 'machine_base',
+		icon: 'note-pencil',
 		fields: {
 			id:       { type: 'id', readonly: true },
 			code:     { type: 'text', required: true },
@@ -137,6 +147,7 @@ export const crfrScheme: MachineModel = {
 
 	"tache": {
 		base: 'machine_base',
+		icon: 'paperclip',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -159,6 +170,7 @@ export const crfrScheme: MachineModel = {
 
 	"tache_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -174,6 +186,7 @@ export const crfrScheme: MachineModel = {
 
 	"tache_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -189,6 +202,7 @@ export const crfrScheme: MachineModel = {
 
 	"todo": {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -200,6 +214,7 @@ export const crfrScheme: MachineModel = {
 
 	"type_activite": {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -214,6 +229,7 @@ export const crfrScheme: MachineModel = {
 	// crfr-specific user extensions (not covered by core appuser_*)
 	"user_list": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -227,6 +243,7 @@ export const crfrScheme: MachineModel = {
 
 	"user_note": {
 		base: 'machine_base',
+		icon: 'note',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -240,6 +257,7 @@ export const crfrScheme: MachineModel = {
 
 	"user_table": {
 		base: 'machine_base',
+		icon: 'table',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -253,6 +271,7 @@ export const crfrScheme: MachineModel = {
 
 	"user_tuile": {
 		base: 'machine_base',
+		icon: 'desktop',
 		fields: {
 			id:    { type: 'id', readonly: true },
 			code:  { type: 'text', required: true },
@@ -267,6 +286,7 @@ export const crfrScheme: MachineModel = {
 
 	"vacance": {
 		base: 'machine_base',
+		icon: 'anchor',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -284,6 +304,7 @@ export const crfrScheme: MachineModel = {
 
 	"client": {
 		base: 'machine_devis',
+		icon: 'user',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -310,6 +331,7 @@ export const crfrScheme: MachineModel = {
 
 	"client_type": {
 		base: 'machine_devis',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -323,6 +345,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis": {
 		base: 'machine_devis',
+		icon: 'money',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -362,6 +385,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_acompte": {
 		base: 'machine_devis',
+		icon: 'currency-dollar',
 		isType: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -379,6 +403,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_acompte_type": {
 		base: 'machine_devis',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -392,6 +417,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_annotation": {
 		base: 'machine_devis',
+		icon: 'note-pencil',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -405,6 +431,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_envie": {
 		base: 'machine_devis',
+		icon: 'star',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -416,6 +443,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_mail": {
 		base: 'machine_devis',
+		icon: 'at',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -429,6 +457,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_marge": {
 		base: 'machine_devis',
+		icon: 'percent',
 		isType: true,
 		fields: {
 			id:            { type: 'id', readonly: true },
@@ -446,6 +475,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_marge_type": {
 		base: 'machine_devis',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -458,6 +488,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_passager": {
 		base: 'machine_devis',
+		icon: 'users',
 		fields: {
 			id:        { type: 'id', readonly: true },
 			code:      { type: 'text', required: true },
@@ -475,6 +506,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_prestation": {
 		base: 'machine_devis',
+		icon: 'list-checks',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -493,6 +525,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_statut": {
 		base: 'machine_devis',
+		icon: 'flag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -506,6 +539,7 @@ export const crfrScheme: MachineModel = {
 
 	"devis_type": {
 		base: 'machine_devis',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -521,6 +555,7 @@ export const crfrScheme: MachineModel = {
 
 	"document": {
 		base: 'machine_devis',
+		icon: 'file-doc',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -534,6 +569,7 @@ export const crfrScheme: MachineModel = {
 
 	"dossier_devis": {
 		base: 'machine_devis',
+		icon: 'book',
 		fields: {
 			id:            { type: 'id', readonly: true },
 			code:          { type: 'text', required: true },
@@ -549,6 +585,7 @@ export const crfrScheme: MachineModel = {
 
 	"facture": {
 		base: 'machine_devis',
+		icon: 'currency-eur',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -573,6 +610,7 @@ export const crfrScheme: MachineModel = {
 
 	"facture_ligne": {
 		base: 'machine_devis',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -586,6 +624,7 @@ export const crfrScheme: MachineModel = {
 
 	"facture_type": {
 		base: 'machine_devis',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -598,6 +637,7 @@ export const crfrScheme: MachineModel = {
 
 	"paiement": {
 		base: 'machine_devis',
+		icon: 'credit-card',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -615,6 +655,7 @@ export const crfrScheme: MachineModel = {
 
 	"prestataire": {
 		base: 'machine_devis',
+		icon: 'handshake',
 		fields: {
 			id:               { type: 'id', readonly: true },
 			code:             { type: 'text', required: true },
@@ -636,6 +677,7 @@ export const crfrScheme: MachineModel = {
 
 	"newsletter": {
 		base: 'machine_newsletter',
+		icon: 'file-code',
 		isType: true,
 		fields: {
 			id:             { type: 'id', readonly: true },
@@ -655,6 +697,7 @@ export const crfrScheme: MachineModel = {
 
 	"newsletter_block": {
 		base: 'machine_newsletter',
+		icon: 'layout',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -666,6 +709,7 @@ export const crfrScheme: MachineModel = {
 
 	"newsletter_item": {
 		base: 'machine_newsletter',
+		icon: 'newspaper',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -683,6 +727,7 @@ export const crfrScheme: MachineModel = {
 
 	"newsletter_item_type": {
 		base: 'machine_newsletter',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:       { type: 'id', readonly: true },
@@ -696,6 +741,7 @@ export const crfrScheme: MachineModel = {
 
 	"newsletter_type": {
 		base: 'machine_newsletter',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -710,6 +756,7 @@ export const crfrScheme: MachineModel = {
 
 	"aeroport": {
 		base: 'machine_production',
+		icon: 'airplane',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -724,6 +771,7 @@ export const crfrScheme: MachineModel = {
 
 	"asavoir": {
 		base: 'machine_production',
+		icon: 'info',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -742,6 +790,7 @@ export const crfrScheme: MachineModel = {
 
 	"asavoir_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -758,6 +807,7 @@ export const crfrScheme: MachineModel = {
 
 	"continent": {
 		base: 'machine_production',
+		icon: 'globe',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -780,6 +830,7 @@ export const crfrScheme: MachineModel = {
 
 	"destination": {
 		base: 'machine_production',
+		icon: 'flag',
 		fields: {
 			id:                { type: 'id', readonly: true },
 			code:              { type: 'text', required: true },
@@ -812,6 +863,7 @@ export const crfrScheme: MachineModel = {
 
 	"fleuve": {
 		base: 'machine_production',
+		icon: 'waves',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -830,6 +882,7 @@ export const crfrScheme: MachineModel = {
 
 	"fleuve_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -842,6 +895,7 @@ export const crfrScheme: MachineModel = {
 
 	"fournisseur": {
 		base: 'machine_production',
+		icon: 'boat',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -857,6 +911,7 @@ export const crfrScheme: MachineModel = {
 
 	"fournisseur_clause": {
 		base: 'machine_production',
+		icon: 'file-text',
 		isType: true,
 		fields: {
 			id:              { type: 'id', readonly: true },
@@ -871,6 +926,7 @@ export const crfrScheme: MachineModel = {
 
 	"fournisseur_clause_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -883,6 +939,7 @@ export const crfrScheme: MachineModel = {
 
 	"fournisseur_presentation": {
 		base: 'machine_production',
+		icon: 'article',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -895,6 +952,7 @@ export const crfrScheme: MachineModel = {
 
 	"fournisseur_presentation_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -908,6 +966,7 @@ export const crfrScheme: MachineModel = {
 
 	"fournisseur_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:        { type: 'id', readonly: true },
@@ -925,6 +984,7 @@ export const crfrScheme: MachineModel = {
 
 	"gamme": {
 		base: 'machine_production',
+		icon: 'trophy',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -941,6 +1001,7 @@ export const crfrScheme: MachineModel = {
 
 	"hotel": {
 		base: 'machine_production',
+		icon: 'bank',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -962,6 +1023,7 @@ export const crfrScheme: MachineModel = {
 
 	"hotel_clause": {
 		base: 'machine_production',
+		icon: 'file-text',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -976,6 +1038,7 @@ export const crfrScheme: MachineModel = {
 
 	"hotel_gamme": {
 		base: 'machine_production',
+		icon: 'trophy',
 		fields: {
 			id:         { type: 'id', readonly: true },
 			code:       { type: 'text', required: true },
@@ -992,6 +1055,7 @@ export const crfrScheme: MachineModel = {
 
 	"hotel_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -1006,6 +1070,7 @@ export const crfrScheme: MachineModel = {
 
 	"mer": {
 		base: 'machine_production',
+		icon: 'waves',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -1024,6 +1089,7 @@ export const crfrScheme: MachineModel = {
 
 	"mer_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1036,6 +1102,7 @@ export const crfrScheme: MachineModel = {
 
 	"pays": {
 		base: 'machine_production',
+		icon: 'flag',
 		fields: {
 			id:                  { type: 'id', readonly: true },
 			code:                { type: 'text', required: true },
@@ -1063,6 +1130,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit": {
 		base: 'machine_production',
+		icon: 'cube',
 		isType: true,
 		fields: {
 			id:                    { type: 'id', readonly: true },
@@ -1114,6 +1182,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_etape": {
 		base: 'machine_production',
+		icon: 'buildings',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1133,6 +1202,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_selection": {
 		base: 'machine_production',
+		icon: 'star',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1146,6 +1216,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_tarif": {
 		base: 'machine_production',
+		icon: 'calendar',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1165,6 +1236,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_tarif_gamme": {
 		base: 'machine_production',
+		icon: 'currency-eur',
 		isType: true,
 		fields: {
 			id:         { type: 'id', readonly: true },
@@ -1183,6 +1255,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_tarif_gamme_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1195,6 +1268,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isType:  true,
 		isGroup: true,
 		fields: {
@@ -1218,6 +1292,7 @@ export const crfrScheme: MachineModel = {
 
 	"produit_type_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1230,6 +1305,7 @@ export const crfrScheme: MachineModel = {
 
 	"theme": {
 		base: 'machine_production',
+		icon: 'paint-brush',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -1249,6 +1325,7 @@ export const crfrScheme: MachineModel = {
 
 	"theme_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:       { type: 'id', readonly: true },
@@ -1262,6 +1339,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport": {
 		base: 'machine_production',
+		icon: 'anchor',
 		isType: true,
 		fields: {
 			id:             { type: 'id', readonly: true },
@@ -1283,6 +1361,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport_cabine": {
 		base: 'machine_production',
+		icon: 'bed',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1300,6 +1379,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport_gamme": {
 		base: 'machine_production',
+		icon: 'trophy',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1311,6 +1391,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport_pont": {
 		base: 'machine_production',
+		icon: 'crosshair',
 		fields: {
 			id:    { type: 'id', readonly: true },
 			code:  { type: 'text', required: true },
@@ -1323,6 +1404,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport_presentation": {
 		base: 'machine_production',
+		icon: 'article',
 		isType: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1335,6 +1417,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport_presentation_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1347,6 +1430,7 @@ export const crfrScheme: MachineModel = {
 
 	"transport_type": {
 		base: 'machine_production',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:     { type: 'id', readonly: true },
@@ -1360,6 +1444,7 @@ export const crfrScheme: MachineModel = {
 
 	"ville": {
 		base: 'machine_production',
+		icon: 'road-horizon',
 		fields: {
 			id:                  { type: 'id', readonly: true },
 			code:                { type: 'text', required: true },
@@ -1393,6 +1478,7 @@ export const crfrScheme: MachineModel = {
 
 	"article": {
 		base: 'machine_site',
+		icon: 'article',
 		isType: true,
 		fields: {
 			id:          { type: 'id', readonly: true },
@@ -1412,6 +1498,7 @@ export const crfrScheme: MachineModel = {
 
 	"article_type": {
 		base: 'machine_site',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1424,6 +1511,7 @@ export const crfrScheme: MachineModel = {
 
 	"categorie": {
 		base: 'machine_site',
+		icon: 'squares-four',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1439,6 +1527,7 @@ export const crfrScheme: MachineModel = {
 
 	"site": {
 		base: 'machine_site',
+		icon: 'map-pin',
 		isType: true,
 		fields: {
 			id:       { type: 'id', readonly: true },
@@ -1456,6 +1545,7 @@ export const crfrScheme: MachineModel = {
 
 	"site_type": {
 		base: 'machine_site',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1470,6 +1560,7 @@ export const crfrScheme: MachineModel = {
 
 	"daemon": {
 		base: 'machine_sockets',
+		icon: 'gear',
 		fields: {
 			id:        { type: 'id', readonly: true },
 			code:      { type: 'text', required: true },
@@ -1487,6 +1578,7 @@ export const crfrScheme: MachineModel = {
 
 	"appsite": {
 		base: 'machine_web',
+		icon: 'globe',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1499,6 +1591,7 @@ export const crfrScheme: MachineModel = {
 
 	"appsite_page": {
 		base: 'machine_web',
+		icon: 'newspaper',
 		isType: true,
 		fields: {
 			id:    { type: 'id', readonly: true },
@@ -1512,6 +1605,7 @@ export const crfrScheme: MachineModel = {
 
 	"appsite_page_ligne": {
 		base: 'machine_web',
+		icon: 'list-bullets',
 		fields: {
 			id:    { type: 'id', readonly: true },
 			code:  { type: 'text', required: true },
@@ -1524,6 +1618,7 @@ export const crfrScheme: MachineModel = {
 
 	"appsite_page_type": {
 		base: 'machine_web',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1536,6 +1631,7 @@ export const crfrScheme: MachineModel = {
 
 	"appsite_template": {
 		base: 'machine_web',
+		icon: 'layout',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1548,6 +1644,7 @@ export const crfrScheme: MachineModel = {
 
 	"appsite_template_type": {
 		base: 'machine_web',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1562,6 +1659,7 @@ export const crfrScheme: MachineModel = {
 
 	"feed_header": {
 		base: 'machine_xml',
+		icon: 'rss',
 		fields: {
 			id:          { type: 'id', readonly: true },
 			code:        { type: 'text', required: true },
@@ -1576,6 +1674,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_conf": {
 		base: 'machine_xml',
+		icon: 'file-code',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1587,6 +1686,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_cruise": {
 		base: 'machine_xml',
+		icon: 'boat',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1598,6 +1698,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_destination": {
 		base: 'machine_xml',
+		icon: 'flag',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1609,6 +1710,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_itinerary": {
 		base: 'machine_xml',
+		icon: 'map-trifold',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1620,6 +1722,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_job": {
 		base: 'machine_xml',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1631,6 +1734,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_price": {
 		base: 'machine_xml',
+		icon: 'coin',
 		fields: {
 			id:        { type: 'id', readonly: true },
 			code:      { type: 'text', required: true },
@@ -1644,6 +1748,7 @@ export const crfrScheme: MachineModel = {
 
 	"xml_ville": {
 		base: 'machine_xml',
+		icon: 'buildings',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },

@@ -6,6 +6,7 @@ export const schoolScheme: MachineModel = {
 
 	user_role: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const schoolScheme: MachineModel = {
 
 	attendance_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const schoolScheme: MachineModel = {
 
 	assignment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const schoolScheme: MachineModel = {
 
 	absence_reason: {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const schoolScheme: MachineModel = {
 
 	period_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -72,6 +77,7 @@ export const schoolScheme: MachineModel = {
 
 	relation_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -84,6 +90,7 @@ export const schoolScheme: MachineModel = {
 
 	day_of_week: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -99,6 +106,7 @@ export const schoolScheme: MachineModel = {
 
 	school: {
 		base: 'machine_base',
+		icon: 'graduation-cap',
 		fields: {
 			id:        { type: 'id',    readonly: true },
 			code:      { type: 'text',  required: true },
@@ -119,6 +127,7 @@ export const schoolScheme: MachineModel = {
 
 	school_year: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:         { type: 'id',   readonly: true },
 			code:       { type: 'text', required: true },
@@ -135,6 +144,7 @@ export const schoolScheme: MachineModel = {
 
 	term: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -152,6 +162,7 @@ export const schoolScheme: MachineModel = {
 
 	room: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },
@@ -170,6 +181,7 @@ export const schoolScheme: MachineModel = {
 
 	subject: {
 		base: 'machine_base',
+		icon: 'books',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -184,6 +196,7 @@ export const schoolScheme: MachineModel = {
 
 	grade_level: {
 		base: 'machine_base',
+		icon: 'chart-line-up',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -197,6 +210,7 @@ export const schoolScheme: MachineModel = {
 
 	class_group: {
 		base: 'machine_base',
+		icon: 'users',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },
@@ -215,6 +229,7 @@ export const schoolScheme: MachineModel = {
 
 	staff: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -236,6 +251,7 @@ export const schoolScheme: MachineModel = {
 
 	teacher: {
 		base: 'machine_base',
+		icon: 'chalkboard-teacher',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -257,6 +273,7 @@ export const schoolScheme: MachineModel = {
 
 	student: {
 		base: 'machine_base',
+		icon: 'student',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -282,6 +299,7 @@ export const schoolScheme: MachineModel = {
 
 	guardian: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -300,6 +318,7 @@ export const schoolScheme: MachineModel = {
 
 	student_guardian: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -319,6 +338,7 @@ export const schoolScheme: MachineModel = {
 
 	course: {
 		base: 'machine_base',
+		icon: 'books',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -336,6 +356,7 @@ export const schoolScheme: MachineModel = {
 
 	schedule_slot: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -355,6 +376,7 @@ export const schoolScheme: MachineModel = {
 
 	lesson: {
 		base: 'machine_base',
+		icon: 'chalkboard-teacher',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -378,6 +400,7 @@ export const schoolScheme: MachineModel = {
 
 	attendance: {
 		base: 'machine_base',
+		icon: 'list-checks',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -395,6 +418,7 @@ export const schoolScheme: MachineModel = {
 
 	absence: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -416,6 +440,7 @@ export const schoolScheme: MachineModel = {
 
 	assignment: {
 		base: 'machine_base',
+		icon: 'exam',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -437,6 +462,7 @@ export const schoolScheme: MachineModel = {
 
 	grade: {
 		base: 'machine_base',
+		icon: 'exam',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -454,6 +480,7 @@ export const schoolScheme: MachineModel = {
 
 	report_card: {
 		base: 'machine_base',
+		icon: 'exam',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -475,6 +502,7 @@ export const schoolScheme: MachineModel = {
 
 	message: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },

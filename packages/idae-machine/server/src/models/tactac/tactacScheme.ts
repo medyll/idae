@@ -6,6 +6,7 @@ import type { MachineModel } from '../../../../src/lib/types/machine-model.js';
 export const tactacScheme: MachineModel = {
 	"adresse_type": {
 		base: 'machine_base',
+		icon: 'envelope',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -18,6 +19,7 @@ export const tactacScheme: MachineModel = {
 
 	"agence": {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -29,6 +31,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent": {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -63,6 +66,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_activite": {
 		base: 'machine_user',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -77,6 +81,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_history": {
 		base: 'machine_user',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -93,6 +98,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_liste": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -105,6 +111,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_liste_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -116,6 +123,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_note": {
 		base: 'machine_user',
+		icon: 'note',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -131,6 +139,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_pref": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -142,6 +151,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_recherche": {
 		base: 'machine_base',
+		icon: 'magnifying-glass',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -153,6 +163,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_table": {
 		base: 'machine_base',
+		icon: 'table',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -164,6 +175,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_tuile": {
 		base: 'machine_user',
+		icon: 'desktop',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -179,6 +191,7 @@ export const tactacScheme: MachineModel = {
 
 	"agent_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -191,6 +204,7 @@ export const tactacScheme: MachineModel = {
 
 	"app_conf": {
 		base: 'machine_base',
+		icon: 'key',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -202,6 +216,7 @@ export const tactacScheme: MachineModel = {
 
 	"app_daemon": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -213,6 +228,7 @@ export const tactacScheme: MachineModel = {
 
 	"app_version": {
 		base: 'machine_base',
+		icon: 'git-branch',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -226,6 +242,7 @@ export const tactacScheme: MachineModel = {
 
 	"app_version_file": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -241,6 +258,7 @@ export const tactacScheme: MachineModel = {
 
 	"app_version_file_preprod": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -256,6 +274,7 @@ export const tactacScheme: MachineModel = {
 
 	"cart": {
 		base: 'machine_base',
+		icon: 'shopping-cart',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -282,6 +301,7 @@ export const tactacScheme: MachineModel = {
 
 	"categorie_produit": {
 		base: 'machine_base',
+		icon: 'briefcase',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -295,6 +315,7 @@ export const tactacScheme: MachineModel = {
 
 	"client": {
 		base: 'machine_base',
+		icon: 'users',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -315,6 +336,7 @@ export const tactacScheme: MachineModel = {
 
 	"client_categorie": {
 		base: 'machine_base',
+		icon: 'tray',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -329,6 +351,7 @@ export const tactacScheme: MachineModel = {
 
 	"client_type": {
 		base: 'machine_base',
+		icon: 'info',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -343,6 +366,7 @@ export const tactacScheme: MachineModel = {
 
 	"comande_history": {
 		base: 'machine_base',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -354,6 +378,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande": {
 		base: 'machine_base',
+		icon: 'cube',
 		isStatus: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -409,6 +434,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande_facture": {
 		base: 'machine_base',
+		icon: 'calculator',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -436,6 +462,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande_ligne": {
 		base: 'machine_base',
+		icon: 'stack',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -461,6 +488,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande_proposition": {
 		base: 'machine_base',
+		icon: 'hand',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -488,6 +516,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande_slot": {
 		base: 'machine_base',
+		icon: 'clock',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -499,6 +528,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande_slot_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -510,6 +540,7 @@ export const tactacScheme: MachineModel = {
 
 	"commande_statut": {
 		base: 'machine_base',
+		icon: 'chart-line-up',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -527,6 +558,7 @@ export const tactacScheme: MachineModel = {
 
 	"commune": {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -547,6 +579,7 @@ export const tactacScheme: MachineModel = {
 
 	"contact_type": {
 		base: 'machine_base',
+		icon: 'address-book',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -561,6 +594,7 @@ export const tactacScheme: MachineModel = {
 
 	"cron": {
 		base: 'machine_base',
+		icon: 'clock',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -572,6 +606,7 @@ export const tactacScheme: MachineModel = {
 
 	"daemon": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -586,6 +621,7 @@ export const tactacScheme: MachineModel = {
 
 	"entite": {
 		base: 'machine_base',
+		icon: 'factory',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -600,6 +636,7 @@ export const tactacScheme: MachineModel = {
 
 	"facture": {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -615,6 +652,7 @@ export const tactacScheme: MachineModel = {
 
 	"facture_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -632,6 +670,7 @@ export const tactacScheme: MachineModel = {
 
 	"jours": {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -647,6 +686,7 @@ export const tactacScheme: MachineModel = {
 
 	"livraison": {
 		base: 'machine_base',
+		icon: 'bicycle',
 		isStatus: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -662,6 +702,7 @@ export const tactacScheme: MachineModel = {
 
 	"livraison_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -675,6 +716,7 @@ export const tactacScheme: MachineModel = {
 
 	"livreur": {
 		base: 'machine_base',
+		icon: 'bicycle',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -704,6 +746,7 @@ export const tactacScheme: MachineModel = {
 
 	"livreur_affectation": {
 		base: 'machine_base',
+		icon: 'tree-structure',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -729,6 +772,7 @@ export const tactacScheme: MachineModel = {
 
 	"produit": {
 		base: 'machine_base',
+		icon: 'file',
 		isType:   true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -763,6 +807,7 @@ export const tactacScheme: MachineModel = {
 
 	"produit_categorie": {
 		base: 'machine_base',
+		icon: 'stack',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -777,6 +822,7 @@ export const tactacScheme: MachineModel = {
 
 	"produit_type": {
 		base: 'machine_base',
+		icon: 'cube',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -790,6 +836,7 @@ export const tactacScheme: MachineModel = {
 
 	"secteur": {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -814,6 +861,7 @@ export const tactacScheme: MachineModel = {
 
 	"secteur_jours_shift": {
 		base: 'machine_base',
+		icon: 'rocket',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -835,6 +883,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop": {
 		base: 'machine_base',
+		icon: 'fork-knife',
 		isType:   true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -876,6 +925,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_categorie": {
 		base: 'machine_base',
+		icon: 'squares-four',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -888,6 +938,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_client": {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -908,6 +959,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_configuration": {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -919,6 +971,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_configuration_ligne": {
 		base: 'machine_base',
+		icon: 'dots-three',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -931,6 +984,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_jours": {
 		base: 'machine_base',
+		icon: 'calendar-plus',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -952,6 +1006,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_jours_shift": {
 		base: 'machine_base',
+		icon: 'clock',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -975,6 +1030,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_jours_shift_run": {
 		base: 'machine_base',
+		icon: 'rocket',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -998,6 +1054,7 @@ export const tactacScheme: MachineModel = {
 
 	"shop_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1010,6 +1067,7 @@ export const tactacScheme: MachineModel = {
 
 	"tache": {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -1029,6 +1087,7 @@ export const tactacScheme: MachineModel = {
 
 	"tache_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1044,6 +1103,7 @@ export const tactacScheme: MachineModel = {
 
 	"tache_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1056,6 +1116,7 @@ export const tactacScheme: MachineModel = {
 
 	"ville": {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },

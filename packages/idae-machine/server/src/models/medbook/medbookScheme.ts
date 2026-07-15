@@ -6,6 +6,7 @@ export const medbookScheme: MachineModel = {
 
 	appointment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const medbookScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const medbookScheme: MachineModel = {
 
 	appointment_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:           { type: 'id',       readonly: true },
@@ -61,6 +65,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation_motive: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -73,6 +78,7 @@ export const medbookScheme: MachineModel = {
 
 	day_of_week: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -86,6 +92,7 @@ export const medbookScheme: MachineModel = {
 
 	insurance_provider: {
 		base: 'machine_base',
+		icon: 'shield-check',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -102,6 +109,7 @@ export const medbookScheme: MachineModel = {
 
 	specialty: {
 		base: 'machine_base',
+		icon: 'stethoscope',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -116,6 +124,7 @@ export const medbookScheme: MachineModel = {
 
 	act: {
 		base: 'machine_base',
+		icon: 'first-aid',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -134,6 +143,7 @@ export const medbookScheme: MachineModel = {
 
 	clinic: {
 		base: 'machine_base',
+		icon: 'hospital',
 		fields: {
 			id:          { type: 'id',    readonly: true },
 			code:        { type: 'text',  required: true },
@@ -157,6 +167,7 @@ export const medbookScheme: MachineModel = {
 
 	room: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -174,6 +185,7 @@ export const medbookScheme: MachineModel = {
 
 	practitioner: {
 		base: 'machine_base',
+		icon: 'stethoscope',
 		fields: {
 			id:                { type: 'id',    readonly: true },
 			code:              { type: 'text',  required: true },
@@ -201,6 +213,7 @@ export const medbookScheme: MachineModel = {
 
 	practitioner_clinic: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:         { type: 'id',   readonly: true },
 			code:       { type: 'text', required: true },
@@ -217,6 +230,7 @@ export const medbookScheme: MachineModel = {
 
 	practitioner_specialty: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -232,6 +246,7 @@ export const medbookScheme: MachineModel = {
 
 	availability_slot: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -252,6 +267,7 @@ export const medbookScheme: MachineModel = {
 
 	leave_period: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -270,6 +286,7 @@ export const medbookScheme: MachineModel = {
 
 	patient: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:                { type: 'id',    readonly: true },
 			code:              { type: 'text',  required: true },
@@ -304,6 +321,7 @@ export const medbookScheme: MachineModel = {
 
 	patient_document: {
 		base: 'machine_base',
+		icon: 'file-doc',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -325,6 +343,7 @@ export const medbookScheme: MachineModel = {
 
 	appointment: {
 		base: 'machine_base',
+		icon: 'calendar-plus',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -355,6 +374,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation: {
 		base: 'machine_base',
+		icon: 'stethoscope',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			code:           { type: 'text',     required: true },
@@ -380,6 +400,7 @@ export const medbookScheme: MachineModel = {
 
 	vital_record: {
 		base: 'machine_base',
+		icon: 'heart',
 		fields: {
 			id:               { type: 'id',     readonly: true },
 			code:             { type: 'text',   required: true },
@@ -403,6 +424,7 @@ export const medbookScheme: MachineModel = {
 
 	prescription: {
 		base: 'machine_base',
+		icon: 'pill',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -421,6 +443,7 @@ export const medbookScheme: MachineModel = {
 
 	prescription_item: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -440,6 +463,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation_act: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:       { type: 'id',       readonly: true },
 			code:     { type: 'text',     required: true },
@@ -457,6 +481,7 @@ export const medbookScheme: MachineModel = {
 
 	invoice: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -479,6 +504,7 @@ export const medbookScheme: MachineModel = {
 
 	review: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },

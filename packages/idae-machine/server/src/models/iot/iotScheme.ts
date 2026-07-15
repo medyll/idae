@@ -6,6 +6,7 @@ export const iotScheme: MachineModel = {
 
 	device_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const iotScheme: MachineModel = {
 
 	alert_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const iotScheme: MachineModel = {
 
 	severity: {
 		base: 'machine_base',
+		icon: 'warning',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -47,6 +50,7 @@ export const iotScheme: MachineModel = {
 
 	device_type: {
 		base: 'machine_base',
+		icon: 'cpu',
 		isType: true,
 		fields: {
 			id:           { type: 'id',   readonly: true },
@@ -61,6 +65,7 @@ export const iotScheme: MachineModel = {
 
 	sensor_type: {
 		base: 'machine_base',
+		icon: 'thermometer',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -76,6 +81,7 @@ export const iotScheme: MachineModel = {
 
 	command_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -91,6 +97,7 @@ export const iotScheme: MachineModel = {
 
 	site: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -108,6 +115,7 @@ export const iotScheme: MachineModel = {
 
 	zone: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -124,6 +132,7 @@ export const iotScheme: MachineModel = {
 
 	gateway: {
 		base: 'machine_base',
+		icon: 'wifi-high',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -144,6 +153,7 @@ export const iotScheme: MachineModel = {
 
 	firmware: {
 		base: 'machine_base',
+		icon: 'hard-drives',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -165,6 +175,7 @@ export const iotScheme: MachineModel = {
 
 	device: {
 		base: 'machine_base',
+		icon: 'cpu',
 		fields: {
 			id:             { type: 'id',     readonly: true },
 			code:           { type: 'text',   required: true },
@@ -190,6 +201,7 @@ export const iotScheme: MachineModel = {
 
 	sensor: {
 		base: 'machine_base',
+		icon: 'thermometer',
 		fields: {
 			id:             { type: 'id',     readonly: true },
 			code:           { type: 'text',   required: true },
@@ -210,6 +222,7 @@ export const iotScheme: MachineModel = {
 
 	reading: {
 		base: 'machine_base',
+		icon: 'chart-line',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -226,6 +239,7 @@ export const iotScheme: MachineModel = {
 
 	reading_rollup: {
 		base: 'machine_base',
+		icon: 'chart-line-up',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -247,6 +261,7 @@ export const iotScheme: MachineModel = {
 
 	alert_rule: {
 		base: 'machine_base',
+		icon: 'warning',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -270,6 +285,7 @@ export const iotScheme: MachineModel = {
 
 	alert: {
 		base: 'machine_base',
+		icon: 'warning',
 		fields: {
 			id:             { type: 'id',     readonly: true },
 			code:           { type: 'text',   required: true },
@@ -294,6 +310,7 @@ export const iotScheme: MachineModel = {
 
 	command: {
 		base: 'machine_base',
+		icon: 'terminal',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -312,6 +329,7 @@ export const iotScheme: MachineModel = {
 
 	maintenance_log: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },

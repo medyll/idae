@@ -6,6 +6,7 @@ export const ledgerScheme: MachineModel = {
 
 	account_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:           { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const ledgerScheme: MachineModel = {
 
 	entry_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const ledgerScheme: MachineModel = {
 
 	period_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const ledgerScheme: MachineModel = {
 
 	invoice_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const ledgerScheme: MachineModel = {
 
 	currency: {
 		base: 'machine_base',
+		icon: 'coin',
 		isType: true,
 		fields: {
 			id:        { type: 'id',     readonly: true },
@@ -73,6 +78,7 @@ export const ledgerScheme: MachineModel = {
 
 	tax_rate: {
 		base: 'machine_base',
+		icon: 'percent',
 		isGroup: true,
 		fields: {
 			id:      { type: 'id',     readonly: true },
@@ -88,6 +94,7 @@ export const ledgerScheme: MachineModel = {
 
 	account: {
 		base: 'machine_base',
+		icon: 'bank',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -108,6 +115,7 @@ export const ledgerScheme: MachineModel = {
 
 	fiscal_year: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:         { type: 'id',   readonly: true },
 			code:       { type: 'text', required: true },
@@ -122,6 +130,7 @@ export const ledgerScheme: MachineModel = {
 
 	period: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -140,6 +149,7 @@ export const ledgerScheme: MachineModel = {
 
 	journal: {
 		base: 'machine_base',
+		icon: 'book',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -154,6 +164,7 @@ export const ledgerScheme: MachineModel = {
 
 	party: {
 		base: 'machine_base',
+		icon: 'handshake',
 		fields: {
 			id:          { type: 'id',    readonly: true },
 			code:        { type: 'text',  required: true },
@@ -179,6 +190,7 @@ export const ledgerScheme: MachineModel = {
 
 	journal_entry: {
 		base: 'machine_base',
+		icon: 'note-pencil',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -204,6 +216,7 @@ export const ledgerScheme: MachineModel = {
 
 	entry_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -226,6 +239,7 @@ export const ledgerScheme: MachineModel = {
 
 	invoice: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -251,6 +265,7 @@ export const ledgerScheme: MachineModel = {
 
 	invoice_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -272,6 +287,7 @@ export const ledgerScheme: MachineModel = {
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -293,6 +309,7 @@ export const ledgerScheme: MachineModel = {
 
 	bank_statement: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -309,6 +326,7 @@ export const ledgerScheme: MachineModel = {
 
 	statement_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },

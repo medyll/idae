@@ -6,6 +6,7 @@ export const comixScheme: MachineModel = {
 
 	page_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const comixScheme: MachineModel = {
 
 	issue_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const comixScheme: MachineModel = {
 
 	credit_role: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const comixScheme: MachineModel = {
 
 	panel_shape: {
 		base: 'machine_base',
+		icon: 'layout',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -58,6 +62,7 @@ export const comixScheme: MachineModel = {
 
 	bubble_type: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -70,6 +75,7 @@ export const comixScheme: MachineModel = {
 
 	genre: {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -84,6 +90,7 @@ export const comixScheme: MachineModel = {
 
 	publisher: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -100,6 +107,7 @@ export const comixScheme: MachineModel = {
 
 	creator: {
 		base: 'machine_base',
+		icon: 'pen-nib',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -119,6 +127,7 @@ export const comixScheme: MachineModel = {
 
 	series: {
 		base: 'machine_base',
+		icon: 'books',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -139,6 +148,7 @@ export const comixScheme: MachineModel = {
 
 	series_genre: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -152,6 +162,7 @@ export const comixScheme: MachineModel = {
 
 	character: {
 		base: 'machine_base',
+		icon: 'user-circle',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -172,6 +183,7 @@ export const comixScheme: MachineModel = {
 
 	location: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -189,6 +201,7 @@ export const comixScheme: MachineModel = {
 
 	issue: {
 		base: 'machine_base',
+		icon: 'book',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -212,6 +225,7 @@ export const comixScheme: MachineModel = {
 
 	issue_credit: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
@@ -229,6 +243,7 @@ export const comixScheme: MachineModel = {
 
 	script: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -249,6 +264,7 @@ export const comixScheme: MachineModel = {
 
 	page: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -277,6 +293,7 @@ export const comixScheme: MachineModel = {
 
 	panel: {
 		base: 'machine_base',
+		icon: 'layout',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -300,6 +317,7 @@ export const comixScheme: MachineModel = {
 
 	panel_character: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:       { type: 'id',   readonly: true },
 			code:     { type: 'text', required: true },
@@ -316,6 +334,7 @@ export const comixScheme: MachineModel = {
 
 	bubble: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -338,6 +357,7 @@ export const comixScheme: MachineModel = {
 
 	asset: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -359,6 +379,7 @@ export const comixScheme: MachineModel = {
 
 	revision: {
 		base: 'machine_base',
+		icon: 'git-branch',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },

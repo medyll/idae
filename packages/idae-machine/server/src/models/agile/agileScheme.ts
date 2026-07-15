@@ -6,6 +6,7 @@ export const agileScheme: MachineModel = {
 
 	project_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const agileScheme: MachineModel = {
 
 	sprint_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const agileScheme: MachineModel = {
 
 	story_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const agileScheme: MachineModel = {
 
 	task_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const agileScheme: MachineModel = {
 
 	bug_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -72,6 +77,7 @@ export const agileScheme: MachineModel = {
 
 	bug_severity: {
 		base: 'machine_base',
+		icon: 'warning',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -86,6 +92,7 @@ export const agileScheme: MachineModel = {
 
 	priority: {
 		base: 'machine_base',
+		icon: 'warning',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -100,6 +107,7 @@ export const agileScheme: MachineModel = {
 
 	member_role: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -113,6 +121,7 @@ export const agileScheme: MachineModel = {
 
 	milestone_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -128,6 +137,7 @@ export const agileScheme: MachineModel = {
 
 	team_member: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:       { type: 'id',    readonly: true },
 			code:     { type: 'text',  required: true },
@@ -146,6 +156,7 @@ export const agileScheme: MachineModel = {
 
 	project: {
 		base: 'machine_base',
+		icon: 'kanban',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -166,6 +177,7 @@ export const agileScheme: MachineModel = {
 
 	project_member: {
 		base: 'machine_base',
+		icon: 'users',
 		fields: {
 			id:        { type: 'id',   readonly: true },
 			code:      { type: 'text', required: true },
@@ -181,6 +193,7 @@ export const agileScheme: MachineModel = {
 
 	label: {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
@@ -197,6 +210,7 @@ export const agileScheme: MachineModel = {
 
 	epic: {
 		base: 'machine_base',
+		icon: 'target',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -217,6 +231,7 @@ export const agileScheme: MachineModel = {
 
 	milestone: {
 		base: 'machine_base',
+		icon: 'flag',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -234,6 +249,7 @@ export const agileScheme: MachineModel = {
 
 	release: {
 		base: 'machine_base',
+		icon: 'rocket',
 		fields: {
 			id:            { type: 'id',      readonly: true },
 			code:          { type: 'text',    required: true },
@@ -253,6 +269,7 @@ export const agileScheme: MachineModel = {
 
 	sprint: {
 		base: 'machine_base',
+		icon: 'timer',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -274,6 +291,7 @@ export const agileScheme: MachineModel = {
 
 	story: {
 		base: 'machine_base',
+		icon: 'book',
 		fields: {
 			id:                  { type: 'id',      readonly: true },
 			code:                { type: 'text',    required: true },
@@ -305,6 +323,7 @@ export const agileScheme: MachineModel = {
 
 	story_label: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -318,6 +337,7 @@ export const agileScheme: MachineModel = {
 
 	task: {
 		base: 'machine_base',
+		icon: 'check-square',
 		fields: {
 			id:             { type: 'id',      readonly: true },
 			code:           { type: 'text',    required: true },
@@ -342,6 +362,7 @@ export const agileScheme: MachineModel = {
 
 	bug: {
 		base: 'machine_base',
+		icon: 'bug',
 		fields: {
 			id:                 { type: 'id',      readonly: true },
 			code:               { type: 'text',    required: true },
@@ -372,6 +393,7 @@ export const agileScheme: MachineModel = {
 
 	worklog: {
 		base: 'machine_base',
+		icon: 'clock',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -390,6 +412,7 @@ export const agileScheme: MachineModel = {
 
 	comment: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -409,6 +432,7 @@ export const agileScheme: MachineModel = {
 
 	attachment: {
 		base: 'machine_base',
+		icon: 'paperclip',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },

@@ -6,6 +6,7 @@ export const hoteloScheme: MachineModel = {
 
 	booking_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const hoteloScheme: MachineModel = {
 
 	room_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -34,6 +36,7 @@ export const hoteloScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -47,6 +50,7 @@ export const hoteloScheme: MachineModel = {
 
 	housekeeping_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -61,6 +65,7 @@ export const hoteloScheme: MachineModel = {
 
 	bed_type: {
 		base: 'machine_base',
+		icon: 'bed',
 		isGroup: true,
 		fields: {
 			id:       { type: 'id',     readonly: true },
@@ -74,6 +79,7 @@ export const hoteloScheme: MachineModel = {
 
 	channel: {
 		base: 'machine_base',
+		icon: 'broadcast',
 		isType: true,
 		fields: {
 			id:              { type: 'id',     readonly: true },
@@ -87,6 +93,7 @@ export const hoteloScheme: MachineModel = {
 
 	rate_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -102,6 +109,7 @@ export const hoteloScheme: MachineModel = {
 
 	property: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -128,6 +136,7 @@ export const hoteloScheme: MachineModel = {
 
 	amenity: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -140,6 +149,7 @@ export const hoteloScheme: MachineModel = {
 
 	room_type: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -159,6 +169,7 @@ export const hoteloScheme: MachineModel = {
 
 	room_type_amenity: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -172,6 +183,7 @@ export const hoteloScheme: MachineModel = {
 
 	room: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -193,6 +205,7 @@ export const hoteloScheme: MachineModel = {
 
 	rate_plan: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -209,6 +222,7 @@ export const hoteloScheme: MachineModel = {
 
 	daily_rate: {
 		base: 'machine_base',
+		icon: 'coin',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -226,6 +240,7 @@ export const hoteloScheme: MachineModel = {
 
 	availability: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -245,6 +260,7 @@ export const hoteloScheme: MachineModel = {
 
 	guest: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -270,6 +286,7 @@ export const hoteloScheme: MachineModel = {
 
 	booking: {
 		base: 'machine_base',
+		icon: 'calendar-plus',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -300,6 +317,7 @@ export const hoteloScheme: MachineModel = {
 
 	booking_room: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -321,6 +339,7 @@ export const hoteloScheme: MachineModel = {
 
 	stay: {
 		base: 'machine_base',
+		icon: 'house',
 		fields: {
 			id:              { type: 'id',   readonly: true },
 			code:            { type: 'text', required: true },
@@ -340,6 +359,7 @@ export const hoteloScheme: MachineModel = {
 
 	service: {
 		base: 'machine_base',
+		icon: 'bell',
 		fields: {
 			id:    { type: 'id',       readonly: true },
 			code:  { type: 'text',     required: true },
@@ -355,6 +375,7 @@ export const hoteloScheme: MachineModel = {
 
 	folio_charge: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -373,6 +394,7 @@ export const hoteloScheme: MachineModel = {
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -392,6 +414,7 @@ export const hoteloScheme: MachineModel = {
 
 	housekeeping_task: {
 		base: 'machine_base',
+		icon: 'broom',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -410,6 +433,7 @@ export const hoteloScheme: MachineModel = {
 
 	review: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },

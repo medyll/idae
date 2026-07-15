@@ -6,6 +6,7 @@ export const hippoScheme: MachineModel = {
 
 	race_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const hippoScheme: MachineModel = {
 
 	race_discipline: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const hippoScheme: MachineModel = {
 
 	race_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -45,6 +48,7 @@ export const hippoScheme: MachineModel = {
 
 	track_surface: {
 		base: 'machine_base',
+		icon: 'road-horizon',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -57,6 +61,7 @@ export const hippoScheme: MachineModel = {
 
 	going: {
 		base: 'machine_base',
+		icon: 'gauge',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -70,6 +75,7 @@ export const hippoScheme: MachineModel = {
 
 	bet_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -83,6 +89,7 @@ export const hippoScheme: MachineModel = {
 
 	bet_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -96,6 +103,7 @@ export const hippoScheme: MachineModel = {
 
 	horse_gender: {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -110,6 +118,7 @@ export const hippoScheme: MachineModel = {
 
 	racetrack: {
 		base: 'machine_base',
+		icon: 'map-trifold',
 		fields: {
 			id:        { type: 'id',   readonly: true },
 			code:      { type: 'text', required: true },
@@ -128,6 +137,7 @@ export const hippoScheme: MachineModel = {
 
 	track: {
 		base: 'machine_base',
+		icon: 'road-horizon',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -144,6 +154,7 @@ export const hippoScheme: MachineModel = {
 
 	meeting: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -163,6 +174,7 @@ export const hippoScheme: MachineModel = {
 
 	stable: {
 		base: 'machine_base',
+		icon: 'house',
 		fields: {
 			id:       { type: 'id',    readonly: true },
 			code:     { type: 'text',  required: true },
@@ -180,6 +192,7 @@ export const hippoScheme: MachineModel = {
 
 	owner: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -198,6 +211,7 @@ export const hippoScheme: MachineModel = {
 
 	trainer: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -218,6 +232,7 @@ export const hippoScheme: MachineModel = {
 
 	jockey: {
 		base: 'machine_base',
+		icon: 'person-simple-run',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -241,6 +256,7 @@ export const hippoScheme: MachineModel = {
 
 	horse: {
 		base: 'machine_base',
+		icon: 'horse',
 		fields: {
 			id:            { type: 'id',    readonly: true },
 			code:          { type: 'text',  required: true },
@@ -271,6 +287,7 @@ export const hippoScheme: MachineModel = {
 
 	race: {
 		base: 'machine_base',
+		icon: 'flag',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -296,6 +313,7 @@ export const hippoScheme: MachineModel = {
 
 	runner: {
 		base: 'machine_base',
+		icon: 'person-simple-run',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			code:           { type: 'text',     required: true },
@@ -319,6 +337,7 @@ export const hippoScheme: MachineModel = {
 
 	race_result: {
 		base: 'machine_base',
+		icon: 'trophy',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -339,6 +358,7 @@ export const hippoScheme: MachineModel = {
 
 	punter: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:      { type: 'id',    readonly: true },
 			code:    { type: 'text',  required: true },
@@ -354,6 +374,7 @@ export const hippoScheme: MachineModel = {
 
 	bet: {
 		base: 'machine_base',
+		icon: 'coin',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -374,6 +395,7 @@ export const hippoScheme: MachineModel = {
 
 	bet_selection: {
 		base: 'machine_base',
+		icon: 'list-checks',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },
