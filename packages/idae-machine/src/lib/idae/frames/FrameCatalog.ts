@@ -18,6 +18,7 @@ const IDAE_FRAME_ENTRIES = {
 	'fiche.update':     () => import('$lib/shell/layout/FicheUpdate.svelte'),
 	'rbac.matrix':      () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
 	'synthesis':        () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
+	'planning':         () => import('$lib/shell/frame/planning/Planning.svelte'),
 	'diagram':          () => import('$lib/shell/frame/diagram/Diagram.svelte'),
 	'dashboard':        () => import('$lib/shell/frame/dashboard/Dashboard.svelte'),
 	'space':            () => import('$lib/shell/frame/space/Space.svelte'),

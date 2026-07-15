@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- **Scheme timespan qualifier** (2026-07-15): `appscheme.timespan: { start, end }` marks collections carrying a period (start/end date-datetime-time pair). Declared on the model or auto-detected by `detectTimespan()` (start/end, started/ended, debut/fin, from/until, check_in/out). Qualifies collections for period views; `hasTimespan = !!timespan`. See `SCHEMA-CONVENTIONS.md §9`.
+- **Planning frame** (2026-07-15): `shell/frame/planning/Planning.svelte` (registry key `planning`) — receives a collection, reads its `appscheme.timespan`, and lays records on a time axis (inspired by idae-legacy planning). Refuses collections without a timespan.
+- **Per-collection icons** (2026-07-15): every scheme (business + engine/registry) carries a Phosphor (`ph:`) icon. Legacy-derived orgs mined from idae-legacy `appscheme.iconAppscheme` (FontAwesome→Phosphor). Rendered in menu, explorer sidebar, synthesis.
+
+### Fixed
+
+- **Icon pipeline** (2026-07-15): render code forced the `typcn:` (Typicons) prefix while the bundled set is Phosphor (`@iconify-json/ph`) → most icons rendered empty. Switched to `ph:` in MainMenu/ButtonAction/FieldIcon/Explorer/Synthesis; `publishModel` no longer hardcodes `icon:'table'`.
+
 ## [2.0.0] - 2026-05-24
 
 ### Added
