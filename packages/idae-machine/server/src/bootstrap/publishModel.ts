@@ -318,14 +318,20 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		console.log(
 			`  [publishModel] ${collectionName.padEnd(28)} base=${baseCode.padEnd(14)} type=${typeCode.padEnd(9)} fks=[${declaredFks.join(', ')}]`,
 		);
+		// Scheme icon/color come from the model declaration (colDef.icon/color). Fall
+		// back to a generic collection glyph only when the model declares none — never
+		// hardcode one icon for every scheme (that produced the "everything is a table"
+		// slop). Values are Phosphor (iconify 'ph:') names.
+		const schemeIcon  = (colDef as { icon?: string }).icon  ?? 'table';
+		const schemeColor = (colDef as { color?: string }).color ?? '#222';
 		const schemeId = await ensureCodeToId(
 			col(META.scheme),
 			collectionName,
 			{
 				code:     collectionName,
 				name:     collectionName,
-				icon:     'table',
-				color:    '#222',
+				icon:     schemeIcon,
+				color:    schemeColor,
 				order:    ++schemeOrder,
 				keyPath:  colDef.keyPath ?? '++id',
 				base:     baseCode,
@@ -396,7 +402,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 					fks: {
 						[META.scheme]: {
 							id: schemeId, code: collectionName, name: collectionName,
-							icon: 'table', color: '#222',
+							icon: schemeIcon, color: schemeColor,
 							order: 0, required: true,
 						},
 						[META.field]: {
@@ -476,7 +482,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 						color: '#444',
 						order: order + 1,
 						fks: {
-							[META.scheme]:   buildFkRef({ id: schemeId, code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, required: true }),
+							[META.scheme]:   buildFkRef({ id: schemeId, code: collectionName, name: collectionName, icon: schemeIcon, color: schemeColor, order: 0, required: true }),
 							[META.viewType]: viewTypeFk,
 							[META.field]:    buildFkRef({ id: vFieldId, code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, required: false }),
 						},

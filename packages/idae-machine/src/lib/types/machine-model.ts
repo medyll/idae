@@ -136,6 +136,12 @@ export interface MachineCollectionModel<T = any> {
 	defaultSort?: SortBy[];
 	/** Structural rights policy — declared in schema, seeded as default grants by publishModel. */
 	rights?:     MachineRightsPolicy;
+	/** Display icon for the collection (Phosphor / iconify name, e.g. 'car', 'user').
+	 *  Written to the appscheme doc by publishModel; rendered in menu/explorer/synthesis.
+	 *  Optional — publishModel falls back to a generic default when absent. */
+	icon?:       string;
+	/** Display accent color for the collection (any CSS color). Optional. */
+	color?:      string;
 	/** Semantic role flags — written to appscheme doc by publishModel. Drive UI/validation/routing. */
 	isType?:     boolean;
 	isGroup?:    boolean;

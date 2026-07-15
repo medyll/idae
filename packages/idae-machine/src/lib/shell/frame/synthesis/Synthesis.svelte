@@ -4,8 +4,20 @@
 	import DataListRfk from '$lib/data-ui/data/DataListRfk.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import Icon from '@iconify/svelte';
 	import RecordToolbar from '$lib/shell/layout/RecordToolbar.svelte';
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
+
+	// Resolve a collection's appscheme icon (Phosphor 'ph:' name) reactively.
+	const appschemeStore = machine.store<{ code: string; icon?: string }>('appscheme');
+	function schemeIcon(code: string): string {
+		const rec = appschemeStore.records.find((s) => s.code === code);
+		const icon = rec?.icon;
+		if (typeof icon !== 'string') return 'ph:table';
+		const t = icon.trim();
+		if (!t || /^\d+$/.test(t) || /\s/.test(t)) return 'ph:table';
+		return t.includes(':') ? t : `ph:${t}`;
+	}
 
 	let {
 		collection,
@@ -106,7 +118,7 @@
 			<synthesis-sidebar-actions>
 				{#each rfkEntries as rfk (rfk.collection)}
 					<button class="action-create" onclick={() => handleCreateRfk(rfk.collection)}>
-						<span class="icon-appscheme"></span>
+						<Icon icon={schemeIcon(rfk.collection)} class="icon-appscheme" />
 						créer {rfk.collection}
 					</button>
 				{/each}
@@ -116,7 +128,7 @@
 
 	<synthesis-main>
 		<synthesis-header>
-			<span class="icon-appscheme"></span>
+			<Icon icon={schemeIcon(collection)} class="icon-appscheme" />
 			<group-info>
 				<div class="record-title">{recordLabel}</div>
 				<div class="record-subtitle">{scheme?.collection ?? collection}</div>
@@ -144,11 +156,11 @@
 				aria-label="Home"
 				onclick={() => machine.framer.loadFrame('explorer', collection)}
 			>
-				<span class="icon-home"></span>
+				<Icon icon="ph:house" class="icon-home" />
 			</button>
 			{#each rfkEntries as rfk (rfk.collection)}
 				<button class="action-navigate" onclick={() => machine.framer.loadInDialog('fiche.update', rfk.collection)}>
-					<span class="icon-appscheme"></span>
+					<Icon icon={schemeIcon(rfk.collection)} class="icon-appscheme" />
 					{rfk.collection}
 				</button>
 			{/each}
@@ -318,11 +330,11 @@
 			color: var(--color-text);
 		}
 
-		.icon-appscheme,
-		.icon-home {
-			display: inline-block;
-			width: 16px;
-			height: 16px;
+		:global(.icon-appscheme),
+		:global(.icon-home) {
+			flex-shrink: 0;
+			font-size: var(--icon-size-sm);
+			color: var(--color-text-muted);
 		}
 
 		.record-title {

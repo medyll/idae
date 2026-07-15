@@ -42,17 +42,17 @@ Toggled from TaskBar's menu button via bind:open.
 	/**
 	 * Normalize an appscheme icon value for Iconify.
 	 * The stored value may be a bare glyph name (e.g. "user") or already prefixed
-	 * (e.g. "typcn:user"). Bare names are treated as Typicons to match FieldIcon.
-	 * Invalid/fallback values that look like free text are replaced with a safe default.
+	 * (e.g. "ph:user"). Bare names are treated as Phosphor ('ph:') — the icon set
+	 * bundled with the app (@iconify-json/ph). Free-text/numeric values fall back.
 	 */
-	function normalizeIcon(icon: string | undefined, fallback = 'typcn:folder'): string {
+	function normalizeIcon(icon: string | undefined, fallback = 'ph:folder'): string {
 		if (!icon) return fallback;
 		const trimmed = icon.trim();
 		if (!trimmed) return fallback;
 		if (/^\d+$/.test(trimmed)) return fallback;
 		if (/\s/.test(trimmed)) return fallback;
 		if (trimmed.includes(':')) return trimmed;
-		return `typcn:${trimmed}`;
+		return `ph:${trimmed}`;
 	}
 </script>
 
@@ -74,7 +74,7 @@ Toggled from TaskBar's menu button via bind:open.
 				aria-label="Close menu"
 				onclick={() => (open = false)}
 			>
-				<Icon icon="typcn:close" />
+				<Icon icon="ph:x" />
 			</button>
 
 			<main-menu-dock>

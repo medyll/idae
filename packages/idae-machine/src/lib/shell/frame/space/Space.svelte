@@ -34,11 +34,11 @@ Mounted via machine.framer.loadFrame('space', collection).
 
 	<space-actions>
 		<button type="button" class="space-tile" onclick={openExplorer}>
-			<span class="space-tile-icon"><Icon icon="typcn:th-list" /></span>
+			<span class="space-tile-icon"><Icon icon="ph:list" /></span>
 			<span class="space-tile-label">Parcourir {collection}</span>
 		</button>
 		<button type="button" class="space-tile" onclick={openCreate}>
-			<span class="space-tile-icon"><Icon icon="typcn:plus" /></span>
+			<span class="space-tile-icon"><Icon icon="ph:plus" /></span>
 			<span class="space-tile-label">Créer {collection}</span>
 		</button>
 	</space-actions>

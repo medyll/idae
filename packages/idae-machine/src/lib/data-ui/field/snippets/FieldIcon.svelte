@@ -31,14 +31,14 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 
 {#if mode === 'show'}
 	{#if value}
-		<Icon icon={'typcn:' + value} class="icon-field icon-size-{size}" />
+		<Icon icon={value.includes(':') ? value : 'ph:' + value} class="icon-field icon-size-{size}" />
 	{:else}
 		<span class="icon-empty">—</span>
 	{/if}
 {:else}
 	<div class="icon-edit">
 		{#if value}
-			<Icon icon={'typcn:' + value} class="icon-preview icon-size-{size}" />
+			<Icon icon={value.includes(':') ? value : 'ph:' + value} class="icon-preview icon-size-{size}" />
 		{/if}
 		<input
 			type="text"

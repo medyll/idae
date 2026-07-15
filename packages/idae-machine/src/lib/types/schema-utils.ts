@@ -27,22 +27,24 @@ export function inferFieldGroup(name: string, type: string): string {
  * Maps field groups to icons for UI display.
  * Centralizes presentation logic to avoid duplication.
  */
+// Phosphor (iconify 'ph:') glyph names. Keep every value a real ph icon —
+// invalid names render nothing (that was the silent-empty-icon bug).
 export const ICON_BY_GROUP: Record<string, string> = {
-	audit:          'history',
+	audit:          'clock-counter-clockwise',
 	classification: 'tag',
 	codification:   'hash',
-	contact:        'mail',
+	contact:        'envelope',
 	date:           'calendar',
-	finance:        'dollar',
+	finance:        'currency-dollar',
 	identification: 'key',
-	inventory:      'box',
-	location:       'map',
+	inventory:      'package',
+	location:       'map-pin',
 	metrics:        'ruler',
 	presentation:   'eye',
-	progress:       'trending-up',
+	progress:       'trend-up',
 	quantity:       'package',
 	security:       'lock',
 	status:         'flag',
-	system:         'cog',
+	system:         'gear',
 	custom:         'star',
 };

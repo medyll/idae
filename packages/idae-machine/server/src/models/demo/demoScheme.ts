@@ -6,6 +6,7 @@ export const demoScheme: MachineModel = {
 
 	category: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:              { type: 'id',     readonly: true },
 			code:            { type: 'text',   required: true },
@@ -20,6 +21,7 @@ export const demoScheme: MachineModel = {
 
 	location_office: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:      { type: 'id',    readonly: true },
 			code:    { type: 'text',  required: true },
@@ -37,6 +39,7 @@ export const demoScheme: MachineModel = {
 
 	supplier: {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -55,6 +58,7 @@ export const demoScheme: MachineModel = {
 
 	seller: {
 		base: 'machine_base',
+		icon: 'handshake',
 		fields: {
 			id:              { type: 'id',    readonly: true },
 			first_name:      { type: 'text',  required: true },
@@ -75,6 +79,7 @@ export const demoScheme: MachineModel = {
 
 	vehicle: {
 		base: 'machine_base',
+		icon: 'car',
 		fields: {
 			id:              { type: 'id',    readonly: true },
 			license_plate:   { type: 'text',  required: true },
@@ -97,6 +102,7 @@ export const demoScheme: MachineModel = {
 
 	vehicle_acquisition: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:               { type: 'id',       readonly: true },
 			acquisition_date: { type: 'date',     required: true },
@@ -115,6 +121,7 @@ export const demoScheme: MachineModel = {
 
 	insurance: {
 		base: 'machine_base',
+		icon: 'shield-check',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			provider:       { type: 'text',     required: true },
@@ -134,6 +141,7 @@ export const demoScheme: MachineModel = {
 
 	maintenance: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:                 { type: 'id',       readonly: true },
 			date:               { type: 'date' },
@@ -152,6 +160,7 @@ export const demoScheme: MachineModel = {
 
 	fuel_log: {
 		base: 'machine_base',
+		icon: 'gas-pump',
 		fields: {
 			id:      { type: 'id',       readonly: true },
 			date:    { type: 'date',     required: true },
@@ -171,6 +180,7 @@ export const demoScheme: MachineModel = {
 
 	customer: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:              { type: 'id',    readonly: true },
 			first_name:      { type: 'text',  required: true },
@@ -190,6 +200,7 @@ export const demoScheme: MachineModel = {
 
 	pricing_rule: {
 		base: 'machine_base',
+		icon: 'currency-dollar',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			season_code:   { type: 'text',     required: true },
@@ -208,6 +219,7 @@ export const demoScheme: MachineModel = {
 
 	rental: {
 		base: 'machine_base',
+		icon: 'calendar-check',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			start_date:      { type: 'date',     required: true },
@@ -232,6 +244,7 @@ export const demoScheme: MachineModel = {
 
 	damage_report: {
 		base: 'machine_base',
+		icon: 'warning',
 		fields: {
 			id:                  { type: 'id',       readonly: true },
 			reported_at:         { type: 'date',     required: true },
@@ -254,6 +267,7 @@ export const demoScheme: MachineModel = {
 
 	lead: {
 		base: 'machine_base',
+		icon: 'target',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			first_name: { type: 'text',     required: true },
@@ -276,6 +290,7 @@ export const demoScheme: MachineModel = {
 
 	sale_task: {
 		base: 'machine_base',
+		icon: 'check-square',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			type:         { type: 'text',     required: true },

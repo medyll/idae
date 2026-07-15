@@ -9,7 +9,7 @@ Composable brick for toolbars (Fiche, lists…), main-menu tiles, and dock actio
 @prop {'loadFrame'|'loadInDialog'} [action='loadFrame'] - framer dispatch
 @prop {string} [label] - button text (defaults to frame key)
 @prop {string} [title] - tooltip
-@prop {string} [icon] - Iconify icon name; bare names are prefixed with "typcn:"
+@prop {string} [icon] - Iconify icon name; bare names are prefixed with "ph:"
 @prop {Record<string,string>} [vars] - extra vars passed to framer
 @prop {'default'|'primary'|'tile'} [variant='default'] - visual style
 @prop {() => void} [afterRun] - callback fired after the framer dispatch
@@ -52,14 +52,14 @@ Composable brick for toolbars (Fiche, lists…), main-menu tiles, and dock actio
 		children
 	}: ButtonActionProps = $props();
 
-	function normalizeIcon(value: string | undefined, fallback = 'typcn:folder'): string {
+	function normalizeIcon(value: string | undefined, fallback = 'ph:folder'): string {
 		if (!value) return fallback;
 		const trimmed = value.trim();
 		if (!trimmed) return fallback;
 		if (/^\d+$/.test(trimmed)) return fallback;
 		if (/\s/.test(trimmed)) return fallback;
 		if (trimmed.includes(':')) return trimmed;
-		return `typcn:${trimmed}`;
+		return `ph:${trimmed}`;
 	}
 
 	function run(): void {
