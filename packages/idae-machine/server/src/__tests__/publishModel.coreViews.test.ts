@@ -14,7 +14,9 @@ const META_COLS = [
 
 let idaeDb: IdaeDb;
 
-describe('publishModel — core collections generate appscheme_view rows', () => {
+// Each test runs a FULL seedIdaeRegistries + publishModel against real Mongo;
+// under gate-level parallel load that legitimately exceeds vitest's 5s default.
+describe('publishModel — core collections generate appscheme_view rows', { timeout: 30_000 }, () => {
 	beforeAll(async () => {
 		idaeDb = IdaeDb.init(config.mongodbUri, {
 			dbType:           DbType.MONGODB,

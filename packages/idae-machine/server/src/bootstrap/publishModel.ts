@@ -10,7 +10,7 @@ import { IdaeDb, DbType } from '@medyll/idae-db';
 import { mongooseConnectionManager } from '@medyll/idae-api';
 import { buildFkRef, FieldList, type FkRef } from '../idae/index.js';
 import { ensureCodeToId } from './resolveFkUtils.js';
-import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
+import { inferFieldGroup, ICON_BY_GROUP, detectTimespan } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
 import { MACHINE_APP_BASE } from './seed/idaeModel.js';
 import type {
@@ -311,6 +311,10 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		const isType   = ((colDef as any).isType   ?? collectionName.endsWith('_type'))   || undefined;
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
+		// Time span qualifier: declared on the model, else auto-detected from the
+		// start/end temporal field pair (detectTimespan). Qualifies the collection
+		// for period-based views (planning/calendar). hasTimespan = !!timespan.
+		const timespan = (colDef as any).timespan ?? detectTimespan(fields as Record<string, { type?: string }>);
 
 		// Log declared FKs (from the model), not the auto-injected meta base/type.
 		const declaredFks = Object.entries(colDef.fkRelations ?? {})
@@ -338,6 +342,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 				...(isType   ? { isType:   true } : {}),
 				...(isGroup  ? { isGroup:  true } : {}),
 				...(isStatus ? { isStatus: true } : {}),
+				...(timespan ? { timespan } : {}),
 				...(colDef.rights ? { rights: colDef.rights } : {}),
 				template,
 				fks:         schemeFksDoc,

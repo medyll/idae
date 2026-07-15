@@ -142,6 +142,12 @@ export interface MachineCollectionModel<T = any> {
 	icon?:       string;
 	/** Display accent color for the collection (any CSS color). Optional. */
 	color?:      string;
+	/** Time span carried by records of this collection — the start/end field pair
+	 *  (date, datetime or time types). Declared here or auto-detected by publishModel
+	 *  from field-name pairs (start/end, debut/fin, from/until, check_in/check_out).
+	 *  Written to the appscheme doc; qualifies the collection for period-based views
+	 *  (planning/calendar). `hasTimespan` is derivable: `!!timespan`. */
+	timespan?:   { start: string; end: string };
 	/** Semantic role flags — written to appscheme doc by publishModel. Drive UI/validation/routing. */
 	isType?:     boolean;
 	isGroup?:    boolean;
