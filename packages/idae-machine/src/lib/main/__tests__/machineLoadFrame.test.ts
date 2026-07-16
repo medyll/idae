@@ -7,7 +7,7 @@ let mockPush = vi.fn();
 vi.mock('@medyll/idae-router', () => ({
 	createRouter: vi.fn(() => ({
 		before: () => {},
-		push:   vi.fn(),
+		push: vi.fn()
 	}))
 }));
 
@@ -48,10 +48,10 @@ describe('machine.framer.loadFrame — URL-driven', () => {
 	});
 
 	it('uses explicit zone when provided', () => {
-		machine.framer.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
+		machine.framer.loadFrame('explorer', 'vehicle', undefined, undefined, 'main');
 
 		const url = mockPush.mock.calls[0][0] as string;
-		expect(url).toBe('/+main.modal/explorer/vehicle');
+		expect(url).toBe('/+main/explorer/vehicle');
 	});
 
 	it('omits vars query when empty', () => {

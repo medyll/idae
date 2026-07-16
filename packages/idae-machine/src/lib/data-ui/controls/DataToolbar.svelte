@@ -47,14 +47,16 @@ No data logic — composition only. Lives in data-ui so data-ui/data stays layer
 		.data-toolbar {
 			display: flex;
 			align-items: center;
-			gap: 0.5rem;
+			gap: var(--gutter-sm);
 			flex-wrap: wrap;
-			margin-bottom: var(--gutter-sm);
+			padding: var(--pad-sm) var(--pad-md);
+			border-bottom: var(--border-width) solid var(--color-border);
+			background: var(--color-surface-alt);
 		}
 		.data-toolbar-slot {
 			display: inline-flex;
 			align-items: center;
-			gap: 0.25rem;
+			gap: var(--gutter-xs);
 		}
 		.data-toolbar-extras {
 			margin-left: auto;

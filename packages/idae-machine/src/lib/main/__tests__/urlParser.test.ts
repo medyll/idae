@@ -30,24 +30,24 @@ describe('parseLoadInUrl', () => {
 	});
 
 	it('parses multi-target URL', () => {
-		const result = parseLoadInUrl('/+main/explorer.split/vehicle/42/+main.modal/card.edit/vehicle/42');
+		const result = parseLoadInUrl('/+main/explorer/vehicle/42/+main/fiche.update/vehicle/42');
 		expect(result).toHaveLength(2);
 		expect(result[0]).toEqual({
 			targetId: 'main',
-			modulePath: 'explorer.split',
+			modulePath: 'explorer',
 			collection: 'vehicle',
 			collectionId: '42'
 		});
 		expect(result[1]).toEqual({
-			targetId: 'main.modal',
-			modulePath: 'card.edit',
+			targetId: 'main',
+			modulePath: 'fiche.update',
 			collection: 'vehicle',
 			collectionId: '42'
 		});
 	});
 
 	it('parses multi-target with vars on last segment only', () => {
-		const result = parseLoadInUrl('/+main/explorer.list/vehicle/+main.modal/card.edit/vehicle/42?tab=info');
+		const result = parseLoadInUrl('/+main/explorer/vehicle/+main/fiche.update/vehicle/42?tab=info');
 		expect(result).toHaveLength(2);
 		expect(result[0].vars).toBeUndefined();
 		expect(result[1].vars).toEqual({ tab: 'info' });
@@ -60,9 +60,9 @@ describe('parseLoadInUrl', () => {
 	});
 
 	it('handles complex dotted targetId and modulePath', () => {
-		const result = parseLoadInUrl('/+main.window/card.view/vehicle/99');
-		expect(result[0].targetId).toBe('main.window');
-		expect(result[0].modulePath).toBe('card.view');
+		const result = parseLoadInUrl('/+main/fiche/vehicle/99');
+		expect(result[0].targetId).toBe('main');
+		expect(result[0].modulePath).toBe('fiche');
 	});
 
 	it('decodes URI components in vars', () => {

@@ -1,23 +1,62 @@
 import { MachineDb } from '$lib/main/machineDb.js';
-import { createQoolie, type SyncConfig, type SyncErrorContext, type ResultSet } from '@medyll/qoolie';
+import {
+	createQoolie,
+	type SyncConfig,
+	type SyncErrorContext,
+	type ResultSet
+} from '@medyll/qoolie';
 import { useQoolieCollection, useQoolieQuery } from '@medyll/qoolie/svelte';
 import type { EventDataClientInstance } from '@medyll/idae-socket';
 import { be as _be } from '@medyll/idae-be';
 import { MachineRouter, type MachineRouterConfig } from '$lib/main/machine/MachineRouter.js';
 import { setupNavigationTracking } from '$lib/idae/userscope/navTracking.js';
 import { machineRights } from '$lib/main/machine/MachineRights.js';
-import { machineAction, machineActionCallable, type ActionCollection } from '$lib/main/machine/MachineAction.js';
+import {
+	machineAction,
+	machineActionCallable,
+	type ActionCollection
+} from '$lib/main/machine/MachineAction.js';
 import { buildEffectiveModel } from '$lib/main/machineModelBuilder.js';
-import { detectSchemaDrift, performIdbUpgrade, deleteIdbDatabase, getActualIdbVersion, storeSchemaHash, type PendingIdbUpgrade } from '$lib/main/machineIdbAdapter.js';
+import {
+	diagnoseMachineModel,
+	type SchemaDiagnosticReport
+} from '$lib/main/machineSchemaDoctor.js';
+import {
+	detectSchemaDrift,
+	performIdbUpgrade,
+	deleteIdbDatabase,
+	getActualIdbVersion,
+	storeSchemaHash,
+	type PendingIdbUpgrade
+} from '$lib/main/machineIdbAdapter.js';
 import { componentRegistry, type ComponentRegistry } from '$lib/main/router/componentRegistry.js';
 import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
 import { createMenuManager } from '$lib/idae/menu/menuSnapshot.js';
 import type { IdaeMenuManager } from '$lib/idae/menu/IdaeMenuManager.js';
 import { wrapCollectionFkFold } from '$lib/main/machine/MachineFkFold.js';
-import { initializeDomainPoliciesWithMachine, initializeDomainPoliciesWithModel, frameCatalog } from '$lib/idae/boot.js';
+import {
+	initializeDomainPoliciesWithMachine,
+	initializeDomainPoliciesWithModel,
+	frameCatalog
+} from '$lib/idae/boot.js';
 import type { MachineModel } from '$lib/types/index.js';
 
 type SyncEvent = { type: string; collection?: string; entryId?: string; reason?: unknown };
+
+export type MachineBootPhase = 'boot' | 'schema' | 'model' | 'storage' | 'frames' | 'seed' | 'ui';
+export type MachineBootStatus = 'start' | 'done' | 'error';
+
+export interface MachineBootTraceEntry {
+	phase: MachineBootPhase;
+	status: MachineBootStatus;
+	at: string;
+	detail?: string;
+}
+
+export interface MachineStoreDiagnostic {
+	collection: string;
+	calls: number;
+}
 
 /**
  * Race a promise against a timeout so a silently-hung IndexedDB open (e.g. an Edge
@@ -29,22 +68,29 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
 	let timer: ReturnType<typeof setTimeout>;
 	const timeout = new Promise<never>((_, reject) => {
 		timer = setTimeout(
-			() => reject(new Error(`[idae-machine] ${label} timed out after ${ms}ms — IndexedDB likely blocked (another tab open) or sync stalled. Close other tabs and reload.`)),
+			() =>
+				reject(
+					new Error(
+						`[idae-machine] ${label} timed out after ${ms}ms — IndexedDB likely blocked (another tab open) or sync stalled. Close other tabs and reload.`
+					)
+				),
 			ms
 		);
 	});
 	return Promise.race([promise, timeout]).finally(() => clearTimeout(timer)) as Promise<T>;
 }
 
-export type MachineComponentRegistry = Readonly<Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>>;
+export type MachineComponentRegistry = Readonly<
+	Pick<ComponentRegistry, 'register' | 'registerMany' | 'unregister' | 'resolve' | 'has' | 'keys'>
+>;
 
 const machineComponentRegistry: MachineComponentRegistry = Object.freeze({
-	register:     componentRegistry.register.bind(componentRegistry),
+	register: componentRegistry.register.bind(componentRegistry),
 	registerMany: componentRegistry.registerMany.bind(componentRegistry),
-	unregister:   componentRegistry.unregister.bind(componentRegistry),
-	resolve:      componentRegistry.resolve.bind(componentRegistry),
-	has:          componentRegistry.has.bind(componentRegistry),
-	keys:         componentRegistry.keys.bind(componentRegistry),
+	unregister: componentRegistry.unregister.bind(componentRegistry),
+	resolve: componentRegistry.resolve.bind(componentRegistry),
+	has: componentRegistry.has.bind(componentRegistry),
+	keys: componentRegistry.keys.bind(componentRegistry)
 });
 
 /**
@@ -60,19 +106,17 @@ export class Machine {
 	/**
 	 * Instance name (optional)
 	 */
-	instanceName?:           string;
+	instanceName?: string;
 
 	/**
 	 * Qoolie instance — data layer (IndexedDB + optional sync)
 	 */
 	_qoolie!: ReturnType<typeof createQoolie> | undefined;
 
-
-
 	/**
 	 * Centralized access to schema and collection logic
 	 */
-	_machineDb!:              MachineDb;
+	_machineDb!: MachineDb;
 
 	/**
 	 * Database name (IDB). Derived from org+domain if not explicit.
@@ -85,37 +129,37 @@ export class Machine {
 	_version = 1;
 
 	/** System/framework collections (appscheme, appuser_*, …). Usually omitted — schema is fetched during boot(). */
-	_core?:                   MachineModel;
+	_core?: MachineModel;
 
 	/** Application business collections (vehicle, reservation, …). */
-	_business?:               MachineModel;
+	_business?: MachineModel;
 
 	/**
 	 * Effective model = system collections + business model. Built once at boot().
 	 */
-	_effectiveModel!:         MachineModel;
+	_effectiveModel!: MachineModel;
 
 	/** Organisation identifier — prefixes all DB names. e.g. 'test', 'crfr' */
-	_org?:                    string;
+	_org?: string;
 
 	/** Domain/site name. e.g. 'machine', 'sitebase' */
-	_domain?:                 string;
+	_domain?: string;
 
 	/**
 	 * Schema router instance (lazy-initialized)
 	 */
-	_router?:                 MachineRouter;
+	_router?: MachineRouter;
 
 	/** Global sync config forwarded to createQoolie(). false = sync disabled. */
-	_syncOptions?:            SyncConfig | false;
+	_syncOptions?: SyncConfig | false;
 
 	/** Reactive state engine: 'svelte5' (default) | 'stator' */
-	_stateEngine?:            'svelte5' | 'stator';
+	_stateEngine?: 'svelte5' | 'stator';
 
 	/** Qoolie lifecycle hooks */
 	_hooks?: {
 		onSyncEvent?: (event: SyncEvent) => void;
-		onError?:     (error: Error, context: SyncErrorContext) => void;
+		onError?: (error: Error, context: SyncErrorContext) => void;
 	};
 
 	/** Seed data for mobile-first mode — auto-called with onlyIfEmpty on boot if mode === 'mobile-first' */
@@ -129,6 +173,20 @@ export class Machine {
 
 	/** Cleanup fn returned by setupContextMenuListener — called in destroy(). */
 	private _contextMenuCleanup?: () => void;
+
+	/** Last boot trace — intentionally plain data so recovery screens can render it after failure. */
+	private _bootTrace: MachineBootTraceEntry[] = [];
+
+	/** Last pure schema inspection, refreshed whenever the effective model changes. */
+	private _schemaDiagnostics: SchemaDiagnosticReport = {
+		valid: true,
+		errors: 0,
+		warnings: 0,
+		issues: []
+	};
+
+	/** Development signal for spotting repeated store subscriptions per collection. */
+	private _storeAccessCounts = new Map<string, number>();
 
 	/**
 	 * Promise that resolves when boot() has completed.
@@ -153,40 +211,63 @@ export class Machine {
 	 * @role Initializer
 	 */
 	init(options?: {
-		dbName?:      string;
-		version?:     number;
+		dbName?: string;
+		version?: number;
 		/** System/framework collections. Usually omitted — schema is fetched from the server during boot(). */
-		core?:        MachineModel;
+		core?: MachineModel;
 		/** Application business collections (vehicle, reservation, …). */
-		business?:    MachineModel;
-		org?:         string;
-		domain?:      string;
-		sync?:        SyncConfig | false;
+		business?: MachineModel;
+		org?: string;
+		domain?: string;
+		sync?: SyncConfig | false;
 		stateEngine?: 'svelte5' | 'stator';
 		hooks?: {
 			onSyncEvent?: (event: SyncEvent) => void;
-			onError?:     (error: Error, context: SyncErrorContext) => void;
+			onError?: (error: Error, context: SyncErrorContext) => void;
 		};
 		/** Seed data for mobile-first mode. When sync.mode === 'mobile-first', boot() auto-calls seed(seed, { onlyIfEmpty: true }). */
-		seed?:        Record<string, unknown[]>;
+		seed?: Record<string, unknown[]>;
 	}) {
-		if (options?.org)    this._org    = options.org;
+		if (options?.org) this._org = options.org;
 		if (options?.domain) this._domain = options.domain;
 
-		const derived    = (this._org && this._domain) ? `${this._org}_${this._domain}` : undefined;
-		this._dbName     = options?.dbName    ?? derived ?? this._dbName;
-		this._version    = options?.version   ?? this._version;
-		this._core       = options?.core      ?? this._core;
-		this._business   = options?.business  ?? this._business;
-		this._syncOptions   = options?.sync        !== undefined ? options.sync : this._syncOptions;
-		this._stateEngine   = options?.stateEngine ?? this._stateEngine;
-		this._hooks         = options?.hooks       ?? this._hooks;
-		this._seed          = options?.seed        ?? this._seed;
+		const derived = this._org && this._domain ? `${this._org}_${this._domain}` : undefined;
+		this._dbName = options?.dbName ?? derived ?? this._dbName;
+		this._version = options?.version ?? this._version;
+		this._core = options?.core ?? this._core;
+		this._business = options?.business ?? this._business;
+		this._syncOptions = options?.sync !== undefined ? options.sync : this._syncOptions;
+		this._stateEngine = options?.stateEngine ?? this._stateEngine;
+		this._hooks = options?.hooks ?? this._hooks;
+		this._seed = options?.seed ?? this._seed;
 	}
 
 	/** Fully qualified DB name for a given base: {org}_{base} */
 	moduleDbName(base: string): string {
 		return this._org ? `${this._org}_${base}` : base;
+	}
+
+	private markBoot(phase: MachineBootPhase, status: MachineBootStatus, detail?: string): void {
+		this._bootTrace.push({
+			phase,
+			status,
+			at: new Date().toISOString(),
+			...(detail ? { detail } : {})
+		});
+	}
+
+	get bootTrace(): readonly MachineBootTraceEntry[] {
+		return this._bootTrace;
+	}
+
+	get schemaDiagnostics(): SchemaDiagnosticReport {
+		return this._schemaDiagnostics;
+	}
+
+	get storeDiagnostics(): readonly MachineStoreDiagnostic[] {
+		return [...this._storeAccessCounts.entries()]
+			.map(([collection, calls]) => ({ collection, calls }))
+			.sort((left, right) => right.calls - left.calls);
 	}
 
 	/** Pending IDB upgrade scheduled by drift detection — consumed by next createStore(). */
@@ -205,16 +286,19 @@ export class Machine {
 			this._qoolie = undefined;
 		}
 		const collections = Object.fromEntries([
-			...Object.entries(this._effectiveModel).map(([name, col]) => [name, { keyPath: col.keyPath ?? '++id' }]),
+			...Object.entries(this._effectiveModel).map(([name, col]) => [
+				name,
+				{ keyPath: col.keyPath ?? '++id' }
+			]),
 			['__schema_meta__', { keyPath: 'id' }]
 		]);
 		this._qoolie = createQoolie({
-			dbName:    this._dbName,
+			dbName: this._dbName,
 			dbVersion: this._version,
 			collections,
 			...(this._syncOptions !== undefined && { sync: this._syncOptions }),
-			...(this._stateEngine  !== undefined && { stateEngine: this._stateEngine }),
-			...(this._hooks        !== undefined && { hooks: this._hooks }),
+			...(this._stateEngine !== undefined && { stateEngine: this._stateEngine }),
+			...(this._hooks !== undefined && { hooks: this._hooks })
 		});
 
 		// Persist the schema hash AFTER qoolie's open created __schema_meta__.
@@ -223,7 +307,10 @@ export class Machine {
 		if (pending) {
 			await withTimeout(this._qoolie.ready(), 20000, 'qoolie.ready');
 			await storeSchemaHash(this._dbName, pending.expectedHash).catch((err) => {
-				console.warn('[idae-machine] Could not persist schema hash after store creation (will retry next boot):', err);
+				console.warn(
+					'[idae-machine] Could not persist schema hash after store creation (will retry next boot):',
+					err
+				);
 			});
 		}
 	}
@@ -245,7 +332,8 @@ export class Machine {
 	 */
 	private async _applyModel(replaceExisting: boolean): Promise<void> {
 		this._effectiveModel = buildEffectiveModel(this._core, this._business);
-		this._machineDb      = new MachineDb(this._effectiveModel);
+		this._schemaDiagnostics = diagnoseMachineModel(this._effectiveModel);
+		this._machineDb = new MachineDb(this._effectiveModel);
 		machineRights.loadPoliciesFromModel(this._effectiveModel);
 		initializeDomainPoliciesWithModel(this._effectiveModel);
 		if (!replaceExisting) {
@@ -298,47 +386,79 @@ export class Machine {
 	 * @throws If sync is enabled but schema is unavailable (no cache, no network, no local model).
 	 */
 	async boot(options?: Parameters<Machine['init']>[0]): Promise<void> {
-		if (options) this.init(options);
-		if (!this._dbName) throw new Error('dbName is required — call machine.boot({ org, domain }) or machine.init({ dbName }) first');
-		if (this._qoolie) {
-			this._qoolie.destroy();
-			this._qoolie = undefined;
+		this._bootTrace = [];
+		this._storeAccessCounts.clear();
+		this.markBoot('boot', 'start');
+		try {
+			if (options) this.init(options);
+			if (!this._dbName)
+				throw new Error(
+					'dbName is required — call machine.boot({ org, domain }) or machine.init({ dbName }) first'
+				);
+			if (this._qoolie) {
+				this._qoolie.destroy();
+				this._qoolie = undefined;
+			}
+
+			const dbHost =
+				this._syncOptions && typeof this._syncOptions === 'object'
+					? ((this._syncOptions as Record<string, unknown>).databaseHost as string | undefined)
+					: undefined;
+
+			this.markBoot('schema', 'start', dbHost ? 'remote' : 'local');
+			if (dbHost) {
+				const orgQs = this._org ? `?org=${encodeURIComponent(this._org)}` : '';
+				const url = dbHost.replace(/\/+$/, '') + '/api/scheme' + orgQs;
+				const { loadSchema } = await import('$lib/main/machineSchemaLoader.js');
+				await loadSchema(url, {
+					onModel: (model) => {
+						this._business = model;
+					},
+					onStart: () => {},
+					onDrift: async () => {
+						await this._applyModel(true);
+					}
+				}).catch((err) => {
+					if (!this._business) throw err;
+					console.warn('[idae-machine] Schema fetch failed, continuing with local model:', err);
+				});
+			}
+			this.markBoot('schema', 'done');
+
+			this.markBoot('model', 'start');
+			this.markBoot('storage', 'start');
+			await this._applyModel(false);
+			this.markBoot(
+				'model',
+				'done',
+				`${Object.keys(this._effectiveModel).length} collections, ${this._schemaDiagnostics.issues.length} diagnostics`
+			);
+			this.markBoot('storage', 'done', this._dbName);
+
+			this.markBoot('frames', 'start');
+			frameCatalog.registerFrames(componentRegistry);
+			this.markBoot('frames', 'done', `${componentRegistry.keys().length} frames`);
+
+			const syncMode =
+				this._syncOptions && typeof this._syncOptions === 'object'
+					? (this._syncOptions as SyncConfig).mode
+					: undefined;
+			if (syncMode === 'mobile-first' && this._seed) {
+				this.markBoot('seed', 'start');
+				const { seed } = await import('$lib/main/machineSeed.js');
+				await seed(this._seed, { onlyIfEmpty: true });
+				this.markBoot('seed', 'done');
+			}
+
+			this.markBoot('ui', 'start');
+			const { setupContextMenuListener } = await import('$lib/main/frame/contextMenuSetup.js');
+			this._contextMenuCleanup = setupContextMenuListener(this._frameManager);
+			this.markBoot('ui', 'done');
+			this.markBoot('boot', 'done');
+		} catch (error) {
+			this.markBoot('boot', 'error', error instanceof Error ? error.message : String(error));
+			throw error;
 		}
-
-		const dbHost = (this._syncOptions && typeof this._syncOptions === 'object')
-			? (this._syncOptions as Record<string, unknown>).databaseHost as string | undefined
-			: undefined;
-
-		// Resolve schema: server (cache-first SWR) or local fallback
-		if (dbHost) {
-			const orgQs = this._org ? `?org=${encodeURIComponent(this._org)}` : '';
-			const url = dbHost.replace(/\/+$/, '') + '/api/scheme' + orgQs;
-			const { loadSchema } = await import('$lib/main/machineSchemaLoader.js');
-			await loadSchema(url, {
-				onModel: (model) => { this._business = model; },
-				onStart: () => {},
-				onDrift: async () => { await this._applyModel(true); }
-			}).catch((err) => {
-				if (!this._business) throw err;
-				// Server unreachable but local model available — continue with local
-				console.warn('[idae-machine] Schema fetch failed, continuing with local model:', err);
-			});
-		}
-
-		await this._applyModel(false);
-		frameCatalog.registerFrames(componentRegistry);
-
-		// Mobile-first auto-seed: run seed(..., { onlyIfEmpty: true }) when seed data is provided
-		const syncMode = (this._syncOptions && typeof this._syncOptions === 'object')
-			? (this._syncOptions as SyncConfig).mode
-			: undefined;
-		if (syncMode === 'mobile-first' && this._seed) {
-			const { seed } = await import('$lib/main/machineSeed.js');
-			await seed(this._seed, { onlyIfEmpty: true });
-		}
-
-		const { setupContextMenuListener } = await import('$lib/main/frame/contextMenuSetup.js');
-		this._contextMenuCleanup = setupContextMenuListener(this._frameManager);
 	}
 
 	/**
@@ -360,8 +480,12 @@ export class Machine {
 	 * Must be called from within a Svelte component or .svelte.ts context.
 	 * For imperative CRUD use machine.collection(name) instead.
 	 */
-	store<T = any>(name: string, query?: Parameters<typeof useQoolieQuery>[2]): { records: ResultSet<T> } {
+	store<T = any>(
+		name: string,
+		query?: Parameters<typeof useQoolieQuery>[2]
+	): { records: ResultSet<T> } {
 		if (!this._qoolie || !name) return { records: [] as unknown as ResultSet<T> };
+		this._storeAccessCounts.set(name, (this._storeAccessCounts.get(name) ?? 0) + 1);
 		const src = query
 			? useQoolieQuery<T>(this._qoolie, name, query)
 			: useQoolieCollection<T>(this._qoolie, name);
@@ -372,7 +496,11 @@ export class Machine {
 		// "flatten" store() to return the array directly: the underlying $state
 		// binding in the qoolie adapter is reassigned, so only a getter sees fresh
 		// values. This indirection looks redundant but is load-bearing.
-		return { get records() { return src.items as ResultSet<T>; } };
+		return {
+			get records() {
+				return src.items as ResultSet<T>;
+			}
+		};
 	}
 
 	/**
@@ -391,14 +519,18 @@ export class Machine {
 	}
 
 	/** Access rights manager — checkAccess, setCurrentUser, setPolicies, etc. */
-	get rights() { return machineRights; }
+	get rights() {
+		return machineRights;
+	}
 
 	/**
 	 * Generic write dispatcher — `machine.action(collection, vars, opts?)`.
 	 * One imperative entry point for every user-scoped write (prefs, history, activity, …).
 	 * Auto-injects `userId` + `id`. Use opts for upsert / bump / touch / code-template behavior.
 	 */
-	get action() { return machineActionCallable; }
+	get action() {
+		return machineActionCallable;
+	}
 
 	/**
 	 * Sync controller — pause/resume/status/flush/dlq.
@@ -422,7 +554,9 @@ export class Machine {
 		} catch {
 			return undefined;
 		}
-		const inner = (pushListener as { getListener?: () => unknown } | undefined)?.getListener?.() ?? pushListener;
+		const inner =
+			(pushListener as { getListener?: () => unknown } | undefined)?.getListener?.() ??
+			pushListener;
 		return (inner as { getClient?: () => EventDataClientInstance } | undefined)?.getClient?.();
 	}
 
@@ -477,13 +611,17 @@ export class Machine {
 	}
 
 	/** Compute a record label from `template.presentation`. Used by nav history writes and dialog titles. @internal */
-	async _renderLabel(collection: string, collectionId: string | number): Promise<string | undefined> {
+	async _renderLabel(
+		collection: string,
+		collectionId: string | number
+	): Promise<string | undefined> {
 		const { renderLabel } = await import('$lib/main/machine/machineLabel.js');
 		return renderLabel(
 			this._machineDb,
-			async (col, id) => this.collection(col).get(id) as Promise<Record<string, unknown> | undefined>,
+			async (col, id) =>
+				this.collection(col).get(id) as Promise<Record<string, unknown> | undefined>,
 			collection,
-			collectionId,
+			collectionId
 		);
 	}
 
@@ -563,13 +701,18 @@ export const machine: Machine = _g.__idae_machine ?? (_g.__idae_machine = new Ma
 // Avoids importing `machine` from inside MachineAction.ts (which would create a cycle).
 machineAction.setHost({
 	currentUserId: () => (machine.rights.currentUser ? String(machine.rights.currentUser.id) : null),
-	collection:    (name) => {
-		try { return machine.collection(name) as unknown as ActionCollection; }
-		catch { return null; }
+	collection: (name) => {
+		try {
+			return machine.collection(name) as unknown as ActionCollection;
+		} catch {
+			return null;
+		}
 	}
 });
 
 // Wire dialog/frame titles to record presentation labels (lazy — avoids init ordering).
-machineFrameManager.setLabelResolver((col, id) => (id ? machine._renderLabel(col, id) : Promise.resolve(undefined)));
+machineFrameManager.setLabelResolver((col, id) =>
+	id ? machine._renderLabel(col, id) : Promise.resolve(undefined)
+);
 
 if (import.meta.hot) import.meta.hot.accept();

@@ -11,7 +11,7 @@
 
 ---
 
-## What's new in v2.0
+## Current capabilities
 
 - **`machine.boot()`** — Single async entry point: resolves schema (server cache-first SWR or local), detects IDB drift, creates stores, and hydrates. No partial render, no reactivity races.
 - **Unified Explorer** — Single `Explorer` component with four modes: `list`, `table`, `card`, `actions`. Driven by `_views` registry from MongoDB.
@@ -119,9 +119,7 @@ await machine.boot({ org: 'myapp', domain: 'machine', version: 1, business: myMo
 </TemplateShell>
 
 <!-- Or open a record in a frame -->
-<button onclick={() => machine.framer.loadFrame('form', 'users', userId)}>
-	Edit user
-</button>
+<button onclick={() => machine.framer.loadFrame('form', 'users', userId)}> Edit user </button>
 ```
 
 ---
@@ -169,19 +167,19 @@ await machine.boot({
 ### Data access
 
 ```ts
-// Reactive store accessor — returns { items } via Svelte 5 runes
+// Reactive store accessor — returns { records } via Svelte 5 runes
 // Must be called inside a Svelte component
-const { items } = machine.store('users');
-const { items } = machine.store('users', { active: { eq: true } });
+const { records } = machine.store('users');
+const activeUsers = machine.store('users', { active: { $eq: true } }).records;
 
 // Direct collection accessor — returns raw QoolieCollection for CRUD
 machine.collection('users').getAll();
-machine.collection('users').where({ active: { eq: true } });
+machine.collection('users').where({ active: { $eq: true } });
 machine.collection('users').get(id);
 await machine.collection('users').create({ name: 'Alice', email: 'alice@x.com' });
 await machine.collection('users').update(id, { name: 'Bob' });
 await machine.collection('users').delete(id); // soft delete by default
-machine.collection('users').count({ active: { eq: true } });
+machine.collection('users').count({ active: { $eq: true } });
 await machine.collection('users').updateWhere({ active: false }, { active: true });
 await machine.collection('users').deleteWhere({ active: false });
 ```
@@ -206,7 +204,7 @@ await scheme.validator.validateField('email', value);
 
 ```ts
 // Open a collection or record in a frame (tab-like window)
-machine.framer.loadFrame('explorer', 'users');         // collection explorer
+machine.framer.loadFrame('explorer', 'users'); // collection explorer
 machine.framer.loadFrame('form', 'users', userId); // edit record
 
 // Open in a floating draggable dialog (content-keyed, focuses if already open)
@@ -272,7 +270,7 @@ await machine.action(
 );
 
 // Read favorites
-machine.store('appuser_prefs').items.filter((p) => p.code === 'fav' && p.value === true);
+machine.store('appuser_prefs').records.filter((p) => p.code === 'fav' && p.value === true);
 ```
 
 ### Socket (real-time)
@@ -318,22 +316,22 @@ const inst = Machine.instance('reporting');
 
 ## Schema field types
 
-| Type | HTML input | Notes |
-|------|-----------|-------|
-| `'id'` | hidden | readonly, auto-gen |
-| `'text'` / `'text-short'` / `'text-medium'` / `'text-long'` / `'text-area'` | text/textarea | |
-| `'number'` | number | |
-| `'boolean'` | checkbox | |
-| `'date'` / `'datetime'` / `'time'` | date inputs | |
-| `'email'` | email | |
-| `'password'` | password | |
-| `'url'` | url | |
-| `'phone'` | tel | |
-| `'currency'` | text+format | |
-| `'image'` | file upload | presets: `['thumb', 'banner']`, free notation support |
-| `'schemelink'` | — | polymorphic FK: `{ collection, collection_value, collection_vars? }` |
-| `'fk-collection.field'` | select | FK-aware, queries store, uses `_views.fkLabelView` for labels |
-| `'array-of-text'` | — | no UI yet |
+| Type                                                                        | HTML input    | Notes                                                                |
+| --------------------------------------------------------------------------- | ------------- | -------------------------------------------------------------------- |
+| `'id'`                                                                      | hidden        | readonly, auto-gen                                                   |
+| `'text'` / `'text-short'` / `'text-medium'` / `'text-long'` / `'text-area'` | text/textarea |                                                                      |
+| `'number'`                                                                  | number        |                                                                      |
+| `'boolean'`                                                                 | checkbox      |                                                                      |
+| `'date'` / `'datetime'` / `'time'`                                          | date inputs   |                                                                      |
+| `'email'`                                                                   | email         |                                                                      |
+| `'password'`                                                                | password      |                                                                      |
+| `'url'`                                                                     | url           |                                                                      |
+| `'phone'`                                                                   | tel           |                                                                      |
+| `'currency'`                                                                | text+format   |                                                                      |
+| `'image'`                                                                   | file upload   | presets: `['thumb', 'banner']`, free notation support                |
+| `'schemelink'`                                                              | —             | polymorphic FK: `{ collection, collection_value, collection_vars? }` |
+| `'fk-collection.field'`                                                     | select        | FK-aware, queries store, uses `_views.fkLabelView` for labels        |
+| `'array-of-text'`                                                           | —             | no UI yet                                                            |
 
 ```ts
 fields: {
@@ -354,53 +352,53 @@ fields: {
 
 ### Explorer (collection level)
 
-| Component | Description |
-|-----------|-------------|
-| `Explorer` | Unified component — modes: `list`, `table`, `card`, `actions`. Props: `collection`, `mode`, `where`, `sortBy`, `groupBy`, `pageSize` |
-| `DataList` | Data provider + renderer. Snippets: `item`, `groupHeader`, `empty`, `footer` |
-| `DataToolbar` | Find / group / sort controls bar above a `DataList` |
+| Component     | Description                                                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `Explorer`    | Unified component — modes: `list`, `table`, `card`, `actions`. Props: `collection`, `mode`, `where`, `sortBy`, `groupBy`, `pageSize` |
+| `DataList`    | Data provider + renderer. Snippets: `item`, `groupHeader`, `empty`, `footer`                                                         |
+| `DataToolbar` | Find / group / sort controls bar above a `DataList`                                                                                  |
 
 ### Card (record level)
 
-| Component | Description |
-|-----------|-------------|
-| `DataForm` | Form engine (`collection`, `mode`, `dataId?`, `onsubmit?`) |
-| `DataFields` | Field list renderer |
-| `DataFk` | Forward FK viewer |
-| `DataRfk` | Reverse FK viewer |
+| Component    | Description                                                |
+| ------------ | ---------------------------------------------------------- |
+| `DataForm`   | Form engine (`collection`, `mode`, `dataId?`, `onsubmit?`) |
+| `DataFields` | Field list renderer                                        |
+| `DataFk`     | Forward FK viewer                                          |
+| `DataRfk`    | Reverse FK viewer                                          |
 
 ### Field & Input
 
-| Component | Description |
-|-----------|-------------|
-| `FieldDisplay` | Auto-dispatches to Input atoms by fieldType |
-| `FieldEditor` | Editable field wrapper |
-| `InputBoolean` | `boolean` |
-| `InputEmail` | `email` |
-| `InputCurrency` | `currency` |
-| `InputSelect` | `fk-*` (uses `_views.fkLabelView` for labels) |
-| `InputTextarea` | `*area*` |
+| Component       | Description                                   |
+| --------------- | --------------------------------------------- |
+| `FieldDisplay`  | Auto-dispatches to Input atoms by fieldType   |
+| `FieldEditor`   | Editable field wrapper                        |
+| `InputBoolean`  | `boolean`                                     |
+| `InputEmail`    | `email`                                       |
+| `InputCurrency` | `currency`                                    |
+| `InputSelect`   | `fk-*` (uses `_views.fkLabelView` for labels) |
+| `InputTextarea` | `*area*`                                      |
 
 ### Layout & navigation
 
-| Component | Description |
-|-----------|-------------|
+| Component       | Description                                      |
+| --------------- | ------------------------------------------------ |
 | `TemplateShell` | Root layout with navbar/sidebar/content snippets |
-| `CollectionNav` | Schema-driven collection navigation |
-| `Navigation` | Generic navigation component |
-| `Breadcrumb` | Dynamic path breadcrumb |
-| `Pane` | Layout pane container |
-| `PaneRight` | Right-side layout pane |
+| `CollectionNav` | Schema-driven collection navigation              |
+| `Navigation`    | Generic navigation component                     |
+| `Breadcrumb`    | Dynamic path breadcrumb                          |
+| `Pane`          | Layout pane container                            |
+| `PaneRight`     | Right-side layout pane                           |
 
 ### Fragments
 
-| Component | Description |
-|-----------|-------------|
-| `Confirm` | Confirmation dialog |
-| `Frame` | Frame mount/unmount wrapper |
-| `InfoLine` | Inline info display |
-| `Selector` | Selection control |
-| `Skeleton` | Loading skeleton |
+| Component  | Description                 |
+| ---------- | --------------------------- |
+| `Confirm`  | Confirmation dialog         |
+| `Frame`    | Frame mount/unmount wrapper |
+| `InfoLine` | Inline info display         |
+| `Selector` | Selection control           |
+| `Skeleton` | Loading skeleton            |
 
 ---
 
@@ -412,7 +410,7 @@ Machine
   │     → resolve schema (server SWR or local) → drift detect → createStores → hydrate
   │
   ├── machine.collection(name)     → QoolieCollection (CRUD + reactive)
-  ├── machine.store(name)          → reactive { items } via Svelte 5 runes
+  ├── machine.store(name)          → reactive { records } via Svelte 5 runes
   ├── machine.sync                 → SyncController (pause/resume/flush/dlq)
   ├── machine.rights               → RBAC manager
   ├── machine.socket               → EventDataClientInstance (real-time)
@@ -487,22 +485,22 @@ await machineServer.stop();
 
 ### HTTP endpoints
 
-| Method | Path | Description |
-|--------|------|-------------|
-| `GET` | `/api/scheme` | Full MachineModel JSON |
-| `GET` | `/api/scheme/:table` | Single collection schema |
-| `GET` | `/api/data/:table` | Records (pagination: `?page=1&limit=20`, sort: `?sort=name&order=desc`) |
-| `GET` | `/api/data/:table/:id` | Single record |
-| `POST` | `/api/data/:table` | Create record |
-| `PUT` | `/api/data/:table/:id` | Update record |
-| `DELETE` | `/api/data/:table/:id` | Soft delete (add `?permanent=true` for hard delete) |
-| `POST` | `/api/auth/login` | `{ login, password }` → `{ token }` |
-| `POST` | `/api/bootstrap` | Deploy model via HTTP (dev only) |
-| `POST` | `/api/admin/reset` | Reset + reseed demo data |
-| `POST` | `/api/files/upload` | File upload (multer) |
-| `GET` | `/api/files/:id` | File download |
-| `GET` | `/api/image/:preset/:fileId` | Image resize by preset |
-| `PATCH` | `/api/files/:id/focus` | Set image focus point `{ x, y }` |
+| Method   | Path                         | Description                                                             |
+| -------- | ---------------------------- | ----------------------------------------------------------------------- |
+| `GET`    | `/api/scheme`                | Full MachineModel JSON                                                  |
+| `GET`    | `/api/scheme/:table`         | Single collection schema                                                |
+| `GET`    | `/api/data/:table`           | Records (pagination: `?page=1&limit=20`, sort: `?sort=name&order=desc`) |
+| `GET`    | `/api/data/:table/:id`       | Single record                                                           |
+| `POST`   | `/api/data/:table`           | Create record                                                           |
+| `PUT`    | `/api/data/:table/:id`       | Update record                                                           |
+| `DELETE` | `/api/data/:table/:id`       | Soft delete (add `?permanent=true` for hard delete)                     |
+| `POST`   | `/api/auth/login`            | `{ login, password }` → `{ token }`                                     |
+| `POST`   | `/api/bootstrap`             | Deploy model via HTTP (dev only)                                        |
+| `POST`   | `/api/admin/reset`           | Reset + reseed demo data                                                |
+| `POST`   | `/api/files/upload`          | File upload (multer)                                                    |
+| `GET`    | `/api/files/:id`             | File download                                                           |
+| `GET`    | `/api/image/:preset/:fileId` | Image resize by preset                                                  |
+| `PATCH`  | `/api/files/:id/focus`       | Set image focus point `{ x, y }`                                        |
 
 ### DB naming convention
 
@@ -526,10 +524,10 @@ npx tsx server/src/bootstrap/bootstrap.ts crfr                            # crfr
 
 Default seeded users (`{org}_machine_user`):
 
-| Login | Password | Access |
-|-------|----------|--------|
-| `admin` | `admin123` | all ops |
-| `user` | `user123` | read + list |
+| Login    | Password    | Access                  |
+| -------- | ----------- | ----------------------- |
+| `admin`  | `admin123`  | all ops                 |
+| `user`   | `user123`   | read + list             |
 | `viewer` | `viewer123` | read + list (via group) |
 
 ### Environment (`server/.env`)

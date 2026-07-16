@@ -8,13 +8,13 @@ describe('buildLoadInUrl', () => {
 	});
 
 	it('builds URL with collectionId', () => {
-		const url = buildLoadInUrl('card.edit', 'main.modal', 'vehicle', '42');
-		expect(url).toBe('/+main.modal/card.edit/vehicle/42');
+		const url = buildLoadInUrl('fiche.update', 'main', 'vehicle', '42');
+		expect(url).toBe('/+main/fiche.update/vehicle/42');
 	});
 
 	it('builds URL with vars query string', () => {
-		const url = buildLoadInUrl('card.edit', 'main.modal', 'vehicle', '42', 'tab=info');
-		expect(url).toBe('/+main.modal/card.edit/vehicle/42?tab=info');
+		const url = buildLoadInUrl('fiche.update', 'main', 'vehicle', '42', 'tab=info');
+		expect(url).toBe('/+main/fiche.update/vehicle/42?tab=info');
 	});
 
 	it('builds URL without collectionId but with vars', () => {

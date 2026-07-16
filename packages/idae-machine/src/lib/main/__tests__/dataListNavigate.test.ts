@@ -45,12 +45,12 @@ describe('DataList navigate logic', () => {
 		it('uses custom zone from link string', () => {
 			const result = navigate(
 				{ id: 1, code: 'supplier' },
-				'loadFrame:explorer@main.modal',
+				'loadFrame:explorer@main',
 				'appscheme',
 				'code'
 			);
 			expect(result?.navCollection).toBe('supplier');
-			expect(result?.zone).toBe('main.modal');
+			expect(result?.zone).toBe('main');
 		});
 	});
 
@@ -66,14 +66,10 @@ describe('DataList navigate logic', () => {
 		});
 
 		it('loadIn action is parsed correctly', () => {
-			const result = navigate(
-				{ id: 7, brand: 'Ford' },
-				'loadIn:card.form@main.panel',
-				'vehicle'
-			);
+			const result = navigate({ id: 7, brand: 'Ford' }, 'loadIn:form@main', 'vehicle');
 			expect(result?.action).toBe('loadIn');
-			expect(result?.module).toBe('card.form');
-			expect(result?.zone).toBe('main.panel');
+			expect(result?.module).toBe('form');
+			expect(result?.zone).toBe('main');
 			expect(result?.navCollection).toBe('vehicle');
 			expect(result?.navId).toBe('7');
 		});

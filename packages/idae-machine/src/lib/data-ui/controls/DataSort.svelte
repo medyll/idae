@@ -57,13 +57,13 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 		.data-sort-btn {
 			display: inline-flex;
 			align-items: center;
-			gap: 0.25rem;
-			padding: 0.25rem 0.5rem;
-			border: 1px solid var(--color-border);
+			gap: var(--gutter-xs);
+			padding: var(--pad-xs) var(--pad-sm);
+			border: var(--border-width) solid var(--color-border);
 			background: var(--color-surface);
 			border-radius: var(--radius-sm);
 			cursor: pointer;
-			font-size: 0.875rem;
+			font-size: var(--text-sm);
 		}
 		.data-sort-btn.active {
 			background: var(--color-primary);
@@ -71,7 +71,7 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 			border-color: var(--color-primary);
 		}
 		.data-sort-icon {
-			font-size: 0.75rem;
+			font-size: var(--text-xs);
 			opacity: 0.7;
 		}
 	}

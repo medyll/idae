@@ -3,9 +3,21 @@
 // Core
 export { Machine } from './machine.js';
 export { machine } from './machine.js';
-export type { MachineComponentRegistry } from './machine.js';
+export type {
+	MachineBootPhase,
+	MachineBootStatus,
+	MachineBootTraceEntry,
+	MachineComponentRegistry,
+	MachineStoreDiagnostic
+} from './machine.js';
 export { MachineDb } from './machineDb.js';
 export { MachineParserForge } from './machineParserForge.js';
+export { diagnoseMachineModel } from './machineSchemaDoctor.js';
+export type {
+	SchemaDiagnostic,
+	SchemaDiagnosticReport,
+	SchemaDiagnosticSeverity
+} from './machineSchemaDoctor.js';
 
 // Schema builder helpers
 export { field } from './machine/fieldBuilder.js';

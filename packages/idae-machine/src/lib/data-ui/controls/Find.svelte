@@ -12,6 +12,7 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 		collection: string;
 		prefsScope?: string;
 		usePrefs?: boolean;
+		advanced?: boolean;
 	}
 </script>
 
@@ -26,11 +27,12 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 	let {
 		collection,
 		prefsScope,
-		usePrefs = true
+		usePrefs = true,
+		advanced = false
 	}: FindProps = $props();
 
 	const scope = $derived(dataListPrefsScope(collection, prefsScope));
 	const prefs = useMachinePrefs(() => scope, dataListPrefsDefaults(), () => usePrefs);
 </script>
 
-<DataFind {collection} bind:where={() => prefs.get('find'), (v) => prefs.set('find', v)} />
+<DataFind {collection} {advanced} bind:where={() => prefs.get('find'), (v) => prefs.set('find', v)} />

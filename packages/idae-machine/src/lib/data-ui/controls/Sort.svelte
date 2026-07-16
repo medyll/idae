@@ -64,12 +64,12 @@ same collection/prefsScope; both bind the same shared prefs store (mediator) and
 			display: inline-block;
 		}
 		.sort-trigger {
-			padding: 0.25rem 0.75rem;
-			border: 1px solid var(--color-border);
+			padding: var(--pad-xs) var(--pad-sm);
+			border: var(--border-width) solid var(--color-border);
 			background: var(--color-surface);
 			border-radius: var(--radius-sm);
 			cursor: pointer;
-			font-size: 0.875rem;
+			font-size: var(--text-sm);
 		}
 		.sort-trigger.active {
 			background: var(--color-primary);
@@ -80,21 +80,21 @@ same collection/prefsScope; both bind the same shared prefs store (mediator) and
 			position: absolute;
 			top: 100%;
 			left: 0;
-			margin-top: 0.25rem;
-			padding: 0.375rem;
+			margin-top: var(--marg-xs);
+			padding: var(--pad-xs);
 			display: flex;
 			flex-direction: column;
-			gap: 0.25rem;
-			background: var(--color-surface);
-			border: 1px solid var(--color-border);
+			gap: var(--gutter-xs);
+			background: var(--color-surface-overlay);
+			border: var(--border-width) solid var(--color-border);
 			border-radius: var(--radius-sm);
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-			min-width: 160px;
-			z-index: 10;
+			box-shadow: var(--shadow-md);
+			min-width: calc(var(--gutter-3xl) * 2.5);
+			z-index: var(--z-dropdown);
 		}
 		.sort-empty {
-			color: var(--color-text-muted, #888);
-			font-size: 0.875rem;
+			color: var(--color-text-muted);
+			font-size: var(--text-sm);
 		}
 	}
 </style>

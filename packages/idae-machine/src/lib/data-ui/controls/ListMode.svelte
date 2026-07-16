@@ -14,6 +14,7 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 		prefsScope?: string;
 		usePrefs?: boolean;
 		modes?: Array<'list' | 'table' | 'grid' | 'accordion'>;
+		onModeChange?: (mode: 'list' | 'table' | 'grid' | 'accordion') => void;
 	}
 </script>
 
@@ -28,7 +29,8 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 		collection,
 		prefsScope,
 		usePrefs = true,
-		modes = ['list', 'table', 'grid', 'accordion']
+		modes = ['list', 'table', 'grid', 'accordion'],
+		onModeChange
 	}: ListModeProps = $props();
 
 	const scope = $derived(dataListPrefsScope(collection, prefsScope));
@@ -39,7 +41,15 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 
 <div class="mode-switcher">
 	{#each modes as m (m)}
-		<button type="button" class="mode-btn" class:active={current === m} onclick={() => prefs.set('mode', m)}>
+		<button
+			type="button"
+			class="mode-btn"
+			class:active={current === m}
+			onclick={() => {
+				prefs.set('mode', m);
+				onModeChange?.(m);
+			}}
+		>
 			{m}
 		</button>
 	{/each}
@@ -49,14 +59,15 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 	@layer components {
 		.mode-switcher {
 			display: flex;
-			gap: 0.25rem;
+			gap: var(--gutter-xs);
 		}
 		.mode-btn {
-			padding: 0.25rem 0.75rem;
-			border: 1px solid var(--color-border);
+			padding: var(--pad-xs) var(--pad-sm);
+			border: var(--border-width) solid var(--color-border);
 			background: var(--color-surface);
 			cursor: pointer;
 			border-radius: var(--radius-sm);
+			font-size: var(--text-sm);
 			text-transform: capitalize;
 		}
 		.mode-btn.active {

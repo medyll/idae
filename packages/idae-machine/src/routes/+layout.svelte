@@ -204,42 +204,77 @@
 		</div>
 	{/if}
 {:catch err}
-	<div class="boot-error">
-		<h2>Boot failed</h2>
+	<section class="boot-error" aria-labelledby="boot-error-title">
+		<h2 id="boot-error-title">Boot failed</h2>
 		<pre>{err?.message ?? String(err)}</pre>
-	</div>
+		<details>
+			<summary>Diagnostic du démarrage</summary>
+			<ol class="boot-trace">
+				{#each machine.bootTrace as entry (`${entry.at}:${entry.phase}:${entry.status}`)}
+					<li>
+						<time datetime={entry.at}>{new Date(entry.at).toLocaleTimeString('fr-FR')}</time>
+						<strong>{entry.phase}</strong>
+						<span class="badge">{entry.status}</span>
+						{#if entry.detail}<span>{entry.detail}</span>{/if}
+					</li>
+				{/each}
+			</ol>
+			{#if machine.schemaDiagnostics.issues.length}
+				<ul class="boot-diagnostics">
+					{#each machine.schemaDiagnostics.issues as issue (`${issue.collection}:${issue.path}:${issue.code}`)}
+						<li><strong>{issue.collection}.{issue.path}</strong> — {issue.message}</li>
+					{/each}
+				</ul>
+			{/if}
+		</details>
+	</section>
 {/await}
 
 <style>
-	.boot-splash {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		height: 100vh;
-		gap: 1rem;
-		color: var(--color-muted, #888);
-		font-family: system-ui, sans-serif;
-	}
-	.boot-spinner {
-		width: 32px;
-		height: 32px;
-		border: 3px solid var(--color-border, #ddd);
-		border-top-color: var(--color-primary, #4f46e5);
-		border-radius: 50%;
-		animation: spin 0.8s linear infinite;
-	}
-	@keyframes spin { to { transform: rotate(360deg); } }
-	.boot-text { font-size: 0.9rem; }
-	.boot-error {
-		padding: 2rem;
-		color: #dc2626;
-		font-family: monospace;
-	}
-	.boot-error pre {
-		background: #fef2f2;
-		padding: 1rem;
-		border-radius: 4px;
-		white-space: pre-wrap;
+	@layer components {
+		.boot-splash {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100dvh;
+			gap: var(--gutter-md);
+			color: var(--color-text-muted);
+		}
+		.boot-spinner {
+			width: var(--icon-size-md);
+			height: var(--icon-size-md);
+			border: var(--border-width) solid var(--color-border);
+			border-top-color: var(--color-primary);
+			border-radius: var(--radius-full);
+			animation: spin var(--duration-slow) linear infinite;
+		}
+		@keyframes spin { to { transform: rotate(360deg); } }
+		.boot-text { font-size: var(--text-sm); }
+		.boot-error {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-md);
+			padding: var(--pad-xl);
+			color: var(--color-critical);
+			font-family: var(--font-mono);
+		}
+		.boot-error pre {
+			background: var(--color-surface-sunken);
+			padding: var(--pad-md);
+			border-radius: var(--radius-sm);
+			white-space: pre-wrap;
+		}
+		.boot-trace,
+		.boot-diagnostics {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-xs);
+		}
+		.boot-trace li {
+			display: flex;
+			align-items: center;
+			gap: var(--gutter-sm);
+		}
 	}
 </style>

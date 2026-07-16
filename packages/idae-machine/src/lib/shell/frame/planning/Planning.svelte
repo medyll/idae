@@ -1,117 +1,203 @@
 <!--
-Planning.svelte — period view for a single collection (registry key `planning`).
-Inspired by idae-legacy's task planning: a month grid with day columns; each
-record is laid out as a bar spanning its timespan (start → end). The start/end
-fields come from `appscheme.timespan` (see SCHEMA-CONVENTIONS §9) — a collection
-without a timespan cannot be planned and renders an empty state.
-
-Receives `collection` as its frame parameter. Reads records via machine.store
-(reactive). Click a bar → open the record fiche; double-click a day → create.
+Planning.svelte — day/week/month period view for a single collection.
+The start/end fields come from appscheme.timespan. Records can be opened,
+created on a day, or shifted while preserving their duration.
 -->
+<script module lang="ts">
+	export type PlanningView = 'day' | 'week' | 'month';
+
+	export const PLANNING_VIEW_LABELS: Record<PlanningView, string> = {
+		day: 'Jour',
+		week: 'Semaine',
+		month: 'Mois'
+	};
+	export const PLANNING_VIEWS = ['day', 'week', 'month'] as const;
+
+	export function planningDays(cursor: Date, mode: PlanningView): Date[] {
+		if (mode === 'day') return [new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate())];
+		if (mode === 'week') {
+			const start = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate());
+			const mondayOffset = (start.getDay() + 6) % 7;
+			start.setDate(start.getDate() - mondayOffset);
+			return Array.from({ length: 7 }, (_, index) =>
+				new Date(start.getFullYear(), start.getMonth(), start.getDate() + index)
+			);
+		}
+		const count = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
+		return Array.from({ length: count }, (_, index) =>
+			new Date(cursor.getFullYear(), cursor.getMonth(), index + 1)
+		);
+	}
+
+	export function shiftPlanningCursor(cursor: Date, mode: PlanningView, direction: -1 | 1): Date {
+		const next = new Date(cursor);
+		if (mode === 'day') next.setDate(next.getDate() + direction);
+		else if (mode === 'week') next.setDate(next.getDate() + direction * 7);
+		else next.setMonth(next.getMonth() + direction);
+		return next;
+	}
+
+	export function shiftDateValue(value: unknown, days: number): unknown {
+		if (value == null || value === '') return value;
+		const parsed = new Date(value as string);
+		if (Number.isNaN(parsed.getTime())) return value;
+		parsed.setDate(parsed.getDate() + days);
+		if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+			const year = parsed.getFullYear();
+			const month = String(parsed.getMonth() + 1).padStart(2, '0');
+			const day = String(parsed.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		}
+		return parsed.toISOString();
+	}
+</script>
+
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import Icon from '@iconify/svelte';
 
 	let { collection }: { collection: string } = $props();
 
-	// ── timespan qualifier from appscheme ────────────────────────────────────
-	const appschemeStore = machine.store<{ code: string; timespan?: { start: string; end: string } }>('appscheme');
-	const timespan = $derived(
-		appschemeStore.records.find((s) => s.code === collection)?.timespan
-	);
-
-	// ── records ──────────────────────────────────────────────────────────────
-	// Per-collection frame: wrap the store read in $derived so `collection` is a
-	// reactive dependency (mirrors Synthesis.svelte, the golden per-collection frame).
+	const appschemeStore = machine.store<{
+		code: string;
+		timespan?: { start: string; end: string };
+	}>('appscheme');
+	const timespan = $derived(appschemeStore.records.find((scheme) => scheme.code === collection)?.timespan);
 	const recordsStore = $derived(machine.store<Record<string, unknown>>(collection));
 	const collLogic = $derived(machine.logic.collection(collection));
 
-	function recordLabel(rec: Record<string, unknown>): string {
-		return collLogic?.collectionValues.presentation(rec) || String(rec.code ?? rec.id ?? '—');
+	let mode = $state<PlanningView>('month');
+	let cursor = $state<Date | null>(null);
+	let draggedRecord = $state<Record<string, unknown> | null>(null);
+	let feedback = $state('');
+
+	function parseDate(value: unknown): Date | null {
+		if (value == null || value === '') return null;
+		const parsed = new Date(value as string);
+		return Number.isNaN(parsed.getTime()) ? null : parsed;
 	}
 
-	// ── month cursor ─────────────────────────────────────────────────────────
-	// Anchor on the month with the most records so the view opens on real data.
-	function initialCursor(): { year: number; month: number } {
+	function dayIndex(date: Date): number {
+		return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86_400_000);
+	}
+
+	function initialCursor(): Date {
 		const start = timespan?.start;
-		let ref = new Date();
-		if (start) {
-			const dates = recordsStore.records
-				.map((r) => parseDate(r[start]))
-				.filter((d): d is Date => d != null)
-				.sort((a, b) => a.getTime() - b.getTime());
-			if (dates.length) ref = dates[Math.floor(dates.length / 2)];
+		if (!start) return new Date();
+		const dates = recordsStore.records
+			.map((record) => parseDate(record[start]))
+			.filter((date): date is Date => date != null)
+			.sort((left, right) => left.getTime() - right.getTime());
+		return dates.length ? dates[Math.floor(dates.length / 2)] : new Date();
+	}
+
+	const activeCursor = $derived(cursor ?? initialCursor());
+	const days = $derived(planningDays(activeCursor, mode));
+	const periodLabel = $derived.by(() => {
+		if (mode === 'day') {
+			return activeCursor.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 		}
-		return { year: ref.getFullYear(), month: ref.getMonth() };
-	}
-
-	let cursor = $state<{ year: number; month: number } | null>(null);
-	const view = $derived(cursor ?? initialCursor());
-
-	function parseDate(v: unknown): Date | null {
-		if (v == null || v === '') return null;
-		const d = new Date(v as string);
-		return Number.isNaN(d.getTime()) ? null : d;
-	}
-	/** Whole-day index (UTC midnight) so day math ignores time-of-day. */
-	function dayIndex(d: Date): number {
-		return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86_400_000);
-	}
-
-	const days = $derived.by(() => {
-		const count = new Date(view.year, view.month + 1, 0).getDate();
-		return Array.from({ length: count }, (_, i) => new Date(view.year, view.month, i + 1));
+		if (mode === 'week') {
+			const first = days[0];
+			const last = days.at(-1) ?? first;
+			return `${first.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })} – ${last.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+		}
+		return activeCursor.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 	});
-	const monthLabel = $derived(
-		new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(
-			new Date(view.year, view.month, 1)
-		)
-	);
 
-	// ── bars: one lane per record, clamped to the visible month ───────────────
-	type Bar = { rec: Record<string, unknown>; label: string; colStart: number; colSpan: number };
+	function recordLabel(record: Record<string, unknown>): string {
+		return collLogic?.collectionValues.presentation(record) || String(record.code ?? record.id ?? '—');
+	}
+
+	type Bar = {
+		record: Record<string, unknown>;
+		label: string;
+		columnStart: number;
+		columnSpan: number;
+	};
+
 	const bars = $derived.by((): Bar[] => {
-		if (!timespan) return [];
-		const first = dayIndex(new Date(view.year, view.month, 1));
-		const last = dayIndex(new Date(view.year, view.month, days.length));
-		const out: Bar[] = [];
-		for (const rec of recordsStore.records) {
-			const s = parseDate(rec[timespan.start]);
-			const e = parseDate(rec[timespan.end]) ?? s;
-			if (!s || !e) continue;
-			const si = dayIndex(s), ei = dayIndex(e);
-			if (ei < first || si > last) continue; // outside this month
-			const colStart = Math.max(si, first) - first + 1; // 1-based grid column
-			const colEnd = Math.min(ei, last) - first + 1;
-			out.push({ rec, label: recordLabel(rec), colStart, colSpan: Math.max(1, colEnd - colStart + 1) });
+		if (!timespan || !days.length) return [];
+		const first = dayIndex(days[0]);
+		const last = dayIndex(days.at(-1) ?? days[0]);
+		const visible: Bar[] = [];
+		for (const record of recordsStore.records) {
+			const start = parseDate(record[timespan.start]);
+			const end = parseDate(record[timespan.end]) ?? start;
+			if (!start || !end) continue;
+			const startIndex = dayIndex(start);
+			const endIndex = dayIndex(end);
+			if (endIndex < first || startIndex > last) continue;
+			const columnStart = Math.max(startIndex, first) - first + 1;
+			const columnEnd = Math.min(endIndex, last) - first + 1;
+			visible.push({
+				record,
+				label: recordLabel(record),
+				columnStart,
+				columnSpan: Math.max(1, columnEnd - columnStart + 1)
+			});
 		}
-		return out.sort((a, b) => a.colStart - b.colStart);
+		return visible.sort((left, right) => left.columnStart - right.columnStart);
 	});
 
-	function prevMonth(): void {
-		const m = view.month - 1;
-		cursor = m < 0 ? { year: view.year - 1, month: 11 } : { year: view.year, month: m };
-	}
-	function nextMonth(): void {
-		const m = view.month + 1;
-		cursor = m > 11 ? { year: view.year + 1, month: 0 } : { year: view.year, month: m };
-	}
-	function today(): void {
-		const now = new Date();
-		cursor = { year: now.getFullYear(), month: now.getMonth() };
+	function move(direction: -1 | 1): void {
+		cursor = shiftPlanningCursor(activeCursor, mode, direction);
 	}
 
-	function openRecord(rec: Record<string, unknown>): void {
-		machine.framer.loadFrame('fiche', collection, rec.id as number);
+	function goToday(): void {
+		cursor = new Date();
 	}
+
+	function selectMode(next: PlanningView): void {
+		mode = next;
+		cursor = new Date(activeCursor);
+	}
+
+	function openRecord(record: Record<string, unknown>): void {
+		void machine.framer.loadInDialog('fiche', collection, record.id as number);
+	}
+
 	function createOn(day: Date): void {
 		if (!timespan) return;
-		const iso = day.toISOString().slice(0, 10);
-		machine.framer.loadInDialog('form', collection, undefined, { [`vars[${timespan.start}]`]: iso });
+		const value = String(
+			shiftDateValue(
+			`${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`,
+			0
+			)
+		);
+		void machine.framer.loadInDialog('form', collection, undefined, {
+			[`vars[${timespan.start}]`]: value
+		});
 	}
 
-	const isToday = (d: Date) => dayIndex(d) === dayIndex(new Date());
-	const isWeekend = (d: Date) => d.getDay() === 0 || d.getDay() === 6;
+	function beginDrag(event: DragEvent, record: Record<string, unknown>): void {
+		draggedRecord = record;
+		event.dataTransfer?.setData('text/plain', String(record.id ?? record.code ?? ''));
+		if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move';
+	}
+
+	async function dropOn(day: Date): Promise<void> {
+		const record = draggedRecord;
+		draggedRecord = null;
+		if (!timespan || !record) return;
+		const start = parseDate(record[timespan.start]);
+		if (!start) return;
+		const offset = dayIndex(day) - dayIndex(start);
+		if (!offset) return;
+		feedback = `Déplacement de ${recordLabel(record)}…`;
+		try {
+			await machine.collection(collection).update(record.id as never, {
+				[timespan.start]: shiftDateValue(record[timespan.start], offset),
+				[timespan.end]: shiftDateValue(record[timespan.end], offset)
+			});
+			feedback = `${recordLabel(record)} déplacé de ${offset} jour${Math.abs(offset) > 1 ? 's' : ''}.`;
+		} catch (error) {
+			feedback = error instanceof Error ? error.message : 'Le déplacement a échoué.';
+		}
+	}
+
+	const isToday = (day: Date) => dayIndex(day) === dayIndex(new Date());
+	const isWeekend = (day: Date) => day.getDay() === 0 || day.getDay() === 6;
 </script>
 
 <planning-component>
@@ -123,18 +209,32 @@ Receives `collection` as its frame parameter. Reads records via machine.store
 		</planning-empty>
 	{:else}
 		<planning-toolbar>
-			<button type="button" class="btn-icon" aria-label="Mois précédent" onclick={prevMonth}>
+			<button type="button" class="btn-icon" aria-label="Période précédente" onclick={() => move(-1)}>
 				<Icon icon="ph:caret-left" />
 			</button>
-			<button type="button" class="planning-today" onclick={today}>Aujourd'hui</button>
-			<button type="button" class="btn-icon" aria-label="Mois suivant" onclick={nextMonth}>
+			<button type="button" class="planning-today" onclick={goToday}>Aujourd'hui</button>
+			<button type="button" class="btn-icon" aria-label="Période suivante" onclick={() => move(1)}>
 				<Icon icon="ph:caret-right" />
 			</button>
-			<span class="planning-month">{monthLabel}</span>
+			<planning-period>{periodLabel}</planning-period>
+			<planning-view-switch aria-label="Échelle du planning">
+				{#each PLANNING_VIEWS as viewMode (viewMode)}
+					<button
+						type="button"
+						class="planning-view"
+						class:active={mode === viewMode}
+						onclick={() => selectMode(viewMode as PlanningView)}
+					>
+						{PLANNING_VIEW_LABELS[viewMode]}
+					</button>
+				{/each}
+			</planning-view-switch>
 			<span class="planning-count">{bars.length} / {recordsStore.records.length}</span>
 		</planning-toolbar>
 
-		<planning-grid style="--planning-days: {days.length};">
+		{#if feedback}<planning-feedback aria-live="polite">{feedback}</planning-feedback>{/if}
+
+		<planning-grid style:--planning-days={days.length}>
 			<planning-axis>
 				{#each days as day (day.getTime())}
 					<planning-day
@@ -143,7 +243,12 @@ Receives `collection` as its frame parameter. Reads records via machine.store
 						class:is-today={isToday(day)}
 						class:is-weekend={isWeekend(day)}
 						ondblclick={() => createOn(day)}
-						title={day.toLocaleDateString('fr-FR')}
+						onkeydown={(event: KeyboardEvent) => {
+							if (event.key === 'Enter') createOn(day);
+						}}
+						ondragover={(event: DragEvent) => event.preventDefault()}
+						ondrop={() => void dropOn(day)}
+						title={`${day.toLocaleDateString('fr-FR')} — double-clic pour créer`}
 					>
 						<span class="planning-day-num">{day.getDate()}</span>
 						<span class="planning-day-dow">{day.toLocaleDateString('fr-FR', { weekday: 'narrow' })}</span>
@@ -152,21 +257,24 @@ Receives `collection` as its frame parameter. Reads records via machine.store
 			</planning-axis>
 
 			<planning-lanes>
-				{#each bars as bar (bar.rec.id ?? bar.rec.code)}
+				{#each bars as bar (bar.record.id ?? bar.record.code)}
 					<planning-lane>
 						<button
 							type="button"
 							class="planning-bar"
-							style="grid-column: {bar.colStart} / span {bar.colSpan};"
-							onclick={() => openRecord(bar.rec)}
-							title={bar.label}
+							style:grid-column={`${bar.columnStart} / span ${bar.columnSpan}`}
+							draggable="true"
+							ondragstart={(event) => beginDrag(event, bar.record)}
+							ondragend={() => (draggedRecord = null)}
+							onclick={() => openRecord(bar.record)}
+							title={`${bar.label} — glisser pour déplacer`}
 						>
 							{bar.label}
 						</button>
 					</planning-lane>
 				{:else}
 					<planning-lane>
-						<span class="planning-empty-row">Aucun enregistrement ce mois-ci.</span>
+						<span class="planning-empty-row">Aucun enregistrement sur cette période.</span>
 					</planning-lane>
 				{/each}
 			</planning-lanes>
@@ -191,22 +299,42 @@ Receives `collection` as its frame parameter. Reads records via machine.store
 			gap: var(--gutter-sm);
 			padding: var(--pad-sm) var(--pad-md);
 			border-bottom: var(--border-width) solid var(--color-border);
+			flex-wrap: wrap;
 		}
-		.planning-today {
+		planning-period {
+			display: inline;
+			font-weight: var(--font-semibold);
+			text-transform: capitalize;
+		}
+		planning-view-switch {
+			display: inline-flex;
+			gap: var(--gutter-xs);
+			margin-left: auto;
+		}
+		planning-feedback {
+			display: block;
+			padding: var(--pad-xs) var(--pad-md);
+			background: var(--color-surface-active);
+			color: var(--color-text);
+			font-size: var(--text-sm);
+		}
+		.planning-today,
+		.planning-view {
 			padding: var(--pad-xs) var(--pad-sm);
 			border: var(--border-width) solid var(--color-border);
 			border-radius: var(--radius-sm);
 			background: var(--color-surface-raised);
 			cursor: pointer;
 			color: var(--color-text);
-		}
-		.planning-today:hover { background: var(--color-surface-hover); }
-		.planning-month {
-			font-weight: var(--font-semibold);
-			text-transform: capitalize;
+			font-size: var(--text-sm);
+			&:hover { background: var(--color-surface-hover); }
+			&.active {
+				background: var(--color-surface-active);
+				border-color: var(--color-primary);
+				color: var(--color-primary);
+			}
 		}
 		.planning-count {
-			margin-left: auto;
 			font-size: var(--text-sm);
 			color: var(--color-text-muted);
 		}
@@ -218,10 +346,9 @@ Receives `collection` as its frame parameter. Reads records via machine.store
 			min-height: 0;
 			overflow: auto;
 		}
-
 		planning-axis {
 			display: grid;
-			grid-template-columns: repeat(var(--planning-days), minmax(2rem, 1fr));
+			grid-template-columns: repeat(var(--planning-days), minmax(var(--gutter-xl), 1fr));
 			position: sticky;
 			top: 0;
 			z-index: var(--z-dropdown);
@@ -236,42 +363,46 @@ Receives `collection` as its frame parameter. Reads records via machine.store
 			font-size: var(--text-xs);
 			border-right: var(--border-width) solid var(--color-border);
 			cursor: pointer;
+			&.is-weekend { background: var(--color-surface-sunken); }
+			&.is-today {
+				background: color-mix(in oklch, var(--color-primary) 18%, transparent);
+				font-weight: var(--font-semibold);
+			}
+			&:hover { background: var(--color-surface-hover); }
 		}
-		planning-day.is-weekend { background: var(--color-surface-sunken); }
-		planning-day.is-today {
-			background: color-mix(in oklch, var(--color-primary) 18%, transparent);
-			font-weight: var(--font-semibold);
+		.planning-day-dow {
+			color: var(--color-text-muted);
+			text-transform: uppercase;
 		}
-		planning-day:hover { background: var(--color-surface-hover); }
-		.planning-day-dow { color: var(--color-text-muted); text-transform: uppercase; }
 
 		planning-lanes {
 			display: flex;
 			flex-direction: column;
 			gap: var(--gutter-xs);
-			padding: var(--gutter-xs) 0;
+			padding: var(--pad-xs) 0;
 		}
 		planning-lane {
 			display: grid;
-			grid-template-columns: repeat(var(--planning-days), minmax(2rem, 1fr));
-			min-height: 1.75rem;
+			grid-template-columns: repeat(var(--planning-days), minmax(var(--gutter-xl), 1fr));
+			min-height: calc(var(--gutter-md) + var(--gutter-sm));
 		}
 		.planning-bar {
 			all: unset;
 			display: flex;
 			align-items: center;
 			padding: 0 var(--pad-sm);
-			height: 1.5rem;
+			min-height: calc(var(--gutter-md) + var(--gutter-sm));
 			border-radius: var(--radius-full);
 			background: var(--color-primary);
-			color: var(--color-on-primary, #fff);
+			color: var(--color-on-primary);
 			font-size: var(--text-xs);
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;
-			cursor: pointer;
+			cursor: grab;
+			&:hover { background: color-mix(in oklch, var(--color-primary), black 10%); }
+			&:active { cursor: grabbing; }
 		}
-		.planning-bar:hover { filter: brightness(1.08); }
 		.planning-empty-row {
 			grid-column: 1 / -1;
 			padding: var(--pad-sm);
