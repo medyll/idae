@@ -145,8 +145,7 @@ describe('tool handlers', () => {
 			'explorer',
 			'vehicle',
 			undefined,
-			undefined,
-			'main'
+			{ vars: undefined, zone: 'main' }
 		);
 	});
 
@@ -157,7 +156,12 @@ describe('tool handlers', () => {
 			collectionId: '1',
 			zone: 'main'
 		});
-		expect(mockFramer.loadFrame).toHaveBeenCalledWith('form', 'vehicle', '1', undefined, 'main');
+		expect(mockFramer.loadFrame).toHaveBeenCalledWith(
+			'form',
+			'vehicle',
+			'1',
+			{ vars: undefined, zone: 'main' }
+		);
 	});
 
 	it('machine_user_context → returns user + access check', async () => {

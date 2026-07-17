@@ -5,9 +5,15 @@ force the mode. The persisted key ('idae_theme') is read by the no-flash script
 in app.html on load. Mounted in the TaskBar right cluster.
 -->
 <script lang="ts">
+	import Icon from '@iconify/svelte';
+
 	type Theme = 'auto' | 'light' | 'dark';
 
-	const ICON: Record<Theme, string> = { auto: '◐', light: '☀', dark: '☾' };
+	const ICON: Record<Theme, string> = {
+		auto: 'ph:circle-half',
+		light: 'ph:sun',
+		dark: 'ph:moon'
+	};
 	const LABEL: Record<Theme, string> = { auto: 'Thème : auto', light: 'Thème : clair', dark: 'Thème : sombre' };
 	const NEXT: Record<Theme, Theme> = { auto: 'light', light: 'dark', dark: 'auto' };
 
@@ -36,5 +42,5 @@ in app.html on load. Mounted in the TaskBar right cluster.
 </script>
 
 <button type="button" class="btn-icon" title={LABEL[theme]} aria-label={LABEL[theme]} onclick={cycle}>
-	{ICON[theme]}
+	<Icon icon={ICON[theme]} />
 </button>

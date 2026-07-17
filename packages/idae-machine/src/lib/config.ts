@@ -10,8 +10,11 @@
  */
 export const DEFAULT_API_PORT = 7842;
 
+const defaultApiHost = typeof window !== 'undefined' ? window.location.hostname : 'localhost';
+
 export const API_URL =
-	(import.meta.env.PUBLIC_API_URL as string | undefined) ?? `http://localhost:${DEFAULT_API_PORT}`;
+	(import.meta.env.PUBLIC_API_URL as string | undefined) ??
+	`http://${defaultApiHost}:${DEFAULT_API_PORT}`;
 
 /**
  * Available organizations/tenants. Centralized here to avoid hardcoding in multiple places.

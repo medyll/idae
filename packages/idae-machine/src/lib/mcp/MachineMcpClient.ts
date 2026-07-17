@@ -168,8 +168,10 @@ function buildTools(machine: Machine): McpToolInput[] {
 					modulePath as any,
 					collection as string,
 					collectionId as string | undefined,
-					vars as Record<string, string> | undefined,
-					(zone as string | undefined) ?? 'main'
+					{
+						vars: vars as Record<string, string> | undefined,
+						zone: (zone as string | undefined) ?? 'main'
+					}
 				);
 				return text({ navigated: true, modulePath, collection, collectionId, zone });
 			},

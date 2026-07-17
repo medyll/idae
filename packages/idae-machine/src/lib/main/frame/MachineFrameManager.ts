@@ -37,6 +37,38 @@ export interface FrameRegisterOptions {
 	replace?: boolean;
 }
 
+export interface FrameRouterOptions {
+	push: (url: string) => void;
+	openFrame: (event: NavigationEvent) => void;
+	openDialog: (event: DialogNavigationEvent) => void;
+	closeFrame: (frameId: string) => void;
+}
+
+export interface DialogNavigationEvent extends Omit<NavigationEvent, 'zone'> {
+	modal?: boolean;
+	closable?: boolean;
+}
+
+export interface LoadFrameOptions {
+	vars?: Record<string, string>;
+	zone?: string;
+	/** Add the navigation to the URL and browser history. Defaults to true. */
+	history?: boolean;
+}
+
+export interface LoadDialogOptions {
+	vars?: Record<string, string>;
+	modal?: boolean;
+	closable?: boolean;
+	/** Add open/close states to browser history. Defaults to true. */
+	history?: boolean;
+}
+
+export interface CloseFrameOptions {
+	/** Notify the router of a user-driven close. Router reconciliation passes false. */
+	history?: boolean;
+}
+
 export interface NavigationEvent {
 	modulePath:    string;
 	collection:    string;
@@ -52,14 +84,15 @@ export class MachineFrameManager {
 	private mountingZones = new Set<string>();
 	/** zone name → set of registered frameIds in that zone (for sibling hide/show). */
 	private zoneFrames = new Map<string, Set<string>>();
-	private _pushFn?: (url: string) => void;
+	private _router?: FrameRouterOptions;
+	private silentCloseFrames = new Set<string>();
 	private _onNavigate?: (e: NavigationEvent) => void;
 	private _labelResolver?: LabelResolver;
 	private _contextMenuMounted = false;
 
 	/** Injected by machine at init — enables URL-based navigation from framer. */
-	setRouter(pushFn: (url: string) => void): void {
-		this._pushFn = pushFn;
+	setRouter(options: FrameRouterOptions): void {
+		this._router = options;
 	}
 
 	/** Injected by machine at init — fires after each loadFrame navigation. */
@@ -201,18 +234,23 @@ export class MachineFrameManager {
 	 * Back/forward, deep links, refresh all work by construction.
 	 */
 	loadFrame(
-		modulePath: RegistryKey,
+		pathKey: RegistryKey,
 		collection: string,
 		collectionId?: string | number,
-		vars?: Record<string, string>,
-		zone = 'main'
+		options: LoadFrameOptions = {}
 	): void {
-		if (!this._pushFn) throw new Error('[FrameManager] router not set — call machine.init() first');
-		const varsStr = vars && Object.keys(vars).length > 0 ? new URLSearchParams(vars).toString() : undefined;
-		this._pushFn(buildLoadInUrl(modulePath, zone, collection, collectionId, varsStr));
+		if (!this._router) throw new Error('[FrameManager] router not set — call machine.init() first');
+		const { vars, zone = 'main', history = true } = options;
+		const event = { modulePath: pathKey, collection, collectionId, vars, zone };
+		if (history) {
+			const varsStr = vars && Object.keys(vars).length > 0 ? new URLSearchParams(vars).toString() : undefined;
+			this._router.push(buildLoadInUrl(pathKey, zone, collection, collectionId, varsStr));
+		} else {
+			this._router.openFrame(event);
+		}
 		try {
-			this._onNavigate?.({ modulePath, collection, collectionId, vars, zone });
-			console.log(`[FrameManager] navigate: ${modulePath} in zone "${zone}" for ${collection}:${collectionId ?? ''}`);
+			this._onNavigate?.(event);
+			console.log(`[FrameManager] navigate: ${pathKey} in zone "${zone}" for ${collection}:${collectionId ?? ''}`);
 		} catch (err) {
 			console.warn('[FrameManager] navigation hook failed:', err);
 		}
@@ -220,16 +258,15 @@ export class MachineFrameManager {
 
 	/**
 	 * URL-based navigation into a specific zone.
-	 * Zone is first param — explicit target.
+	 * Zone lives in options and currently defaults to "main".
 	 */
 	loadIn(
-		zone: string,
-		modulePath: RegistryKey,
+		pathKey: RegistryKey,
 		collection: string,
 		collectionId?: string,
-		vars?: Record<string, string>
+		options: LoadFrameOptions = {}
 	): void {
-		this.loadFrame(modulePath, collection, collectionId, vars, zone);
+		this.loadFrame(pathKey, collection, collectionId, options);
 	}
 
 	/**
@@ -238,13 +275,13 @@ export class MachineFrameManager {
 	 * existing dialog instead of duplicating; different content stacks new dialogs.
 	 */
 	async loadInDialog(
-		modulePath: RegistryKey,
+		pathKey: RegistryKey,
 		collection: string,
 		collectionId?: string | number,
-		vars?: Record<string, string>,
-		opts?: { modal?: boolean; closable?: boolean }
+		options: LoadDialogOptions = {}
 	): Promise<void> {
-		const frameId = `dialog:${modulePath}:${collection}:${collectionId ?? ''}`;
+		const { vars, history = true, modal, closable } = options;
+		const frameId = `dialog:${pathKey}:${collection}:${collectionId ?? ''}`;
 		console.log(`[FrameManager] loadInDialog: ${frameId}`);
 		// Already open → focus the existing dialog, don't reload/duplicate.
 		const existing = this.registry.get(frameId);
@@ -254,11 +291,16 @@ export class MachineFrameManager {
 			existing.focus?.();
 			return;
 		}
+		if (history) {
+			if (!this._router) throw new Error('[FrameManager] router not set — call machine.init() first');
+			this._router.openDialog({ modulePath: pathKey, collection, collectionId, vars, modal, closable });
+			return;
+		}
 		console.log(`[FrameManager] loadInDialog: loading new dialog`);
-		await this.load(frameId, modulePath, collection, collectionId, vars, async (id) => {
+		await this.load(frameId, pathKey, collection, collectionId, vars, async (id) => {
 			console.log(`[FrameManager] loadInDialog: opening dialog ${id}`);
 			const { openDialog } = await import('$lib/data-ui/fragments/dialog/dialog.svelte.js');
-			openDialog({ id, ...opts });
+			openDialog({ id, modal, closable });
 			console.log(`[FrameManager] loadInDialog: dialog opened`);
 		});
 		console.log(`[FrameManager] loadInDialog: completed`);
@@ -279,7 +321,16 @@ export class MachineFrameManager {
 		if (existing && !options.replace) {
 			throw new Error(`[FrameManager] frame "${frameId}" already registered`);
 		}
-		this.registry.set(frameId, controls);
+		const registeredControls = !this._router
+			? controls
+			: {
+				...controls,
+				close: () => {
+					controls.close();
+					if (!this.silentCloseFrames.has(frameId)) this._router?.closeFrame(frameId);
+				}
+			};
+		this.registry.set(frameId, registeredControls);
 		if (!frameId.startsWith('dialog:')) {
 			const colonIdx = frameId.indexOf(':');
 			if (colonIdx !== -1) {
@@ -402,10 +453,15 @@ export class MachineFrameManager {
 	}
 
 	/** Close a frame (unmount + unregister). Throws if not found. */
-	close(frameId: string): void {
+	close(frameId: string, options: CloseFrameOptions = {}): void {
 		const controls = this.registry.get(frameId);
 		if (!controls) throw new Error(`[FrameManager] frame "${frameId}" not found`);
-		controls.close();
+		if (options.history === false) this.silentCloseFrames.add(frameId);
+		try {
+			controls.close();
+		} finally {
+			this.silentCloseFrames.delete(frameId);
+		}
 	}
 
 	/** Read-only view of currently open frames. */

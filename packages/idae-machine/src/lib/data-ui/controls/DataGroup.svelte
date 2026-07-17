@@ -104,7 +104,7 @@ Click sets/clears groupBy.
 		}
 		.data-group-btn.active {
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			border-color: var(--color-primary);
 		}
 		.data-group-menu {

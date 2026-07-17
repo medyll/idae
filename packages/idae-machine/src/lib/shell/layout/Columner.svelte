@@ -138,6 +138,7 @@
 </columner-componet>
 
 <style>
+	@layer components {
 	columner-componet {
 		display: flex;
 		flex-direction: row;
@@ -147,11 +148,11 @@
 	columner-column {
 		display: flex;
 		flex-direction: column;
-		min-width: 280px;
+		min-width: calc(var(--gutter-3xl) * 4.5);
 		flex-shrink: 0;
 		height: 100%;
-		border-right: 1px solid var(--sl-color-neutral-200, #e0e0e0);
-		background: var(--sl-color-neutral-0, #fff);
+		border-right: var(--border-width) solid var(--color-border-strong);
+		background: var(--color-surface-raised);
 	}
 
 	columner-dock {
@@ -161,22 +162,22 @@
 	columner-header {
 		display: flex;
 		align-items: center;
-		padding: 4px 8px;
-		min-height: 36px;
-		border-bottom: 1px solid var(--sl-color-neutral-200, #e0e0e0);
-		background: var(--sl-color-neutral-50, #f5f5f5);
+		padding: var(--pad-xs) var(--pad-sm);
+		min-height: var(--header-height);
+		border-bottom: var(--border-width) solid var(--color-border-strong);
+		background: var(--color-surface-alt);
 		flex-shrink: 0;
 	}
 
 	columner-header.sticky {
 		position: sticky;
 		top: 0;
-		z-index: 10;
+		z-index: var(--z-dropdown);
 	}
 
 	columner-controls {
 		display: flex;
-		gap: 4px;
+		gap: var(--gutter-xs);
 		margin-left: auto;
 	}
 
@@ -191,22 +192,23 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 28px;
-		height: 28px;
+		width: var(--control-height);
+		height: var(--control-height);
 		border: none;
-		border-radius: 4px;
+		border-radius: var(--radius-xs);
 		background: transparent;
 		cursor: pointer;
-		font-size: 14px;
-		transition: background-color 0.15s;
+		font-size: var(--text-base);
+		transition: background-color var(--transition-normal);
 	}
 
 	button:hover {
-		background: var(--sl-color-neutral-200, #e0e0e0);
+		background: var(--color-surface-hover);
 	}
 
 	.ctrl-close:hover {
-		background: var(--sl-color-danger-600, #e53935);
-		color: #fff;
+		background: var(--color-critical);
+		color: var(--default-color-surface-light);
+	}
 	}
 </style>

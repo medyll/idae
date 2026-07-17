@@ -174,16 +174,18 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 {/if}
 
 <style>
+	@layer components {
 	.sr-only {
 		position: absolute;
-		width: 1px;
-		height: 1px;
+		width: var(--border-width);
+		height: var(--border-width);
 		padding: 0;
-		margin: -1px;
+		margin: calc(-1 * var(--border-width));
 		overflow: hidden;
 		clip: rect(0,0,0,0);
 		white-space: nowrap;
 		border-width: 0;
 	}
-	.error-message { color: red; padding: 1rem; }
+	.error-message { color: var(--color-critical); padding: var(--pad-md); }
+	}
 </style>

@@ -191,11 +191,11 @@ Consumers can override via the dataRecord snippet.
 		}
 
 		if (action === 'loadFrame') {
-			machine.framer.loadFrame(module as RegistryKey, navCollection, navId, linkVars, zone);
+			machine.framer.loadFrame(module as RegistryKey, navCollection, navId, { vars: linkVars, zone });
 		} else if (action === 'loadIn') {
-			machine.framer.loadIn(zone, module as RegistryKey, navCollection, navId, linkVars);
+			machine.framer.loadIn(module as RegistryKey, navCollection, navId, { vars: linkVars, zone });
 		} else if (action === 'loadInDialog') {
-			void machine.framer.loadInDialog(module as RegistryKey, navCollection, navId, linkVars);
+			void machine.framer.loadInDialog(module as RegistryKey, navCollection, navId, { vars: linkVars });
 		}
 	}
 
@@ -531,8 +531,8 @@ Consumers can override via the dataRecord snippet.
 	@layer components {
 		.grid-list {
 			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-			gap: var(--gutter-md);
+			grid-template-columns: repeat(auto-fill, minmax(calc(var(--gutter-3xl) * 4), 1fr));
+			gap: var(--gutter-sm);
 			list-style: none;
 			padding: 0;
 			margin: 0;
@@ -546,7 +546,7 @@ Consumers can override via the dataRecord snippet.
 		.accordion-list {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm);
+			gap: var(--gutter-xs);
 			list-style: none;
 			padding: 0;
 			margin: 0;
@@ -554,14 +554,14 @@ Consumers can override via the dataRecord snippet.
 		.accordion-item {
 			background: var(--color-surface-raised);
 			border: var(--border-width) solid var(--color-border);
-			border-radius: var(--radius-md);
+			border-radius: var(--radius-xs);
 			overflow: hidden;
 
 			& > .accordion-summary {
 				display: flex;
 				align-items: center;
 				gap: var(--gutter-sm);
-				padding: var(--pad-md);
+				padding: var(--pad-sm);
 				cursor: pointer;
 				list-style: none;
 				user-select: none;
@@ -585,7 +585,7 @@ Consumers can override via the dataRecord snippet.
 				rotate: 180deg;
 			}
 			& .accordion-body {
-				padding: var(--pad-md);
+				padding: var(--pad-sm);
 				border-top: var(--border-width) solid var(--color-border);
 			}
 		}
@@ -600,27 +600,28 @@ Consumers can override via the dataRecord snippet.
 		:global(.data-list-group-header) {
 			display: flex;
 			align-items: center;
-			gap: var(--gutter-sm, 0.5rem);
-			padding: var(--gutter-sm, 0.5rem) var(--gutter-sm, 0.5rem) 0.25rem;
-			font-weight: 600;
-			font-size: 0.8125rem;
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm) var(--pad-sm) var(--pad-xs);
+			font-weight: var(--font-semibold);
+			font-size: var(--text-xs);
 			text-transform: uppercase;
-			letter-spacing: 0.03em;
-			color: var(--color-text-muted, #888);
-			border-bottom: 1px solid var(--color-border);
+			letter-spacing: var(--tracking-wide);
+			color: var(--color-text-muted);
+			background: var(--color-surface-alt);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
 		}
 		:global(.data-table .data-list-group-header) {
 			text-align: left;
-			background: var(--color-surface-raised, var(--color-surface, #f7f7f7));
+			background: var(--color-surface-alt);
 		}
 		:global(.data-list-group-count) {
-			font-weight: 400;
-			color: var(--color-text-muted, #888);
+			font-weight: var(--font-normal);
+			color: var(--color-text-muted);
 		}
 		:global(.data-list-empty) {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 			list-style: none;
-			padding: var(--gutter-sm, 0.5rem) 0;
+			padding: var(--pad-sm) 0;
 		}
 		:global(.data-list-link) {
 			width: 100%;
@@ -628,11 +629,12 @@ Consumers can override via the dataRecord snippet.
 			justify-content: flex-start;
 			background: transparent;
 			border: none;
-			padding: 6px 8px;
+			min-height: var(--control-height);
+			padding: var(--pad-xs) var(--pad-sm);
 			cursor: pointer;
 			border-radius: var(--radius-sm);
 		}
-		:global(.data-list-link:hover) { background: var(--color-hover); }
-		:global(.error-message) { color: red; padding: 1rem; }
+		:global(.data-list-link:hover) { background: var(--color-surface-hover); }
+		:global(.error-message) { color: var(--color-critical); padding: var(--pad-md); }
 	}
 </style>

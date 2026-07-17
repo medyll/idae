@@ -59,20 +59,20 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 	@layer components {
 		.mode-switcher {
 			display: flex;
-			gap: var(--gutter-xs);
+			gap: 0;
 		}
 		.mode-btn {
 			padding: var(--pad-xs) var(--pad-sm);
 			border: var(--border-width) solid var(--color-border);
 			background: var(--color-surface);
 			cursor: pointer;
-			border-radius: var(--radius-sm);
+			border-radius: 0;
 			font-size: var(--text-sm);
 			text-transform: capitalize;
 		}
 		.mode-btn.active {
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			border-color: var(--color-primary);
 		}
 	}

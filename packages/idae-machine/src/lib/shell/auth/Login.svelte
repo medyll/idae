@@ -17,12 +17,34 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 	let error = $state('');
 	let busy = $state(false);
 
+	const SERVER_WAIT_ATTEMPTS = 10;
+	const SERVER_WAIT_MS = 500;
+
+	function delay(ms: number): Promise<void> {
+		return new Promise((resolve) => setTimeout(resolve, ms));
+	}
+
+	/** Wait briefly for the API listener when the UI and server start together. */
+	async function waitForServer(): Promise<void> {
+		for (let attempt = 0; attempt < SERVER_WAIT_ATTEMPTS; attempt += 1) {
+			try {
+				const response = await fetch(`${API_URL}/health`, { cache: 'no-store' });
+				if (response.ok) return;
+			} catch {
+				// The listener is not ready yet; retry within the bounded startup window.
+			}
+			if (attempt < SERVER_WAIT_ATTEMPTS - 1) await delay(SERVER_WAIT_MS);
+		}
+		throw new Error('SERVER_UNAVAILABLE');
+	}
+
 	async function submit(e: SubmitEvent) {
 		e.preventDefault();
 		if (busy) return;
 		error = '';
 		busy = true;
 		try {
+			await waitForServer();
 			// Org travels as a query param so the server resolves it before body parsing
 			// (orgContextMiddleware) and authenticates against that org's user DB.
 			const res = await fetch(`${API_URL}/api/auth/login?org=${encodeURIComponent(org)}`, {
@@ -32,7 +54,10 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 			});
 
 			if (!res.ok) {
-				error = 'Identifiants invalides';
+				error =
+					res.status === 401 || res.status === 403
+						? 'Identifiants invalides'
+						: `Erreur du serveur (${res.status})`;
 				return;
 			}
 
@@ -55,7 +80,7 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 			// login dialog does not reappear.
 			window.location.reload();
 		} catch {
-			error = 'Connexion au serveur impossible';
+			error = `Serveur indisponible (${API_URL})`;
 		} finally {
 			busy = false;
 		}
@@ -105,7 +130,7 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 	@layer components {
 		login-component {
 			display: block;
-			min-width: 18rem;
+			min-width: calc(var(--gutter-3xl) * 4.5);
 			padding: var(--pad-sm);
 		}
 

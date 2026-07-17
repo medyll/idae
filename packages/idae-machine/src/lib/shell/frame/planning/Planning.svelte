@@ -166,7 +166,7 @@ created on a day, or shifted while preserving their duration.
 			)
 		);
 		void machine.framer.loadInDialog('form', collection, undefined, {
-			[`vars[${timespan.start}]`]: value
+			vars: { [`vars[${timespan.start}]`]: value }
 		});
 	}
 
@@ -394,7 +394,7 @@ created on a day, or shifted while preserving their duration.
 			min-height: calc(var(--gutter-md) + var(--gutter-sm));
 			border-radius: var(--radius-full);
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			font-size: var(--text-xs);
 			white-space: nowrap;
 			overflow: hidden;

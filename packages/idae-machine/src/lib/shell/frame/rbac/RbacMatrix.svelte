@@ -140,56 +140,58 @@ Composes existing store API + FieldBoolean. No custom field logic.
 </div>
 
 <style>
+	@layer components {
 	.rbac-matrix {
 		display: flex;
 		flex-direction: column;
-		gap: 12px;
-		padding: 12px;
+		gap: var(--gutter-sm);
+		padding: var(--pad-sm);
 	}
 	.rbac-toolbar {
 		display: flex;
 		align-items: center;
-		gap: 16px;
+		gap: var(--gutter-md);
 	}
 	.note {
 		font-size: 0.85em;
-		color: var(--color-muted, #888);
+		color: var(--color-text-muted);
 	}
 	.empty {
-		padding: 24px;
+		padding: var(--pad-lg);
 		text-align: center;
-		color: var(--color-muted, #888);
+		color: var(--color-text-muted);
 	}
 	.matrix {
 		border-collapse: collapse;
-		min-width: 480px;
+		min-width: calc(var(--gutter-3xl) * 7.5);
 	}
 	.matrix th,
 	.matrix td {
-		border: 1px solid var(--color-border, #e5e7eb);
-		padding: 4px 8px;
+		border: var(--border-width) solid var(--color-border);
+		padding: var(--pad-xs) var(--pad-sm);
 		text-align: center;
 	}
 	.matrix thead th {
 		position: sticky;
 		top: 0;
-		background: var(--color-surface, #fafafa);
-		z-index: 1;
+		background: var(--color-surface-alt);
+		z-index: var(--z-dropdown);
 	}
 	.row-head {
 		position: sticky;
 		left: 0;
-		background: var(--color-surface, #fafafa);
+		background: var(--color-surface-alt);
 		text-align: left;
-		font-weight: var(--font-medium, 500);
+		font-weight: var(--font-medium);
 	}
 	.op-head {
 		all: unset;
 		cursor: pointer;
-		font-weight: var(--font-semibold, 600);
-		padding: 4px 8px;
+		font-weight: var(--font-semibold);
+		padding: var(--pad-xs) var(--pad-sm);
 	}
 	.op-head:hover {
-		background: var(--color-hover, #f3f4f6);
+		background: var(--color-surface-hover);
+	}
 	}
 </style>

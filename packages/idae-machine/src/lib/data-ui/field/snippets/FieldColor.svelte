@@ -39,10 +39,10 @@ Color field atom — swatch in show mode, color picker in edit.
 <style>
 	.color-swatch {
 		display: inline-block;
-		width: 1.25rem;
-		height: 1.25rem;
-		border-radius: var(--radius-xs, 2px);
-		border: 1px solid var(--color-border, #ccc);
+		width: var(--icon-size-sm);
+		height: var(--icon-size-sm);
+		border-radius: var(--radius-xs);
+		border: var(--border-width) solid var(--color-border);
 		vertical-align: middle;
 	}
 </style>

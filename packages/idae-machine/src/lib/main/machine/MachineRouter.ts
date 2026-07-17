@@ -1,7 +1,13 @@
 import { createRouter } from '@medyll/idae-router';
 import { logger } from '$lib/utils/logger.js';
-import { parseLoadInUrl } from '$lib/main/router/urlParser.js';
-import { machineFrameManager } from '$lib/main/frame/MachineFrameManager.js';
+import { parseLoadInUrl, type LoadInSegment } from '$lib/main/router/urlParser.js';
+import { buildLoadInUrl } from '$lib/main/frame/frameUrl.js';
+import {
+	machineFrameManager,
+	type DialogNavigationEvent,
+	type NavigationEvent
+} from '$lib/main/frame/MachineFrameManager.js';
+import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
 
 export interface MachineRouterConfig {
 	baseUrl?: string;
@@ -30,6 +36,10 @@ interface RouteMetadata {
 export class MachineRouter {
 	private router: ReturnType<typeof createRouter> | null = null;
 	private config: Required<MachineRouterConfig>;
+	private pushedRoutes = new Set<string>();
+	private routedDialogIds = new Set<string>();
+	private dialogReturnPaths = new Map<string, string>();
+	private dialogOptions = new Map<string, Pick<DialogNavigationEvent, 'modal' | 'closable'>>();
 
 	constructor(config: MachineRouterConfig = {}) {
 		this.config = {
@@ -53,7 +63,7 @@ export class MachineRouter {
 
 		const routes = [
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			{ path: '/+*', action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: 'LoadIn' } },
+			{ path: '/*', action: (ctx: any) => this.handleLoadIn(ctx), metadata: { title: 'LoadIn' } },
 		];
 
 		this.router = createRouter({
@@ -76,38 +86,74 @@ export class MachineRouter {
 	private async handleLoadIn(ctx: { path?: string }): Promise<void> {
 		const path = ctx.path ?? '';
 		const segments = parseLoadInUrl(path);
+		const desiredDialogIds = new Set(
+			segments
+				.filter((seg) => seg.targetId === 'dialog')
+				.map((seg) => this.dialogFrameId(seg.modulePath, seg.collection, seg.collectionId))
+		);
+
+		for (const frameId of this.routedDialogIds) {
+			if (desiredDialogIds.has(frameId)) continue;
+			if (machineFrameManager.has(frameId)) {
+				machineFrameManager.close(frameId, { history: false });
+			}
+			this.routedDialogIds.delete(frameId);
+		}
 
 		for (const seg of segments) {
-			// frameId is content-keyed: "modulePath:zone" — mirrors loadInDialog's "dialog:modulePath:collection:id".
-			// Enables registry lookup by content, and allows sibling-hide across zone frames.
-			const contentFrameId = `${seg.modulePath}:${seg.targetId}`;
-
-			const mountFn = async (frameId: string) => {
-				if (typeof document === 'undefined') return;
-				// DOM zone lookup uses zone name (targetId), not the content-keyed frameId.
-				const zone = frameId.slice(frameId.indexOf(':') + 1);
-				const target = await this.waitForZone(zone);
-				if (!target) return;
-				// Zones can opt out of the taskbar via data-taskbar="false" (inner content zones).
-				const taskbar = (target as HTMLElement).dataset.taskbar !== 'false';
-				const { mount } = await import('svelte');
-				const { default: Frame } = await import('$lib/shell/Frame.svelte');
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				mount(Frame as any, { target, props: { id: frameId, taskbar } });
-			};
-
-			try {
-				await machineFrameManager.load(
-					contentFrameId,
-					seg.modulePath,
+			if (seg.targetId === 'dialog') {
+				const frameId = this.dialogFrameId(seg.modulePath, seg.collection, seg.collectionId);
+				const dialogOptions = this.dialogOptions.get(frameId);
+				await machineFrameManager.loadInDialog(
+					seg.modulePath as RegistryKey,
 					seg.collection,
 					seg.collectionId,
-					seg.vars,
-					mountFn
+					{ vars: seg.vars, history: false, ...dialogOptions }
 				);
-			} catch (err) {
-				logger.warn(`[MachineRouter] Failed to load frame: ${seg.modulePath} → ${seg.targetId}`, err);
+				this.routedDialogIds.add(frameId);
+				continue;
 			}
+			await this.mountZoneFrame(seg);
+		}
+	}
+
+	/** Mount a frame without changing the URL (framer history:false). */
+	openFrame(event: NavigationEvent): void {
+		void this.mountZoneFrame({
+			targetId: event.zone,
+			modulePath: event.modulePath,
+			collection: event.collection,
+			collectionId: event.collectionId === undefined ? undefined : String(event.collectionId),
+			vars: event.vars
+		});
+	}
+
+	private async mountZoneFrame(seg: LoadInSegment): Promise<void> {
+		// frameId is content-keyed: "modulePath:zone" — mirrors dialog frame ids.
+		const contentFrameId = `${seg.modulePath}:${seg.targetId}`;
+		const mountFn = async (frameId: string) => {
+			if (typeof document === 'undefined') return;
+			const zone = frameId.slice(frameId.indexOf(':') + 1);
+			const target = await this.waitForZone(zone);
+			if (!target) return;
+			const taskbar = (target as HTMLElement).dataset.taskbar !== 'false';
+			const { mount } = await import('svelte');
+			const { default: Frame } = await import('$lib/shell/Frame.svelte');
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			mount(Frame as any, { target, props: { id: frameId, taskbar } });
+		};
+
+		try {
+			await machineFrameManager.load(
+				contentFrameId,
+				seg.modulePath,
+				seg.collection,
+				seg.collectionId,
+				seg.vars,
+				mountFn
+			);
+		} catch (err) {
+			logger.warn(`[MachineRouter] Failed to load frame: ${seg.modulePath} → ${seg.targetId}`, err);
 		}
 	}
 
@@ -154,6 +200,7 @@ export class MachineRouter {
 	}
 
 	navigate(path: string): void {
+		this.pushedRoutes.add(path);
 		this.router ? this.router.push(path) : (location.href = path);
 	}
 
@@ -161,7 +208,98 @@ export class MachineRouter {
 		this.navigate(path);
 	}
 
+	/** Add a business dialog to the current routed state. */
+	openDialog(event: DialogNavigationEvent): void {
+		if (typeof window === 'undefined') return;
+		const currentPath = window.location.hash.replace(/^#/, '') || '/';
+		const frameId = this.dialogFrameId(event.modulePath, event.collection, event.collectionId);
+		const alreadyPresent = parseLoadInUrl(currentPath).some(
+			(seg) => seg.targetId === 'dialog'
+				&& this.dialogFrameId(seg.modulePath, seg.collection, seg.collectionId) === frameId
+		);
+		if (alreadyPresent) return;
+
+		this.dialogReturnPaths.set(frameId, currentPath);
+		this.dialogOptions.set(frameId, { modal: event.modal, closable: event.closable });
+		const basePath = currentPath.split('?')[0].replace(/\/$/, '');
+		const vars = event.vars && Object.keys(event.vars).length > 0
+			? new URLSearchParams(event.vars).toString()
+			: undefined;
+		const dialogPath = buildLoadInUrl(
+			event.modulePath,
+			'dialog',
+			event.collection,
+			event.collectionId,
+			vars
+		);
+		this.push(`${basePath === '' ? '' : basePath}${dialogPath}`);
+	}
+
+	/**
+	 * Keep browser history aligned when a routed zone frame closes.
+	 * Routes pushed inside the app can safely go back. A cold deep-link only goes
+	 * back when its referrer is same-origin; otherwise the frame hash is removed
+	 * in place so closing never sends the user back to another site.
+	 */
+	closeFrame(frameId: string): void {
+		if (typeof window === 'undefined') return;
+		const path = window.location.hash.replace(/^#/, '');
+		const segments = parseLoadInUrl(path);
+		const isCurrentFrame = segments.some(
+			(seg) => `${seg.modulePath}:${seg.targetId}` === frameId
+				|| (seg.targetId === 'dialog'
+					&& this.dialogFrameId(seg.modulePath, seg.collection, seg.collectionId) === frameId)
+		);
+		if (!isCurrentFrame) return;
+
+		if (frameId.startsWith('dialog:')) {
+			const returnPath = this.dialogReturnPaths.get(frameId);
+			this.dialogReturnPaths.delete(frameId);
+			if (returnPath) {
+				this.push(returnPath);
+				return;
+			}
+
+			const remaining = segments.filter(
+				(seg) => this.dialogFrameId(seg.modulePath, seg.collection, seg.collectionId) !== frameId
+			);
+			const remainingPath = remaining.map((seg, index) => {
+				const isLast = index === remaining.length - 1;
+				const vars = isLast && seg.vars
+					? new URLSearchParams(seg.vars).toString()
+					: undefined;
+				return buildLoadInUrl(seg.modulePath, seg.targetId, seg.collection, seg.collectionId, vars);
+			}).join('');
+			this.push(remainingPath || '/');
+			return;
+		}
+
+		let sameOriginReferrer = false;
+		if (document.referrer) {
+			try {
+				sameOriginReferrer = new URL(document.referrer).origin === window.location.origin;
+			} catch {
+				sameOriginReferrer = false;
+			}
+		}
+
+		if (this.pushedRoutes.has(path) || sameOriginReferrer) {
+			window.history.back();
+			return;
+		}
+
+		window.history.replaceState(
+			window.history.state,
+			'',
+			`${window.location.pathname}${window.location.search}`
+		);
+	}
+
 	getRouter() { return this.router; }
+
+	private dialogFrameId(modulePath: string, collection: string, collectionId?: string | number): string {
+		return `dialog:${modulePath}:${collection}:${collectionId ?? ''}`;
+	}
 }
 
 export function createMachineRouter(config?: MachineRouterConfig): MachineRouter {

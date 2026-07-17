@@ -139,6 +139,7 @@ Iterates a record's fields and renders DataField for each.
 {/if}
 
 <style>
+	@layer components {
 	/* flex-wrap (legacy .fiche_field_group: flex_h flex_wrap) — each DataField's
 	   `.field-line` carries its own flex-basis (~320px, legacy min-width:40%) and
 	   fixed-width label, so values line up without a rigid grid forcing uneven
@@ -161,5 +162,6 @@ Iterates a record's fields and renders DataField for each.
 		padding: var(--pad-sm) 0 var(--pad-xs);
 		font-weight: var(--font-medium);
 		color: var(--color-text-muted);
+	}
 	}
 </style>

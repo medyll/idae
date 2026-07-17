@@ -73,7 +73,7 @@ same collection/prefsScope; both bind the same shared prefs store (mediator) and
 		}
 		.sort-trigger.active {
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			border-color: var(--color-primary);
 		}
 		.sort-pop {

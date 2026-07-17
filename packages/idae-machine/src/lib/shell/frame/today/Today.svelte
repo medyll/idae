@@ -128,28 +128,29 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 	@layer components {
 		today-dashboard-component {
 			display: grid;
-			grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-			gap: var(--gutter-lg, 1.5rem);
-			padding: var(--gutter-lg, 1.5rem);
+			grid-template-columns: repeat(auto-fit, minmax(calc(var(--gutter-3xl) * 4), 1fr));
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm);
 		}
 		today-section {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-xs);
 		}
 		today-create {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-xs);
 		}
 		.today-create-item {
 			all: unset;
 			display: flex;
 			align-items: center;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-sm);
 			cursor: pointer;
-			padding: 0.25rem 0.5rem;
-			border-radius: var(--radius-sm, 4px);
+			min-height: var(--control-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			border-radius: var(--radius-xs);
 		}
 		.today-create-item:hover {
 			background: var(--color-surface-alt);
@@ -157,7 +158,7 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 		today-my-lists {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-xs);
 		}
 		today-my-lists-group {
 			display: flex;
@@ -166,15 +167,15 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 		today-echeancier {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-xs);
 		}
 		.today-echeancier-item {
 			display: flex;
 			justify-content: space-between;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-xs);
 		}
 		.today-empty {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 		}
 	}
 </style>

@@ -41,26 +41,32 @@
 			display: flex;
 			flex-direction: column;
 			min-height: 0;
-			gap: var(--gutter-sm);
-			padding: var(--pad-md);
+			gap: 0;
+			padding: 0;
 			width: 100%;
 			max-inline-size: calc(var(--gutter-3xl) * 12);
+			background: var(--color-surface-raised);
 		}
 
 		:global(fiche-header) {
 			display: block;
+			background: var(--color-surface-alt);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
 		}
 
 		:global(fiche-zone) {
 			display: flex;
 			flex: 1;
 			min-height: 0;
-			gap: var(--gutter-md);
+			gap: 0;
 		}
 
 		:global(sidebar-info) {
 			display: block;
-			flex: 0 0 auto;
+			flex: 0 0 calc(var(--gutter-3xl) * 2);
+			padding: var(--pad-sm);
+			background: var(--color-surface-alt);
+			border-right: var(--border-width) solid var(--color-border);
 		}
 
 		:global(zone-main-half) {
@@ -68,7 +74,7 @@
 			flex-direction: row;
 			flex: 1;
 			min-width: 0;
-			gap: var(--gutter-md);
+			gap: 0;
 		}
 
 		/* was a bare <div> with no flex-grow — zone-main-half's flex children
@@ -85,7 +91,8 @@
 			flex-direction: column;
 			flex: 1;
 			min-width: 0;
-			gap: var(--gutter-md);
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm);
 		}
 
 		:global(fiche-timeline) {
@@ -94,8 +101,11 @@
 
 		:global(info-bar-right) {
 			display: block;
-			flex: 0 0 calc(var(--gutter-3xl) * 4);
-			max-width: calc(var(--gutter-3xl) * 4);
+			flex: 0 0 calc(var(--gutter-3xl) * 3);
+			max-width: calc(var(--gutter-3xl) * 3);
+			padding: var(--pad-sm);
+			background: var(--color-surface-alt);
+			border-left: var(--border-width) solid var(--color-border);
 		}
 	}
 </style>

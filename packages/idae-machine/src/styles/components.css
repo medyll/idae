@@ -1,170 +1,225 @@
-/* ── Dialog ── mounted on document.body, :global required */
+/* Dialog is mounted on document.body; global selectors are intentional. */
 dialog.idae-dialog {
 	z-index: var(--z-modal);
 	isolation: isolate;
 }
 
-/* Modal scrim — sits just under the dialog on the same --z-modal layer. */
 .idae-dialog__backdrop {
 	position: fixed;
 	inset: 0;
 	z-index: var(--z-modal);
-	background: color-mix(in oklch, var(--color-text) 45%, transparent);
+	background: color-mix(in oklch, var(--color-text) 42%, transparent);
 }
 
 @layer components {
-	dialog.idae-dialog.idae-dialog--modal .idae-dialog__bar {
-		cursor: default;
+	.card,
+	.panel,
+	.list-item {
+		border-radius: var(--radius-xs);
+		box-shadow: none;
 	}
-}
 
-@layer components {
+	.card,
+	.panel {
+		background: var(--color-surface-raised);
+		border-color: var(--color-border);
+	}
+
+	.section-header {
+		min-height: var(--header-height);
+		padding: var(--pad-xs) var(--pad-sm);
+		background: var(--color-surface-alt);
+		border-color: var(--color-border);
+
+		& h1,
+		& h2,
+		& h3,
+		& h4 {
+			margin: 0;
+			font-size: var(--text-md);
+			font-weight: var(--font-semibold);
+			line-height: var(--leading-tight);
+		}
+	}
+
+	.toolbar,
+	toolbar {
+		display: flex;
+		align-items: center;
+		gap: var(--gutter-xs);
+		min-height: var(--header-height);
+		padding: var(--pad-xs) var(--pad-sm);
+		background: var(--color-surface-alt);
+		border-bottom: var(--border-width) solid var(--color-border);
+		box-shadow: var(--shadow-xs);
+	}
+
+	.list {
+		gap: 0;
+	}
+
+	.list-item {
+		min-height: var(--control-height);
+		padding: var(--pad-xs) var(--pad-sm);
+		border-color: var(--color-border);
+
+		&:hover {
+			background: var(--color-surface-hover);
+		}
+
+		&.is-active,
+		&[aria-current='page'] {
+			background: var(--color-surface-active);
+			box-shadow: inset var(--focus-ring-width) 0 var(--color-primary);
+		}
+	}
+
+	.empty-state {
+		gap: var(--gutter-xs);
+		padding: var(--pad-lg);
+		color: var(--color-text-muted);
+	}
+
 	dialog.idae-dialog {
 		position: fixed;
 		top: 0;
 		left: 0;
-		margin: 0;
-		padding: 0;
-		min-width: 260px;
-		max-height: 90vh;
 		display: flex;
 		flex-direction: column;
+		min-width: calc(var(--gutter-3xl) * 4);
+		max-height: 90dvh;
+		margin: 0;
+		padding: 0;
 		overflow: hidden;
 		color: var(--color-text);
 		background: var(--color-surface-raised);
-		border: var(--border-width) solid var(--color-border);
-		border-radius: var(--radius-md);
-		box-shadow: var(--shadow-lg);
+		border: var(--border-width) solid var(--color-border-strong);
+		border-radius: var(--radius-xs);
+		box-shadow: var(--shadow-xl);
+
+		&.idae-dialog--modal .idae-dialog__bar {
+			cursor: default;
+		}
+
+		& .idae-dialog__bar {
+			position: relative;
+			z-index: var(--z-dropdown);
+			display: flex;
+			align-items: center;
+			gap: var(--gutter-xs);
+			min-height: var(--header-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			cursor: grab;
+			background: var(--color-surface-alt);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
+		}
+
+		& .idae-dialog__title {
+			flex: 1;
+			overflow: hidden;
+			font-size: var(--text-sm);
+			font-weight: var(--font-semibold);
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+
+		& .idae-dialog__close {
+			margin-left: auto;
+		}
+
+		& .idae-dialog__body {
+			position: relative;
+			flex: 1 1 auto;
+			min-height: 0;
+			padding: var(--pad-sm);
+			overflow: auto;
+			background: var(--color-surface-raised);
+		}
+
+		& .idae-dialog__body--framed {
+			padding: 0;
+		}
+
+		& .idae-dialog__footer {
+			display: flex;
+			justify-content: flex-end;
+			gap: var(--gutter-xs);
+			padding: var(--pad-sm);
+			background: var(--color-surface-alt);
+			border-top: var(--border-width) solid var(--color-border);
+		}
 	}
 
-	dialog.idae-dialog .idae-dialog__bar {
-		display: flex;
-		align-items: center;
-		gap: var(--gutter-sm);
-		padding: var(--pad-xs) var(--pad-sm);
+	table.data-table {
 		position: relative;
-		z-index: var(--z-dropdown);
-		cursor: grab;
-		background: var(--color-surface-alt);
-		border-bottom: var(--border-width) solid var(--color-border);
-	}
-
-	dialog.idae-dialog .idae-dialog__title {
-		flex: 1;
+		align-self: flex-start;
+		width: 100%;
+		height: max-content;
 		font-size: var(--text-sm);
-		font-weight: 600;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
+		border-collapse: collapse;
+		background: var(--color-surface-raised);
+
+		& thead th {
+			height: var(--header-height);
+			padding: 0 var(--pad-sm);
+			overflow: hidden;
+			font-weight: var(--font-medium);
+			line-height: var(--header-height);
+			color: var(--color-text);
+			text-align: left;
+			text-transform: capitalize;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			vertical-align: middle;
+			cursor: pointer;
+			user-select: none;
+			background: var(--color-surface-alt);
+			border-right: var(--border-width) solid var(--color-border);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
+
+			&:hover {
+				background: var(--color-surface-hover);
+			}
+
+			&.sorted {
+				color: var(--color-primary);
+				background: var(--color-surface-active);
+				box-shadow: inset 0 calc(-1 * var(--focus-ring-width)) var(--color-primary);
+			}
+		}
+
+		& .sort-arrow {
+			margin-left: var(--gutter-xs);
+			font-size: var(--text-xs);
+			opacity: 0.7;
+		}
+
+		& tbody tr.clickable {
+			cursor: pointer;
+		}
+
+		& tbody td {
+			height: var(--control-height);
+			max-width: calc(var(--gutter-3xl) * 3);
+			padding: 0 var(--pad-sm);
+			overflow: hidden;
+			line-height: var(--control-height);
+			color: var(--color-text);
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			vertical-align: middle;
+			border-bottom: var(--border-width) solid var(--color-border);
+		}
+
+		& tbody tr:nth-child(even) td {
+			background: color-mix(in oklch, var(--color-surface-alt) 46%, transparent);
+		}
+
+		& tbody tr:hover td {
+			background: var(--color-surface-hover);
+			box-shadow:
+				inset 0 var(--border-width) var(--color-border),
+				inset 0 calc(-1 * var(--border-width)) var(--color-border);
+		}
 	}
-
-	dialog.idae-dialog .idae-dialog__close {
-		margin-left: auto;
-	}
-
-	dialog.idae-dialog .idae-dialog__body {
-		flex: 1 1 auto;
-		position: relative;
-		min-height: 0;
-		overflow: auto;
-		padding: var(--pad-md);
-	}
-
-	dialog.idae-dialog .idae-dialog__body--framed {
-		padding: 0;
-	}
-
-	dialog.idae-dialog .idae-dialog__footer {
-		display: flex;
-		justify-content: flex-end;
-		gap: var(--gutter-sm);
-		padding: var(--pad-sm) var(--pad-md);
-		border-top: var(--border-width) solid var(--color-border);
-	}
-}
-
-@layer components {
-    taskbar {
-		gap: var(--gutter-xs);
-		padding: var(--pad-xs) var(--pad-sm);
-		background: var(--color-surface);
-		border-bottom: var(--border-width) solid var(--color-border);
-		overflow-x: auto;
-	}
-
-    toolbar {
-        display: flex;
-        gap: var(--pad-sm);
-        padding: var(--pad-sm);
-        background: var(--color-surface);
-        border-bottom: var(--border-width) solid var(--color-border);
-    }
-}
-
-@layer components {
-    /* Plain stylesheet (imported via app.css) — no Svelte `:global()` here;
-       it is invalid in real CSS and silently drops the whole rule. */
-    table.data-table {
-        width: 100%;
-        border-collapse: collapse;
-        position: relative;
-        font-size: var(--text-sm, 0.875rem);
-        /* Don't let a flex parent (explorer-body) stretch the table to full
-           height — that would divide the height across the few rows and
-           balloon each row. Size to content, top-aligned. */
-        align-self: flex-start;
-        height: max-content;
-    }
-    table.data-table thead th {
-        color: var(--color-text, #333);
-        height: 2.4em;
-        line-height: 2.4em;
-        cursor: pointer;
-        user-select: none;
-        overflow: hidden;
-        background-color: var(--color-surface, #fafafa);
-        white-space: nowrap;
-        border-right: 1px solid var(--color-border, #e0e0e0);
-        border-top: 1px solid var(--color-border, #e9e9e9);
-        border-bottom: 1px solid var(--color-border, #ededed);
-        vertical-align: middle;
-        text-overflow: ellipsis;
-        padding: 0 0.6em;
-        text-align: left;
-        text-transform: capitalize;
-        font-weight: var(--font-medium, 500);
-    }
-    table.data-table thead th:hover {
-        background-color: var(--color-surface-hover);
-    }
-    table.data-table thead th.sorted {
-        background-color: var(--color-surface-active);
-    }
-    table.data-table .sort-arrow {
-        font-size: 0.7em;
-        opacity: 0.6;
-        margin-left: 0.3em;
-    }
-    table.data-table tbody tr.clickable {
-        cursor: pointer;
-    }
-    table.data-table tbody td {
-        white-space: nowrap;
-        line-height: 22px;
-        height: 22px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 200px;
-        border-bottom: 1px solid var(--color-border, #ededed);
-        padding: 0 0.5em;
-        vertical-align: middle;
-        color: var(--color-text);
-    }
-    table.data-table tbody tr:hover td {
-        background-color: var(--color-surface-hover);
-        box-shadow: 0 1px 0 0 var(--color-border) inset, 0 -1px 0 0 var(--color-border) inset;
-    }
-    table.data-table tbody tr:nth-child(5n+3) td {
-        background-color: var(--color-surface, #f5f5f5);
-    }
 }

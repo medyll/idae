@@ -2,6 +2,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MachineRouter } from '../machine/MachineRouter.js';
 import { createRouter } from '@medyll/idae-router';
+import { machineFrameManager } from '../frame/MachineFrameManager.js';
 
 vi.mock('$lib/utils/logger.js', () => ({
 	logger: { info: vi.fn(), warn: vi.fn() }
@@ -47,11 +48,11 @@ describe('MachineRouter', () => {
 			expect((r as any).config.authEnabled).toBe(false);
 		});
 
-		it('registers only the catch-all /+* route', () => {
+		it('registers one catch-all route so an empty routed state can close dialogs', () => {
 			router.init();
 			const lastCall = vi.mocked(createRouter).mock.calls.at(-1)?.[0] as any;
 			expect(lastCall.routes).toHaveLength(1);
-			expect(lastCall.routes[0].path).toBe('/+*');
+			expect(lastCall.routes[0].path).toBe('/*');
 		});
 	});
 
@@ -135,6 +136,115 @@ describe('MachineRouter', () => {
 			router.init();
 			router.push('/bar');
 			expect(mockRouterInstance.push).toHaveBeenCalledWith('/bar');
+		});
+
+		it('goes back when closing the current frame after an in-app push', () => {
+			router.init();
+			const path = '/+main/explorer/vehicle';
+			router.push(path);
+			window.location.hash = path;
+			const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+
+			router.closeFrame('explorer:main');
+
+			expect(back).toHaveBeenCalledOnce();
+			back.mockRestore();
+		});
+
+		it('cleans a cold deep-link instead of leaving the origin', () => {
+			router.init();
+			window.history.replaceState({}, '', '/#/+placeholder');
+			window.location.hash = '/+main/explorer/vehicle';
+			const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+
+			router.closeFrame('explorer:main');
+
+			expect(back).not.toHaveBeenCalled();
+			expect(window.location.hash).toBe('');
+			back.mockRestore();
+		});
+
+		it('does not change history when closing a frame absent from the current URL', () => {
+			router.init();
+			window.location.hash = '/+main/explorer/vehicle';
+			const back = vi.spyOn(window.history, 'back').mockImplementation(() => {});
+			const replace = vi.spyOn(window.history, 'replaceState');
+
+			router.closeFrame('dashboard:main');
+
+			expect(back).not.toHaveBeenCalled();
+			expect(replace).not.toHaveBeenCalled();
+			back.mockRestore();
+			replace.mockRestore();
+		});
+
+		it('adds a dialog segment while preserving the current routed page', () => {
+			router.init();
+			window.location.hash = '/+main/explorer/vehicle';
+
+			router.openDialog({ modulePath: 'fiche', collection: 'vehicle', collectionId: '42' });
+
+			expect(mockRouterInstance.push).toHaveBeenLastCalledWith(
+				'/+main/explorer/vehicle/+dialog/fiche/vehicle/42'
+			);
+		});
+
+		it('pushes the pre-dialog URL when the user closes a routed dialog', () => {
+			router.init();
+			window.location.hash = '/+main/explorer/vehicle';
+			router.openDialog({ modulePath: 'fiche', collection: 'vehicle', collectionId: '42' });
+			window.location.hash = '/+main/explorer/vehicle/+dialog/fiche/vehicle/42';
+
+			router.closeFrame('dialog:fiche:vehicle:42');
+
+			expect(mockRouterInstance.push).toHaveBeenLastCalledWith('/+main/explorer/vehicle');
+		});
+
+		it('restores a dialog from a routed Back/Forward state', async () => {
+			router.init();
+			const loadDialog = vi.spyOn(machineFrameManager, 'loadInDialog').mockResolvedValue();
+			const route = (vi.mocked(createRouter).mock.calls.at(-1)?.[0] as any).routes[0];
+
+			await route.action({ path: '/+dialog/fiche/vehicle/42' });
+
+			expect(loadDialog).toHaveBeenCalledWith(
+				'fiche',
+				'vehicle',
+				'42',
+				{ vars: undefined, history: false }
+			);
+			loadDialog.mockRestore();
+		});
+
+		it('closes a routed dialog silently when it disappears from the URL', async () => {
+			router.init();
+			const loadDialog = vi.spyOn(machineFrameManager, 'loadInDialog').mockResolvedValue();
+			const has = vi.spyOn(machineFrameManager, 'has').mockReturnValue(true);
+			const close = vi.spyOn(machineFrameManager, 'close').mockImplementation(() => {});
+			const route = (vi.mocked(createRouter).mock.calls.at(-1)?.[0] as any).routes[0];
+
+			await route.action({ path: '/+dialog/fiche/vehicle/42' });
+			await route.action({ path: '/' });
+
+			expect(close).toHaveBeenCalledWith('dialog:fiche:vehicle:42', { history: false });
+			loadDialog.mockRestore();
+			has.mockRestore();
+			close.mockRestore();
+		});
+
+		it('keeps the previous dialog in the URL when closing the top dialog', () => {
+			router.init();
+			window.location.hash = '/+main/explorer/vehicle';
+			router.openDialog({ modulePath: 'fiche', collection: 'vehicle', collectionId: '42' });
+			window.location.hash = '/+main/explorer/vehicle/+dialog/fiche/vehicle/42';
+			router.openDialog({ modulePath: 'fiche.update', collection: 'vehicle', collectionId: '42' });
+			window.location.hash = '/+main/explorer/vehicle/+dialog/fiche/vehicle/42/+dialog/fiche.update/vehicle/42';
+
+			router.closeFrame('dialog:fiche.update:vehicle:42');
+
+			expect(mockRouterInstance.push).toHaveBeenLastCalledWith(
+				'/+main/explorer/vehicle/+dialog/fiche/vehicle/42'
+			);
 		});
 	});
 });

@@ -1,7 +1,7 @@
 <!--
 MainMenuContent.svelte
 Right-hand content of the global start menu.
-Loaded via machine.framer.loadIn('main-menu-content' /* zone */, 'main-menu.content' /* frame key */, collection).
+Loaded via machine.framer.loadIn('main-menu.content', collection, undefined, { zone: 'main-menu-content' }).
 
 @prop {string} collection - currently selected collection
 -->
@@ -36,7 +36,7 @@ Loaded via machine.framer.loadIn('main-menu-content' /* zone */, 'main-menu.cont
 		<button
 			type="button"
 			class="mmc-action mmc-action--primary"
-			onclick={() => machine.framer.loadInDialog('form', collection, undefined, { mode: 'create' })}
+			onclick={() => machine.framer.loadInDialog('form', collection, undefined, { vars: { mode: 'create' } })}
 		>
 			Créer
 		</button>
@@ -48,25 +48,25 @@ Loaded via machine.framer.loadIn('main-menu-content' /* zone */, 'main-menu.cont
 		main-menu-content-frame {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-md, 1rem);
-			padding: var(--gutter-md, 1rem);
-			background: var(--color-surface, #ffffff);
-			color: var(--color-text, #111827);
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm);
+			background: var(--color-surface-raised);
+			color: var(--color-text);
 			overflow-y: auto;
 		}
 		.mmc-title {
 			margin: 0;
-			font-size: 1.125rem;
-			font-weight: 600;
+			font-size: var(--text-md);
+			font-weight: var(--font-semibold);
 		}
 		.mmc-meta {
 			margin: 0;
-			color: var(--color-text-muted, #6b7280);
-			font-size: 0.875rem;
+			color: var(--color-text-muted);
+			font-size: var(--text-sm);
 		}
 		main-menu-content-actions {
 			display: flex;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-xs);
 			flex-wrap: wrap;
 		}
 		.mmc-action {
@@ -75,25 +75,26 @@ Loaded via machine.framer.loadIn('main-menu-content' /* zone */, 'main-menu.cont
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
-			padding: 0.375rem 0.75rem;
-			border-radius: var(--radius-sm, 4px);
-			background: var(--color-surface-alt, #f3f4f6);
-			border: 1px solid var(--color-border);
-			color: var(--color-text, #111827);
-			font-size: 0.875rem;
+			min-height: var(--control-height);
+			padding: 0 var(--pad-sm);
+			border-radius: var(--radius-sm);
+			background: var(--color-surface-raised);
+			border: var(--border-width) solid var(--color-border-strong);
+			color: var(--color-text);
+			font-size: var(--text-sm);
 			cursor: pointer;
 		}
 		.mmc-action:hover {
-			background: var(--color-surface-elevated, #e5e7eb);
+			background: var(--color-surface-hover);
 		}
 		.mmc-action--primary {
-			background: var(--color-primary, #2563eb);
-			border-color: var(--color-primary, #2563eb);
-			color: var(--color-on-primary, #ffffff);
+			background: var(--color-primary);
+			border-color: var(--color-primary-hover);
+			color: var(--default-color-surface-light);
 		}
 		.mmc-action--primary:hover {
-			background: var(--color-primary-hover, #1d4ed8);
-			border-color: var(--color-primary-hover, #1d4ed8);
+			background: var(--color-primary-hover);
+			border-color: var(--color-primary-hover);
 		}
 	}
 </style>

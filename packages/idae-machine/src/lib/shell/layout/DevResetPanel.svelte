@@ -134,59 +134,61 @@ Dev-only panel to reset server data and/or client IDB.
 </div>
 
 <style>
+	@layer components {
 	.dev-reset-panel {
-		border: 2px solid #f59e0b;
-		border-radius: 6px;
-		background: #fffbeb;
-		padding: 0.75rem;
-		font-size: 0.8rem;
+		border: var(--focus-ring-width) solid var(--color-warning);
+		border-radius: var(--radius-xs);
+		background: color-mix(in oklch, var(--color-warning) 12%, var(--color-surface-raised));
+		padding: var(--pad-sm);
+		font-size: var(--text-xs);
 	}
 	.dev-reset-header {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
-		margin-bottom: 0.5rem;
+		gap: var(--gutter-sm);
+		margin-bottom: var(--marg-sm);
 	}
 	.dev-badge {
-		background: #f59e0b;
-		color: white;
-		font-size: 0.65rem;
-		font-weight: 700;
-		padding: 1px 5px;
-		border-radius: 3px;
-		letter-spacing: 0.05em;
+		background: var(--color-warning);
+		color: var(--default-color-surface-light);
+		font-size: var(--text-xs);
+		font-weight: var(--font-bold);
+		padding: 0 var(--pad-xs);
+		border-radius: var(--radius-xs);
+		letter-spacing: var(--tracking-wider);
 	}
 	.dev-reset-steps {
 		display: flex;
 		flex-direction: column;
-		gap: 0.3rem;
-		margin-bottom: 0.5rem;
+		gap: var(--gutter-xs);
+		margin-bottom: var(--marg-sm);
 	}
 	.step {
 		display: flex;
 		align-items: center;
-		gap: 0.5rem;
+		gap: var(--gutter-sm);
 	}
 	.step-icon { width: 1.2em; text-align: center; }
 	.step-label { flex: 1; }
-	.dev-reset-actions { margin-top: 0.5rem; }
+	.dev-reset-actions { margin-top: var(--marg-sm); }
 	.btn-dev {
-		padding: 2px 8px;
-		font-size: 0.75rem;
-		border: 1px solid #d97706;
-		background: white;
-		border-radius: 3px;
+		padding: var(--pad-xs) var(--pad-sm);
+		font-size: var(--text-xs);
+		border: var(--border-width) solid var(--color-warning);
+		background: var(--color-surface-raised);
+		border-radius: var(--radius-xs);
 		cursor: pointer;
 	}
-	.btn-dev:hover:not(:disabled) { background: #fef3c7; }
+	.btn-dev:hover:not(:disabled) { background: color-mix(in oklch, var(--color-warning) 16%, var(--color-surface-raised)); }
 	.btn-dev:disabled { opacity: 0.5; cursor: not-allowed; }
-	.btn-danger { border-color: #dc2626; color: #dc2626; }
-	.btn-danger:hover:not(:disabled) { background: #fef2f2; }
-	.btn-full { width: 100%; padding: 4px 8px; }
+	.btn-danger { border-color: var(--color-critical); color: var(--color-critical); }
+	.btn-danger:hover:not(:disabled) { background: color-mix(in oklch, var(--color-critical) 12%, var(--color-surface-raised)); }
+	.btn-full { width: 100%; padding: var(--pad-xs) var(--pad-sm); }
 	.dev-reset-error {
-		margin-top: 0.4rem;
-		color: #dc2626;
-		font-size: 0.75rem;
+		margin-top: var(--marg-xs);
+		color: var(--color-critical);
+		font-size: var(--text-xs);
 		word-break: break-all;
+	}
 	}
 </style>

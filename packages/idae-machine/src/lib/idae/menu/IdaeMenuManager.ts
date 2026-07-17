@@ -42,7 +42,7 @@ export type IdaeMenuSnapshotReader = () => Omit<IdaeMenuTreeSnapshot, 'allowedCo
 export function createDefaultLaunchVerbs(framer: MachineFrameManager): MenuLaunchVerbs {
 	return {
 		explorer: (collection) => framer.loadFrame('explorer', collection),
-		create: (collection) => framer.loadInDialog('form', collection, undefined, { mode: 'create' }),
+		create: (collection) => framer.loadInDialog('form', collection, undefined, { vars: { mode: 'create' } }),
 		dashboard: (collection) => framer.loadFrame('dashboard', collection),
 		space: (collection) => framer.loadFrame('space', collection),
 		fiche: (collection, id) => framer.loadInDialog('fiche', collection, id),

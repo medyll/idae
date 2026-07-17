@@ -605,7 +605,12 @@ export class Machine {
 	private _buildRouter(config: MachineRouterConfig = {}): MachineRouter {
 		const r = new MachineRouter(config);
 		r.init();
-		this._frameManager.setRouter((url) => r.push(url));
+		this._frameManager.setRouter({
+			push: (url) => r.push(url),
+			openFrame: (event) => r.openFrame(event),
+			openDialog: (event) => r.openDialog(event),
+			closeFrame: (frameId) => r.closeFrame(frameId)
+		});
 		setupNavigationTracking(this._frameManager, (col, id) => this._renderLabel(col, id));
 		return r;
 	}

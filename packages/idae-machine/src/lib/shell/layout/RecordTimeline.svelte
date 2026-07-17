@@ -145,8 +145,8 @@ appuser_audit and appuser_activity collections. Read-only and reactive.
 		record-timeline-component {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm);
-			padding-top: var(--pad-md);
+			gap: var(--gutter-xs);
+			padding-top: var(--pad-sm);
 			border-top: var(--border-width) solid var(--color-border);
 		}
 		record-timeline-header {
@@ -158,7 +158,7 @@ appuser_audit and appuser_activity collections. Read-only and reactive.
 		.timeline {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm);
+			gap: var(--gutter-xs);
 			margin: 0;
 			padding: 0;
 			list-style: none;
@@ -166,7 +166,7 @@ appuser_audit and appuser_activity collections. Read-only and reactive.
 		.timeline-item {
 			display: grid;
 			grid-template-columns: var(--icon-size-sm) minmax(0, 1fr);
-			gap: var(--gutter-sm);
+			gap: var(--gutter-xs);
 		}
 		.timeline-marker {
 			display: inline-flex;

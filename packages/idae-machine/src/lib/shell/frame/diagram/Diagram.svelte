@@ -173,7 +173,7 @@
 	{/if}
 </diagram-component>
 
-<style>
+	<style lang="postcss">
 	@layer components {
 		:global(diagram-component) {
 			display: flex;
@@ -188,13 +188,12 @@
 			flex: 1;
 			min-height: 0;
 		}
-	}
 
-	svg {
-		width: 100%;
-		height: 100%;
-		min-height: 400px;
-	}
+		svg {
+			width: 100%;
+			height: 100%;
+			min-height: 50vh;
+		}
 
 	.diagram-status {
 		padding: var(--pad-md);
@@ -206,7 +205,7 @@
 	}
 
 	.node-label {
-		font-size: 11px;
+		font-size: var(--default-font-size);
 		text-anchor: middle;
 		fill: var(--color-text);
 		pointer-events: none;
@@ -214,7 +213,7 @@
 	}
 
 	.node-collection {
-		font-size: 9px;
+		font-size: calc(var(--default-font-size) * 0.8);
 		text-anchor: middle;
 		fill: var(--color-text-muted);
 		pointer-events: none;
@@ -222,7 +221,7 @@
 	}
 
 	.edge-label {
-		font-size: 9px;
+		font-size: calc(var(--default-font-size) * 0.8);
 		text-anchor: middle;
 		fill: var(--color-text-muted);
 		pointer-events: none;
@@ -240,5 +239,6 @@
 	.diagram-node--neighbor:focus circle {
 		fill: var(--color-primary-muted);
 		stroke: var(--color-primary);
+	}
 	}
 </style>

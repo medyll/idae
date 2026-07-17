@@ -53,26 +53,26 @@ Mounted via machine.framer.loadFrame('space', collection).
 		space-component {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-lg, 1.5rem);
-			padding: var(--gutter-lg, 1.5rem);
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm);
 			overflow-y: auto;
 		}
 		space-header {
 			display: flex;
 			align-items: baseline;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-sm);
 		}
 		space-header h2 {
 			margin: 0;
 			text-transform: capitalize;
 		}
 		.space-record {
-			color: var(--color-text-muted, #888);
-			font-size: var(--font-size-sm, 0.875rem);
+			color: var(--color-text-muted);
+			font-size: var(--text-sm);
 		}
 		space-actions {
 			display: flex;
-			gap: var(--gutter-md, 1rem);
+			gap: var(--gutter-sm);
 			flex-wrap: wrap;
 		}
 		.space-tile {
@@ -81,31 +81,32 @@ Mounted via machine.framer.loadFrame('space', collection).
 			flex-direction: column;
 			align-items: center;
 			justify-content: center;
-			gap: var(--gutter-xs, 0.25rem);
-			width: 8rem;
-			height: 8rem;
-			padding: var(--gutter-sm, 0.5rem);
-			border-radius: var(--radius-md, 8px);
-			background: var(--color-surface-alt, #f3f4f6);
-			color: var(--color-text, #111827);
+			gap: var(--gutter-xs);
+			width: calc(var(--gutter-3xl) * 1.75);
+			height: calc(var(--gutter-3xl) * 1.75);
+			padding: var(--pad-sm);
+			border: var(--border-width) solid var(--color-border);
+			border-radius: var(--radius-xs);
+			background: var(--color-surface-alt);
+			color: var(--color-text);
 			cursor: pointer;
 			text-align: center;
 		}
 		.space-tile:hover {
-			background: var(--color-surface-elevated, #e5e7eb);
+			background: var(--color-surface-hover);
 		}
 		.space-tile-icon :global(svg) {
-			font-size: 1.75rem;
+			font-size: var(--icon-size-md);
 		}
 		.space-tile-label {
-			font-size: var(--font-size-sm, 0.875rem);
-			line-height: 1.2;
+			font-size: var(--text-sm);
+			line-height: var(--leading-tight);
 		}
 		space-body {
 			display: block;
 		}
 		.space-empty {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 		}
 	}
 </style>

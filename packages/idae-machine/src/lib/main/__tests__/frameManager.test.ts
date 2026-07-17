@@ -216,6 +216,28 @@ describe('MachineFrameManager', () => {
 			expect(controls.close).toHaveBeenCalled();
 		});
 
+		it('notifies the router when a zone frame closes', () => {
+			const closeRoute = vi.fn();
+			manager.setRouter({ push: vi.fn(), openFrame: vi.fn(), openDialog: vi.fn(), closeFrame: closeRoute });
+			const controls = makeControls();
+			manager.register('explorer:main', controls);
+
+			manager.close('explorer:main');
+
+			expect(controls.close).toHaveBeenCalledOnce();
+			expect(closeRoute).toHaveBeenCalledWith('explorer:main');
+		});
+
+		it('does not notify the router during a silent routed close', () => {
+			const closeRoute = vi.fn();
+			manager.setRouter({ push: vi.fn(), openFrame: vi.fn(), openDialog: vi.fn(), closeFrame: closeRoute });
+			manager.register('dialog:fiche:vehicle:42', makeControls());
+
+			manager.close('dialog:fiche:vehicle:42', { history: false });
+
+			expect(closeRoute).not.toHaveBeenCalled();
+		});
+
 		it('show throws for unknown frame', () => {
 			expect(() => manager.show('missing')).toThrow('[FrameManager] frame "missing" not found');
 		});

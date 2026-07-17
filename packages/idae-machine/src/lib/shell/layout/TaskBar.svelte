@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { authState } from '$lib/main/machine/authState.svelte.js';
+	import Icon from '@iconify/svelte';
 	import MainMenu from './MainMenu.svelte';
 	import MenuSettings from './MenuSettings.svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
@@ -47,10 +48,11 @@
 				mainMenuOpen = !mainMenuOpen;
 			}}
 		>
-			⊟
+			<Icon icon="ph:squares-four" />
 		</button>
 		<button type="button" class="taskbar-btn taskbar-btn--primary" onclick={openExplorer} title="Open Explorer">
-			⊞ Explorer
+			<Icon icon="ph:table" />
+			<span>Explorer</span>
 		</button>
 	</div>
 
@@ -62,7 +64,7 @@
 					{frameId}
 				</button>
 				<button type="button" class="taskbar-close" onclick={() => controls.close()} aria-label="Close {frameId}">
-					×
+					<Icon icon="ph:x" />
 				</button>
 			</div>
 		{:else}
@@ -85,7 +87,7 @@
 				settingsOpen = !settingsOpen;
 			}}
 		>
-			⚙
+			<Icon icon="ph:gear" />
 		</button>
 		<div class="taskbar-user">
 			<button
@@ -97,7 +99,7 @@
 					userMenuOpen = !userMenuOpen;
 				}}
 			>
-				👤
+				<Icon icon="ph:user-circle" />
 			</button>
 			{#if userMenuOpen}
 				<div class="taskbar-user-menu">

@@ -67,11 +67,11 @@ Email field atom. Show mode renders a mailto link.
 {/if}
 
 <style>
-	.field-email { display: flex; flex-direction: column; gap: 0.25rem; width: 100%; }
-	.email-input { width: 100%; padding: 0.5rem; border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 1rem; }
-	.email-input:focus { border-color: var(--color-primary); outline: none; box-shadow: 0 0 0 0.2rem var(--color-primary-muted); }
+	.field-email { display: flex; flex-direction: column; gap: var(--gutter-xs); width: 100%; }
+	.email-input { width: 100%; padding: var(--pad-xs) var(--pad-sm); border: var(--focus-ring-width) solid var(--color-border); border-radius: var(--radius-sm); font-size: var(--text-sm); }
+	.email-input:focus { border-color: var(--color-primary); outline: none; box-shadow: none; }
 	.field-email.has-error .email-input { border-color: var(--color-critical); }
-	.error-message { color: var(--color-critical); font-size: 0.875rem; }
+	.error-message { color: var(--color-critical); font-size: var(--text-xs); }
 	input:disabled { background: var(--color-surface-alt); cursor: not-allowed; }
 	.field-empty { color: var(--color-text-muted); }
 </style>

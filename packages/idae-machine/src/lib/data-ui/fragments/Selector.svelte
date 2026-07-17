@@ -36,15 +36,21 @@ Selection list that renders items via snippet prop
   {@render selectorFallback?.()}
 {/if}
 
-<style>
-  .active {
-    border: 1px solid;
-    border-bottom-width: 2px;
-    border-color: #737373;
-  }
-  .inactive {
-    border: 1px solid transparent;
-    border-bottom-width: 2px;
-    opacity: 0.6;
+<style lang="postcss">
+  @layer components {
+    .active,
+    .inactive {
+      border: var(--border-width) solid transparent;
+      border-bottom-width: calc(var(--border-width) * 2);
+    }
+
+    .active {
+      border-color: var(--color-border-strong);
+      background: var(--color-surface-alt);
+    }
+
+    .inactive {
+      color: var(--color-text-muted);
+    }
   }
 </style>

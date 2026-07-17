@@ -76,7 +76,7 @@ Global context menu container that handles positioning and content loading
   bind:this={menuElement}
   class="context-menu"
   class:open={state.isOpen}
-  style="position: fixed; left: {state.position.x}px; top: {state.position.y}px; z-index: 10000;"
+  style="position: fixed; left: {state.position.x}px; top: {state.position.y}px;"
 >
   <div class="context-menu-content" bind:this={contentElement}></div>
 </div>
@@ -86,12 +86,13 @@ Global context menu container that handles positioning and content loading
     .context-menu {
       display: none;
       background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
+      border: var(--border-width) solid var(--color-border-strong);
+      border-radius: var(--radius-sm);
       box-shadow: var(--shadow-lg);
-      padding: var(--gutter-sm);
-      min-width: 200px;
-      max-width: 320px;
+      padding: var(--pad-xs);
+      min-width: var(--sidebar-width);
+      max-width: var(--panel-width);
+      z-index: var(--z-dropdown);
     }
     
     .context-menu.open {
@@ -100,7 +101,7 @@ Global context menu container that handles positioning and content loading
     
     .context-menu-content {
       width: 100%;
-      max-height: 400px;
+      max-height: 50vh;
       overflow-y: auto;
       overscroll-behavior: contain;
     }

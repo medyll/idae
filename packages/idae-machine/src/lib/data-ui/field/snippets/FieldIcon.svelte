@@ -56,7 +56,7 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 		.icon-edit {
 			display: flex;
 			align-items: center;
-			gap: var(--space-1, 0.25rem);
+			gap: var(--gap-xs);
 		}
 		.icon-edit input {
 			flex: 1;

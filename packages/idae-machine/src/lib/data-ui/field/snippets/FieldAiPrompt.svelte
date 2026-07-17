@@ -139,7 +139,7 @@ Edit-only field; show mode renders the raw text.
 			flex: 1;
 			resize: none;
 			field-sizing: content;
-			max-height: 200px;
+			max-height: 30vh;
 		}
 	}
 </style>

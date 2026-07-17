@@ -67,7 +67,7 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 		}
 		.data-sort-btn.active {
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			border-color: var(--color-primary);
 		}
 		.data-sort-icon {

@@ -210,9 +210,9 @@ Dynamic context menu content that builds menu items based on permissions and col
   @layer components {
     context-menu-toolbar {
       display: block;
-      padding: 0 var(--gutter-sm, 0.5rem) var(--gutter-xs, 0.25rem);
-      border-bottom: 1px solid var(--color-border);
-      margin-bottom: var(--gutter-xs, 0.25rem);
+      padding: 0 var(--pad-sm) var(--pad-xs);
+      border-bottom: var(--border-width) solid var(--color-border);
+      margin-bottom: var(--marg-xs);
     }
 
     .context-menu-list {
@@ -221,32 +221,32 @@ Dynamic context menu content that builds menu items based on permissions and col
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: var(--gutter-xs, 0.25rem);
+      gap: var(--gap-xs);
     }
     
     .context-menu-item {
       display: flex;
       align-items: center;
-      gap: var(--gutter-sm, 0.5rem);
+      gap: var(--gap-sm);
       width: 100%;
-      padding: var(--gutter-xs, 0.25rem) var(--gutter-sm, 0.5rem);
+      min-height: var(--control-height);
+      padding: var(--pad-xs) var(--pad-sm);
       background: transparent;
       border: none;
-      border-radius: var(--radius-sm);
+      border-radius: var(--radius-xs);
       cursor: pointer;
       text-align: left;
-      font-size: var(--font-size-sm);
-      line-height: 1.2;
-      transition: background-color 0.1s ease;
+      line-height: var(--leading-snug);
+      transition: background-color var(--transition-fast);
     }
     
     .context-menu-item:hover:not(.disabled) {
-      background: var(--color-hover);
+      background: var(--color-surface-alt);
     }
     
     .context-menu-item:focus-visible:not(.disabled) {
-      outline: 2px solid var(--color-primary);
-      outline-offset: -2px;
+      outline: calc(var(--border-width) * 2) solid var(--color-primary);
+      outline-offset: calc(var(--border-width) * -2);
     }
     
     .context-menu-item.disabled {
@@ -257,8 +257,6 @@ Dynamic context menu content that builds menu items based on permissions and col
     .context-menu-icon {
       width: 1.2em;
       text-align: center;
-      font-family: var(--font-icons, 'Font Awesome 6 Free');
-      font-weight: 900;
     }
     
     .context-menu-label {
@@ -269,9 +267,9 @@ Dynamic context menu content that builds menu items based on permissions and col
     }
     
     .context-menu-divider {
-      height: 1px;
+      height: var(--border-width);
       background: var(--color-border);
-      margin: var(--gutter-xs, 0.25rem) 0;
+      margin: var(--marg-xs) 0;
     }
   }
 </style>

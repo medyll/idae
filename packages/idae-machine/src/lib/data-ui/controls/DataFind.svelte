@@ -136,12 +136,13 @@ Debounced schema-aware search. Advanced mode exposes the field and match operato
 			position: relative;
 		}
 		.data-find-input {
+			min-height: var(--control-height);
 			padding: var(--pad-xs) var(--pad-sm);
-			border: var(--border-width) solid var(--color-border);
-			background: var(--color-surface);
+			border: var(--focus-ring-width) solid var(--color-border);
+			background: var(--color-surface-raised);
 			border-radius: var(--radius-sm);
 			font-size: var(--text-sm);
-			min-inline-size: calc(var(--gutter-3xl) * 3);
+			min-inline-size: calc(var(--gutter-3xl) * 2.5);
 		}
 		.data-find-field {
 			min-inline-size: calc(var(--gutter-3xl) * 2);
@@ -157,10 +158,12 @@ Debounced schema-aware search. Advanced mode exposes the field and match operato
 			background: transparent;
 			border: none;
 			cursor: pointer;
-			font-size: var(--text-lg);
+			min-height: 0;
+			font-size: var(--text-md);
 			line-height: 1;
 			color: var(--color-text-muted);
 			padding: 0 var(--pad-xs);
+			box-shadow: none;
 		}
 	}
 </style>

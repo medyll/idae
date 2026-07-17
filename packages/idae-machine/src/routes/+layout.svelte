@@ -16,14 +16,13 @@
 
 	const bootPromise: Promise<void> = _g.__idae_boot ?? doBoot();
 	_g.__idae_boot = bootPromise;
-	void bootPromise.then(() => { booted = true; });
+	void bootPromise.then(() => {
+		booted = true;
+	});
 
 	async function doBoot(): Promise<void> {
-		console.log('[idae-machine] doBoot started');
 		const org = typeof localStorage !== 'undefined' ? localStorage.getItem('idae_org') : null;
 		const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
-		console.log('[idae-machine] org:', org);
-		console.log('[idae-machine] token:', token ? 'present' : 'missing');
 
 		// No org, or org but no token yet (first visit / logged out) = not authenticated.
 		// Skip boot entirely: boot()'s warmup fetches auth-gated collections, so running
@@ -31,16 +30,13 @@
 		// run first; the reload after login carries the token and re-enters doBoot to
 		// boot for real.
 		if (!org || !token) {
-			console.log('[idae-machine] Not authenticated (org:', org, 'token:', token ? 'present' : 'missing', ') — skipping boot until login');
 			// Login dialog still needs the frame registry (loadInDialog('login', ...))
 			// even though full boot() — which normally does this — never runs here.
 			frameCatalog.registerFrames(machine.componentRegistry);
-			booted = true;
 			return;
 		}
 
 		try {
-			console.log('[idae-machine] Booting machine...');
 			await machine.boot({
 				org: org!, domain: 'machine', version: 7,
 				sync: {
@@ -55,19 +51,19 @@
 					...(token ? { token } : {}),
 				},
 			});
-			console.log('[idae-machine] Machine booted successfully');
 		} catch (err) {
 			console.error('[idae-machine] Boot failed:', err);
-			// A "blocked" boot (another tab held the IDB during a versioned upgrade — common
-			// on Edge) is transient: the lock clears once the other connection closes. Reload
-			// once WITHOUT wiping auth/IDB. Only a genuine corrupt boot falls through to the
-			// destructive recovery below.
+			// Recover only the subsystem identified by the error. Network failures are
+			// surfaced as-is and never erase the session or local database.
 			if (isIdbBlockedError(err) && tryBlockedReload()) return;
-			await recoverFromCorruptBoot(org, err as Error);
-			return;
+			if (isAuthError(err) && tryAuthReset()) return;
+			if (isRecoverableIdbError(err)) {
+				await recoverFromCorruptBoot(org, err as Error);
+				return;
+			}
+			throw err;
 		}
 		machine.initRouter({ baseUrl: '/', authEnabled: false });
-		console.log('[idae-machine] Router initialized');
 
 		if (typeof window !== 'undefined') {
 			(window as any).__machine = machine;
@@ -75,24 +71,33 @@
 
 		// Block render until all schema collections are in IDB — prevents empty-set race.
 		// Collections are now derived from the model (base='machine_app') instead of hardcoded array.
-		console.log('[idae-machine] Starting warmup...');
 		await machine.warmup();
-		console.log('[idae-machine] Warmup completed');
 
 		restoreSession();
 		// Boot succeeded — reset the one-shot guards so a future transient block can retry.
 		if (typeof sessionStorage !== 'undefined') {
 			sessionStorage.removeItem('idae_boot_blocked_retry');
 			sessionStorage.removeItem('idae_boot_recovery_attempted');
+			sessionStorage.removeItem('idae_auth_recovery_attempted');
 		}
-		console.log('[idae-machine] doBoot completed, booted=true');
-		booted = true;
 	}
 
 	/** True when boot failed because the IDB open/upgrade was blocked by another connection. */
 	function isIdbBlockedError(err: unknown): boolean {
 		const msg = err instanceof Error ? err.message : String(err);
 		return /blocked|timed out/i.test(msg);
+	}
+
+	function isAuthError(err: unknown): boolean {
+		const msg = err instanceof Error ? err.message : String(err);
+		return /\b(401|403)\b|unauthori[sz]ed|forbidden/i.test(msg);
+	}
+
+	function isRecoverableIdbError(err: unknown): boolean {
+		const msg = err instanceof Error ? err.message : String(err);
+		return /indexeddb|\bidb\b|object store|versionerror|schema hash|database.*(?:corrupt|upgrade)/i.test(
+			msg
+		);
 	}
 
 	/**
@@ -109,11 +114,24 @@
 		return true;
 	}
 
+	/** Clear an expired/invalid session once, without touching local application data. */
+	function tryAuthReset(): boolean {
+		const FLAG = 'idae_auth_recovery_attempted';
+		if (typeof sessionStorage === 'undefined' || sessionStorage.getItem(FLAG)) return false;
+		sessionStorage.setItem(FLAG, '1');
+		if (typeof localStorage !== 'undefined') {
+			localStorage.removeItem('auth_token');
+			localStorage.removeItem('auth_user');
+			localStorage.removeItem('auth_grants');
+			localStorage.removeItem('auth_menu_baseline');
+		}
+		if (typeof window !== 'undefined') window.location.reload();
+		return true;
+	}
+
 	/**
-	 * Boot can fail when local state (stale auth token / mismatched org / corrupt IDB
-	 * schema cache) drifts from the server — non-devs would otherwise hit a raw
-	 * "Boot failed" screen needing a manual localStorage.clear(). Wipe the local
-	 * state once and reload; if it still fails, surface the real error.
+	 * Recover once from a proven local database failure. Authentication and org are
+	 * deliberately preserved: a storage repair must not destroy the user session.
 	 */
 	async function recoverFromCorruptBoot(org: string, err: Error): Promise<void> {
 		const FLAG = 'idae_boot_recovery_attempted';
@@ -121,13 +139,7 @@
 			throw err;
 		}
 		sessionStorage.setItem(FLAG, '1');
-		console.warn('[idae-machine] Boot failed, clearing local state and retrying:', err);
-
-		if (typeof localStorage !== 'undefined') {
-			localStorage.removeItem('auth_token');
-			localStorage.removeItem('auth_user');
-			localStorage.removeItem('idae_org');
-		}
+		console.warn('[idae-machine] Local database failed, rebuilding it once:', err);
 		await deleteIdbDatabase(`${org}_machine`).catch(() => {});
 
 		if (typeof window !== 'undefined') window.location.reload();
@@ -135,19 +147,14 @@
 
 	/** Rehydrate auth from a persisted token so a reload doesn't re-prompt. */
 	function restoreSession(): void {
-		console.log('[idae-machine] restoreSession called');
 		if (typeof localStorage === 'undefined') return;
 		const token = localStorage.getItem('auth_token');
 		const rawUser = localStorage.getItem('auth_user');
-		console.log('[idae-machine] token:', token ? 'present' : 'missing');
-		console.log('[idae-machine] rawUser:', rawUser ? 'present' : 'missing');
 		if (!token || !rawUser) {
-			console.log('[idae-machine] No token or user, setting authed=false');
 			authState.authed = false;
 			return;
 		}
 		try {
-			console.log('[idae-machine] Parsing user and setting current user');
 			const user = JSON.parse(rawUser) as { userId: string; login: string; isAdmin: boolean };
 			// Grants are persisted at login — without them a non-admin would be denied
 			// every read by the client rights gate even though the server allows it.
@@ -169,7 +176,6 @@
 				grants,
 				menuBaseline
 			);
-			console.log('[idae-machine] User set, setting authed=true');
 			authState.authed = true;
 		} catch (err) {
 			console.error('[idae-machine] Error in restoreSession:', err);
@@ -179,12 +185,11 @@
 
 	// Gate: when booted but not authed, open the modal login over the splash.
 	$effect(() => {
-		console.log('[idae-machine] effect: booted=', booted, 'authed=', authState.authed);
 		if (booted && !authState.authed) {
-			console.log('[idae-machine] Opening login dialog');
-			void machine.framer.loadInDialog('login', 'appuser', undefined, undefined, {
+			void machine.framer.loadInDialog('login', 'appuser', undefined, {
 				modal: true,
-				closable: false
+				closable: false,
+				history: false
 			});
 		}
 	});

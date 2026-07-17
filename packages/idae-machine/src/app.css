@@ -3,20 +3,24 @@
 @import './styles/components.css';
 
 :root {
-  /* layout dimensions — not in css-base */
-  --sidebar-width: 240px;
-  --header-height: 48px;
-  --panel-width:   400px;
+	/* Legacy visual DNA, expressed through css-base theme seeds. */
+	--color-primary: oklch(0.56 0.16 250);
+	--default-color-text-light: oklch(0.32 0.006 265);
+	--default-color-text-dark: oklch(0.94 0.006 265);
+	--default-color-surface-light: oklch(0.985 0.002 265);
+	--default-color-surface-dark: oklch(0.19 0.008 265);
 
-  /* --color-bg maps to css-base surface-sunken */
-  --color-bg: var(--color-surface-sunken);
+	/* Legacy used tight, almost square chrome. Keep the css-base scale semantic. */
+	--radius-xs: calc(var(--gutter-xs) / 2);
+	--radius-sm: var(--gutter-xs);
+	--radius-md: var(--gutter-sm);
+	--radius-lg: var(--gutter-md);
+	--radius-xl: var(--gutter-lg);
 
-  /* Dark ambiance: soften css-base's near-pure-black dark (0.1/0.14/0.18) into
-     lifted, faintly cool-tinted greys. Seed overrides only — every computed
-     --color-surface-* derives from these, so the base/alt/raised hierarchy and
-     light-dark() theme switching stay intact (css-base rule: override seeds,
-     never computed tokens). Light seeds are left at css-base defaults. */
-  --default-color-surface-dark:        oklch(0.185 0.008 265); /* page base */
-  --default-color-surface-dark-alt:    oklch(0.215 0.008 265); /* sidebar, header */
-  --default-color-surface-dark-raised: oklch(0.245 0.008 265); /* cards, panels, dialogs */
+	/* Application layout dimensions. */
+	--sidebar-width: calc(var(--gutter-3xl) * 3.5);
+	--header-height: calc(var(--gutter-xl) + var(--gutter-sm));
+	--panel-width: calc(var(--gutter-3xl) * 6);
+	--control-height: calc(var(--gutter-md) + var(--gutter-sm));
+	--color-bg: var(--color-surface-sunken);
 }
