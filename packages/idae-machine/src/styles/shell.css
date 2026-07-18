@@ -67,14 +67,31 @@
 		padding: var(--pad-xs) var(--pad-sm);
 		font-size: var(--text-sm);
 		line-height: var(--leading-snug);
-		color: var(--color-text);
-		background: var(--color-surface-raised);
-		border: var(--border-width) solid transparent;
+		/* Legacy controls stay light in both themes. */
+		color: var(--default-color-text-light);
+		background: var(--default-color-surface-light);
+		border: var(--border-width) solid color-mix(
+			in oklch,
+			var(--default-color-text-light) 28%,
+			var(--default-color-surface-light)
+		);
 		border-radius: 0;
 		box-shadow: none;
 
 		&:hover:not(:disabled) {
-			border-color: var(--color-border-strong);
+			border-color: color-mix(
+				in oklch,
+				var(--default-color-text-light) 42%,
+				var(--default-color-surface-light)
+			);
+		}
+
+		&::placeholder {
+			color: color-mix(
+				in oklch,
+				var(--default-color-text-light) 62%,
+				var(--default-color-surface-light)
+			);
 		}
 
 		&:focus {
