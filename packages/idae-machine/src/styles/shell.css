@@ -69,8 +69,8 @@
 		line-height: var(--leading-snug);
 		color: var(--color-text);
 		background: var(--color-surface-raised);
-		border: var(--focus-ring-width) solid var(--color-border);
-		border-radius: var(--radius-sm);
+		border: var(--border-width) solid transparent;
+		border-radius: 0;
 		box-shadow: none;
 
 		&:hover:not(:disabled) {
@@ -79,7 +79,8 @@
 
 		&:focus {
 			border-color: var(--color-primary);
-			outline: none;
+			outline: var(--border-width) solid var(--color-primary);
+			outline-offset: 0;
 			box-shadow: none;
 		}
 	}
@@ -88,6 +89,12 @@
 		font-size: var(--text-sm);
 		font-weight: var(--font-normal);
 		color: var(--color-text);
+	}
+
+	.field-stack > label,
+	.field > label,
+	.form-control > label {
+		padding: var(--pad-xs) 0;
 	}
 
 	.app-shell {
@@ -165,6 +172,8 @@
 	}
 
 	.taskbar {
+		position: relative;
+		z-index: var(--z-dropdown);
 		gap: var(--gutter-xs);
 		height: var(--header-height);
 		min-height: var(--header-height);

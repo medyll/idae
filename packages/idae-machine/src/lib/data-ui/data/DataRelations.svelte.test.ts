@@ -2,6 +2,8 @@ import { cleanup, render, screen, waitFor } from '@testing-library/svelte';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import type { MachineModel } from '$lib/types/index.js';
 import DataList from './DataList.svelte';
+import ListMode from '$lib/data-ui/controls/ListMode.svelte';
+import Group from '$lib/data-ui/controls/Group.svelte';
 import DataListFk from './DataListFk.svelte';
 import DataListRfk from './DataListRfk.svelte';
 import { machine } from '$lib/main/machine.js';
@@ -204,6 +206,28 @@ describe('DataList relation components', () => {
 			expect(list.classList.contains('list-stack')).toBe(true);
 			expect(list.classList.contains('list-grid')).toBe(false);
 		});
+
+		it('does not read live shared mode or group prefs when usePrefs is false', async () => {
+			const modeControls = render(ListMode, { collection: 'vehicle' });
+			await screen.getByRole('button', { name: 'table' }).click();
+			modeControls.unmount();
+
+			const groupControls = render(Group, { collection: 'vehicle' });
+			await screen.getByRole('button', { name: 'Group ▾' }).click();
+			await screen.getByRole('button', { name: 'status' }).click();
+			groupControls.unmount();
+
+			render(DataList, {
+				collection: 'vehicle',
+				mode: 'list',
+				groupBy: 'brand',
+				usePrefs: false
+			});
+
+			expect(await screen.findByRole('list')).not.toBeNull();
+			expect(screen.queryByRole('table')).toBeNull();
+			expect(document.querySelector('.data-list-group-header')?.textContent).toContain('Renault');
+		});
 	});
 
 	describe('DataListFk', () => {
@@ -286,6 +310,7 @@ describe('DataList relation components', () => {
 			const headerTexts = Array.from(groupHeaders).map((h) => h.textContent);
 			expect(headerTexts.some((t) => t?.includes('Renault'))).toBe(true);
 			expect(headerTexts.some((t) => t?.includes('Peugeot'))).toBe(true);
+			expect(getComputedStyle(groupHeaders[0]).display).toBe('table-cell');
 		});
 
 		it('groups items in grid mode', async () => {

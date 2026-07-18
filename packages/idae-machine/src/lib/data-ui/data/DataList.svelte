@@ -117,10 +117,14 @@ Consumers can override via the dataRecord snippet.
 
 	const prefs = useMachinePrefs(() => prefsScope, dataListPrefsDefaults(), () => usePrefs);
 
-	let userMode      = $derived(prefs.slots.mode);
-	let userSortBy    = $derived(prefs.slots.sortBy);
-	let userGroupBy   = $derived(prefs.slots.groupBy);
-	let userFindWhere = $derived(prefs.slots.find);
+	// A prefs-disabled list must be fully isolated from the shared scope cache.
+	// This matters when the same collection is rendered in two contexts (for
+	// example Explorer and MainMenu): disabling persistence must also disable
+	// live values previously written by the other context's toolbar.
+	let userMode      = $derived(usePrefs ? prefs.slots.mode : null);
+	let userSortBy    = $derived(usePrefs ? prefs.slots.sortBy : []);
+	let userGroupBy   = $derived(usePrefs ? prefs.slots.groupBy : undefined);
+	let userFindWhere = $derived(usePrefs ? prefs.slots.find : undefined);
 
 	const currentMode = $derived(userMode ?? modeProp);
 
@@ -611,6 +615,7 @@ Consumers can override via the dataRecord snippet.
 			border-bottom: var(--border-width) solid var(--color-border-strong);
 		}
 		:global(.data-table .data-list-group-header) {
+			display: table-cell;
 			text-align: left;
 			background: var(--color-surface-alt);
 		}

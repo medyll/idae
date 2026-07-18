@@ -7,6 +7,7 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 -->
 <script lang="ts">
 	import { API_URL, ORGS } from '$lib/config.js';
+	import { machine } from '$lib/main/machine.js';
 
 	const bootedOrg =
 		(typeof localStorage !== 'undefined' && localStorage.getItem('idae_org')) || 'demo';
@@ -16,6 +17,7 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 	let password = $state('');
 	let error = $state('');
 	let busy = $state(false);
+	let clearing = $state(false);
 
 	const SERVER_WAIT_ATTEMPTS = 10;
 	const SERVER_WAIT_MS = 500;
@@ -85,65 +87,158 @@ derives org from the verified JWT — see orgContextMiddleware). restoreSession(
 			busy = false;
 		}
 	}
+
+	async function clearLocalData(): Promise<void> {
+		if (busy || clearing) return;
+		if (!window.confirm('Vider le stockage local et la base IndexedDB de cette application ?')) return;
+
+		error = '';
+		clearing = true;
+		try {
+			localStorage.clear();
+			await machine.resetClientData();
+		} catch {
+			error = 'Impossible de vider les données locales';
+			clearing = false;
+		}
+	}
 </script>
 
 <login-component>
-	<form class="form form-stack" onsubmit={submit}>
-		<div class="field-stack">
-			<label for="login-org">Organisation</label>
-			<select id="login-org" class="form-select" bind:value={org}>
-				{#each ORGS as o (o)}
-					<option value={o}>{o}</option>
-				{/each}
-			</select>
-		</div>
+	<login-panel>
+		<form class="form form-stack" onsubmit={submit}>
+			<login-header>Identification</login-header>
 
-		<div class="field-stack">
-			<label for="login-user">Utilisateur</label>
-			<input id="login-user" type="text" autocomplete="username" bind:value={login} required />
-		</div>
+			<div class="field-stack">
+				<label for="login-org">Organisation</label>
+				<select id="login-org" class="form-select" bind:value={org}>
+					{#each ORGS as o (o)}
+						<option value={o}>{o}</option>
+					{/each}
+				</select>
+			</div>
 
-		<div class="field-stack">
-			<label for="login-pass">Mot de passe</label>
-			<input
-				id="login-pass"
-				type="password"
-				autocomplete="current-password"
-				bind:value={password}
-				required
-			/>
-		</div>
+			<div class="field-stack">
+				<label for="login-user">Login</label>
+				<input
+					id="login-user"
+					type="text"
+					placeholder="Identification"
+					autocomplete="username"
+					bind:value={login}
+					required
+				/>
+			</div>
 
-		{#if error}
-			<login-error role="alert">{error}</login-error>
-		{/if}
+			<div class="field-stack">
+				<label for="login-pass">Mot de passe</label>
+				<input
+					id="login-pass"
+					type="password"
+					placeholder="Mot de passe"
+					autocomplete="current-password"
+					bind:value={password}
+					required
+				/>
+			</div>
 
-		<login-actions>
-			<button type="submit" class="btn-primary" disabled={busy}>
-				{busy ? 'Connexion…' : 'Se connecter'}
-			</button>
-		</login-actions>
-	</form>
+			{#if error}
+				<login-error role="alert">{error}</login-error>
+			{/if}
+
+			<login-actions>
+				<button type="submit" disabled={busy || clearing}>
+					{busy ? 'Connexion…' : 'Valider'}
+				</button>
+				<button type="button" class="btn-danger" disabled={busy || clearing} onclick={clearLocalData}>
+					{clearing ? 'Nettoyage…' : 'Vider les données locales'}
+				</button>
+			</login-actions>
+		</form>
+	</login-panel>
 </login-component>
 
 <style>
-	@layer components {
+	@layer login-legacy {
 		login-component {
+			position: fixed;
+			inset: 0;
+			z-index: var(--z-modal);
+			display: flex;
+			align-items: center;
+			width: 100dvw;
+			height: 100dvh;
+			color: oklch(0.32 0 0);
+			font-size: var(--text-sm);
+			background: oklch(0.18 0 0);
+		}
+
+		login-panel {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+			padding: var(--pad-xs) 0 var(--pad-sm);
+			background: oklch(0.88 0 0 / 0.92);
+		}
+
+		login-panel > form {
+			display: flex;
+			flex-direction: column;
+			gap: 0;
+			width: calc(var(--gutter-3xl) * 3.2);
+			max-width: calc(100% - var(--gutter-xl));
+		}
+
+		login-header {
 			display: block;
-			min-width: calc(var(--gutter-3xl) * 4.5);
-			padding: var(--pad-sm);
+			margin-bottom: var(--marg-xs);
+			padding: var(--pad-xs);
+			font-weight: var(--font-bold);
+			text-align: center;
+			text-transform: uppercase;
+			border-bottom: var(--border-width) solid oklch(0.72 0 0);
+		}
+
+		.field-stack {
+			display: flex;
+			flex-direction: column;
+			gap: 0;
+			margin-bottom: var(--marg-sm);
 		}
 
 		login-error {
 			display: block;
+			margin-bottom: var(--marg-sm);
 			color: var(--color-critical);
 			font-size: var(--text-sm);
 		}
 
 		login-actions {
 			display: flex;
-			justify-content: flex-end;
-			margin-top: var(--marg-sm);
+			justify-content: flex-start;
+			gap: var(--gutter-xs);
+			flex-wrap: wrap;
+
+			& button {
+				min-height: calc(var(--gutter-xl) + var(--gutter-xs));
+				padding: 0 var(--pad-sm);
+				font-size: var(--text-sm);
+				font-weight: var(--font-normal);
+				color: oklch(0.32 0 0);
+				background: oklch(0.9 0 0);
+				border: var(--border-width) solid oklch(0.56 0.17 242);
+				border-radius: var(--radius-xs);
+				box-shadow: none;
+
+				&:hover:not(:disabled) {
+					background: oklch(0.84 0 0);
+				}
+
+				&:focus-visible {
+					outline: var(--focus-ring-width) solid oklch(0.56 0.17 242);
+					outline-offset: var(--focus-ring-gap);
+				}
+			}
 		}
 	}
 </style>
