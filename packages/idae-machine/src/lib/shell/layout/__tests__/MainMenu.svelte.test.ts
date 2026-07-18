@@ -138,7 +138,11 @@ describe('MainMenu', () => {
 		await fireEvent.click(screen.getByText('Widget').closest('button')!);
 
 		await waitFor(() =>
-			expect(loadInSpy).toHaveBeenCalledWith('main-menu-content', 'main-menu.content', 'widget')
+			expect(loadInSpy).toHaveBeenCalledWith(
+				'main-menu.content',
+				'widget',
+				{ zone: 'main-menu-content' }
+			)
 		);
 		expect(document.querySelector('[data-target-zone="main-menu-content"]')).toBeInTheDocument();
 	});

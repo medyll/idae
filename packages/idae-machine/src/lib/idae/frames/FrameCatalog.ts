@@ -6,7 +6,7 @@ import type { ComponentLoaderFn } from '$lib/main/router/componentRegistry.js';
 
 // Source of truth for domain frame keys — module augmentation below feeds this
 // into main/router/componentRegistry.ts's RegistryKey, so `machine.framer.loadFrame`,
-// ButtonAction's `frame` prop, etc. all get the real literal union, not `string`.
+// ButtonAction's `pathKey` prop, etc. all get the real literal union, not `string`.
 const IDAE_FRAME_ENTRIES = {
 	'explorer':         () => import('$lib/shell/frame/explorer/Explorer.svelte'),
 	'explorer.content': () => import('$lib/shell/frame/explorer/ExplorerContent.svelte'),

@@ -10,6 +10,10 @@ export interface OpenDialogOptions {
 	modal?: boolean;
 	/** Allow closing via button / Escape / backdrop. Defaults to true. */
 	closable?: boolean;
+	/** Allow dragging by the header. Defaults to true. */
+	draggable?: boolean;
+	/** Fill the viewport. Defaults to false. */
+	fullscreen?: boolean;
 	/** Mount target. Defaults to document.body. */
 	target?: HTMLElement;
 	onClose?: () => void;

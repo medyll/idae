@@ -21,7 +21,7 @@ Toggled from TaskBar's menu button via bind:open.
 	let selected = $state<string | undefined>(undefined);
 
 	function loadContent(collection: string): void {
-		machine.framer.loadIn(CONTENT_FRAME, collection, undefined, { zone: CONTENT_ZONE });
+		machine.framer.loadIn(CONTENT_FRAME, collection, { zone: CONTENT_ZONE });
 	}
 
 	$effect(() => {

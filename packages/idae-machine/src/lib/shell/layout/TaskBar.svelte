@@ -63,9 +63,11 @@
 				<button type="button" class="taskbar-btn" onclick={() => controls.toggle()}>
 					{frameId}
 				</button>
-				<button type="button" class="taskbar-close" onclick={() => controls.close()} aria-label="Close {frameId}">
-					<Icon icon="ph:x" />
-				</button>
+				{#if controls.closable !== false}
+					<button type="button" class="taskbar-close" onclick={() => controls.close()} aria-label="Close {frameId}">
+						<Icon icon="ph:x" />
+					</button>
+				{/if}
 			</div>
 		{:else}
 			<span class="taskbar-empty">No open frames</span>

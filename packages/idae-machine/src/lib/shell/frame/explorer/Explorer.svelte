@@ -43,7 +43,7 @@ Sidebar = DataList over appscheme, grouped by fks.appscheme_base.code (company s
 				<button
 					type="button"
 					class="explorer-scheme-item"
-					onclick={() => machine.framer.loadIn('explorer.content', scheme.code, undefined, { zone: frameId })}
+					onclick={() => machine.framer.loadIn('explorer.content', scheme.code, { zone: frameId })}
 				>
 					<Icon icon={schemeIcon(scheme.icon)} class="explorer-scheme-icon" />
 					<span class="explorer-scheme-label">{scheme.name ?? scheme.code}</span>

@@ -189,6 +189,8 @@
 			void machine.framer.loadInDialog('login', 'appuser', undefined, {
 				modal: true,
 				closable: false,
+				draggable: false,
+				fullscreen: true,
 				history: false
 			});
 		}

@@ -18,6 +18,8 @@ export interface FrameControls {
 	focus?: () => void;
 	/** Whether this frame appears as a window in the taskbar. Inner content zones (loadIn) set false. */
 	taskbar?: boolean;
+	/** Whether user-facing close controls are available. Defaults to true. */
+	closable?: boolean;
 }
 
 /**
@@ -47,19 +49,33 @@ export interface FrameRouterOptions {
 export interface DialogNavigationEvent extends Omit<NavigationEvent, 'zone'> {
 	modal?: boolean;
 	closable?: boolean;
+	draggable?: boolean;
+	fullscreen?: boolean;
 }
 
 export interface LoadFrameOptions {
 	vars?: Record<string, string>;
 	zone?: string;
+	/** Show user-facing close controls. Defaults to true. */
+	closable?: boolean;
 	/** Add the navigation to the URL and browser history. Defaults to true. */
 	history?: boolean;
+}
+
+export interface LoadInOptions extends Omit<LoadFrameOptions, 'zone'> {
+	/** Explicit target zone. loadIn never supplies a default. */
+	zone: string;
 }
 
 export interface LoadDialogOptions {
 	vars?: Record<string, string>;
 	modal?: boolean;
+	/** Show user-facing close controls. Defaults to true. */
 	closable?: boolean;
+	/** Allow dragging by the dialog header. Defaults to true. */
+	draggable?: boolean;
+	/** Fill the viewport. Defaults to false. */
+	fullscreen?: boolean;
 	/** Add open/close states to browser history. Defaults to true. */
 	history?: boolean;
 }
@@ -84,6 +100,7 @@ export class MachineFrameManager {
 	private mountingZones = new Set<string>();
 	/** zone name → set of registered frameIds in that zone (for sibling hide/show). */
 	private zoneFrames = new Map<string, Set<string>>();
+	private frameClosable = new Map<string, boolean>();
 	private _router?: FrameRouterOptions;
 	private silentCloseFrames = new Set<string>();
 	private _onNavigate?: (e: NavigationEvent) => void;
@@ -230,8 +247,8 @@ export class MachineFrameManager {
 	}
 
 	/**
-	 * URL-based navigation — pushes hash URL via router.
-	 * Back/forward, deep links, refresh all work by construction.
+	 * Frame navigation. By default it pushes a hash URL through the router;
+	 * history:false mounts directly and leaves the URL untouched.
 	 */
 	loadFrame(
 		pathKey: RegistryKey,
@@ -240,7 +257,11 @@ export class MachineFrameManager {
 		options: LoadFrameOptions = {}
 	): void {
 		if (!this._router) throw new Error('[FrameManager] router not set — call machine.init() first');
-		const { vars, zone = 'main', history = true } = options;
+		const { vars, zone = 'main', closable = true, history = true } = options;
+		const frameId = `${pathKey}:${zone}`;
+		this.frameClosable.set(frameId, closable);
+		const registered = this.registry.get(frameId);
+		if (registered) registered.closable = closable;
 		const event = { modulePath: pathKey, collection, collectionId, vars, zone };
 		if (history) {
 			const varsStr = vars && Object.keys(vars).length > 0 ? new URLSearchParams(vars).toString() : undefined;
@@ -257,20 +278,37 @@ export class MachineFrameManager {
 	}
 
 	/**
-	 * URL-based navigation into a specific zone.
-	 * Zone lives in options and currently defaults to "main".
+	 * Navigation into an explicit zone. Unlike loadFrame, loadIn requires options.zone.
 	 */
 	loadIn(
 		pathKey: RegistryKey,
 		collection: string,
-		collectionId?: string,
-		options: LoadFrameOptions = {}
+		options: LoadInOptions
+	): void;
+	loadIn(
+		pathKey: RegistryKey,
+		collection: string,
+		collectionId: string | number | undefined,
+		options: LoadInOptions
+	): void;
+	loadIn(
+		pathKey: RegistryKey,
+		collection: string,
+		collectionIdOrOptions: string | number | LoadInOptions | undefined,
+		maybeOptions?: LoadInOptions
 	): void {
+		const collectionId = typeof collectionIdOrOptions === 'object'
+			? undefined
+			: collectionIdOrOptions;
+		const options = typeof collectionIdOrOptions === 'object'
+			? collectionIdOrOptions
+			: maybeOptions;
+		if (!options) throw new Error('[FrameManager] loadIn requires options.zone');
 		this.loadFrame(pathKey, collection, collectionId, options);
 	}
 
 	/**
-	 * Open the content in a floating draggable dialog (off-router).
+	 * Open content in a dialog, routed by default and direct when history:false.
 	 * frameId is content-keyed: reopening the same (modulePath, collection, id) focuses the
 	 * existing dialog instead of duplicating; different content stacks new dialogs.
 	 */
@@ -280,12 +318,21 @@ export class MachineFrameManager {
 		collectionId?: string | number,
 		options: LoadDialogOptions = {}
 	): Promise<void> {
-		const { vars, history = true, modal, closable } = options;
+		const {
+			vars,
+			history = true,
+			modal,
+			closable = true,
+			draggable = true,
+			fullscreen = false
+		} = options;
 		const frameId = `dialog:${pathKey}:${collection}:${collectionId ?? ''}`;
+		this.frameClosable.set(frameId, closable);
 		console.log(`[FrameManager] loadInDialog: ${frameId}`);
 		// Already open → focus the existing dialog, don't reload/duplicate.
 		const existing = this.registry.get(frameId);
 		if (existing) {
+			existing.closable = closable;
 			console.log(`[FrameManager] loadInDialog: focusing existing dialog`);
 			existing.show();
 			existing.focus?.();
@@ -293,14 +340,23 @@ export class MachineFrameManager {
 		}
 		if (history) {
 			if (!this._router) throw new Error('[FrameManager] router not set — call machine.init() first');
-			this._router.openDialog({ modulePath: pathKey, collection, collectionId, vars, modal, closable });
+			this._router.openDialog({
+				modulePath: pathKey,
+				collection,
+				collectionId,
+				vars,
+				modal,
+				closable,
+				draggable,
+				fullscreen
+			});
 			return;
 		}
 		console.log(`[FrameManager] loadInDialog: loading new dialog`);
 		await this.load(frameId, pathKey, collection, collectionId, vars, async (id) => {
 			console.log(`[FrameManager] loadInDialog: opening dialog ${id}`);
 			const { openDialog } = await import('$lib/data-ui/fragments/dialog/dialog.svelte.js');
-			openDialog({ id, modal, closable });
+			openDialog({ id, modal, closable, draggable, fullscreen });
 			console.log(`[FrameManager] loadInDialog: dialog opened`);
 		});
 		console.log(`[FrameManager] loadInDialog: completed`);
@@ -325,6 +381,7 @@ export class MachineFrameManager {
 			? controls
 			: {
 				...controls,
+				closable: this.frameClosable.get(frameId) ?? controls.closable ?? true,
 				close: () => {
 					controls.close();
 					if (!this.silentCloseFrames.has(frameId)) this._router?.closeFrame(frameId);
@@ -483,6 +540,7 @@ export class MachineFrameManager {
 	clear(): void {
 		this.registry.clear();
 		this.zoneFrames.clear();
+		this.frameClosable.clear();
 	}
 }
 

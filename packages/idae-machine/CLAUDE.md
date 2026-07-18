@@ -68,10 +68,11 @@ machine.collection(name)  → raw QoolieCollection (imperative CRUD)
 ### Navigation (`machine.framer`)
 
 ```ts
-machine.framer.loadFrame(pathKey, collection, collectionId?, { vars?, zone?, history? })
-machine.framer.loadIn(pathKey, collection, collectionId?, { vars?, zone?, history? })
-machine.framer.loadInDialog(pathKey, collection, collectionId?, { vars?, history?, modal?, closable? })
-// Dialogs are content-keyed. history defaults to true; use history:false for ephemeral dialogs.
+machine.framer.loadFrame(pathKey, collection, collectionId?, { vars?, zone?, history?, closable? })
+machine.framer.loadIn(pathKey, collection, collectionId?, { vars?, zone, history?, closable? })
+machine.framer.loadInDialog(pathKey, collection, collectionId?, { vars?, history?, modal?, closable?, draggable?, fullscreen? })
+// Dialogs are content-keyed. Defaults: history:true, draggable:true, fullscreen:false.
+// Use history:false for ephemeral dialogs.
 ```
 
 ### Write dispatcher (`machine.action`)

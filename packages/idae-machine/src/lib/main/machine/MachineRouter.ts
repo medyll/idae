@@ -39,7 +39,10 @@ export class MachineRouter {
 	private pushedRoutes = new Set<string>();
 	private routedDialogIds = new Set<string>();
 	private dialogReturnPaths = new Map<string, string>();
-	private dialogOptions = new Map<string, Pick<DialogNavigationEvent, 'modal' | 'closable'>>();
+	private dialogOptions = new Map<
+		string,
+		Pick<DialogNavigationEvent, 'modal' | 'closable' | 'draggable' | 'fullscreen'>
+	>();
 
 	constructor(config: MachineRouterConfig = {}) {
 		this.config = {
@@ -220,7 +223,12 @@ export class MachineRouter {
 		if (alreadyPresent) return;
 
 		this.dialogReturnPaths.set(frameId, currentPath);
-		this.dialogOptions.set(frameId, { modal: event.modal, closable: event.closable });
+		this.dialogOptions.set(frameId, {
+			modal: event.modal,
+			closable: event.closable,
+			draggable: event.draggable,
+			fullscreen: event.fullscreen
+		});
 		const basePath = currentPath.split('?')[0].replace(/\/$/, '');
 		const vars = event.vars && Object.keys(event.vars).length > 0
 			? new URLSearchParams(event.vars).toString()

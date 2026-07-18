@@ -255,6 +255,46 @@ describe('MachineFrameManager', () => {
 		});
 	});
 
+	describe('dialog options', () => {
+		it('routes dialogs as draggable and non-fullscreen by default', async () => {
+			const openDialog = vi.fn();
+			manager.setRouter({
+				push: vi.fn(),
+				openFrame: vi.fn(),
+				openDialog,
+				closeFrame: vi.fn()
+			});
+
+			await manager.loadInDialog('fiche', 'vehicle', '42');
+
+			expect(openDialog).toHaveBeenCalledWith({
+				modulePath: 'fiche',
+				collection: 'vehicle',
+				collectionId: '42',
+				vars: undefined,
+				modal: undefined,
+				closable: true,
+				draggable: true,
+				fullscreen: false
+			});
+		});
+	});
+
+	describe('frame options', () => {
+		it('exposes closable false on registered controls', () => {
+			manager.setRouter({
+				push: vi.fn(),
+				openFrame: vi.fn(),
+				openDialog: vi.fn(),
+				closeFrame: vi.fn()
+			});
+			manager.loadFrame('explorer', 'vehicle', undefined, { closable: false });
+			manager.register('explorer:main', makeControls());
+
+			expect(manager.getControls('explorer:main')?.closable).toBe(false);
+		});
+	});
+
 	describe('clear', () => {
 		it('removes all registered frames', () => {
 			manager.register('x', makeControls());

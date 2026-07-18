@@ -97,6 +97,17 @@ dialog.idae-dialog {
 		border-radius: var(--radius-xs);
 		box-shadow: var(--shadow-xl);
 
+		&.idae-dialog--fullscreen {
+			inset: 0;
+			width: 100dvw;
+			height: 100dvh;
+			max-width: none;
+			max-height: none;
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
+		}
+
 		&.idae-dialog--modal .idae-dialog__bar {
 			cursor: default;
 		}
