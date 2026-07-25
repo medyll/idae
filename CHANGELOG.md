@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.10] - 2026-07-25
+**Features:**
+- update README with new package details and multi-database management example
+
+
+
 ## [0.1.9] - 2026-07-25
 **Features:**
 - add InfoLine and Tile components for improved UI structure
