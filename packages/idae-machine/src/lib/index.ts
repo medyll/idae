@@ -7,6 +7,7 @@ export * from '$lib/main/index.js';
 export { default as Explorer } from '$lib/shell/frame/explorer/Explorer.svelte';
 export { default as Diagram } from '$lib/shell/frame/diagram/Diagram.svelte';
 export { default as Today } from '$lib/shell/frame/today/Today.svelte';
+export { default as Space } from '$lib/shell/frame/space/Space.svelte';
 export { buildGraph } from '$lib/data-ui/utils/diagramUtils.js';
 export type { DiagramOptions } from '$lib/data-ui/utils/diagramUtils.js';
 
@@ -18,6 +19,7 @@ export { default as DataForm } from '$lib/data-ui/data/DataForm.svelte';
 export { default as DataRecord } from '$lib/data-ui/data/DataRecord.svelte';
 export { default as DataFk } from '$lib/data-ui/data/DataFk.svelte';
 export { default as DataRfk } from '$lib/data-ui/data/DataRfk.svelte';
+export { default as DataCount } from '$lib/data-ui/data/DataCount.svelte';
 
 // UI — frame content: card (record level)
 
@@ -32,6 +34,8 @@ export { default as Sort } from '$lib/data-ui/controls/Sort.svelte';
 export { default as Group } from '$lib/data-ui/controls/Group.svelte';
 export { default as Find } from '$lib/data-ui/controls/Find.svelte';
 export { default as ListMode } from '$lib/data-ui/controls/ListMode.svelte';
+export { default as AlphabetFilter } from '$lib/data-ui/controls/AlphabetFilter.svelte';
+export { default as FkFilter } from '$lib/data-ui/controls/FkFilter.svelte';
 
 // UI — prefs helpers
 export {
@@ -93,6 +97,8 @@ export { default as FrameFragment } from '$lib/data-ui/fragments/Frame.svelte';
 export { default as Frame } from '$lib/shell/Frame.svelte';
 export { default as Selector } from '$lib/data-ui/fragments/Selector.svelte';
 export { default as Skeleton } from '$lib/data-ui/fragments/Skeleton.svelte';
+export { default as Tile } from '$lib/data-ui/fragments/Tile.svelte';
+export { default as InfoLine } from '$lib/data-ui/fragments/InfoLine.svelte';
 export { default as ContextMenu } from '$lib/data-ui/fragments/ContextMenu.svelte';
 export { default as ContextMenuContent } from '$lib/data-ui/fragments/ContextMenuContent.svelte';
 export { openContextMenu, closeContextMenu } from '$lib/data-ui/fragments/contextMenu.svelte.js';
