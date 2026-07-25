@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.1.8] - 2026-07-25
+**Features:**
+- add dialog navigation options
+- enrich data workspace
+- period view frame reading appscheme.timespan; document icons+timespan
+- timespan qualifier — start/end temporal pair, published to appscheme
+- per-collection icons for all 19 org schemes
+- specific icons for engine/registry collections, mined from legacy
+- real per-scheme icons + fix broken icon pipeline (typcn→ph)
+- add accordion mode and update related props and snippets
+
+**Bug Fixes:**
+- restore legacy input contrast
+- stabilize lists, menus, and login
+- narrow registerFrames param to registration surface; drop dead CSS
+- main-menu grouping, empty groups, reverse-FK resolution, pre-auth boot, dark/light theme
+- rename DataListFk/DataListRfk recordId prop to collectionId
+- kill FK-multiple, converge fold into one qoolie primitive
+
+**Refactoring:**
+- collection() returns null instead of throwing, kill collectionOr
+- move component prop types to <script module>
+
+**Other:**
+- Refactor UI components for improved styling and responsiveness
+
+
+
 ## [0.1.7] - 2026-07-09
 **Features:**
 - update loadInDialog action and simplify DataRecord rendering
