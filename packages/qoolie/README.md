@@ -408,23 +408,7 @@ const qoolie = createQoolie({
 
 ## Schema migrations
 
-Migrate IndexedDB structure across versions.
-
-```typescript
-import { defineMigration, runMigrations } from '@medyll/qoolie/migrations';
-
-const migrations = [
-  defineMigration(2, (db) => {
-    db.createObjectStore('posts', { keyPath: 'id' });
-  }),
-  defineMigration(3, async (db, tx) => {
-    const store = tx.objectStore('users');
-    // transform existing records
-  }),
-];
-
-await runMigrations('my-app', migrations);
-```
+`defineMigration`/`runMigrations` exist under `src/lib/migrations` but are not yet re-exported from the package root or any public subpath in `package.json` — there is currently no supported import for them. Use the CLI migration commands below instead until that lands.
 
 ---
 
@@ -460,6 +444,42 @@ const health = await getHealthStatus(qoolie);
 // }
 
 const stats = await getCollectionStats(qoolie, 'users');
+```
+
+---
+
+## Multi-database
+
+Manage several qoolie instances that share one collection schema (e.g. one IndexedDB per tenant) from a single manager.
+
+```typescript
+import { createMultiDbQoolie } from '@medyll/qoolie';
+
+const manager = createMultiDbQoolie({
+  dbNamePattern: 'tenant-{id}',
+  collections: { users: { keyPath: '++id' } },
+});
+
+const dbA = manager.get('tenantA');       // creates/reuses 'tenant-tenantA'
+await dbA.collection.users.create({ name: 'Alice' });
+
+manager.switchTo('tenantB');
+manager.list();                            // ids currently instantiated
+await manager.delete('tenantA');           // destroy instance + drop the IndexedDB
+```
+
+---
+
+## Foreign key fold
+
+Denormalize foreign-key fields into `record.fks.<field>` using a resolver you provide.
+
+```typescript
+import { foldFk } from '@medyll/qoolie';
+
+const { data, errors } = await foldFk(fkDefs, record, resolve);
+// fkDefs: Record<string, { code: string; multiple?: boolean; required?: boolean }>
+// resolve: (targetCollection, indexField, value) => record | null | undefined
 ```
 
 ---
@@ -552,7 +572,7 @@ qoolie import users --input=users.json --merge
 
 ## License
 
-MIT
+ISC
 
 ---
 
