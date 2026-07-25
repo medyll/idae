@@ -2,6 +2,8 @@
 export { default as Skeleton } from './Skeleton.svelte';
 export { default as Selector } from './Selector.svelte';
 export { default as Frame } from './Frame.svelte';
+export { default as Tile } from './Tile.svelte';
+export { default as InfoLine } from './InfoLine.svelte';
 export { default as Dialog } from './dialog/Dialog.svelte';
 export { default as ContextMenu } from './ContextMenu.svelte';
 export { default as ContextMenuContent } from './ContextMenuContent.svelte';

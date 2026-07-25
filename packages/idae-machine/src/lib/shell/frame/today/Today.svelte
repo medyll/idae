@@ -11,6 +11,7 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { useMenuTree } from '$lib/data-ui/utils/useMenuTree.svelte.js';
+	import Tile from '$lib/data-ui/fragments/Tile.svelte';
 
 	type RecordRow = Record<string, unknown> & {
 		id?: unknown;
@@ -77,8 +78,7 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 </script>
 
 <today-dashboard-component>
-	<today-section data-section="create">
-		<h3>Créer</h3>
+	<Tile title="Créer">
 		<today-create>
 			{#each createMenu.tree.groups as group (group.key)}
 				{#each group.items as item (item.key)}
@@ -91,10 +91,9 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 				<span class="today-empty">—</span>
 			{/each}
 		</today-create>
-	</today-section>
+	</Tile>
 
-	<today-section data-section="my-lists">
-		<h3>Mes listes</h3>
+	<Tile title="Mes listes">
 		<today-my-lists>
 			{#each myLists as group (group.collection)}
 				<today-my-lists-group>
@@ -107,10 +106,9 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 				<span class="today-empty">—</span>
 			{/each}
 		</today-my-lists>
-	</today-section>
+	</Tile>
 
-	<today-section data-section="echeancier">
-		<h3>Échéancier</h3>
+	<Tile title="Échéancier">
 		<today-echeancier>
 			{#each echeancier as entry (`${entry.collection}:${entry.record.id ?? entry.record.code}`)}
 				<div class="today-echeancier-item">
@@ -121,7 +119,7 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 				<span class="today-empty">—</span>
 			{/each}
 		</today-echeancier>
-	</today-section>
+	</Tile>
 </today-dashboard-component>
 
 <style>
@@ -131,11 +129,6 @@ machine.logic.collections() (static post-boot schema), never re-joined per rende
 			grid-template-columns: repeat(auto-fit, minmax(calc(var(--gutter-3xl) * 4), 1fr));
 			gap: var(--gutter-sm);
 			padding: var(--pad-sm);
-		}
-		today-section {
-			display: flex;
-			flex-direction: column;
-			gap: var(--gutter-xs);
 		}
 		today-create {
 			display: flex;

@@ -89,7 +89,12 @@ Debounced schema-aware search. Advanced mode exposes the field and match operato
 					} else if (mode === 'exact' && fieldType === 'boolean') {
 						queryValue = kw === 'true';
 					}
-					where = { [field]: { [mode === 'exact' ? '$eq' : '$contains']: queryValue } };
+					// Operator keys are BARE, never $-prefixed: qoolie's matchOperators
+					// switches on 'eq'/'contains'/... with no default branch, so a '$eq'
+					// key is skipped and the clause silently matches every record.
+					// (The $-spelling in node_modules/@medyll/qoolie/dist/lib/operators.d.ts
+					// is a stale published artifact — packages/qoolie/src is authoritative.)
+					where = { [field]: { [mode === 'exact' ? 'eq' : 'contains']: queryValue } };
 				}
 			});
 		}, debounceMs);
