@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.9] - 2026-07-25
+**Features:**
+- add InfoLine and Tile components for improved UI structure
+
+
+
 ## [0.1.8] - 2026-07-25
 **Features:**
 - add dialog navigation options
