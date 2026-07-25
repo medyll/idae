@@ -5,7 +5,6 @@ A high-performance monorepo for modern full-stack application development. Focus
 
 - [@medyll/idae-api](https://github.com/medyll/idae/tree/main/packages/idae-api)
 - [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
-- [@medyll/idae-cadenzia](https://github.com/medyll/idae/tree/main/packages/idae-cadenzia)
 - [@medyll/idae-csss](https://github.com/medyll/idae/tree/main/packages/idae-csss)
 - [@medyll/idae-db](https://github.com/medyll/idae/tree/main/packages/idae-db)
 - [@medyll/idae-dom-events](https://github.com/medyll/idae/tree/main/packages/idae-dom-events)
@@ -16,7 +15,6 @@ A high-performance monorepo for modern full-stack application development. Focus
 - [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
 - [@medyll/idae-query](https://github.com/medyll/idae/tree/main/packages/idae-query)
 - [@medyll/idae-router](https://github.com/medyll/idae/tree/main/packages/idae-router)
-- [@medyll/idae-slotui-svelte](https://github.com/medyll/idae/tree/main/packages/idae-slotui)
 - [@medyll/idae-socket](https://github.com/medyll/idae/tree/main/packages/idae-socket)
 - [@medyll/idae-stator](https://github.com/medyll/idae/tree/main/packages/idae-stator)
 - [@medyll/idae-sync](https://github.com/medyll/idae/tree/main/packages/idae-sync)
@@ -42,14 +40,6 @@ A modern, lightweight, and extensible DOM manipulation library built with TypeSc
 **Repo:** [@medyll/idae-be](https://github.com/medyll/idae/tree/main/packages/idae-be)
 
 **Version:** 1.96.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-be/CHANGELOG.md)
-
-##
-### @medyll/idae-cadenzia
-Svelte component library and demo for Cadenzia UI elements used by the Idae project.
-
-**Repo:** [@medyll/idae-cadenzia](https://github.com/medyll/idae/tree/main/packages/idae-cadenzia)
-
-**Version:** 0.147.2 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-cadenzia/CHANGELOG.md)
 
 ##
 ### @medyll/idae-csss
@@ -128,14 +118,6 @@ A powerful and flexible query library for TypeScript and JavaScript applications
 **Repo:** [@medyll/idae-router](https://github.com/medyll/idae/tree/main/packages/idae-router)
 
 **Version:** 0.1.0 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-router/CHANGELOG.md)
-
-##
-### @medyll/idae-slotui-svelte
-A Svelte 5 component library for building modular and reactive user interfaces.
-
-**Repo:** [@medyll/idae-slotui-svelte](https://github.com/medyll/idae/tree/main/packages/idae-slotui)
-
-**Version:** 0.181.4 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-slotui/CHANGELOG.md)
 
 ##
 ### @medyll/idae-socket
