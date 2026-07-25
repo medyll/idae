@@ -6,6 +6,7 @@ export const agileScheme: MachineModel = {
 
 	project_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const agileScheme: MachineModel = {
 
 	sprint_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const agileScheme: MachineModel = {
 
 	story_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const agileScheme: MachineModel = {
 
 	task_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const agileScheme: MachineModel = {
 
 	bug_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -72,6 +77,7 @@ export const agileScheme: MachineModel = {
 
 	bug_severity: {
 		base: 'machine_base',
+		icon: 'warning',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -86,6 +92,7 @@ export const agileScheme: MachineModel = {
 
 	priority: {
 		base: 'machine_base',
+		icon: 'warning',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -100,6 +107,7 @@ export const agileScheme: MachineModel = {
 
 	member_role: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -113,6 +121,7 @@ export const agileScheme: MachineModel = {
 
 	milestone_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -128,6 +137,7 @@ export const agileScheme: MachineModel = {
 
 	team_member: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:       { type: 'id',    readonly: true },
 			code:     { type: 'text',  required: true },
@@ -146,6 +156,7 @@ export const agileScheme: MachineModel = {
 
 	project: {
 		base: 'machine_base',
+		icon: 'kanban',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -158,29 +169,31 @@ export const agileScheme: MachineModel = {
 			ended_at:    { type: 'date' },
 		},
 		fkRelations: {
-			project_status: { code: 'project_status', required: true,  multiple: false },
-			lead:           { code: 'team_member',    required: false, multiple: false },
+			project_status: { code: 'project_status', required: true },
+			lead:           { code: 'team_member',    required: false },
 		},
 		template: { presentation: 'name code project_status lead' },
 	},
 
 	project_member: {
 		base: 'machine_base',
+		icon: 'users',
 		fields: {
 			id:        { type: 'id',   readonly: true },
 			code:      { type: 'text', required: true },
 			joined_at: { type: 'date' },
 		},
 		fkRelations: {
-			project:     { code: 'project',     required: true, multiple: false },
-			team_member: { code: 'team_member', required: true, multiple: false },
-			member_role: { code: 'member_role', required: true, multiple: false },
+			project:     { code: 'project',     required: true },
+			team_member: { code: 'team_member', required: true },
+			member_role: { code: 'member_role', required: true },
 		},
 		template: { presentation: 'project team_member member_role' },
 	},
 
 	label: {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
@@ -188,7 +201,7 @@ export const agileScheme: MachineModel = {
 			color: { type: 'text' },
 		},
 		fkRelations: {
-			project: { code: 'project', required: true, multiple: false },
+			project: { code: 'project', required: true },
 		},
 		template: { presentation: 'project name color' },
 	},
@@ -197,6 +210,7 @@ export const agileScheme: MachineModel = {
 
 	epic: {
 		base: 'machine_base',
+		icon: 'target',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -207,16 +221,17 @@ export const agileScheme: MachineModel = {
 			target_date: { type: 'date' },
 		},
 		fkRelations: {
-			project:      { code: 'project',      required: true,  multiple: false },
-			story_status: { code: 'story_status', required: true,  multiple: false },
-			owner:        { code: 'team_member',  required: false, multiple: false },
-			priority:     { code: 'priority',     required: false, multiple: false },
+			project:      { code: 'project',      required: true },
+			story_status: { code: 'story_status', required: true },
+			owner:        { code: 'team_member',  required: false },
+			priority:     { code: 'priority',     required: false },
 		},
 		template: { presentation: 'project name story_status owner priority' },
 	},
 
 	milestone: {
 		base: 'machine_base',
+		icon: 'flag',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -226,14 +241,15 @@ export const agileScheme: MachineModel = {
 			completed_at: { type: 'date' },
 		},
 		fkRelations: {
-			project:          { code: 'project',          required: true, multiple: false },
-			milestone_status: { code: 'milestone_status', required: true, multiple: false },
+			project:          { code: 'project',          required: true },
+			milestone_status: { code: 'milestone_status', required: true },
 		},
 		template: { presentation: 'project name due_date milestone_status' },
 	},
 
 	release: {
 		base: 'machine_base',
+		icon: 'rocket',
 		fields: {
 			id:            { type: 'id',      readonly: true },
 			code:          { type: 'text',    required: true },
@@ -244,7 +260,7 @@ export const agileScheme: MachineModel = {
 			released_at:   { type: 'date' },
 		},
 		fkRelations: {
-			project: { code: 'project', required: true, multiple: false },
+			project: { code: 'project', required: true },
 		},
 		template: { presentation: 'project version released_at' },
 	},
@@ -253,6 +269,7 @@ export const agileScheme: MachineModel = {
 
 	sprint: {
 		base: 'machine_base',
+		icon: 'timer',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -264,8 +281,8 @@ export const agileScheme: MachineModel = {
 			capacity_points: { type: 'number' },
 		},
 		fkRelations: {
-			project:       { code: 'project',       required: true, multiple: false },
-			sprint_status: { code: 'sprint_status', required: true, multiple: false },
+			project:       { code: 'project',       required: true },
+			sprint_status: { code: 'sprint_status', required: true },
 		},
 		template: { presentation: 'project number name sprint_status start_date end_date' },
 	},
@@ -274,6 +291,7 @@ export const agileScheme: MachineModel = {
 
 	story: {
 		base: 'machine_base',
+		icon: 'book',
 		fields: {
 			id:                  { type: 'id',      readonly: true },
 			code:                { type: 'text',    required: true },
@@ -290,34 +308,36 @@ export const agileScheme: MachineModel = {
 			due_date:            { type: 'date' },
 		},
 		fkRelations: {
-			project:      { code: 'project',      required: true,  multiple: false },
-			epic:         { code: 'epic',         required: false, multiple: false },
-			sprint:       { code: 'sprint',       required: false, multiple: false },
-			story_status: { code: 'story_status', required: true,  multiple: false },
-			priority:     { code: 'priority',     required: false, multiple: false },
-			assignee:     { code: 'team_member',  required: false, multiple: false },
-			reporter:     { code: 'team_member',  required: false, multiple: false },
-			milestone:    { code: 'milestone',    required: false, multiple: false },
-			release:      { code: 'release',      required: false, multiple: false },
+			project:      { code: 'project',      required: true },
+			epic:         { code: 'epic',         required: false },
+			sprint:       { code: 'sprint',       required: false },
+			story_status: { code: 'story_status', required: true },
+			priority:     { code: 'priority',     required: false },
+			assignee:     { code: 'team_member',  required: false },
+			reporter:     { code: 'team_member',  required: false },
+			milestone:    { code: 'milestone',    required: false },
+			release:      { code: 'release',      required: false },
 		},
 		template: { presentation: 'code title story_status assignee story_points sprint' },
 	},
 
 	story_label: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
 		fkRelations: {
-			story: { code: 'story', required: true, multiple: false },
-			label: { code: 'label', required: true, multiple: false },
+			story: { code: 'story', required: true },
+			label: { code: 'label', required: true },
 		},
 		template: { presentation: 'story label' },
 	},
 
 	task: {
 		base: 'machine_base',
+		icon: 'check-square',
 		fields: {
 			id:             { type: 'id',      readonly: true },
 			code:           { type: 'text',    required: true },
@@ -331,9 +351,9 @@ export const agileScheme: MachineModel = {
 			completed_at:   { type: 'date' },
 		},
 		fkRelations: {
-			story:       { code: 'story',       required: true,  multiple: false },
-			task_status: { code: 'task_status', required: true,  multiple: false },
-			assignee:    { code: 'team_member', required: false, multiple: false },
+			story:       { code: 'story',       required: true },
+			task_status: { code: 'task_status', required: true },
+			assignee:    { code: 'team_member', required: false },
 		},
 		template: { presentation: 'story title task_status assignee estimate_hours' },
 	},
@@ -342,6 +362,7 @@ export const agileScheme: MachineModel = {
 
 	bug: {
 		base: 'machine_base',
+		icon: 'bug',
 		fields: {
 			id:                 { type: 'id',      readonly: true },
 			code:               { type: 'text',    required: true },
@@ -356,14 +377,14 @@ export const agileScheme: MachineModel = {
 			resolved_at:        { type: 'date' },
 		},
 		fkRelations: {
-			project:      { code: 'project',      required: true,  multiple: false },
-			bug_status:   { code: 'bug_status',   required: true,  multiple: false },
-			bug_severity: { code: 'bug_severity', required: true,  multiple: false },
-			priority:     { code: 'priority',     required: false, multiple: false },
-			assignee:     { code: 'team_member',  required: false, multiple: false },
-			reporter:     { code: 'team_member',  required: false, multiple: false },
-			story:        { code: 'story',        required: false, multiple: false },
-			release:      { code: 'release',      required: false, multiple: false },
+			project:      { code: 'project',      required: true },
+			bug_status:   { code: 'bug_status',   required: true },
+			bug_severity: { code: 'bug_severity', required: true },
+			priority:     { code: 'priority',     required: false },
+			assignee:     { code: 'team_member',  required: false },
+			reporter:     { code: 'team_member',  required: false },
+			story:        { code: 'story',        required: false },
+			release:      { code: 'release',      required: false },
 		},
 		template: { presentation: 'code title bug_status bug_severity assignee' },
 	},
@@ -372,6 +393,7 @@ export const agileScheme: MachineModel = {
 
 	worklog: {
 		base: 'machine_base',
+		icon: 'clock',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -380,16 +402,17 @@ export const agileScheme: MachineModel = {
 			description: { type: 'text-lg' },
 		},
 		fkRelations: {
-			team_member: { code: 'team_member', required: true,  multiple: false },
-			story:       { code: 'story',       required: false, multiple: false },
-			task:        { code: 'task',        required: false, multiple: false },
-			bug:         { code: 'bug',         required: false, multiple: false },
+			team_member: { code: 'team_member', required: true },
+			story:       { code: 'story',       required: false },
+			task:        { code: 'task',        required: false },
+			bug:         { code: 'bug',         required: false },
 		},
 		template: { presentation: 'team_member work_date hours story task bug' },
 	},
 
 	comment: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -398,17 +421,18 @@ export const agileScheme: MachineModel = {
 			edited_at:  { type: 'date' },
 		},
 		fkRelations: {
-			team_member: { code: 'team_member', required: true,  multiple: false },
-			story:       { code: 'story',       required: false, multiple: false },
-			task:        { code: 'task',        required: false, multiple: false },
-			bug:         { code: 'bug',         required: false, multiple: false },
-			epic:        { code: 'epic',        required: false, multiple: false },
+			team_member: { code: 'team_member', required: true },
+			story:       { code: 'story',       required: false },
+			task:        { code: 'task',        required: false },
+			bug:         { code: 'bug',         required: false },
+			epic:        { code: 'epic',        required: false },
 		},
 		template: { presentation: 'team_member created_at story task bug' },
 	},
 
 	attachment: {
 		base: 'machine_base',
+		icon: 'paperclip',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -419,10 +443,10 @@ export const agileScheme: MachineModel = {
 			uploaded_at: { type: 'date' },
 		},
 		fkRelations: {
-			team_member: { code: 'team_member', required: true,  multiple: false },
-			story:       { code: 'story',       required: false, multiple: false },
-			task:        { code: 'task',        required: false, multiple: false },
-			bug:         { code: 'bug',         required: false, multiple: false },
+			team_member: { code: 'team_member', required: true },
+			story:       { code: 'story',       required: false },
+			task:        { code: 'task',        required: false },
+			bug:         { code: 'bug',         required: false },
 		},
 		template: { presentation: 'filename mime size_bytes uploaded_at' },
 	},

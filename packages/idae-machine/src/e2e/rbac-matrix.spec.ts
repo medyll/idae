@@ -7,7 +7,7 @@ import { test, expect, type Page } from '@playwright/test';
  * - App.svelte: TaskBar + main content zone (no sidebar)
  * - TaskBar: "⊞ Explorer" button + open frames + dev/settings/user icons
  * - RbacMatrix registered as 'rbac.matrix' in componentRegistry
- * - Hash router: machine.framer.loadFrame(componentKey, collection, collectionId?, vars?)
+ * - Hash router: machine.framer.loadFrame(pathKey, collection, collectionId?, { vars?, zone?, history? })
  * - Login gating (multi-org ALS): the app shell only mounts once authed, so
  *   every test logs in first (admin / admin123 on the demo org).
  *

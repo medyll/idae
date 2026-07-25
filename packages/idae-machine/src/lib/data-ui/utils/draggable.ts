@@ -16,8 +16,13 @@ export function draggable(node: HTMLElement, options: DraggableOptions = {}) {
 
 	const getTarget = (): HTMLElement => (handle ? (node.querySelector(handle) as HTMLElement) : node) ?? node;
 	let target = getTarget();
-	target.style.userSelect = 'none';
-	target.style.cursor = 'grab';
+
+	function syncTargetStyle() {
+		target.style.userSelect = disabled ? '' : 'none';
+		target.style.cursor = disabled ? '' : 'grab';
+	}
+
+	syncTargetStyle();
 
 	function onPointerDown(e: PointerEvent) {
 		if (disabled || e.button !== 0) return;
@@ -39,7 +44,7 @@ export function draggable(node: HTMLElement, options: DraggableOptions = {}) {
 
 	function onPointerUp() {
 		moving = false;
-		target.style.cursor = 'grab';
+		target.style.cursor = disabled ? '' : 'grab';
 		window.removeEventListener('pointermove', onPointerMove, true);
 		window.removeEventListener('pointerup', onPointerUp, true);
 	}
@@ -53,10 +58,9 @@ export function draggable(node: HTMLElement, options: DraggableOptions = {}) {
 				target.removeEventListener('pointerdown', onPointerDown, true);
 				handle = next.handle;
 				target = getTarget();
-				target.style.userSelect = 'none';
-				target.style.cursor = 'grab';
 				target.addEventListener('pointerdown', onPointerDown, true);
 			}
+			syncTargetStyle();
 		},
 		destroy() {
 			target.removeEventListener('pointerdown', onPointerDown, true);

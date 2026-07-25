@@ -63,8 +63,10 @@ export interface Capabilities {
  * FrameCatalog — domain registry entries
  */
 export interface FrameCatalog {
-  // Register domain-specific frame types
-  registerFrames(registry: ComponentRegistry): void;
+  // Register domain-specific frame types. Only needs the registration surface —
+  // narrowed so the caller can pass machine.componentRegistry (the public
+  // Readonly<Pick<…>> facade) without exposing the raw registry map or clear().
+  registerFrames(registry: Pick<ComponentRegistry, 'registerMany'>): void;
 }
 
 // Concrete types from the codebase

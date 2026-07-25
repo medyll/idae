@@ -9,22 +9,26 @@ No data logic — composition only. Lives in data-ui so data-ui/data stays layer
 @snippet extras - free area (mode switcher, custom buttons…)
 @snippet default - if provided, replaces all named slots
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
 
+	export interface DataToolbarProps {
+		sort?: Snippet;
+		group?: Snippet;
+		find?: Snippet;
+		extras?: Snippet;
+		children?: Snippet;
+	}
+</script>
+
+<script lang="ts">
 	let {
 		sort,
 		group,
 		find,
 		extras,
 		children
-	}: {
-		sort?: Snippet;
-		group?: Snippet;
-		find?: Snippet;
-		extras?: Snippet;
-		children?: Snippet;
-	} = $props();
+	}: DataToolbarProps = $props();
 </script>
 
 <div class="data-toolbar">
@@ -43,14 +47,18 @@ No data logic — composition only. Lives in data-ui so data-ui/data stays layer
 		.data-toolbar {
 			display: flex;
 			align-items: center;
-			gap: 0.5rem;
+			gap: var(--gutter-xs);
 			flex-wrap: wrap;
-			margin-bottom: var(--gutter-sm);
+			min-height: var(--header-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
+			background: var(--color-surface-alt);
 		}
 		.data-toolbar-slot {
 			display: inline-flex;
 			align-items: center;
-			gap: 0.25rem;
+			gap: var(--gutter-xs);
+			min-width: 0;
 		}
 		.data-toolbar-extras {
 			margin-left: auto;

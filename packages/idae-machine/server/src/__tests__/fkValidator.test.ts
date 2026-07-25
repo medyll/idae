@@ -19,18 +19,18 @@ import {
 	invalidateFkDefsCache,
 } from '../validation/FkValidator.js';
 
-// Model fixture: travel has multiple FK 'destination', single FK 'agency' (required).
+// Model fixture: travel has two single FKs, 'destination' (optional) and 'agency' (required).
 const MODEL = {
 	travel: {
 		fks: {
-			destination: { code: 'destination', multiple: true,  required: false },
-			agency:      { code: 'agency',      multiple: false, required: true  },
+			destination: { code: 'destination', required: false },
+			agency:      { code: 'agency', required: true  },
 		},
 	},
 	destination: { fks: {} },
 	booking: {
 		fks: {
-			travel: { code: 'travel', multiple: false, required: true },
+			travel: { code: 'travel', required: true },
 		},
 	},
 };
@@ -69,28 +69,27 @@ describe('validateFkEntries', () => {
 		// required agency not flagged because there is no fks object at all? No — required still applies.
 	});
 
-	it('accepts well-formed multiple FK entries (suffix matches id)', async () => {
+	it('accepts well-formed single FK entries (bare field name, no suffix)', async () => {
 		const r = await validateFkEntries('travel', {
 			fks: {
-				destination_1:  { id: 1, name: 'Paris' },
-				destination_42: { id: 42, name: 'Rome' },
-				agency_3:       { id: 3, name: 'ACME' },
+				destination: { id: 1, name: 'Paris' },
+				agency:      { id: 3, name: 'ACME' },
 			},
 		});
 		expect(r).toEqual({ valid: true, errors: [] });
 	});
 
-	it('rejects key without _id suffix', async () => {
+	it('rejects legacy suffixed key — FK is always single', async () => {
 		const r = await validateFkEntries('travel', {
-			fks: { agency: { id: 3 } },
+			fks: { agency_3: { id: 3 } },
 		});
 		expect(r.valid).toBe(false);
-		expect(r.errors[0].message).toMatch(/missing _id suffix/i);
+		expect(r.errors.some(e => /Unknown FK relation 'agency_3'/.test(e.message))).toBe(true);
 	});
 
 	it('rejects unknown FK relation', async () => {
 		const r = await validateFkEntries('travel', {
-			fks: { hotel_5: { id: 5 }, agency_3: { id: 3 } },
+			fks: { hotel: { id: 5 }, agency: { id: 3 } },
 		});
 		expect(r.valid).toBe(false);
 		expect(r.errors.some(e => /Unknown FK relation 'hotel'/.test(e.message))).toBe(true);
@@ -98,30 +97,22 @@ describe('validateFkEntries', () => {
 
 	it('rejects entry missing id', async () => {
 		const r = await validateFkEntries('travel', {
-			fks: { destination_1: { name: 'Paris' }, agency_3: { id: 3 } },
+			fks: { destination: { name: 'Paris' }, agency: { id: 3 } },
 		});
 		expect(r.valid).toBe(false);
 		expect(r.errors.some(e => /Missing 'id'/.test(e.message))).toBe(true);
 	});
 
-	it('rejects suffix not matching entry.id', async () => {
-		const r = await validateFkEntries('travel', {
-			fks: { destination_1: { id: 99 }, agency_3: { id: 3 } },
-		});
-		expect(r.valid).toBe(false);
-		expect(r.errors.some(e => /must match entry\.id/.test(e.message))).toBe(true);
-	});
-
 	it('rejects when required FK absent', async () => {
 		const r = await validateFkEntries('travel', {
-			fks: { destination_1: { id: 1 } },
+			fks: { destination: { id: 1 } },
 		});
 		expect(r.valid).toBe(false);
 		expect(r.errors.some(e => /'agency' is required/.test(e.message))).toBe(true);
 	});
 
 	it('skips validation when collection has no FK defs', async () => {
-		const r = await validateFkEntries('destination', { fks: { x_1: { id: 1 } } });
+		const r = await validateFkEntries('destination', { fks: { x: { id: 1 } } });
 		expect(r.valid).toBe(true);
 	});
 });

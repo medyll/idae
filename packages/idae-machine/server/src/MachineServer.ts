@@ -149,7 +149,6 @@ class MachineServerClass {
 			for (const [key, fkItem] of Object.entries(schemeRels)) {
 				fks[key] = {
 					code:     fkItem.code ?? key,
-					multiple: fkItem.multiple ?? false,
 					required: !!(fkItem.required),
 				};
 			}

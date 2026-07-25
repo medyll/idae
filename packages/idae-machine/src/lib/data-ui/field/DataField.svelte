@@ -9,8 +9,21 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
 @prop {string} [inputForm] - Form id
 @prop {boolean|string} [showLabel] - Label visibility/position
 -->
-<script lang="ts" generics="COL extends Record<string,unknown>">
+<script module lang="ts">
     import type { TplCollectionName } from '$lib/types/index.js';
+
+    export interface DataFieldProps<COL extends Record<string, unknown> = Record<string, unknown>> {
+        collection?: TplCollectionName;
+        fieldName: keyof COL;
+        data: COL;
+        mode?: 'show' | 'create' | 'update';
+        // TODO: editInPlace — legacy app_field_update feature, planned for reimplementation
+        inputForm?: string;
+        showLabel?: boolean | string
+    }
+</script>
+
+<script lang="ts" generics="COL extends Record<string,unknown>">
     import { getContext, untrack } from 'svelte';
     import { machine } from '$lib/main/machine.js';
     import { MachineRecordIdentity } from '$lib/main/index.js';
@@ -33,17 +46,9 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
         mode = 'show',
         inputForm,
         showLabel = true
-    }:{
-        collection?: TplCollectionName;
-        fieldName: keyof COL;
-        data: COL;
-        mode?: 'show' | 'create' | 'update';
-        // TODO: editInPlace — legacy app_field_update feature, planned for reimplementation
-        inputForm?: string;
-        showLabel?: boolean | string
-    } = $props();
+    }: DataFieldProps<COL> = $props();
 
-    const scheme            = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+    const scheme            = $derived(collection ? machine.logic.collection(collection) : null);
     const fieldForge        = $derived(scheme ? scheme.fieldForge(String(fieldName), data ?? {}) : null);
     const schemeFieldValues = $derived(scheme?.collectionValues ?? null);
     const inputDataset      = $derived.by(() => {
@@ -83,7 +88,7 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
     // FK store — guard prevents machine.store('') phantom subscription on non-FK fields
     const fkStore  = $derived(fkCollection ? machine.store(fkCollection) : { records: [] as Record<string, unknown>[] });
     const fkItems  = $derived(fkStore.records as Record<string, unknown>[]);
-    const fkScheme = $derived(fkCollection ? machine.logic.collectionOr(fkCollection, null) : null);
+    const fkScheme = $derived(fkCollection ? machine.logic.collection(fkCollection) : null);
     const fkLabel  = $derived.by(() => {
         if (!fkCollection || internalValue == null) return '—';
         // Prefer the denorm snapshot already fed onto the record (`fks.<field>` bare or
@@ -292,13 +297,14 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
 
 
 <style>
+	@layer components {
     .field-line {
         display: flex;
         flex-direction: row;
         align-items: baseline;
         gap: var(--gutter-sm);
         padding: var(--pad-xs) var(--pad-sm) var(--pad-xs) 0;
-        flex: 1 1 320px; /* ~legacy .fiche_field min-width:40% — wraps 2-up, full width when narrow */
+		flex: 1 1 calc(var(--gutter-3xl) * 5);
     }
     .field-line.input-size-full {
         flex: 1 1 100%;
@@ -311,8 +317,8 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
            constant label column, not from an elastic min/max range.
            NB: --field-label-w (not css-base's --field-label-width, which is a
            different token — grid label column for .form/.field, default max-content). */
-        flex: 0 0 var(--field-label-w, 7rem);
-        width: var(--field-label-w, 7rem);
+		flex: 0 0 var(--field-label-w, calc(var(--gutter-3xl) + var(--gutter-2xl)));
+		width: var(--field-label-w, calc(var(--gutter-3xl) + var(--gutter-2xl)));
         color: var(--color-text-muted);
         overflow: hidden;
         text-overflow: ellipsis;
@@ -322,15 +328,16 @@ Svelte 5 field renderer — dispatches to type-specific field atoms (show + edit
 
     /* inputSize presets — constrain the INPUT, not the field wrapper */
     .field-input { min-width: 0; }
-    .field-line.input-size-xs .field-input { width: 5rem; }
-    .field-line.input-size-sm .field-input { width: 10rem; }
-    .field-line.input-size-md .field-input { width: 18rem; }
-    .field-line.input-size-lg .field-input { width: 28rem; }
+	.field-line.input-size-xs .field-input { width: calc(var(--gutter-3xl) + var(--gutter-md)); }
+	.field-line.input-size-sm .field-input { width: calc(var(--gutter-3xl) * 2.5); }
+	.field-line.input-size-md .field-input { width: calc(var(--gutter-3xl) * 4.5); }
+	.field-line.input-size-lg .field-input { width: calc(var(--gutter-3xl) * 7); }
     .field-line.input-size-full .field-input { width: 100%; }
     /* default (no preset): input fills available */
     .field-input { flex: 1 1 auto; }
     .field-input :global(input),
     .field-input :global(select),
     .field-input :global(textarea) { width: 100%; }
-    .error-message { color: red; font-size: 0.9em; margin-top: 0.2em; }
+	.error-message { color: var(--color-critical); font-size: var(--text-xs); margin-top: var(--marg-xs); }
+	}
 </style>

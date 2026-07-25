@@ -6,6 +6,7 @@ export const boutiqueScheme: MachineModel = {
 
 	order_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const boutiqueScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const boutiqueScheme: MachineModel = {
 
 	product_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -45,6 +48,7 @@ export const boutiqueScheme: MachineModel = {
 
 	cart_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -58,6 +62,7 @@ export const boutiqueScheme: MachineModel = {
 
 	payment_method: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -71,6 +76,7 @@ export const boutiqueScheme: MachineModel = {
 
 	address_type: {
 		base: 'machine_base',
+		icon: 'envelope',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -84,6 +90,7 @@ export const boutiqueScheme: MachineModel = {
 
 	currency: {
 		base: 'machine_base',
+		icon: 'coin',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -99,6 +106,7 @@ export const boutiqueScheme: MachineModel = {
 
 	brand: {
 		base: 'machine_base',
+		icon: 'trademark-registered',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -114,6 +122,7 @@ export const boutiqueScheme: MachineModel = {
 
 	category: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -124,13 +133,14 @@ export const boutiqueScheme: MachineModel = {
 			ordre:       { type: 'number' },
 		},
 		fkRelations: {
-			parent: { code: 'category', multiple: false },
+			parent: { code: 'category' },
 		},
 		template: { presentation: 'name slug' },
 	},
 
 	product: {
 		base: 'machine_base',
+		icon: 'package',
 		fields: {
 			id:               { type: 'id',       readonly: true },
 			code:             { type: 'text',     required: true },
@@ -153,15 +163,16 @@ export const boutiqueScheme: MachineModel = {
 			published_at:     { type: 'date' },
 		},
 		fkRelations: {
-			brand:          { code: 'brand',          required: false, multiple: false },
-			category:       { code: 'category',       required: false, multiple: false },
-			product_status: { code: 'product_status', required: true,  multiple: false },
+			brand:          { code: 'brand',          required: false },
+			category:       { code: 'category',       required: false },
+			product_status: { code: 'product_status', required: true },
 		},
 		template: { presentation: 'name sku price stock product_status' },
 	},
 
 	variant: {
 		base: 'machine_base',
+		icon: 'stack',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -177,13 +188,14 @@ export const boutiqueScheme: MachineModel = {
 			image:        { type: 'image' },
 		},
 		fkRelations: {
-			product: { code: 'product', required: true, multiple: false },
+			product: { code: 'product', required: true },
 		},
 		template: { presentation: 'name sku price stock' },
 	},
 
 	product_image: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:    { type: 'id',     readonly: true },
 			code:  { type: 'text',   required: true },
@@ -192,7 +204,7 @@ export const boutiqueScheme: MachineModel = {
 			ordre: { type: 'number' },
 		},
 		fkRelations: {
-			product: { code: 'product', required: true, multiple: false },
+			product: { code: 'product', required: true },
 		},
 		template: { presentation: 'product alt ordre' },
 	},
@@ -201,6 +213,7 @@ export const boutiqueScheme: MachineModel = {
 
 	address: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:          { type: 'id',   readonly: true },
 			code:        { type: 'text', required: true },
@@ -219,15 +232,16 @@ export const boutiqueScheme: MachineModel = {
 
 	customer_address: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
 			is_primary:   { type: 'boolean' },
 		},
 		fkRelations: {
-			customer:     { code: 'customer',     required: true, multiple: false },
-			address:      { code: 'address',      required: true, multiple: false },
-			address_type: { code: 'address_type', required: true, multiple: false },
+			customer:     { code: 'customer',     required: true },
+			address:      { code: 'address',      required: true },
+			address_type: { code: 'address_type', required: true },
 		},
 		template: { presentation: 'customer address_type address is_primary' },
 	},
@@ -236,6 +250,7 @@ export const boutiqueScheme: MachineModel = {
 
 	customer: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -257,6 +272,7 @@ export const boutiqueScheme: MachineModel = {
 
 	cart: {
 		base: 'machine_base',
+		icon: 'shopping-cart',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -266,14 +282,15 @@ export const boutiqueScheme: MachineModel = {
 			updated_at: { type: 'date' },
 		},
 		fkRelations: {
-			customer:    { code: 'customer',    required: false, multiple: false },
-			cart_status: { code: 'cart_status', required: true,  multiple: false },
+			customer:    { code: 'customer',    required: false },
+			cart_status: { code: 'cart_status', required: true },
 		},
 		template: { presentation: 'customer cart_status subtotal updated_at' },
 	},
 
 	cart_item: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -282,9 +299,9 @@ export const boutiqueScheme: MachineModel = {
 			line_total: { type: 'currency' },
 		},
 		fkRelations: {
-			cart:    { code: 'cart',    required: true,  multiple: false },
-			product: { code: 'product', required: true,  multiple: false },
-			variant: { code: 'variant', required: false, multiple: false },
+			cart:    { code: 'cart',    required: true },
+			product: { code: 'product', required: true },
+			variant: { code: 'variant', required: false },
 		},
 		template: { presentation: 'cart product variant qty line_total' },
 	},
@@ -293,6 +310,7 @@ export const boutiqueScheme: MachineModel = {
 
 	order: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:                { type: 'id',       readonly: true },
 			code:              { type: 'text',     required: true },
@@ -312,19 +330,20 @@ export const boutiqueScheme: MachineModel = {
 			cancelled_at:      { type: 'date' },
 		},
 		fkRelations: {
-			customer:         { code: 'customer',         required: true, multiple: false },
-			order_status:     { code: 'order_status',     required: true, multiple: false },
-			currency:         { code: 'currency',         required: true, multiple: false },
-			billing_address:  { code: 'address',          required: false, multiple: false },
-			shipping_address: { code: 'address',          required: false, multiple: false },
-			shipping_method:  { code: 'shipping_method',  required: false, multiple: false },
-			coupon:           { code: 'coupon',           required: false, multiple: false },
+			customer:         { code: 'customer',         required: true },
+			order_status:     { code: 'order_status',     required: true },
+			currency:         { code: 'currency',         required: true },
+			billing_address:  { code: 'address',          required: false },
+			shipping_address: { code: 'address',          required: false },
+			shipping_method:  { code: 'shipping_method',  required: false },
+			coupon:           { code: 'coupon',           required: false },
 		},
 		template: { presentation: 'order_number customer order_status total placed_at' },
 	},
 
 	order_item: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -336,9 +355,9 @@ export const boutiqueScheme: MachineModel = {
 			tax:          { type: 'currency' },
 		},
 		fkRelations: {
-			order:   { code: 'order',   required: true,  multiple: false },
-			product: { code: 'product', required: true,  multiple: false },
-			variant: { code: 'variant', required: false, multiple: false },
+			order:   { code: 'order',   required: true },
+			product: { code: 'product', required: true },
+			variant: { code: 'variant', required: false },
 		},
 		template: { presentation: 'order name_snapshot qty unit_price line_total' },
 	},
@@ -347,6 +366,7 @@ export const boutiqueScheme: MachineModel = {
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -356,16 +376,17 @@ export const boutiqueScheme: MachineModel = {
 			notes:     { type: 'text-lg' },
 		},
 		fkRelations: {
-			order:          { code: 'order',          required: true, multiple: false },
-			payment_method: { code: 'payment_method', required: true, multiple: false },
-			payment_status: { code: 'payment_status', required: true, multiple: false },
-			currency:       { code: 'currency',       required: true, multiple: false },
+			order:          { code: 'order',          required: true },
+			payment_method: { code: 'payment_method', required: true },
+			payment_status: { code: 'payment_status', required: true },
+			currency:       { code: 'currency',       required: true },
 		},
 		template: { presentation: 'order payment_method amount payment_status paid_at' },
 	},
 
 	shipping_method: {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -382,6 +403,7 @@ export const boutiqueScheme: MachineModel = {
 
 	coupon: {
 		base: 'machine_base',
+		icon: 'ticket',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -403,6 +425,7 @@ export const boutiqueScheme: MachineModel = {
 
 	review: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -415,8 +438,8 @@ export const boutiqueScheme: MachineModel = {
 			created_at:   { type: 'date',    required: true },
 		},
 		fkRelations: {
-			product:  { code: 'product',  required: true,  multiple: false },
-			customer: { code: 'customer', required: false, multiple: false },
+			product:  { code: 'product',  required: true },
+			customer: { code: 'customer', required: false },
 		},
 		template: { presentation: 'product rating author_name created_at' },
 	},

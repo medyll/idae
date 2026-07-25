@@ -10,15 +10,12 @@ Reverse FK relation viewer — shows collections that point to this record.
 @prop {Record<string,any>} [componentProps] - Props for custom component
 @slot children (let:item) - Custom reverse FK rendering
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { TplCollectionName } from '$lib/types/index.js';
-	import type { SortBy } from '$lib/types/index.js';
+	import type { TplCollectionName, SortBy } from '$lib/types/index.js';
 	import type { SvelteComponent } from 'svelte';
-	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
 
-	let { collection, showTitle = false, component, componentProps = {}, sortBy, groupBy, children } = $props<{
+	export interface DataRfkProps {
 		collection: TplCollectionName;
 		showTitle?: boolean | string;
 		sortBy?: SortBy | SortBy[];
@@ -26,9 +23,16 @@ Reverse FK relation viewer — shows collections that point to this record.
 		component?: typeof SvelteComponent;
 		componentProps?: Record<string, any>;
 		children?: Snippet<[[string, Record<string, unknown>]]>;
-	}>();
+	}
+</script>
 
-	const reverseFks = $derived(machine.logic.collection(collection).parseReverseFks());
+<script lang="ts">
+	import { machine } from '$lib/main/machine.js';
+	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
+
+	let { collection, showTitle = false, component, componentProps = {}, sortBy, groupBy, children }: DataRfkProps = $props();
+
+	const reverseFks = $derived(machine.logic.collection(collection)?.parseReverseFks() ?? {});
 
 	const rfkEntries = $derived(
 		Object.entries(reverseFks).map(([key, def]) => ({ key, ...(def as Record<string, unknown>) }))

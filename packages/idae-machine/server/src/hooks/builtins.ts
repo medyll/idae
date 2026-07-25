@@ -3,10 +3,9 @@ import { logAudit } from '../services/AuditService.js';
 import { broadcastToTable } from '../socket/index.js';
 import { getDomainActions } from '../models/domainActions.js';
 import * as ImagePresetRegistry from '../services/ImagePresetRegistry.js';
-import { findReverseFkHolders, getFkDefs, makeMongoFkResolver, parseFkKey } from '../validation/FkValidator.js';
+import { getFkDefs, makeMongoFkResolver } from '../validation/FkValidator.js';
 import { foldFks } from '../validation/FkFolder.js';
-import { getDbForCollection } from '../middleware/dbRouter.js';
-import { Schema } from 'mongoose';
+import { refoldReverseFkSnapshots, nullifyReverseFkSnapshots } from '../validation/FkStaleness.js';
 
 async function foldAndMutate(ctx: { collection: string; data?: unknown }): Promise<Array<{ fkName: string; message: string }>> {
 	if (!ctx.data || typeof ctx.data !== 'object') return [];
@@ -34,32 +33,19 @@ export function registerBuiltinHooks(): void {
 		}
 	}, { priority: 20, blocking: true });
 
-	// FK CASCADE NULLIFY — non-blocking, post:delete
-	// When a record is deleted, unset all fks.{fkName}_{deletedId} entries in referencing collections.
+	// FK STALENESS CASCADE (UNMULTIPLE.md Phase 5) — non-blocking.
+	// Target updated → refold every holder's `fks.<fkName>` snapshot to match.
+	registerHook('post:update', async (ctx) => {
+		const record = ctx.data as Record<string, unknown> | undefined;
+		if (!record) return;
+		await refoldReverseFkSnapshots(ctx.collection, record);
+	}, { priority: 95 });
+
+	// Target deleted → drop the now-dangling `fks.<fkName>` snapshot in holders.
 	registerHook('post:delete', async (ctx) => {
-		if (!ctx.recordId) return;
-		const holders = await findReverseFkHolders(ctx.collection);
-		if (!Object.keys(holders).length) return;
-
-		for (const [sourceCollection, fkNames] of Object.entries(holders)) {
-			try {
-				const db = await getDbForCollection(sourceCollection);
-				const schema = new Schema({}, { strict: false, collection: sourceCollection.toLowerCase() });
-				const modelName = `${db.name}__${sourceCollection}`;
-				const Model = db.models[modelName] ?? db.model(modelName, schema, sourceCollection.toLowerCase());
-
-				for (const fkName of fkNames) {
-					const fkKey = `fks.${fkName}_${ctx.recordId}`;
-					await (Model as any).updateMany(
-						{ [fkKey]: { $exists: true } },
-						{ $unset: { [fkKey]: '' } },
-					);
-				}
-			} catch (err) {
-				// Non-blocking — log and continue
-				console.warn(`FK cascade nullify failed for ${sourceCollection}:`, err);
-			}
-		}
+		const deletedId = (ctx.data as Record<string, unknown> | undefined)?.id ?? ctx.recordId;
+		if (deletedId == null) return;
+		await nullifyReverseFkSnapshots(ctx.collection, deletedId);
 	}, { priority: 95 });
 
 	// IMAGE PRESET CACHE INVALIDATION — priority 10 (earliest)

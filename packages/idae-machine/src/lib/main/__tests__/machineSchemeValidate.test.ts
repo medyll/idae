@@ -45,21 +45,21 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('valid email passes', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const r = await validator.validateField('email', 'alice@example.com');
 		expect(r.isValid).toBe(true);
 	});
 
 	it('invalid email fails', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const r = await validator.validateField('email', 'not-an-email');
 		expect(r.isValid).toBe(false);
 	});
 
 	it('number type validation', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const rGood = await validator.validateField('age', 42);
 		const rBad = await validator.validateField('age', 'nope');
 		expect(rGood.isValid).toBe(true);
@@ -68,7 +68,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('required field missing fails in form', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const out = await validator.validateForm({ age: 30 } as any);
 		expect(out.isValid).toBe(false);
 		expect(out.invalidFields).toContain('email');
@@ -78,21 +78,21 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('async validator passes when value ok', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const r = await validator.validateField('asyncField', 'ok');
 		expect(r.isValid).toBe(true);
 	});
 
 	it('async validator fails when value not ok', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const r = await validator.validateField('asyncField', 'bad');
 		expect(r.isValid).toBe(false);
 	});
 
 	it('cross-field validator: password match passes', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const form = { email: 'a@b.com', name: 'A', password: 'p', confirm: 'p' } as any;
 		const out = await validator.validateForm(form, {
 			crossFieldValidators: [
@@ -108,7 +108,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('cross-field validator: password mismatch yields error map', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const form = { email: 'a@b.com', name: 'A', password: 'p', confirm: 'q' } as any;
 		const out = await validator.validateForm(form, {
 			crossFieldValidators: [
@@ -125,7 +125,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('validateFieldValue returns boolean', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const ok = await validator.validateFieldValue('email', 'x@x.com');
 		const bad = await validator.validateFieldValue('email', 'x');
 		expect(ok).toBe(true);
@@ -134,7 +134,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('ignoreFields option skips validation', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const out = await validator.validateForm({} as any, {
 			ignoreFields: ['email', 'name', 'password']
 		});
@@ -144,7 +144,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('complete valid form passes', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const form = {
 			email:      'ok@ok.com',
 			name:       'A',
@@ -159,7 +159,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('time field accepts HTML time input strings', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const rGood = await validator.validateField('reminderAt', '09:45');
 		const rBad = await validator.validateField('reminderAt', '99:45');
 		expect(rGood.isValid).toBe(true);
@@ -168,7 +168,7 @@ describe('MachineSchemeValidate - advanced', () => {
 
 	it('boolean field accepts form-style true/false strings', async () => {
 		const db = createDb();
-		const validator = db.collection('user').validator;
+		const validator = db.collection('user')!.validator;
 		const rTrue = await validator.validateField('isActive', 'true');
 		const rFalse = await validator.validateField('isActive', 'false');
 		const rBad = await validator.validateField('isActive', 'yes');
@@ -206,7 +206,7 @@ describe('MachineSchemeValidate - FK required', () => {
 
 	it('missing required FK fails in form', async () => {
 		const db = await createVehicleDb();
-		const validator = db.collection('vehicle').validator;
+		const validator = db.collection('vehicle')!.validator;
 		const out = await validator.validateForm({ name: 'X' } as any);
 		expect(out.isValid).toBe(false);
 		expect(out.invalidFields).toContain('category');
@@ -215,30 +215,30 @@ describe('MachineSchemeValidate - FK required', () => {
 
 	it('non-required FK relation does not block form', async () => {
 		const db = await createVehicleDb();
-		const validator = db.collection('vehicle').validator;
+		const validator = db.collection('vehicle')!.validator;
 		const out = await validator.validateForm({ name: 'X', category: 'compact' } as any);
 		expect(out.invalidFields).not.toContain('location_office');
 	});
 
 	it('flat scalar FK value satisfies required check', async () => {
 		const db = await createVehicleDb();
-		const validator = db.collection('vehicle').validator;
+		const validator = db.collection('vehicle')!.validator;
 		const out = await validator.validateForm({ name: 'X', category: 'compact' } as any);
 		expect(out.isValid).toBe(true);
 		expect(out.invalidFields).not.toContain('category');
 	});
 
-	it('nested fks.{relation}_{id} value satisfies required check', async () => {
+	it('legacy suffixed fks.{relation}_{id} key does not satisfy required check — FK is always single', async () => {
 		const db = await createVehicleDb();
-		const validator = db.collection('vehicle').validator;
+		const validator = db.collection('vehicle')!.validator;
 		const out = await validator.validateForm({ name: 'X', fks: { category_42: {} } } as any);
-		expect(out.isValid).toBe(true);
-		expect(out.invalidFields).not.toContain('category');
+		expect(out.isValid).toBe(false);
+		expect(out.invalidFields).toContain('category');
 	});
 
 	it('nested fks.{relation} object value satisfies required check', async () => {
 		const db = await createVehicleDb();
-		const validator = db.collection('vehicle').validator;
+		const validator = db.collection('vehicle')!.validator;
 		const out = await validator.validateForm({ name: 'X', fks: { category: { id: 7, code: 'compact' } } } as any);
 		expect(out.isValid).toBe(true);
 		expect(out.invalidFields).not.toContain('category');
@@ -246,7 +246,7 @@ describe('MachineSchemeValidate - FK required', () => {
 
 	it('ignoreFields skips required FK check', async () => {
 		const db = await createVehicleDb();
-		const validator = db.collection('vehicle').validator;
+		const validator = db.collection('vehicle')!.validator;
 		const out = await validator.validateForm({ name: 'X' } as any, { ignoreFields: ['category'] });
 		expect(out.invalidFields).not.toContain('category');
 	});

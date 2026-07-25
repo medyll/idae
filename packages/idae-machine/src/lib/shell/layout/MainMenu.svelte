@@ -21,7 +21,7 @@ Toggled from TaskBar's menu button via bind:open.
 	let selected = $state<string | undefined>(undefined);
 
 	function loadContent(collection: string): void {
-		machine.framer.loadIn(CONTENT_ZONE, CONTENT_FRAME, collection);
+		machine.framer.loadIn(CONTENT_FRAME, collection, { zone: CONTENT_ZONE });
 	}
 
 	$effect(() => {
@@ -42,17 +42,17 @@ Toggled from TaskBar's menu button via bind:open.
 	/**
 	 * Normalize an appscheme icon value for Iconify.
 	 * The stored value may be a bare glyph name (e.g. "user") or already prefixed
-	 * (e.g. "typcn:user"). Bare names are treated as Typicons to match FieldIcon.
-	 * Invalid/fallback values that look like free text are replaced with a safe default.
+	 * (e.g. "ph:user"). Bare names are treated as Phosphor ('ph:') — the icon set
+	 * bundled with the app (@iconify-json/ph). Free-text/numeric values fall back.
 	 */
-	function normalizeIcon(icon: string | undefined, fallback = 'typcn:folder'): string {
+	function normalizeIcon(icon: string | undefined, fallback = 'ph:folder'): string {
 		if (!icon) return fallback;
 		const trimmed = icon.trim();
 		if (!trimmed) return fallback;
 		if (/^\d+$/.test(trimmed)) return fallback;
 		if (/\s/.test(trimmed)) return fallback;
 		if (trimmed.includes(':')) return trimmed;
-		return `typcn:${trimmed}`;
+		return `ph:${trimmed}`;
 	}
 </script>
 
@@ -74,14 +74,14 @@ Toggled from TaskBar's menu button via bind:open.
 				aria-label="Close menu"
 				onclick={() => (open = false)}
 			>
-				<Icon icon="typcn:close" />
+				<Icon icon="ph:x" />
 			</button>
 
 			<main-menu-dock>
 				<DataList
 					collection="appscheme"
 					where={{ code: { $in: startMenu.codes } }}
-					groupBy="fks.appscheme_base.code"
+					groupBy="fks.appscheme_type.code"
 					usePrefs={false}
 				>
 					{#snippet dataRecord({ data })}
@@ -131,9 +131,9 @@ Toggled from TaskBar's menu button via bind:open.
 			justify-content: flex-start;
 			position: fixed;
 			inset: 0;
-			z-index: var(--z-modal, 1000);
-			padding: var(--gutter-md, 1rem);
-			background: rgba(0, 0, 0, 0.45);
+			z-index: var(--z-modal);
+			padding: 0;
+			background: color-mix(in oklch, var(--color-text) 38%, transparent);
 			overflow: hidden;
 		}
 		.main-menu-backdrop {
@@ -147,72 +147,77 @@ Toggled from TaskBar's menu button via bind:open.
 			display: flex;
 			position: relative;
 			width: 100%;
-			max-width: 31.25rem;
-			height: calc(100% - var(--gutter-md, 1rem) * 2);
-			max-height: 48rem;
-			background: var(--color-surface, #ffffff);
-			border-radius: var(--radius-lg, 12px);
-			box-shadow: var(--shadow-xl, 0 20px 60px rgba(0, 0, 0, 0.3));
+			max-width: calc(var(--gutter-3xl) * 10);
+			height: 100%;
+			max-height: 100%;
+			background: var(--color-surface-raised);
+			border-right: var(--border-width) solid var(--color-border-strong);
+			border-radius: 0;
+			box-shadow: var(--shadow-xl);
 			overflow: hidden;
 		}
 		.main-menu-close {
 			all: unset;
 			position: absolute;
-			top: var(--gutter-sm, 0.5rem);
-			right: var(--gutter-sm, 0.5rem);
+			top: var(--gutter-sm);
+			right: var(--gutter-sm);
 			z-index: 1;
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
-			width: 2rem;
-			height: 2rem;
+			width: var(--control-height);
+			height: var(--control-height);
 			cursor: pointer;
-			border-radius: var(--radius-full, 9999px);
-			background: var(--color-surface-alt, #e5e7eb);
-			color: var(--color-text, #111827);
-			font-size: 1.25rem;
+			border-radius: var(--radius-xs);
+			background: var(--color-surface-alt);
+			color: var(--color-text);
+			font-size: var(--text-md);
 			line-height: 1;
 		}
 		.main-menu-close :global(svg) {
-			font-size: 1.25rem;
+			font-size: var(--text-md);
 		}
 		.main-menu-close:hover {
-			background: var(--color-surface-elevated, #d1d5db);
+			background: var(--color-critical);
+			color: var(--default-color-surface-light);
 		}
 		.main-menu-dock-item-icon :global(svg) {
-			font-size: 1.25em;
+			font-size: var(--icon-size-sm);
 			vertical-align: middle;
 		}
 			main-menu-dock :global(.data-list-group-header) { display: none; }
 		main-menu-dock {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-xs, 0.25rem);
-			width: 14rem;
+			gap: 0;
+			width: calc(var(--gutter-3xl) * 3.25);
 			flex-shrink: 0;
-			background: var(--color-surface-alt, #f3f4f6);
-			color: var(--color-text, #111827);
-			padding: var(--gutter-md, 1rem);
-			padding-top: 2.5rem;
+			background: var(--color-surface-alt);
+			color: var(--color-text);
+			padding: var(--header-height) var(--pad-xs) var(--pad-xs);
+			border-right: var(--border-width) solid var(--color-border-strong);
 			overflow-y: auto;
 		}
 		.main-menu-dock-item {
 			all: unset;
 			display: flex;
 			align-items: center;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-sm);
 			cursor: pointer;
-			padding: 0.375rem 0.5rem;
-			border-radius: var(--radius-sm, 4px);
+			min-height: var(--control-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			border-radius: var(--radius-xs);
 			color: inherit;
+			font-size: var(--text-sm);
 		}
 		.main-menu-dock-item:hover,
 		.main-menu-dock-item[aria-pressed='true'] {
-			background: var(--color-surface-elevated, rgba(0, 0, 0, 0.08));
+			background: var(--color-surface-active);
+			box-shadow: inset var(--focus-ring-width) 0 var(--color-primary);
 		}
 		.main-menu-dock-item-icon {
 			display: inline-flex;
-			width: 1.25rem;
+			width: var(--icon-size-sm);
 			justify-content: center;
 		}
 		.main-menu-dock-item-label {
@@ -226,27 +231,26 @@ Toggled from TaskBar's menu button via bind:open.
 			display: flex;
 			flex-direction: column;
 			flex: 1;
-			gap: var(--gutter-lg, 1.5rem);
-			padding: var(--gutter-lg, 1.5rem);
-			padding-top: 2.5rem;
+			gap: var(--gutter-sm);
+			padding: var(--header-height) var(--pad-md) var(--pad-md);
 			overflow-y: auto;
-			background: var(--color-surface, #ffffff);
-			color: var(--color-text, #111827);
+			background: var(--color-surface-raised);
+			color: var(--color-text);
 		}
 		main-menu-home {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-sm);
 		}
 		.main-menu-empty {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 		}
 
 		main-menu-frame-zone {
-			display:block;
-			position:relative;
-			height:100%;
-			width:100%;
+			display: block;
+			position: relative;
+			height: 100%;
+			width: 100%;
 		}
 	}
 </style>

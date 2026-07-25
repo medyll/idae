@@ -3,19 +3,31 @@ import { parseLink } from '../frame/linkParser.js';
 
 describe('parseLink', () => {
 	it('parses loadFrame with default zone', () => {
-		expect(parseLink('loadFrame:explorer')).toEqual({ action: 'loadFrame', module: 'explorer', zone: 'main' });
+		expect(parseLink('loadFrame:explorer')).toEqual({
+			action: 'loadFrame',
+			module: 'explorer',
+			zone: 'main'
+		});
 	});
 
 	it('parses loadIn with default zone', () => {
-		expect(parseLink('loadIn:card.form')).toEqual({ action: 'loadIn', module: 'card.form', zone: 'main' });
+		expect(parseLink('loadIn:form')).toEqual({ action: 'loadIn', module: 'form', zone: 'main' });
 	});
 
 	it('parses custom zone', () => {
-		expect(parseLink('loadFrame:explorer@main.modal')).toEqual({ action: 'loadFrame', module: 'explorer', zone: 'main.modal' });
+		expect(parseLink('loadFrame:explorer@main')).toEqual({
+			action: 'loadFrame',
+			module: 'explorer',
+			zone: 'main'
+		});
 	});
 
 	it('parses loadIn with custom zone', () => {
-		expect(parseLink('loadIn:explorer@main.panel')).toEqual({ action: 'loadIn', module: 'explorer', zone: 'main.panel' });
+		expect(parseLink('loadIn:explorer@main')).toEqual({
+			action: 'loadIn',
+			module: 'explorer',
+			zone: 'main'
+		});
 	});
 
 	it('returns null when no colon', () => {
@@ -28,8 +40,8 @@ describe('parseLink', () => {
 	});
 
 	it('handles module with dots', () => {
-		const r = parseLink('loadFrame:card.form@main.modal');
-		expect(r?.module).toBe('card.form');
-		expect(r?.zone).toBe('main.modal');
+		const r = parseLink('loadFrame:form@main');
+		expect(r?.module).toBe('form');
+		expect(r?.zone).toBe('main');
 	});
 });

@@ -27,7 +27,7 @@ describe('Field Validation — Stress Tests', () => {
 
 	describe('Bulk Validation Performance', () => {
 		it('should validate 100 records within reasonable time', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const startTime = performance.now();
 
 			const promises = [];
@@ -41,7 +41,7 @@ describe('Field Validation — Stress Tests', () => {
 		});
 
 		it('should validate 500 records without timeout', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const startTime = performance.now();
 
 			const promises = [];
@@ -57,7 +57,7 @@ describe('Field Validation — Stress Tests', () => {
 
 	describe('Concurrent Validation', () => {
 		it('should handle 50 concurrent validations', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const promises = [];
 
 			for (let i = 0; i < 50; i++) {
@@ -70,7 +70,7 @@ describe('Field Validation — Stress Tests', () => {
 		});
 
 		it('should handle rapid sequential validations', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const results = [];
 
 			for (let i = 0; i < 100; i++) {
@@ -83,7 +83,7 @@ describe('Field Validation — Stress Tests', () => {
 		});
 
 		it('should handle mixed validation types concurrently', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const promises = [];
 
 			for (let i = 0; i < 30; i++) {
@@ -100,20 +100,20 @@ describe('Field Validation — Stress Tests', () => {
 
 	describe('Large Value Validation', () => {
 		it('should validate very long strings', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const longString = 'x'.repeat(100000);
 			const result = await validator.validateField('name', longString);
 			expect(result.isValid).toBe(true);
 		});
 
 		it('should validate large numbers', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const result = await validator.validateField('value', Number.MAX_SAFE_INTEGER);
 			expect(result.isValid).toBe(true);
 		});
 
 		it('should handle multiple large value validations', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const promises = [];
 
 			for (let i = 0; i < 10; i++) {
@@ -128,7 +128,7 @@ describe('Field Validation — Stress Tests', () => {
 
 	describe('Error Handling Under Load', () => {
 		it('should handle mixed valid and invalid validations', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const promises = [];
 
 			for (let i = 0; i < 50; i++) {
@@ -147,7 +147,7 @@ describe('Field Validation — Stress Tests', () => {
 		});
 
 		it('should recover from validation failures in sequence', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 
 			const result1 = await validator.validateField('name', '');
 			const result2 = await validator.validateField('name', 'Valid');
@@ -163,7 +163,7 @@ describe('Field Validation — Stress Tests', () => {
 
 	describe('Memory and Resource Usage', () => {
 		it('should not leak memory with repeated validations', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 
 			// Perform 1000 validations and check memory doesn't explode
 			for (let i = 0; i < 1000; i++) {
@@ -175,7 +175,7 @@ describe('Field Validation — Stress Tests', () => {
 		});
 
 		it('should handle validator reuse efficiently', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const iterations = 100;
 
 			for (let round = 0; round < 10; round++) {
@@ -192,7 +192,7 @@ describe('Field Validation — Stress Tests', () => {
 
 	describe('Validator State Consistency', () => {
 		it('should maintain consistent results across validations', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 			const value = 'consistent-test-value';
 
 			const results = [];
@@ -205,7 +205,7 @@ describe('Field Validation — Stress Tests', () => {
 		});
 
 		it('should produce same results for same inputs', async () => {
-			const validator = db.collection('large_dataset').validator;
+			const validator = db.collection('large_dataset')!.validator;
 
 			const result1 = await validator.validateField('value', 42);
 			const result2 = await validator.validateField('value', 42);

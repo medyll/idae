@@ -7,18 +7,22 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 @prop {string} [title] - Display label (defaults to field)
 @prop {SortBy[]} sortBy - Bindable array. Entry is upserted/removed for this field.
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { SortBy } from '$lib/types/index.js';
 
+	export interface DataSortProps {
+		field: string;
+		title?: string;
+		sortBy?: SortBy[];
+	}
+</script>
+
+<script lang="ts">
 	let {
 		field,
 		title,
 		sortBy = $bindable([])
-	}: {
-		field: string;
-		title?: string;
-		sortBy?: SortBy[];
-	} = $props();
+	}: DataSortProps = $props();
 
 	const current = $derived(sortBy.find(s => s.field === field)?.direction ?? 'none');
 
@@ -53,21 +57,21 @@ Designed to be stacked (multi-sort): each instance mutates a shared bindable `so
 		.data-sort-btn {
 			display: inline-flex;
 			align-items: center;
-			gap: 0.25rem;
-			padding: 0.25rem 0.5rem;
-			border: 1px solid var(--color-border);
+			gap: var(--gutter-xs);
+			padding: var(--pad-xs) var(--pad-sm);
+			border: var(--border-width) solid var(--color-border);
 			background: var(--color-surface);
 			border-radius: var(--radius-sm);
 			cursor: pointer;
-			font-size: 0.875rem;
+			font-size: var(--text-sm);
 		}
 		.data-sort-btn.active {
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			border-color: var(--color-primary);
 		}
 		.data-sort-icon {
-			font-size: 0.75rem;
+			font-size: var(--text-xs);
 			opacity: 0.7;
 		}
 	}

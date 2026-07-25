@@ -6,6 +6,7 @@ export const comixScheme: MachineModel = {
 
 	page_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const comixScheme: MachineModel = {
 
 	issue_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const comixScheme: MachineModel = {
 
 	credit_role: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const comixScheme: MachineModel = {
 
 	panel_shape: {
 		base: 'machine_base',
+		icon: 'layout',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -58,6 +62,7 @@ export const comixScheme: MachineModel = {
 
 	bubble_type: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -70,6 +75,7 @@ export const comixScheme: MachineModel = {
 
 	genre: {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -84,6 +90,7 @@ export const comixScheme: MachineModel = {
 
 	publisher: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -100,6 +107,7 @@ export const comixScheme: MachineModel = {
 
 	creator: {
 		base: 'machine_base',
+		icon: 'pen-nib',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -119,6 +127,7 @@ export const comixScheme: MachineModel = {
 
 	series: {
 		base: 'machine_base',
+		icon: 'books',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -132,26 +141,28 @@ export const comixScheme: MachineModel = {
 			banner:       { type: 'image' },
 		},
 		fkRelations: {
-			publisher: { code: 'publisher', required: false, multiple: false },
+			publisher: { code: 'publisher', required: false },
 		},
 		template: { presentation: 'name publisher started_year ongoing' },
 	},
 
 	series_genre: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
 		fkRelations: {
-			series: { code: 'series', required: true, multiple: false },
-			genre:  { code: 'genre',  required: true, multiple: false },
+			series: { code: 'series', required: true },
+			genre:  { code: 'genre',  required: true },
 		},
 		template: { presentation: 'series genre' },
 	},
 
 	character: {
 		base: 'machine_base',
+		icon: 'user-circle',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -165,13 +176,14 @@ export const comixScheme: MachineModel = {
 			color_palette:{ type: 'text' },
 		},
 		fkRelations: {
-			series: { code: 'series', required: false, multiple: false },
+			series: { code: 'series', required: false },
 		},
 		template: { presentation: 'name alias series' },
 	},
 
 	location: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -180,7 +192,7 @@ export const comixScheme: MachineModel = {
 			ref_image:   { type: 'image' },
 		},
 		fkRelations: {
-			series: { code: 'series', required: false, multiple: false },
+			series: { code: 'series', required: false },
 		},
 		template: { presentation: 'name series' },
 	},
@@ -189,6 +201,7 @@ export const comixScheme: MachineModel = {
 
 	issue: {
 		base: 'machine_base',
+		icon: 'book',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -204,23 +217,24 @@ export const comixScheme: MachineModel = {
 			price:        { type: 'currency' },
 		},
 		fkRelations: {
-			series:       { code: 'series',       required: true, multiple: false },
-			issue_status: { code: 'issue_status', required: true, multiple: false },
+			series:       { code: 'series',       required: true },
+			issue_status: { code: 'issue_status', required: true },
 		},
 		template: { presentation: 'series number title issue_status release_date' },
 	},
 
 	issue_credit: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
 			ordre: { type: 'number' },
 		},
 		fkRelations: {
-			issue:       { code: 'issue',       required: true, multiple: false },
-			creator:     { code: 'creator',     required: true, multiple: false },
-			credit_role: { code: 'credit_role', required: true, multiple: false },
+			issue:       { code: 'issue',       required: true },
+			creator:     { code: 'creator',     required: true },
+			credit_role: { code: 'credit_role', required: true },
 		},
 		template: { presentation: 'issue creator credit_role' },
 	},
@@ -229,6 +243,7 @@ export const comixScheme: MachineModel = {
 
 	script: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -241,14 +256,15 @@ export const comixScheme: MachineModel = {
 			updated_at: { type: 'date' },
 		},
 		fkRelations: {
-			issue:  { code: 'issue',   required: true,  multiple: false },
-			writer: { code: 'creator', required: false, multiple: false },
+			issue:  { code: 'issue',   required: true },
+			writer: { code: 'creator', required: false },
 		},
 		template: { presentation: 'issue version writer locked updated_at' },
 	},
 
 	page: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -265,18 +281,19 @@ export const comixScheme: MachineModel = {
 			due_date:     { type: 'date' },
 		},
 		fkRelations: {
-			issue:       { code: 'issue',       required: true,  multiple: false },
-			page_status: { code: 'page_status', required: true,  multiple: false },
-			penciller:   { code: 'creator',     required: false, multiple: false },
-			inker:       { code: 'creator',     required: false, multiple: false },
-			colorist:    { code: 'creator',     required: false, multiple: false },
-			letterer:    { code: 'creator',     required: false, multiple: false },
+			issue:       { code: 'issue',       required: true },
+			page_status: { code: 'page_status', required: true },
+			penciller:   { code: 'creator',     required: false },
+			inker:       { code: 'creator',     required: false },
+			colorist:    { code: 'creator',     required: false },
+			letterer:    { code: 'creator',     required: false },
 		},
 		template: { presentation: 'issue number page_status due_date' },
 	},
 
 	panel: {
 		base: 'machine_base',
+		icon: 'layout',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -291,15 +308,16 @@ export const comixScheme: MachineModel = {
 			image:        { type: 'image' },
 		},
 		fkRelations: {
-			page:        { code: 'page',        required: true,  multiple: false },
-			panel_shape: { code: 'panel_shape', required: false, multiple: false },
-			location:    { code: 'location',    required: false, multiple: false },
+			page:        { code: 'page',        required: true },
+			panel_shape: { code: 'panel_shape', required: false },
+			location:    { code: 'location',    required: false },
 		},
 		template: { presentation: 'page number panel_shape sfx' },
 	},
 
 	panel_character: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:       { type: 'id',   readonly: true },
 			code:     { type: 'text', required: true },
@@ -308,14 +326,15 @@ export const comixScheme: MachineModel = {
 			emotion:  { type: 'text' },
 		},
 		fkRelations: {
-			panel:     { code: 'panel',     required: true, multiple: false },
-			character: { code: 'character', required: true, multiple: false },
+			panel:     { code: 'panel',     required: true },
+			character: { code: 'character', required: true },
 		},
 		template: { presentation: 'panel character pose emotion' },
 	},
 
 	bubble: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -327,9 +346,9 @@ export const comixScheme: MachineModel = {
 			font:      { type: 'text' },
 		},
 		fkRelations: {
-			panel:       { code: 'panel',       required: true,  multiple: false },
-			character:   { code: 'character',   required: false, multiple: false },
-			bubble_type: { code: 'bubble_type', required: true,  multiple: false },
+			panel:       { code: 'panel',       required: true },
+			character:   { code: 'character',   required: false },
+			bubble_type: { code: 'bubble_type', required: true },
 		},
 		template: { presentation: 'panel ordre character bubble_type text' },
 	},
@@ -338,6 +357,7 @@ export const comixScheme: MachineModel = {
 
 	asset: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -351,14 +371,15 @@ export const comixScheme: MachineModel = {
 			uploaded_at: { type: 'date' },
 		},
 		fkRelations: {
-			creator: { code: 'creator', required: false, multiple: false },
-			series:  { code: 'series',  required: false, multiple: false },
+			creator: { code: 'creator', required: false },
+			series:  { code: 'series',  required: false },
 		},
 		template: { presentation: 'name kind series' },
 	},
 
 	revision: {
 		base: 'machine_base',
+		icon: 'git-branch',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -369,9 +390,9 @@ export const comixScheme: MachineModel = {
 			resolved:   { type: 'boolean' },
 		},
 		fkRelations: {
-			page:    { code: 'page',    required: false, multiple: false },
-			panel:   { code: 'panel',   required: false, multiple: false },
-			creator: { code: 'creator', required: true,  multiple: false },
+			page:    { code: 'page',    required: false },
+			panel:   { code: 'panel',   required: false },
+			creator: { code: 'creator', required: true },
 		},
 		template: { presentation: 'page panel creator created_at resolved' },
 	},

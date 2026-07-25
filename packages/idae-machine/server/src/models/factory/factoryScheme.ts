@@ -6,6 +6,7 @@ export const factoryScheme: MachineModel = {
 
 	item_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const factoryScheme: MachineModel = {
 
 	work_order_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const factoryScheme: MachineModel = {
 
 	po_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const factoryScheme: MachineModel = {
 
 	lot_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const factoryScheme: MachineModel = {
 
 	qc_result: {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -72,6 +77,7 @@ export const factoryScheme: MachineModel = {
 
 	uom: {
 		base: 'machine_base',
+		icon: 'scales',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -84,6 +90,7 @@ export const factoryScheme: MachineModel = {
 
 	machine_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -100,6 +107,7 @@ export const factoryScheme: MachineModel = {
 
 	item: {
 		base: 'machine_base',
+		icon: 'package',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -115,14 +123,15 @@ export const factoryScheme: MachineModel = {
 			image:         { type: 'image' },
 		},
 		fkRelations: {
-			item_type: { code: 'item_type', required: true, multiple: false },
-			uom:       { code: 'uom',       required: true, multiple: false },
+			item_type: { code: 'item_type', required: true },
+			uom:       { code: 'uom',       required: true },
 		},
 		template: { presentation: 'sku name item_type standard_cost' },
 	},
 
 	supplier: {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -141,6 +150,7 @@ export const factoryScheme: MachineModel = {
 
 	supplier_item: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -151,8 +161,8 @@ export const factoryScheme: MachineModel = {
 			preferred:     { type: 'boolean' },
 		},
 		fkRelations: {
-			supplier: { code: 'supplier', required: true, multiple: false },
-			item:     { code: 'item',     required: true, multiple: false },
+			supplier: { code: 'supplier', required: true },
+			item:     { code: 'item',     required: true },
 		},
 		template: { presentation: 'supplier item price preferred' },
 	},
@@ -161,6 +171,7 @@ export const factoryScheme: MachineModel = {
 
 	bom: {
 		base: 'machine_base',
+		icon: 'tree-structure',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -171,14 +182,15 @@ export const factoryScheme: MachineModel = {
 			notes:       { type: 'text-lg' },
 		},
 		fkRelations: {
-			item: { code: 'item', required: true, multiple: false },
-			uom:  { code: 'uom',  required: true, multiple: false },
+			item: { code: 'item', required: true },
+			uom:  { code: 'uom',  required: true },
 		},
 		template: { presentation: 'item name version is_active' },
 	},
 
 	bom_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -188,10 +200,10 @@ export const factoryScheme: MachineModel = {
 			notes:        { type: 'text-lg' },
 		},
 		fkRelations: {
-			bom:           { code: 'bom',  required: true,  multiple: false },
-			component:     { code: 'item', required: true,  multiple: false },
-			component_bom: { code: 'bom',  required: false, multiple: false },
-			uom:           { code: 'uom',  required: true,  multiple: false },
+			bom:           { code: 'bom',  required: true },
+			component:     { code: 'item', required: true },
+			component_bom: { code: 'bom',  required: false },
+			uom:           { code: 'uom',  required: true },
 		},
 		template: { presentation: 'bom component quantity uom' },
 	},
@@ -200,6 +212,7 @@ export const factoryScheme: MachineModel = {
 
 	work_center: {
 		base: 'machine_base',
+		icon: 'factory',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			code:           { type: 'text',     required: true },
@@ -213,6 +226,7 @@ export const factoryScheme: MachineModel = {
 
 	machine: {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:              { type: 'id',     readonly: true },
 			code:            { type: 'text',   required: true },
@@ -224,27 +238,29 @@ export const factoryScheme: MachineModel = {
 			next_maintenance:{ type: 'date' },
 		},
 		fkRelations: {
-			work_center:    { code: 'work_center',    required: true, multiple: false },
-			machine_status: { code: 'machine_status', required: true, multiple: false },
+			work_center:    { code: 'work_center',    required: true },
+			machine_status: { code: 'machine_status', required: true },
 		},
 		template: { presentation: 'name work_center machine_status next_maintenance' },
 	},
 
 	routing: {
 		base: 'machine_base',
+		icon: 'tree-structure',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 			name: { type: 'text', required: true },
 		},
 		fkRelations: {
-			item: { code: 'item', required: true, multiple: false },
+			item: { code: 'item', required: true },
 		},
 		template: { presentation: 'item name' },
 	},
 
 	operation: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -255,8 +271,8 @@ export const factoryScheme: MachineModel = {
 			instructions:  { type: 'text-lg' },
 		},
 		fkRelations: {
-			routing:     { code: 'routing',     required: true, multiple: false },
-			work_center: { code: 'work_center', required: true, multiple: false },
+			routing:     { code: 'routing',     required: true },
+			work_center: { code: 'work_center', required: true },
 		},
 		template: { presentation: 'routing sequence name work_center' },
 	},
@@ -265,6 +281,7 @@ export const factoryScheme: MachineModel = {
 
 	work_order: {
 		base: 'machine_base',
+		icon: 'clipboard',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -280,16 +297,17 @@ export const factoryScheme: MachineModel = {
 			notes:        { type: 'text-lg' },
 		},
 		fkRelations: {
-			item:              { code: 'item',              required: true,  multiple: false },
-			bom:               { code: 'bom',               required: false, multiple: false },
-			routing:           { code: 'routing',           required: false, multiple: false },
-			work_order_status: { code: 'work_order_status', required: true,  multiple: false },
+			item:              { code: 'item',              required: true },
+			bom:               { code: 'bom',               required: false },
+			routing:           { code: 'routing',           required: false },
+			work_order_status: { code: 'work_order_status', required: true },
 		},
 		template: { presentation: 'wo_number item quantity work_order_status scheduled_start' },
 	},
 
 	wo_operation: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -300,16 +318,17 @@ export const factoryScheme: MachineModel = {
 			completed_at:  { type: 'date' },
 		},
 		fkRelations: {
-			work_order:  { code: 'work_order',  required: true,  multiple: false },
-			operation:   { code: 'operation',   required: false, multiple: false },
-			work_center: { code: 'work_center', required: true,  multiple: false },
-			machine:     { code: 'machine',     required: false, multiple: false },
+			work_order:  { code: 'work_order',  required: true },
+			operation:   { code: 'operation',   required: false },
+			work_center: { code: 'work_center', required: true },
+			machine:     { code: 'machine',     required: false },
 		},
 		template: { presentation: 'work_order sequence work_center actual_minutes' },
 	},
 
 	material_consumption: {
 		base: 'machine_base',
+		icon: 'chart-line',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -318,9 +337,9 @@ export const factoryScheme: MachineModel = {
 			consumed_at:  { type: 'date' },
 		},
 		fkRelations: {
-			work_order: { code: 'work_order', required: true,  multiple: false },
-			item:       { code: 'item',       required: true,  multiple: false },
-			lot:        { code: 'lot',        required: false, multiple: false },
+			work_order: { code: 'work_order', required: true },
+			item:       { code: 'item',       required: true },
+			lot:        { code: 'lot',        required: false },
 		},
 		template: { presentation: 'work_order item planned_qty consumed_qty' },
 	},
@@ -329,6 +348,7 @@ export const factoryScheme: MachineModel = {
 
 	warehouse: {
 		base: 'machine_base',
+		icon: 'warehouse',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -342,6 +362,7 @@ export const factoryScheme: MachineModel = {
 
 	stock_location: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -350,13 +371,14 @@ export const factoryScheme: MachineModel = {
 			bin:  { type: 'text' },
 		},
 		fkRelations: {
-			warehouse: { code: 'warehouse', required: true, multiple: false },
+			warehouse: { code: 'warehouse', required: true },
 		},
 		template: { presentation: 'warehouse name aisle bin' },
 	},
 
 	lot: {
 		base: 'machine_base',
+		icon: 'barcode',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -366,15 +388,16 @@ export const factoryScheme: MachineModel = {
 			expires_at:   { type: 'date' },
 		},
 		fkRelations: {
-			item:       { code: 'item',       required: true,  multiple: false },
-			lot_status: { code: 'lot_status', required: true,  multiple: false },
-			work_order: { code: 'work_order', required: false, multiple: false },
+			item:       { code: 'item',       required: true },
+			lot_status: { code: 'lot_status', required: true },
+			work_order: { code: 'work_order', required: false },
 		},
 		template: { presentation: 'lot_number item quantity lot_status' },
 	},
 
 	stock_move: {
 		base: 'machine_base',
+		icon: 'arrows-left-right',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -384,11 +407,11 @@ export const factoryScheme: MachineModel = {
 			reference: { type: 'text' },
 		},
 		fkRelations: {
-			item:          { code: 'item',           required: true,  multiple: false },
-			lot:           { code: 'lot',            required: false, multiple: false },
-			from_location: { code: 'stock_location', required: false, multiple: false },
-			to_location:   { code: 'stock_location', required: false, multiple: false },
-			work_order:    { code: 'work_order',     required: false, multiple: false },
+			item:          { code: 'item',           required: true },
+			lot:           { code: 'lot',            required: false },
+			from_location: { code: 'stock_location', required: false },
+			to_location:   { code: 'stock_location', required: false },
+			work_order:    { code: 'work_order',     required: false },
 		},
 		template: { presentation: 'item quantity move_type moved_at' },
 	},
@@ -397,6 +420,7 @@ export const factoryScheme: MachineModel = {
 
 	purchase_order: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -408,14 +432,15 @@ export const factoryScheme: MachineModel = {
 			notes:        { type: 'text-lg' },
 		},
 		fkRelations: {
-			supplier:  { code: 'supplier',  required: true, multiple: false },
-			po_status: { code: 'po_status', required: true, multiple: false },
+			supplier:  { code: 'supplier',  required: true },
+			po_status: { code: 'po_status', required: true },
 		},
 		template: { presentation: 'po_number supplier order_date po_status total' },
 	},
 
 	po_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -425,8 +450,8 @@ export const factoryScheme: MachineModel = {
 			line_total:   { type: 'currency' },
 		},
 		fkRelations: {
-			purchase_order: { code: 'purchase_order', required: true, multiple: false },
-			item:           { code: 'item',           required: true, multiple: false },
+			purchase_order: { code: 'purchase_order', required: true },
+			item:           { code: 'item',           required: true },
 		},
 		template: { presentation: 'purchase_order item quantity received_qty unit_price' },
 	},
@@ -435,6 +460,7 @@ export const factoryScheme: MachineModel = {
 
 	quality_check: {
 		base: 'machine_base',
+		icon: 'shield-check',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -444,10 +470,10 @@ export const factoryScheme: MachineModel = {
 			notes:       { type: 'text-lg' },
 		},
 		fkRelations: {
-			lot:        { code: 'lot',        required: false, multiple: false },
-			work_order: { code: 'work_order', required: false, multiple: false },
-			item:       { code: 'item',       required: true,  multiple: false },
-			qc_result:  { code: 'qc_result',  required: true,  multiple: false },
+			lot:        { code: 'lot',        required: false },
+			work_order: { code: 'work_order', required: false },
+			item:       { code: 'item',       required: true },
+			qc_result:  { code: 'qc_result',  required: true },
 		},
 		template: { presentation: 'item lot qc_result checked_at' },
 	},

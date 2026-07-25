@@ -10,14 +10,32 @@ Iterates a record's fields and renders DataField for each.
 @prop {string} [view] - Named view (resolved via appscheme_view/appscheme_field query — see useViewFields)
 @prop {string} [groupFieldBy] - FK relation key on appscheme_field to group by (e.g. 'appscheme_field_type'); grouping runs on `fks.{groupFieldBy}.code` via native groupBy
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ViewTypeCode } from '$lib/types/index.js';
+
+	export interface DataRecordProps {
+		collection: string;
+		collectionId?: string | number;
+		data?: Record<string, any>;
+		mode?: 'show' | 'create' | 'update';
+		as?: 'fields' | 'row';
+		showFields?: string[];
+		view?: ViewTypeCode;
+		groupFieldBy?: string;
+		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
+		inputForm?: string;
+		showLabel?: boolean | string;
+		showGroupNames?: boolean;
+	}
+</script>
+
+<script lang="ts">
 	import DataField from '$lib/data-ui/field/DataField.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
 	import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 	import { getContext } from 'svelte';
-	import type { ViewTypeCode } from '$lib/types/index.js';
 
 	let {
 		collection = getContext('collection'),
@@ -32,20 +50,7 @@ Iterates a record's fields and renders DataField for each.
 		inputForm,
 		showLabel = true,
 		showGroupNames = true
-	}: {
-		collection: string;
-		collectionId?: string | number;
-		data?: Record<string, any>;
-		mode?: 'show' | 'create' | 'update';
-		as?: 'fields' | 'row';
-		showFields?: string[];
-		view?: ViewTypeCode;
-		groupFieldBy?: string;
-		groupChildren?: Snippet<[{ key: string; fieldNames: string[] }]>;
-		inputForm?: string;
-		showLabel?: boolean | string;
-		showGroupNames?: boolean;
-	} = $props();
+	}: DataRecordProps = $props();
 
 	// Data source contract (CLAUDE.md §4): `data` prop → controlled (e.g. DataList store
 	// items), used as-is; else `collectionId` → reactive read via machine.store (BL-24,
@@ -83,25 +88,29 @@ Iterates a record's fields and renders DataField for each.
 	{/if}
 {:else if groups}
 	{#each Object.entries(groups) as [key, groupFields] (key)}
+		{@const visibleFields = groupFields.filter(
+			({ code: fieldName }) =>
+				(scheme?.fields?.[fieldName] || isFkField(fieldName)) &&
+				(mode !== 'show' ||
+					(effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))
+		)}
 		{#if groupChildren}
 			{@render groupChildren({ key, fieldNames: groupFields.map((f) => f.code) })}
-		{:else}
+		{:else if visibleFields.length}
 			<fieldset class="field-group">
 				{#if showGroupNames}<legend>- {key}</legend>{/if}
-				{#each groupFields as { code: fieldName } (fieldName)}
-					{#if (scheme?.fields?.[fieldName] || isFkField(fieldName)) && (mode !== 'show' || (effectiveData != null && (fieldName in effectiveData || isFkField(fieldName))))}
-						<div class="field">
-							{#if mode === 'show'}
-								<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
-							{:else if data !== undefined}<DataField
-									{collection}
-									{fieldName}
-									{mode}
-									bind:data
-									{inputForm}
-								/>{/if}
-						</div>
-					{/if}
+				{#each visibleFields as { code: fieldName } (fieldName)}
+					<div class="field">
+						{#if mode === 'show'}
+							<DataField {showLabel} {collection} {fieldName} {mode} data={effectiveData!} {inputForm} />
+						{:else if data !== undefined}<DataField
+								{collection}
+								{fieldName}
+								{mode}
+								bind:data
+								{inputForm}
+							/>{/if}
+					</div>
 				{/each}
 			</fieldset>
 		{/if}
@@ -130,6 +139,7 @@ Iterates a record's fields and renders DataField for each.
 {/if}
 
 <style>
+	@layer components {
 	/* flex-wrap (legacy .fiche_field_group: flex_h flex_wrap) — each DataField's
 	   `.field-line` carries its own flex-basis (~320px, legacy min-width:40%) and
 	   fixed-width label, so values line up without a rigid grid forcing uneven
@@ -152,5 +162,6 @@ Iterates a record's fields and renders DataField for each.
 		padding: var(--pad-sm) 0 var(--pad-xs);
 		font-weight: var(--font-medium);
 		color: var(--color-text-muted);
+	}
 	}
 </style>

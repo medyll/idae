@@ -10,7 +10,7 @@ import { IdaeDb, DbType } from '@medyll/idae-db';
 import { mongooseConnectionManager } from '@medyll/idae-api';
 import { buildFkRef, FieldList, type FkRef } from '../idae/index.js';
 import { ensureCodeToId } from './resolveFkUtils.js';
-import { inferFieldGroup, ICON_BY_GROUP } from '../../../src/lib/types/schema-utils.js';
+import { inferFieldGroup, ICON_BY_GROUP, detectTimespan } from '../../../src/lib/types/schema-utils.js';
 import { analyzeSchema } from './seed/schemaWalker.js';
 import { MACHINE_APP_BASE } from './seed/idaeModel.js';
 import type {
@@ -186,7 +186,7 @@ export async function seedIdaeRegistries(opts: DeployOpts): Promise<void> {
 	);
 
 	const baseRef: Record<string, any> = {
-		[META.base]: { id: baseId, code: MACHINE_APP_BASE, name: 'Machine App', icon: 'cpu', color: '#111', order: 1, multiple: false, required: true },
+		[META.base]: { id: baseId, code: MACHINE_APP_BASE, name: 'Machine App', icon: 'cpu', color: '#111', order: 1, required: true },
 	};
 
 	// 1. field_type
@@ -288,13 +288,14 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		// model (relations come from `fkRelations`): their `.code` is a base/type code,
 		// not a queryable collection. The pair (write here / read there) is load-bearing.
 		schemeFksDoc[META.base] = await embedFk(col(META.base), baseCode, {
-			name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true
+			name: baseCode, icon: 'database', color: '#333', order: 0, required: true
 		});
 		schemeFksDoc[META.schemeType] = await embedFk(col(META.schemeType), typeCode, {
-			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, multiple: false, required: false
+			name: typeCode.charAt(0).toUpperCase() + typeCode.slice(1), icon: 'layers', color: '#555', order: 0, required: false
 		});
 
-		// Business FK relations: relation descriptor only ({ code, multiple, required }).
+		// Business FK relations: relation descriptor only ({ code, required }).
+		// A FK is always single (UNMULTIPLE.md) — N-N goes through a junction collection.
 		// A scheme FK names its TARGET COLLECTION by `code` — not a resolved data
 		// pointer, so it must NOT be embedFk'd (that would upsert a stub into the
 		// META connection and create phantom business collections there).
@@ -302,7 +303,6 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			const fk = fkDef as MachineFkDef;
 			fkRelationsDoc[fkKey] = {
 				code:     fk.code ?? fkKey,
-				multiple: fk.multiple ?? false,
 				required: !!fk.required,
 			};
 		}
@@ -311,27 +311,38 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		const isType   = ((colDef as any).isType   ?? collectionName.endsWith('_type'))   || undefined;
 		const isGroup  = ((colDef as any).isGroup  ?? collectionName.endsWith('_group'))  || undefined;
 		const isStatus = ((colDef as any).isStatus ?? collectionName.endsWith('_status')) || undefined;
+		// Time span qualifier: declared on the model, else auto-detected from the
+		// start/end temporal field pair (detectTimespan). Qualifies the collection
+		// for period-based views (planning/calendar). hasTimespan = !!timespan.
+		const timespan = (colDef as any).timespan ?? detectTimespan(fields as Record<string, { type?: string }>);
 
 		// Log declared FKs (from the model), not the auto-injected meta base/type.
 		const declaredFks = Object.entries(colDef.fkRelations ?? {})
-			.map(([k, v]) => `${k}${(v as any).multiple ? '[]' : ''}${(v as any).required ? '*' : ''}`);
+			.map(([k, v]) => `${k}${(v as any).required ? '*' : ''}`);
 		console.log(
 			`  [publishModel] ${collectionName.padEnd(28)} base=${baseCode.padEnd(14)} type=${typeCode.padEnd(9)} fks=[${declaredFks.join(', ')}]`,
 		);
+		// Scheme icon/color come from the model declaration (colDef.icon/color). Fall
+		// back to a generic collection glyph only when the model declares none — never
+		// hardcode one icon for every scheme (that produced the "everything is a table"
+		// slop). Values are Phosphor (iconify 'ph:') names.
+		const schemeIcon  = (colDef as { icon?: string }).icon  ?? 'table';
+		const schemeColor = (colDef as { color?: string }).color ?? '#222';
 		const schemeId = await ensureCodeToId(
 			col(META.scheme),
 			collectionName,
 			{
 				code:     collectionName,
 				name:     collectionName,
-				icon:     'table',
-				color:    '#222',
+				icon:     schemeIcon,
+				color:    schemeColor,
 				order:    ++schemeOrder,
 				keyPath:  colDef.keyPath ?? '++id',
 				base:     baseCode,
 				...(isType   ? { isType:   true } : {}),
 				...(isGroup  ? { isGroup:  true } : {}),
 				...(isStatus ? { isStatus: true } : {}),
+				...(timespan ? { timespan } : {}),
 				...(colDef.rights ? { rights: colDef.rights } : {}),
 				template,
 				fks:         schemeFksDoc,
@@ -353,9 +364,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 
 			if (!fieldReg.has(fieldName)) {
 				const fieldGridFks = {
-					[META.base]:       await embedFk(col(META.base),       baseCode, { name: baseCode, icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-					[META.fieldType]:  await embedFk(col(META.fieldType),  baseType, { name: baseType, icon: 'type',     color: '#666', order: 0, multiple: false, required: true }),
-					[META.fieldGroup]: await embedFk(col(META.fieldGroup), group,    { name: group,    icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, multiple: false, required: false }),
+					[META.base]:       await embedFk(col(META.base),       baseCode, { name: baseCode, icon: 'database', color: '#333', order: 0, required: true }),
+					[META.fieldType]:  await embedFk(col(META.fieldType),  baseType, { name: baseType, icon: 'type',     color: '#666', order: 0, required: true }),
+					[META.fieldGroup]: await embedFk(col(META.fieldGroup), group,    { name: group,    icon: ICON_BY_GROUP[group] ?? 'tag', color: '#888', order: 0, required: false }),
 				};
 
 				const fieldId = await ensureCodeToId(
@@ -396,13 +407,13 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 					fks: {
 						[META.scheme]: {
 							id: schemeId, code: collectionName, name: collectionName,
-							icon: 'table', color: '#222',
-							order: 0, multiple: false, required: true,
+							icon: schemeIcon, color: schemeColor,
+							order: 0, required: true,
 						},
 						[META.field]: {
 							id: fieldId, code: fieldName, name: fieldName,
 							icon: fieldIcon, color: '#666',
-							order: 0, multiple: false, required: true,
+							order: 0, required: true,
 						},
 					},
 				},
@@ -416,9 +427,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 			if (fieldReg.has(fkKey)) continue;
 			const fk = fkDef as MachineFkDef;
 			const fieldGridFks = {
-				[META.base]:       await embedFk(col(META.base),       baseCode,  { name: baseCode,   icon: 'database', color: '#333', order: 0, multiple: false, required: true }),
-				[META.fieldType]:  await embedFk(col(META.fieldType),  'fk',      { name: 'fk',       icon: 'link',     color: '#666', order: 0, multiple: false, required: true }),
-				[META.fieldGroup]: await embedFk(col(META.fieldGroup), 'relations',{ name: 'relations', icon: 'link',    color: '#888', order: 0, multiple: false, required: false }),
+				[META.base]:       await embedFk(col(META.base),       baseCode,  { name: baseCode,   icon: 'database', color: '#333', order: 0, required: true }),
+				[META.fieldType]:  await embedFk(col(META.fieldType),  'fk',      { name: 'fk',       icon: 'link',     color: '#666', order: 0, required: true }),
+				[META.fieldGroup]: await embedFk(col(META.fieldGroup), 'relations',{ name: 'relations', icon: 'link',    color: '#888', order: 0, required: false }),
 			};
 			const fieldId = await ensureCodeToId(
 				col(META.field),
@@ -458,7 +469,7 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 		};
 
 		for (const [viewTypeCode, viewFields] of Object.entries(viewDefs)) {
-			const viewTypeFk = await embedFk(col(META.viewType), viewTypeCode, { name: viewTypeCode, icon: 'eye', color: '#444', order: 0, multiple: false, required: true });
+			const viewTypeFk = await embedFk(col(META.viewType), viewTypeCode, { name: viewTypeCode, icon: 'eye', color: '#444', order: 0, required: true });
 			for (const [order, vFieldName] of viewFields.entries()) {
 				const vFieldId = fieldReg.get(vFieldName);
 				if (!vFieldId) continue;
@@ -476,9 +487,9 @@ export async function publishModel(rawModel: MachineModel, opts: DeployOpts): Pr
 						color: '#444',
 						order: order + 1,
 						fks: {
-							[META.scheme]:   buildFkRef({ id: schemeId, code: collectionName, name: collectionName, icon: 'table', color: '#222', order: 0, multiple: false, required: true }),
+							[META.scheme]:   buildFkRef({ id: schemeId, code: collectionName, name: collectionName, icon: schemeIcon, color: schemeColor, order: 0, required: true }),
 							[META.viewType]: viewTypeFk,
-							[META.field]:    buildFkRef({ id: vFieldId, code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, multiple: false, required: false }),
+							[META.field]:    buildFkRef({ id: vFieldId, code: vFieldName, name: vFieldName, icon: ICON_BY_GROUP[inferFieldGroup(vFieldName, '')] ?? 'circle', color: '#666', order: order + 1, required: false }),
 						},
 					},
 				);

@@ -37,11 +37,11 @@ export async function getFkDefs(collection: string): Promise<Record<string, Mach
 
 /**
  * Validate fks.* payload for a write (POST or PUT).
- * Rules:
- *   - key must be {baseName}_{refId} — suffix always required
- *   - baseName must exist in FK defs for the collection
- *   - entry must have an `id` field matching refId
- *   - required FKs must have at least one entry
+ * Law (UNMULTIPLE.md): a FK is always single — the bag key IS the FK field
+ * name, never suffixed. Rules:
+ *   - key must equal a FK field name declared on the collection (no `_id` suffix)
+ *   - entry must have an `id` field
+ *   - required FKs must have an entry
  */
 export async function validateFkEntries(
 	collection: string,
@@ -56,41 +56,28 @@ export async function validateFkEntries(
 	if (Object.keys(fkDefs).length === 0) return { valid: true, errors: [] };
 
 	const errors: FkValidationError[] = [];
-	const presentBases = new Set<string>();
+	const present = new Set<string>();
 
 	for (const [key, entry] of Object.entries(fks as Record<string, unknown>)) {
-		const { baseName, refId } = parseFkKey(key);
-
-		if (!refId) {
-			errors.push({ field: `fks.${key}`, message: `Key '${key}' missing _id suffix — use {fkName}_{recordId}` });
+		if (!(key in fkDefs)) {
+			errors.push({ field: `fks.${key}`, message: `Unknown FK relation '${key}' — FK is always single, key must be the bare field name (no '_id' suffix)` });
 			continue;
 		}
 
-		if (!(baseName in fkDefs)) {
-			errors.push({ field: `fks.${key}`, message: `Unknown FK relation '${baseName}'` });
-			continue;
-		}
-
-		presentBases.add(baseName);
+		present.add(key);
 
 		if (!entry || typeof entry !== 'object' || Array.isArray(entry)) {
 			errors.push({ field: `fks.${key}`, message: `Entry must be an object` });
 			continue;
 		}
 
-		const entryObj = entry as Record<string, unknown>;
-		if (!('id' in entryObj)) {
+		if (!('id' in (entry as Record<string, unknown>))) {
 			errors.push({ field: `fks.${key}`, message: `Missing 'id' field` });
-			continue;
-		}
-
-		if (String(entryObj.id) !== refId) {
-			errors.push({ field: `fks.${key}`, message: `Key suffix '${refId}' must match entry.id '${entryObj.id}'` });
 		}
 	}
 
 	for (const [name, def] of Object.entries(fkDefs)) {
-		if (def.required && !presentBases.has(name)) {
+		if (def.required && !present.has(name)) {
 			errors.push({ field: `fks.${name}`, message: `FK '${name}' is required` });
 		}
 	}

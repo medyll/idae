@@ -112,14 +112,15 @@ keeps the row, matching the simplest machine.action upsert contract).
 		menu-settings-component {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-md, 1rem);
+			gap: var(--gutter-sm);
 			position: fixed;
 			inset: 10% 25%;
-			z-index: var(--z-modal, 1000);
-			padding: var(--gutter-lg, 1.5rem);
-			background: var(--color-surface);
-			border-radius: var(--radius-md, 8px);
-			box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.2));
+			z-index: var(--z-modal);
+			padding: var(--pad-sm);
+			background: var(--color-surface-raised);
+			border: var(--border-width) solid var(--color-border-strong);
+			border-radius: var(--radius-xs);
+			box-shadow: var(--shadow-xl);
 			overflow-y: auto;
 		}
 		.menu-settings-backdrop {
@@ -131,38 +132,41 @@ keeps the row, matching the simplest machine.action upsert contract).
 		}
 		menu-settings-tabs {
 			display: flex;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: 0;
 			border-bottom: var(--border-width) solid var(--color-border);
-			padding-bottom: var(--gutter-sm, 0.5rem);
+			padding-bottom: 0;
 		}
 		.menu-settings-tab {
 			all: unset;
 			cursor: pointer;
-			padding: 0.25rem 0.5rem;
-			border-radius: var(--radius-sm, 4px);
+			min-height: var(--control-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			border-radius: 0;
 			text-transform: capitalize;
 		}
 		.menu-settings-tab[aria-pressed='true'] {
 			background: var(--color-surface-alt);
-			font-weight: 600;
+			font-weight: var(--font-semibold);
+			box-shadow: inset 0 calc(-1 * var(--focus-ring-width)) var(--color-primary);
 		}
 		.menu-settings-warning {
-			color: var(--color-warning, #b45309);
+			color: var(--color-warning);
 			margin: 0;
 		}
 		menu-settings-zone {
 			display: flex;
 			flex-direction: column;
-			gap: var(--gutter-xs, 0.25rem);
+			gap: 0;
 		}
 		.menu-settings-toggle {
 			all: unset;
 			display: flex;
 			align-items: center;
-			gap: var(--gutter-sm, 0.5rem);
+			gap: var(--gutter-sm);
 			cursor: pointer;
-			padding: 0.25rem 0.5rem;
-			border-radius: var(--radius-sm, 4px);
+			min-height: var(--control-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			border-radius: var(--radius-xs);
 		}
 		.menu-settings-toggle:hover {
 			background: var(--color-surface-alt);
@@ -172,7 +176,7 @@ keeps the row, matching the simplest machine.action upsert contract).
 			width: 1.2em;
 		}
 		.menu-settings-empty {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 		}
 	}
 </style>

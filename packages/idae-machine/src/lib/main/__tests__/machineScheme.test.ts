@@ -9,7 +9,7 @@ describe('MachineScheme', () => {
 
 	beforeEach(() => {
 		db = new MachineDb(demoScheme);
-		scheme = db.collection('vehicle');
+		scheme = db.collection('vehicle')!;
 	});
 
 	it('should expose collection name and template', () => {

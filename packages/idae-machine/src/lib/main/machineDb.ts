@@ -33,7 +33,8 @@ export class MachineDb {
 	collections(): MachineScheme[] {
 		const list: MachineScheme[] = [];
 		for (const name of Object.keys(this.model)) {
-			list.push(this.collection(name as TplCollectionName));
+			// Model keys are guaranteed present, so collection() always resolves.
+			list.push(this.collection(name as TplCollectionName)!);
 		}
 		return list
 	}
@@ -42,25 +43,14 @@ export class MachineDb {
 	 * Get an IDbCollection instance for a collection name.
 	 * @role Collection accessor
 	 * @param {TplCollectionName} collection The collection name.
-	 * @return {MachineScheme} The IDbCollection instance.
+	 * @return {MachineScheme | null} The IDbCollection instance, or null when unknown to the model.
 	 */
-	collection(collection: TplCollectionName): MachineScheme {
+	collection(collection: TplCollectionName): MachineScheme | null {
+		if (!this.model[String(collection)]) return null;
 		if (!this.#idbCollectionsList[collection]) {
 			this.#idbCollectionsList[collection] = new MachineScheme(collection, this, this.model);
 		}
 		return this.#idbCollectionsList[collection];
-	}
-
-	/**
-	 * Non-throwing variant of `collection()`. Returns null when the collection is not in the model.
-	 * Use in components/UI layers that must not throw on unknown collection names.
-	 */
-	collectionOr<F>(collection: string, fallback: F): MachineScheme | F {
-		try {
-			return this.collection(collection as TplCollectionName);
-		} catch {
-			return fallback;
-		}
 	}
 
 	/**

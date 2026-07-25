@@ -51,7 +51,7 @@ export function useViewFields(
 	// stays the single source of truth.
 	const fieldKinds = $derived.by(() => {
 		const name = collection();
-		const collLogic = name ? machine.logic.collectionOr(name, null) : null;
+		const collLogic = name ? machine.logic.collection(name) : null;
 		const out: Record<string, FieldDescriptor> = {};
 		if (!collLogic) return out;
 		for (const fieldName of fieldNames) {

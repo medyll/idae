@@ -7,7 +7,7 @@ let mockPush = vi.fn();
 vi.mock('@medyll/idae-router', () => ({
 	createRouter: vi.fn(() => ({
 		before: () => {},
-		push:   vi.fn(),
+		push: vi.fn()
 	}))
 }));
 
@@ -22,7 +22,12 @@ describe('machine.framer.loadFrame — URL-driven', () => {
 		machine = new Machine();
 		machineFrameManager.clear();
 		mockPush = vi.fn();
-		machineFrameManager.setRouter(mockPush);
+		machineFrameManager.setRouter({
+			push: mockPush,
+			openFrame: vi.fn(),
+			openDialog: vi.fn(),
+			closeFrame: vi.fn()
+		});
 	});
 
 	it('pushes hash URL with /+zone/modulePath/collection', () => {
@@ -41,17 +46,17 @@ describe('machine.framer.loadFrame — URL-driven', () => {
 	});
 
 	it('serializes vars as query string', () => {
-		machine.framer.loadFrame('explorer', 'vehicle', '42', { mode: 'card' });
+		machine.framer.loadFrame('explorer', 'vehicle', '42', { vars: { mode: 'card' } });
 
 		const url = mockPush.mock.calls[0][0] as string;
 		expect(url).toBe('/+main/explorer/vehicle/42?mode=card');
 	});
 
 	it('uses explicit zone when provided', () => {
-		machine.framer.loadFrame('explorer', 'vehicle', undefined, undefined, 'main.modal');
+		machine.framer.loadFrame('explorer', 'vehicle', undefined, { zone: 'main' });
 
 		const url = mockPush.mock.calls[0][0] as string;
-		expect(url).toBe('/+main.modal/explorer/vehicle');
+		expect(url).toBe('/+main/explorer/vehicle');
 	});
 
 	it('omits vars query when empty', () => {
@@ -59,6 +64,37 @@ describe('machine.framer.loadFrame — URL-driven', () => {
 
 		const url = mockPush.mock.calls[0][0] as string;
 		expect(url).toBe('/+main/explorer/vehicle/42');
+	});
+
+	it('loads directly without changing the URL when history is false', () => {
+		const openFrame = vi.fn();
+		machineFrameManager.setRouter({
+			push: mockPush,
+			openFrame,
+			openDialog: vi.fn(),
+			closeFrame: vi.fn()
+		});
+
+		machine.framer.loadFrame('explorer', 'vehicle', '42', {
+			zone: 'panel',
+			vars: { mode: 'card' },
+			history: false
+		});
+
+		expect(mockPush).not.toHaveBeenCalled();
+		expect(openFrame).toHaveBeenCalledWith({
+			modulePath: 'explorer',
+			collection: 'vehicle',
+			collectionId: '42',
+			vars: { mode: 'card' },
+			zone: 'panel'
+		});
+	});
+
+	it('loadIn takes its optional zone from options', () => {
+		machine.framer.loadIn('explorer', 'vehicle', '42', { zone: 'panel' });
+
+		expect(mockPush).toHaveBeenCalledWith('/+panel/explorer/vehicle/42');
 	});
 
 	it('exposes machineFrameManager via framer getter', () => {

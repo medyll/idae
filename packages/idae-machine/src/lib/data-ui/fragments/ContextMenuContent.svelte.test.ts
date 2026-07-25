@@ -27,7 +27,7 @@ describe('ContextMenuContent', () => {
           }
         },
         logic: {
-          collectionOr: vi.fn().mockReturnValue(null)
+          collection: vi.fn().mockReturnValue(null)
         },
         collection: vi.fn().mockReturnValue({
           delete: vi.fn().mockResolvedValue(true)

@@ -85,8 +85,8 @@ export const idaeModelCore = {
 				isStatus: { required: false, readonly: true  }
 			},
 			fkRelations: {
-				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true  },
-				appscheme_type: { code: 'appscheme_type', order: 0, multiple: false, required: false },
+				appscheme_base: { code: 'appscheme_base', order: 0, required: true  },
+				appscheme_type: { code: 'appscheme_type', order: 0, required: false },
 			},
 			template: {
 				presentation: 'name',
@@ -108,8 +108,8 @@ export const idaeModelCore = {
 				private:       { required: false, readonly: false },
 			},
 			fkRelations: {
-				appscheme_field_type:  { code: 'appscheme_field_type',  order: 0, multiple: false, required: true  },
-				appscheme_field_group: { code: 'appscheme_field_group', order: 0, multiple: false, required: false },
+				appscheme_field_type:  { code: 'appscheme_field_type',  order: 0, required: true  },
+				appscheme_field_group: { code: 'appscheme_field_group', order: 0, required: false },
 			},
 			template: {
 				presentation: 'name',
@@ -129,7 +129,7 @@ export const idaeModelCore = {
 				order: { required: true, readonly: false },
 			},
 			fkRelations: {
-				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
+				appscheme_base: { code: 'appscheme_base', order: 0, required: true },
 			},
 			template: {
 				presentation: 'name',
@@ -149,7 +149,7 @@ export const idaeModelCore = {
 				order: { required: true, readonly: false },
 			},
 			fkRelations: {
-				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
+				appscheme_base: { code: 'appscheme_base', order: 0, required: true },
 			},
 			template: {
 				presentation: 'name',
@@ -171,8 +171,8 @@ export const idaeModelCore = {
 				readonly: { required: false, readonly: false },
 			},
 			fkRelations: {
-				appscheme:       { code: 'appscheme',       order: 0, multiple: false, required: true },
-				appscheme_field: { code: 'appscheme_field', order: 0, multiple: false, required: true },
+				appscheme:       { code: 'appscheme',       order: 0, required: true },
+				appscheme_field: { code: 'appscheme_field', order: 0, required: true },
 			},
 			template: {
 				presentation: 'fks.appscheme.code fks.appscheme_field.code',
@@ -192,7 +192,7 @@ export const idaeModelCore = {
 				order: { required: true, readonly: false },
 			},
 			fkRelations: {
-				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
+				appscheme_base: { code: 'appscheme_base', order: 0, required: true },
 			},
 			template: {
 				presentation: 'name',
@@ -213,7 +213,7 @@ export const idaeModelCore = {
 				description: { required: false, readonly: false },
 			},
 			fkRelations: {
-				appscheme_base: { code: 'appscheme_base', order: 0, multiple: false, required: true },
+				appscheme_base: { code: 'appscheme_base', order: 0, required: true },
 			},
 			template: {
 				presentation: 'name',
@@ -233,9 +233,9 @@ export const idaeModelCore = {
 				options: { required: false, readonly: false },
 			},
 			fkRelations: {
-				appscheme:           { code: 'appscheme',           order: 0, multiple: false, required: true },
-				appscheme_view_type: { code: 'appscheme_view_type', order: 0, multiple: false, required: true },
-				appscheme_field:     { code: 'appscheme_field',     order: 0, multiple: false, required: true },
+				appscheme:           { code: 'appscheme',           order: 0, required: true },
+				appscheme_view_type: { code: 'appscheme_view_type', order: 0, required: true },
+				appscheme_field:     { code: 'appscheme_field',     order: 0, required: true },
 			},
 			template: {
 				presentation: 'fks.appscheme.code fks.appscheme_view_type.code fks.appscheme_field.code',
@@ -255,7 +255,7 @@ export const idaeModelCore = {
 				changes:   { required: false, readonly: true },
 			},
 			fkRelations: {
-				appscheme: { code: 'appscheme', order: 0, multiple: false, required: false },
+				appscheme: { code: 'appscheme', order: 0, required: false },
 			},
 			template: {
 				presentation: 'operation scheme timestamp',
@@ -286,7 +286,7 @@ export const idaeModelCore = {
 				appPermissions:     { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser_profile: { code: 'appuser_profile', order: 0, multiple: false, required: false },
+				appuser_profile: { code: 'appuser_profile', order: 0, required: false },
 			},
 			template: {
 				presentation: 'login email',
@@ -374,9 +374,9 @@ export const idaeModelCore = {
 				revocationReason: { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser:       { code: 'appuser',       order: 0, multiple: false, required: true  },
-				appuser_type:  { code: 'appuser_type',  order: 0, multiple: false, required: false },
-				appuser_group: { code: 'appuser_group', order: 0, multiple: false, required: false },
+				appuser:       { code: 'appuser',       order: 0, required: true  },
+				appuser_type:  { code: 'appuser_type',  order: 0, required: false },
+				appuser_group: { code: 'appuser_group', order: 0, required: false },
 			},
 			template: {
 				presentation: 'assignmentType fks.appuser.login',
@@ -407,10 +407,10 @@ export const idaeModelCore = {
 				constraints:      { required: false, readonly: false },
 			},
 			fkRelations: {
-				appscheme:     { code: 'appscheme',     order: 0, multiple: false, required: true  },
-				appuser_type:  { code: 'appuser_type',  order: 0, multiple: false, required: false },
-				appuser_group: { code: 'appuser_group', order: 0, multiple: false, required: false },
-				appuser:       { code: 'appuser',       order: 0, multiple: false, required: false },
+				appscheme:     { code: 'appscheme',     order: 0, required: true  },
+				appuser_type:  { code: 'appuser_type',  order: 0, required: false },
+				appuser_group: { code: 'appuser_group', order: 0, required: false },
+				appuser:       { code: 'appuser',       order: 0, required: false },
 			},
 			template: {
 				presentation: 'fks.appscheme.code grantType',
@@ -435,7 +435,7 @@ export const idaeModelCore = {
 				revocationReason: { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+				appuser: { code: 'appuser', order: 0, required: true },
 			},
 			template: {
 				presentation: 'fks.appuser.login startedAt',
@@ -459,7 +459,7 @@ export const idaeModelCore = {
 				performedAt:   { required: true,  readonly: true },
 			},
 			fkRelations: {
-				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+				appuser: { code: 'appuser', order: 0, required: true },
 			},
 			template: {
 				presentation: 'action resourceType performedAt',
@@ -504,7 +504,7 @@ export const idaeModelCore = {
 			},
 			fkRelations: {
 				// required:false — role-owned preset rows (code 'role:{typeCode}:...') carry no appuser.
-				appuser: { code: 'appuser', order: 0, multiple: false, required: false },
+				appuser: { code: 'appuser', order: 0, required: false },
 			},
 			template: {
 				presentation: 'code value',
@@ -523,7 +523,7 @@ export const idaeModelCore = {
 				timestamp:        { required: true,  readonly: true },
 			},
 			fkRelations: {
-				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+				appuser: { code: 'appuser', order: 0, required: true },
 			},
 			template: {
 				presentation: 'code collection timestamp',
@@ -542,7 +542,7 @@ export const idaeModelCore = {
 				lastSeen:         { required: true,  readonly: false },
 			},
 			fkRelations: {
-				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+				appuser: { code: 'appuser', order: 0, required: true },
 			},
 			template: {
 				presentation: 'collection label lastSeen',
@@ -582,7 +582,7 @@ export const idaeModelCore = {
 				order:          { required: true,  readonly: false },
 			},
 			fkRelations: {
-				ai_provider: { code: 'ai_provider', order: 0, multiple: false, required: true },
+				ai_provider: { code: 'ai_provider', order: 0, required: true },
 			},
 			template: {
 				presentation: 'name code',
@@ -683,9 +683,9 @@ export const idaeModelCore = {
 				skills:         { required: false, readonly: false },   // string[] of skill codes
 			},
 			fkRelations: {
-				ai_model: { code: 'ai_model', order: 0, multiple: false, required: true  },   // provider/model — never free-text
+				ai_model: { code: 'ai_model', order: 0, required: true  },   // provider/model — never free-text
 				// absent = global template; set = user-owned instance/clone with overrides
-				appuser:  { code: 'appuser',  order: 1, multiple: false, required: false },
+				appuser:  { code: 'appuser',  order: 1, required: false },
 			},
 			template: {
 				presentation: 'name code',
@@ -709,11 +709,10 @@ export const idaeModelCore = {
 				collectionId:  { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser:                 { code: 'appuser',                 order: 0, multiple: false, required: true  },
-				ai_companion:            { code: 'ai_companion',            order: 1, multiple: false, required: true  },
-				ai_chat_session_status:  { code: 'ai_chat_session_status',  order: 2, multiple: false, required: false },
-				ai_model:                { code: 'ai_model',                order: 3, multiple: false, required: false },   // optional per-chat override of companion's model
-				tag:                     { code: 'tag',                     order: 4, multiple: true,  required: false },
+				appuser:                 { code: 'appuser',                 order: 0, required: true  },
+				ai_companion:            { code: 'ai_companion',            order: 1, required: true  },
+				ai_chat_session_status:  { code: 'ai_chat_session_status',  order: 2, required: false },
+				ai_model:                { code: 'ai_model',                order: 3, required: false },   // optional per-chat override of companion's model
 			},
 			template: {
 				presentation: 'title code',
@@ -747,11 +746,10 @@ export const idaeModelCore = {
 				collectionId:    { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser:           { code: 'appuser',           order: 0, multiple: false, required: true  },
-				ai_chat_session:   { code: 'ai_chat_session',   order: 1, multiple: false, required: true  },
-				ai_message_status: { code: 'ai_message_status', order: 2, multiple: false, required: false },
-				ai_model:          { code: 'ai_model',          order: 3, multiple: false, required: false },   // model actually used for this message
-				ai_tool_call:      { code: 'ai_tool_call',      order: 4, multiple: false, required: false },
+				appuser:           { code: 'appuser',           order: 0, required: true  },
+				ai_chat_session:   { code: 'ai_chat_session',   order: 1, required: true  },
+				ai_message_status: { code: 'ai_message_status', order: 2, required: false },
+				ai_model:          { code: 'ai_model',          order: 3, required: false },   // model actually used for this message
 			},
 			template: {
 				presentation: 'role code',
@@ -769,9 +767,9 @@ export const idaeModelCore = {
 				error:  { required: false, readonly: false },
 			},
 			fkRelations: {
-				ai_message:         { code: 'ai_message',         order: 0, multiple: false, required: true  },
-				ai_tool:            { code: 'ai_tool',            order: 1, multiple: false, required: true  },
-				ai_tool_call_status: { code: 'ai_tool_call_status', order: 2, multiple: false, required: false },
+				ai_message:         { code: 'ai_message',         order: 0, required: true  },
+				ai_tool:            { code: 'ai_tool',            order: 1, required: true  },
+				ai_tool_call_status: { code: 'ai_tool_call_status', order: 2, required: false },
 			},
 			template: {
 				presentation: 'code',
@@ -779,8 +777,8 @@ export const idaeModelCore = {
 		},
 
 		// ── Tags ─────────────────────────────────────────────────────────────
-		// App-scoped catalog — searchable, colored, iconified. Linked from
-		// ai_chat_session (and any future collection) via fks.tag (multiple).
+		// App-scoped catalog — searchable, colored, iconified. N-N to any collection
+		// via a junction table (UNMULTIPLE.md — FK-multiple is dead; see ai_chat_session_has_tag).
 
 		tag: {
 			base:   'machine_app',
@@ -800,6 +798,22 @@ export const idaeModelCore = {
 			},
 		},
 
+		ai_chat_session_has_tag: {
+			base:   'machine_ai',
+			rights: { ops: ['C', 'R', 'U', 'D', 'L'] },
+			fields: {
+				id:   { required: true,  readonly: true  },
+				code: { required: true,  readonly: false },
+			},
+			fkRelations: {
+				ai_chat_session: { code: 'ai_chat_session', order: 0, required: true },
+				tag:             { code: 'tag',             order: 1, required: true },
+			},
+			template: {
+				presentation: 'fks.ai_chat_session.code fks.tag.code',
+			},
+		},
+
 		// ── User prompts ─────────────────────────────────────────────────────
 		// Custom instructions auto-injected into the companion's system prompt.
 
@@ -814,7 +828,7 @@ export const idaeModelCore = {
 				locale:    { required: false, readonly: false },
 			},
 			fkRelations: {
-				appuser: { code: 'appuser', order: 0, multiple: false, required: true },
+				appuser: { code: 'appuser', order: 0, required: true },
 			},
 			template: {
 				presentation: 'content is_active',

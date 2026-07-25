@@ -6,6 +6,7 @@ export const flixScheme: MachineModel = {
 
 	title_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const flixScheme: MachineModel = {
 
 	role_type: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -32,6 +34,7 @@ export const flixScheme: MachineModel = {
 
 	age_rating: {
 		base: 'machine_base',
+		icon: 'warning',
 		isGroup: true,
 		fields: {
 			id:         { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const flixScheme: MachineModel = {
 
 	subscription_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const flixScheme: MachineModel = {
 
 	video_quality: {
 		base: 'machine_base',
+		icon: 'sliders',
 		isType: true,
 		fields: {
 			id:     { type: 'id',   readonly: true },
@@ -74,6 +79,7 @@ export const flixScheme: MachineModel = {
 
 	language: {
 		base: 'machine_base',
+		icon: 'globe',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
@@ -88,6 +94,7 @@ export const flixScheme: MachineModel = {
 
 	genre: {
 		base: 'machine_base',
+		icon: 'tag',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -100,6 +107,7 @@ export const flixScheme: MachineModel = {
 
 	studio: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -116,6 +124,7 @@ export const flixScheme: MachineModel = {
 
 	person: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -135,6 +144,7 @@ export const flixScheme: MachineModel = {
 
 	title: {
 		base: 'machine_base',
+		icon: 'film-slate',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -157,41 +167,44 @@ export const flixScheme: MachineModel = {
 			published_at: { type: 'date' },
 		},
 		fkRelations: {
-			title_type: { code: 'title_type', required: true,  multiple: false },
-			age_rating: { code: 'age_rating', required: false, multiple: false },
+			title_type: { code: 'title_type', required: true },
+			age_rating: { code: 'age_rating', required: false },
 		},
 		template: { presentation: 'name title_type release_year rating_avg' },
 	},
 
 	title_genre: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
 		fkRelations: {
-			title: { code: 'title', required: true, multiple: false },
-			genre: { code: 'genre', required: true, multiple: false },
+			title: { code: 'title', required: true },
+			genre: { code: 'genre', required: true },
 		},
 		template: { presentation: 'title genre' },
 	},
 
 	title_studio: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 			role: { type: 'text' },
 		},
 		fkRelations: {
-			title:  { code: 'title',  required: true, multiple: false },
-			studio: { code: 'studio', required: true, multiple: false },
+			title:  { code: 'title',  required: true },
+			studio: { code: 'studio', required: true },
 		},
 		template: { presentation: 'title studio role' },
 	},
 
 	credit: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		fields: {
 			id:             { type: 'id',     readonly: true },
 			code:           { type: 'text',   required: true },
@@ -199,15 +212,16 @@ export const flixScheme: MachineModel = {
 			ordre:          { type: 'number' },
 		},
 		fkRelations: {
-			title:     { code: 'title',     required: true, multiple: false },
-			person:    { code: 'person',    required: true, multiple: false },
-			role_type: { code: 'role_type', required: true, multiple: false },
+			title:     { code: 'title',     required: true },
+			person:    { code: 'person',    required: true },
+			role_type: { code: 'role_type', required: true },
 		},
 		template: { presentation: 'title person role_type character_name' },
 	},
 
 	season: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -218,13 +232,14 @@ export const flixScheme: MachineModel = {
 			poster:       { type: 'image' },
 		},
 		fkRelations: {
-			title: { code: 'title', required: true, multiple: false },
+			title: { code: 'title', required: true },
 		},
 		template: { presentation: 'title number name release_year' },
 	},
 
 	episode: {
 		base: 'machine_base',
+		icon: 'play-circle',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -236,8 +251,8 @@ export const flixScheme: MachineModel = {
 			still_image:  { type: 'image' },
 		},
 		fkRelations: {
-			season: { code: 'season', required: true, multiple: false },
-			title:  { code: 'title',  required: true, multiple: false },
+			season: { code: 'season', required: true },
+			title:  { code: 'title',  required: true },
 		},
 		template: { presentation: 'season number name air_date' },
 	},
@@ -246,6 +261,7 @@ export const flixScheme: MachineModel = {
 
 	video_asset: {
 		base: 'machine_base',
+		icon: 'video-camera',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -258,15 +274,16 @@ export const flixScheme: MachineModel = {
 			hdr:          { type: 'boolean' },
 		},
 		fkRelations: {
-			title:         { code: 'title',         required: false, multiple: false },
-			episode:       { code: 'episode',       required: false, multiple: false },
-			video_quality: { code: 'video_quality', required: true,  multiple: false },
+			title:         { code: 'title',         required: false },
+			episode:       { code: 'episode',       required: false },
+			video_quality: { code: 'video_quality', required: true },
 		},
 		template: { presentation: 'title episode video_quality codec' },
 	},
 
 	audio_track: {
 		base: 'machine_base',
+		icon: 'waveform',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			code:  { type: 'text', required: true },
@@ -274,14 +291,15 @@ export const flixScheme: MachineModel = {
 			url:   { type: 'url' },
 		},
 		fkRelations: {
-			video_asset: { code: 'video_asset', required: true, multiple: false },
-			language:    { code: 'language',    required: true, multiple: false },
+			video_asset: { code: 'video_asset', required: true },
+			language:    { code: 'language',    required: true },
 		},
 		template: { presentation: 'video_asset language kind' },
 	},
 
 	subtitle: {
 		base: 'machine_base',
+		icon: 'text-aa',
 		fields: {
 			id:     { type: 'id',     readonly: true },
 			code:   { type: 'text',   required: true },
@@ -291,8 +309,8 @@ export const flixScheme: MachineModel = {
 			sdh:    { type: 'boolean' },
 		},
 		fkRelations: {
-			video_asset: { code: 'video_asset', required: true, multiple: false },
-			language:    { code: 'language',    required: true, multiple: false },
+			video_asset: { code: 'video_asset', required: true },
+			language:    { code: 'language',    required: true },
 		},
 		template: { presentation: 'video_asset language format' },
 	},
@@ -301,6 +319,7 @@ export const flixScheme: MachineModel = {
 
 	plan: {
 		base: 'machine_base',
+		icon: 'ticket',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			code:           { type: 'text',     required: true },
@@ -319,6 +338,7 @@ export const flixScheme: MachineModel = {
 
 	viewer: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -335,6 +355,7 @@ export const flixScheme: MachineModel = {
 
 	subscription: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -345,15 +366,16 @@ export const flixScheme: MachineModel = {
 			billing_cycle:{ type: 'text' },
 		},
 		fkRelations: {
-			viewer:              { code: 'viewer',              required: true, multiple: false },
-			plan:                { code: 'plan',                required: true, multiple: false },
-			subscription_status: { code: 'subscription_status', required: true, multiple: false },
+			viewer:              { code: 'viewer',              required: true },
+			plan:                { code: 'plan',                required: true },
+			subscription_status: { code: 'subscription_status', required: true },
 		},
 		template: { presentation: 'viewer plan subscription_status started_at renews_at' },
 	},
 
 	viewer_profile: {
 		base: 'machine_base',
+		icon: 'user-circle',
 		fields: {
 			id:            { type: 'id',      readonly: true },
 			code:          { type: 'text',    required: true },
@@ -364,8 +386,8 @@ export const flixScheme: MachineModel = {
 			language_pref: { type: 'text' },
 		},
 		fkRelations: {
-			viewer:            { code: 'viewer',     required: true,  multiple: false },
-			max_age_rating:    { code: 'age_rating', required: false, multiple: false },
+			viewer:            { code: 'viewer',     required: true },
+			max_age_rating:    { code: 'age_rating', required: false },
 		},
 		template: { presentation: 'viewer name is_kid' },
 	},
@@ -374,20 +396,22 @@ export const flixScheme: MachineModel = {
 
 	watchlist: {
 		base: 'machine_base',
+		icon: 'bookmark',
 		fields: {
 			id:       { type: 'id',   readonly: true },
 			code:     { type: 'text', required: true },
 			added_at: { type: 'date' },
 		},
 		fkRelations: {
-			viewer_profile: { code: 'viewer_profile', required: true, multiple: false },
-			title:          { code: 'title',          required: true, multiple: false },
+			viewer_profile: { code: 'viewer_profile', required: true },
+			title:          { code: 'title',          required: true },
 		},
 		template: { presentation: 'viewer_profile title added_at' },
 	},
 
 	watch_history: {
 		base: 'machine_base',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -399,15 +423,16 @@ export const flixScheme: MachineModel = {
 			device:       { type: 'text' },
 		},
 		fkRelations: {
-			viewer_profile: { code: 'viewer_profile', required: true,  multiple: false },
-			title:          { code: 'title',          required: false, multiple: false },
-			episode:        { code: 'episode',        required: false, multiple: false },
+			viewer_profile: { code: 'viewer_profile', required: true },
+			title:          { code: 'title',          required: false },
+			episode:        { code: 'episode',        required: false },
 		},
 		template: { presentation: 'viewer_profile title episode position_sec watched_at' },
 	},
 
 	rating: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -416,8 +441,8 @@ export const flixScheme: MachineModel = {
 			created_at: { type: 'date',    required: true },
 		},
 		fkRelations: {
-			viewer_profile: { code: 'viewer_profile', required: true, multiple: false },
-			title:          { code: 'title',          required: true, multiple: false },
+			viewer_profile: { code: 'viewer_profile', required: true },
+			title:          { code: 'title',          required: true },
 		},
 		template: { presentation: 'viewer_profile title score created_at' },
 	},

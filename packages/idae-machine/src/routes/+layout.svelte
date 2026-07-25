@@ -1,6 +1,7 @@
 <script lang="ts">
 	import "../app.css";
 	import { machine } from '$lib/main/machine.js';
+	import { frameCatalog } from '$lib/idae/boot.js';
 	import { App } from '$lib/shell/layout/index.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
 	import { API_URL } from '$lib/config.js';
@@ -15,25 +16,27 @@
 
 	const bootPromise: Promise<void> = _g.__idae_boot ?? doBoot();
 	_g.__idae_boot = bootPromise;
-	void bootPromise.then(() => { booted = true; });
+	void bootPromise.then(() => {
+		booted = true;
+	});
 
 	async function doBoot(): Promise<void> {
-		console.log('[idae-machine] doBoot started');
 		const org = typeof localStorage !== 'undefined' ? localStorage.getItem('idae_org') : null;
 		const token = typeof localStorage !== 'undefined' ? localStorage.getItem('auth_token') : null;
-		console.log('[idae-machine] org:', org);
-		console.log('[idae-machine] token:', token ? 'present' : 'missing');
 
-		// No org yet = first visit or logged out. Skip boot entirely and let the
-		// login dialog handle org selection. The reload after login will carry idae_org.
-		if (!org) {
-			console.log('[idae-machine] No org, skipping boot');
-			booted = true;
+		// No org, or org but no token yet (first visit / logged out) = not authenticated.
+		// Skip boot entirely: boot()'s warmup fetches auth-gated collections, so running
+		// it before login fires unauthenticated requests that 401. Let the login dialog
+		// run first; the reload after login carries the token and re-enters doBoot to
+		// boot for real.
+		if (!org || !token) {
+			// Login dialog still needs the frame registry (loadInDialog('login', ...))
+			// even though full boot() — which normally does this — never runs here.
+			frameCatalog.registerFrames(machine.componentRegistry);
 			return;
 		}
 
 		try {
-			console.log('[idae-machine] Booting machine...');
 			await machine.boot({
 				org: org!, domain: 'machine', version: 7,
 				sync: {
@@ -48,19 +51,19 @@
 					...(token ? { token } : {}),
 				},
 			});
-			console.log('[idae-machine] Machine booted successfully');
 		} catch (err) {
 			console.error('[idae-machine] Boot failed:', err);
-			// A "blocked" boot (another tab held the IDB during a versioned upgrade — common
-			// on Edge) is transient: the lock clears once the other connection closes. Reload
-			// once WITHOUT wiping auth/IDB. Only a genuine corrupt boot falls through to the
-			// destructive recovery below.
+			// Recover only the subsystem identified by the error. Network failures are
+			// surfaced as-is and never erase the session or local database.
 			if (isIdbBlockedError(err) && tryBlockedReload()) return;
-			await recoverFromCorruptBoot(org, err as Error);
-			return;
+			if (isAuthError(err) && tryAuthReset()) return;
+			if (isRecoverableIdbError(err)) {
+				await recoverFromCorruptBoot(org, err as Error);
+				return;
+			}
+			throw err;
 		}
 		machine.initRouter({ baseUrl: '/', authEnabled: false });
-		console.log('[idae-machine] Router initialized');
 
 		if (typeof window !== 'undefined') {
 			(window as any).__machine = machine;
@@ -68,24 +71,33 @@
 
 		// Block render until all schema collections are in IDB — prevents empty-set race.
 		// Collections are now derived from the model (base='machine_app') instead of hardcoded array.
-		console.log('[idae-machine] Starting warmup...');
 		await machine.warmup();
-		console.log('[idae-machine] Warmup completed');
 
 		restoreSession();
 		// Boot succeeded — reset the one-shot guards so a future transient block can retry.
 		if (typeof sessionStorage !== 'undefined') {
 			sessionStorage.removeItem('idae_boot_blocked_retry');
 			sessionStorage.removeItem('idae_boot_recovery_attempted');
+			sessionStorage.removeItem('idae_auth_recovery_attempted');
 		}
-		console.log('[idae-machine] doBoot completed, booted=true');
-		booted = true;
 	}
 
 	/** True when boot failed because the IDB open/upgrade was blocked by another connection. */
 	function isIdbBlockedError(err: unknown): boolean {
 		const msg = err instanceof Error ? err.message : String(err);
 		return /blocked|timed out/i.test(msg);
+	}
+
+	function isAuthError(err: unknown): boolean {
+		const msg = err instanceof Error ? err.message : String(err);
+		return /\b(401|403)\b|unauthori[sz]ed|forbidden/i.test(msg);
+	}
+
+	function isRecoverableIdbError(err: unknown): boolean {
+		const msg = err instanceof Error ? err.message : String(err);
+		return /indexeddb|\bidb\b|object store|versionerror|schema hash|database.*(?:corrupt|upgrade)/i.test(
+			msg
+		);
 	}
 
 	/**
@@ -102,11 +114,24 @@
 		return true;
 	}
 
+	/** Clear an expired/invalid session once, without touching local application data. */
+	function tryAuthReset(): boolean {
+		const FLAG = 'idae_auth_recovery_attempted';
+		if (typeof sessionStorage === 'undefined' || sessionStorage.getItem(FLAG)) return false;
+		sessionStorage.setItem(FLAG, '1');
+		if (typeof localStorage !== 'undefined') {
+			localStorage.removeItem('auth_token');
+			localStorage.removeItem('auth_user');
+			localStorage.removeItem('auth_grants');
+			localStorage.removeItem('auth_menu_baseline');
+		}
+		if (typeof window !== 'undefined') window.location.reload();
+		return true;
+	}
+
 	/**
-	 * Boot can fail when local state (stale auth token / mismatched org / corrupt IDB
-	 * schema cache) drifts from the server — non-devs would otherwise hit a raw
-	 * "Boot failed" screen needing a manual localStorage.clear(). Wipe the local
-	 * state once and reload; if it still fails, surface the real error.
+	 * Recover once from a proven local database failure. Authentication and org are
+	 * deliberately preserved: a storage repair must not destroy the user session.
 	 */
 	async function recoverFromCorruptBoot(org: string, err: Error): Promise<void> {
 		const FLAG = 'idae_boot_recovery_attempted';
@@ -114,13 +139,7 @@
 			throw err;
 		}
 		sessionStorage.setItem(FLAG, '1');
-		console.warn('[idae-machine] Boot failed, clearing local state and retrying:', err);
-
-		if (typeof localStorage !== 'undefined') {
-			localStorage.removeItem('auth_token');
-			localStorage.removeItem('auth_user');
-			localStorage.removeItem('idae_org');
-		}
+		console.warn('[idae-machine] Local database failed, rebuilding it once:', err);
 		await deleteIdbDatabase(`${org}_machine`).catch(() => {});
 
 		if (typeof window !== 'undefined') window.location.reload();
@@ -128,19 +147,14 @@
 
 	/** Rehydrate auth from a persisted token so a reload doesn't re-prompt. */
 	function restoreSession(): void {
-		console.log('[idae-machine] restoreSession called');
 		if (typeof localStorage === 'undefined') return;
 		const token = localStorage.getItem('auth_token');
 		const rawUser = localStorage.getItem('auth_user');
-		console.log('[idae-machine] token:', token ? 'present' : 'missing');
-		console.log('[idae-machine] rawUser:', rawUser ? 'present' : 'missing');
 		if (!token || !rawUser) {
-			console.log('[idae-machine] No token or user, setting authed=false');
 			authState.authed = false;
 			return;
 		}
 		try {
-			console.log('[idae-machine] Parsing user and setting current user');
 			const user = JSON.parse(rawUser) as { userId: string; login: string; isAdmin: boolean };
 			// Grants are persisted at login — without them a non-admin would be denied
 			// every read by the client rights gate even though the server allows it.
@@ -162,7 +176,6 @@
 				grants,
 				menuBaseline
 			);
-			console.log('[idae-machine] User set, setting authed=true');
 			authState.authed = true;
 		} catch (err) {
 			console.error('[idae-machine] Error in restoreSession:', err);
@@ -172,12 +185,13 @@
 
 	// Gate: when booted but not authed, open the modal login over the splash.
 	$effect(() => {
-		console.log('[idae-machine] effect: booted=', booted, 'authed=', authState.authed);
 		if (booted && !authState.authed) {
-			console.log('[idae-machine] Opening login dialog');
-			void machine.framer.loadInDialog('login', 'appuser', undefined, undefined, {
+			void machine.framer.loadInDialog('login', 'appuser', undefined, {
 				modal: true,
-				closable: false
+				closable: false,
+				draggable: false,
+				fullscreen: true,
+				history: false
 			});
 		}
 	});
@@ -197,42 +211,77 @@
 		</div>
 	{/if}
 {:catch err}
-	<div class="boot-error">
-		<h2>Boot failed</h2>
+	<section class="boot-error" aria-labelledby="boot-error-title">
+		<h2 id="boot-error-title">Boot failed</h2>
 		<pre>{err?.message ?? String(err)}</pre>
-	</div>
+		<details>
+			<summary>Diagnostic du démarrage</summary>
+			<ol class="boot-trace">
+				{#each machine.bootTrace as entry (`${entry.at}:${entry.phase}:${entry.status}`)}
+					<li>
+						<time datetime={entry.at}>{new Date(entry.at).toLocaleTimeString('fr-FR')}</time>
+						<strong>{entry.phase}</strong>
+						<span class="badge">{entry.status}</span>
+						{#if entry.detail}<span>{entry.detail}</span>{/if}
+					</li>
+				{/each}
+			</ol>
+			{#if machine.schemaDiagnostics.issues.length}
+				<ul class="boot-diagnostics">
+					{#each machine.schemaDiagnostics.issues as issue (`${issue.collection}:${issue.path}:${issue.code}`)}
+						<li><strong>{issue.collection}.{issue.path}</strong> — {issue.message}</li>
+					{/each}
+				</ul>
+			{/if}
+		</details>
+	</section>
 {/await}
 
 <style>
-	.boot-splash {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		height: 100vh;
-		gap: 1rem;
-		color: var(--color-muted, #888);
-		font-family: system-ui, sans-serif;
-	}
-	.boot-spinner {
-		width: 32px;
-		height: 32px;
-		border: 3px solid var(--color-border, #ddd);
-		border-top-color: var(--color-primary, #4f46e5);
-		border-radius: 50%;
-		animation: spin 0.8s linear infinite;
-	}
-	@keyframes spin { to { transform: rotate(360deg); } }
-	.boot-text { font-size: 0.9rem; }
-	.boot-error {
-		padding: 2rem;
-		color: #dc2626;
-		font-family: monospace;
-	}
-	.boot-error pre {
-		background: #fef2f2;
-		padding: 1rem;
-		border-radius: 4px;
-		white-space: pre-wrap;
+	@layer components {
+		.boot-splash {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100dvh;
+			gap: var(--gutter-md);
+			color: var(--color-text-muted);
+		}
+		.boot-spinner {
+			width: var(--icon-size-md);
+			height: var(--icon-size-md);
+			border: var(--border-width) solid var(--color-border);
+			border-top-color: var(--color-primary);
+			border-radius: var(--radius-full);
+			animation: spin var(--duration-slow) linear infinite;
+		}
+		@keyframes spin { to { transform: rotate(360deg); } }
+		.boot-text { font-size: var(--text-sm); }
+		.boot-error {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-md);
+			padding: var(--pad-xl);
+			color: var(--color-critical);
+			font-family: var(--font-mono);
+		}
+		.boot-error pre {
+			background: var(--color-surface-sunken);
+			padding: var(--pad-md);
+			border-radius: var(--radius-sm);
+			white-space: pre-wrap;
+		}
+		.boot-trace,
+		.boot-diagnostics {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-xs);
+		}
+		.boot-trace li {
+			display: flex;
+			align-items: center;
+			gap: var(--gutter-sm);
+		}
 	}
 </style>

@@ -6,23 +6,27 @@ Click sets/clears groupBy.
 @prop {string} collection - Source collection name
 @prop {string|undefined} groupBy - Bindable group field name (FK field key)
 -->
+<script module lang="ts">
+	export interface DataGroupProps {
+		collection: string;
+		groupBy?: string | undefined;
+	}
+</script>
+
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 
 	let {
 		collection,
 		groupBy = $bindable(undefined)
-	}: {
-		collection: string;
-		groupBy?: string | undefined;
-	} = $props();
+	}: DataGroupProps = $props();
 
 	let open = $state(false);
 
 	// Any field or FK relation can be a grouping axis. Plain fields group on
 	// their raw value; FK fields resolve their label via DataList (parseFkGroupKey).
 	const groupableFields = $derived.by(() => {
-		const collLogic = safeCollection(collection);
+		const collLogic = machine.logic.collection(collection);
 		if (!collLogic) return [] as { field: string; label: string }[];
 		const fields = (collLogic.fields ?? {}) as Record<string, { type?: string }>;
 		const fks    = (collLogic.fks ?? {}) as Record<string, unknown>;
@@ -42,14 +46,6 @@ Click sets/clears groupBy.
 		}
 		return out;
 	});
-
-	function safeCollection(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
-	}
 
 	function pick(field: string | undefined): void {
 		groupBy = field;
@@ -99,56 +95,56 @@ Click sets/clears groupBy.
 			display: inline-block;
 		}
 		.data-group-btn {
-			padding: 0.25rem 0.75rem;
-			border: 1px solid var(--color-border);
+			padding: var(--pad-xs) var(--pad-sm);
+			border: var(--border-width) solid var(--color-border);
 			background: var(--color-surface);
 			border-radius: var(--radius-sm);
 			cursor: pointer;
-			font-size: 0.875rem;
+			font-size: var(--text-sm);
 		}
 		.data-group-btn.active {
 			background: var(--color-primary);
-			color: var(--color-on-primary);
+			color: var(--default-color-surface-light);
 			border-color: var(--color-primary);
 		}
 		.data-group-menu {
 			position: absolute;
 			top: 100%;
 			left: 0;
-			margin: 0.25rem 0 0;
-			padding: 0.25rem 0;
+			margin: var(--marg-xs) 0 0;
+			padding: var(--pad-xs) 0;
 			list-style: none;
-			background: var(--color-surface);
-			border: 1px solid var(--color-border);
+			background: var(--color-surface-overlay);
+			border: var(--border-width) solid var(--color-border);
 			border-radius: var(--radius-sm);
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-			min-width: 160px;
-			z-index: 10;
+			box-shadow: var(--shadow-md);
+			min-width: calc(var(--gutter-3xl) * 2.5);
+			z-index: var(--z-dropdown);
 		}
 		.data-group-item {
 			width: 100%;
 			text-align: left;
-			padding: 0.375rem 0.75rem;
+			padding: var(--pad-xs) var(--pad-sm);
 			background: transparent;
 			border: none;
 			cursor: pointer;
-			font-size: 0.875rem;
+			font-size: var(--text-sm);
 		}
 		.data-group-item:hover {
-			background: var(--color-hover);
+			background: var(--color-surface-hover);
 		}
 		.data-group-item.clear {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 		}
 		.data-group-empty {
-			padding: 0.375rem 0.75rem;
-			color: var(--color-text-muted, #888);
-			font-size: 0.875rem;
+			padding: var(--pad-xs) var(--pad-sm);
+			color: var(--color-text-muted);
+			font-size: var(--text-sm);
 		}
 		.data-group-sep {
-			height: 1px;
+			height: var(--border-width);
 			background: var(--color-border);
-			margin: 0.25rem 0;
+			margin: var(--marg-xs) 0;
 		}
 	}
 </style>

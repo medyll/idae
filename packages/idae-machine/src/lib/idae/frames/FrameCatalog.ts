@@ -6,7 +6,7 @@ import type { ComponentLoaderFn } from '$lib/main/router/componentRegistry.js';
 
 // Source of truth for domain frame keys — module augmentation below feeds this
 // into main/router/componentRegistry.ts's RegistryKey, so `machine.framer.loadFrame`,
-// ButtonAction's `frame` prop, etc. all get the real literal union, not `string`.
+// ButtonAction's `pathKey` prop, etc. all get the real literal union, not `string`.
 const IDAE_FRAME_ENTRIES = {
 	'explorer':         () => import('$lib/shell/frame/explorer/Explorer.svelte'),
 	'explorer.content': () => import('$lib/shell/frame/explorer/ExplorerContent.svelte'),
@@ -18,6 +18,7 @@ const IDAE_FRAME_ENTRIES = {
 	'fiche.update':     () => import('$lib/shell/layout/FicheUpdate.svelte'),
 	'rbac.matrix':      () => import('$lib/shell/frame/rbac/RbacMatrix.svelte'),
 	'synthesis':        () => import('$lib/shell/frame/synthesis/Synthesis.svelte'),
+	'planning':         () => import('$lib/shell/frame/planning/Planning.svelte'),
 	'diagram':          () => import('$lib/shell/frame/diagram/Diagram.svelte'),
 	'dashboard':        () => import('$lib/shell/frame/dashboard/Dashboard.svelte'),
 	'space':            () => import('$lib/shell/frame/space/Space.svelte'),
@@ -38,7 +39,7 @@ declare module '$lib/main/router/componentRegistry.js' {
 }
 
 export class IdaeFrameCatalog implements FrameCatalog {
-	registerFrames(registry: ComponentRegistry): void {
+	registerFrames(registry: Pick<ComponentRegistry, 'registerMany'>): void {
 		registry.registerMany(IDAE_FRAME_ENTRIES);
 	}
 }

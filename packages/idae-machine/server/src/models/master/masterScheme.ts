@@ -9,6 +9,7 @@ export const masterScheme: MachineModel = {
 
 	org: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:            { type: 'id',    readonly: true },
 			code:          { type: 'text',  required: true },
@@ -27,6 +28,7 @@ export const masterScheme: MachineModel = {
 
 	model: {
 		base: 'machine_base',
+		icon: 'database',
 		fields: {
 			id:               { type: 'id',     readonly: true },
 			code:             { type: 'text',   required: true },
@@ -38,13 +40,14 @@ export const masterScheme: MachineModel = {
 			notes:            { type: 'text-lg' },
 		},
 		fkRelations: {
-			org: { code: 'org', multiple: false, required: true },
+			org: { code: 'org', required: true },
 		},
 		template: { presentation: 'name version collection_count status' },
 	},
 
 	model_collection: {
 		base: 'machine_base',
+		icon: 'table',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -57,7 +60,7 @@ export const masterScheme: MachineModel = {
 			is_status:    { type: 'boolean' },
 		},
 		fkRelations: {
-			model: { code: 'model', multiple: false, required: true },
+			model: { code: 'model', required: true },
 		},
 		template: { presentation: 'code base field_count fk_count' },
 	},

@@ -61,9 +61,13 @@ describe('Global componentRegistry entries', () => {
 		expect(componentRegistry.has('diagram')).toBe(true);
 	});
 
-	it('has exactly 18 entries', () => {
+	it('has "planning" registered (Planning.svelte)', () => {
+		expect(componentRegistry.has('planning')).toBe(true);
+	});
+
+	it('has exactly 19 entries', () => {
 		const keys = componentRegistry.keys();
-		expect(keys).toHaveLength(18);
+		expect(keys).toHaveLength(19);
 		expect(keys.sort()).toEqual([
 			'ai.chat-session',
 			'columner',
@@ -78,6 +82,7 @@ describe('Global componentRegistry entries', () => {
 			'list',
 			'login',
 			'main-menu.content',
+			'planning',
 			'rbac.matrix',
 			'record',
 			'space',

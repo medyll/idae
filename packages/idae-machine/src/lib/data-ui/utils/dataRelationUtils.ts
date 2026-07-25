@@ -27,32 +27,6 @@ function matchesRelationFilter(filter: string | undefined, relationKey: string, 
 	return filter === relationKey || filter === collection || filter === `${collection}.${relationKey}`;
 }
 
-/**
- * Split a nested FK key "destination_42" → { baseName: "destination", refId: "42" }.
- * The suffix IS the referenced record id (mirrors server FkValidator.parseFkKey).
- */
-export function parseFkKey(key: string): { baseName: string; refId: string } {
-	const pos = key.lastIndexOf('_');
-	if (pos < 1) return { baseName: key, refId: '' };
-	return { baseName: key.slice(0, pos), refId: key.slice(pos + 1) };
-}
-
-/**
- * Collect referenced ids for one FK relation from a record's nested `fks` block.
- * Reads the `{relationKey}_{id}` convention; returns the refIds (as stored).
- * Empty array when the record carries no nested entries for that relation.
- */
-export function extractFkRefs(record: Record<string, unknown>, relationKey: string): string[] {
-	const bag = record.fks;
-	if (!bag || typeof bag !== 'object') return [];
-	const refs: string[] = [];
-	for (const key of Object.keys(bag as Record<string, unknown>)) {
-		const { baseName, refId } = parseFkKey(key);
-		if (baseName === relationKey && refId) refs.push(refId);
-	}
-	return refs;
-}
-
 export function buildRelationWhere(targetIndex: string, value: unknown): RelationWhere {
 	if (Array.isArray(value)) {
 		return { [targetIndex]: { $in: value } } as RelationWhere;
@@ -70,23 +44,6 @@ export function resolveForwardRelations(
 
 	for (const [relationKey, fkDef] of Object.entries(scheme.fks)) {
 		if (!matchesRelationFilter(fk, relationKey, fkDef.code)) continue;
-
-		// Nested `fks.{relationKey}_{id}` convention takes precedence — the suffix
-		// carries the referenced id, so resolution targets the 'id' index. Supports
-		// multiple references per relation natively.
-		const nestedRefs = extractFkRefs(record, relationKey);
-		if (nestedRefs.length > 0) {
-			resolved.push({
-				key:         relationKey,
-				title:       relationKey,
-				collection:  fkDef.code,
-				fieldName:   `fks.${relationKey}`,
-				targetIndex: 'id',
-				where:       buildRelationWhere('id', nestedRefs.length === 1 ? nestedRefs[0] : nestedRefs),
-				fkDef
-			});
-			continue;
-		}
 
 		// Nested object format: record.fks[relationKey] = { id, code }
 		// (used by join collections whose template uses `fks.{relation}.code` paths)
@@ -175,7 +132,9 @@ export function resolveReverseRelations(
 				continue;
 			}
 
-			// Source value = this record's value at the FK's declared target index (id or code)
+			// Source value = this record's value at the FK's declared target index (code —
+			// FK_INDEX_FIELD). The source scalar on the related collection is normalized to
+			// that same code at seed time, so a plain equality where resolves the relation.
 			const sourceValue = record[fkDef.targetIndex];
 			if (sourceValue == null) continue;
 

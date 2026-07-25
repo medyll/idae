@@ -279,5 +279,44 @@ naming is a convention only, not enforced by the engine.
 | `hasAdresseScheme` | field `adresse` in FieldList group `location` |
 | `hasPrixScheme` | field in FieldList group `finance` |
 | `hasDateScheme` | field in FieldList group `date` |
+| `hasDateRange` (planning) | **`appscheme.timespan`** — see §9 |
 
 All flags are now **derived from schema introspection**, not stored manually.
+
+---
+
+## 9. Scheme icon + timespan (implemented 2026-07-15)
+
+Two per-collection qualifiers written to the `appscheme` doc by `publishModel`,
+both declarable on the model and otherwise inferred.
+
+### 9.1 `icon` / `color`
+
+- `MachineCollectionModel.icon?` / `.color?` (optional). `publishModel` writes
+  `appscheme.icon`; falls back to `'table'` only when the model declares none.
+- **Icon set = Phosphor (`ph:`)** — the bundled `@iconify-json/ph`. Render code
+  prefixes bare names with `ph:` (MainMenu/ButtonAction/FieldIcon/Explorer/
+  Synthesis). **Do NOT use `typcn:`** (Typicons) — it is not bundled and most
+  names (table, car, wrench…) don't exist there → silent empty icons.
+- Field-group icons live in `schema-utils.ts` `ICON_BY_GROUP` (all must be real
+  `ph:` names). Engine/registry icons: `idaeModel.ts` `IDAE_ICON_BY_COLLECTION`.
+  Business org icons: declared per collection in each `<org>Scheme.ts`
+  (legacy-derived orgs mined from idae-legacy `appscheme.iconAppscheme`,
+  FontAwesome→Phosphor).
+- Validate any new name against `https://api.iconify.design/ph.json?icons=<name>`
+  before committing — an invalid name renders nothing.
+
+### 9.2 `timespan` (replaces the planned `hasDateRange`)
+
+- `MachineCollectionModel.timespan?: { start: string; end: string }` — the
+  start/end temporal field pair. Qualifies the collection for period views
+  (planning/calendar). Boolean is derivable: `hasTimespan = !!timespan`.
+- Declared on the model wins; otherwise **auto-detected** by
+  `schema-utils.ts detectTimespan(fields)`: segment-wise pairing on
+  snake_case-normalized field names — `start/end`, `started/ended`,
+  `debut/fin` (legacy FR), `from/until`, `check_in/check_out`. Both fields must
+  be `date` | `datetime` | `time`; first declared pair wins.
+- `publishModel` writes `appscheme.timespan` alongside `isType/isGroup/isStatus`.
+- The **Planning** frame (`shell/frame/planning/Planning.svelte`, registry key
+  `planning`) reads `appscheme.timespan` to place records on a time axis. It
+  refuses to render a collection with no timespan.

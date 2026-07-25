@@ -6,7 +6,7 @@ type SlotMap = Record<string, unknown>;
 
 /** Prefs slots shared by DataList and its externalised controls (Sort/Group/Find). */
 export interface DataListPrefs {
-	mode: 'list' | 'table' | 'grid' | null;
+	mode: 'list' | 'table' | 'grid' | 'accordion' | null;
 	sortBy: SortBy[];
 	groupBy: string | undefined;
 	find: Record<string, unknown> | undefined;

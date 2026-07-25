@@ -22,7 +22,7 @@ const testModel: any = {
 			categoryId: { type: 'fk-category.id' },
 		},
 		fkRelations: {
-			category: { code: 'category', multiple: false, required: false }
+			category: { code: 'category', required: false }
 		},
 		template: {
 			presentation: 'name',
@@ -97,7 +97,6 @@ describe('seedSchemeFromModel', () => {
 		expect(product?.fks?.appscheme_base?.code).toBe('test_base');
 		expect(product?.fks?.appscheme_type?.code).toBe('standard');
 		expect(product?.fkRelations?.category?.code).toBe('category');
-		expect(product?.fkRelations?.category?.multiple).toBe(false);
 	});
 
 	it('is idempotent — second seed does not duplicate appscheme', async () => {

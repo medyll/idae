@@ -5,6 +5,19 @@ Long-text field atom. Show mode renders wrapped text.
 @prop {string} value - Current value (bindable)
 @prop {string} [display] - Pre-formatted display string (from scheme)
 -->
+<script module lang="ts">
+	export interface FieldTextareaProps {
+		value?: string;
+		display?: string;
+		mode?: 'show' | 'create' | 'update';
+		rows?: number;
+		id?: string;
+		name?: string;
+		form?: string;
+		disabled?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	let {
 		value = $bindable(),
@@ -15,16 +28,7 @@ Long-text field atom. Show mode renders wrapped text.
 		name,
 		form,
 		disabled = false
-	} = $props<{
-		value?: string;
-		display?: string;
-		mode?: 'show' | 'create' | 'update';
-		rows?: number;
-		id?: string;
-		name?: string;
-		form?: string;
-		disabled?: boolean;
-	}>();
+	}: FieldTextareaProps = $props();
 </script>
 
 {#if mode === 'show'}

@@ -14,7 +14,7 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 				show: vi.fn(),
 				hide: vi.fn(),
 				toggle: vi.fn(),
-				close: vi.fn(),
+				close: vi.fn()
 			};
 			machineFrameManager.register('main', controls);
 
@@ -29,13 +29,13 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 				show: vi.fn(),
 				hide: vi.fn(),
 				toggle: vi.fn(),
-				close: vi.fn(),
+				close: vi.fn()
 			};
 			machineFrameManager.register('main', controls);
 
-			await machineFrameManager.load('main', 'card.form', 'vehicle', '42');
+			await machineFrameManager.load('main', 'form', 'vehicle', '42');
 
-			expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '42', undefined);
+			expect(controls.load).toHaveBeenCalledWith('form', 'vehicle', '42', undefined);
 		});
 	});
 
@@ -46,7 +46,7 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 				show: vi.fn(),
 				hide: vi.fn(),
 				toggle: vi.fn(),
-				close: vi.fn(),
+				close: vi.fn()
 			};
 
 			machineFrameManager.register('test-frame', controls);
@@ -89,8 +89,20 @@ describe('Sprint 24 — Frame Manager Integration', () => {
 		it('openFrames reflects current registry state', () => {
 			expect(machineFrameManager.openFrames.size).toBe(0);
 
-			const c1: FrameControls = { load: vi.fn(), show: vi.fn(), hide: vi.fn(), toggle: vi.fn(), close: vi.fn() };
-			const c2: FrameControls = { load: vi.fn(), show: vi.fn(), hide: vi.fn(), toggle: vi.fn(), close: vi.fn() };
+			const c1: FrameControls = {
+				load: vi.fn(),
+				show: vi.fn(),
+				hide: vi.fn(),
+				toggle: vi.fn(),
+				close: vi.fn()
+			};
+			const c2: FrameControls = {
+				load: vi.fn(),
+				show: vi.fn(),
+				hide: vi.fn(),
+				toggle: vi.fn(),
+				close: vi.fn()
+			};
 
 			machineFrameManager.register('frame-a', c1);
 			expect(machineFrameManager.openFrames.size).toBe(1);

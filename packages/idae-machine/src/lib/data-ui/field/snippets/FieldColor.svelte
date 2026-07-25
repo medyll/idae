@@ -4,6 +4,16 @@ Color field atom — swatch in show mode, color picker in edit.
 @role field-atom
 @prop {string} value - Current value (bindable)
 -->
+<script module lang="ts">
+	export interface FieldColorProps {
+		value?: string;
+		mode?: 'show' | 'create' | 'update';
+		id?: string;
+		name?: string;
+		form?: string;
+	}
+</script>
+
 <script lang="ts">
 	let {
 		value = $bindable<string | undefined>(),
@@ -11,13 +21,7 @@ Color field atom — swatch in show mode, color picker in edit.
 		id,
 		name,
 		form
-	}: {
-		value?: string;
-		mode?: 'show' | 'create' | 'update';
-		id?: string;
-		name?: string;
-		form?: string;
-	} = $props();
+	}: FieldColorProps = $props();
 </script>
 
 {#if mode === 'show'}
@@ -35,10 +39,10 @@ Color field atom — swatch in show mode, color picker in edit.
 <style>
 	.color-swatch {
 		display: inline-block;
-		width: 1.25rem;
-		height: 1.25rem;
-		border-radius: var(--radius-xs, 2px);
-		border: 1px solid var(--color-border, #ccc);
+		width: var(--icon-size-sm);
+		height: var(--icon-size-sm);
+		border-radius: var(--radius-xs);
+		border: var(--border-width) solid var(--color-border);
 		vertical-align: middle;
 	}
 </style>

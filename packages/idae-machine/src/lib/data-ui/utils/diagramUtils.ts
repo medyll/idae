@@ -13,8 +13,8 @@ export interface DiagramOptions {
 	direction?: 'forward' | 'reverse' | 'both';
 }
 
-function resolveLabel(scheme: MachineScheme, record: Record<string, unknown>): string {
-	const presentation = scheme.template?.presentation;
+function resolveLabel(scheme: MachineScheme | null, record: Record<string, unknown>): string {
+	const presentation = scheme?.template?.presentation;
 	if (presentation) {
 		const parts = presentation.split(/\s+/)
 			.map(f => record[f])
@@ -110,12 +110,8 @@ export async function buildGraph(
 		const { node, level } = item;
 		if (level >= depth) continue;
 
-		let scheme: MachineScheme;
-		try {
-			scheme = machine.logic.collection(node.collection);
-		} catch {
-			continue;
-		}
+		const scheme = machine.logic.collection(node.collection);
+		if (!scheme) continue;
 
 		const processRelation = async (rel: ResolvedRelation, dir: 'forward' | 'reverse'): Promise<void> => {
 			const records = await fetchRelated(rel.collection, rel.where as Record<string, unknown>);
@@ -129,15 +125,11 @@ export async function buildGraph(
 					relationKey: rel.key,
 					direction:   dir,
 					fieldName:   rel.fieldName,
-					multiple:    rel.fkDef.multiple,
 				});
 
 				if (!visited.has(nodeId)) {
 					visited.add(nodeId);
-					let label = String(relRecord['code'] ?? relRecord['name'] ?? relRecord['id'] ?? '?');
-					try {
-						label = resolveLabel(machine.logic.collection(rel.collection), relRecord);
-					} catch { /* collection absent from model, use fallback label */ }
+					const label = resolveLabel(machine.logic.collection(rel.collection), relRecord);
 
 					const newNode: DiagramNode = {
 						id:         nodeId,

@@ -7,19 +7,24 @@ Selection list that renders items via snippet prop
 @prop {Snippet} item - Snippet for rendering an item (item, active)
 @snippet selectorFallback - Fallback snippet when values empty
 -->
-<script lang="ts">
+<script module lang="ts">
   import type { Snippet } from 'svelte';
+
+  export interface SelectorProps {
+    values?: unknown[];
+    value?: unknown;
+    item?: Snippet<[unknown, boolean]>;
+    selectorFallback?: Snippet;
+  }
+</script>
+
+<script lang="ts">
   let {
     values = [],
     value,
     item,
     selectorFallback
-  }: {
-    values?: unknown[];
-    value?: unknown;
-    item?: Snippet<[unknown, boolean]>;
-    selectorFallback?: Snippet;
-  } = $props();
+  }: SelectorProps = $props();
 </script>
 
 {#each values as valueO ((valueO as Record<string, unknown>)?.id ?? valueO)}
@@ -31,15 +36,21 @@ Selection list that renders items via snippet prop
   {@render selectorFallback?.()}
 {/if}
 
-<style>
-  .active {
-    border: 1px solid;
-    border-bottom-width: 2px;
-    border-color: #737373;
-  }
-  .inactive {
-    border: 1px solid transparent;
-    border-bottom-width: 2px;
-    opacity: 0.6;
+<style lang="postcss">
+  @layer components {
+    .active,
+    .inactive {
+      border: var(--border-width) solid transparent;
+      border-bottom-width: calc(var(--border-width) * 2);
+    }
+
+    .active {
+      border-color: var(--color-border-strong);
+      background: var(--color-surface-alt);
+    }
+
+    .inactive {
+      color: var(--color-text-muted);
+    }
   }
 </style>

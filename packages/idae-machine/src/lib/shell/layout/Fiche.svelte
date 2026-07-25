@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { DataRecord } from '$lib/index.js';
+	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
 	import RecordToolbar from './RecordToolbar.svelte';
+	import RecordTimeline from './RecordTimeline.svelte';
 	let {
 		collection,
 		collectionId
@@ -17,9 +18,12 @@
 	<fiche-zone>
 		<sidebar-info>
 			<DataRecord {collection} {collectionId} showFields={['icon']} showLabel={false} />
-        </sidebar-info>
+		</sidebar-info>
 		<zone-main-half>
-			<zone-main-fields><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></zone-main-fields>
+			<zone-main-content>
+				<zone-main-fields><DataRecord {collection} {collectionId} groupFieldBy="appscheme_field_group" /></zone-main-fields>
+				<fiche-timeline><RecordTimeline {collection} {collectionId} /></fiche-timeline>
+			</zone-main-content>
 			<info-bar-right>
 				<DataRecord {collection} {collectionId} view="fk" />
 			</info-bar-right>
@@ -37,25 +41,32 @@
 			display: flex;
 			flex-direction: column;
 			min-height: 0;
-			gap: var(--gutter-sm);
-			padding: var(--pad-md);
-            width: clamp(100%, 300px, 750px);
+			gap: 0;
+			padding: 0;
+			width: 100%;
+			max-inline-size: calc(var(--gutter-3xl) * 12);
+			background: var(--color-surface-raised);
 		}
 
 		:global(fiche-header) {
 			display: block;
+			background: var(--color-surface-alt);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
 		}
 
 		:global(fiche-zone) {
 			display: flex;
 			flex: 1;
 			min-height: 0;
-			gap: var(--gutter-md);
+			gap: 0;
 		}
 
 		:global(sidebar-info) {
 			display: block;
-			flex: 0 0 auto;
+			flex: 0 0 calc(var(--gutter-3xl) * 2);
+			padding: var(--pad-sm);
+			background: var(--color-surface-alt);
+			border-right: var(--border-width) solid var(--color-border);
 		}
 
 		:global(zone-main-half) {
@@ -63,7 +74,7 @@
 			flex-direction: row;
 			flex: 1;
 			min-width: 0;
-			gap: var(--gutter-md);
+			gap: 0;
 		}
 
 		/* was a bare <div> with no flex-grow — zone-main-half's flex children
@@ -75,9 +86,26 @@
 			min-width: 0;
 		}
 
+		:global(zone-main-content) {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+			min-width: 0;
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm);
+		}
+
+		:global(fiche-timeline) {
+			display: block;
+		}
+
 		:global(info-bar-right) {
-			flex: 0 0 16rem;
-			max-width: 16rem;
+			display: block;
+			flex: 0 0 calc(var(--gutter-3xl) * 3);
+			max-width: calc(var(--gutter-3xl) * 3);
+			padding: var(--pad-sm);
+			background: var(--color-surface-alt);
+			border-left: var(--border-width) solid var(--color-border);
 		}
 	}
 </style>

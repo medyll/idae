@@ -21,6 +21,7 @@
 		"@medyll/css-base": "^0.7.10",
 		"@medyll/idae-api": "workspace:*",
 		"@medyll/idae-socket": "workspace:*",
+		"@medyll/qoolie": "workspace:*",
 		"@modelcontextprotocol/sdk": "1.11.0",
 		"bcryptjs": "^3.0.3",
 		"cors": "^2.8.5",

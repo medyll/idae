@@ -61,7 +61,7 @@ export class MachineSchemeFieldForge<T extends Record<string, unknown>> {
 	 */
 	get forge(): IDbForge | undefined {
 		return this.#collectionValues.machine
-			.collection(this.#collection)
+			.collection(this.#collection)!
 			.field(String(this.#fieldName))
 			.parse();
 	}

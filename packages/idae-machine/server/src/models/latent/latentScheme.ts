@@ -16,6 +16,7 @@ export const latentScheme: MachineModel = {
 	// ── Project ──────────────────────────────────────────────────────────────────
 	project: {
 		base: 'machine_base',
+		icon: 'kanban',
 		fields: {
 			id:    { type: 'id',     readonly: true },
 			name:  { type: 'text',   required: true },
@@ -30,6 +31,7 @@ export const latentScheme: MachineModel = {
 	// ── Assets · Characters ──────────────────────────────────────────────────────
 	characters: {
 		base: 'machine_base',
+		icon: 'user-circle',
 		fields: {
 			id:       { type: 'id',   readonly: true },
 			name:     { type: 'text', required: true },
@@ -42,6 +44,7 @@ export const latentScheme: MachineModel = {
 	// character.references[] → { url, context, weight }
 	character_reference: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:      { type: 'id',     readonly: true },
 			url:     { type: 'text',   required: true },
@@ -49,7 +52,7 @@ export const latentScheme: MachineModel = {
 			weight:  { type: 'number' },
 		},
 		fkRelations: {
-			character: { code: 'characters', multiple: false, required: true },
+			character: { code: 'characters', required: true },
 		},
 		template: { presentation: 'context url weight' },
 	},
@@ -57,6 +60,7 @@ export const latentScheme: MachineModel = {
 	// character.outfits{} → { name, prompt, lora }
 	outfit: {
 		base: 'machine_base',
+		icon: 'paint-brush',
 		fields: {
 			id:     { type: 'id',   readonly: true },
 			name:   { type: 'text', required: true },
@@ -64,7 +68,7 @@ export const latentScheme: MachineModel = {
 			lora:   { type: 'text' },
 		},
 		fkRelations: {
-			character: { code: 'characters', multiple: false, required: true },
+			character: { code: 'characters', required: true },
 		},
 		template: { presentation: 'name prompt' },
 	},
@@ -72,6 +76,7 @@ export const latentScheme: MachineModel = {
 	// ── Assets · Environments ────────────────────────────────────────────────────
 	environments: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:     { type: 'id',   readonly: true },
 			prompt: { type: 'text', required: true },
@@ -84,6 +89,7 @@ export const latentScheme: MachineModel = {
 	// ── Assets · Audio ───────────────────────────────────────────────────────────
 	audio: {
 		base: 'machine_base',
+		icon: 'waveform',
 		fields: {
 			id:    { type: 'id',   readonly: true },
 			url:   { type: 'text', required: true },
@@ -96,6 +102,7 @@ export const latentScheme: MachineModel = {
 	// ── Timeline event ───────────────────────────────────────────────────────────
 	timeline: {
 		base: 'machine_base',
+		icon: 'film-slate',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			time:     { type: 'number', required: true },
@@ -103,7 +110,7 @@ export const latentScheme: MachineModel = {
 			notes:    { type: 'text' },
 		},
 		fkRelations: {
-			project: { code: 'project', multiple: false, required: true },
+			project: { code: 'project', required: true },
 		},
 		template: { presentation: 'time duration notes' },
 	},
@@ -111,6 +118,7 @@ export const latentScheme: MachineModel = {
 	// ── Timeline frame (1:1 with event) — embedded value-objects flattened ───────
 	frame: {
 		base: 'machine_base',
+		icon: 'image',
 		fields: {
 			id:                    { type: 'id',     readonly: true },
 			prompt:                { type: 'text' },
@@ -134,7 +142,7 @@ export const latentScheme: MachineModel = {
 			audio_reactive_strength: { type: 'number' },
 		},
 		fkRelations: {
-			timeline: { code: 'timeline', multiple: false, required: true },
+			timeline: { code: 'timeline', required: true },
 		},
 		template: { presentation: 'prompt lighting_type' },
 	},
@@ -142,6 +150,7 @@ export const latentScheme: MachineModel = {
 	// ── Frame · Actor[] ──────────────────────────────────────────────────────────
 	actor: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:               { type: 'id',      readonly: true },
 			action:           { type: 'text' },
@@ -156,8 +165,8 @@ export const latentScheme: MachineModel = {
 			speech_volume:    { type: 'number' },
 		},
 		fkRelations: {
-			frame:     { code: 'frame',      multiple: false, required: true },
-			character: { code: 'characters', multiple: false, required: true },
+			frame:     { code: 'frame', required: true },
+			character: { code: 'characters', required: true },
 		},
 		template: { presentation: 'action speech_text' },
 	},
@@ -165,6 +174,7 @@ export const latentScheme: MachineModel = {
 	// ── Frame · audio_tracks[] ───────────────────────────────────────────────────
 	frame_audio_track: {
 		base: 'machine_base',
+		icon: 'waveform',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			volume:   { type: 'number' },
@@ -173,8 +183,8 @@ export const latentScheme: MachineModel = {
 			loop:     { type: 'boolean' },
 		},
 		fkRelations: {
-			frame: { code: 'frame', multiple: false, required: true },
-			audio: { code: 'audio', multiple: false, required: true },
+			frame: { code: 'frame', required: true },
+			audio: { code: 'audio', required: true },
 		},
 		template: { presentation: 'volume start_ms' },
 	},
@@ -182,6 +192,7 @@ export const latentScheme: MachineModel = {
 	// ── Markers ──────────────────────────────────────────────────────────────────
 	markers: {
 		base: 'machine_base',
+		icon: 'map-pin',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			time:      { type: 'number', required: true },
@@ -193,7 +204,7 @@ export const latentScheme: MachineModel = {
 			updatedAt: { type: 'date',   required: true },
 		},
 		fkRelations: {
-			project: { code: 'project', multiple: false, required: false },
+			project: { code: 'project', required: false },
 		},
 		template: { presentation: 'type label time' },
 	},
@@ -201,6 +212,7 @@ export const latentScheme: MachineModel = {
 	// ── Config ───────────────────────────────────────────────────────────────────
 	config: {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			checkpoint: { type: 'text' },
@@ -210,7 +222,7 @@ export const latentScheme: MachineModel = {
 			audioLanes: { type: 'text' },   // lane array — no lane schema in ARCH, kept as JSON text
 		},
 		fkRelations: {
-			project: { code: 'project', multiple: false, required: false },
+			project: { code: 'project', required: false },
 		},
 		template: { presentation: 'checkpoint sampler tts_engine' },
 	},

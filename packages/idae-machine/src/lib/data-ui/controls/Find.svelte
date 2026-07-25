@@ -7,6 +7,15 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 @prop {string} [prefsScope] - override scope (must match the DataList's)
 @prop {boolean} [usePrefs=true]
 -->
+<script module lang="ts">
+	export interface FindProps {
+		collection: string;
+		prefsScope?: string;
+		usePrefs?: boolean;
+		advanced?: boolean;
+	}
+</script>
+
 <script lang="ts">
 	import {
 		useMachinePrefs,
@@ -18,11 +27,12 @@ Shares the same prefs store as the matching <DataList collection> (mediator).
 	let {
 		collection,
 		prefsScope,
-		usePrefs = true
-	}: { collection: string; prefsScope?: string; usePrefs?: boolean } = $props();
+		usePrefs = true,
+		advanced = false
+	}: FindProps = $props();
 
 	const scope = $derived(dataListPrefsScope(collection, prefsScope));
 	const prefs = useMachinePrefs(() => scope, dataListPrefsDefaults(), () => usePrefs);
 </script>
 
-<DataFind {collection} bind:where={() => prefs.get('find'), (v) => prefs.set('find', v)} />
+<DataFind {collection} {advanced} bind:where={() => prefs.get('find'), (v) => prefs.set('find', v)} />

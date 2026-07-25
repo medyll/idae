@@ -49,11 +49,11 @@ export interface ImageFieldDef extends BaseFieldDef {
 export type MachineFieldDef = BaseFieldDef | ImageFieldDef;
 
 // ── FK definition ─────────────────────────────────────────────────────────────
+// A FK is always single (UNMULTIPLE.md, 2026-07-06 — user law). N-N needs a
+// junction collection (`X_has_Y`, two single FKs), never a `multiple` flag.
 export interface MachineFkDef {
 	/** Target collection code */
 	code:      string;
-	/** Allow selecting multiple records */
-	multiple:  boolean;
 	required?: boolean;
 }
 
@@ -136,6 +136,18 @@ export interface MachineCollectionModel<T = any> {
 	defaultSort?: SortBy[];
 	/** Structural rights policy — declared in schema, seeded as default grants by publishModel. */
 	rights?:     MachineRightsPolicy;
+	/** Display icon for the collection (Phosphor / iconify name, e.g. 'car', 'user').
+	 *  Written to the appscheme doc by publishModel; rendered in menu/explorer/synthesis.
+	 *  Optional — publishModel falls back to a generic default when absent. */
+	icon?:       string;
+	/** Display accent color for the collection (any CSS color). Optional. */
+	color?:      string;
+	/** Time span carried by records of this collection — the start/end field pair
+	 *  (date, datetime or time types). Declared here or auto-detected by publishModel
+	 *  from field-name pairs (start/end, debut/fin, from/until, check_in/check_out).
+	 *  Written to the appscheme doc; qualifies the collection for period-based views
+	 *  (planning/calendar). `hasTimespan` is derivable: `!!timespan`. */
+	timespan?:   { start: string; end: string };
 	/** Semantic role flags — written to appscheme doc by publishModel. Drive UI/validation/routing. */
 	isType?:     boolean;
 	isGroup?:    boolean;
@@ -228,7 +240,6 @@ export interface DiagramEdge {
 	relationKey: string;
 	direction:   'forward' | 'reverse';
 	fieldName:   string;
-	multiple:    boolean;
 }
 
 export interface DiagramGraph {

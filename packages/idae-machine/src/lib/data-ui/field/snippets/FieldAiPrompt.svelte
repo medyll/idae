@@ -6,19 +6,23 @@ Edit-only field; show mode renders the raw text.
 @prop {object} session - Chat session record (id, code)
 @prop {string} bind:value - Input text
 -->
-<script lang="ts">
-	import { machine } from '$lib/main/machine.js';
-	import { streamIntoRecord } from '$lib/ai/streamIntoRecord.js';
-	import { generateCode } from '$lib/utils/generateCode.js';
-
-	let { session, value = $bindable<string | undefined>(), mode = 'show', id, name, form }: {
+<script module lang="ts">
+	export interface FieldAiPromptProps {
 		session?: { id: number; code: string };
 		value?: string;
 		mode?: 'show' | 'create' | 'update';
 		id?: string;
 		name?: string;
 		form?: string;
-	} = $props();
+	}
+</script>
+
+<script lang="ts">
+	import { machine } from '$lib/main/machine.js';
+	import { streamIntoRecord } from '$lib/ai/streamIntoRecord.js';
+	import { generateCode } from '$lib/utils/generateCode.js';
+
+	let { session, value = $bindable<string | undefined>(), mode = 'show', id, name, form }: FieldAiPromptProps = $props();
 	let abort: AbortController | null = $state(null);
 	const streaming = $derived(!!abort);
 
@@ -135,7 +139,7 @@ Edit-only field; show mode renders the raw text.
 			flex: 1;
 			resize: none;
 			field-sizing: content;
-			max-height: 200px;
+			max-height: 30vh;
 		}
 	}
 </style>

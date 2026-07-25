@@ -8,7 +8,7 @@ Consumers can override via the dataRecord snippet.
 @prop {Where<COL>} [where]
 @prop {SortBy | SortBy[]} [sortBy]
 @prop {string} [groupBy]
-@prop {'list'|'table'|'grid'} [mode='list'] - Visual layout mode
+@prop {'list'|'table'|'grid'|'accordion'} [mode='list'] - Visual layout mode. Accordion: header = template.presentation, collapsible body = DataRecord ({view}).
 @prop {string} [view='full'] - Named view driving the field list (resolved query-side via appscheme_view/appscheme_field)
 @prop {string} [linkTarget] - Zone / frameId to target for navigation (overrides zone from link)
 @prop {number} [pageSize] - chunk size for infinite scroll or page size for classic pagination
@@ -22,59 +22,28 @@ Consumers can override via the dataRecord snippet.
   as="row" structural layout, crudMode still applies). Payload IS DataRecord's prop set
   (BL-21) — spread straight into `<DataRecord {...props} />` rather than unwrapping an
   `{ item, record, records }` wrapper.
-@snippet groupHeader({ key, count }) - renders group section header (optional)
+@snippet dataListHeader({ key, count }) - renders group section header (optional)
 @snippet empty() - renders empty state (optional — "—" shown by default)
 @snippet footer({ pagination }) - renders pagination/footer (optional)
 -->
-<script lang="ts" generics="COL extends Record<string, unknown>">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
-	import { untrack } from 'svelte';
 	import type { SortBy, TplCollectionName, ViewTypeCode, Where } from '$lib/types/index.js';
-	import { machine } from '$lib/main/machine.js';
-	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
-	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
-	import { getResultSet, type ResultSet } from '@medyll/qoolie';
-	import { useMachinePrefs, dataListPrefsScope, dataListPrefsDefaults } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
-	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
-	import { parseLink, type LinkString } from '$lib/main/frame/linkParser.js';
-	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
+	import type { LinkString } from '$lib/main/frame/linkParser.js';
 
-	interface PaginationInfo {
+	export interface PaginationInfo {
 		page: number;
 		pageSize: number;
 		total: number;
 		totalPages: number;
 	}
 
-	let {
-		collection,
-		where,
-		sortBy,
-		groupBy,
-		mode: modeProp = 'list',
-		view = 'full',
-		pageSize = 0,
-		page = 1,
-		infiniteScroll = true,
-		listClass,
-		groupClass,
-		link,
-		linkTarget,
-		linkVars,
-		linkCollectionField,
-		usePrefs = true,
-		prefsScope: prefsScopeProp,
-		crudMode = 'show',
-		dataRecord: dataRecordSnippet,
-		groupHeader: groupHeaderSnippet,
-		empty: emptySnippet,
-		footer: footerSnippet
-	}: {
+	export interface DataListProps<COL extends Record<string, unknown> = Record<string, unknown>> {
 		collection: string;
 		where?: Where<COL>;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
-		mode?: 'list' | 'table' | 'grid';
+		mode?: 'list' | 'table' | 'grid' | 'accordion';
 		view?: ViewTypeCode;
 		pageSize?: number;
 		page?: number;
@@ -100,10 +69,47 @@ Consumers can override via the dataRecord snippet.
 			view: string;
 			idx: number;
 		}]>;
-		groupHeader?: Snippet<[{ key: string; count: number }]>;
+		dataListHeader?: Snippet<[{ key: string; count: number }]>;
 		empty?: Snippet;
 		footer?: Snippet<[{ pagination: PaginationInfo }]>;
-	} = $props();
+	}
+</script>
+
+<script lang="ts" generics="COL extends Record<string, unknown>">
+	import { untrack } from 'svelte';
+	import { machine } from '$lib/main/machine.js';
+	import { groupItemsResolved, parseFkGroupKey, fkObjectLabel } from '$lib/data-ui/utils/data-utils.js';
+	import { useViewFields } from '$lib/data-ui/utils/useViewFields.svelte.js';
+	import { getResultSet, type ResultSet } from '@medyll/qoolie';
+	import { useMachinePrefs, dataListPrefsScope, dataListPrefsDefaults } from '$lib/data-ui/utils/useMachinePrefs.svelte.js';
+	import DataRecord from '$lib/data-ui/data/DataRecord.svelte';
+	import { parseLink } from '$lib/main/frame/linkParser.js';
+	import type { RegistryKey } from '$lib/main/router/componentRegistry.js';
+
+	let {
+		collection,
+		where,
+		sortBy,
+		groupBy,
+		mode: modeProp = 'list',
+		view = 'full',
+		pageSize = 0,
+		page = 1,
+		infiniteScroll = true,
+		listClass,
+		groupClass,
+		link,
+		linkTarget,
+		linkVars,
+		linkCollectionField,
+		usePrefs = true,
+		prefsScope: prefsScopeProp,
+		crudMode = 'show',
+		dataRecord: dataRecordSnippet,
+		dataListHeader: groupHeaderSnippet,
+		empty: emptySnippet,
+		footer: footerSnippet
+	}: DataListProps<COL> = $props();
 
 	// Toolbar controls (Sort/Group/Find/ListMode) are externalised — compose
 	// them as siblings around <DataList>, keyed by the same collection/prefsScope.
@@ -111,10 +117,14 @@ Consumers can override via the dataRecord snippet.
 
 	const prefs = useMachinePrefs(() => prefsScope, dataListPrefsDefaults(), () => usePrefs);
 
-	let userMode      = $derived(prefs.slots.mode);
-	let userSortBy    = $derived(prefs.slots.sortBy);
-	let userGroupBy   = $derived(prefs.slots.groupBy);
-	let userFindWhere = $derived(prefs.slots.find);
+	// A prefs-disabled list must be fully isolated from the shared scope cache.
+	// This matters when the same collection is rendered in two contexts (for
+	// example Explorer and MainMenu): disabling persistence must also disable
+	// live values previously written by the other context's toolbar.
+	let userMode      = $derived(usePrefs ? prefs.slots.mode : null);
+	let userSortBy    = $derived(usePrefs ? prefs.slots.sortBy : []);
+	let userGroupBy   = $derived(usePrefs ? prefs.slots.groupBy : undefined);
+	let userFindWhere = $derived(usePrefs ? prefs.slots.find : undefined);
 
 	const currentMode = $derived(userMode ?? modeProp);
 
@@ -133,7 +143,7 @@ Consumers can override via the dataRecord snippet.
 				: machine.store<COL>(collection)
 			: { records: [] as unknown as COL[] }
 	);
-	const collLogic = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+	const collLogic = $derived(collection ? machine.logic.collection(collection) : null);
 	const indexField = 'id';
 	const defaultSort = $derived(
 		collLogic?.defaultSort ?? [{ field: indexField as string, direction: 'asc' as const }]
@@ -151,7 +161,7 @@ Consumers can override via the dataRecord snippet.
 
 	const parsedLink = $derived(link ? parseLink(link) : null);
 
-	function normalizeListClass(currentMode: 'list' | 'table' | 'grid', customClass?: string): string | undefined {
+	function normalizeListClass(currentMode: 'list' | 'table' | 'grid' | 'accordion', customClass?: string): string | undefined {
 		if (currentMode !== 'list') return customClass;
 		if (!customClass) return 'list list-stack';
 		const classes = customClass.split(/\s+/).filter(Boolean);
@@ -185,11 +195,11 @@ Consumers can override via the dataRecord snippet.
 		}
 
 		if (action === 'loadFrame') {
-			machine.framer.loadFrame(module as RegistryKey, navCollection, navId, linkVars, zone);
+			machine.framer.loadFrame(module as RegistryKey, navCollection, navId, { vars: linkVars, zone });
 		} else if (action === 'loadIn') {
-			machine.framer.loadIn(zone, module as RegistryKey, navCollection, navId, linkVars);
+			machine.framer.loadIn(module as RegistryKey, navCollection, navId, { vars: linkVars, zone });
 		} else if (action === 'loadInDialog') {
-			void machine.framer.loadInDialog(module as RegistryKey, navCollection, navId, linkVars);
+			void machine.framer.loadInDialog(module as RegistryKey, navCollection, navId, { vars: linkVars });
 		}
 	}
 
@@ -258,7 +268,7 @@ Consumers can override via the dataRecord snippet.
 			const fkCollection = collLogic?.fks?.[fkKey]?.code ?? null;
 			const labelMap = new Map<unknown, string>();
 			if (fkCollection) {
-				const fkScheme     = machine.logic.collectionOr(fkCollection, null);
+				const fkScheme     = machine.logic.collection(fkCollection);
 				const fkIndexField = collLogic?.findFkField(fkCollection)?.targetIndex ?? fkScheme?.index ?? 'id';
 				const fkItems      = machine.store(fkCollection).records as Record<string, unknown>[];
 				for (const item of fkItems) {
@@ -282,7 +292,7 @@ Consumers can override via the dataRecord snippet.
 	let errorMessage = $state<string | null>(null);
 
 	$effect(() => {
-		if (!machine.logic.collectionOr(collection, null)) {
+		if (!machine.logic.collection(collection)) {
 			errorMessage = `Collection '${collection}' not found in schema.`;
 		} else {
 			errorMessage = null;
@@ -329,8 +339,62 @@ Consumers can override via the dataRecord snippet.
 	</svelte:element>
 {/snippet}
 
+{#snippet renderAccordionItem(record: COL, idx: number)}
+	{@const rec = record as Record<string, unknown>}
+	<li data-contextual={`collection=${collection}&collectionId=${rec[indexField]}`}>
+		<details class="accordion-item">
+			<summary class="accordion-summary">
+				<span class="accordion-title">{renderPresentation(rec) || String(rec[indexField] ?? '—')}</span>
+				<span class="accordion-chevron" aria-hidden="true">⌄</span>
+			</summary>
+			<div class="accordion-body">
+				{#if dataRecordSnippet}
+					{@render dataRecordSnippet({
+						collection,
+						collectionId: record?.id as number,
+						data: record as COL,
+						mode: crudMode,
+						view,
+						idx
+					})}
+				{:else}
+					<DataRecord {collection} data={rec} mode={crudMode} {view} />
+				{/if}
+			</div>
+		</details>
+	</li>
+{/snippet}
+
 {#if errorMessage}
 	<div class="error-message">{errorMessage}</div>
+{:else if currentMode === 'accordion'}
+	{#if groups}
+		{#each Array.from(groups) as [key, groupItems] (key)}
+			<div class={groupClass ?? 'data-list-group'}>
+				<div class="data-list-group-header">
+					{@render renderGroupHeader(key, groupItems.length)}
+				</div>
+				<ul class="accordion-list" role="list">
+					{#each groupItems as record, idx ((record as Record<string, unknown>)[indexField])}
+						{@render renderAccordionItem(record as COL, idx)}
+					{/each}
+				</ul>
+			</div>
+		{/each}
+	{:else}
+		<ul class="accordion-list" role="list">
+			{#each paginatedItems as record, idx ((record as Record<string, unknown>)[indexField])}
+				{@render renderAccordionItem(record as COL, idx)}
+			{/each}
+			{#if !paginatedItems.length}
+				{#if emptySnippet}
+					{@render emptySnippet()}
+				{:else}
+					<li class="data-list-empty">—</li>
+				{/if}
+			{/if}
+		</ul>
+	{/if}
 {:else if currentMode === 'table'}
 	<table class="data-table">
 		<thead>
@@ -471,8 +535,8 @@ Consumers can override via the dataRecord snippet.
 	@layer components {
 		.grid-list {
 			display: grid;
-			grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-			gap: var(--gutter-md);
+			grid-template-columns: repeat(auto-fill, minmax(calc(var(--gutter-3xl) * 4), 1fr));
+			gap: var(--gutter-sm);
 			list-style: none;
 			padding: 0;
 			margin: 0;
@@ -482,6 +546,52 @@ Consumers can override via the dataRecord snippet.
 			display: block;
 			width: 100%;
 			cursor: pointer;
+		}
+		.accordion-list {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-xs);
+			list-style: none;
+			padding: 0;
+			margin: 0;
+		}
+		.accordion-item {
+			background: var(--color-surface-raised);
+			border: var(--border-width) solid var(--color-border);
+			border-radius: var(--radius-xs);
+			overflow: hidden;
+
+			& > .accordion-summary {
+				display: flex;
+				align-items: center;
+				gap: var(--gutter-sm);
+				padding: var(--pad-sm);
+				cursor: pointer;
+				list-style: none;
+				user-select: none;
+
+				&::-webkit-details-marker { display: none; }
+				&:hover { background: var(--color-surface-hover); }
+				&:focus-visible { outline: var(--border-width) solid var(--color-primary); outline-offset: calc(-1 * var(--border-width)); }
+			}
+			& .accordion-title {
+				flex: 1;
+				min-width: 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+			}
+			& .accordion-chevron {
+				color: var(--color-text-muted);
+				transition: var(--transition-normal);
+			}
+			&[open] > .accordion-summary .accordion-chevron {
+				rotate: 180deg;
+			}
+			& .accordion-body {
+				padding: var(--pad-sm);
+				border-top: var(--border-width) solid var(--color-border);
+			}
 		}
 		:global(.data-list-sentinel) {
 			height: 1px;
@@ -494,27 +604,29 @@ Consumers can override via the dataRecord snippet.
 		:global(.data-list-group-header) {
 			display: flex;
 			align-items: center;
-			gap: var(--gutter-sm, 0.5rem);
-			padding: var(--gutter-sm, 0.5rem) var(--gutter-sm, 0.5rem) 0.25rem;
-			font-weight: 600;
-			font-size: 0.8125rem;
+			gap: var(--gutter-sm);
+			padding: var(--pad-sm) var(--pad-sm) var(--pad-xs);
+			font-weight: var(--font-semibold);
+			font-size: var(--text-xs);
 			text-transform: uppercase;
-			letter-spacing: 0.03em;
-			color: var(--color-text-muted, #888);
-			border-bottom: 1px solid var(--color-border);
+			letter-spacing: var(--tracking-wide);
+			color: var(--color-text-muted);
+			background: var(--color-surface-alt);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
 		}
 		:global(.data-table .data-list-group-header) {
+			display: table-cell;
 			text-align: left;
-			background: var(--color-surface-raised, var(--color-surface, #f7f7f7));
+			background: var(--color-surface-alt);
 		}
 		:global(.data-list-group-count) {
-			font-weight: 400;
-			color: var(--color-text-muted, #888);
+			font-weight: var(--font-normal);
+			color: var(--color-text-muted);
 		}
 		:global(.data-list-empty) {
-			color: var(--color-text-muted, #888);
+			color: var(--color-text-muted);
 			list-style: none;
-			padding: var(--gutter-sm, 0.5rem) 0;
+			padding: var(--pad-sm) 0;
 		}
 		:global(.data-list-link) {
 			width: 100%;
@@ -522,11 +634,12 @@ Consumers can override via the dataRecord snippet.
 			justify-content: flex-start;
 			background: transparent;
 			border: none;
-			padding: 6px 8px;
+			min-height: var(--control-height);
+			padding: var(--pad-xs) var(--pad-sm);
 			cursor: pointer;
 			border-radius: var(--radius-sm);
 		}
-		:global(.data-list-link:hover) { background: var(--color-hover); }
-		:global(.error-message) { color: red; padding: 1rem; }
+		:global(.data-list-link:hover) { background: var(--color-surface-hover); }
+		:global(.error-message) { color: var(--color-critical); padding: var(--pad-md); }
 	}
 </style>

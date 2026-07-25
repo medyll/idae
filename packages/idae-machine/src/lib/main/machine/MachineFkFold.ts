@@ -1,3 +1,4 @@
+import { foldFk } from '@medyll/qoolie';
 import type { MachineFkDef } from '$lib/types/index.js';
 import { getRelationResolver } from '$lib/main/ext/hooks.js';
 
@@ -35,35 +36,9 @@ export async function foldFksIntoRecord(
 	record: Record<string, unknown>,
 	resolveTarget: FkTargetResolver,
 ): Promise<Record<string, unknown>> {
-	const fkKeys = Object.keys(fks ?? {});
-	if (!fkKeys.length) return record;
-
-	const out: Record<string, unknown> = { ...record };
-	const fksBag: Record<string, unknown> = { ...(out.fks as Record<string, unknown> | undefined) };
-
-	for (const fieldName of fkKeys) {
-		const fkDef = fks[fieldName];
-		if (!fkDef?.code) continue;
-
-		const raw = record[fieldName];
-		if (raw == null) continue;
-
-		if (fkDef.multiple) {
-			const values = Array.isArray(raw) ? raw : [raw];
-			for (const value of values) {
-				if (value == null) continue;
-				const target = await resolveTarget(fkDef.code, FK_INDEX_FIELD, value);
-				if (target) fksBag[`${fieldName}_${value}`] = { ...target };
-			}
-			continue;
-		}
-
-		const target = await resolveTarget(fkDef.code, FK_INDEX_FIELD, raw);
-		if (target) fksBag[fieldName] = { ...target };
-	}
-
-	out.fks = fksBag;
-	return out;
+	if (!Object.keys(fks ?? {}).length) return record;
+	const { data } = await foldFk(fks, record, resolveTarget, FK_INDEX_FIELD);
+	return data;
 }
 
 /**

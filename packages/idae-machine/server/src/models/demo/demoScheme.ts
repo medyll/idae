@@ -6,6 +6,7 @@ export const demoScheme: MachineModel = {
 
 	category: {
 		base: 'machine_base',
+		icon: 'squares-four',
 		fields: {
 			id:              { type: 'id',     readonly: true },
 			code:            { type: 'text',   required: true },
@@ -20,6 +21,7 @@ export const demoScheme: MachineModel = {
 
 	location_office: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:      { type: 'id',    readonly: true },
 			code:    { type: 'text',  required: true },
@@ -37,6 +39,7 @@ export const demoScheme: MachineModel = {
 
 	supplier: {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -55,6 +58,7 @@ export const demoScheme: MachineModel = {
 
 	seller: {
 		base: 'machine_base',
+		icon: 'handshake',
 		fields: {
 			id:              { type: 'id',    readonly: true },
 			first_name:      { type: 'text',  required: true },
@@ -66,7 +70,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			location_office: { code: 'location_office', multiple: false },
+			location_office: { code: 'location_office' },
 		},
 		template: { presentation: 'first_name last_name email status' },
 	},
@@ -75,6 +79,7 @@ export const demoScheme: MachineModel = {
 
 	vehicle: {
 		base: 'machine_base',
+		icon: 'car',
 		fields: {
 			id:              { type: 'id',    readonly: true },
 			license_plate:   { type: 'text',  required: true },
@@ -89,14 +94,15 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			category:        { code: 'category',        multiple: false },
-			location_office: { code: 'location_office', multiple: false },
+			category:        { code: 'category' },
+			location_office: { code: 'location_office' },
 		},
 		template: { presentation: 'license_plate brand model year status' },
 	},
 
 	vehicle_acquisition: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:               { type: 'id',       readonly: true },
 			acquisition_date: { type: 'date',     required: true },
@@ -107,14 +113,15 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle:  { code: 'vehicle',  multiple: false, required: true },
-			supplier: { code: 'supplier', multiple: false, required: true },
+			vehicle:  { code: 'vehicle', required: true },
+			supplier: { code: 'supplier', required: true },
 		},
 		template: { presentation: 'acquisition_date purchase_price invoice_ref' },
 	},
 
 	insurance: {
 		base: 'machine_base',
+		icon: 'shield-check',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			provider:       { type: 'text',     required: true },
@@ -127,13 +134,14 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle: { code: 'vehicle', multiple: false, required: true },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'provider policy_number expires_at status' },
 	},
 
 	maintenance: {
 		base: 'machine_base',
+		icon: 'wrench',
 		fields: {
 			id:                 { type: 'id',       readonly: true },
 			date:               { type: 'date' },
@@ -145,13 +153,14 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'date type status cost' },
 	},
 
 	fuel_log: {
 		base: 'machine_base',
+		icon: 'gas-pump',
 		fields: {
 			id:      { type: 'id',       readonly: true },
 			date:    { type: 'date',     required: true },
@@ -162,7 +171,7 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'date liters cost mileage' },
 	},
@@ -171,6 +180,7 @@ export const demoScheme: MachineModel = {
 
 	customer: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:              { type: 'id',    readonly: true },
 			first_name:      { type: 'text',  required: true },
@@ -190,6 +200,7 @@ export const demoScheme: MachineModel = {
 
 	pricing_rule: {
 		base: 'machine_base',
+		icon: 'currency-dollar',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			season_code:   { type: 'text',     required: true },
@@ -201,13 +212,14 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			category: { code: 'category', required: true, multiple: false },
+			category: { code: 'category', required: true },
 		},
 		template: { presentation: 'season_code price_per_day category' },
 	},
 
 	rental: {
 		base: 'machine_base',
+		icon: 'calendar-check',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			start_date:      { type: 'date',     required: true },
@@ -223,15 +235,16 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			vehicle:  { code: 'vehicle',  required: true, multiple: false },
-			customer: { code: 'customer', required: true, multiple: false },
-			seller:   { code: 'seller',   required: false, multiple: false },
+			vehicle:  { code: 'vehicle',  required: true },
+			customer: { code: 'customer', required: true },
+			seller:   { code: 'seller',   required: false },
 		},
 		template: { presentation: 'start_date status price_per_day total_price' },
 	},
 
 	damage_report: {
 		base: 'machine_base',
+		icon: 'warning',
 		fields: {
 			id:                  { type: 'id',       readonly: true },
 			reported_at:         { type: 'date',     required: true },
@@ -244,8 +257,8 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			rental:  { code: 'rental',  required: true, multiple: false },
-			vehicle: { code: 'vehicle', required: true, multiple: false },
+			rental:  { code: 'rental',  required: true },
+			vehicle: { code: 'vehicle', required: true },
 		},
 		template: { presentation: 'reported_at status estimated_cost description' },
 	},
@@ -254,6 +267,7 @@ export const demoScheme: MachineModel = {
 
 	lead: {
 		base: 'machine_base',
+		icon: 'target',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			first_name: { type: 'text',     required: true },
@@ -269,13 +283,14 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			seller: { code: 'seller', multiple: false },
+			seller: { code: 'seller' },
 		},
 		template: { presentation: 'last_name first_name status source' },
 	},
 
 	sale_task: {
 		base: 'machine_base',
+		icon: 'check-square',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			type:         { type: 'text',     required: true },
@@ -288,9 +303,9 @@ export const demoScheme: MachineModel = {
 		},
 		fks: {},
 		fkRelations: {
-			seller:   { code: 'seller',   required: true,  multiple: false },
-			lead:     { code: 'lead',     required: false, multiple: false },
-			customer: { code: 'customer', required: false, multiple: false },
+			seller:   { code: 'seller',   required: true },
+			lead:     { code: 'lead',     required: false },
+			customer: { code: 'customer', required: false },
 		},
 		template: { presentation: 'title type priority status due_date' },
 	},

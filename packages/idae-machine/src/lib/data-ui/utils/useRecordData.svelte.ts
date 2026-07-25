@@ -21,7 +21,7 @@ export function useRecordData(
 ) {
 	const scheme = $derived.by(() => {
 		const c = collection();
-		return c ? machine.logic.collectionOr(c, null) : null;
+		return c ? machine.logic.collection(c) : null;
 	});
 
 	const queryId = $derived(MachineRecordIdentity.normalizeKey(source().collectionId));

@@ -228,14 +228,14 @@ describe('Machine', () => {
 		});
 
 		it('should access a collection and its template', () => {
-			const scheme = machine.logic.collection('vehicle');
+			const scheme = machine.logic.collection('vehicle')!;
 			expect(scheme).toBeDefined();
 			expect(scheme.collection).toBe('vehicle');
 			expect(scheme.template).toBeDefined();
 		});
 
 		it('should access a field and parse its metadata', () => {
-			const scheme = machine.logic.collection('vehicle');
+			const scheme = machine.logic.collection('vehicle')!;
 			const field = scheme.field('id');
 			const meta = field.parse();
 			expect(meta).toBeDefined();
@@ -243,7 +243,7 @@ describe('Machine', () => {
 		});
 
 		it('should parse all fields of a collection', () => {
-			const scheme = machine.logic.collection('vehicle');
+			const scheme = machine.logic.collection('vehicle')!;
 			const parsed = scheme.parse();
 			expect(parsed).toBeDefined();
 			expect(parsed?.id).toBeDefined();
@@ -251,14 +251,14 @@ describe('Machine', () => {
 		});
 
 		it('should validate a valid field value', async () => {
-			const scheme = machine.logic.collection('vehicle');
+			const scheme = machine.logic.collection('vehicle')!;
 			const validator = scheme.validator;
 			const result = await validator.validateField('id', 1);
 			expect(result).toHaveProperty('isValid');
 		});
 
 		it('should throw MachineError for invalid field', async () => {
-			const scheme = machine.logic.collection('vehicle');
+			const scheme = machine.logic.collection('vehicle')!;
 			const validator = scheme.validator;
 			await expect(validator.validateField('notAField', 1)).resolves.toHaveProperty(
 				'isValid',

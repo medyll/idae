@@ -7,21 +7,25 @@ Forward FK relation viewer — shows collections this record points to.
 @prop {string} [groupBy] - Group FK entries by property
 @slot children (let:item) - Custom FK rendering
 -->
-<script lang="ts">
+<script module lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { TplCollectionName } from '$lib/types/index.js';
-	import type { SortBy } from '$lib/types/index.js';
-	import { machine } from '$lib/main/machine.js';
-	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
+	import type { TplCollectionName, SortBy } from '$lib/types/index.js';
 
-	let { collection, sortBy, groupBy, children } = $props<{
+	export interface DataFkProps {
 		collection: TplCollectionName;
 		sortBy?: SortBy | SortBy[];
 		groupBy?: string;
 		children?: Snippet<[[string, Record<string, unknown>]]>;
-	}>();
+	}
+</script>
 
-	const fks = $derived(machine.logic.collection(collection).parseFks());
+<script lang="ts">
+	import { machine } from '$lib/main/machine.js';
+	import { sortItems, groupItems } from '$lib/data-ui/utils/data-utils.js';
+
+	let { collection, sortBy, groupBy, children }: DataFkProps = $props();
+
+	const fks = $derived(machine.logic.collection(collection)?.parseFks() ?? {});
 
 	const fkEntries = $derived(
 		Object.entries(fks).map(([key, def]) => ({ key, ...(def as Record<string, unknown>) }))

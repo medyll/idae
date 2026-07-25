@@ -22,7 +22,7 @@ describe('MachineDb', () => {
 	});
 
 	it('should return a MachineScheme for a collection', () => {
-		const scheme = db.collection('vehicle');
+		const scheme = db.collection('vehicle')!;
 		expect(scheme).toBeDefined();
 		expect(scheme.collection).toBe('vehicle');
 		expect(scheme.template).toBeDefined();

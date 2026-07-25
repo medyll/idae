@@ -6,6 +6,7 @@ export const ledgerScheme: MachineModel = {
 
 	account_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:           { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const ledgerScheme: MachineModel = {
 
 	entry_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const ledgerScheme: MachineModel = {
 
 	period_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const ledgerScheme: MachineModel = {
 
 	invoice_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const ledgerScheme: MachineModel = {
 
 	currency: {
 		base: 'machine_base',
+		icon: 'coin',
 		isType: true,
 		fields: {
 			id:        { type: 'id',     readonly: true },
@@ -73,6 +78,7 @@ export const ledgerScheme: MachineModel = {
 
 	tax_rate: {
 		base: 'machine_base',
+		icon: 'percent',
 		isGroup: true,
 		fields: {
 			id:      { type: 'id',     readonly: true },
@@ -88,6 +94,7 @@ export const ledgerScheme: MachineModel = {
 
 	account: {
 		base: 'machine_base',
+		icon: 'bank',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -99,15 +106,16 @@ export const ledgerScheme: MachineModel = {
 			is_reconcilable:{ type: 'boolean' },
 		},
 		fkRelations: {
-			account_type: { code: 'account_type', required: true,  multiple: false },
-			parent:       { code: 'account',      required: false, multiple: false },
-			currency:     { code: 'currency',     required: true,  multiple: false },
+			account_type: { code: 'account_type', required: true },
+			parent:       { code: 'account',      required: false },
+			currency:     { code: 'currency',     required: true },
 		},
 		template: { presentation: 'account_number name account_type' },
 	},
 
 	fiscal_year: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:         { type: 'id',   readonly: true },
 			code:       { type: 'text', required: true },
@@ -122,6 +130,7 @@ export const ledgerScheme: MachineModel = {
 
 	period: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -132,14 +141,15 @@ export const ledgerScheme: MachineModel = {
 			closed_at:  { type: 'date' },
 		},
 		fkRelations: {
-			fiscal_year:   { code: 'fiscal_year',   required: true, multiple: false },
-			period_status: { code: 'period_status', required: true, multiple: false },
+			fiscal_year:   { code: 'fiscal_year',   required: true },
+			period_status: { code: 'period_status', required: true },
 		},
 		template: { presentation: 'fiscal_year name period_status start_date end_date' },
 	},
 
 	journal: {
 		base: 'machine_base',
+		icon: 'book',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -154,6 +164,7 @@ export const ledgerScheme: MachineModel = {
 
 	party: {
 		base: 'machine_base',
+		icon: 'handshake',
 		fields: {
 			id:          { type: 'id',    readonly: true },
 			code:        { type: 'text',  required: true },
@@ -169,8 +180,8 @@ export const ledgerScheme: MachineModel = {
 			iban:        { type: 'text' },
 		},
 		fkRelations: {
-			receivable_account: { code: 'account', required: false, multiple: false },
-			payable_account:    { code: 'account', required: false, multiple: false },
+			receivable_account: { code: 'account', required: false },
+			payable_account:    { code: 'account', required: false },
 		},
 		template: { presentation: 'name kind tax_id' },
 	},
@@ -179,6 +190,7 @@ export const ledgerScheme: MachineModel = {
 
 	journal_entry: {
 		base: 'machine_base',
+		icon: 'note-pencil',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -193,17 +205,18 @@ export const ledgerScheme: MachineModel = {
 			reversed:      { type: 'boolean' },
 		},
 		fkRelations: {
-			journal:      { code: 'journal',      required: true,  multiple: false },
-			period:       { code: 'period',       required: true,  multiple: false },
-			entry_status: { code: 'entry_status', required: true,  multiple: false },
-			party:        { code: 'party',        required: false, multiple: false },
-			reverses:     { code: 'journal_entry', required: false, multiple: false },
+			journal:      { code: 'journal',      required: true },
+			period:       { code: 'period',       required: true },
+			entry_status: { code: 'entry_status', required: true },
+			party:        { code: 'party',        required: false },
+			reverses:     { code: 'journal_entry', required: false },
 		},
 		template: { presentation: 'entry_number entry_date journal entry_status total_debit' },
 	},
 
 	entry_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -214,10 +227,10 @@ export const ledgerScheme: MachineModel = {
 			reconciled:  { type: 'boolean' },
 		},
 		fkRelations: {
-			journal_entry: { code: 'journal_entry', required: true,  multiple: false },
-			account:       { code: 'account',       required: true,  multiple: false },
-			party:         { code: 'party',         required: false, multiple: false },
-			tax_rate:      { code: 'tax_rate',      required: false, multiple: false },
+			journal_entry: { code: 'journal_entry', required: true },
+			account:       { code: 'account',       required: true },
+			party:         { code: 'party',         required: false },
+			tax_rate:      { code: 'tax_rate',      required: false },
 		},
 		template: { presentation: 'journal_entry account debit credit' },
 	},
@@ -226,6 +239,7 @@ export const ledgerScheme: MachineModel = {
 
 	invoice: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -241,16 +255,17 @@ export const ledgerScheme: MachineModel = {
 			notes:         { type: 'text-lg' },
 		},
 		fkRelations: {
-			party:          { code: 'party',          required: true,  multiple: false },
-			invoice_status: { code: 'invoice_status', required: true,  multiple: false },
-			currency:       { code: 'currency',       required: true,  multiple: false },
-			journal_entry:  { code: 'journal_entry',  required: false, multiple: false },
+			party:          { code: 'party',          required: true },
+			invoice_status: { code: 'invoice_status', required: true },
+			currency:       { code: 'currency',       required: true },
+			journal_entry:  { code: 'journal_entry',  required: false },
 		},
 		template: { presentation: 'invoice_number party direction total invoice_status' },
 	},
 
 	invoice_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -261,9 +276,9 @@ export const ledgerScheme: MachineModel = {
 			tax_amount:  { type: 'currency' },
 		},
 		fkRelations: {
-			invoice:  { code: 'invoice',  required: true,  multiple: false },
-			account:  { code: 'account',  required: false, multiple: false },
-			tax_rate: { code: 'tax_rate', required: false, multiple: false },
+			invoice:  { code: 'invoice',  required: true },
+			account:  { code: 'account',  required: false },
+			tax_rate: { code: 'tax_rate', required: false },
 		},
 		template: { presentation: 'invoice description quantity unit_price line_total' },
 	},
@@ -272,6 +287,7 @@ export const ledgerScheme: MachineModel = {
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -282,17 +298,18 @@ export const ledgerScheme: MachineModel = {
 			memo:        { type: 'text-lg' },
 		},
 		fkRelations: {
-			party:          { code: 'party',          required: true,  multiple: false },
-			invoice:        { code: 'invoice',        required: false, multiple: false },
-			bank_account:   { code: 'account',        required: true,  multiple: false },
-			currency:       { code: 'currency',       required: true,  multiple: false },
-			journal_entry:  { code: 'journal_entry',  required: false, multiple: false },
+			party:          { code: 'party',          required: true },
+			invoice:        { code: 'invoice',        required: false },
+			bank_account:   { code: 'account',        required: true },
+			currency:       { code: 'currency',       required: true },
+			journal_entry:  { code: 'journal_entry',  required: false },
 		},
 		template: { presentation: 'payment_date party amount method' },
 	},
 
 	bank_statement: {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -302,13 +319,14 @@ export const ledgerScheme: MachineModel = {
 			closing_balance: { type: 'currency' },
 		},
 		fkRelations: {
-			bank_account: { code: 'account', required: true, multiple: false },
+			bank_account: { code: 'account', required: true },
 		},
 		template: { presentation: 'bank_account statement_date closing_balance' },
 	},
 
 	statement_line: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -318,8 +336,8 @@ export const ledgerScheme: MachineModel = {
 			reconciled:  { type: 'boolean' },
 		},
 		fkRelations: {
-			bank_statement:  { code: 'bank_statement', required: true,  multiple: false },
-			matched_line:    { code: 'entry_line',     required: false, multiple: false },
+			bank_statement:  { code: 'bank_statement', required: true },
+			matched_line:    { code: 'entry_line',     required: false },
 		},
 		template: { presentation: 'bank_statement value_date label amount reconciled' },
 	},

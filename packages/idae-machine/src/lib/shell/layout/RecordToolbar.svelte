@@ -14,12 +14,12 @@ Composed of generic ButtonAction bricks.
 </script>
 
 <toolbar-component>
-	<ButtonAction {collection} {collectionId} frame="synthesis" label="synthese" />
-	<ButtonAction {collection} {collectionId} frame="diagram" label="diagram" />
+	<ButtonAction {collection} {collectionId} pathKey="synthesis" label="synthese" />
+	<ButtonAction {collection} {collectionId} pathKey="diagram" label="diagram" />
 	<ButtonAction
 		{collection}
 		{collectionId}
-		frame="fiche.update"
+		pathKey="fiche.update"
 		label="update"
 		action="loadInDialog"
 	/>
@@ -30,8 +30,10 @@ Composed of generic ButtonAction bricks.
 		/* Dynamically mounted inside the fiche frame host — :global needed. */
 		:global(toolbar-component) {
 			display: flex;
-			gap: var(--gutter-sm);
+			gap: var(--gutter-xs);
 			align-items: center;
+			min-height: var(--header-height);
+			padding: var(--pad-xs) var(--pad-sm);
 		}
 	}
 </style>

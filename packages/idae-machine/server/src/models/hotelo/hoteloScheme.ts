@@ -6,6 +6,7 @@ export const hoteloScheme: MachineModel = {
 
 	booking_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const hoteloScheme: MachineModel = {
 
 	room_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -34,6 +36,7 @@ export const hoteloScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -47,6 +50,7 @@ export const hoteloScheme: MachineModel = {
 
 	housekeeping_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -61,6 +65,7 @@ export const hoteloScheme: MachineModel = {
 
 	bed_type: {
 		base: 'machine_base',
+		icon: 'bed',
 		isGroup: true,
 		fields: {
 			id:       { type: 'id',     readonly: true },
@@ -74,6 +79,7 @@ export const hoteloScheme: MachineModel = {
 
 	channel: {
 		base: 'machine_base',
+		icon: 'broadcast',
 		isType: true,
 		fields: {
 			id:              { type: 'id',     readonly: true },
@@ -87,6 +93,7 @@ export const hoteloScheme: MachineModel = {
 
 	rate_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -102,6 +109,7 @@ export const hoteloScheme: MachineModel = {
 
 	property: {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -128,6 +136,7 @@ export const hoteloScheme: MachineModel = {
 
 	amenity: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
@@ -140,6 +149,7 @@ export const hoteloScheme: MachineModel = {
 
 	room_type: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -151,27 +161,29 @@ export const hoteloScheme: MachineModel = {
 			photo:         { type: 'image' },
 		},
 		fkRelations: {
-			property: { code: 'property', required: true,  multiple: false },
-			bed_type: { code: 'bed_type', required: false, multiple: false },
+			property: { code: 'property', required: true },
+			bed_type: { code: 'bed_type', required: false },
 		},
 		template: { presentation: 'property name max_occupancy base_rate' },
 	},
 
 	room_type_amenity: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
 		fkRelations: {
-			room_type: { code: 'room_type', required: true, multiple: false },
-			amenity:   { code: 'amenity',   required: true, multiple: false },
+			room_type: { code: 'room_type', required: true },
+			amenity:   { code: 'amenity',   required: true },
 		},
 		template: { presentation: 'room_type amenity' },
 	},
 
 	room: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -181,10 +193,10 @@ export const hoteloScheme: MachineModel = {
 			notes:      { type: 'text-lg' },
 		},
 		fkRelations: {
-			property:            { code: 'property',            required: true, multiple: false },
-			room_type:           { code: 'room_type',           required: true, multiple: false },
-			room_status:         { code: 'room_status',         required: true, multiple: false },
-			housekeeping_status: { code: 'housekeeping_status', required: true, multiple: false },
+			property:            { code: 'property',            required: true },
+			room_type:           { code: 'room_type',           required: true },
+			room_status:         { code: 'room_status',         required: true },
+			housekeeping_status: { code: 'housekeeping_status', required: true },
 		},
 		template: { presentation: 'number room_type room_status housekeeping_status' },
 	},
@@ -193,6 +205,7 @@ export const hoteloScheme: MachineModel = {
 
 	rate_plan: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -201,14 +214,15 @@ export const hoteloScheme: MachineModel = {
 			cancellation_policy:{ type: 'text-lg' },
 		},
 		fkRelations: {
-			property:  { code: 'property',  required: true,  multiple: false },
-			rate_type: { code: 'rate_type', required: true,  multiple: false },
+			property:  { code: 'property',  required: true },
+			rate_type: { code: 'rate_type', required: true },
 		},
 		template: { presentation: 'property name rate_type' },
 	},
 
 	daily_rate: {
 		base: 'machine_base',
+		icon: 'coin',
 		fields: {
 			id:            { type: 'id',       readonly: true },
 			code:          { type: 'text',     required: true },
@@ -218,14 +232,15 @@ export const hoteloScheme: MachineModel = {
 			closed:        { type: 'boolean' },
 		},
 		fkRelations: {
-			rate_plan: { code: 'rate_plan', required: true, multiple: false },
-			room_type: { code: 'room_type', required: true, multiple: false },
+			rate_plan: { code: 'rate_plan', required: true },
+			room_type: { code: 'room_type', required: true },
 		},
 		template: { presentation: 'room_type rate_date price min_stay' },
 	},
 
 	availability: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:            { type: 'id',     readonly: true },
 			code:          { type: 'text',   required: true },
@@ -236,7 +251,7 @@ export const hoteloScheme: MachineModel = {
 			stop_sell:     { type: 'boolean' },
 		},
 		fkRelations: {
-			room_type: { code: 'room_type', required: true, multiple: false },
+			room_type: { code: 'room_type', required: true },
 		},
 		template: { presentation: 'room_type avail_date available_rooms stop_sell' },
 	},
@@ -245,6 +260,7 @@ export const hoteloScheme: MachineModel = {
 
 	guest: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -270,6 +286,7 @@ export const hoteloScheme: MachineModel = {
 
 	booking: {
 		base: 'machine_base',
+		icon: 'calendar-plus',
 		fields: {
 			id:              { type: 'id',       readonly: true },
 			code:            { type: 'text',     required: true },
@@ -289,17 +306,18 @@ export const hoteloScheme: MachineModel = {
 			special_requests:{ type: 'text-lg' },
 		},
 		fkRelations: {
-			property:       { code: 'property',       required: true,  multiple: false },
-			guest:          { code: 'guest',          required: true,  multiple: false },
-			booking_status: { code: 'booking_status', required: true,  multiple: false },
-			channel:        { code: 'channel',        required: false, multiple: false },
-			payment_status: { code: 'payment_status', required: true,  multiple: false },
+			property:       { code: 'property',       required: true },
+			guest:          { code: 'guest',          required: true },
+			booking_status: { code: 'booking_status', required: true },
+			channel:        { code: 'channel',        required: false },
+			payment_status: { code: 'payment_status', required: true },
 		},
 		template: { presentation: 'booking_number guest check_in check_out booking_status total' },
 	},
 
 	booking_room: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:          { type: 'id',       readonly: true },
 			code:        { type: 'text',     required: true },
@@ -311,16 +329,17 @@ export const hoteloScheme: MachineModel = {
 			children:    { type: 'number' },
 		},
 		fkRelations: {
-			booking:   { code: 'booking',   required: true,  multiple: false },
-			room_type: { code: 'room_type', required: true,  multiple: false },
-			room:      { code: 'room',      required: false, multiple: false },
-			rate_plan: { code: 'rate_plan', required: false, multiple: false },
+			booking:   { code: 'booking',   required: true },
+			room_type: { code: 'room_type', required: true },
+			room:      { code: 'room',      required: false },
+			rate_plan: { code: 'rate_plan', required: false },
 		},
 		template: { presentation: 'booking room_type room check_in check_out rate_total' },
 	},
 
 	stay: {
 		base: 'machine_base',
+		icon: 'house',
 		fields: {
 			id:              { type: 'id',   readonly: true },
 			code:            { type: 'text', required: true },
@@ -330,8 +349,8 @@ export const hoteloScheme: MachineModel = {
 			actual_check_out:{ type: 'date' },
 		},
 		fkRelations: {
-			booking_room: { code: 'booking_room', required: true, multiple: false },
-			room:         { code: 'room',         required: true, multiple: false },
+			booking_room: { code: 'booking_room', required: true },
+			room:         { code: 'room',         required: true },
 		},
 		template: { presentation: 'room checked_in_at checked_out_at' },
 	},
@@ -340,6 +359,7 @@ export const hoteloScheme: MachineModel = {
 
 	service: {
 		base: 'machine_base',
+		icon: 'bell',
 		fields: {
 			id:    { type: 'id',       readonly: true },
 			code:  { type: 'text',     required: true },
@@ -348,13 +368,14 @@ export const hoteloScheme: MachineModel = {
 			unit:  { type: 'text' },
 		},
 		fkRelations: {
-			property: { code: 'property', required: true, multiple: false },
+			property: { code: 'property', required: true },
 		},
 		template: { presentation: 'name price unit' },
 	},
 
 	folio_charge: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:         { type: 'id',       readonly: true },
 			code:       { type: 'text',     required: true },
@@ -365,14 +386,15 @@ export const hoteloScheme: MachineModel = {
 			charged_at: { type: 'date',     required: true },
 		},
 		fkRelations: {
-			booking: { code: 'booking', required: true,  multiple: false },
-			service: { code: 'service', required: false, multiple: false },
+			booking: { code: 'booking', required: true },
+			service: { code: 'service', required: false },
 		},
 		template: { presentation: 'booking description amount charged_at' },
 	},
 
 	payment: {
 		base: 'machine_base',
+		icon: 'credit-card',
 		fields: {
 			id:        { type: 'id',       readonly: true },
 			code:      { type: 'text',     required: true },
@@ -382,8 +404,8 @@ export const hoteloScheme: MachineModel = {
 			reference: { type: 'text' },
 		},
 		fkRelations: {
-			booking:        { code: 'booking',        required: true, multiple: false },
-			payment_status: { code: 'payment_status', required: true, multiple: false },
+			booking:        { code: 'booking',        required: true },
+			payment_status: { code: 'payment_status', required: true },
 		},
 		template: { presentation: 'booking amount method paid_at' },
 	},
@@ -392,6 +414,7 @@ export const hoteloScheme: MachineModel = {
 
 	housekeeping_task: {
 		base: 'machine_base',
+		icon: 'broom',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -402,14 +425,15 @@ export const hoteloScheme: MachineModel = {
 			notes:       { type: 'text-lg' },
 		},
 		fkRelations: {
-			room:                { code: 'room',                required: true, multiple: false },
-			housekeeping_status: { code: 'housekeeping_status', required: true, multiple: false },
+			room:                { code: 'room',                required: true },
+			housekeeping_status: { code: 'housekeeping_status', required: true },
 		},
 		template: { presentation: 'room task_date housekeeping_status assigned_to' },
 	},
 
 	review: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -420,9 +444,9 @@ export const hoteloScheme: MachineModel = {
 			response:   { type: 'text-lg' },
 		},
 		fkRelations: {
-			property: { code: 'property', required: true,  multiple: false },
-			guest:    { code: 'guest',    required: false, multiple: false },
-			booking:  { code: 'booking',  required: false, multiple: false },
+			property: { code: 'property', required: true },
+			guest:    { code: 'guest',    required: false },
+			booking:  { code: 'booking',  required: false },
 		},
 		template: { presentation: 'property rating guest created_at' },
 	},

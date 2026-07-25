@@ -1,17 +1,13 @@
 <!--
-Dialog.svelte — floating, draggable, non-modal frame (Svelte 5 runes).
+Dialog.svelte — floating/fullscreen frame with optional drag and modality (Svelte 5 runes).
 A dialog IS a frame: it registers in machine.framer and mounts its content via the
 shared host (componentRegistry). Rendered floating instead of filling a static zone.
-Draggable by the header bar. Stacking via css-base --z-modal.
+When enabled, dragging uses the header bar. Stacking via css-base --z-modal.
 -->
-<script lang="ts">
-	import Icon from '@iconify/svelte';
-	import { untrack, type Snippet } from 'svelte';
-	import { machine } from '$lib/main/machine.js';
-	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
-	import { draggable, centerInViewport } from '$lib/data-ui/utils/draggable.js';
+<script module lang="ts">
+	import type { Snippet } from 'svelte';
 
-	type Props = {
+	export interface DialogProps {
 		open?: boolean;
 		id: string;
 		modulePath?: string;
@@ -25,11 +21,23 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		modal?: boolean;
 		/** Allow closing via the header button, Escape, or backdrop click. */
 		closable?: boolean;
+		/** Allow dragging by the header. Defaults to true. */
+		draggable?: boolean;
+		/** Fill the viewport. Defaults to false. */
+		fullscreen?: boolean;
 		onClose?: () => void;
 		header?: Snippet;
 		footer?: Snippet;
 		children?: Snippet;
-	};
+	}
+</script>
+
+<script lang="ts">
+	import Icon from '@iconify/svelte';
+	import { untrack } from 'svelte';
+	import { machine } from '$lib/main/machine.js';
+	import type { FrameControls } from '$lib/main/frame/MachineFrameManager.js';
+	import { draggable as draggableAction, centerInViewport } from '$lib/data-ui/utils/draggable.js';
 
 	let {
 		open = $bindable(true),
@@ -43,20 +51,21 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		removeOnClose = false,
 		modal = false,
 		closable = true,
+		draggable = true,
+		fullscreen = false,
 		onClose = () => {},
 		header,
 		footer,
 		children
-	}: Props = $props();
+	}: DialogProps = $props();
 
 	let element = $state<HTMLDialogElement>();
 	let bodyEl = $state<HTMLDivElement>();
 	let visible = $state(true);
 	let title = $state('');
 
-	// fill:false — a floating dialog is content-driven, so the mounted frame must
-	// sit in normal flow (not absolute inset:0) for the dialog to grow to fit it.
-	const host = machine.framer.createHost(() => bodyEl, { fill: false });
+	// Normal dialogs are content-driven; fullscreen dialogs provide a sized host.
+	const host = machine.framer.createHost(() => bodyEl, { fill: untrack(() => fullscreen) });
 
 	function setTitle(col?: string, colId?: string | number) {
 		if (!col) return;
@@ -88,7 +97,8 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		hide: () => { visible = false; },
 		toggle: () => { visible = !visible; },
 		close: () => close(),
-		focus: () => focusDialog()
+		focus: () => focusDialog(),
+		closable: untrack(() => closable)
 	};
 
 	$effect(() => {
@@ -104,7 +114,7 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 	});
 
 	$effect(() => {
-		if (element && open && center) centerInViewport(element);
+		if (element && open && center && !fullscreen) centerInViewport(element);
 	});
 
 	export function close() {
@@ -133,9 +143,10 @@ Draggable by the header bar. Stacking via css-base --z-modal.
 		open
 		class="idae-dialog"
 		class:idae-dialog--modal={modal}
+		class:idae-dialog--fullscreen={fullscreen}
 		tabindex="-1"
 		style:display={visible ? 'flex' : 'none'}
-		use:draggable={{ handle: modal ? '__none__' : '[data-drag-handle]' }}
+		use:draggableAction={{ disabled: !draggable || fullscreen || modal }}
 		onpointerdown={raise}
 		onkeydown={onKeydown}
 		aria-label={title}

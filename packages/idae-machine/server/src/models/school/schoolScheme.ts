@@ -6,6 +6,7 @@ export const schoolScheme: MachineModel = {
 
 	user_role: {
 		base: 'machine_base',
+		icon: 'identification-card',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -19,6 +20,7 @@ export const schoolScheme: MachineModel = {
 
 	attendance_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const schoolScheme: MachineModel = {
 
 	assignment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const schoolScheme: MachineModel = {
 
 	absence_reason: {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -59,6 +63,7 @@ export const schoolScheme: MachineModel = {
 
 	period_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -72,6 +77,7 @@ export const schoolScheme: MachineModel = {
 
 	relation_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup: true,
 		fields: {
 			id:   { type: 'id',   readonly: true },
@@ -84,6 +90,7 @@ export const schoolScheme: MachineModel = {
 
 	day_of_week: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -99,6 +106,7 @@ export const schoolScheme: MachineModel = {
 
 	school: {
 		base: 'machine_base',
+		icon: 'graduation-cap',
 		fields: {
 			id:        { type: 'id',    readonly: true },
 			code:      { type: 'text',  required: true },
@@ -119,6 +127,7 @@ export const schoolScheme: MachineModel = {
 
 	school_year: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:         { type: 'id',   readonly: true },
 			code:       { type: 'text', required: true },
@@ -128,13 +137,14 @@ export const schoolScheme: MachineModel = {
 			current:    { type: 'boolean' },
 		},
 		fkRelations: {
-			school: { code: 'school', required: true, multiple: false },
+			school: { code: 'school', required: true },
 		},
 		template: { presentation: 'school name current' },
 	},
 
 	term: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -144,14 +154,15 @@ export const schoolScheme: MachineModel = {
 			ordre:      { type: 'number' },
 		},
 		fkRelations: {
-			school_year: { code: 'school_year', required: true, multiple: false },
-			period_type: { code: 'period_type', required: true, multiple: false },
+			school_year: { code: 'school_year', required: true },
+			period_type: { code: 'period_type', required: true },
 		},
 		template: { presentation: 'school_year name period_type start_date end_date' },
 	},
 
 	room: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },
@@ -161,7 +172,7 @@ export const schoolScheme: MachineModel = {
 			equipment:{ type: 'text-lg' },
 		},
 		fkRelations: {
-			school: { code: 'school', required: true, multiple: false },
+			school: { code: 'school', required: true },
 		},
 		template: { presentation: 'school name capacity floor' },
 	},
@@ -170,6 +181,7 @@ export const schoolScheme: MachineModel = {
 
 	subject: {
 		base: 'machine_base',
+		icon: 'books',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -184,6 +196,7 @@ export const schoolScheme: MachineModel = {
 
 	grade_level: {
 		base: 'machine_base',
+		icon: 'chart-line-up',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -197,6 +210,7 @@ export const schoolScheme: MachineModel = {
 
 	class_group: {
 		base: 'machine_base',
+		icon: 'users',
 		fields: {
 			id:       { type: 'id',     readonly: true },
 			code:     { type: 'text',   required: true },
@@ -204,9 +218,9 @@ export const schoolScheme: MachineModel = {
 			capacity: { type: 'number' },
 		},
 		fkRelations: {
-			school_year: { code: 'school_year', required: true,  multiple: false },
-			grade_level: { code: 'grade_level', required: true,  multiple: false },
-			homeroom_teacher: { code: 'teacher', required: false, multiple: false },
+			school_year: { code: 'school_year', required: true },
+			grade_level: { code: 'grade_level', required: true },
+			homeroom_teacher: { code: 'teacher', required: false },
 		},
 		template: { presentation: 'school_year grade_level name homeroom_teacher' },
 	},
@@ -215,6 +229,7 @@ export const schoolScheme: MachineModel = {
 
 	staff: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -228,14 +243,15 @@ export const schoolScheme: MachineModel = {
 			photo:      { type: 'image' },
 		},
 		fkRelations: {
-			school:    { code: 'school',    required: true, multiple: false },
-			user_role: { code: 'user_role', required: true, multiple: false },
+			school:    { code: 'school',    required: true },
+			user_role: { code: 'user_role', required: true },
 		},
 		template: { presentation: 'name user_role email' },
 	},
 
 	teacher: {
 		base: 'machine_base',
+		icon: 'chalkboard-teacher',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -250,13 +266,14 @@ export const schoolScheme: MachineModel = {
 			hire_date:    { type: 'date' },
 		},
 		fkRelations: {
-			school: { code: 'school', required: true, multiple: false },
+			school: { code: 'school', required: true },
 		},
 		template: { presentation: 'name specialty email' },
 	},
 
 	student: {
 		base: 'machine_base',
+		icon: 'student',
 		fields: {
 			id:           { type: 'id',    readonly: true },
 			code:         { type: 'text',  required: true },
@@ -275,13 +292,14 @@ export const schoolScheme: MachineModel = {
 			enrolled_at:  { type: 'date' },
 		},
 		fkRelations: {
-			class_group: { code: 'class_group', required: true, multiple: false },
+			class_group: { code: 'class_group', required: true },
 		},
 		template: { presentation: 'last_name first_name class_group birth_date' },
 	},
 
 	guardian: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:         { type: 'id',    readonly: true },
 			code:       { type: 'text',  required: true },
@@ -300,6 +318,7 @@ export const schoolScheme: MachineModel = {
 
 	student_guardian: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:         { type: 'id',      readonly: true },
 			code:       { type: 'text',    required: true },
@@ -308,9 +327,9 @@ export const schoolScheme: MachineModel = {
 			has_custody:{ type: 'boolean' },
 		},
 		fkRelations: {
-			student:       { code: 'student',       required: true, multiple: false },
-			guardian:      { code: 'guardian',      required: true, multiple: false },
-			relation_type: { code: 'relation_type', required: true, multiple: false },
+			student:       { code: 'student',       required: true },
+			guardian:      { code: 'guardian',      required: true },
+			relation_type: { code: 'relation_type', required: true },
 		},
 		template: { presentation: 'student guardian relation_type is_primary' },
 	},
@@ -319,6 +338,7 @@ export const schoolScheme: MachineModel = {
 
 	course: {
 		base: 'machine_base',
+		icon: 'books',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -327,15 +347,16 @@ export const schoolScheme: MachineModel = {
 			hours_per_week:{ type: 'number' },
 		},
 		fkRelations: {
-			class_group: { code: 'class_group', required: true, multiple: false },
-			subject:     { code: 'subject',     required: true, multiple: false },
-			teacher:     { code: 'teacher',     required: true, multiple: false },
+			class_group: { code: 'class_group', required: true },
+			subject:     { code: 'subject',     required: true },
+			teacher:     { code: 'teacher',     required: true },
 		},
 		template: { presentation: 'class_group subject teacher' },
 	},
 
 	schedule_slot: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -346,15 +367,16 @@ export const schoolScheme: MachineModel = {
 			valid_until:{ type: 'date' },
 		},
 		fkRelations: {
-			course:      { code: 'course',      required: true,  multiple: false },
-			day_of_week: { code: 'day_of_week', required: true,  multiple: false },
-			room:        { code: 'room',        required: false, multiple: false },
+			course:      { code: 'course',      required: true },
+			day_of_week: { code: 'day_of_week', required: true },
+			room:        { code: 'room',        required: false },
 		},
 		template: { presentation: 'course day_of_week start_time end_time room' },
 	},
 
 	lesson: {
 		base: 'machine_base',
+		icon: 'chalkboard-teacher',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -367,9 +389,9 @@ export const schoolScheme: MachineModel = {
 			cancelled:    { type: 'boolean' },
 		},
 		fkRelations: {
-			course:  { code: 'course',  required: true,  multiple: false },
-			room:    { code: 'room',    required: false, multiple: false },
-			teacher: { code: 'teacher', required: false, multiple: false },
+			course:  { code: 'course',  required: true },
+			room:    { code: 'room',    required: false },
+			teacher: { code: 'teacher', required: false },
 		},
 		template: { presentation: 'course lesson_date start_time room teacher' },
 	},
@@ -378,6 +400,7 @@ export const schoolScheme: MachineModel = {
 
 	attendance: {
 		base: 'machine_base',
+		icon: 'list-checks',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -386,15 +409,16 @@ export const schoolScheme: MachineModel = {
 			comment:      { type: 'text-lg' },
 		},
 		fkRelations: {
-			lesson:            { code: 'lesson',            required: true,  multiple: false },
-			student:           { code: 'student',           required: true,  multiple: false },
-			attendance_status: { code: 'attendance_status', required: true,  multiple: false },
+			lesson:            { code: 'lesson',            required: true },
+			student:           { code: 'student',           required: true },
+			attendance_status: { code: 'attendance_status', required: true },
 		},
 		template: { presentation: 'lesson student attendance_status minutes_late' },
 	},
 
 	absence: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -405,9 +429,9 @@ export const schoolScheme: MachineModel = {
 			document:    { type: 'image' },
 		},
 		fkRelations: {
-			student:        { code: 'student',        required: true,  multiple: false },
-			absence_reason: { code: 'absence_reason', required: true,  multiple: false },
-			justified_by:   { code: 'guardian',       required: false, multiple: false },
+			student:        { code: 'student',        required: true },
+			absence_reason: { code: 'absence_reason', required: true },
+			justified_by:   { code: 'guardian',       required: false },
 		},
 		template: { presentation: 'student start_date end_date absence_reason justified' },
 	},
@@ -416,6 +440,7 @@ export const schoolScheme: MachineModel = {
 
 	assignment: {
 		base: 'machine_base',
+		icon: 'exam',
 		fields: {
 			id:           { type: 'id',      readonly: true },
 			code:         { type: 'text',    required: true },
@@ -428,15 +453,16 @@ export const schoolScheme: MachineModel = {
 			coefficient:  { type: 'number' },
 		},
 		fkRelations: {
-			course:            { code: 'course',            required: true, multiple: false },
-			term:              { code: 'term',              required: true, multiple: false },
-			assignment_status: { code: 'assignment_status', required: true, multiple: false },
+			course:            { code: 'course',            required: true },
+			term:              { code: 'term',              required: true },
+			assignment_status: { code: 'assignment_status', required: true },
 		},
 		template: { presentation: 'course title due_date max_score' },
 	},
 
 	grade: {
 		base: 'machine_base',
+		icon: 'exam',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -445,15 +471,16 @@ export const schoolScheme: MachineModel = {
 			graded_at:  { type: 'date' },
 		},
 		fkRelations: {
-			assignment: { code: 'assignment', required: true, multiple: false },
-			student:    { code: 'student',    required: true, multiple: false },
-			teacher:    { code: 'teacher',    required: false, multiple: false },
+			assignment: { code: 'assignment', required: true },
+			student:    { code: 'student',    required: true },
+			teacher:    { code: 'teacher',    required: false },
 		},
 		template: { presentation: 'assignment student score graded_at' },
 	},
 
 	report_card: {
 		base: 'machine_base',
+		icon: 'exam',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -465,8 +492,8 @@ export const schoolScheme: MachineModel = {
 			pdf:          { type: 'url' },
 		},
 		fkRelations: {
-			student: { code: 'student', required: true, multiple: false },
-			term:    { code: 'term',    required: true, multiple: false },
+			student: { code: 'student', required: true },
+			term:    { code: 'term',    required: true },
 		},
 		template: { presentation: 'student term avg_score rank' },
 	},
@@ -475,6 +502,7 @@ export const schoolScheme: MachineModel = {
 
 	message: {
 		base: 'machine_base',
+		icon: 'chat-circle',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -485,10 +513,10 @@ export const schoolScheme: MachineModel = {
 			attachment: { type: 'url' },
 		},
 		fkRelations: {
-			from_staff:    { code: 'staff',    required: false, multiple: false },
-			from_teacher:  { code: 'teacher',  required: false, multiple: false },
-			to_student:    { code: 'student',  required: false, multiple: false },
-			to_guardian:   { code: 'guardian', required: false, multiple: false },
+			from_staff:    { code: 'staff',    required: false },
+			from_teacher:  { code: 'teacher',  required: false },
+			to_student:    { code: 'student',  required: false },
+			to_guardian:   { code: 'guardian', required: false },
 		},
 		template: { presentation: 'subject sent_at from_teacher to_student' },
 	},

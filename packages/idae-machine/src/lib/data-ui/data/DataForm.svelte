@@ -10,7 +10,19 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 @prop {string} [groupFieldBy] - FK relation key on appscheme_field to group fields by (e.g. 'appscheme_field_type')
 @prop {(payload: {mode: string; data: Record<string,unknown>}) => void} [onsubmit] - Submit callback
 -->
-<script lang="ts" generics="COL = Record<string, unknown>">
+<script module lang="ts">
+	export interface DataFormProps {
+		onsubmit?: (payload: { mode: string; data: Record<string, unknown> }) => void;
+		mode?: 'show' | 'create' | 'update';
+		collection: string;
+		data?: Record<string, unknown>;
+		dataId?: string | number;
+		withData?: Record<string, unknown>;
+		groupFieldBy?: string;
+	}
+</script>
+
+<script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
 	import DataRecord from './DataRecord.svelte';
@@ -23,18 +35,10 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		dataId,
 		withData,
 		groupFieldBy
-	}: {
-		onsubmit?: (payload: { mode: string; data: Record<string, unknown> }) => void;
-		mode?: 'show' | 'create' | 'update';
-		collection: string;
-		data?: Record<string, unknown>;
-		dataId?: string | number;
-		withData?: Record<string, unknown>;
-		groupFieldBy?: string;
-	} = $props();
+	}: DataFormProps = $props();
 
 	const store = $derived(collection ? machine.collection(collection) : undefined);
-	const collLogic = $derived(collection ? safeCollection(collection) : null);
+	const collLogic = $derived(collection ? machine.logic.collection(collection) : null);
 	const formFields = $derived(collLogic?.parse() ?? {});
 	const validator = $derived(collLogic?.validator);
 	const indexName = $derived(collLogic?.index);
@@ -112,14 +116,10 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		}
 	}
 
-	function safeCollection(name: string) {
-		try { return machine.logic.collection(name); } catch { return null; }
-	}
-
 	let errorMessage = $state<string | null>(null);
 
 	$effect(() => {
-		if (!safeCollection(collection)) {
+		if (!machine.logic.collection(collection)) {
 			errorMessage = `Collection '${collection}' non trouvée dans le schéma.`;
 		} else {
 			errorMessage = null;
@@ -174,16 +174,18 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 {/if}
 
 <style>
+	@layer components {
 	.sr-only {
 		position: absolute;
-		width: 1px;
-		height: 1px;
+		width: var(--border-width);
+		height: var(--border-width);
 		padding: 0;
-		margin: -1px;
+		margin: calc(-1 * var(--border-width));
 		overflow: hidden;
 		clip: rect(0,0,0,0);
 		white-space: nowrap;
 		border-width: 0;
 	}
-	.error-message { color: red; padding: 1rem; }
+	.error-message { color: var(--color-critical); padding: var(--pad-md); }
+	}
 </style>

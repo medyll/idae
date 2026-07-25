@@ -2,13 +2,26 @@
 DataListRfk.svelte
 Renders reverse FK relations for a record as DataList sections.
 @prop {string} collection - Source collection name
-@prop {string|number} [recordId] - Source record id (if data not provided)
+@prop {string|number} [collectionId] - Source record id (if data not provided)
 @prop {Record<string,unknown>|null} [data] - Source record (controlled)
 @prop {string} [fk] - Filter to a single FK key
 @prop {boolean} [showTitle] - Show section title (default: true)
 @prop {boolean} [usePrefs] - Use persisted user prefs (default: false)
 @prop {string} [prefsScope] - Custom prefs scope
 -->
+<script module lang="ts">
+	export interface DataListRfkProps {
+		collection:  string;
+		collectionId?: string | number;
+		data?:       Record<string, unknown> | null;
+		fk?:         string;
+		showTitle?:  boolean;
+		usePrefs?:   boolean;
+		prefsScope?: string;
+		[key: string]: unknown;
+	}
+</script>
+
 <script lang="ts">
 	import DataList from './DataList.svelte';
 	import { machine } from '$lib/main/machine.js';
@@ -16,43 +29,34 @@ Renders reverse FK relations for a record as DataList sections.
 
 	let {
 		collection,
-		recordId,
+		collectionId,
 		data = undefined,
 		fk,
 		showTitle  = true,
 		usePrefs   = false,
 		prefsScope,
 		...dataListProps
-	}: {
-		collection:  string;
-		recordId?:   string | number;
-		data?:       Record<string, unknown> | null;
-		fk?:         string;
-		showTitle?:  boolean;
-		usePrefs?:   boolean;
-		prefsScope?: string;
-		[key: string]: unknown;
-	} = $props();
+	}: DataListRfkProps = $props();
 
 	const sourceStore = $derived(collection ? machine.store<Record<string, unknown>>(collection) : { records: [] as Record<string, unknown>[] });
-	const scheme      = $derived(collection ? machine.logic.collectionOr(collection, null) : null);
+	const scheme      = $derived(collection ? machine.logic.collection(collection) : null);
 
 	const storeRecord = $derived.by(() => {
-		if (recordId == null) return null;
-		return sourceStore.records.find((item) => String(item.id) === String(recordId)) ?? null;
+		if (collectionId == null) return null;
+		return sourceStore.records.find((item) => String(item.id) === String(collectionId)) ?? null;
 	});
 
 	let fetchedRecord = $state<Record<string, unknown> | null>(null);
 	let lookupDone    = $state(false);
 	$effect(() => {
-		if (data != null || recordId == null || storeRecord != null) {
+		if (data != null || collectionId == null || storeRecord != null) {
 			lookupDone = true;
 			return;
 		}
 		lookupDone = false;
 		fetchedRecord = null;
 		let cancelled = false;
-		Promise.resolve(machine.collection(collection).get(recordId)).then((rec) => {
+		Promise.resolve(machine.collection(collection).get(collectionId)).then((rec) => {
 			if (cancelled) return;
 			fetchedRecord = (rec as Record<string, unknown> | undefined) ?? null;
 			lookupDone = true;
@@ -62,13 +66,13 @@ Renders reverse FK relations for a record as DataList sections.
 
 	const record = $derived.by(() => {
 		if (data) return data;
-		if (recordId == null) return null;
+		if (collectionId == null) return null;
 		return storeRecord ?? fetchedRecord;
 	});
 
 	const recordState = $derived.by(() => {
 		if (record) return 'found';
-		if (data != null || recordId == null) return 'absent';
+		if (data != null || collectionId == null) return 'absent';
 		return lookupDone ? 'absent' : 'loading';
 	});
 

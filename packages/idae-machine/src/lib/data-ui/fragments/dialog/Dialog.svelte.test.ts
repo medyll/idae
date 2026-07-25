@@ -25,4 +25,26 @@ describe('Dialog', () => {
 		const body = container.querySelector('.idae-dialog__body');
 		expect(body?.classList.contains('idae-dialog__body--framed')).toBe(false);
 	});
+
+	it('is draggable and not fullscreen by default', () => {
+		const { container } = render(Dialog, { id: 'dialog-defaults' });
+		const dialog = container.querySelector('dialog');
+		const header = container.querySelector<HTMLElement>('[data-drag-handle]');
+
+		expect(dialog?.classList.contains('idae-dialog--fullscreen')).toBe(false);
+		expect(header?.style.cursor).toBe('grab');
+	});
+
+	it('fills the viewport without enabling drag when requested', () => {
+		const { container } = render(Dialog, {
+			id: 'dialog-fullscreen',
+			fullscreen: true,
+			draggable: false
+		});
+		const dialog = container.querySelector('dialog');
+		const header = container.querySelector<HTMLElement>('[data-drag-handle]');
+
+		expect(dialog?.classList.contains('idae-dialog--fullscreen')).toBe(true);
+		expect(header?.style.cursor).toBe('');
+	});
 });

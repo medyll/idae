@@ -34,7 +34,7 @@ sprints:
         test_result: pass
 
   - id: 32
-    goal: "DataList snippet API refactor — children → item/groupHeader/empty/footer + listClass/groupClass props"
+    goal: "DataList snippet API refactor — children → item/dataListHeader/empty/footer + listClass/groupClass props"
     status: completed
     depends_on: [31]
     stories:

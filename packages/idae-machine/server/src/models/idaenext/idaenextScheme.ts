@@ -6,6 +6,7 @@ import type { MachineModel } from '../../../../src/lib/types/machine-model.js';
 export const idaenextScheme: MachineModel = {
 	"accessoire": {
 		base: 'machine_base',
+		icon: 'puzzle-piece',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -14,13 +15,14 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 		},
 		fkRelations: {
-				marque: { code: 'marque', multiple: false },
+				marque: { code: 'marque' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"affaire": {
 		base: 'machine_base',
+		icon: 'diamond',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -37,13 +39,14 @@ export const idaenextScheme: MachineModel = {
 			isoDateDebut: { type: 'datetime' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
+				client: { code: 'client' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"agence": {
 		base: 'machine_base',
+		icon: 'buildings',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -55,6 +58,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent": {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -74,6 +78,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_activite": {
 		base: 'machine_user',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -90,6 +95,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_history": {
 		base: 'machine_user',
+		icon: 'clock-counter-clockwise',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -106,6 +112,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_liste": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -118,6 +125,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_liste_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -130,6 +138,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_note": {
 		base: 'machine_user',
+		icon: 'note',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -151,6 +160,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_pref": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -163,6 +173,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_recherche": {
 		base: 'machine_base',
+		icon: 'magnifying-glass',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -174,6 +185,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_table": {
 		base: 'machine_base',
+		icon: 'table',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -185,6 +197,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_tuile": {
 		base: 'machine_user',
+		icon: 'desktop',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -197,6 +210,7 @@ export const idaenextScheme: MachineModel = {
 
 	"agent_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -209,6 +223,7 @@ export const idaenextScheme: MachineModel = {
 
 	"app_conf": {
 		base: 'machine_base',
+		icon: 'key',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -220,6 +235,7 @@ export const idaenextScheme: MachineModel = {
 
 	"app_daemon": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -231,6 +247,7 @@ export const idaenextScheme: MachineModel = {
 
 	"app_version": {
 		base: 'machine_base',
+		icon: 'git-branch',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -244,6 +261,7 @@ export const idaenextScheme: MachineModel = {
 
 	"app_version_file": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -259,6 +277,7 @@ export const idaenextScheme: MachineModel = {
 
 	"app_version_file_preprod": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -274,6 +293,7 @@ export const idaenextScheme: MachineModel = {
 
 	"categorie_produit": {
 		base: 'machine_base',
+		icon: 'briefcase',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -285,6 +305,7 @@ export const idaenextScheme: MachineModel = {
 
 	"client": {
 		base: 'machine_base',
+		icon: 'house',
 		isType:   true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -309,15 +330,16 @@ export const idaenextScheme: MachineModel = {
 			identite: { type: 'text' },
 		},
 		fkRelations: {
-				agence: { code: 'agence', multiple: false },
-				client_type: { code: 'client_type', multiple: false },
-				client_categorie: { code: 'client_categorie', multiple: false },
+				agence: { code: 'agence' },
+				client_type: { code: 'client_type' },
+				client_categorie: { code: 'client_categorie' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"client_activite": {
 		base: 'machine_base',
+		icon: 'qr-code',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -329,6 +351,7 @@ export const idaenextScheme: MachineModel = {
 
 	"client_categorie": {
 		base: 'machine_base',
+		icon: 'tray',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -343,6 +366,7 @@ export const idaenextScheme: MachineModel = {
 
 	"client_type": {
 		base: 'machine_base',
+		icon: 'info',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -357,6 +381,7 @@ export const idaenextScheme: MachineModel = {
 
 	"commande": {
 		base: 'machine_base',
+		icon: 'truck',
 		isStatus: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -371,13 +396,14 @@ export const idaenextScheme: MachineModel = {
 			totalHt: { type: 'currency' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
+				client: { code: 'client' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"commande_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -391,13 +417,14 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 		},
 		fkRelations: {
-				commande: { code: 'commande', multiple: false },
+				commande: { code: 'commande' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"commande_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -412,6 +439,7 @@ export const idaenextScheme: MachineModel = {
 
 	"conge": {
 		base: 'machine_base',
+		icon: 'calendar',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -430,13 +458,14 @@ export const idaenextScheme: MachineModel = {
 			actifAgent: { type: 'text' },
 		},
 		fkRelations: {
-				conge_type: { code: 'conge_type', multiple: false },
+				conge_type: { code: 'conge_type' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"conge_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -454,6 +483,7 @@ export const idaenextScheme: MachineModel = {
 
 	"conge_type": {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -468,6 +498,7 @@ export const idaenextScheme: MachineModel = {
 
 	"contact": {
 		base: 'machine_base',
+		icon: 'at',
 		isType:   true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -484,6 +515,7 @@ export const idaenextScheme: MachineModel = {
 
 	"contact_type": {
 		base: 'machine_base',
+		icon: 'address-book',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -498,6 +530,7 @@ export const idaenextScheme: MachineModel = {
 
 	"contrat": {
 		base: 'machine_base',
+		icon: 'file-text',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -517,15 +550,16 @@ export const idaenextScheme: MachineModel = {
 			aa_partie_site_n_id: { type: 'text' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
-				contrat_statut: { code: 'contrat_statut', multiple: false },
-				contrat_type: { code: 'contrat_type', multiple: false },
+				client: { code: 'client' },
+				contrat_statut: { code: 'contrat_statut' },
+				contrat_type: { code: 'contrat_type' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"contrat_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -535,13 +569,14 @@ export const idaenextScheme: MachineModel = {
 			valeur: { type: 'number' },
 		},
 		fkRelations: {
-				contrat: { code: 'contrat', multiple: false },
+				contrat: { code: 'contrat' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"contrat_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -557,6 +592,7 @@ export const idaenextScheme: MachineModel = {
 
 	"contrat_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -570,6 +606,7 @@ export const idaenextScheme: MachineModel = {
 
 	"cron": {
 		base: 'machine_base',
+		icon: 'clock',
 		isType:   true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -586,6 +623,7 @@ export const idaenextScheme: MachineModel = {
 
 	"cron_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -598,6 +636,7 @@ export const idaenextScheme: MachineModel = {
 
 	"daemon": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -612,6 +651,7 @@ export const idaenextScheme: MachineModel = {
 
 	"document": {
 		base: 'machine_base',
+		icon: 'file-doc',
 		isType:   true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -626,15 +666,16 @@ export const idaenextScheme: MachineModel = {
 			isoDateCreation: { type: 'datetime' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
-				document_type: { code: 'document_type', multiple: false },
-				document_extension: { code: 'document_extension', multiple: false },
+				client: { code: 'client' },
+				document_type: { code: 'document_type' },
+				document_extension: { code: 'document_extension' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"document_extension": {
 		base: 'machine_base',
+		icon: 'file',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -646,6 +687,7 @@ export const idaenextScheme: MachineModel = {
 
 	"document_type": {
 		base: 'machine_base',
+		icon: 'qr-code',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -658,6 +700,7 @@ export const idaenextScheme: MachineModel = {
 
 	"email": {
 		base: 'machine_base',
+		icon: 'envelope',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -669,6 +712,7 @@ export const idaenextScheme: MachineModel = {
 
 	"email_mime": {
 		base: 'machine_base',
+		icon: 'paperclip',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -680,6 +724,7 @@ export const idaenextScheme: MachineModel = {
 
 	"emailbox": {
 		base: 'machine_base',
+		icon: 'tray',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -691,6 +736,7 @@ export const idaenextScheme: MachineModel = {
 
 	"entite": {
 		base: 'machine_base',
+		icon: 'factory',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -707,6 +753,7 @@ export const idaenextScheme: MachineModel = {
 
 	"facture": {
 		base: 'machine_base',
+		icon: 'file-text',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -719,14 +766,15 @@ export const idaenextScheme: MachineModel = {
 			description: { type: 'text' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
-				contrat: { code: 'contrat', multiple: false },
+				client: { code: 'client' },
+				contrat: { code: 'contrat' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"facture_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -742,13 +790,14 @@ export const idaenextScheme: MachineModel = {
 			description: { type: 'text' },
 		},
 		fkRelations: {
-				facture: { code: 'facture', multiple: false },
+				facture: { code: 'facture' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"financement": {
 		base: 'machine_base',
+		icon: 'money',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -767,16 +816,17 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
-				affaire: { code: 'affaire', multiple: false },
-				leaser: { code: 'leaser', multiple: false },
-				financement_type: { code: 'financement_type', multiple: false },
+				client: { code: 'client' },
+				affaire: { code: 'affaire' },
+				leaser: { code: 'leaser' },
+				financement_type: { code: 'financement_type' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"financement_ligne": {
 		base: 'machine_base',
+		icon: 'credit-card',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -791,14 +841,15 @@ export const idaenextScheme: MachineModel = {
 			prix: { type: 'currency' },
 		},
 		fkRelations: {
-				financement: { code: 'financement', multiple: false },
-				commande_ligne: { code: 'commande_ligne', multiple: false },
+				financement: { code: 'financement' },
+				commande_ligne: { code: 'commande_ligne' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"financement_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -813,6 +864,7 @@ export const idaenextScheme: MachineModel = {
 
 	"ged_bin": {
 		base: 'machine_base',
+		icon: 'trash',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -824,6 +876,7 @@ export const idaenextScheme: MachineModel = {
 
 	"intervention_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -839,6 +892,7 @@ export const idaenextScheme: MachineModel = {
 
 	"intervention_type": {
 		base: 'machine_base',
+		icon: 'barcode',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -851,6 +905,7 @@ export const idaenextScheme: MachineModel = {
 
 	"leaser": {
 		base: 'machine_base',
+		icon: 'truck',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -865,6 +920,7 @@ export const idaenextScheme: MachineModel = {
 
 	"marque": {
 		base: 'machine_base',
+		icon: 'trademark-registered',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -877,6 +933,7 @@ export const idaenextScheme: MachineModel = {
 
 	"materiel": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -896,15 +953,16 @@ export const idaenextScheme: MachineModel = {
 			description: { type: 'text' },
 		},
 		fkRelations: {
-				produit: { code: 'produit', multiple: false },
-				client: { code: 'client', multiple: false },
-				contrat: { code: 'contrat', multiple: false },
+				produit: { code: 'produit' },
+				client: { code: 'client' },
+				contrat: { code: 'contrat' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"materiel_compteur": {
 		base: 'machine_base',
+		icon: 'calculator',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -918,13 +976,14 @@ export const idaenextScheme: MachineModel = {
 			vmmNBMateriel: { type: 'text' },
 		},
 		fkRelations: {
-				materiel: { code: 'materiel', multiple: false },
+				materiel: { code: 'materiel' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"materiel_volume": {
 		base: 'machine_base',
+		icon: 'chart-line',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -936,13 +995,14 @@ export const idaenextScheme: MachineModel = {
 			valeur: { type: 'text' },
 		},
 		fkRelations: {
-				materiel: { code: 'materiel', multiple: false },
+				materiel: { code: 'materiel' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"opportunite": {
 		base: 'machine_base',
+		icon: 'currency-dollar',
 		isStatus: true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -966,14 +1026,15 @@ export const idaenextScheme: MachineModel = {
 			ordreOpportunite_statut: { type: 'text' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
-				opportunite_statut: { code: 'opportunite_statut', multiple: false },
+				client: { code: 'client' },
+				opportunite_statut: { code: 'opportunite_statut' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"opportunite_ligne": {
 		base: 'machine_base',
+		icon: 'money',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -982,14 +1043,15 @@ export const idaenextScheme: MachineModel = {
 			quantite: { type: 'number' },
 		},
 		fkRelations: {
-				opportunite: { code: 'opportunite', multiple: false },
-				produit: { code: 'produit', multiple: false },
+				opportunite: { code: 'opportunite' },
+				produit: { code: 'produit' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"opportunite_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1004,6 +1066,7 @@ export const idaenextScheme: MachineModel = {
 
 	"opportunite_type": {
 		base: 'machine_base',
+		icon: 'lightning',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1017,6 +1080,7 @@ export const idaenextScheme: MachineModel = {
 
 	"prestataire": {
 		base: 'machine_base',
+		icon: 'handshake',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1028,6 +1092,7 @@ export const idaenextScheme: MachineModel = {
 
 	"produit": {
 		base: 'machine_base',
+		icon: 'gear',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1039,13 +1104,14 @@ export const idaenextScheme: MachineModel = {
 			N_ID: { type: 'text' },
 		},
 		fkRelations: {
-				marque: { code: 'marque', multiple: false },
+				marque: { code: 'marque' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"produit_gamme": {
 		base: 'machine_base',
+		icon: 'trophy',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1058,6 +1124,7 @@ export const idaenextScheme: MachineModel = {
 
 	"prospect": {
 		base: 'machine_base',
+		icon: 'house',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1080,6 +1147,7 @@ export const idaenextScheme: MachineModel = {
 
 	"rachat": {
 		base: 'machine_base',
+		icon: 'currency-eur',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1091,14 +1159,15 @@ export const idaenextScheme: MachineModel = {
 			commentaire: { type: 'text' },
 		},
 		fkRelations: {
-				client: { code: 'client', multiple: false },
-				affaire: { code: 'affaire', multiple: false },
+				client: { code: 'client' },
+				affaire: { code: 'affaire' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"rachat_ligne": {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1110,13 +1179,14 @@ export const idaenextScheme: MachineModel = {
 			valeurArgus: { type: 'text' },
 		},
 		fkRelations: {
-				rachat: { code: 'rachat', multiple: false },
+				rachat: { code: 'rachat' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"ressource": {
 		base: 'machine_base',
+		icon: 'currency-eur',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1130,13 +1200,14 @@ export const idaenextScheme: MachineModel = {
 			duree: { type: 'number' },
 		},
 		fkRelations: {
-				prospect: { code: 'prospect', multiple: false },
+				prospect: { code: 'prospect' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"secteur": {
 		base: 'machine_base',
+		icon: 'map-trifold',
 		fields: {
 			id:   { type: 'id', readonly: true },
 			code: { type: 'text', required: true },
@@ -1152,6 +1223,7 @@ export const idaenextScheme: MachineModel = {
 
 	"site_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1164,6 +1236,7 @@ export const idaenextScheme: MachineModel = {
 
 	"tache": {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isType:   true,
 		isStatus: true,
 		fields: {
@@ -1179,15 +1252,16 @@ export const idaenextScheme: MachineModel = {
 			resultat: { type: 'text' },
 		},
 		fkRelations: {
-				prospect: { code: 'prospect', multiple: false },
-				tache_statut: { code: 'tache_statut', multiple: false },
-				tache_type: { code: 'tache_type', multiple: false },
+				prospect: { code: 'prospect' },
+				tache_statut: { code: 'tache_statut' },
+				tache_type: { code: 'tache_type' },
 			},
 		template: { presentation: 'name code' },
 	},
 
 	"tache_statut": {
 		base: 'machine_base',
+		icon: 'flag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },
@@ -1207,6 +1281,7 @@ export const idaenextScheme: MachineModel = {
 
 	"tache_type": {
 		base: 'machine_base',
+		icon: 'tag',
 		isGroup:  true,
 		fields: {
 			id:   { type: 'id', readonly: true },

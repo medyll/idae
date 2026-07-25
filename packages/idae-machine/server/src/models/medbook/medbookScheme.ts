@@ -6,6 +6,7 @@ export const medbookScheme: MachineModel = {
 
 	appointment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -20,6 +21,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -33,6 +35,7 @@ export const medbookScheme: MachineModel = {
 
 	payment_status: {
 		base: 'machine_base',
+		icon: 'flag',
 		isStatus: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -46,6 +49,7 @@ export const medbookScheme: MachineModel = {
 
 	appointment_type: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:           { type: 'id',       readonly: true },
@@ -61,6 +65,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation_motive: {
 		base: 'machine_base',
+		icon: 'tag',
 		isType: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -73,6 +78,7 @@ export const medbookScheme: MachineModel = {
 
 	day_of_week: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		isGroup: true,
 		fields: {
 			id:    { type: 'id',   readonly: true },
@@ -86,6 +92,7 @@ export const medbookScheme: MachineModel = {
 
 	insurance_provider: {
 		base: 'machine_base',
+		icon: 'shield-check',
 		fields: {
 			id:      { type: 'id',   readonly: true },
 			code:    { type: 'text', required: true },
@@ -102,6 +109,7 @@ export const medbookScheme: MachineModel = {
 
 	specialty: {
 		base: 'machine_base',
+		icon: 'stethoscope',
 		fields: {
 			id:          { type: 'id',      readonly: true },
 			code:        { type: 'text',    required: true },
@@ -116,6 +124,7 @@ export const medbookScheme: MachineModel = {
 
 	act: {
 		base: 'machine_base',
+		icon: 'first-aid',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -125,7 +134,7 @@ export const medbookScheme: MachineModel = {
 			reimbursable: { type: 'boolean' },
 		},
 		fkRelations: {
-			specialty: { code: 'specialty', required: false, multiple: false },
+			specialty: { code: 'specialty', required: false },
 		},
 		template: { presentation: 'ngap_code name fee specialty' },
 	},
@@ -134,6 +143,7 @@ export const medbookScheme: MachineModel = {
 
 	clinic: {
 		base: 'machine_base',
+		icon: 'hospital',
 		fields: {
 			id:          { type: 'id',    readonly: true },
 			code:        { type: 'text',  required: true },
@@ -157,6 +167,7 @@ export const medbookScheme: MachineModel = {
 
 	room: {
 		base: 'machine_base',
+		icon: 'bed',
 		fields: {
 			id:        { type: 'id',     readonly: true },
 			code:      { type: 'text',   required: true },
@@ -165,7 +176,7 @@ export const medbookScheme: MachineModel = {
 			equipment: { type: 'text-lg' },
 		},
 		fkRelations: {
-			clinic: { code: 'clinic', required: true, multiple: false },
+			clinic: { code: 'clinic', required: true },
 		},
 		template: { presentation: 'clinic name floor' },
 	},
@@ -174,6 +185,7 @@ export const medbookScheme: MachineModel = {
 
 	practitioner: {
 		base: 'machine_base',
+		icon: 'stethoscope',
 		fields: {
 			id:                { type: 'id',    readonly: true },
 			code:              { type: 'text',  required: true },
@@ -194,13 +206,14 @@ export const medbookScheme: MachineModel = {
 			photo:             { type: 'image' },
 		},
 		fkRelations: {
-			primary_specialty: { code: 'specialty', required: true, multiple: false },
+			primary_specialty: { code: 'specialty', required: true },
 		},
 		template: { presentation: 'honorific name primary_specialty rpps_number' },
 	},
 
 	practitioner_clinic: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:         { type: 'id',   readonly: true },
 			code:       { type: 'text', required: true },
@@ -209,21 +222,22 @@ export const medbookScheme: MachineModel = {
 			end_date:   { type: 'date' },
 		},
 		fkRelations: {
-			practitioner: { code: 'practitioner', required: true, multiple: false },
-			clinic:       { code: 'clinic',       required: true, multiple: false },
+			practitioner: { code: 'practitioner', required: true },
+			clinic:       { code: 'clinic',       required: true },
 		},
 		template: { presentation: 'practitioner clinic is_primary' },
 	},
 
 	practitioner_specialty: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:   { type: 'id',   readonly: true },
 			code: { type: 'text', required: true },
 		},
 		fkRelations: {
-			practitioner: { code: 'practitioner', required: true, multiple: false },
-			specialty:    { code: 'specialty',    required: true, multiple: false },
+			practitioner: { code: 'practitioner', required: true },
+			specialty:    { code: 'specialty',    required: true },
 		},
 		template: { presentation: 'practitioner specialty' },
 	},
@@ -232,6 +246,7 @@ export const medbookScheme: MachineModel = {
 
 	availability_slot: {
 		base: 'machine_base',
+		icon: 'calendar-blank',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -243,15 +258,16 @@ export const medbookScheme: MachineModel = {
 			valid_until: { type: 'date' },
 		},
 		fkRelations: {
-			practitioner: { code: 'practitioner', required: true,  multiple: false },
-			clinic:       { code: 'clinic',       required: false, multiple: false },
-			day_of_week:  { code: 'day_of_week',  required: true,  multiple: false },
+			practitioner: { code: 'practitioner', required: true },
+			clinic:       { code: 'clinic',       required: false },
+			day_of_week:  { code: 'day_of_week',  required: true },
 		},
 		template: { presentation: 'practitioner day_of_week start_time end_time clinic' },
 	},
 
 	leave_period: {
 		base: 'machine_base',
+		icon: 'calendar',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -261,7 +277,7 @@ export const medbookScheme: MachineModel = {
 			reason:     { type: 'text' },
 		},
 		fkRelations: {
-			practitioner: { code: 'practitioner', required: true, multiple: false },
+			practitioner: { code: 'practitioner', required: true },
 		},
 		template: { presentation: 'practitioner start_date end_date reason' },
 	},
@@ -270,6 +286,7 @@ export const medbookScheme: MachineModel = {
 
 	patient: {
 		base: 'machine_base',
+		icon: 'user',
 		fields: {
 			id:                { type: 'id',    readonly: true },
 			code:              { type: 'text',  required: true },
@@ -297,13 +314,14 @@ export const medbookScheme: MachineModel = {
 			registered_at:     { type: 'date' },
 		},
 		fkRelations: {
-			insurance_provider: { code: 'insurance_provider', required: false, multiple: false },
+			insurance_provider: { code: 'insurance_provider', required: false },
 		},
 		template: { presentation: 'last_name first_name birth_date phone' },
 	},
 
 	patient_document: {
 		base: 'machine_base',
+		icon: 'file-doc',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -316,7 +334,7 @@ export const medbookScheme: MachineModel = {
 			notes:        { type: 'text-lg' },
 		},
 		fkRelations: {
-			patient: { code: 'patient', required: true, multiple: false },
+			patient: { code: 'patient', required: true },
 		},
 		template: { presentation: 'patient name kind uploaded_at' },
 	},
@@ -325,6 +343,7 @@ export const medbookScheme: MachineModel = {
 
 	appointment: {
 		base: 'machine_base',
+		icon: 'calendar-plus',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -341,12 +360,12 @@ export const medbookScheme: MachineModel = {
 			reminder_sent_at: { type: 'date' },
 		},
 		fkRelations: {
-			patient:            { code: 'patient',            required: true,  multiple: false },
-			practitioner:       { code: 'practitioner',       required: true,  multiple: false },
-			clinic:             { code: 'clinic',             required: false, multiple: false },
-			room:               { code: 'room',               required: false, multiple: false },
-			appointment_type:   { code: 'appointment_type',   required: true,  multiple: false },
-			appointment_status: { code: 'appointment_status', required: true,  multiple: false },
+			patient:            { code: 'patient',            required: true },
+			practitioner:       { code: 'practitioner',       required: true },
+			clinic:             { code: 'clinic',             required: false },
+			room:               { code: 'room',               required: false },
+			appointment_type:   { code: 'appointment_type',   required: true },
+			appointment_status: { code: 'appointment_status', required: true },
 		},
 		template: { presentation: 'scheduled_at patient practitioner appointment_type appointment_status' },
 	},
@@ -355,6 +374,7 @@ export const medbookScheme: MachineModel = {
 
 	consultation: {
 		base: 'machine_base',
+		icon: 'stethoscope',
 		fields: {
 			id:             { type: 'id',       readonly: true },
 			code:           { type: 'text',     required: true },
@@ -369,17 +389,18 @@ export const medbookScheme: MachineModel = {
 			fee:            { type: 'currency' },
 		},
 		fkRelations: {
-			patient:             { code: 'patient',             required: true,  multiple: false },
-			practitioner:        { code: 'practitioner',        required: true,  multiple: false },
-			appointment:         { code: 'appointment',         required: false, multiple: false },
-			consultation_motive: { code: 'consultation_motive', required: false, multiple: false },
-			consultation_status: { code: 'consultation_status', required: true,  multiple: false },
+			patient:             { code: 'patient',             required: true },
+			practitioner:        { code: 'practitioner',        required: true },
+			appointment:         { code: 'appointment',         required: false },
+			consultation_motive: { code: 'consultation_motive', required: false },
+			consultation_status: { code: 'consultation_status', required: true },
 		},
 		template: { presentation: 'consulted_at patient practitioner consultation_status' },
 	},
 
 	vital_record: {
 		base: 'machine_base',
+		icon: 'heart',
 		fields: {
 			id:               { type: 'id',     readonly: true },
 			code:             { type: 'text',   required: true },
@@ -395,14 +416,15 @@ export const medbookScheme: MachineModel = {
 			notes:            { type: 'text-lg' },
 		},
 		fkRelations: {
-			patient:      { code: 'patient',      required: true,  multiple: false },
-			consultation: { code: 'consultation', required: false, multiple: false },
+			patient:      { code: 'patient',      required: true },
+			consultation: { code: 'consultation', required: false },
 		},
 		template: { presentation: 'patient measured_at weight_kg blood_pressure_sys heart_rate_bpm' },
 	},
 
 	prescription: {
 		base: 'machine_base',
+		icon: 'pill',
 		fields: {
 			id:          { type: 'id',     readonly: true },
 			code:        { type: 'text',   required: true },
@@ -412,15 +434,16 @@ export const medbookScheme: MachineModel = {
 			pdf_url:     { type: 'url' },
 		},
 		fkRelations: {
-			consultation: { code: 'consultation', required: true,  multiple: false },
-			patient:      { code: 'patient',      required: true,  multiple: false },
-			practitioner: { code: 'practitioner', required: true,  multiple: false },
+			consultation: { code: 'consultation', required: true },
+			patient:      { code: 'patient',      required: true },
+			practitioner: { code: 'practitioner', required: true },
 		},
 		template: { presentation: 'issued_at patient practitioner' },
 	},
 
 	prescription_item: {
 		base: 'machine_base',
+		icon: 'list-bullets',
 		fields: {
 			id:           { type: 'id',     readonly: true },
 			code:         { type: 'text',   required: true },
@@ -433,13 +456,14 @@ export const medbookScheme: MachineModel = {
 			instructions: { type: 'text-lg' },
 		},
 		fkRelations: {
-			prescription: { code: 'prescription', required: true, multiple: false },
+			prescription: { code: 'prescription', required: true },
 		},
 		template: { presentation: 'prescription drug_name dosage frequency duration_days' },
 	},
 
 	consultation_act: {
 		base: 'machine_base',
+		icon: 'link',
 		fields: {
 			id:       { type: 'id',       readonly: true },
 			code:     { type: 'text',     required: true },
@@ -447,8 +471,8 @@ export const medbookScheme: MachineModel = {
 			fee:      { type: 'currency' },
 		},
 		fkRelations: {
-			consultation: { code: 'consultation', required: true, multiple: false },
-			act:          { code: 'act',          required: true, multiple: false },
+			consultation: { code: 'consultation', required: true },
+			act:          { code: 'act',          required: true },
 		},
 		template: { presentation: 'consultation act quantity fee' },
 	},
@@ -457,6 +481,7 @@ export const medbookScheme: MachineModel = {
 
 	invoice: {
 		base: 'machine_base',
+		icon: 'receipt',
 		fields: {
 			id:           { type: 'id',       readonly: true },
 			code:         { type: 'text',     required: true },
@@ -468,9 +493,9 @@ export const medbookScheme: MachineModel = {
 			pdf_url:      { type: 'url' },
 		},
 		fkRelations: {
-			consultation:   { code: 'consultation',   required: true, multiple: false },
-			patient:        { code: 'patient',        required: true, multiple: false },
-			payment_status: { code: 'payment_status', required: true, multiple: false },
+			consultation:   { code: 'consultation',   required: true },
+			patient:        { code: 'patient',        required: true },
+			payment_status: { code: 'payment_status', required: true },
 		},
 		template: { presentation: 'invoice_number patient amount payment_status issued_at' },
 	},
@@ -479,6 +504,7 @@ export const medbookScheme: MachineModel = {
 
 	review: {
 		base: 'machine_base',
+		icon: 'star',
 		fields: {
 			id:         { type: 'id',     readonly: true },
 			code:       { type: 'text',   required: true },
@@ -488,9 +514,9 @@ export const medbookScheme: MachineModel = {
 			verified:   { type: 'boolean' },
 		},
 		fkRelations: {
-			practitioner: { code: 'practitioner', required: true,  multiple: false },
-			patient:      { code: 'patient',      required: false, multiple: false },
-			appointment:  { code: 'appointment',  required: false, multiple: false },
+			practitioner: { code: 'practitioner', required: true },
+			patient:      { code: 'patient',      required: false },
+			appointment:  { code: 'appointment',  required: false },
 		},
 		template: { presentation: 'practitioner rating verified created_at' },
 	},

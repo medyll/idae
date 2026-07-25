@@ -5,6 +5,17 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 @prop {string} value - Current value (bindable, iconify name)
 @prop {'xs'|'sm'|'md'|'lg'} [size] - Glyph size preset (maps to --icon-size-* tokens). Default 'sm'.
 -->
+<script module lang="ts">
+	export interface FieldIconProps {
+		value?: string;
+		mode?: 'show' | 'create' | 'update';
+		size?: 'xs' | 'sm' | 'md' | 'lg';
+		id?: string;
+		name?: string;
+		form?: string;
+	}
+</script>
+
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 
@@ -15,26 +26,19 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 		id,
 		name,
 		form
-	}: {
-		value?: string;
-		mode?: 'show' | 'create' | 'update';
-		size?: 'xs' | 'sm' | 'md' | 'lg';
-		id?: string;
-		name?: string;
-		form?: string;
-	} = $props();
+	}: FieldIconProps = $props();
 </script>
 
 {#if mode === 'show'}
 	{#if value}
-		<Icon icon={'typcn:' + value} class="icon-field icon-size-{size}" />
+		<Icon icon={value.includes(':') ? value : 'ph:' + value} class="icon-field icon-size-{size}" />
 	{:else}
 		<span class="icon-empty">—</span>
 	{/if}
 {:else}
 	<div class="icon-edit">
 		{#if value}
-			<Icon icon={'typcn:' + value} class="icon-preview icon-size-{size}" />
+			<Icon icon={value.includes(':') ? value : 'ph:' + value} class="icon-preview icon-size-{size}" />
 		{/if}
 		<input
 			type="text"
@@ -52,7 +56,7 @@ Icon field atom — renders icon glyph in show mode, icon picker in edit.
 		.icon-edit {
 			display: flex;
 			align-items: center;
-			gap: var(--space-1, 0.25rem);
+			gap: var(--gap-xs);
 		}
 		.icon-edit input {
 			flex: 1;

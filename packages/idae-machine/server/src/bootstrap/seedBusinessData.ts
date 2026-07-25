@@ -88,13 +88,29 @@ export async function seedBusinessData(opts: SeedBusinessOpts): Promise<void> {
 		const resolver = makeSeedResolver();
 		const foldedRecords: Record<string, unknown>[] = [];
 
+		const fkDefs = model[collectionName]?.fkRelations ?? {};
+
 		for (const row of rows as Record<string, unknown>[]) {
 			if (!row || typeof row !== 'object') { foldedRecords.push(row); continue; }
 			const withCode: Record<string, unknown> =
 				(row.code === undefined || row.code === null || row.code === '') && row.id != null
 					? { ...row, code: String(row.id) }
 					: { ...row };
-			const fkDefs = model[collectionName]?.fkRelations ?? {};
+
+			// Normalize each FK scalar to the TARGET's code (the canonical join index —
+			// FK_INDEX_FIELD='code', SCHEMA-CONVENTIONS §6bis). Seed rows author FKs by
+			// numeric id for readability; resolution (forward fallback + reverse) joins on
+			// code, so the stored scalar must be the code, not the id. Referentials are
+			// seeded before dependents (insertion-order contract), so the target is already
+			// in seedMap when we resolve here.
+			for (const [relKey, fkDef] of Object.entries(fkDefs)) {
+				const raw = withCode[relKey];
+				if (raw == null) continue;
+				const targetMap = seedMap[fkDef.code];
+				const target = targetMap?.get(Number(raw));
+				if (target?.code != null) withCode[relKey] = target.code;
+			}
+
 			const { data: folded } = await foldFks(fkDefs, withCode, resolver);
 			foldedRecords.push(folded);
 		}

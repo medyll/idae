@@ -3,12 +3,12 @@ import { MachineFrameManager, type FrameControls } from '../frame/MachineFrameMa
 
 function makeControls(overrides: Partial<FrameControls> = {}): FrameControls {
 	return {
-		load:     vi.fn(),
-		show:     vi.fn(),
-		hide:     vi.fn(),
-		toggle:   vi.fn(),
-		close:    vi.fn(),
-		...overrides,
+		load: vi.fn(),
+		show: vi.fn(),
+		hide: vi.fn(),
+		toggle: vi.fn(),
+		close: vi.fn(),
+		...overrides
 	};
 }
 
@@ -88,9 +88,9 @@ describe('MachineFrameManager', () => {
 			const controls = makeControls();
 			manager.register('vehicle', controls);
 
-			await manager.load('vehicle', 'card.form', 'vehicle', '42', { tab: 'info' });
+			await manager.load('vehicle', 'form', 'vehicle', '42', { tab: 'info' });
 
-			expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '42', { tab: 'info' });
+			expect(controls.load).toHaveBeenCalledWith('form', 'vehicle', '42', { tab: 'info' });
 		});
 
 		it('calls load with minimal args (no collectionId, no vars)', async () => {
@@ -105,20 +105,23 @@ describe('MachineFrameManager', () => {
 
 	describe('load — unknown frame with DOM zone', () => {
 		it('throws when frame not registered and no DOM zone exists', async () => {
-			await expect(
-				manager.load('ghost', 'card.form', 'vehicle')
-			).rejects.toThrow('[FrameManager] frame "ghost" not found and no DOM zone');
+			await expect(manager.load('ghost', 'form', 'vehicle')).rejects.toThrow(
+				'[FrameManager] frame "ghost" not found and no DOM zone'
+			);
 		});
 
 		it('throws when frame not registered, zone exists, but no mountFn provided', async () => {
 			// Simulate DOM zone via manual document mock
 			const zone = { setAttribute: vi.fn() };
 			const querySelector = vi.fn().mockReturnValue(zone);
-			(globalThis as any).document = { querySelector, body: { appendChild: vi.fn(), removeChild: vi.fn() } };
+			(globalThis as any).document = {
+				querySelector,
+				body: { appendChild: vi.fn(), removeChild: vi.fn() }
+			};
 
-			await expect(
-				manager.load('dynamic-frame', 'card.form', 'vehicle')
-			).rejects.toThrow('[FrameManager] frame "dynamic-frame" not registered — mountFn required');
+			await expect(manager.load('dynamic-frame', 'form', 'vehicle')).rejects.toThrow(
+				'[FrameManager] frame "dynamic-frame" not registered — mountFn required'
+			);
 
 			delete (globalThis as any).document;
 		});
@@ -126,7 +129,10 @@ describe('MachineFrameManager', () => {
 		it('mounts via mountFn, then loads after auto-registration', async () => {
 			const zone = { setAttribute: vi.fn() };
 			const querySelector = vi.fn().mockReturnValue(zone);
-			(globalThis as any).document = { querySelector, body: { appendChild: vi.fn(), removeChild: vi.fn() } };
+			(globalThis as any).document = {
+				querySelector,
+				body: { appendChild: vi.fn(), removeChild: vi.fn() }
+			};
 
 			const controls = makeControls();
 
@@ -134,17 +140,20 @@ describe('MachineFrameManager', () => {
 				manager.register(frameId, controls);
 			});
 
-			await manager.load('auto-frame', 'card.form', 'vehicle', '99', undefined, mountFn);
+			await manager.load('auto-frame', 'form', 'vehicle', '99', undefined, mountFn);
 
 			expect(mountFn).toHaveBeenCalledWith('auto-frame');
-			expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '99', undefined);
+			expect(controls.load).toHaveBeenCalledWith('form', 'vehicle', '99', undefined);
 
 			delete (globalThis as any).document;
 		});
 
 		it('allows floating hosts to register without a DOM zone', async () => {
 			const querySelector = vi.fn().mockReturnValue(null);
-			(globalThis as any).document = { querySelector, body: { appendChild: vi.fn(), removeChild: vi.fn() } };
+			(globalThis as any).document = {
+				querySelector,
+				body: { appendChild: vi.fn(), removeChild: vi.fn() }
+			};
 
 			const controls = makeControls();
 
@@ -152,10 +161,10 @@ describe('MachineFrameManager', () => {
 				manager.register(frameId, controls);
 			});
 
-			await manager.load('dialog:card.form:vehicle:99', 'card.form', 'vehicle', '99', undefined, mountFn);
+			await manager.load('dialog:form:vehicle:99', 'form', 'vehicle', '99', undefined, mountFn);
 
-			expect(mountFn).toHaveBeenCalledWith('dialog:card.form:vehicle:99');
-			expect(controls.load).toHaveBeenCalledWith('card.form', 'vehicle', '99', undefined);
+			expect(mountFn).toHaveBeenCalledWith('dialog:form:vehicle:99');
+			expect(controls.load).toHaveBeenCalledWith('form', 'vehicle', '99', undefined);
 
 			delete (globalThis as any).document;
 		});
@@ -163,12 +172,15 @@ describe('MachineFrameManager', () => {
 		it('throws if mountFn succeeds but frame did not register', async () => {
 			const zone = { setAttribute: vi.fn() };
 			const querySelector = vi.fn().mockReturnValue(zone);
-			(globalThis as any).document = { querySelector, body: { appendChild: vi.fn(), removeChild: vi.fn() } };
+			(globalThis as any).document = {
+				querySelector,
+				body: { appendChild: vi.fn(), removeChild: vi.fn() }
+			};
 
 			const mountFn = vi.fn().mockResolvedValue(undefined);
 
 			await expect(
-				manager.load('broken-frame', 'card.form', 'vehicle', undefined, undefined, mountFn)
+				manager.load('broken-frame', 'form', 'vehicle', undefined, undefined, mountFn)
 			).rejects.toThrow('[FrameManager] frame "broken-frame" failed to register after mount');
 
 			delete (globalThis as any).document;
@@ -204,6 +216,28 @@ describe('MachineFrameManager', () => {
 			expect(controls.close).toHaveBeenCalled();
 		});
 
+		it('notifies the router when a zone frame closes', () => {
+			const closeRoute = vi.fn();
+			manager.setRouter({ push: vi.fn(), openFrame: vi.fn(), openDialog: vi.fn(), closeFrame: closeRoute });
+			const controls = makeControls();
+			manager.register('explorer:main', controls);
+
+			manager.close('explorer:main');
+
+			expect(controls.close).toHaveBeenCalledOnce();
+			expect(closeRoute).toHaveBeenCalledWith('explorer:main');
+		});
+
+		it('does not notify the router during a silent routed close', () => {
+			const closeRoute = vi.fn();
+			manager.setRouter({ push: vi.fn(), openFrame: vi.fn(), openDialog: vi.fn(), closeFrame: closeRoute });
+			manager.register('dialog:fiche:vehicle:42', makeControls());
+
+			manager.close('dialog:fiche:vehicle:42', { history: false });
+
+			expect(closeRoute).not.toHaveBeenCalled();
+		});
+
 		it('show throws for unknown frame', () => {
 			expect(() => manager.show('missing')).toThrow('[FrameManager] frame "missing" not found');
 		});
@@ -218,6 +252,46 @@ describe('MachineFrameManager', () => {
 
 		it('close throws for unknown frame', () => {
 			expect(() => manager.close('missing')).toThrow('[FrameManager] frame "missing" not found');
+		});
+	});
+
+	describe('dialog options', () => {
+		it('routes dialogs as draggable and non-fullscreen by default', async () => {
+			const openDialog = vi.fn();
+			manager.setRouter({
+				push: vi.fn(),
+				openFrame: vi.fn(),
+				openDialog,
+				closeFrame: vi.fn()
+			});
+
+			await manager.loadInDialog('fiche', 'vehicle', '42');
+
+			expect(openDialog).toHaveBeenCalledWith({
+				modulePath: 'fiche',
+				collection: 'vehicle',
+				collectionId: '42',
+				vars: undefined,
+				modal: undefined,
+				closable: true,
+				draggable: true,
+				fullscreen: false
+			});
+		});
+	});
+
+	describe('frame options', () => {
+		it('exposes closable false on registered controls', () => {
+			manager.setRouter({
+				push: vi.fn(),
+				openFrame: vi.fn(),
+				openDialog: vi.fn(),
+				closeFrame: vi.fn()
+			});
+			manager.loadFrame('explorer', 'vehicle', undefined, { closable: false });
+			manager.register('explorer:main', makeControls());
+
+			expect(manager.getControls('explorer:main')?.closable).toBe(false);
 		});
 	});
 

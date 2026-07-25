@@ -4,8 +4,20 @@
 	import DataListRfk from '$lib/data-ui/data/DataListRfk.svelte';
 	import { machine } from '$lib/main/machine.js';
 	import DataList from '$lib/data-ui/data/DataList.svelte';
+	import Icon from '@iconify/svelte';
 	import RecordToolbar from '$lib/shell/layout/RecordToolbar.svelte';
 	import TemplateShell from '$lib/shell/layout/TemplateShell.svelte';
+
+	// Resolve a collection's appscheme icon (Phosphor 'ph:' name) reactively.
+	const appschemeStore = machine.store<{ code: string; icon?: string }>('appscheme');
+	function schemeIcon(code: string): string {
+		const rec = appschemeStore.records.find((s) => s.code === code);
+		const icon = rec?.icon;
+		if (typeof icon !== 'string') return 'ph:table';
+		const t = icon.trim();
+		if (!t || /^\d+$/.test(t) || /\s/.test(t)) return 'ph:table';
+		return t.includes(':') ? t : `ph:${t}`;
+	}
 
 	let {
 		collection,
@@ -16,17 +28,9 @@
 		dataId?: string;
 	} = $props();
 
-	function safeScheme(name: string) {
-		try {
-			return machine.logic.collection(name);
-		} catch {
-			return null;
-		}
-	}
-
 	const store = $derived(machine.store<Record<string, unknown>>(collection));
 	const record = $derived(store.records.find((r) => String(r.id) === String(collectionId)) ?? {});
-	const scheme = $derived(safeScheme(collection));
+	const scheme = $derived(machine.logic.collection(collection));
 	const presentation = $derived(
 		(scheme as { template?: { presentation?: string } } | null)?.template?.presentation ?? ''
 	);
@@ -114,7 +118,7 @@
 			<synthesis-sidebar-actions>
 				{#each rfkEntries as rfk (rfk.collection)}
 					<button class="action-create" onclick={() => handleCreateRfk(rfk.collection)}>
-						<span class="icon-appscheme"></span>
+						<Icon icon={schemeIcon(rfk.collection)} class="icon-appscheme" />
 						créer {rfk.collection}
 					</button>
 				{/each}
@@ -124,7 +128,7 @@
 
 	<synthesis-main>
 		<synthesis-header>
-			<span class="icon-appscheme"></span>
+			<Icon icon={schemeIcon(collection)} class="icon-appscheme" />
 			<group-info>
 				<div class="record-title">{recordLabel}</div>
 				<div class="record-subtitle">{scheme?.collection ?? collection}</div>
@@ -152,11 +156,11 @@
 				aria-label="Home"
 				onclick={() => machine.framer.loadFrame('explorer', collection)}
 			>
-				<span class="icon-home"></span>
+				<Icon icon="ph:house" class="icon-home" />
 			</button>
 			{#each rfkEntries as rfk (rfk.collection)}
 				<button class="action-navigate" onclick={() => machine.framer.loadInDialog('fiche.update', rfk.collection)}>
-					<span class="icon-appscheme"></span>
+					<Icon icon={schemeIcon(rfk.collection)} class="icon-appscheme" />
 					{rfk.collection}
 				</button>
 			{/each}
@@ -171,7 +175,7 @@
 			<synthesis-pane-right>
 				<!-- <DataList {collection} where={{ id: { eq: Number(collectionId) } }} view="fk" /> -->
 				{#if record}
-					<DataListRfk {collection} recordId={collectionId} showTitle={true} />
+					<DataListRfk {collection} {collectionId} showTitle={true} />
 				{/if}
 			</synthesis-pane-right>
 		</synthesis-panes>
@@ -189,7 +193,7 @@
 			display: flex;
 			flex-direction: column;
 			height: 100%;
-			width: 240px;
+			width: var(--sidebar-width);
 			background: var(--color-surface-alt);
 		}
 
@@ -197,7 +201,7 @@
 			display: flex;
 			flex-direction: column;
 			gap: var(--gutter-xs);
-			padding: var(--pad-md);
+			padding: var(--pad-sm);
 		}
 
 		synthesis-sidebar-actions {
@@ -213,15 +217,17 @@
 			flex-direction: column;
 			flex: 1;
 			min-width: 0;
-			background: var(--color-surface);
+			background: var(--color-surface-raised);
 		}
 
 		synthesis-header {
 			display: flex;
 			align-items: center;
-			gap: var(--gutter-md);
-			padding: var(--pad-md);
-			border-bottom: var(--border-width) solid var(--color-border);
+			gap: var(--gutter-sm);
+			min-height: var(--header-height);
+			padding: var(--pad-xs) var(--pad-sm);
+			background: var(--color-surface-alt);
+			border-bottom: var(--border-width) solid var(--color-border-strong);
 		}
 
 		group-info {
@@ -234,8 +240,8 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			gap: var(--gutter-md);
-			padding: 0 var(--pad-md);
+			gap: var(--gutter-sm);
+			padding: 0 var(--pad-sm);
 			border-bottom: var(--border-width) solid var(--color-border);
 		}
 
@@ -247,7 +253,8 @@
 		synthesis-tabs {
 			display: flex;
 			gap: var(--gutter-xs);
-			padding: var(--pad-sm) var(--pad-md);
+			padding: var(--pad-xs) var(--pad-sm);
+			background: var(--color-surface-alt);
 			border-bottom: var(--border-width) solid var(--color-border);
 		}
 
@@ -264,7 +271,7 @@
 			min-width: 0;
 			border-right: var(--border-width) solid var(--color-border);
 			overflow: auto;
-			padding: var(--pad-md);
+			padding: var(--pad-sm);
 		}
 
 		synthesis-pane-right {
@@ -273,7 +280,7 @@
 			flex: 1;
 			min-width: 0;
 			overflow: auto;
-			padding: var(--pad-md);
+			padding: var(--pad-sm);
 		}
 
 		/* Atoms */
@@ -281,8 +288,8 @@
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
-			width: 32px;
-			height: 32px;
+			width: var(--control-height);
+			height: var(--control-height);
 			padding: 0;
 			border: none;
 			background: transparent;
@@ -303,7 +310,7 @@
 			gap: var(--gutter-xs);
 			padding: var(--pad-xs) var(--pad-sm);
 			border: var(--border-width) solid var(--color-border);
-			border-radius: var(--radius-md);
+			border-radius: var(--radius-sm);
 			background: var(--color-surface-raised);
 			cursor: pointer;
 			color: var(--color-text);
@@ -326,11 +333,11 @@
 			color: var(--color-text);
 		}
 
-		.icon-appscheme,
-		.icon-home {
-			display: inline-block;
-			width: 16px;
-			height: 16px;
+		:global(.icon-appscheme),
+		:global(.icon-home) {
+			flex-shrink: 0;
+			font-size: var(--icon-size-sm);
+			color: var(--color-text-muted);
 		}
 
 		.record-title {
@@ -357,7 +364,7 @@
 			align-items: center;
 			padding: var(--pad-xs) var(--pad-sm);
 			border: none;
-			border-bottom: 2px solid transparent;
+			border-bottom: var(--focus-ring-width) solid transparent;
 			background: transparent;
 			cursor: pointer;
 			color: var(--color-text-muted);
@@ -371,25 +378,6 @@
 
 		.tab-item:hover {
 			color: var(--color-text);
-		}
-
-		.empty-state {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			gap: var(--gutter-sm);
-			padding: var(--pad-xl);
-			color: var(--color-text-muted);
-		}
-
-		.empty-state-icon {
-			font-size: var(--text-3xl);
-		}
-
-		.empty-state-title {
-			font-size: var(--text-lg);
-			font-weight: var(--font-medium);
 		}
 	}
 </style>

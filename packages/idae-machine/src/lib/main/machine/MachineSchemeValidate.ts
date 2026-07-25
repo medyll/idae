@@ -62,7 +62,7 @@ export class MachineSchemeValidate {
 		formData?: Record<string, unknown>
 	): Promise<{ isValid: boolean; error?: string }> {
 		try {
-			const fieldInfo = this.machineDb.collection(this.collection).field(fieldName).parse();
+			const fieldInfo = this.machineDb.collection(this.collection)!.field(fieldName).parse();
 
 			if (!fieldInfo) {
 				return {
@@ -207,7 +207,7 @@ export class MachineSchemeValidate {
 		const invalidFields: string[] = [];
 		let isValid = true;
 
-		const fields = this.machineDb.collection(this.collection).fields;
+		const fields = this.machineDb.collection(this.collection)!.fields;
 		if (!fields) {
 			return {
 				isValid:       false,
@@ -234,7 +234,7 @@ export class MachineSchemeValidate {
 
 		// FK relations declared `required: true` in the `fks` block — checked
 		// separately from `fields` since FK refs aren't scalar form fields.
-		const scheme = this.machineDb.collection(this.collection);
+		const scheme = this.machineDb.collection(this.collection)!;
 		for (const [relationKey, fkDef] of Object.entries(scheme.fks)) {
 			if (!fkDef.required) continue;
 			if (options.ignoreFields && options.ignoreFields.includes(relationKey)) continue;

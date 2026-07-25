@@ -69,6 +69,10 @@ export type { MultiDbConfig, DbInfo } from './lib/multiDb/index.js';
 export { exportDatabase, downloadExport, importDatabase } from './lib/importExport/index.js';
 export type { ExportData, ImportOptions, ImportResult } from './lib/importExport/index.js';
 
+// Foreign Key Fold
+export { foldFk } from './lib/fk/foldFk.js';
+export type { FkDef, FkResolver, FkFoldError, FkFoldResult } from './lib/fk/foldFk.js';
+
 // Query Operators
 export { SUPPORTED_OPERATORS } from './lib/operators.js';
 export type { OperatorType, Operator, Where, SupportedOperator } from './lib/operators.js';
