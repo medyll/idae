@@ -71,35 +71,6 @@ Set `GITHUB_TOKEN` in your environment with a token that has `repo` permissions 
 export GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 ```
 
-## CI Integration
-
-The CLI detects CI environments automatically. When `GITHUB_ACTIONS` is set, it uses token-based HTTPS remotes instead of SSH.
-
-The recommended approach is to add a job to an existing workflow (release, publish, or push on main):
-
-```yaml
-# .github/workflows/release.yml
-name: Release
-
-on:
-  push:
-    branches: [main]
-  workflow_dispatch: # allows manual trigger
-
-jobs:
-  publish:
-    # ... your existing publish job
-
-  showcase:
-    needs: publish
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: npx @medyll/monorepo-vitrine --suffix
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
 ## How it works
 
 Repository names are derived from the package name (scope removed). For example, `@medyll/idae-socket` becomes `idae-socket`, or `idae-socket-showcase` with `--suffix`.
