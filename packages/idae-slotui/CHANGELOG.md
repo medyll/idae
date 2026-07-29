@@ -1,5 +1,324 @@
 # Changelog
 
+## [0.181.5] - 2026-07-29
+**Features:**
+- add Playwright screenshot scripts and stubs for server-only packages
+- add add-skill CLI entry point for @medyll packages
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- refactor data handling and introduce CollectionList component
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- update openWindow function to use WindowProps and remove unused OpenWindow type
+- implement window styles and remove outdated PRD document
+- enhance DataForm component with detailed documentation and clean up unused code
+- add CLAUDE.md for developer guidance and commands
+- add README.md for BMAD commands and enhance existing README with usage examples
+- enhance registry generation script with CLI options and update documentation
+- update registry generation scripts and add tests for consistency
+- add CLI enhancements and registry generation scripts
+- integrate shadcn-svelte standards and add example components for registry
+- add BMAD command helpers and update component styles for consistency
+- add quick validation script for skills and enhance COMPONENT_MAP.md
+- Update styles to include Tailwind CSS reference and create types files
+- enhance migration documentation and tracking for Svelte 5 and Tailwind CSS
+- add Explorer and Header components with initial implementation
+- add component map and snippet components hardening instructions
+- standardize snippet component structure and add type exports
+- refactor component exports to improve structure and modularity
+- update package dependencies and clean up unused imports
+- refactor button components and add PopperContent snippet for improved modularity
+- Refactor button components and introduce snippet migration
+- Migrate SCSS to CSS and implement strict snippet migration instructions
+- update copilot instructions with new features and contributing guidelines; remove AGENTS.md
+- document SCSS to CSS migration progress and update component references in migration files
+- add and refactor CSS styles for various components; update imports and structure for consistency
+- clean up mcp.json by removing unused server configurations; update pnpm-lock.yaml to remove obsolete unocss packages
+- refactor component exports and enhance index generation; update package.json and scripts for improved structure
+- migrate CLI from CommonJS to ESM; update package.json to reflect new script location; add utility functions for class name management and type definitions
+- add new components and restructure exports
+- enhance documentation and automate component exports; migrate styles from SCSS to CSS for multiple components; update configurations for improved module resolution and Tailwind CSS integration
+- remove SCSS support and migrate to Tailwind CSS; update configuration and documentation
+- migrate styles from SCSS to CSS for multiple components
+- migrate styles from SCSS to CSS across components and update documentation
+- update migration documentation and add components migration checklist
+- add CSS files for various components with custom properties for styling
+- add initial CSS files for various components with custom properties for styling
+- update migration documentation and theme variables for improved clarity and structure
+- enhance idae-idbql documentation with modular references and examples
+- update migration documentation with tracking table and Tailwind CSS v4 setup instructions
+- add dark mode strategies documentation and setup instructions for Tailwind v4
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- add CLI functionality for README retrieval and SKILL installation
+- remove outdated README.md for csss; eliminate unnecessary content and improve repository clarity
+- initialize idae-csss library with basic structure and configurations
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
+- Add validation and verification scripts for AGENTS.md structure and content
+- update Copilot instructions and enhance Chipper component with new props
+- add documentation guidelines for Svelte components in SKILL.md
+- enhance component documentation and props typing across multiple files
+- add props interfaces for multiple components to enhance type safety and documentation
+- Refactor components to use module scripts and improve type definitions
+- update SCSS imports to use global styles across multiple Svelte components
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- update package.json scripts and dependencies
+- migrate all SCSS mixins and component styles to Tailwind plugins, ensure per-component CSS, attribute selectors, and custom properties. Remove legacy slotui-mixins.css. BREAKING CHANGE: all styling now uses Tailwind plugin utilities.
+- update auto exports in multiple index files to include new components and services
+- migrate components from _work to /lib and adapt to Svelte 5
+- update package dependencies to use 'next' version for consistency across packages
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+- add comprehensive GitHub Copilot instructions for the idae-slotui-svelte package
+
+**Bug Fixes:**
+- add ignoreDeprecations option to tsconfig for better compatibility
+- update compliance report for DemoPage and Looper components
+- add DemoPage wrapper for compatibility
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- restore export for fakeHttpPost from fakeZone in index.ts
+- update repository URLs in package.json files to use git+ protocol
+- remove unnecessary closing script tag in Login.svelte
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- reorder exports in index.ts to include config.js
+- update devDependencies to use workspace references for idae-be and idae-engine
+- update version and dependencies in package.json
+- update loop function signature to include type annotation and handle null data gracefully
+- update data binding in Looper component and ensure proper grouping of sorted data
+- update version to 0.181.1 in package.json
+- update package versions to latest in package.json and pnpm-lock.yaml
+- add postcss dependency for improved CSS processing
+- update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- remove .npmrc file from idae-slotui package
+- update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json
+- downgrade @medyll/cssfabric dependency from 0.2.1-beta.9 to 0.2.1-beta.7 in package.json
+- update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json
+- update @medyll/cssfabric dependency to version 0.2.1-beta.9 in package.json and pnpm-lock.yaml
+- update .gitignore to include specific SvelteKit generated files
+- packaging and workspace deps
+
+**Documentation:**
+- update Copilot instructions and migration documentation for clarity and completeness
+- update SKILL.md for git-commit-monorepo skill
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+- remove unused CSS and SCSS files, streamline Window component styles
+- update sprint status and planning phases in YAML files
+- update variable names for consistency and clarity across components
+- remove unused demo value exports and clean up code
+- remove unused demo value exports from various components
+- remove unused components and exports from the idae-slotui library
+- remove unused types and interfaces from types.ts
+- migrate props to component module scripts and update demo values
+- migrate component props to module scripts and update documentation
+- enhance compliance report generation with detailed checks for Svelte components
+- update padding classes from 'pad-*' to 'p-*' across multiple components for consistency
+- update Svelte components to use TypeScript props
+- simplify external error logic and enhance console output in COMPONENT_MAP.md generation
+- remove unused alert snippet components
+- update demo imports and restructure component exports
+- component props and types across multiple files
+- remove unused import of AlertProps in Alert.svelte
+- remove processor and watcher classes, update CLI for README retrieval
+
+**Chores:**
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- ensure repository/scope/author/publishConfig in package.json (verified)
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- add initial changelog for shared package with recent updates and fixes
+- update dependencies and remove lerna
+- update svelte-check to version 4.3.6 and add dependencies
+- release v0.0.2
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add SKILL.md for multi-role agent and Svelte code writer tools; remove unused alias from svelte.config.js
+- migrate styles from Tailwind CSS to SCSS for multiple components
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- remove outdated changesets for idae-socket and idae-shared
+- Ensure package is marked as private in package.json
+- update Prettier configuration and dependencies for improved formatting
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- indexes
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- Remove unused CSS files for switch, tabs, taskbar, textfield, title bar, toggle bar, toolbar, tree, and window components to streamline the codebase and improve maintainability.
+- Refactor code structure for improved readability and maintainability
+- Add new skills and update existing components
+- Refactor styles and add demo values across components
+- Refactor UI components to integrate Tailwind CSS
+- Refactor styles in Svelte components to use PostCSS
+- Refactor layout and styling across components for improved consistency
+- Refactor exports in component index files to use named exports with aliases
+- Refactor component annotations and add new snippets
+- Refactor slotuiCatalog and slotuiDemoCatalog to remove unused components and streamline exports; add new popper.css file; update Svelte configuration for improved module resolution and preprocess support; remove outdated test files; enhance Vite configuration with Tailwind CSS integration and aliasing for easier imports.
+- Refactor exports in index.ts for improved organization and clarity
+- Refactor code structure for improved readability and maintainability
+- Reorder exports in index.ts for consistency and clarity
+- Refactor exports in idae-socket and update package.json for idae-stator
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor CSS for window and panel components; consolidate styles and remove unused code
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- restore: revert idae-slotui to pre-tailwind state (a8c463c6) for full SCSS/cssFabric support
+- Refactor code structure for improved readability and maintainability
+- Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor styles to use Tailwind CSS across components
+- Apply changeset versions
+- Refactor:  code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-07** - chore: update svelte-check to version 4.3.6 and add dependencies
 - **2026-02-07** - feat: add CLI functionality for README retrieval and SKILL installation

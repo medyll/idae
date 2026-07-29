@@ -1,6 +1,6 @@
 {
   "name": "@medyll/idae-sync",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Sync scaffolding for Idae (Outbox store, SyncAdapter, deliverers)",
   "type": "module",
   "main": "./dist/index.js",

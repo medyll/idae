@@ -1,6 +1,6 @@
 {
   "name": "@medyll/qoolie",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Client database IndexedDB the easy way, add server sync",
   "type": "module",
   "main": "./dist/index.js",

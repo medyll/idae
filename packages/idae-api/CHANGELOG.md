@@ -1,5 +1,210 @@
 # Changelog
 
+## [0.187.3] - 2026-07-29
+**Features:**
+- refactor database handling to remove legacy defaults and enforce tenant-scoped database resolution
+- add client and server entry points to package exports, remove unused stubs
+- add HTTP streaming support (SSE/ndjson/text)
+- update ExplorerTableInline to use $derived for store items
+- add mode switcher to DataList and remove redundant styles from Explorer
+- Enhance idae-machine and idae-api with new features and improvements
+- enhance validation schemas and conflict resolution logic
+- add add-skill CLI entry point for @medyll packages
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- enhance DataForm component with detailed documentation and clean up unused code
+- add quick validation script for skills and enhance COMPONENT_MAP.md
+- add default REST API routes documentation to README
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- add Vite configuration for testing and coverage setup
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- add HttpError class for standardized HTTP error handling
+- add documentation section for component documentation in SKILL.md
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- implémente toutes les méthodes CRUD et transaction pour PostgreSQLAdapter
+- implement create() for PouchDBAdapter (insert doc)
+- implement create() for SQLiteAdapter (insert row)
+- implement create() for PostgreSQLAdapter (insert row)
+- implement connect() for PouchDBAdapter using pouchdb
+- implement connect() for SQLiteAdapter using sqlite3
+- implement connect() for PostgreSQLAdapter using pg
+- add skeletons and registration for PostgreSQL, SQLite, PouchDB adapters; extend DbType enum
+- add MCP integration documentation and usage examples
+- enhance documentation for database adapter implementation and add git commit skill
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- update auto exports in multiple index files to include new components and services
+- add debug step for pnpm version verification in workflow files
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+- Add API documentation generation and update middleware
+- integration
+- scaffold MCP middleware placeholder for future integration
+- strict multi-tenancy with tenant context injection and enforcement
+- add RBAC/ABAC middleware and per-route authorization support
+- expose Swagger UI and Redoc at /docs and /redoc
+- add OpenAPI /openapi.json endpoint (auto-generation ready)
+- db guardrails, health endpoints, validation layer skeleton
+- add zod validation middleware to all routes
+- lock query route and errors
+- add security middleware
+- enhance database middleware and testing configurations
+- remove 'reboot' option from onInUse settings and update related documentation
+
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- restore export for fakeHttpPost from fakeZone in index.ts
+- update repository URLs in package.json files to use git+ protocol
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- reorder exports in index.ts to include config.js
+- update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- replace corepack setup with direct pnpm installation in workflow files
+- packaging and workspace deps
+- fix auth init order
+- done sme things
+
+**Documentation:**
+- remove emojis from package READMEs
+- update SKILL.md for git-commit-monorepo skill
+- add MCP troubleshooting note to agent guide
+- document MCP config flag usage, middleware order, and code example
+- add MCP integration section with config flag and best practices
+
+**Refactoring:**
+- reorganize route registration in MachineServer
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+- update import paths for MakeLibIndex in package-pre.js scripts
+- code structure for improved readability and maintainability
+- remove multiAdapters and registerAdapters files for cleaner architecture
+- remove TEST_IMPLEMENTATION_SUMMARY.md as part of test suite cleanup
+- remove processor and watcher classes, update CLI for README retrieval
+- update IdaeApiClient and related classes for improved request handling and configuration
+
+**Chores:**
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- remove unused configuration and agent documentation files
+- publish packages
+- add initial changelog for shared package with recent updates and fixes
+- release v0.0.2
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- Refactor code structure for improved readability and maintainability
+- Refactor exports in index.ts for improved organization and clarity
+- Refactor code structure for improved readability and maintainability
+- Reorder exports in index.ts for consistency and clarity
+- Refactor code structure for improved readability and maintainability
+- revert: suppression des adapters custom, nettoyage pour migration sur idae-db
+- Refactor code structure for improved readability and maintainability
+- Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Enhance middleware and documentation: add comprehensive middleware system, improve error handling, and update validation logic; include tests for database, health, and tenant context middleware.
+- Add comprehensive tests for auth and database middleware
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-08** - feat: add Vite configuration for testing and coverage setup
 - **2026-02-03** - feat: add HttpError class for standardized HTTP error handling

@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.1.1] - 2026-07-29
+**Features:**
+- add Playwright screenshot scripts and stubs for server-only packages
+- add add-skill CLI entry point for @medyll packages
+- add 'add-skill' command to multiple packages and enhance skill management
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- Update README and status files for improved clarity and documentation
+- Add implementation status and release artifacts for v0.1.0
+- complete Sprint 04 with cache integration and generics
+- add in-memory SWR cache engine and related utilities
+- implement HTTP data-fetching for routes
+- update PRD for idae-router to version 2.0.0; enhance title and add supersedes information
+- update status and progress in status.yaml; enhance demo.html with new features and styling
+- update dashboard and status files for Sprint 03 planning and progress tracking
+- enhance router functionality with recursive route matching and outlet handling
+- add support for nested routes with parent-child rendering and update demo files
+- implement nested route handling with parent-child mounting and cleanup logic
+- implement core router functionality with path matching, context handling, and lifecycle hooks
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+
+**Chores:**
+- simplify package scripts and remove unused test runners
+- update test script to run unit and coverage tests together
+- update test scripts and configurations for consistency across packages
+- update package.json to set idae-mono-expand-vitrine as public and modify test script for idae-router
+- add esbuild to onlyBuiltDependencies in pnpm-workspace.yaml
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+
+
+
 All notable changes to `@medyll/idae-router` are documented here.
 
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).

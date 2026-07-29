@@ -1,5 +1,191 @@
 # Changelog
 
+## [0.51.3] - 2026-07-29
+**Features:**
+- add Playwright screenshot scripts and stubs for server-only packages
+- add Svelte export to package.json for improved module compatibility
+- add add-skill CLI entry point for @medyll packages
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add audit report and update status with next actions
+- Refactor Stator module and implement batch and subscribe functionalities
+- extract types to src/lib/stator/types.ts; update Stator.ts; add tech-spec draft; update bmad status
+- add context-mode hooks for vscode-copilot integration
+- add quick validation script for skills and enhance COMPONENT_MAP.md
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- update CLI file extension and repository URL format in package.json
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- update onchange callback to provide old and new values for improved state change tracking
+- update event handling to use 'stator:change' for improved clarity and consistency
+- add comprehensive edge case tests for stator state management
+- add comprehensive tests for array operations and reactivity in Stator
+- Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- enhance Stator with EventTarget compatibility and improve onchange handling
+- implement deep reactivity in stator with enhanced proxy handling and initialization
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+- enhance package.json and add README for Stator library demo
+- updated ci
+- Add package-pre script for pre-processing packages
+
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- update repository URLs in package.json files to use git+ protocol
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- correct increment logic for monobjSte in setInterval
+- documentation du format de commit monorepo et extraction du nom du package
+- packaging and workspace deps
+- update state structure from 'stator' to 'value' for consistency in Stator implementation
+- mettre à jour les dépendances vers les dernières versions
+- dependencies
+
+**Documentation:**
+- remove emojis from package READMEs
+- translate and update improvement section to 'Future developments' in copilot-instructions.md
+- update copilot instructions for clarity and structure
+- update SKILL.md for git-commit-monorepo skill
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+- update import paths for MakeLibIndex in package-pre.js scripts
+- remove processor and watcher classes, update CLI for README retrieval
+- main config changes
+- remove svelte 5 support
+
+**Chores:**
+- publish packages
+- publish packages
+- remove duplicate "types" entry in package.json
+- move CLI libs to devDependencies\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- publish packages
+- ensure repository/scope/author/publishConfig in package.json (verified)
+- add initial changelog for shared package with recent updates and fixes
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- remove outdated changesets for idae-socket and idae-shared
+- Remove duplicate prepackage script and clean up package.json metadata
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- version package
+- versioning
+- versions updates
+- Update import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be
+- Update npm dependencies and add Svelte v5.0.0-next.218
+- chore
+- update npm dependencies
+- Update npm dependencies and import paths
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- Update package.json files to include scope for @medyll packages
+- version packages
+- deps
+- prettier is now global
+- packaging
+- renammed packages
+- peerDeps
+- svelte version set to next
+- added operators
+- versions
+- chore
+
+**CI/CD:**
+- Update auto exports of entry components in multiple packages
+- Update auto exports of entry components in multiple packages
+- Update npm dependencies and reexport entry components
+- Remove unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket
+- updated prettier config
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- chore
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- Refactor code structure for improved readability and maintainability
+- Refactor exports in idae-socket and update package.json for idae-stator
+- Refactor code structure for improved readability and maintainability
+- commit
+- Refactor code structure for improved readability and maintainability
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Version Packages
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-07** - feat: update CLI file extension and repository URL format in package.json
 - **2026-02-03** - feat: update onchange callback to provide old and new values for improved state change tracking

@@ -1,5 +1,164 @@
 # Changelog
 
+## [0.186.3] - 2026-07-29
+**Features:**
+- add Playwright screenshot scripts and stubs for server-only packages
+- add add-skill CLI entry point for @medyll packages
+- add 'add-skill' command to multiple packages and enhance skill management
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- update package.json for idae-html and idae-query with new build scripts and exports
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- update CLI file extension and repository URL format in package.json
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- Enhance README with new features and methods; remove outdated CLI script
+- Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- Add Svelte code writer skill and enhance package exports; update README generation script
+- update auto exports in multiple index files to include new components and services
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+
+**Bug Fixes:**
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- update repository URLs in package.json files to use git+ protocol
+- normalize operator keys in filters for consistency
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- reorder exports in index.ts to include config.js
+- update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- packaging and workspace deps
+- correct function name from getResultset to getResultSet in README and tests
+- correct function name from getResultset to getResultSet and deprecate old function
+
+**Documentation:**
+- remove emojis from package READMEs
+- clarify entry point and usage of ResultSet in README
+- update SKILL.md for git-commit-monorepo skill
+- expand README with advanced usage examples for query operators
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+- update CLI path and add new CLI file
+- update import paths for MakeLibIndex in package-pre.js scripts
+- remove processor and watcher classes, update CLI for README retrieval
+
+**Chores:**
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- ensure repository/scope/author/publishConfig in package.json (verified)
+- publish packages
+- add initial changelog for shared package with recent updates and fixes
+- release v0.0.2
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- update package versions and enhance test coverage for query and operators
+- indexes
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- Refactor exports in index.ts for improved organization and clarity
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-03** - docs: clarify entry point and usage of ResultSet in README
 - **2026-02-03** - refactor: update CLI path and add new CLI file

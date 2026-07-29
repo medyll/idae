@@ -6,7 +6,7 @@
   },
   "scope": "medyll",
   "author": "Lebrun Meddy",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "keep your app in sync with your backend!!",
   "main": "./src/lib/index.ts",
   "type": "module",

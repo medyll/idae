@@ -1,5 +1,210 @@
 # Changelog
 
+## [0.185.3] - 2026-07-29
+**Features:**
+- add Playwright screenshot scripts and stubs for server-only packages
+- add base property to collections and implement getBaseModules method in MachineDb
+- add card and explorer components for CRUD operations
+- add add-skill CLI entry point for @medyll packages
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- implement IndexedDB Outbox store and ensure __outbox__ schema
+- add silent/tx options to write methods and emit silent flag in events
+- emit replayable whereClause, respect silent events in adapters
+- add registerAdapters wrapper and event payload silent/source
+- Add status snapshots and update status.yaml for project progress tracking
+- Add architecture, tech spec, and sprint documentation for @medyll/idae-idbql
+- Add initial project artifacts including audit baseline, PRD, product brief, and configuration files
+- clean up mcp.json by removing unused server configurations; update pnpm-lock.yaml to remove obsolete unocss packages
+- enhance idae-idbql documentation with modular references and examples
+- add skill to retrieve idae-idbql README documentation via CLI
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- enhance Stator adapter with updateWhere logic and add additional tests
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
+- implement count() method for document counting in CollectionCore and CollectionState
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- add skills to retrieve README.md for multiple packages via CLI
+- add CLI scripts to retrieve README.md for multiple packages
+- update auto exports in multiple index files to include new components and services
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+- refactor demo page to manage clients and notes; update data structures and UI
+- add Svelte 5 agent documentation and refactor demo page for chat functionality
+- implement demo page with user and message management; update example types
+- enhance Svelte 5 reactivity documentation and add tests for user state updates
+- add initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities
+- Add GitHub Copilot instructions and project guide for @medyll/idae-idbql
+- enhance README generation with blacklist filtering for repositories
+
+**Bug Fixes:**
+- S1-02 multi-store reactivity + batch operations
+- S1-01 transaction deadlocks + stress tests
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- lazy-init idbqlEvent to avoid  crash in non-Svelte environments
+- restore export for fakeHttpPost from fakeZone in index.ts
+- update createIdbqlState to createDb in project guide
+- update repository URLs in package.json files to use git+ protocol
+- update event handling to use local state array instead of stator
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- reorder exports in index.ts to include config.js
+- update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- add default export to package.json for better module compatibility
+- packaging and workspace deps
+- update delete event data structure in CollectionCore
+- update demo page to improve database handling and reactivity
+- correct form event handling in demo page
+
+**Documentation:**
+- remove emojis from package READMEs
+- improve JSDoc coverage to 75-80% across core modules
+- clarify Stator compatibility section and enhance description
+- enhance description and update features for clarity
+- add Stator compatibility section with usage examples
+- update SKILL.md for git-commit-monorepo skill
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+- rename createIdbqDb to createDb and update deprecation notices
+- update import paths for MakeLibIndex in package-pre.js scripts
+- update package dependencies and remove obsolete files
+- remove processor and watcher classes, update CLI for README retrieval
+- Clean up code formatting and improve readability in idbstate and machine modules
+- improve CombineElements type definition and add typing for createIdbqDb
+
+**Tests:**
+- S1-03 comprehensive CRUD unit tests (74 tests total)
+
+**Chores:**
+- publish packages
+- update VSCode settings and improve accordion component styles; add skill creation guide
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- ensure repository/scope/author/publishConfig in package.json (verified)
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- add initial changelog for shared package with recent updates and fixes
+- release v0.0.2
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- update package versions and enhance test coverage for query and operators
+- indexes
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- Add product brief for Idae Monorepo and remove outdated agent and skill documentation
+- Refactor UI components to integrate Tailwind CSS
+- Refactor exports in index.ts for improved organization and clarity
+- Refactor code structure for improved readability and maintainability
+- Reorder exports in index.ts for consistency and clarity
+- Refactor code structure for improved readability and maintainability
+- Refactor exports in idae-socket and update package.json for idae-stator
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor and enhance database schema handling
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-03** - feat: Update documentation and remove outdated skills for idae packages; add GitHub Copilot instructions for new packages
 - **2026-02-02** - feat: implement count() method for document counting in CollectionCore and CollectionState

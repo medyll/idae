@@ -4,7 +4,7 @@
     "idae-db": "./cli.js",
     "add-skill": "./dist/cli/add-skill.js"
   },
-  "version": "0.155.2",
+  "version": "0.155.3",
   "author": "Lebrun Meddy",
   "repository": {
     "type": "git",

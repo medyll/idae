@@ -4,7 +4,7 @@
     "idae-stator": "./cli.cjs",
     "add-skill": "./dist/cli/add-skill.js"
   },
-  "version": "0.51.2",
+  "version": "0.51.3",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/medyll/idae.git"

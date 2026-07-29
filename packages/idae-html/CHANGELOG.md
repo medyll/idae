@@ -1,5 +1,210 @@
 # Changelog
 
+## [1.0.3] - 2026-07-29
+**Features:**
+- remove add-skill CLI entry from @medyll/idae-html package.json
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- implement desktop layout and update test page structure with improved slot handling
+- enhance README and SPECS documentation with slot normalization details and compatibility wrappers
+- add compatibility wrappers for server entry points and enhance slot processing utilities
+- add utility classes and responsive grid column aliases for improved layout handling
+- update dev script to run server instead of vite
+- implement server-side slot processing utilities and caching
+- add CSS module declarations and update index.html for improved data handling in test script
+- enhance server script execution and props handling with componentDataMap and pageUuid
+- enhance comments for clarity in index.html script sections
+- update props initialization and enhance comments for clarity
+- add props function call to initialize data in test script
+- add destructured exports for improved variable management in test script
+- update server-side slot handling and improve documentation
+- add integration tests for server-slots and processHtmlOnce functionality
+- enhance server-side slot processing with debug logging and improve test structure
+- enhance server-side slot processing and add unit tests for slot utilities
+- implement slot support in card component and add minimal reset CSS
+- add serverSlotsEnabled function to check for pre-rendered slots
+- add client detection for server-side slots and implement integration tests
+- add server-side slots documentation and enhance caching with Redis support
+- enhance server-side slot processing with caching support and HTML rendering optimizations
+- add server-side slot processing utilities and integrate with core rendering logic
+- implement server-side slots feature with HTML content handling and size limits
+- add selfsigned package for certificate generation; enhance HTML processing and styling; update index.html and pnpm-lock.yaml
+- add caching support with Redis and memory options; enhance HTML processing and server configuration
+- update README.md logging messages, refine package script, and enhance app.html structure; remove unused Svelte page and add new index.html
+- reorganize theme.css for improved structure and readability; consolidate variable declarations and enhance dark theme support
+- add layout and utility helpers for flexbox, scrolling, positioning, and grid systems
+- update package.json and pnpm-lock.yaml to include additional workspace dependencies; enhance app.html and vite.config.ts for improved functionality
+- remove svelte.config.js from idae-html package
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- update package.json for idae-html and idae-query with new build scripts and exports
+- enhance router functionality with recursive route matching and outlet handling
+- remove heading elements from multiple components and replace with div wrappers
+- add VSCode settings for Svelte file associations and formatting
+- add new UI components including Avatar, Badge, Box, Checkbox, DataTable, Drawer, Form, Grid, Icon, Image, Select, Skeleton, Spacer, Stack, and Textarea
+- implement per-instance cleanup for components and enhance resource loading logic
+- enhance dropdown component with Anchor Positioning API support and fallback positioning
+- update component styles to use CSS variables for improved theming and consistency
+- auto-load theme CSS for centralized styling in components
+- Refactor components and improve functionality
+- Refactor components to use new script structure and add metadata
+- add IndexedDB persistence helpers to core engine and update README with usage examples
+- add slot demonstration component and update README with slot usage details
+- enhance build scripts to include optional CSS from component HTML; update core engine to integrate idae-csss for styling
+- add verification script for AGENTS.md content
+- add core engine module with global app registry and update import paths
+- enhance idae-html package with new examples and build scripts
+- initialize idae-htmlu package with Svelte preprocess utility
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add new HTML components with dynamic behavior and resize observation
+- add content component and resize panel functionality
+- add keywords to package.json files for improved discoverability
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- Add comprehensive documentation for idae-html, including README and copilot instructions; remove outdated SKILL.md
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- update package dependencies to use 'next' version for consistency across packages
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+
+**Bug Fixes:**
+- add rootDir option to tsconfig.build.json for improved build configuration
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- adjust script placement for cssDom component registration
+- restore export for fakeHttpPost from fakeZone in index.ts
+- update repository URLs in package.json files to use git+ protocol
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- update version to 1.0.0 in package.json
+- update package versions in package.json and pnpm-lock.yaml
+- packaging and workspace deps
+
+**Documentation:**
+- update SKILL.md for git-commit-monorepo skill
+
+**Refactoring:**
+- update z-index values in theme.css, enhance DataList class normalization, and add tests for DataRecord and Dialog components
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+- comment out unused idbql imports and related variables in core-engine.ts
+- update CLI path and add new CLI file
+- update import paths for MakeLibIndex in package-pre.js scripts
+- remove processor and watcher classes, update CLI for README retrieval
+
+**Chores:**
+- remove test script command from package.json
+- update VSCode settings and improve accordion component styles; add skill creation guide
+- ensure repository/scope/author/publishConfig in package.json (verified)
+- publish packages
+- add initial changelog for shared package with recent updates and fixes
+- update svelte-check to version 4.3.6 and add dependencies
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- Refactor code structure for improved readability and maintainability
+- Refactor exports in index.ts for improved organization and clarity
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- ok
+- Refactor code structure for improved readability and maintainability
+- Refactor components to use data attributes for improved readability and maintainability; update core engine to support component registration and initialization; enhance toast, modal, tabs, progress, resizePanel, inputs, and example components with new structure and functionality; implement slot rendering utility for dynamic content insertion.
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-07** - chore: update svelte-check to version 4.3.6 and add dependencies
 - **2026-02-03** - feat: Add comprehensive documentation for idae-html, including README and copilot instructions; remove outdated SKILL.md

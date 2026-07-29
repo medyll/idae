@@ -1,5 +1,159 @@
 # Changelog
 
+## [0.0.5] - 2026-07-29
+**Features:**
+- Enhance idae-machine and idae-api with new features and improvements
+- Refactor imports and enhance type definitions across multiple components
+- add Playwright screenshot scripts and stubs for server-only packages
+- add add-skill CLI entry point for @medyll packages
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add context-mode hooks for vscode-copilot integration
+- update exports in idae-socket and add idae-query to pnpm-lock.yaml
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- add advanced integration tests for payload transformation and server setup
+- enhance README and type definitions, add advanced configuration options and payload mapping support
+- enhance testing setup with Vitest, add integration and unit tests for socket functionality
+- implement authentication strategies with JWT and introspection for secure WebSocket connections
+- replace body-parser with express built-in middleware for improved performance and simplicity
+- refactor imports and update main entry point in package.json for improved module structure
+- enhance idae-socket documentation with detailed agent instructions and usage examples
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- Add Svelte code writer skill and enhance package exports; update README generation script
+- update auto exports in multiple index files to include new components and services
+- update package.json files to set private flag and adjust dependencies to use 'next' version
+- update package dependencies to use workspace:* and add verification script for internal dependencies
+- update dependencies and improve exports in index.ts
+- ajouter des composants CRUD et types pour la gestion des collections
+- ajouter des fichiers de configuration et des composants de base pour le projet SvelteKit
+- Add server utils and routes exports
+- updated ci
+- Add package-pre script for pre-processing packages
+
+**Bug Fixes:**
+- let indexIfy skip hand-maintained barrels
+- enforce socket handshake authentication
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- restore export for fakeHttpPost from fakeZone in index.ts
+- update repository URLs in package.json files to use git+ protocol
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- reorder exports in index.ts to include config.js
+- packaging and workspace deps
+- mettre à jour les dépendances vers les dernières versions
+- css loading and breakpoints
+
+**Documentation:**
+- remove emojis from package READMEs
+- update SKILL.md for git-commit-monorepo skill
+
+**Refactoring:**
+- update package READMEs for clarity and consistency
+- remove unused types and interfaces from types.ts
+- update import paths for MakeLibIndex in package-pre.js scripts
+- remove processor and watcher classes, update CLI for README retrieval
+- main config changes
+
+**Chores:**
+- add server typecheck gate, dedup model types, hygiene
+- publish packages
+- update pnpm-lock.yaml to include @medyll/idae-socket and upgrade debug dependency to supports-color@8.1.1
+- publish packages
+- clear test script in package.json
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- add initial changelog for shared package with recent updates and fixes
+- update dependencies and remove lerna
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add author field to package.json files across multiple packages
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+- version package
+- versioning
+- versions updates
+- chore
+- package update
+- ajouter l'export de fakeHttpPost depuis le répertoire fakeZone
+- Update fakeHttpPost import in index.ts
+- Update dependencies and fix CSS loading and breakpoints
+- Update import paths in idae-stator, idae-engine, idae-socket, idae-data-tpl, idae-dom-events, idae-query, idae-mongo, idae-idbql, and idae-be
+- Update npm dependencies and add Svelte v5.0.0-next.218
+- Update npm dependencies and add new packages
+- chore
+- update npm dependencies
+- Update npm dependencies and import paths
+- Update npm dependencies and remove unused devDependencies
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- deps
+- prettier is now global
+- added type module du package
+- packaging
+- packaging repo
+- renammed packages
+- peerDeps
+- svelte version set to next
+- chore
+- update idae-socket
+- 1st integration in monorepo
+
+**CI/CD:**
+- reject write on unchanged index
+- Update auto exports of entry components in multiple packages
+- Update auto exports of entry components in multiple packages
+- Update npm dependencies and reexport entry components
+- Remove unused exports in idae-stator, idae-engine, idae-dom-events, idae-api, idae-query, idae-idbql, and idae-socket
+- updated prettier config
+- clean up obsolete tools and configurations
+- clean up obsolete tools and configurations
+- chore
+- socket client-server for idae
+
+**Other:**
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- Refactor code structure for improved readability and maintainability
+- Refactor exports in index.ts for improved organization and clarity
+- Reorder exports in index.ts for consistency and clarity
+- Refactor exports in idae-socket and update package.json for idae-stator
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor styles to use SCSS instead of Tailwind CSS in various components; remove unused global styles and add new theme variables for SlotUI.
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Version Packages
+
+
+
 ## [Unreleased] - 2026-02-08
 - **2026-02-03** - feat: add advanced integration tests for payload transformation and server setup
 - **2026-02-03** - feat: enhance README and type definitions, add advanced configuration options and payload mapping support

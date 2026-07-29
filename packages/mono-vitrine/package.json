@@ -1,6 +1,6 @@
 {
   "name": "@medyll/monorepo-vitrine",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Sync monorepo packages to individual GitHub showcase repositories",
   "private": false,
   "type": "module",

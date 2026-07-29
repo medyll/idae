@@ -1,5 +1,769 @@
 # Changelog
 
+## [0.136.1] - 2026-07-29
+**Features:**
+- add InfoLine and Tile components for improved UI structure
+- add dialog navigation options
+- enrich data workspace
+- period view frame reading appscheme.timespan; document icons+timespan
+- timespan qualifier — start/end temporal pair, published to appscheme
+- per-collection icons for all 19 org schemes
+- specific icons for engine/registry collections, mined from legacy
+- real per-scheme icons + fix broken icon pipeline (typcn→ph)
+- add accordion mode and update related props and snippets
+- update loadInDialog action and simplify DataRecord rendering
+- add launch configuration for development and refactor DataList and DataRecord components to use ViewTypeCode
+- replace DataListRelations with separate DataListFk and DataListRfk components for forward and reverse FK relations
+- group dock by appscheme_base
+- add navigation tracking setup for appuser_activity and appuser_history
+- implement menu manager creation and snapshot reading functionality
+- implement navigation tracking and label rendering separation
+- implement context menu setup and cleanup functionality
+- implement shared model-rebuild sequence for boot and onDrift paths
+- Enhance ButtonAction component with icon support and variants
+- load Explorer frame into right pane via framer
+- render icons with Iconify and add fallback for invalid icon values
+- two-pane MainMenu with max-width, close button and readable labels
+- add detailed logging for dialog and boot processes
+- implement role-based menu presets and visibility management
+- BL-25 — add 803 missing FieldList entries with real scanned types
+- BL-23 P0+P1 — ADR + optional field.type, P2 stopped after audit
+- Sprint 55 — BL-17 rights-gated contextual launch verbs
+- Sprint 54 — BL-22 RecordToolbar rename + ContextMenu inclusion
+- Sprint 53 — BL-18 settings gear + BL-24 useRecordData
+- S51-02 Today dashboard (BL-16) + Sprint 52 RecentPanel (BL-19) + WaffleMenu (BL-15)
+- S51-01 BL-14 sidebar tree (MenuTree.svelte) + fix useMenuTree reactivity bug
+- S50-01 menu generator (BL-13) — IdaeMenuStore/IdaeMenuManager, useMenuTree hook, menuPrefs utilities, renamed from main/menu to idae/menu per NAMESPACE.md. S50-02 groupBy across all DataList modes (table/grid/list). Full suite 739/739, 0 errors.
+- S50-02 groupBy for table and grid modes + tests
+- enhance DataList and DataRecord components with CRUD mode support
+- S49-02 add menuPrefs module with zone scope mapping and defaults
+- S48-01 route DataForm and RbacMatrix writes through machine.action
+- S48-02 add MachineRights.allowedCollections(op)
+- update next_action and add RBAC-VIA-DATALIST epic backlog
+- add initial analysis and porting plan for idae-machine
+- wire global context menu through framer
+- Add rationalization backlog for model-core and implement various tests
+- add script to check core model fkRelations and count collections
+- implement multi-mode storage adapters for Qoolie architecture
+- Add comprehensive architecture documentation for Qoolie multi-mode implementation
+- project FK kind onto useViewFields field list
+- Add detailed documentation for FK handling, including automatic creation and rendering in views
+- Add initial documentation for legacy idae functionality and module architecture
+- Add comprehensive documentation for layout datagram, positioning, unmultiple rationale, and view system
+- enhance clearCollections to drop collections based on model definition and add tests for FK view logic
+- add investigation and test scripts for FK field rendering fix
+- enhance logging in publishModel and display collection info in Fiche and Synthesis components
+- add documentation for IndexedDB architecture and layer interactions
+- add idae model core and index for seed-time field catalog
+- add comprehensive UNHACK backlog for quick-win eliminations and workaround documentation
+- implement org-authoritative data routing for database resolution in idae-api
+- update dependencies and refactor streamIntoRecord to use IdaeApiClient
+- add client and server entry points to package exports, remove unused stubs
+- add FABLE_2.md for second audit and project status post-chantiers
+- update DataField and Fiche components to enhance data rendering and adjust icon type
+- add ai.chat-session component to registry and update tests
+- render HITL confirm/cancel for pending ai_tool_call
+- cancel flow for HITL tool calls (resume without executing)
+- confirm route runs callTool for pending HITL tool, resumes loop
+- AgentRouter persists pending ai_tool_call on tool_pending, ends SSE
+- AgentLoop suspends on HITL tool_calls (tool_pending event)
+- NormalizedTool.hitl + buildTools resolves ai_tool.hitl, write tool subset
+- add AI chat functionality with streaming support
+- M5 — periphery tools (files, mail, health, db_stats) + generated tool reference
+- M4 — org tools + flag-gated schema mutation
+- M3 — admin tools (users, RBAC grants, audit trail)
+- M2 — enriched data tools (by-id CRUD, aggregate, distinct, FK introspection)
+- M1 — auth tools + long-lived API keys
+- implement required FK validation and update related documentation
+- update FABLE.md with user decisions on toolbars externalization and layout adjustments
+- add syncFieldList script + initial FieldList sync
+- update LAYOUT-DATAGRAM.md with detailed documentation on zones and diagram frame
+- add color and icon input components with corresponding field types
+- implement diagram graph functionality with buildGraph and Diagram component
+- add FK/RFK diagram report documentation
+- add 'latent' organization to the login component's organization list
+- refactor DataForm, DataList, and DataRecord components to use groupFieldBy for improved grouping functionality
+- rename groupBy to groupFieldBy in DataRecord and MachineScheme for clarity
+- add resolveFkIds function to fix foreign key references in publishModel
+- enhance MachineServer with per-request org context and improve image preset logging
+- implement per-request organization context for multi-tenant support
+- implement user menu in taskbar with logout functionality
+- add restaurant and school machine models
+- rename zone-main to zone-main-half for improved layout clarity
+- replace crypto UUID with generateFrameId for consistent frame ID generation
+- add master scheme and seed data for organization and model management
+- add latent and sive schemas for machine models
+- add column view mode (Columner) to ExplorerContent
+- Finder-style column navigation + link system cleanup
+- enforce per-table RBAC on subscribe
+- add scripts for MongoDB exploration and FK analysis
+- rename deployModel to publishModel and update related documentation
+- implement deployModel function for writing MachineModel to Mongo meta collections
+- refactor MongoDB seeding process and update CLI usage for dynamic org models
+- make keyPath optional in MachineCollectionModel and provide default value
+- enhance foreign key handling and add login functionality with modal support
+- implement foldFks function for foreign key resolution and enhance data seeding process
+- implement FK handling with suffixed keys and enhance presentation resolution
+- add browser-side WebMCP tool registration (phase 5)
+- add audit logging to all tool calls via AuditService
+- implement MCP server phase 1+2 with RBAC and tests
+- add seed commands to package.json and enhance CORS handling in MachineServer
+- update DataList and DataRecord components to support new grouping logic and disable toolbar by default
+- enhance input size options and improve layout styling for data fields
+- integrate @modelcontextprotocol/sdk and refactor engine model handling
+- implement MCP server and associated tools for collection and schema operations
+- refactor schema handling and introduce schema analysis tools
+- add MongoDB FK analysis and exploration scripts
+- Implement MCP integration with schema analysis and FK reference utilities
+- Add REDEPLOY.md for dynamic deployment strategy and outline Walker/Parser/Crawler solution
+- Standardize foreign key resolution to use 'code' index and integrate folding into effective model building
+- Add SCHEME_DRIFT document for reflection on schema evolution and type philosophy
+- Implement DataRecord mode="row" and refactor DataList for ADR-06 compliance
+- update Sprint 41 status and session history in status.yaml
+- add Sprint 41 test results and update status in status.yaml
+- add Sprint 41 planning document and update status with new action items
+- add PRODUCT.md for product documentation and brand guidelines
+- add comprehensive documentation for the View System, outlining structure, runtime chain, and future proposals
+- enhance CORS handling and improve DataRecord component
+- enhance Explorer and Synthesis components with new content loading and layout features
+- refactor data UI components and utilities for improved structure and functionality
+- add FK convention audit and fix plan documentation
+- add favorites functionality via appuser_prefs
+- Implement DataListFk and DataListRfk components for FK/RFK relation viewing
+- add support for 'loadInDialog' action in link parsing and update Explorer to use it
+- add audit report and update status with latest findings and actions
+- enhance Dialog component with dynamic title handling and improved frame management
+- add draggable dialog component with openDialog function for imperatively managing dialog state
+- add integration study for @medyll/idae-dom-events to simplify JavaScript in idae-machine using declarative HTML markup
+- enhance MachineAction to support lazy resolution of current user and collections, avoiding circular dependencies
+- consolidate user-scoped actions into a single dispatcher for preferences, history, and activity logging
+- implement user-scoped preferences and activity logging with MachinePrefs and MachineActivity
+- add DataFind, DataGroup, DataSort, and DataToolbar components for enhanced data manipulation
+- enhance DataForm with error handling and submission logic
+- add linkCollectionField for dynamic navigation and enhance navigate logic
+- add infinite scroll support and link navigation
+- add context-mode configuration, update data handling types, and remove obsolete tasks
+- add InputSize preset + machine.be test
+- expose @medyll/idae-be via machine.be getter
+- add audit report and update status files for Sprint 36 completion
+- update ExplorerTableInline to use $derived for store items
+- S35-01/02/04/05 HydrationController, revalidate, autoHydrate
+- S35-03 bulkUpsertSilent on IdbCollection
+- add comprehensive audit report with health score and action items
+- ADR-02 machine.store(name) wraps useQoolieCollection
+- implement boot process with error handling and loading state in layout component
+- implement mode switcher in DataListToolbar and refactor Explorer component
+- add mode switcher to DataList and refactor styles in Explorer
+- add sorting and grouping utility functions
+- enhance admin reset handler to seed business data and improve dev panel in layout
+- Add CollectionNav component and integrate it into TemplateShell; update related exports and properties
+- Implement Sprint 30 features including unified seeding and machine initialization; update related components and tests
+- Introduce TemplateShell layout component; deprecate AppShell and update related exports
+- Refactor IDB handling and schema management; introduce new utilities for schema loading and drift detection
+- S28 complete + root shell refactor
+- Add planning details for Sprint 26 and Sprint 27; update status.yaml with new goals and stories
+- Add Sprint 25 planning details and update next actions in status.yaml
+- Enhance idae-machine and idae-api with new features and improvements
+- Refactor data-ui components to support sorting and grouping; remove unused scheme components
+- Refactor imports and enhance type definitions across multiple components
+- remove signals.dataVersion + bumpDataVersion workaround
+- Enhance SchemeList component with filtering, grouping, and sorting capabilities
+- Integration tests — frameManager, loadFrame, Frame lifecycle, openFrames reactivity
+- TaskBar component — reactive open frames list with toggle/close
+- Wire machine.loadIn() via frameManager + Frame components in layout
+- Frame Svelte component — auto-register, mount module, show/hide/close
+- machine.loadFrame() delegates to frameManager with computed frameId
+- computeFrameId() deterministic ID from collection, collectionId, vars
+- MachineFrameManager singleton + FrameControls interface
+- create SchemeList + SchemeItem in data-ui/scheme/
+- extract DataFields, DataFk, DataRfk; Card* become wrappers
+- extract DataForm from CardForm, CardForm becomes wrapper
+- restore DataList as pure data provider in data-ui/data/
+- Update status and add Sprint 23 details including goals and stories
+- Implement placeholder outlet for router and streamline layout initialization
+- Update status reports for Sprint 22 completion and navigation layer implementation
+- PaneLeft activeCollection highlight, ExplorerList onclick → machine.loadIn()
+- layout outlets + data-target-zone, remove goto, delete dynamic routes
+- parseLoadInUrl() multi-target URL parser with query vars
+- machine.loadIn() + buildLoadInUrl() pure URL builder
+- componentRegistry singleton async with lazy loading
+- add Playwright screenshot scripts and stubs for server-only packages
+- add SCHEMA-CONVENTIONS.md for schema-driven feature guidelines
+- refactor type imports to use relative paths and add types for create/update props
+- implement multi-sort functionality and update default sort inference in MachineScheme
+- implement default sort per collection with template.sort and MachineScheme.defaultSort inference
+- initialSortBy prop on ExplorerTable
+- sortBy prop on ExplorerActions
+- groupBy prop on ExplorerList with groupItems utility
+- sortBy prop on ExplorerList with pure sortItems utility
+- update status.yaml to reflect Sprint 17 completion and test results
+- generic schema validation via appscheme MongoDB
+- implement SchemeValidator service for generic schema validation and integrate into create/update workflows
+- complete Sprint 16 with validation module and domain actions integration
+- Update BMAD status report and YAML configuration
+- implement soft delete, CRUD audit trail, and domain actions pattern
+- sortable headers in ExplorerTable
+- pagination in ExplorerList with page controls
+- Pane overlay — workspace navigation with 'gui' forbidden
+- MachineHistory service — aggregated projection of recent visits
+- MachineActivity service — insert-only event log
+- MachinePrefs service — key-value IDB offline-first
+- add _prefs, _activity, _history meta-collections to idae-model-core
+- register schemelink field type with formatter + validator
+- add demoScheme and demoSeed type definitions for machine model
+- implement audit logging for user actions and enhance permission checks
+- add AuthService and GrantService for user authentication and permission management
+- add collection.base, rights policy, semantic role flags + rename appuser_role → appuser_type
+- add comprehensive TypeScript definitions for schema-driven metadata collections
+- implement MachineServer class for managing machine app functionality
+- Refactor database connection management and update model types
+- Update tests and fix TypeScript errors across multiple files
+- Update idae-machine status report and progress to 90%
+- add base property to collections and implement getBaseModules method in MachineDb
+- implement foreign key label resolution and access control in Machine class
+- add card and explorer components for CRUD operations
+- enhance validation schemas and conflict resolution logic
+- add router accessor to Machine class
+- add CONCORDANCE.md for capability analysis and remove outdated gemini.md
+- polish and advanced features
+- integrate idae-router with navigation
+- configure conflict resolution strategies
+- server broadcast on CRUD operations
+- integrate qoolie for offline-first sync
+- build permission middleware (requireDroit)
+- implement CRUD endpoints with pagination
+- remove outdated status files and add multi-database manager
+- create MachineApi client class
+- build schema endpoints
+- set up idae-api server with MongoDB
+- add add-skill CLI entry point for @medyll packages
+- enhance slider functionality and improve touch event handling
+- add author information to README files and create collection context
+- apply code quality audit fixes including type improvements, duplicate exports removal, and JSDoc coverage
+- refactor data handling and introduce CollectionList component
+- Integrate demo-status analyzer into build pipeline
+- Implement mandatory routing rules for context-mode and update audit summary
+- Enhance release workflow and documentation
+- update package names and improve documentation for idae-slotui, idae-socket, idae-stator, and idae-sync
+- add audit report and update status with next actions
+- add CLAUDE.md for package guidance and sync outbox API design documents
+- add context-mode hooks for vscode-copilot integration
+- enhance DataForm component with detailed documentation and clean up unused code
+- add data management components including DataForm, DataEdit, DataList, and DataPicker
+- add Create and Update form components
+- add Playwright configuration for end-to-end testing
+- add advanced components tab with FieldInPlace, Skeleton, DataProvider
+- complete API documentation and usage examples
+- browser and framework compatibility verification complete
+- performance testing and optimization complete
+- final security audit and OWASP compliance review
+- integration testing suite with 30+ E2E test cases
+- complete form validation pipeline with custom/async/cross-field validators
+- Enhance validation logic to support async validators and improve error handling
+- Add initial project artifacts for @medyll/idae-machine
+- migrate sync-vitrine to package; add CLI, tests, and README; improve error logging and repo-name generation
+- add keywords to package.json files for improved discoverability
+- enhance app model declaration and schema types with additional fields for improved data representation
+- add Vite configuration for testing and coverage setup
+- add schema types and update tsconfig to exclude old directories
+- add alternative instance management methods to Machine class for enhanced flexibility
+- enhance Machine class with agent management and improve error handling in MachineScheme
+- add instance management to Machine class with registry and accessor methods
+- update @medyll/idae-config-prettier dependency to latest version across all packages
+- update README files with architecture diagrams for various packages and enhance global architecture in the generator script
+- update testing instructions to use pnpm and add AI agent guide
+- enhance copilot instructions with detailed architecture, workflows, and DSL references
+- add @medyll/idae-config-prettier package with initial configuration and update dependencies across the repository
+- update package dependencies to use @medyll/idae-shared and refactor import paths
+- update publishConfig in package.json files to include directory for public access
+- enhance Svelte components with new features and improved structure; add CollectionListFieldValues component and refactor existing components
+- add unit tests for CreateUpdate component and improve form validation
+- add CollectionFieldGuess and CrudZone components for enhanced UI functionality
+- add technical planner and README creator skills for enhanced project documentation
+- add skills to retrieve README.md for multiple packages via CLI
+- add bin entries for CLI scripts in multiple package.json files
+- add CLI scripts to retrieve README.md for multiple packages
+- Integrate default value factories for SchemeField and add unit tests
+- Implement default value factories and associated tests for SchemeField
+- Add CreateOnly component for collection creation and integrate CollectionList in the demo page
+- Implement field type validation and registration in MachineSchemeValidate
+- Add Copilot instructions and remove outdated AGENTS.md and data model files
+- Add MachineFieldType enum and class for field type management
+- Enhance schema management with new tests for MachineDb and MachineScheme integration
+- Implement MachineScheme and related classes for schema management and validation
+- add test scheme and refactor machine logic
+- introduce field types and enhance data model structure; update test schemas and imports
+- implement new UI components for collection management and enhance error handling with detailed documentation
+- add comprehensive instructions for Mydde AI Agent with role definitions and Kanban integration
+- enhance IDbCollections with new methods and improve collection handling; update dependencies and tests
+- refactor machine initialization and enhance IDbCollections with shared instances; update README and tests
+- remove obsolete components and services; clean up unused code
+- update README with detailed schema model, query examples, and performance tips; enhance robustness and testing coverage sections
+- implement Machine class with core functionality and testing; add vitest tasks for testing
+- enhance README with robustness and testing details; add test plan for Machine class; refactor dbFields and remove obsolete tests
+- add getForge method for parsing collection field names
+- add Svelte 5 coding policy and remove outdated tests; update import paths
+- migrate components from _work to /lib and adapt to Svelte 5
+- add initial project documentation, backlog, and sprint structure; implement unit tests for core functionalities
+- initialize CrudService, docs, unit test
+- initialize dataModel, dbSchema, docs, unit test
+- initialize dbFields, docs, unit test
+- initialize FieldValue, docs, unit test (jsdom)
+- initialize CreateUpdate, docs, unit test (jsdom)
+- initialize CollectionList, docs, unit test (jsdom)
+- initialisation CrudZone, doc étape, test unitaire jsdom
+- enhance database middleware and testing configurations
+- Add CRUD components and fragments for enhanced form handling
+
+**Bug Fixes:**
+- restore legacy input contrast
+- stabilize lists, menus, and login
+- narrow registerFrames param to registration surface; drop dead CSS
+- main-menu grouping, empty groups, reverse-FK resolution, pre-auth boot, dark/light theme
+- rename DataListFk/DataListRfk recordId prop to collectionId
+- kill FK-multiple, converge fold into one qoolie primitive
+- align dock groupBy to fks.appscheme_base.code
+- anchor overlay panel to the left
+- use module:zone frameId convention for embedded Explorer\n\n- Align MainMenu frameId with MachineFrameManager convention: explorer:main-menu-content.\n- Update test expectation accordingly.
+- update menu grouping from appscheme_type to appscheme_base
+- remove debug JSON.stringify in DataListRelations
+- update componentRegistryEntries for contextmenu entry
+- revive dead .data-table CSS + stop table row ballooning
+- don't declare fkRelations as a renderable appscheme field
+- DataField FK label reads the denorm snapshot, not a re-lookup by mismatched index
+- denormalize FK target snapshot at write time
+- update META_FK_KEYS handling and improve DataRecord field rendering logic
+- rename 'localization' to 'location' in field definitions for clarity
+- hydrate IDB from /api/data namespace with proper JWT auth
+- prevent IDB store-creation races (D1/D2/D3) and let qoolie own schema upgrades
+- UNHACK backlog pass — RBAC policy round-trip, FK eager resolution, seed unification
+- hydrate user grants into client rights gate after login
+- correct escape character in next_action string in status.yaml
+- update last_updated dates and pin css-base dependency version
+- pin css-base@0.7.10, drop text-box bandage for real fix
+- card titles overlapping content in Chromium/Edge
+- restore green gate — FABLE_2 Phase 0'
+- import SseStream and parseStream from package root
+- AI collections use dedicated machine_ai base, not machine_base
+- defer deep-link dispatch until target zone mounts
+- update test results to reflect passing status and remove failed test logs
+- dedup hydration on _id to stop autoIncrement duplication
+- update FABLE.md to reflect deprecation of fk-X.code and document DataListRelations
+- remove dead code references for Pane components in FABLE and LAYOUT-DATAGRAM
+- restore green baseline (check 0/0, tests 608/608)
+- skip boot entirely when no idae_org — go straight to login
+- add RBAC ops c/r/u/d/l/x to FieldList sync
+- update import statement for DataList in Fiche.svelte and clean up sidebar-info component
+- correct button label from 'synthese' to 'update' for clarity
+- improve frame ID generation to ensure compatibility with environments lacking crypto support
+- update demo model data structure and improve type handling in DataList and DataRecord components
+- enforce socket handshake authentication
+- fi
+- mount endpoint at /api/mcp to dodge idaeApi catch-all CRUD
+- FK columns invisible client-side — reseed support
+- update test results and improve hydration handling in useQoolieCollection
+- update .prettierignore to exclude status.yaml and change code block language in S25-04.md
+- update frame loading method to use framer for consistency
+- update visibleCount initialization and enhance infinite scroll handling
+- hydrate full collection by forwarding limit=0 through encoded params
+- propagate inputSize via CSS cascade to all input atoms
+- clear remaining svelte-check warnings — state local-capture + a11y
+- update status to done and clarify decision on wrapper classes
+- TypeScript fixes for new services + ExplorerTable + PaneLeft
+- resolve BUG-01 kareem failures — align mongoose to 9.x
+- update default org value in seed script from 'test' to 'demo'
+- update CLAUDE.md and status.yaml to reflect completed tasks; enhance MachineFieldType with currency formatter; improve value parsing in MachineSchemeValues
+- update progress and next action in status.yaml; improve type safety in performance tests and FieldDisplay component; adjust Breadcrumb type definition; modify vite config import
+- improve type assertions and null checks across multiple files
+- update import paths to include file extensions and adjust type assertions
+- machine
+- Update event binding syntax from 'onclick' to 'on:click' in Svelte components
+- remove "type" field from package.json and update analysis and status files
+- fix typos and type cast issues in lib
+- fix null assertions and boolean cast
+- reduce TypeScript errors 102→79
+- resolve TypeScript check errors in src/lib
+- resolve test failures, Svelte 5 warnings, and CJS/ESM bin mismatch
+- correct import name and adjust FieldDisplay wrapper class
+- avoid Svelte rune placement error in CollectionList\n\n- use safeCollection helper and top-level / to prevent misplacementstate_invalid_placement\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- show clear message when collection missing\n\n- Catch MachineError in CollectionList and display guidance to verify schema or clear IndexedDB\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- replace Looper with native {#each} in collection components
+- implement bidirectional binding in FieldValue.svelte
+- skip optional empty fields before type validation
+- handle missing fields without throwing MachineError
+- update import statements for prettier configuration across multiple packages
+- update import paths for prettier configuration across multiple packages
+- update repository URLs in package.json files to use git+ protocol
+- remove dry-run and set verbose to false in release configuration
+- update dbSchema and index exports for improved type handling and organization
+- update pnpm-release version and adjust related dependencies in lockfile
+- update import paths and enhance type definitions across multiple files
+- add description field to @medyll/idae-machine package.json
+- update @medyll/idae-prettier-config dependency to use latest version in multiple package.json files and pnpm-lock.yaml
+- update @medyll/idae-prettier-config dependency to use workspace wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use version wildcard in multiple package.json files
+- update @medyll/idae-prettier-config dependency to use workspace protocol in multiple packages
+- update @medyll/idae-prettier-config dependency in multiple packages and pnpm-lock.yaml
+- update package scopes from '@medyll' to 'medyll' for consistency
+- reorder exports in index.ts to include config.js
+- update loop function signature to include type annotation and handle null data gracefully
+- update pnpm-lock.yaml to remove unnecessary dependency and add new workspace links
+- add console log for changeset file creation in generate-changeset script
+- add comment to clarify context retrieval in FieldValue component
+- update import paths to include file extensions for consistency
+
+**Documentation:**
+- add architecture law & LLM conduct section to CLAUDE.md
+- de-exclusivize architecture knowledge, drop annotation-theater doc
+- mark machine/ fold complete in NAMESPACE law
+- add BL-25 (FieldList catalog repair) as the real next task
+- mark BL-20 complete — already shipped in S50-02, backlog was stale
+- add Sprint 49 planning details and stories to status.yaml and new artifact
+- add sprint 48 plan artifact
+- add sprint 48 completion and analysis artifacts
+- update SCHEMA-CONVENTIONS.md and ARCH.html for fkRelations split
+- recover global menu spec from idae-legacy
+- update ARCH.html to current architecture
+- explain why idae-api imports use package root, not subpaths
+- rewrite CHAT.md to one-world architecture + plan Sprint 44
+- add narrative usage guide + cross-link from generated reference
+- update ADR-fk-model-b with 2026-06-09 state verification
+- triage root markdown into bmad
+- add API drift audit document detailing transport architecture and data flow
+- update conventions.md to match current data-ui/shell structure
+- add verification appendix and clarify FK convention issues in FIX_FKS.md
+- sync CLAUDE.md/README + dedup AGENTS.md via symlink
+- update status.md — Sprint 35 QOOLIE-SWR shipped, BACK-03 closed
+- update README to reflect offline-first capabilities and MongoDB integration
+- Project complete - idae-machine v2.0 ready for release
+- Sprint 4 complete - Router & Navigation finished
+- Sprint 3 complete - Real-Time layer finished
+- update status - S3-01 & S3-02 complete, S3-03 in progress
+- Sprint 2 complete - Data Layer finished
+- update status - S2-02 complete, S2-03 in progress
+- update BMAD status - Sprint 1 complete
+- Create v0.136.0 launch announcement with code examples
+- remove emojis from package READMEs
+- update status - 15 components now showcased (UI 6 + Form 4 + Fragments 5)
+- update status - demo page complete with all components
+- update status with demo page completion and Svelte 5 migration
+- complete S1-02 and finalize Sprint-1
+- complete S1-01 implementation and update sprint status
+- improve JSDoc coverage to 75-80% across core modules
+- note removal of CrudService in CHANGELOG and README
+- update SKILL.md for git-commit-monorepo skill
+- Add initial documentation for @medyll/idae-machine project
+- maj chemins, props et suivi étape 4 CreateUpdate
+- maj chemins, props et suivi étape 3 CollectionList
+- maj chemins, props et suivi étape 2 CrudZone
+
+**Styling:**
+- update layout and styling in DataRecord and DataField components for improved responsiveness
+
+**Refactoring:**
+- collection() returns null instead of throwing, kill collectionOr
+- move component prop types to <script module>
+- disambiguate content frame key from zone name
+- fold machine/ into main/ per NAMESPACE law
+- remove unused contentZoneEl state and adjust main-menu-frame-zone attributes
+- migrate machine/ domain literals to idae/ bridges (V1-V6)
+- replace #wrapCollectionFkFold with wrapCollectionFkFold for FK handling
+- streamline warmup process and error handling in IDB pre-fetch
+- replace WaffleMenu with MainMenu and remove unused MenuTree
+- BL-21 rename item snippet to dataRecord with DataRecord prop shape
+- use FicheToolbar in Synthesis frame
+- sprint 3 — domain/engine separation via bridge pattern
+- unify fkRelations vocabulary core+business, fix getModel().fks regression
+- adaptive FK label width + drop hardcoded appscheme_* warmup fallback
+- split fkRelations from fks value-bag on appscheme records
+- improve comments and structure for FK handling in publishModel and MachineSchemeField
+- rename FK helpers to encode intent and enforce non-null id
+- unify field show/edit atoms under field/snippets
+- split server core from client entity types
+- M0 — extract DataService, unify REST/MCP write pipeline
+- single push transport via qoolie, close FABLE Phase 4
+- externalize toolbars + move Columner to layout (Phase 2)
+- update documentation and code for frame zones and diagram styling
+- update FABLE.md and SCHEMA-CONVENTIONS.md for FK handling; deprecate synthesized fk-X.code fields
+- rename store key items→records, expose ResultSet
+- rename gridFks to fks across the codebase for consistency
+- temporarily disable META_FK_KEYS check in grid foreign keys processing
+- rename by role to remove LLM-confusing duality
+- remove DataFkValue, unify FK rendering in DataField
+- enhance server test configuration with pool and isolation settings
+- extract useMachinePrefs rune, collapse DataList prefs hydration
+- extract Dialog styles to src/styles/components.css
+- migrate hardcoded hex colors to css-base design tokens
+- Phase 2 — DataListRelations, renderItem snippet, remove dead stubs
+- Phase 0+1 factorize — descriptor, displayValue, resolveFieldList, collectionOr
+- remove fkTargetCol and fkTargetField from model, update related logic to use fieldType for FK target persistence
+- update Fiche component to use 'focus' view for DataRecord, enhance formatting logic to handle null/undefined values
+- update z-index values in theme.css, enhance DataList class normalization, and add tests for DataRecord and Dialog components
+- enhance grouping logic in DataGroup, update DataList groupBy reference, and clarify model field handling
+- enhance foreign key handling in DataList and related components, update API URL configuration, and improve layout integration
+- remove NAVIGATION.md as it is no longer relevant to the current routing structure
+- rename 'mini' view to 'focus', update related logic and documentation across the codebase
+- update view handling by renaming 'mini' to 'flat', enhancing view type definitions, and clarifying view logic across the codebase
+- enhance view handling in DataList and DataRecord components by adding view prop and updating field resolution logic
+- update view type definitions and improve view handling across the codebase
+- clarify view type definitions by removing 'form' and 'custom' from ViewTypeCode
+- rename FieldViews to ViewFields for consistency in type definitions
+- rename FieldViews to ViewFields across the codebase for consistency
+- remove unused DataForm import and simplify DataList rendering logic
+- update DataToolbar import path and adjust related exports
+- streamline link parsing and improve error handling
+- reorganize route registration in MachineServer
+- update frame loading in TaskBar to use 'vehicule'
+- move utility functions to data-ui/utils and clean up imports
+- replace SchemaRouter with MachineRouter and update related functionality
+- wrap content in TemplateShell, sidebar max-width only
+- drop bloated effective* aliases and dead vars prop
+- complete DataList API refactor, update conventions and status reports, and adjust Explorer and PaneRecents components for scoped CSS
+- update status report and tests for DataList API refactor, adjust progress and sprint details
+- update DataList and Explorer components for improved snippet handling and remove unused ExplorerCollections component
+- update TemplateShell component to rename sidebar props and streamline rendering logic
+- simplify TemplateShell layout by removing unused components and restructuring for clarity
+- remove deprecated card components and introduce unified Explorer component
+- update collection names and references in PaneRecents and PaneRight components
+- ExplorerActions composes DataList, supports data override
+- ExplorerList composes DataList, uses machine.loadIn()
+- create shell/ — move explorer/, card/, layout/ from main-ui/
+- move field/, input/, fragments/ to data-ui/
+- SchemaRouter — before hooks, authEnabled:false, base:/, mount/unmount actions
+- adopt css-base v0.7.0 components
+- add idae-screen-legacy to .gitignore
+- streamline image field definitions and enhance error handling
+- remove old demo page component
+- remove performance tests and sync utilities
+- data.test.ts uses getConn (mongooseConnectionManager) like handlers
+- update field type from 'text-long' to 'text-lg' across models and tests
+- remove 'A' permission type and update related checks and mappings
+- enhance machine rights policy handling and update model declarations
+- update base property handling in model declarations for consistency
+- replace seedSchemeFromModel with deployModel and seedEngineRegistries for improved model deployment
+- remove demoSeed data file to streamline seed data management
+- migrate to IdaeDb for database operations and streamline seedSchemeFromModel logic
+- update database connection logic to include dbName parameter in createConnection calls
+- update foreign key definitions to use 'required' property instead of 'rules' string
+- rename testScheme to demoScheme and update references
+- remove obsolete documentation and code of conduct; update README and server model references
+- remove unused dbSchema export and improve type handling in CardForm and ExplorerFilter components
+- update import paths for Data components and add logger utility
+- move all UI components to src/lib/main-ui/
+- reorganize src/lib/idae into src/lib/main
+- update package READMEs for clarity and consistency
+- update sprint status and planning phases in YAML files
+- update variable names for consistency and clarity across components
+- remove unused components and exports from the idae-slotui library
+- complete rewrite using all UI components
+- migrate demo page to Svelte 5 patterns and add accessibility
+- replace any types with generics/unknown in core modules
+- remove unused types and interfaces from types.ts
+- update import paths for MakeLibIndex in package-pre.js scripts
+- update documentation and improve default value handling in CreateUpdate component
+- remove processor and watcher classes, update CLI for README retrieval
+- remove idae-api-nest package and add idae-be and idae-idbql packages with CLI skills
+- Clean up code formatting and improve readability in idbstate and machine modules
+- Remove outdated documentation and files; update architecture diagram and clarify project structure
+- Remove deprecated field types and update references to use new MachineFieldType structure
+- Update CreateUpdate component to use $derived for reactive form fields and clean up +page.svelte
+- clean up README and dbSchema by removing outdated sections and unused imports
+- update IDbCollection and related classes to use MachineDb instance, streamline field parsing and template access
+- update import paths for IDbCollectionFieldForge and IDbFormValidate; expose MachineForge class
+- rename constructor parameter for clarity in IDbCollection
+- replace IDbBase with MachineDb across multiple files for improved consistency and clarity
+- update IDbBase and IDbCollection methods for improved clarity and consistency
+- replace IDbCollections with IDbBase across multiple files for consistency
+
+**Tests:**
+- align appuser_prefs fk required to model-core (false)
+- execute main parcours, close FABLE Phase 2
+- add main parcours spec, remove obsolete app.spec
+- repair stale/broken suite — 12 failures → 226 green
+- S35-00 machine.store() return shape tests + S35 completion
+- add seedBusinessData integration test — 5/5 passed
+- 10 sync/destroy tests pass; S11-03 test written (blocked BUG-01)
+- 18 auth flow tests pass — login, JWT, permissions
+- 23 IDB CRUD tests pass across 6 demoScheme collections
+- Add error path coverage for machine initialization and validation
+- Add stress and performance test suite
+- Add comprehensive edge case test suite for field validation
+- expand machineParserForge test coverage to 43 cases
+- add unit tests for Machine class functionality and initialization
+
+**Chores:**
+- anti-drift guardrails — namespace law, arch lint, convention scan
+- S49-02 status update and sprint plan revision
+- export menuPrefs helpers from public index
+- sprint 48 status and test artifacts
+- remove obsolete test scripts from root
+- update dependencies and fix debug version conflicts
+- advisory pre-push gate (non-blocking)
+- refresh shell/frame/index.ts barrel (BL-04)
+- status — MCP v2 M0-M5 complete, 44 tools
+- status — MCP v2 M0+M1 done
+- resync status.yaml — Phase 4 + deep-link close
+- untrack generated playwright-report
+- remove obsolete PRODUCT.md documentation file
+- remove unused Pane/Navigation shell components
+- purge stale fragments from comments and docs
+- add server typecheck gate, dedup model types, hygiene
+- fix VIEWS.md stray typo, add --host to dev server
+- gitignore stray tsc emit, noEmit tsconfig, move styles to src/styles/
+- update status — post-S32 warning cleanup recorded
+- restore status.yaml + regenerate status.md after bmad-rebuild wiped data
+- Sprint 18 complete, cleanup sprint statuses, await Sprint 19
+- Sprint 18 complete — 383/383 tests green
+- update pnpm-lock.yaml to include @medyll/idae-socket and upgrade debug dependency to supports-color@8.1.1
+- complete Sprint 15 — release ready, 100% progress
+- complete Sprint 14 — all stories done
+- remove tailwindcss dependency and related imports
+- update dependencies and remove deprecated packages
+- update status — all sprints complete, 517/517 tests green
+- update status — idae-sync fixes complete, 93/93 tests green
+- update status.md — S11-01 complete, 193/193 green
+- add idae-machine/server to pnpm workspace packages
+- remove unused app scheme types and related functions
+- remove outdated documentation files (CLAUDE.md, API.md, EXAMPLES.md, machine-architecture.md)
+- Mark R2 complete, advance to R3
+- Complete R2 CI/CD verification, ready for npm publish
+- Mark R1 complete, advance to R2
+- Initiate v0.136.0 release phase with R1-R5 checklist
+- bump version to 0.135.3 and update CHANGELOG
+- remove unnecessary whitespace in Svelte component documentation
+- fix formatting & lint\n\n- exclude .svelte from Prettier to avoid plugin conflict\n- update lint script to run Prettier only\n- updated prettier & prettier-plugin-svelte and installed @eslint/js\n\nCo-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
+- mark validation phase complete, transition to release
+- update status after completing S1-03, S1-04, S1-05
+- record audit update - remove CrudService
+- remove CrudService and its export
+- tighten types in core modules
+- remove unused configuration and agent documentation files
+- add initial changelog for shared package with recent updates and fixes
+- update package versions to latest across multiple packages
+- update package versions across multiple packages to latest
+- add SKILL.md for multi-role agent and Svelte code writer tools
+- add author field to package.json files across multiple packages
+- add repository field to package.json files across multiple packages
+- update package.json files to use workspace:* for Medyll dependencies
+- update @medyll/idae-prettier-config to version ^1.2.1 across multiple packages
+
+**Other:**
+- Refactor UI components for improved styling and responsiveness
+- Refactor idae machine model and bootstrap processes
+- Implement code changes to enhance functionality and improve performance
+- Implement code changes to enhance functionality and improve performance
+- Refactor: Remove unused foreign key fields from idaenext and tactac schemes
+- remove: delete Confirm.svelte — legacy duplicate of DataFieldEdit, no consumers
+- remove: delete InfoLine.svelte — no internal consumers, dead branches, unclear contract
+- Remove obsolete source map file for schema-types.js
+- Refactor dataList tests: remove unnecessary afterEach and update sorting expectation
+- Add source map for schema-types.js to improve debugging experience
+- Refactor code structure for improved readability and maintainability
+- Refactor TypeScript types and improve code safety
+- Refactor code structure for improved readability and maintainability
+- Update project status, dependencies, and UI components
+- Refactor machine model structure and templates
+- Refactor imports and update app model declarations
+- Refactor idae-machine component showcase: update main page and create backup of old page
+- Refactor IDAE-MACHINE UI and documentation
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure for improved readability and maintainability
+- Refactor context-mode hooks to include VS Code environment guard; remove unused QwenAdapter; add BOM restoration scripts and PowerShell utilities for branch management.
+- Refactor code structure for improved readability and maintainability
+- fix : fix
+- update(status): Release preparation complete at 80% (R1-R3 done, R4-R5 staged)
+- release(v0.136.0): Polish and enhance release documentation
+- release(v0.136.0): R3 documentation & R4-R5 preparation
+- Refactor JSON and TypeScript files for consistency and readability
+- Refactor Playwright config and improve test setup; enhance demo seed data structure; update form types and index exports; fix event handling in Svelte components; ensure consistent formatting across files.
+- Refactor code structure for improved readability and maintainability
+- Remove unused CSS files for switch, tabs, taskbar, textfield, title bar, toggle bar, toolbar, tree, and window components to streamline the codebase and improve maintainability.
+- Refactor code structure for improved readability and maintainability
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Remove obsolete scripts and documentation for verification, git commit, README creation, and Svelte code writing skills
+- Refactor code structure for improved readability and maintainability
+- Add verification scripts for AGENTS.md commands and content
+- Refactor code structure for improved readability and maintainability
+- Refactor: styles in Marquee, ToggleBar, and Tree components to use Tailwind CSS imports; update package scripts to use "prepackage" instead of "package:pre" in multiple package.json files; enhance index exports in idae-socket.
+- Apply changeset versions
+- Refactor code structure and remove redundant code blocks for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor IDb classes for improved structure and clarity
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor MachineDb and introduce MachineForge for improved field type handling
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor IDbBase and Machine classes; add comprehensive tests for IDbBase functionality
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor code structure for improved readability and maintainability
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor and enhance database schema handling
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- reverted before merge catastrophe
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Apply changeset versions
+- Refactor AGENT.md to establish Svelte 5 coding policy; remove outdated migration strategy and consolidate rules for compliance.
+- Add AGENT.md for Svelte 5 migration strategy; update DataList and +page.svelte for event handling consistency
+- Rename CollectionList to DataList across components and documentation; update imports and references accordingly.
+- Remove unnecessary closing tag for each block in +page.svelte
+- Add integration tests for CreateUpdate component; implement CRUD operations and validation logic
+- Advanced validation: foreign keys required and must exist in target collection (CreateUpdate.svelte)
+- Advanced CreateUpdate.svelte: handle all field types, readonly/private, and FK as select dropdowns in UI
+- Add create and delete UI for agents: support create mode, delete with confirmation, and edit in main demo page
+- Integrate CreateUpdate.svelte with CrudService and event handling in main demo page
+- Enhance CreateUpdate.svelte validation: add type checks for number, email, and boolean fields using schema rules
+- Add validation logic to CreateUpdate.svelte: required fields checked using schema, errors shown, submit prevented if invalid
+- Integrate Svelte 5 components (CrudZone, CollectionList, CreateUpdate, FieldValue) into main demo page
+- Refactor FieldValue.svelte to Svelte 5: use  for props and update logic to Svelte 5 idioms
+- Refactor CreateUpdate.svelte to Svelte 5: use  for props,  for formData, and update logic to Svelte 5 idioms
+- Refactor CollectionList.svelte to Svelte 5: use , Svelte 5 event idioms, and remove legacy export let
+- Full Svelte 5 refactor: CrudZone.svelte now uses , , , and Svelte 5 idioms throughout
+- Refactor CrudZone.svelte to Svelte 5 idioms and syntax
+- Integrate CrudService into CrudZone.svelte via props; update integration test for shared service instance
+
+
+
 ## [Unreleased]
 
 ### Added
