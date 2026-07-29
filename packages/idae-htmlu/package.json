@@ -1,5 +1,6 @@
 {
   "name": "@medyll/idae-htmlu",
+  "private": true,
   "version": "0.1.3",
   "author": "Lebrun Meddy",
   "description": "htmlu : vite preprocess utility allowing to use classNames as elements tags. The next step of utility classNames",

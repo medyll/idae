@@ -1,5 +1,6 @@
 {
   "name": "@medyll/idae-csss",
+  "private": true,
   "bin": {
     "add-skill": "./dist/cli/add-skill.js"
   },
