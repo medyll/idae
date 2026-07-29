@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.12] - 2026-07-29
+**Chores:**
+- mark idae-csss and idae-htmlu as private
+- fix npm auth config and drop dead workflow
+
+
+
 ## [0.1.11] - 2026-07-28
 **Features:**
 - update README with new package details and multi-database management example
