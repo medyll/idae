@@ -1,5 +1,14 @@
 {
-	"permissions": {
-		"allow": ["Bash(cat:*)", "Bash(node:*)"]
-	}
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "Bash(node:*)",
+      "Bash(gh run *)",
+      "Bash(pnpm -r run build --if-present)",
+      "Bash(sed 's/^Release and Publish\\\\tUNKNOWN STEP\\\\t//')",
+      "Bash(git rm *)",
+      "Bash(git fetch *)",
+      "Bash(npm view *)"
+    ]
+  }
 }
