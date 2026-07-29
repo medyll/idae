@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.136.2] - 2026-07-29
+**Bug Fixes:**
+- publish as a public package
+
+
+
 ## [0.136.1] - 2026-07-29
 **Features:**
 - add InfoLine and Tile components for improved UI structure
