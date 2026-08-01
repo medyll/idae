@@ -42,10 +42,10 @@
     "svelte": "^5.0.0-next"
   },
   "dependencies": {
-    "@medyll/skiller": "workspace:*",
     "@medyll/idae-stator": "workspace:*",
+    "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
-    "commander": "^14.0.3"
+    "commander": "^15.0.0"
   },
   "publishConfig": {
     "access": "public",
@@ -55,16 +55,16 @@
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-query": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
-    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/github": "^12.0.9",
     "@sveltejs/adapter-auto": "^7.0.1",
-    "@sveltejs/kit": "^2.55.0",
-    "@sveltejs/package": "^2.5.7",
+    "@sveltejs/kit": "^2.70.2",
+    "@sveltejs/package": "^2.5.8",
     "fake-indexeddb": "^6.2.5",
-    "svelte": "^5.55.1",
-    "svelte-check": "^4.4.6",
+    "svelte": "^5.56.8",
+    "svelte-check": "^4.7.4",
     "tslib": "^2.8.1",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.3"
+    "typescript": "^6.0.3",
+    "vite": "^8.2.0"
   },
   "keywords": [
     "idae",

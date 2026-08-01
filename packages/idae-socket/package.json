@@ -52,7 +52,7 @@
     "@socket.io/redis-adapter": "^8.3.0",
     "@types/express": "^5.0.6",
     "command": "^1.1.1",
-    "commander": "^14.0.3",
+    "commander": "^15.0.0",
     "cors": "^2.8.6",
     "events": "^3.3.0",
     "express": "^5.2.1",
@@ -60,10 +60,10 @@
     "minimist": "^1.2.8",
     "nodemon": "^3.1.14",
     "npm-watch": "^0.13.0",
-    "redis": "^5.11.0",
+    "redis": "^5.12.1",
     "socket.io": "^4.8.3",
     "socket.io-client": "^4.8.3",
-    "svelte-check": "^4.4.6"
+    "svelte-check": "^4.7.4"
   },
   "publishConfig": {
     "access": "public",
@@ -72,14 +72,14 @@
   "devDependencies": {
     "@medyll/idae-eslint-config": "workspace:*",
     "@medyll/idae-shared": "workspace:*",
-    "@semantic-release/github": "^12.0.6",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@semantic-release/github": "^12.0.9",
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
     "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^25.5.0",
-    "@vitest/coverage-v8": "^4.1.2",
-    "svelte": "^5.55.1",
-    "typescript": "^6.0.2",
-    "vitest": "^4.1.2"
+    "@types/node": "^26.1.2",
+    "@vitest/coverage-v8": "^4.1.10",
+    "svelte": "^5.56.8",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   },
   "keywords": [
     "idae",
