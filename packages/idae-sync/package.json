@@ -21,15 +21,15 @@
     "test": "vitest run --reporter=dot"
   },
   "dependencies": {
-    "@medyll/skiller": "workspace:*",
     "@medyll/idae-api": "workspace:*",
-    "@medyll/idae-idbql": "workspace:*"
+    "@medyll/idae-idbql": "workspace:*",
+    "@medyll/skiller": "workspace:*"
   },
   "devDependencies": {
     "fake-indexeddb": "^6.2.5",
-    "jsdom": "^29.0.1",
-    "typescript": "^6.0.2",
-    "vitest": "^4.1.2"
+    "jsdom": "^29.1.1",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   },
   "keywords": [],
   "author": "Lebrun Meddy",

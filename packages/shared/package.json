@@ -15,10 +15,10 @@
   "dependencies": {
     "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
-    "commander": "^14.0.3",
-    "fs-extra": "^11.3.4",
+    "commander": "^15.0.0",
+    "fs-extra": "^11.4.0",
     "glob": "^13.0.6",
-    "svelte-check": "^4.4.6"
+    "svelte-check": "^4.7.4"
   },
   "publishConfig": {
     "access": "public",
@@ -32,11 +32,11 @@
     "config"
   ],
   "devDependencies": {
-    "@semantic-release/github": "^12.0.6",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@semantic-release/github": "^12.0.9",
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
     "@types/fs-extra": "^11.0.4",
-    "svelte": "^5.55.1",
-    "typescript": "^6.0.2"
+    "svelte": "^5.56.8",
+    "typescript": "^6.0.3"
   },
   "repository": {
     "type": "git",

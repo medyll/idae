@@ -42,21 +42,21 @@
     "prepackage": "node scripts/package-pre.js"
   },
   "dependencies": {
-    "@medyll/skiller": "workspace:*",
     "@medyll/idae-sync": "workspace:*",
-    "commander": "^14.0.3",
+    "@medyll/skiller": "workspace:*",
+    "commander": "^15.0.0",
     "idb": "^8.0.3"
   },
   "devDependencies": {
     "@medyll/idae-socket": "workspace:*",
     "@testing-library/react": "^16.3.2",
-    "@types/node": "^25.5.0",
-    "@types/react": "^19.2.14",
+    "@types/node": "^26.1.2",
+    "@types/react": "^19.2.18",
     "fake-indexeddb": "^6.2.5",
-    "react": "^19.2.4",
-    "typescript": "^6.0.2",
-    "vitest": "^4.1.2",
-    "vue": "^3.5.31"
+    "react": "^19.2.8",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10",
+    "vue": "^3.5.40"
   },
   "peerDependencies": {
     "@medyll/idae-socket": "workspace:*",

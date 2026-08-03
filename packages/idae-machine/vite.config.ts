@@ -26,7 +26,12 @@ export default defineConfig({
 					clearMocks:  true,
 					include:     ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/_work/*.spec.ts'],
 					exclude:     ['src/lib/server/**'],
-					setupFiles:  ['./vitest-setup-client.ts']
+					setupFiles:  ['./vitest-setup-client.ts'],
+					// Vite compiles Svelte components on first dynamic import; under a loaded
+					// machine that alone can exceed the 5s default and fail a green suite.
+					// Determinism > speed for a gate — same trade-off as fileParallelism below.
+					testTimeout: 30000,
+					hookTimeout: 30000
 				}
 			},
 			{
@@ -38,7 +43,9 @@ export default defineConfig({
 					pool:        'forks',
 					isolate:     true,
 					include:     ['src/**/*.{test,spec}.{js,ts}'],
-					exclude:     ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/e2e/**']
+					exclude:     ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/e2e/**'],
+					testTimeout: 30000,
+					hookTimeout: 30000
 				}
 			}
 		]

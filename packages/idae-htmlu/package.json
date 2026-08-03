@@ -36,21 +36,21 @@
     "svelte": "^4.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "^1.62.1",
     "@sveltejs/adapter-auto": "^7.0.1",
-    "@sveltejs/kit": "^2.55.0",
-    "@sveltejs/package": "^2.5.7",
-    "@sveltejs/vite-plugin-svelte": "^7.0.0",
-    "@types/jsdom": "^28.0.1",
-    "publint": "^0.3.18",
-    "svelte": "^5.55.1",
-    "svelte-check": "^4.4.6",
-    "svelte-preprocess": "^6.0.3",
+    "@sveltejs/kit": "^2.70.2",
+    "@sveltejs/package": "^2.5.8",
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
+    "@types/jsdom": "^28.0.3",
+    "publint": "^0.3.22",
+    "svelte": "^5.56.8",
+    "svelte-check": "^4.7.4",
+    "svelte-preprocess": "^6.0.5",
     "tslib": "^2.8.1",
-    "typescript": "^6.0.2",
-    "vite": "^8.0.3",
+    "typescript": "^6.0.3",
+    "vite": "^8.2.0",
     "vite-tsconfig-paths": "^6.1.1",
-    "vitest": "^4.1.2"
+    "vitest": "^4.1.10"
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -59,7 +59,7 @@
   "dependencies": {
     "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
-    "commander": "^14.0.3"
+    "commander": "^15.0.0"
   },
   "repository": {
     "type": "git",
