@@ -97,7 +97,7 @@
   "dependencies": {
     "@iconify-json/ph": "^1.2.2",
     "@iconify/svelte": "^5.2.2",
-    "@medyll/css-base": "link:..\\..\\..\\css-base",
+    "@medyll/css-base": "^0.7.10",
     "@medyll/idae-api": "workspace:*",
     "@medyll/idae-be": "workspace:*",
     "@medyll/idae-idbql": "workspace:*",
