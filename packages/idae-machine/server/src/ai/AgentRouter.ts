@@ -18,7 +18,9 @@ import { MistralProvider } from './agent/providers/MistralProvider.js';
 import { OllamaProvider } from './agent/providers/OllamaProvider.js';
 import type { AgentProvider, NormalizedMessage, NormalizedTool } from './agent/types.js';
 
-const router = Router();
+// Explicit annotation: the inferred type is not nameable across package
+// boundaries once declarations are emitted (TS2742).
+const router: Router = Router();
 
 /** Phase 1b tool surface — read-only subset of the MCP registry (§12). */
 const READ_ONLY_TOOL_NAMES = new Set(['find', 'get_by_id', 'count', 'distinct', 'aggregate']);
