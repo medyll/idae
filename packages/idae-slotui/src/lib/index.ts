@@ -236,6 +236,7 @@ export * as popperCss from '$lib/ui/popper/popper.css';
 export { default as Popper } from '$lib/ui/popper/Popper.svelte';
 export * from '$lib/ui/popper/types.js';
 export * from '$lib/ui/popper/usePopper.js';
+export { default as Preview } from '$lib/ui/preview/Preview.svelte';
 export { default as PreviewZoom } from '$lib/ui/preview/PreviewZoom.svelte';
 export * from '$lib/ui/preview/types.js';
 export { default as ServiceBox } from '$lib/ui/serviceBox/ServiceBox.svelte';

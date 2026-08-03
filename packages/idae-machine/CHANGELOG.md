@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.136.3] - 2026-08-03
+**Bug Fixes:**
+- publish as a public package
+
+**Tests:**
+- stop the gate from failing at random
+
+**Chores:**
+- update dependencies across the workspace
+- publish packages
+
+
+
 ## [0.136.2] - 2026-07-29
 **Bug Fixes:**
 - publish as a public package
