@@ -142,4 +142,14 @@ describe('Space — classification detection', () => {
 		expect(lines.some((l) => l.includes('Ouvert') && l.includes('1 sur 2'))).toBe(true);
 		expect(lines.some((l) => l.includes('Terminé'))).toBe(false);
 	});
+
+	it('renders the collection records in the central workspace beside related collections', async () => {
+		const { container } = render(Space, { collection: 'task' });
+		await settle();
+
+		const list = container.querySelector('space-list');
+		expect(list?.querySelector('[role="list"]')).not.toBeNull();
+		expect(list?.textContent).toContain('A');
+		expect(list?.parentElement?.tagName.toLowerCase()).toBe('space-workspace');
+	});
 });

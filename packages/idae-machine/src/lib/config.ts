@@ -20,4 +20,4 @@ export const API_URL =
  * Available organizations/tenants. Centralized here to avoid hardcoding in multiple places.
  * This list should be kept in sync with the actual available organizations in the system.
  */
-export const ORGS = ['crfr', 'demo', 'idaenext', 'tactac', 'latent'] as const;
+export const ORGS = ['demo','crfr',  'idaenext', 'tactac', 'latent'] as const;
