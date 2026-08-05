@@ -4,7 +4,7 @@
   "bin": {
     "idae-machine": "./cli.cjs"
   },
-  "version": "0.136.4",
+  "version": "0.136.5",
   "scripts": {
     "dev": "vite dev --host",
     "build": "vite build && npm run prepack",

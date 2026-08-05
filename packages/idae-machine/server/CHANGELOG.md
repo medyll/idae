@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.4] - 2026-08-05
+**Bug Fixes:**
+- build packages before publishing them
+- make the published package actually usable
+- restore css-base semver range in published packages
+
+
+
 ## [2.0.3] - 2026-08-03
 **Features:**
 - timespan qualifier — start/end temporal pair, published to appscheme
