@@ -103,7 +103,7 @@ SvelteKit based framework to build AI powered applications with ease.
 
 **Repo:** [@medyll/idae-machine](https://github.com/medyll/idae/tree/main/packages/idae-machine)
 
-**Version:** 0.136.6 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
+**Version:** 0.136.7 [see changelog](https://github.com/medyll/idae/tree/main/packages/idae-machine/CHANGELOG.md)
 
 ##
 ### @medyll/idae-query
@@ -157,7 +157,7 @@ Client database IndexedDB the easy way, add server sync
 
 **Repo:** [@medyll/qoolie](https://github.com/medyll/idae/tree/main/packages/qoolie)
 
-**Version:** 0.0.4 [see changelog](https://github.com/medyll/idae/tree/main/packages/qoolie/CHANGELOG.md)
+**Version:** 0.0.5 [see changelog](https://github.com/medyll/idae/tree/main/packages/qoolie/CHANGELOG.md)
 
 ##
 ### @medyll/idae-shared
