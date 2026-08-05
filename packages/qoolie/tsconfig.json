@@ -17,6 +17,11 @@
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },
-  "include": ["src/index.ts", "src/lib/**/*", "src/cli/**/*", "src/react/**/*", "src/vue/**/*", "src/test/**/*"],
+  // devtools/ backs the "./devtools" export subpath; leaving it out of the
+  // emit made that entry point resolve to a missing file.
+  // adapters/ stays out on purpose: those are .svelte.ts files using runes
+  // ($state/$effect), which plain tsc cannot compile — emitting them needs
+  // svelte-package. The "./svelte" subpath is therefore still unbuilt.
+  "include": ["src/index.ts", "src/lib/**/*", "src/cli/**/*", "src/react/**/*", "src/vue/**/*", "src/test/**/*", "src/devtools/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 }

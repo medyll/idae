@@ -5,6 +5,11 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/**/*.test.*",
+    "!dist/**/*.spec.*"
+  ],
   "bin": {
     "qoolie": "./dist/cli/index.js",
     "add-skill": "./dist/cli/add-skill.js"
@@ -34,6 +39,8 @@
   },
   "scripts": {
     "build": "tsc",
+    "// package": "The release tool runs 'package' before publishing and skips packages that lack it — which is why 0.0.2 shipped with no dist/ and an unresolvable main.",
+    "package": "tsc",
     "test": "vitest run",
     "test:unit": "vitest run",
     "lint": "eslint src",

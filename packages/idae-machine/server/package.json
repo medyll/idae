@@ -16,7 +16,8 @@
   "scripts": {
     "dev": "tsx --watch src/index.ts",
     "build": "tsc",
-    "package": "tsc",
+    "// package": "Workspace deps (idae-api, qoolie, idae-socket, idae-db) only resolve once their dist/ exists. On CI they are not necessarily part of the release set, so nothing builds them first and tsc fails with TS2307. Build them explicitly first.",
+    "package": "pnpm --filter \"@medyll/idae-machine-server^...\" run --if-present package && tsc",
     "typecheck": "tsc -p tsconfig.typecheck.json",
     "start": "node dist/server/src/index.js",
     "test": "vitest run",
