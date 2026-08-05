@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.181.7] - 2026-08-05
+**Other:**
+- Refactor organization order in config, enhance Space.svelte layout with overview and workspace sections, and update related tests. Also, refresh component registry timestamps in slotui.
+
+
+
 ## [0.181.6] - 2026-08-03
 **Chores:**
 - update dependencies across the workspace

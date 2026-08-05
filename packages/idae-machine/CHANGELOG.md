@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.136.5] - 2026-08-05
+**Bug Fixes:**
+- build packages before publishing them
+- make the published package actually usable
+- restore css-base semver range in published packages
+
+**Chores:**
+- publish packages
+
+**Other:**
+- Refactor organization order in config, enhance Space.svelte layout with overview and workspace sections, and update related tests. Also, refresh component registry timestamps in slotui.
+
+
+
 ## [0.136.4] - 2026-08-03
 **Bug Fixes:**
 - restore css-base semver range in published packages

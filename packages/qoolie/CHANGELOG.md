@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.0.3] - 2026-08-05
+**Bug Fixes:**
+- build packages before publishing them
+
+**Chores:**
+- update dependencies across the workspace
+
+
+
 ## [0.0.2] - 2026-07-29
 **Features:**
 - update README with new package details and multi-database management example
