@@ -11,8 +11,7 @@
     "!dist/**/*.spec.*"
   ],
   "bin": {
-    "qoolie": "./dist/cli/index.js",
-    "add-skill": "./dist/cli/add-skill.js"
+    "qoolie": "./dist/cli/index.js"
   },
   "exports": {
     ".": {
