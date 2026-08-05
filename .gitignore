@@ -60,4 +60,4 @@ coverage
 .skiller/
 
 # claude
-.claude\settings.local.json
+.claude/settings.local.json

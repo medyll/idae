@@ -8,7 +8,9 @@
       "Bash(sed 's/^Release and Publish\\\\tUNKNOWN STEP\\\\t//')",
       "Bash(git rm *)",
       "Bash(git fetch *)",
-      "Bash(npm view *)"
+      "Bash(npm view *)",
+      "Bash(grep -l 'declare function $state' node_modules/.pnpm/svelte@5.50.0/node_modules/svelte/types/index.d.ts)",
+      "Bash(grep -c 'declare function $state\\\\|$state:' node_modules/.pnpm/svelte@5.50.0/node_modules/svelte/types/index.d.ts)"
     ]
   }
 }
