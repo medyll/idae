@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.5] - 2026-08-05
+**Bug Fixes:**
+- build packages before publishing them
+- make the published package actually usable
+- restore css-base semver range in published packages
+
+**Chores:**
+- publish packages
+
+
+
 ## [2.0.4] - 2026-08-05
 **Bug Fixes:**
 - build packages before publishing them
