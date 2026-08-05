@@ -314,27 +314,31 @@ undefined client-side. publishModel writes both the flags and the equivalent
 	<space-main>
 		<space-header>
 			{#if schemeInfo?.icon}<Icon icon={schemeInfo.icon} class="space-header-icon" />{/if}
-			<h2 style={schemeInfo?.color ? `color: ${schemeInfo.color};` : undefined}>
-				{schemeInfo?.name ?? collection}
-			</h2>
-			{#if collectionId != null}<span class="space-record">{collectionId}</span>{/if}
-			{#if canCreate}
-				<button type="button" class="btn-primary" onclick={openCreate}>
-					Créer {schemeInfo?.name ?? collection}
-				</button>
-			{/if}
-			<DataCount {collection} label="Total" />
-		</space-header>
+			<space-header-content>
+				<h2 style={schemeInfo?.color ? `color: ${schemeInfo.color};` : undefined}>
+					Gestion {schemeInfo?.name ?? collection}
+				</h2>
+				{#if collectionId != null}<span class="space-record">{collectionId}</span>{/if}
+				<group-action>
+					{#if canCreate}
+						<button type="button" class="btn-primary" onclick={openCreate}>
+							Créer {schemeInfo?.name ?? collection}
+						</button>
+					{/if}
+					<DataCount {collection} label="Total" />
+				</group-action>
 
-		{#if recentHistory.length}
-			<space-header-recent>
-				{#each recentHistory as entry (entry.id)}
-					<button type="button" class="space-recent-item" onclick={() => openRecord(entry.collection_value)}>
-						{entry.label ?? entry.collection_value}
-					</button>
-				{/each}
-			</space-header-recent>
-		{/if}
+				{#if recentHistory.length}
+					<space-header-recent>
+						{#each recentHistory as entry (entry.id)}
+							<button type="button" class="space-recent-item" onclick={() => openRecord(entry.collection_value)}>
+								{entry.label ?? entry.collection_value}
+							</button>
+						{/each}
+					</space-header-recent>
+				{/if}
+			</space-header-content>
+		</space-header>
 
 		<space-overview>
 			{#if classificationPanels.some((p) => p.options.length)}
@@ -447,28 +451,48 @@ undefined client-side. publishModel writes both the flags and the equivalent
 	@layer components {
 		space-component {
 			display: grid;
-			grid-template-columns: 1fr minmax(calc(var(--gutter-3xl) * 4), calc(var(--gutter-3xl) * 5.5));
-			gap: var(--gutter-sm);
-			padding: var(--pad-sm);
+			grid-template-columns:
+				clamp(calc(var(--gutter-3xl) * 3), 16vw, calc(var(--gutter-3xl) * 4))
+				minmax(0, 1fr);
+			grid-template-areas: 'search main';
 			min-block-size: 100%;
 			overflow: hidden;
 		}
 		space-main {
 			display: flex;
+			grid-area: main;
 			flex-direction: column;
-			gap: var(--gutter-sm);
 			min-width: 0;
 			min-block-size: 0;
 		}
 		space-header {
+			display: grid;
+			grid-template-columns: var(--gutter-3xl) minmax(0, 1fr);
+			grid-template-areas: 'icon content';
+			min-block-size: calc(var(--gutter-3xl) + var(--gutter-2xl));
+		}
+		space-header :global(.space-header-icon) {
+			grid-area: icon;
+			align-self: center;
+			justify-self: center;
+		}
+		space-header-content {
+			display: flex;
+			grid-area: content;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: var(--gutter-xs);
+			padding: var(--pad-xs);
+			min-width: 0;
+		}
+		space-header-content h2 {
+			margin: 0;
+			text-transform: capitalize;
+		}
+		group-action {
 			display: flex;
 			align-items: center;
 			gap: var(--gutter-sm);
-			flex-wrap: wrap;
-		}
-		space-header h2 {
-			margin: 0;
-			text-transform: capitalize;
 		}
 		.space-record {
 			color: var(--color-text-muted);
@@ -515,10 +539,15 @@ undefined client-side. publishModel writes both the flags and the equivalent
 		}
 		space-workspace {
 			display: grid;
-			grid-template-columns: minmax(0, 1fr) minmax(calc(var(--gutter-3xl) * 4), calc(var(--gutter-3xl) * 5.5));
+			grid-template-columns:
+				minmax(0, 1fr)
+				clamp(calc(var(--gutter-3xl) * 3), 16vw, calc(var(--gutter-3xl) * 4));
 			gap: var(--gutter-sm);
 			flex: 1;
 			min-block-size: 0;
+		}
+		space-list:only-child {
+			grid-column: 1 / -1;
 		}
 		space-related {
 			display: block;
@@ -557,13 +586,13 @@ undefined client-side. publishModel writes both the flags and the equivalent
 		}
 		space-search {
 			display: flex;
+			grid-area: search;
 			flex-direction: column;
 			gap: var(--gutter-sm);
 			position: sticky;
 			top: 0;
 			padding: var(--pad-sm);
-			border: var(--border-width) solid var(--color-border);
-			border-radius: var(--radius-xs);
+			border-inline-end: var(--border-width) solid var(--color-border);
 			background: var(--color-surface-alt);
 			overflow: auto;
 		}
