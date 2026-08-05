@@ -1,7 +1,7 @@
 {
   "name": "idae-slotui-svelte-lib-registry",
   "version": "1.0.0",
-  "generated_at": "2026-08-03T16:47:11.458Z",
+  "generated_at": "2026-08-05T09:23:29.175Z",
   "components": [
     {
       "name": "alert",

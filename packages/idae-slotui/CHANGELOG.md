@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.181.6] - 2026-08-03
+**Chores:**
+- update dependencies across the workspace
+
+
+
 ## [0.181.5] - 2026-07-29
 **Features:**
 - add Playwright screenshot scripts and stubs for server-only packages
