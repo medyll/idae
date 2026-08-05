@@ -336,8 +336,9 @@ undefined client-side. publishModel writes both the flags and the equivalent
 			</space-header-recent>
 		{/if}
 
-		{#if classificationPanels.some((p) => p.options.length)}
-			<space-classifications>
+		<space-overview>
+			{#if classificationPanels.some((p) => p.options.length)}
+				<space-classifications>
 				{#each classificationPanels as panel (panel.fkName)}
 					{#if panel.options.length}
 						<Tile title={panel.fkName}>
@@ -352,11 +353,11 @@ undefined client-side. publishModel writes both the flags and the equivalent
 						</Tile>
 					{/if}
 				{/each}
-			</space-classifications>
-		{/if}
+				</space-classifications>
+			{/if}
 
-		{#if forwardFkPanels.length}
-			<space-repartitions>
+			{#if forwardFkPanels.length}
+				<space-repartitions>
 				{#each forwardFkPanels as panel (panel.fkName)}
 					<Tile
 						title={panel.meta?.name ?? panel.targetCollection}
@@ -372,30 +373,11 @@ undefined client-side. publishModel writes both the flags and the equivalent
 						{/if}
 					</Tile>
 				{/each}
-			</space-repartitions>
-		{/if}
+				</space-repartitions>
+			{/if}
 
-		{#if seeAlsoGroups.length}
-			<space-see-also>
-				<Tile title="Voir aussi">
-					{#each seeAlsoGroups as group (group.key)}
-						<space-see-also-group>
-							<h4>{group.label}</h4>
-							{#each group.items as item (item.collection)}
-								<button type="button" class="space-see-also-item" onclick={() => openSpace(item.collection)}>
-									{#if item.icon}<Icon icon={item.icon} />{/if}
-									{item.name}
-									<DataCount collection={item.collection} />
-								</button>
-							{/each}
-						</space-see-also-group>
-					{/each}
-				</Tile>
-			</space-see-also>
-		{/if}
-
-		{#if dateFieldsStatic.length}
-			<space-periods>
+			{#if dateFieldsStatic.length}
+				<space-periods>
 				<Tile title="Périodes">
 					{#snippet header()}
 						<select class="form-select" bind:value={periodField}>
@@ -408,19 +390,43 @@ undefined client-side. publishModel writes both the flags and the equivalent
 						<InfoLine label={period.label} value={period.count} />
 					{/each}
 				</Tile>
-			</space-periods>
-		{/if}
+				</space-periods>
+			{/if}
+		</space-overview>
 
-		<space-list>
-			<DataList
-				{collection}
-				where={listWhere}
-				{prefsScope}
-				sortBy={logicScheme?.defaultSort}
-				link="loadInDialog:fiche"
-				pageSize={30}
-			/>
-		</space-list>
+		<!-- app_explorer_home: central list with reverse relations alongside it. -->
+		<space-workspace>
+			<space-list>
+				<DataList
+					{collection}
+					where={listWhere}
+					{prefsScope}
+					sortBy={logicScheme?.defaultSort}
+					link="loadInDialog:fiche"
+					pageSize={30}
+				/>
+			</space-list>
+
+			{#if seeAlsoGroups.length}
+				<space-related>
+					<Tile title="Voir aussi">
+						{#each seeAlsoGroups as group (group.key)}
+							<space-see-also-group>
+								<h4>{group.label}</h4>
+								{#each group.items as item (item.collection)}
+									<button type="button" class="space-see-also-item" onclick={() => openSpace(item.collection)}>
+										{#if item.icon}<Icon icon={item.icon} />{/if}
+										{item.name}
+										<DataCount collection={item.collection} />
+									</button>
+								{/each}
+							</space-see-also-group>
+						{/each}
+					</Tile>
+				</space-related>
+			{/if}
+		</space-workspace>
+
 	</space-main>
 
 	<space-search>
@@ -444,14 +450,15 @@ undefined client-side. publishModel writes both the flags and the equivalent
 			grid-template-columns: 1fr minmax(calc(var(--gutter-3xl) * 4), calc(var(--gutter-3xl) * 5.5));
 			gap: var(--gutter-sm);
 			padding: var(--pad-sm);
-			overflow-y: auto;
-			align-items: start;
+			min-block-size: 100%;
+			overflow: hidden;
 		}
 		space-main {
 			display: flex;
 			flex-direction: column;
 			gap: var(--gutter-sm);
 			min-width: 0;
+			min-block-size: 0;
 		}
 		space-header {
 			display: flex;
@@ -491,6 +498,11 @@ undefined client-side. publishModel writes both the flags and the equivalent
 			grid-template-columns: repeat(auto-fit, minmax(calc(var(--gutter-3xl) * 4), 1fr));
 			gap: var(--gutter-sm);
 		}
+		space-overview {
+			display: flex;
+			flex-direction: column;
+			gap: var(--gutter-sm);
+		}
 		.space-fk-count {
 			font-weight: var(--font-semibold);
 		}
@@ -501,8 +513,16 @@ undefined client-side. publishModel writes both the flags and the equivalent
 			color: var(--color-critical);
 			font-size: var(--text-sm);
 		}
-		space-see-also {
+		space-workspace {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(calc(var(--gutter-3xl) * 4), calc(var(--gutter-3xl) * 5.5));
+			gap: var(--gutter-sm);
+			flex: 1;
+			min-block-size: 0;
+		}
+		space-related {
 			display: block;
+			overflow: auto;
 		}
 		space-see-also-group {
 			display: flex;
@@ -533,6 +553,7 @@ undefined client-side. publishModel writes both the flags and the equivalent
 		space-list {
 			display: block;
 			min-block-size: 0;
+			overflow: auto;
 		}
 		space-search {
 			display: flex;
@@ -544,6 +565,7 @@ undefined client-side. publishModel writes both the flags and the equivalent
 			border: var(--border-width) solid var(--color-border);
 			border-radius: var(--radius-xs);
 			background: var(--color-surface-alt);
+			overflow: auto;
 		}
 		space-search-fk-filters {
 			display: flex;

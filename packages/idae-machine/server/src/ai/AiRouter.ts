@@ -6,7 +6,9 @@ import { Router } from 'express'
 import { SseStream } from '@medyll/idae-api'
 import { OllamaService } from './OllamaService.js'
 
-const router = Router()
+// Explicit annotation: the inferred type is not nameable across package
+// boundaries once declarations are emitted (TS2742).
+const router: Router = Router()
 const ollama = new OllamaService(process.env.OLLAMA_ENDPOINT ?? 'http://127.0.0.1:11434')
 
 router.post('/chat-session/:sessionId/send', async (req, res) => {

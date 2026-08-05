@@ -5,7 +5,12 @@
 		"moduleResolution": "NodeNext",
 		"lib": ["ES2022"],
 		"outDir": "./dist",
-		"rootDir": "./src",
+		// The server imports shared types from the parent package
+		// (../src/lib/types/*), so the emit root must span both trees.
+		// Keeping "./src" fails with TS6059 "not under rootDir".
+		// Consequence: the entry lands at dist/server/src/index.js —
+		// see "main"/"types" in package.json.
+		"rootDir": "..",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
