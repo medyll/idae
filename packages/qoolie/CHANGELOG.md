@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.0.4] - 2026-08-05
+**Bug Fixes:**
+- emit the svelte adapter so the "./svelte" export resolves
+- build packages before publishing them
+
+**Chores:**
+- publish packages
+- update dependencies across the workspace
+
+
+
 ## [0.0.3] - 2026-08-05
 **Bug Fixes:**
 - build packages before publishing them
