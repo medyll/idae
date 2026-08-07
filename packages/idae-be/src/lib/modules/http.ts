@@ -7,19 +7,32 @@ enum httpMethods {
 	insert = 'insert'
 }
 
+export interface HttpRequestOptions {
+	method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+	data?: Record<string, unknown>;
+	headers?: Record<string, string>;
+	/** Query-string parameters (serialized onto the URL, mainly for GET). */
+	params?: Record<string, string>;
+	/** Abort the request after this many milliseconds. */
+	timeout?: number;
+	/**
+	 * Invoked instead of the content callback when the response is not ok
+	 * (`!response.ok`) or the fetch throws. `response` is null on network
+	 * failure / timeout; `error` is set when the fetch threw.
+	 */
+	onFailure?: (response: Response | null, error?: unknown) => void;
+}
+
 export interface HttpHandlerHandle {
 	update?: {
 		url: string;
-		options?: {
-			method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-			data?: Record<string, unknown>;
-			headers?: Record<string, string>;
-		};
+		options?: HttpRequestOptions;
 		callback?: HandlerCallBackFn;
 	};
 	insert?: {
 		url: string;
 		mode?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend';
+		options?: Pick<HttpRequestOptions, 'params' | 'timeout' | 'onFailure'>;
 		callback?: HandlerCallBackFn;
 	};
 }
@@ -50,7 +63,7 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 					this.update(props.url, props.options, props.callback);
 					break;
 				case 'insert':
-					this.insert(props.url, props.mode, props.callback);
+					this.insert(props.url, props.mode, props.options, props.callback);
 					break;
 			}
 		});
@@ -77,22 +90,10 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 	 */
 	async update(
 		url: string,
-		optionsOrCallback?:
-			| {
-					method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-					data?: Record<string, unknown>;
-					headers?: Record<string, string>;
-			  }
-			| HandlerCallBackFn,
+		optionsOrCallback?: HttpRequestOptions | HandlerCallBackFn,
 		callback?: HandlerCallBackFn
 	) {
-		let options:
-			| {
-					method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-					data?: Record<string, unknown>;
-					headers?: Record<string, string>;
-			  }
-			| undefined;
+		let options: HttpRequestOptions | undefined;
 
 		// Detect if the second argument is an options object or a callback function
 		if (typeof optionsOrCallback === 'function') {
@@ -101,14 +102,35 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 			options = optionsOrCallback;
 		}
 
-		const response = await fetch(url, {
-			method: options?.method || 'GET',
-			body: options?.data ? JSON.stringify(options.data) : undefined,
-			headers: {
-				'Content-Type': 'application/json',
-				...options?.headers
+		let response: Response;
+		try {
+			response = await this.request(
+				url,
+				{
+					method: options?.method || 'GET',
+					body: options?.data ? JSON.stringify(options.data) : undefined,
+					headers: {
+						'Content-Type': 'application/json',
+						...options?.headers
+					}
+				},
+				options
+			);
+		} catch (error) {
+			if (options?.onFailure) {
+				options.onFailure(null, error);
+				return this.beElement;
 			}
-		});
+			throw error;
+		}
+
+		if (!response.ok) {
+			if (options?.onFailure) {
+				options.onFailure(response);
+				return this.beElement;
+			}
+			throw new Error(`updateHttp: request failed with status ${response.status}`);
+		}
 
 		const content = await response.text();
 
@@ -122,6 +144,8 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 				root: this.beElement
 			});
 		});
+
+		return this.beElement;
 	}
 
 	/**
@@ -144,9 +168,11 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 	async insert(
 		url: string,
 		modeOrCallback?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend' | HandlerCallBackFn,
+		optionsOrCallback?: Pick<HttpRequestOptions, 'params' | 'timeout' | 'onFailure'> | HandlerCallBackFn,
 		callback?: HandlerCallBackFn
 	) {
 		let mode: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend' | undefined;
+		let options: Pick<HttpRequestOptions, 'params' | 'timeout' | 'onFailure'> | undefined;
 
 		// Detect if the second argument is a mode or a callback function
 		if (typeof modeOrCallback === 'function') {
@@ -155,7 +181,32 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 			mode = modeOrCallback;
 		}
 
-		const response = await fetch(url);
+		// Detect if the third argument is options or a callback function
+		if (typeof optionsOrCallback === 'function') {
+			callback = optionsOrCallback;
+		} else {
+			options = optionsOrCallback;
+		}
+
+		let response: Response;
+		try {
+			response = await this.request(url, {}, options);
+		} catch (error) {
+			if (options?.onFailure) {
+				options.onFailure(null, error);
+				return this.beElement;
+			}
+			throw error;
+		}
+
+		if (!response.ok) {
+			if (options?.onFailure) {
+				options.onFailure(response);
+				return this.beElement;
+			}
+			throw new Error(`insertHttp: request failed with status ${response.status}`);
+		}
+
 		const content = await response.text();
 
 		this.beElement.eachNode((el) => {
@@ -169,5 +220,36 @@ export class HttpHandler implements CommonHandler<HttpHandler, HttpHandlerHandle
 				root: this.beElement
 			});
 		});
+
+		return this.beElement;
+	}
+
+	/**
+	 * Performs the fetch with query params serialization and optional timeout.
+	 * @param url - The URL to fetch.
+	 * @param init - The fetch init options.
+	 * @param options - Optional params/timeout from HttpRequestOptions.
+	 * @returns The fetch Response.
+	 */
+	private request(
+		url: string,
+		init: RequestInit,
+		options?: Pick<HttpRequestOptions, 'params' | 'timeout'>
+	): Promise<Response> {
+		let finalUrl = url;
+		if (options?.params) {
+			const qs = new URLSearchParams(options.params).toString();
+			if (qs) finalUrl += (finalUrl.includes('?') ? '&' : '?') + qs;
+		}
+
+		if (!options?.timeout) {
+			return fetch(finalUrl, init);
+		}
+
+		const controller = new AbortController();
+		const timer = setTimeout(() => controller.abort(), options.timeout);
+		return fetch(finalUrl, { ...init, signal: controller.signal }).finally(() =>
+			clearTimeout(timer)
+		);
 	}
 }

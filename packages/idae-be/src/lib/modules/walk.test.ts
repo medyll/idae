@@ -26,9 +26,14 @@ describe('WalkHandler', () => {
             </div>
         `;
 
-		const parent = be('#child').up();
+		let parent: Be | undefined;
+		const root = be('#child').up(({ be: up }) => {
+			parent = up;
+		});
 
+		expect(root.node).toBe(document.getElementById('child'));
 		expect(parent).toBeInstanceOf(Be);
+		expect((parent?.node as HTMLElement[])[0]).toBe(document.getElementById('parent'));
 	});
 
 	it('should find siblings', () => {
@@ -41,7 +46,7 @@ describe('WalkHandler', () => {
         `;
 
 		be('#target').siblings(({ be: siblings }) => {
-			expect(siblings.node.length).toBe(2);
+			expect((siblings.node as HTMLElement[]).length).toBe(2);
 		});
 	});
 

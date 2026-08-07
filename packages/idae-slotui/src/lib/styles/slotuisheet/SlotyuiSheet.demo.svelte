@@ -15,8 +15,10 @@
 			be(element).classAdd(objTag.class).setStyle(objTag.style);
 			console.log(element, changes);
 
-			be(element).up('[container]').setStyle(objTag.style);
-			console.log(be(element).up('[container]').node);
+			be(element).up('[container]', ({ be: container }) => {
+				container.setStyle(objTag.style);
+				console.log(container.node);
+			});
 		}
 	});
 </script>

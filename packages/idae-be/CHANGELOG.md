@@ -1,5 +1,27 @@
 # Changelog
 
+## [1.97.0] - 2026-08-07
+**Features:**
+- events: delegated on/off overloads — on(event, selector, handler) fires only when the target matches a descendant selector; handler invoked with the matched element; removable via the same (event, selector, handler) triple
+- forms: new FormHandler — serializeForm (query string or asJSON), fieldValue (per-field-type extraction), getFormElements
+- effects: new EffectsHandler — fade/appear/slideUp/slideDown/move/scale on the native Web Animations API with a synchronous fallback when el.animate is unavailable
+- http: onFailure/timeout/params on updateHttp/insertHttp and Be.fetch — error bodies are no longer injected and network failures no longer reject silently
+- position: getDimensions (display:none aware), cumulativeOffset, viewportOffset
+- utils: toArray/toWords/range collection helpers; createClass/extendObject runtime class helpers
+- docs: README, SKILL.md and api-reference updated for all new modules
+
+**Fixes:**
+- walk: methodize() now returns the root Be (callback-only contract) instead of the found elements — up/next/previous/children/closest/firstChild/lastChild no longer allow jQuery-style chaining off their return value
+- styles: get() reads inline styles only and returns null when unset, matching its documented contract
+- types: resolve all outstanding TypeScript errors (strict tsc now passes with 0 errors)
+
+**Breaking changes:**
+- walk traversal methods (up/next/previous/children/closest/firstChild/lastChild/findAll) always return the root; results must be read through the callback
+- updateHttp/insertHttp without onFailure now throw on non-ok responses instead of injecting the error body
+- Be.fetch now throws on non-ok responses instead of parsing the error body as JSON
+- getStyle no longer falls back to getComputedStyle; it reads inline styles only
+
+
 ## [1.96.3] - 2026-07-29
 **Features:**
 - add Playwright screenshot scripts and stubs for server-only packages

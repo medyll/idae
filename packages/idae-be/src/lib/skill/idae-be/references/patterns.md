@@ -128,13 +128,15 @@ be('#myForm').on('submit', (e) => {
   e.preventDefault();
   let valid = true;
 
-  be('#myForm input[required]').findAll('input').eachNode?.((input: HTMLElement) => {
-    if (!(input as HTMLInputElement).value.trim()) {
-      be(input).addClass('error').setAttr('aria-invalid', 'true');
-      valid = false;
-    } else {
-      be(input).removeClass('error').deleteAttr('aria-invalid');
-    }
+  be('#myForm input[required]').findAll('input', ({ be: inputs }) => {
+    inputs.eachNode((input: HTMLElement) => {
+      if (!(input as HTMLInputElement).value.trim()) {
+        be(input).addClass('error').setAttr('aria-invalid', 'true');
+        valid = false;
+      } else {
+        be(input).removeClass('error').deleteAttr('aria-invalid');
+      }
+    });
   });
 
   if (!valid) {

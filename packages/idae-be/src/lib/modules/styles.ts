@@ -35,13 +35,13 @@ export class StylesHandler implements CommonHandler<StylesHandler, Partial<BeSty
 		this.beElement.eachNode(() => {
 			switch (method) {
 				case 'set':
-					this.set(args);
+					this.set(args as Record<string, string> | string);
 					break;
 				case 'get':
-					this.get(args);
+					this.get(args as string);
 					break;
 				case 'unset':
-					this.unset(args);
+					this.unset(args as string);
 					break;
 			}
 		});
@@ -105,19 +105,25 @@ export class StylesHandler implements CommonHandler<StylesHandler, Partial<BeSty
 	 * const color = beInstance.getStyle('color');
 	 * console.log(color); // Output: "red"
 	 */
+	/**
+	 * Gets the inline value of a CSS property for the first matched element.
+	 * Only inline styles (set via `setStyle` or the `style` attribute) are read —
+	 * values coming from stylesheets are not resolved, so a property that was
+	 * never set (or was removed with `unsetStyle`) returns null.
+	 * @param key - The CSS property name (camelCase or kebab-case).
+	 * @returns The value of the CSS property, or null if not set inline.
+	 * @example
+	 * // HTML: <div id="test" style="color: red;"></div>
+	 * const beInstance = be('#test');
+	 * const color = beInstance.getStyle('color');
+	 * console.log(color); // Output: "red"
+	 */
 	get(key: string): string | null {
 		let css: string | null = null;
 		this.beElement.eachNode((el) => {
-			// Prioritize inline styles
-			css = el.style[key as any] || null;
-
-			// Fallback to computed styles if inline style is not set
-			if (!css) {
-				const computedStyle = window.getComputedStyle(el);
-				css = computedStyle.getPropertyValue(key).trim();
-			}
+			css = el.style.getPropertyValue(toKebabCase(key)).trim() || null;
 		}, true);
-		return css || null;
+		return css;
 	}
 	/**
 	 * Removes a CSS property from the selected element(s).

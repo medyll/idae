@@ -156,10 +156,27 @@ data(actions: Partial<{
 ```ts
 on(eventName: string, handler: EventListener, options?: EventListenerOptions, callback?: HandlerCallBackFn): Be
 
+// Delegated form — fires only when the event target matches a descendant fitting `selector`;
+// handler is invoked with `this` set to the matched descendant (not the bound root)
+on(eventName: string, selector: string, handler: EventListener, options?: EventListenerOptions, callback?: HandlerCallBackFn): Be
+
 off(eventName: string, handler: EventListener, options?: EventListenerOptions, callback?: HandlerCallBackFn): Be
+
+// Removes a delegated listener registered with the same (eventName, selector, handler) triple
+off(eventName: string, selector: string, handler: EventListener, options?: EventListenerOptions, callback?: HandlerCallBackFn): Be
 
 fire(eventName: string, detail?: unknown, options?: EventInit, callback?: HandlerCallBackFn): Be
 // Dispatches a CustomEvent — detail is passed as event.detail
+```
+
+**Delegated example:**
+
+```ts
+// One listener on the list, works for items added later
+be('#list').on('click', 'li.item', function (e) {
+  be(this as HTMLElement).toggleClass('selected');
+});
+be('#list').off('click', 'li.item', handler); // removed by the same triple
 ```
 
 **Handler API:**
@@ -343,26 +360,41 @@ walk(actions: {
 
 Fetches HTML from a URL and injects it into the element. Uses `fetch` internally.
 
+**`HttpRequestOptions`:**
+
+```ts
+interface HttpRequestOptions {
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  data?: Record<string, unknown>;
+  headers?: Record<string, string>;
+  params?: Record<string, string>;  // serialized onto the URL (query string)
+  timeout?: number;                 // aborts the request after N ms (AbortController)
+  onFailure?: (response: Response | null, error?: unknown) => void;
+  // called INSTEAD of the content callback when !response.ok (response set)
+  // or the fetch throws / times out (response null, error set).
+  // Without onFailure, failures throw.
+}
+```
+
 **Direct methods:**
 
 ```ts
 updateHttp(
   url: string,
-  optionsOrCallback?: {
-    method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    data?: Record<string, unknown>;
-    headers?: Record<string, string>;
-  } | HandlerCallBackFn,
+  optionsOrCallback?: HttpRequestOptions | HandlerCallBackFn,
   callback?: HandlerCallBackFn
 ): Promise<Be>
-// Fetches HTML and replaces element's innerHTML
+// Fetches HTML and replaces element's innerHTML.
+// A non-ok response is NOT injected: onFailure is called (or the error is thrown).
 
 insertHttp(
   url: string,
   mode?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend',
+  options?: Pick<HttpRequestOptions, 'params' | 'timeout' | 'onFailure'>,
   callback?: HandlerCallBackFn
 ): Promise<Be>
 // Fetches HTML and inserts at position (default: beforeend)
+// `callback` may take the options slot when options are omitted.
 ```
 
 **Handler API:**
@@ -371,15 +403,22 @@ insertHttp(
 http(actions: {
   update?: {
     url: string;
-    options?: { method?: string; data?: Record<string, unknown>; headers?: Record<string, string> };
+    options?: HttpRequestOptions;
     callback?: HandlerCallBackFn;
   };
   insert?: {
     url: string;
     mode?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend';
+    options?: Pick<HttpRequestOptions, 'params' | 'timeout' | 'onFailure'>;
     callback?: HandlerCallBackFn;
   };
 }): Be
+```
+
+**`Be.fetch` (JSON helper)** also supports `params` and `timeout`, and throws on non-ok responses:
+
+```ts
+be().fetch({ url: '/api/items', params: { page: '1' }, timeout: 5000 }); // Promise<unknown> (parsed JSON)
 ```
 
 ---
@@ -416,6 +455,21 @@ snapTo(
   callback?: HandlerCallBackFn
 ): Be
 // Snaps this element to a grid/target position
+
+getDimensions(callback?: HandlerCallBackFn): Be
+// { width, height } via callback fragment. display:none elements are temporarily
+// made measurable (position:absolute; visibility:hidden; display:block), measured, restored.
+
+cumulativeOffset(callback?: HandlerCallBackFn): Be
+// { left, top } relative to the document (rect + scroll), via callback fragment.
+
+viewportOffset(callback?: HandlerCallBackFn): Be
+// { left, top } relative to the viewport (getBoundingClientRect), via callback fragment.
+```
+
+```ts
+be('#box').getDimensions(({ fragment }) => console.log(fragment));   // { width: 120, height: 40 }
+be('#box').viewportOffset(({ fragment }) => console.log(fragment));  // { left: 10, top: 32 }
 ```
 
 **`PositionSnapOptions` type:**
@@ -465,6 +519,115 @@ clearInterval(): Be
   method?:  string;    // 'timeout' | 'interval'
 }
 ```
+
+---
+
+## Forms module
+
+Form serialization and per-field value access. Wired explicitly on `Be`
+(not via the generic attach) to expose unambiguous names.
+
+**Direct methods:**
+
+```ts
+serializeForm(options?: { asJSON?: boolean }, callback?: HandlerCallBackFn): string | Record<string, unknown>
+// URL-encoded query string by default; plain object with asJSON.
+// Skips disabled/nameless fields, unchecked checkboxes/radios, buttons and file inputs.
+// <select multiple> → repeated entries (query string) or array of values (asJSON).
+
+fieldValue(callback?: HandlerCallBackFn): string | string[] | boolean | undefined
+// Value of a single wrapped field: checkbox/radio → checked state,
+// <select multiple> → array of selected values, anything else → .value.
+
+getFormElements(callback?: HandlerCallBackFn): HTMLElement[]
+// Array.from(form.elements)
+```
+
+**Handler API:**
+
+```ts
+form(actions: {
+  serialize?:   { options?: { asJSON?: boolean }; callback?: HandlerCallBackFn };
+  getElements?: { callback?: HandlerCallBackFn };
+  getValue?:    { callback?: HandlerCallBackFn };
+}): Be
+```
+
+```ts
+be('#myForm').serializeForm();                  // "name=john&tags=a&tags=b"
+be('#myForm').serializeForm({ asJSON: true });  // { name: 'john', tags: ['a', 'b'] }
+be('#agree').fieldValue();                      // true (checked checkbox)
+```
+
+---
+
+## Effects module
+
+Animation helpers on the native Web Animations API (`el.animate`) — no dependency.
+When `el.animate` is unavailable, final styles are applied synchronously and the
+callback fires immediately.
+
+**Direct methods** (all take `options` + `callback`, return the root `Be`):
+
+```ts
+fade(options?: EffectOptions, callback?: HandlerCallBackFn): Be
+// opacity → 0, then display:none
+
+appear(options?: EffectOptions, callback?: HandlerCallBackFn): Be
+// opacity 0 → 1 (unhides first if display:none)
+
+slideUp(options?: EffectOptions, callback?: HandlerCallBackFn): Be
+// collapses height, then display:none
+
+slideDown(options?: EffectOptions, callback?: HandlerCallBackFn): Be
+// expands height from hidden
+
+move(options?: MoveOptions, callback?: HandlerCallBackFn): Be
+// { x?, y? } px translation, left applied as final style
+
+scale(options?: ScaleOptions, callback?: HandlerCallBackFn): Be
+// { from?, to? } scale factors, left applied as final style
+
+interface EffectOptions { duration?: number; easing?: string; delay?: number } // defaults: 400, 'ease', 0
+```
+
+**Handler API:**
+
+```ts
+effects(actions: {
+  fade?:      { options?: EffectOptions; callback?: HandlerCallBackFn };
+  appear?:    { options?: EffectOptions; callback?: HandlerCallBackFn };
+  slideUp?:   { options?: EffectOptions; callback?: HandlerCallBackFn };
+  slideDown?: { options?: EffectOptions; callback?: HandlerCallBackFn };
+  move?:      { options?: MoveOptions;   callback?: HandlerCallBackFn };
+  scale?:     { options?: ScaleOptions;  callback?: HandlerCallBackFn };
+}): Be
+```
+
+```ts
+be('#toast').appear({ duration: 200 });
+be('#panel').slideUp({ duration: 300 }, ({ be }) => console.log('collapsed'));
+```
+
+---
+
+## Collection & class utilities
+
+Plain exported functions (not handlers — they operate on values, not elements).
+
+```ts
+toArray<T>(iterableOrArrayLike: Iterable<T> | ArrayLike<T>): T[]
+toWords(str: string): string[]                      // whitespace-split, empties dropped
+range(start: number, end: number, exclusive?: boolean): number[]  // inclusive by default, descending ok
+
+createClass(spec: Record<string, Function>, Base?: Function): new (...args: unknown[]) => object
+// Builds an ES class at runtime; spec.initialize acts as constructor body.
+// Prefer native `class` syntax unless the spec itself is dynamic.
+
+extendObject<T, S>(target: T, source: S): T & S     // Object.assign semantics
+```
+
+For key/value stores, prefer the native `Map` — no Hash-like class is shipped.
 
 ---
 

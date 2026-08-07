@@ -55,22 +55,76 @@ export class EventsHandler implements CommonHandler<EventsHandler, EventHandlerH
 
 	/**
 	 * Adds an event listener to the element(s).
+	 *
+	 * Two forms are supported:
+	 * - Direct: `on(eventName, handler, options?, callback?)` — binds on the matched element(s).
+	 * - Delegated: `on(eventName, selector, handler, options?, callback?)` — binds one
+	 *   listener per matched element, but only invokes `handler` when the event's actual
+	 *   target matches a descendant of the bound element that fits `selector`. `handler`
+	 *   is invoked with `this` set to the matched descendant (not the bound root).
+	 *
 	 * @param eventName - The name of the event to listen for.
-	 * @param handler - The event handler function.
-	 * @param options - Optional event listener options.
+	 * @param selectorOrHandler - A descendant selector (delegated form) or the event handler.
+	 * @param handlerOrOptions - The event handler (delegated form) or listener options.
+	 * @param optionsOrCallback - Listener options or the callback function.
 	 * @param callback - Optional callback function to execute after adding the event listener.
 	 * @returns The Be instance for method chaining.
 	 * @example
 	 * // HTML: <div id="test"></div>
 	 * const beInstance = be('#test');
 	 * beInstance.on('click', () => console.log('Clicked!')); // Adds a click event listener
+	 *
+	 * // Delegated: fires only when a '.item' descendant is clicked
+	 * beInstance.on('click', '.item', function (e) { console.log(this); });
 	 */
 	on(
 		eventName: string,
-		handler: EventListener,
-		options?: boolean | AddEventListenerOptions,
+		selectorOrHandler: string | EventListener,
+		handlerOrOptions?: EventListener | boolean | AddEventListenerOptions,
+		optionsOrCallback?: boolean | AddEventListenerOptions | HandlerCallBackFn,
 		callback?: HandlerCallBackFn
 	) {
+		if (typeof selectorOrHandler === 'string') {
+			const selector = selectorOrHandler;
+			const handler = handlerOrOptions as EventListener;
+			let options: boolean | AddEventListenerOptions | undefined;
+			if (typeof optionsOrCallback === 'function') {
+				callback = optionsOrCallback;
+			} else {
+				options = optionsOrCallback;
+			}
+
+			this.beElement.eachNode((el) => {
+				const wrapper: EventListener = (event) => {
+					const target = event.target as Element | null;
+					const matched = target?.closest?.(selector);
+					if (matched && matched !== el && el.contains(matched)) {
+						handler.call(matched, event);
+					}
+				};
+				this.trackDelegated(el, eventName, selector, handler, wrapper);
+				el.addEventListener(eventName, wrapper, options);
+				callback?.({
+					fragment: undefined,
+					be: be(el),
+					root: this.beElement
+				});
+			});
+			return this.beElement;
+		}
+
+		const handler = selectorOrHandler;
+		let options: boolean | AddEventListenerOptions | undefined;
+		if (typeof handlerOrOptions === 'function') {
+			// on(eventName, handler, callback)
+			callback = handlerOrOptions as unknown as HandlerCallBackFn;
+		} else {
+			options = handlerOrOptions as boolean | AddEventListenerOptions | undefined;
+			if (typeof optionsOrCallback === 'function') {
+				callback = optionsOrCallback;
+			}
+		}
+
 		this.beElement.eachNode((el) => {
 			el.addEventListener(eventName, handler, options);
 			callback?.({
@@ -84,24 +138,56 @@ export class EventsHandler implements CommonHandler<EventsHandler, EventHandlerH
 
 	/**
 	 * Removes an event listener from the element(s).
-	 * @param eventName - The name of the event to remove.
-	 * @param handler - The event handler function.
-	 * @param options - Optional event listener options.
-	 * @param callback - Optional callback function to execute after removing the event listener.
-	 * @returns The Be instance for method chaining.
-	 * @example
-	 * // HTML: <div id="test"></div>
-	 * const beInstance = be('#test');
-	 * const handler = () => console.log('Clicked!');
-	 * beInstance.on('click', handler); // Adds a click event listener
-	 * beInstance.off('click', handler); // Removes the click event listener
+	 *
+	 * Two forms are supported:
+	 * - Direct: `off(eventName, handler, options?, callback?)`
+	 * - Delegated: `off(eventName, selector, handler, options?, callback?)` — removes a
+	 *   delegated listener previously registered with the same `(eventName, selector, handler)`
+	 *   triple.
 	 */
 	off(
 		eventName: string,
-		handler: EventListener,
-		options?: boolean | AddEventListenerOptions,
+		selectorOrHandler: string | EventListener,
+		handlerOrOptions?: EventListener | boolean | AddEventListenerOptions,
+		optionsOrCallback?: boolean | AddEventListenerOptions | HandlerCallBackFn,
 		callback?: HandlerCallBackFn
 	) {
+		if (typeof selectorOrHandler === 'string') {
+			const selector = selectorOrHandler;
+			const handler = handlerOrOptions as EventListener;
+			let options: boolean | AddEventListenerOptions | undefined;
+			if (typeof optionsOrCallback === 'function') {
+				callback = optionsOrCallback;
+			} else {
+				options = optionsOrCallback;
+			}
+
+			this.beElement.eachNode((el) => {
+				const wrapper = this.delegatedFor(el, eventName, selector, handler);
+				if (wrapper) {
+					el.removeEventListener(eventName, wrapper, options);
+					this.untrackDelegated(el, eventName, selector, handler);
+				}
+				callback?.({
+					fragment: undefined,
+					be: be(el),
+					root: this.beElement
+				});
+			});
+			return this.beElement;
+		}
+
+		const handler = selectorOrHandler;
+		let options: boolean | AddEventListenerOptions | undefined;
+		if (typeof handlerOrOptions === 'function') {
+			callback = handlerOrOptions as unknown as HandlerCallBackFn;
+		} else {
+			options = handlerOrOptions as boolean | AddEventListenerOptions | undefined;
+			if (typeof optionsOrCallback === 'function') {
+				callback = optionsOrCallback;
+			}
+		}
+
 		this.beElement.eachNode((el) => {
 			el.removeEventListener(eventName, handler, options);
 			callback?.({
@@ -112,6 +198,64 @@ export class EventsHandler implements CommonHandler<EventsHandler, EventHandlerH
 		});
 
 		return this.beElement;
+	}
+
+	/**
+	 * Delegated listeners registry: the actual DOM listener is a wrapper closure,
+	 * so we keep a (handler -> wrapper) map per element/event/selector triple
+	 * to be able to remove it later.
+	 */
+	private static delegated = new WeakMap<Element, Map<string, Map<EventListener, EventListener>>>();
+
+	private static delegatedKey(eventName: string, selector: string): string {
+		return `${eventName}::${selector}`;
+	}
+
+	private trackDelegated(
+		el: Element,
+		eventName: string,
+		selector: string,
+		handler: EventListener,
+		wrapper: EventListener
+	): void {
+		let perEl = EventsHandler.delegated.get(el);
+		if (!perEl) {
+			perEl = new Map();
+			EventsHandler.delegated.set(el, perEl);
+		}
+		const key = EventsHandler.delegatedKey(eventName, selector);
+		let perKey = perEl.get(key);
+		if (!perKey) {
+			perKey = new Map();
+			perEl.set(key, perKey);
+		}
+		perKey.set(handler, wrapper);
+	}
+
+	private delegatedFor(
+		el: Element,
+		eventName: string,
+		selector: string,
+		handler: EventListener
+	): EventListener | undefined {
+		return EventsHandler.delegated
+			.get(el)
+			?.get(EventsHandler.delegatedKey(eventName, selector))
+			?.get(handler);
+	}
+
+	private untrackDelegated(
+		el: Element,
+		eventName: string,
+		selector: string,
+		handler: EventListener
+	): void {
+		const perEl = EventsHandler.delegated.get(el);
+		const key = EventsHandler.delegatedKey(eventName, selector);
+		const perKey = perEl?.get(key);
+		perKey?.delete(handler);
+		if (perKey && perKey.size === 0) perEl?.delete(key);
+		if (perEl && perEl.size === 0) EventsHandler.delegated.delete(el);
 	}
 
 	/**

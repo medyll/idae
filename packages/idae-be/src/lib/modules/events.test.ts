@@ -99,4 +99,68 @@ describe('EventsHandler', () => {
 		expect(mockHandler1).not.toHaveBeenCalled();
 		expect(mockHandler2).not.toHaveBeenCalled();
 	});
+
+	describe('event delegation', () => {
+		beforeEach(() => {
+			document.body.innerHTML = `
+				<div id="root">
+					<button class="item" id="btn1">one</button>
+					<span class="other" id="span1">other</span>
+				</div>
+			`;
+		});
+
+		it('should fire delegated handler only when the target matches the selector', () => {
+			const mockHandler = vi.fn();
+			be('#root').on('click', '.item', mockHandler);
+
+			document.querySelector('#btn1')?.dispatchEvent(new Event('click', { bubbles: true }));
+			document.querySelector('#span1')?.dispatchEvent(new Event('click', { bubbles: true }));
+
+			expect(mockHandler).toHaveBeenCalledTimes(1);
+		});
+
+		it('should invoke delegated handler with the matched element, not the bound root', () => {
+			let receivedThis: unknown = null;
+			const handler = function (this: unknown) {
+				receivedThis = this;
+			} as EventListener;
+
+			be('#root').on('click', '.item', handler);
+			document.querySelector('#btn1')?.dispatchEvent(new Event('click', { bubbles: true }));
+
+			expect(receivedThis).toBe(document.querySelector('#btn1'));
+		});
+
+		it('should fire for descendants of the matched element', () => {
+			document.body.innerHTML = `
+				<div id="root">
+					<div class="item" id="outer"><span id="inner">inner</span></div>
+				</div>
+			`;
+			const mockHandler = vi.fn();
+			be('#root').on('click', '.item', mockHandler);
+
+			document.querySelector('#inner')?.dispatchEvent(new Event('click', { bubbles: true }));
+			expect(mockHandler).toHaveBeenCalledTimes(1);
+		});
+
+		it('should remove a delegated listener with the same (eventName, selector, handler) triple', () => {
+			const mockHandler = vi.fn();
+			be('#root').on('click', '.item', mockHandler);
+			be('#root').off('click', '.item', mockHandler);
+
+			document.querySelector('#btn1')?.dispatchEvent(new Event('click', { bubbles: true }));
+			expect(mockHandler).not.toHaveBeenCalled();
+		});
+
+		it('should not fire after off even when a different Be instance wraps the element', () => {
+			const mockHandler = vi.fn();
+			be(document.querySelector('#root') as HTMLElement).on('click', '.item', mockHandler);
+			be('#root').off('click', '.item', mockHandler);
+
+			document.querySelector('#btn1')?.dispatchEvent(new Event('click', { bubbles: true }));
+			expect(mockHandler).not.toHaveBeenCalled();
+		});
+	});
 });

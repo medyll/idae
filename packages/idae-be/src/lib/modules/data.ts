@@ -22,7 +22,7 @@ export type DataHandlerHandle = {
 /**
  * Handles operations on `data-*` attributes for Be elements.
  */
-export class DataHandler implements CommonHandler<DataHandler> {
+export class DataHandler implements CommonHandler<DataHandler, Partial<DataHandlerHandle>> {
 	private beElement: Be;
 	static methods = Object.values(dataMethods);
 
@@ -41,10 +41,7 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	 * @returns The Be element for chaining.
 	 */
 	handle(actions: Partial<DataHandlerHandle>): Be {
-		const { method, props } = BeUtils.resolveIndirection<DataHandler>(
-			this,
-			actions as unknown as keyof DataHandler
-		);
+		const { method, props } = BeUtils.resolveIndirection<DataHandler>(this, actions);
 		switch (method) {
 			case 'set':
 			case 'delete':
@@ -131,7 +128,12 @@ export class DataHandler implements CommonHandler<DataHandler> {
 	 */
 	getKey(key: string | string[]): string | null {
 		if (this.beElement.isWhat !== 'element') return null;
-		return (this.beElement.inputNode as HTMLElement).dataset[key] || null;
+		const keys = Array.isArray(key) ? key : [key];
+		for (const k of keys) {
+			const value = (this.beElement.inputNode as HTMLElement).dataset[k];
+			if (value !== undefined) return value;
+		}
+		return null;
 	}
 
 	/**
