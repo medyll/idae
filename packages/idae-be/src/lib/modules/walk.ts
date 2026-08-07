@@ -351,6 +351,10 @@ export class WalkHandler
 			requested: Be.elem(ret)
 		});
 
+		// Contract: traversal methods always return the root (`this.beElement`);
+		// results are reached through `callback`'s `be`. methodize()-built
+		// methods (up/next/previous/children/closest/firstChild/lastChild)
+		// follow the same rule.
 		return this.beElement;
 	}
 
@@ -375,7 +379,7 @@ export class WalkHandler
 					fragment: 'result',
 					requested: resultBe
 				});
-				return resultBe;
+				return this.beElement;
 			} catch (e) {
 				console.error(`Error in methodize for ${method}:`, e);
 			}

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { be } from '../be.js';
 
 describe('HttpHandler', () => {
@@ -8,6 +8,8 @@ describe('HttpHandler', () => {
 
 		// Mock fetch
 		global.fetch = vi.fn().mockResolvedValue({
+			ok: true,
+			status: 200,
 			text: vi.fn().mockResolvedValue('<p>Loaded content</p>')
 		}) as unknown as typeof fetch;
 	});
@@ -49,7 +51,7 @@ describe('HttpHandler', () => {
 			expect(be.html).toContain('<p>Loaded content</p>');
 		});
 
-		expect(fetch).toHaveBeenCalledWith('/content.html');
+		expect(fetch).toHaveBeenCalledWith('/content.html', {});
 	});
 
 	it('should insert content with three arguments using insertHttp', async () => {
@@ -57,7 +59,7 @@ describe('HttpHandler', () => {
 			expect(be.html).toContain('<p>Loaded content</p>');
 		});
 
-		expect(fetch).toHaveBeenCalledWith('/content.html');
+		expect(fetch).toHaveBeenCalledWith('/content.html', {});
 	});
 
 	it('should insert content at the default position (beforeend) using insertHttp', async () => {
@@ -65,6 +67,90 @@ describe('HttpHandler', () => {
 			expect(be.html).toContain('<p>Loaded content</p>');
 		});
 
-		expect(fetch).toHaveBeenCalledWith('/content.html');
+		expect(fetch).toHaveBeenCalledWith('/content.html', {});
+	});
+
+	it('should call onFailure and skip content injection on non-ok response', async () => {
+		const errorResponse = {
+			ok: false,
+			status: 500,
+			text: vi.fn().mockResolvedValue('<p>Error body</p>')
+		};
+		global.fetch = vi.fn().mockResolvedValue(errorResponse) as unknown as typeof fetch;
+
+		const onFailure = vi.fn();
+		const callback = vi.fn();
+
+		await be('#test').updateHttp('/content.html', { onFailure }, callback);
+
+		expect(onFailure).toHaveBeenCalledWith(errorResponse);
+		expect(callback).not.toHaveBeenCalled();
+		expect(document.getElementById('test')?.innerHTML).toBe('');
+	});
+
+	it('should call onFailure with null response when fetch throws', async () => {
+		const networkError = new Error('network down');
+		global.fetch = vi.fn().mockRejectedValue(networkError) as unknown as typeof fetch;
+
+		const onFailure = vi.fn();
+		const callback = vi.fn();
+
+		await be('#test').updateHttp('/content.html', { onFailure }, callback);
+
+		expect(onFailure).toHaveBeenCalledWith(null, networkError);
+		expect(callback).not.toHaveBeenCalled();
+	});
+
+	it('should rethrow when fetch fails and no onFailure is provided', async () => {
+		global.fetch = vi.fn().mockRejectedValue(new Error('network down')) as unknown as typeof fetch;
+
+		await expect(be('#test').updateHttp('/content.html')).rejects.toThrow('network down');
+	});
+
+	it('should serialize params onto the URL', async () => {
+		await be('#test').updateHttp('/content.html', { params: { a: '1', b: 'two words' } });
+
+		expect(fetch).toHaveBeenCalledWith(
+			'/content.html?a=1&b=two+words',
+			expect.objectContaining({ method: 'GET' })
+		);
+	});
+
+	it('should abort the request after the timeout', async () => {
+		vi.useFakeTimers();
+		try {
+			global.fetch = vi.fn().mockImplementation(
+				(_url: string, init?: RequestInit) =>
+					new Promise((_resolve, reject) => {
+						init?.signal?.addEventListener('abort', () =>
+							reject(new DOMException('Aborted', 'AbortError'))
+						);
+					})
+			) as unknown as typeof fetch;
+
+			const onFailure = vi.fn();
+			const promise = be('#test').updateHttp('/content.html', { timeout: 100, onFailure });
+
+			await vi.advanceTimersByTimeAsync(150);
+			await promise;
+
+			expect(onFailure).toHaveBeenCalledWith(null, expect.any(DOMException));
+		} finally {
+			vi.useRealTimers();
+		}
+	});
+
+	it('should call onFailure for insertHttp on non-ok response', async () => {
+		const errorResponse = { ok: false, status: 404, text: vi.fn().mockResolvedValue('nope') };
+		global.fetch = vi.fn().mockResolvedValue(errorResponse) as unknown as typeof fetch;
+
+		const onFailure = vi.fn();
+		const callback = vi.fn();
+
+		await be('#test').insertHttp('/missing.html', 'beforeend', { onFailure }, callback);
+
+		expect(onFailure).toHaveBeenCalledWith(errorResponse);
+		expect(callback).not.toHaveBeenCalled();
+		expect(document.getElementById('test')?.innerHTML).toBe('');
 	});
 });

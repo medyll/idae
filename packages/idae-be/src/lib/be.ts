@@ -11,6 +11,8 @@ import { WalkHandler, type WalkHandlerHandle } from './modules/walk.js';
 import { TextHandler, type TextHandlerHandle } from './modules/text.js';
 import { TimersHandler, type TimerHandlerHandle } from './modules/timers.js';
 import { HttpHandler, type HttpHandlerHandle } from './modules/http.js';
+import { FormHandler, type FormHandlerHandle } from './modules/forms.js';
+import { EffectsHandler, type EffectsHandlerHandle } from './modules/effects.js';
 
 export class Be {
 	[key: string]: unknown; // Add an index signature to allow dynamic property assignment
@@ -44,6 +46,9 @@ export class Be {
 	clonePosition!: PositionHandler['clonePosition'];
 	overlapPosition!: PositionHandler['overlapPosition'];
 	snapTo!: PositionHandler['snapTo'];
+	getDimensions!: PositionHandler['getDimensions'];
+	cumulativeOffset!: PositionHandler['cumulativeOffset'];
+	viewportOffset!: PositionHandler['viewportOffset'];
 	// dom
 	dom!: (actions: DomHandlerHandle) => Be;
 	private domHandler!: DomHandler;
@@ -111,6 +116,21 @@ export class Be {
 	private httpHandler!: HttpHandler;
 	updateHttp!: HttpHandler['update'];
 	insertHttp!: HttpHandler['insert'];
+	// forms
+	form!: (actions: FormHandlerHandle) => Be;
+	private formHandler!: FormHandler;
+	serializeForm!: FormHandler['serialize'];
+	fieldValue!: FormHandler['getValue'];
+	getFormElements!: FormHandler['getElements'];
+	// effects
+	effects!: (actions: EffectsHandlerHandle) => Be;
+	private effectsHandler!: EffectsHandler;
+	fade!: EffectsHandler['fade'];
+	appear!: EffectsHandler['appear'];
+	slideUp!: EffectsHandler['slideUp'];
+	slideDown!: EffectsHandler['slideDown'];
+	move!: EffectsHandler['move'];
+	scale!: EffectsHandler['scale'];
 
 	private constructor(input: HTMLElement | HTMLElement[] | Be | string) {
 		if (input instanceof Be) {
@@ -178,6 +198,20 @@ export class Be {
 		this.httpHandler = new HttpHandler(this);
 		this.http = this.handle(this.httpHandler) as (actions: HttpHandlerHandle) => Be;
 		this.attach(HttpHandler, 'Http');
+
+		// forms — wired explicitly (not via attach) so the exposed names are
+		// serializeForm/fieldValue/getFormElements instead of the generic
+		// serialize/getValue, and to avoid any collision with future handlers.
+		this.formHandler = new FormHandler(this);
+		this.form = this.handle(this.formHandler) as (actions: FormHandlerHandle) => Be;
+		this.serializeForm = this.formHandler.serialize.bind(this.formHandler);
+		this.fieldValue = this.formHandler.getValue.bind(this.formHandler);
+		this.getFormElements = this.formHandler.getElements.bind(this.formHandler);
+
+		// effects
+		this.effectsHandler = new EffectsHandler(this);
+		this.effects = this.handle(this.effectsHandler) as (actions: EffectsHandlerHandle) => Be;
+		this.attach(EffectsHandler);
 	}
 
 	/**
@@ -307,12 +341,40 @@ export class Be {
 		method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS' | 'HEAD' | 'CONNECT' | 'TRACE';
 		data?: T;
 		headers?: Record<string, string>;
+		/** Query-string parameters serialized onto the URL. */
+		params?: Record<string, string>;
+		/** Abort the request after this many milliseconds. */
+		timeout?: number;
 	}) {
-		return fetch(options.url, {
+		let url = options.url;
+		if (options.params) {
+			const qs = new URLSearchParams(options.params).toString();
+			if (qs) url += (url.includes('?') ? '&' : '?') + qs;
+		}
+
+		let signal: AbortSignal | undefined;
+		let timer: ReturnType<typeof setTimeout> | undefined;
+		if (options.timeout) {
+			const controller = new AbortController();
+			timer = setTimeout(() => controller.abort(), options.timeout);
+			signal = controller.signal;
+		}
+
+		return fetch(url, {
 			method: options.method || 'GET',
 			body: options.data ? JSON.stringify(options.data) : undefined,
-			headers: options.headers || {}
-		}).then((response) => response.json());
+			headers: options.headers || {},
+			signal
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error(`Be.fetch: request to ${url} failed with status ${response.status}`);
+				}
+				return response.json();
+			})
+			.finally(() => {
+				if (timer) clearTimeout(timer);
+			});
 	}
 
 	/**

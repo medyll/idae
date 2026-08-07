@@ -10,7 +10,10 @@ import { BeUtils } from '../utils.js';
 enum positionMethods {
 	clonePosition = 'clonePosition',
 	overlapPosition = 'overlapPosition',
-	snapTo = 'snapTo'
+	snapTo = 'snapTo',
+	getDimensions = 'getDimensions',
+	cumulativeOffset = 'cumulativeOffset',
+	viewportOffset = 'viewportOffset'
 }
 
 export interface PositionHandlerHandle {
@@ -20,6 +23,9 @@ export interface PositionHandlerHandle {
 		options: PositionSnapOptions;
 	} & HandlerCallBack;
 	snapTo?: { target: string | HTMLElement; options?: PositionSnapOptions } & HandlerCallBack;
+	getDimensions?: HandlerCallBack;
+	cumulativeOffset?: HandlerCallBack;
+	viewportOffset?: HandlerCallBack;
 }
 export class PositionHandler implements CommonHandler<PositionHandler, PositionHandlerHandle> {
 	private beElement: Be;
@@ -42,6 +48,15 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 					break;
 				case 'snapTo':
 					this.snapTo(props.target, props.options, props.callback);
+					break;
+				case 'getDimensions':
+					this.getDimensions(props.callback);
+					break;
+				case 'cumulativeOffset':
+					this.cumulativeOffset(props.callback);
+					break;
+				case 'viewportOffset':
+					this.viewportOffset(props.callback);
 					break;
 			}
 		});
@@ -243,6 +258,106 @@ export class PositionHandler implements CommonHandler<PositionHandler, PositionH
 		});
 
 		return this.beElement;
+	}
+
+	/**
+	 * Returns the dimensions of the element. For elements with `display: none`,
+	 * the element is temporarily made measurable (`position: absolute;
+	 * visibility: hidden; display: block`), measured, then restored.
+	 * The result is passed to the callback via `fragment`.
+	 * @param callback - Optional callback receiving `{ width, height }` as `fragment`.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * be('#box').getDimensions(({ fragment }) => console.log(fragment)); // { width: 120, height: 40 }
+	 */
+	getDimensions(callback?: HandlerCallBackFn): Be {
+		this.beElement.eachNode((el) => {
+			const dimensions = PositionHandler.measure(el);
+			callback?.({
+				fragment: dimensions,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+
+		return this.beElement;
+	}
+
+	/**
+	 * Returns the element's position relative to the document, accounting for scroll.
+	 * The result is passed to the callback via `fragment`.
+	 * @param callback - Optional callback receiving `{ left, top }` as `fragment`.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * be('#box').cumulativeOffset(({ fragment }) => console.log(fragment)); // { left: 10, top: 240 }
+	 */
+	cumulativeOffset(callback?: HandlerCallBackFn): Be {
+		this.beElement.eachNode((el) => {
+			const rect = el.getBoundingClientRect();
+			const offset = {
+				left: rect.left + (window.scrollX || window.pageXOffset || 0),
+				top: rect.top + (window.scrollY || window.pageYOffset || 0)
+			};
+			callback?.({
+				fragment: offset,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+
+		return this.beElement;
+	}
+
+	/**
+	 * Returns the element's position relative to the viewport
+	 * (`getBoundingClientRect()` directly, no scroll adjustment).
+	 * The result is passed to the callback via `fragment`.
+	 * @param callback - Optional callback receiving `{ left, top }` as `fragment`.
+	 * @returns The Be instance for method chaining.
+	 * @example
+	 * be('#box').viewportOffset(({ fragment }) => console.log(fragment)); // { left: 10, top: 32 }
+	 */
+	viewportOffset(callback?: HandlerCallBackFn): Be {
+		this.beElement.eachNode((el) => {
+			const rect = el.getBoundingClientRect();
+			const offset = { left: rect.left, top: rect.top };
+			callback?.({
+				fragment: offset,
+				be: be(el),
+				root: this.beElement
+			});
+		});
+
+		return this.beElement;
+	}
+
+	/**
+	 * Measures an element's dimensions, temporarily making it measurable when
+	 * it is not rendered (`display: none`).
+	 */
+	private static measure(el: HTMLElement): { width: number; height: number } {
+		if (el.offsetWidth !== 0 || el.offsetHeight !== 0) {
+			return { width: el.offsetWidth, height: el.offsetHeight };
+		}
+
+		const computed = window.getComputedStyle(el);
+		if (computed.display !== 'none') {
+			return { width: el.offsetWidth, height: el.offsetHeight };
+		}
+
+		const original = {
+			position: el.style.position,
+			visibility: el.style.visibility,
+			display: el.style.display
+		};
+		el.style.position = 'absolute';
+		el.style.visibility = 'hidden';
+		el.style.display = 'block';
+		const dimensions = { width: el.offsetWidth, height: el.offsetHeight };
+		el.style.position = original.position;
+		el.style.visibility = original.visibility;
+		el.style.display = original.display;
+		return dimensions;
 	}
 
 	valueOf(): DOMRect | null {

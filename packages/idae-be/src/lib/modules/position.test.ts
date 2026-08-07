@@ -171,4 +171,65 @@ describe('PositionHandler', () => {
 			expect(target.style.top).toBe('-167.5px');
 		});
 	});
+
+	// === TESTS FOR getDimensions ===
+	describe('getDimensions', () => {
+		it('should be attached to Be', () => {
+			const instance = be('#test');
+			expect(typeof instance.getDimensions).toBe('function');
+			expect(typeof instance.cumulativeOffset).toBe('function');
+			expect(typeof instance.viewportOffset).toBe('function');
+		});
+
+		it('should return offsetWidth/offsetHeight through the callback fragment', () => {
+			const target = document.querySelector('#target') as HTMLElement;
+			Object.defineProperty(target, 'offsetWidth', { configurable: true, value: 150 });
+			Object.defineProperty(target, 'offsetHeight', { configurable: true, value: 75 });
+
+			be('#target').getDimensions(({ fragment }) => {
+				expect(fragment).toEqual({ width: 150, height: 75 });
+			});
+		});
+
+		it('should measure a display:none element and restore its inline styles', () => {
+			document.body.innerHTML = '<div id="hidden" style="display: none; width: 100px;"></div>';
+			const hidden = document.querySelector('#hidden') as HTMLElement;
+
+			Object.defineProperty(hidden, 'offsetWidth', {
+				configurable: true,
+				get() {
+					return this.style.display === 'none' ? 0 : 100;
+				}
+			});
+			Object.defineProperty(hidden, 'offsetHeight', {
+				configurable: true,
+				get() {
+					return this.style.display === 'none' ? 0 : 20;
+				}
+			});
+
+			be('#hidden').getDimensions(({ fragment }) => {
+				expect(fragment).toEqual({ width: 100, height: 20 });
+			});
+			expect(hidden.style.display).toBe('none');
+		});
+	});
+
+	// === TESTS FOR offsets ===
+	describe('offsets', () => {
+		it('should return the viewport offset through the callback fragment', () => {
+			be('#target').viewportOffset(({ fragment }) => {
+				expect(fragment).toEqual({ left: 300, top: 200 });
+			});
+		});
+
+		it('should return the cumulative offset (document-relative) through the callback fragment', () => {
+			be('#target').cumulativeOffset(({ fragment }) => {
+				expect(fragment).toEqual({
+					left: 300 + (window.scrollX || 0),
+					top: 200 + (window.scrollY || 0)
+				});
+			});
+		});
+	});
 });

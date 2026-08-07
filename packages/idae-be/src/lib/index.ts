@@ -1,12 +1,16 @@
 // auto exports of entry components
 export * from '$lib/be.js';
+export * from '$lib/classes-oop.js';
+export * from '$lib/collections.js';
 export * from '$lib/dic/fragment.js';
 export * from '$lib/dic/proxyHandler.js';
 export * from '$lib/modules/attrs.js';
 export * from '$lib/modules/classes.js';
 export * from '$lib/modules/data.js';
 export * from '$lib/modules/dom.js';
+export * from '$lib/modules/effects.js';
 export * from '$lib/modules/events.js';
+export * from '$lib/modules/forms.js';
 export * from '$lib/modules/http.js';
 export * from '$lib/modules/position.js';
 export * from '$lib/modules/styles.js';

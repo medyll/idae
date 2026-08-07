@@ -39,8 +39,10 @@ be('#btn').on('click', () => {
 // Load remote HTML into an element
 be('#content').updateHttp('/partials/dashboard.html');
 
-// Walk the DOM and mutate results
-be('#list').children('li').without('.disabled').addClass('selectable');
+// Walk the DOM and mutate results (results come through the callback)
+be('#list').children('li', ({ be: items }) => {
+  items.without('.disabled', ({ be: enabled }) => enabled.addClass('selectable'));
+});
 
 // Delayed action
 be('#toast').addClass('show').timeout(() => {
