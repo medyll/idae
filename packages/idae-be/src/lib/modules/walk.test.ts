@@ -46,7 +46,7 @@ describe('WalkHandler', () => {
         `;
 
 		be('#target').siblings(({ be: siblings }) => {
-			expect(siblings.node.length).toBe(2);
+			expect((siblings.node as HTMLElement[]).length).toBe(2);
 		});
 	});
 

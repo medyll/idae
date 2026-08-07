@@ -13,9 +13,14 @@ npm install @medyll/idae-be
 - Root object persistence for consistent chaining
 - Callback-based element manipulation for precise targeting
 - Comprehensive DOM traversal and manipulation
-- Event handling, style management, and attribute control
+- Event handling with **event delegation** (`on(event, selector, handler)`)
+- Form serialization and per-field value access (`serializeForm`, `fieldValue`)
+- Animation helpers on the native Web Animations API (`fade`, `slideUp`, `move`, `scale`…)
+- Style management, and attribute control
+- Position measurement (`getDimensions`, `cumulativeOffset`, `viewportOffset`) and snapping
 - Timer integration for dynamic operations
-- HTTP content loading and insertion
+- HTTP content loading with failure handling, timeouts and query params
+- Standalone utilities: `toArray`, `toWords`, `range`, `createClass`, `extendObject`
 
 ## Unique Approach
 
@@ -203,17 +208,21 @@ const newElement = createBe('div', { className: 'my-class' });
 
 ### HTTP Methods
 
-#### `updateHttp(url: string, callback?: HandlerCallBackFn): Be`
-Loads content from a URL and updates the element's content.
+#### `updateHttp(url: string, options?: HttpRequestOptions, callback?: HandlerCallBackFn): Promise<Be>`
+Loads content from a URL and updates the element's content. Options: `method`, `data`, `headers`, `params` (query string), `timeout` (aborts after N ms), `onFailure(response, error?)` — called instead of the content callback on non-ok responses or network errors; without it, failures throw and error bodies are never injected.
 
 **Example:**
 ```javascript
-be('#test').updateHttp('/content.html', ({ be }) => {
+be('#test').updateHttp('/content.html', {
+    params: { section: 'news' },
+    timeout: 5000,
+    onFailure: (response) => console.error('Load failed', response?.status)
+}, ({ be }) => {
     console.log(be.html);
 });
 ```
 
-#### `insertHttp(url: string, mode?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend', callback?: HandlerCallBackFn): Be`
+#### `insertHttp(url: string, mode?: 'afterbegin' | 'afterend' | 'beforebegin' | 'beforeend', options?: { params?, timeout?, onFailure? }, callback?: HandlerCallBackFn): Promise<Be>`
 Loads content from a URL and inserts it into the element at a specified position.
 
 **Example:**
@@ -354,12 +363,23 @@ Add an event listener to an element.
 be('#test').on('click', () => console.log('Clicked!'));
 ```
 
+#### `on(eventName: string, selector: string, handler: EventListener): Be`
+Delegated listener: binds once on the element, fires only when the actual event target matches a descendant fitting `selector`. The handler runs with `this` set to the matched descendant — works for elements added after binding.
+
+**Example:**
+```javascript
+be('#list').on('click', 'li.item', function () {
+    be(this).toggleClass('selected');
+});
+```
+
 #### `off(eventName: string, handler: EventListener): Be`
-Remove an event listener from an element.
+Remove an event listener from an element. For delegated listeners, use `off(eventName, selector, handler)` with the same triple used at binding time.
 
 **Example:**
 ```javascript
 be('#test').off('click', handler);
+be('#list').off('click', 'li.item', handler);
 ```
 
 #### `fire(eventName: string, detail?: any): Be`
@@ -372,6 +392,82 @@ be('#test').fire('customEvent', { key: 'value' });
 
 ---
 
+### Forms
+
+#### `serializeForm(options?: { asJSON?: boolean }): string | Record<string, unknown>`
+Serialize a form to a query string (default) or a plain object (`asJSON`). Disabled, nameless, unchecked and button/file fields are skipped; multi-selects produce repeated entries or arrays.
+
+**Example:**
+```javascript
+be('#myForm').serializeForm();                 // "name=john&tags=a&tags=b"
+be('#myForm').serializeForm({ asJSON: true }); // { name: 'john', tags: ['a', 'b'] }
+```
+
+#### `fieldValue(): string | string[] | boolean`
+Get a single field's value — checkbox/radio → checked state, `<select multiple>` → array of values, anything else → `.value`.
+
+#### `getFormElements(): HTMLElement[]`
+Get the form's elements (`Array.from(form.elements)`).
+
+---
+
+### Effects
+
+Animation helpers on the native Web Animations API — no dependency. Each takes `{ duration?, easing?, delay? }` and an optional callback fired on finish; when `el.animate` is unavailable, the final state applies synchronously.
+
+#### `fade(options?, callback?): Be` / `appear(options?, callback?): Be`
+Fade out (then `display: none`) / fade in.
+
+#### `slideUp(options?, callback?): Be` / `slideDown(options?, callback?): Be`
+Collapse / expand vertically.
+
+#### `move({ x, y, ...options }, callback?): Be`
+Translate by an offset, left applied.
+
+#### `scale({ from, to, ...options }, callback?): Be`
+Scale between two factors, left applied.
+
+**Example:**
+```javascript
+be('#toast').appear({ duration: 200 });
+be('#panel').slideUp({ duration: 300 }, () => console.log('collapsed'));
+```
+
+---
+
+### Position measurement
+
+#### `getDimensions(callback): Be`
+`{ width, height }` via the callback fragment — `display: none` elements are temporarily made measurable, then restored.
+
+#### `cumulativeOffset(callback): Be`
+`{ left, top }` relative to the document (accounts for scroll).
+
+#### `viewportOffset(callback): Be`
+`{ left, top }` relative to the viewport.
+
+**Example:**
+```javascript
+be('#box').getDimensions(({ fragment }) => console.log(fragment)); // { width: 120, height: 40 }
+```
+
+---
+
+### Utilities
+
+Standalone exports (plain functions, not handlers):
+
+```javascript
+import { toArray, toWords, range, createClass, extendObject } from '@medyll/idae-be';
+
+toArray(document.querySelectorAll('div')); // HTMLElement[]
+toWords('  alpha  beta ');                 // ['alpha', 'beta']
+range(1, 4);                               // [1, 2, 3, 4]
+createClass({ initialize(name) { this.name = name; } }); // runtime class builder
+extendObject({ a: 1 }, { b: 2 });          // { a: 1, b: 2 }
+```
+
+---
 
 ## Architecture
 

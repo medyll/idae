@@ -6,7 +6,7 @@ interface isHTMLReturn {
 	tag: string;
 	attributes: { [key: string]: string };
 	styles: { [key: string]: string };
-	node: HTMLElement;
+	node?: HTMLElement;
 	beElem?: Be;
 	content?: string;
 }
@@ -132,33 +132,33 @@ export class BeUtils {
 		});
 	}
 
-	static applyCallback(el: HTMLElement | HTMLCollection, callback: (el: HTMLElement) => void) {
+	static applyCallback(el: HTMLElement | Element | HTMLCollection, callback: (el: HTMLElement) => void) {
 		if (el instanceof HTMLCollection) {
 			return Array.from(el).forEach((ss) => {
 				BeUtils.applyCallback(ss, callback);
 			});
 		} else {
-			return callback(el);
+			return callback(el as HTMLElement);
 		}
 	}
 
 	static resolveIndirection<T = CommonHandler>(
-		classHandler: CommonHandler,
-		actions: keyof T
+		classHandler: { methods: string[] | unknown },
+		actions: Partial<Record<keyof T, unknown>>
 	): {
 		method: keyof T;
 		props: any;
 	} {
-		let method: keyof T;
-		let props;
+		let method: keyof T | undefined;
+		let props: unknown;
 
-		Object.keys(actions).forEach((action) => {
-			if (classHandler.methods.includes(action)) {
+		(Object.keys(actions) as Array<keyof T>).forEach((action) => {
+			if ((classHandler.methods as string[]).includes(action as string)) {
 				method = action;
-				props = actions[action as keyof T];
+				props = actions[action];
 			}
 		});
 
-		return { method, props };
+		return { method: method as keyof T, props };
 	}
 }

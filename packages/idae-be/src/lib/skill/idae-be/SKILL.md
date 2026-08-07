@@ -58,13 +58,17 @@ be('#toast').addClass('show').timeout(() => {
 | **Classes** | `addClass` `removeClass` `toggleClass` `replaceClass` | `classes({add,remove,toggle,replace})` |
 | **Attributes** | `setAttr` `getAttr` `deleteAttr` | `attrs({set,get,delete})` |
 | **Dataset** | `setData` `getData` `deleteData` `getKey` | `data({set,get,delete,getKey})` |
-| **Events** | `on` `off` `fire` | `events({on,off,fire})` |
+| **Events** | `on` `off` `fire` (incl. delegated `on(event, selector, handler)`) | `events({on,off,fire})` |
 | **DOM** | `update` `append` `prepend` `insert` `remove` `replace` `wrap` `unwrap` `clear` `normalize` | `dom({...})` |
 | **Text** | `updateText` `appendText` `prependText` `replaceText` `removeText` `clearText` `normalizeText` `wrapText` | `text({...})` |
 | **Walk** | `up` `next` `previous` `siblings` `children` `closest` `find` `findAll` `firstChild` `lastChild` `without` | `walk({...})` |
-| **HTTP** | `updateHttp` `insertHttp` | `http({update,insert})` |
-| **Position** | `clonePosition` `overlapPosition` `snapTo` | `position({...})` |
+| **HTTP** | `updateHttp` `insertHttp` (with `onFailure`/`timeout`/`params`) | `http({update,insert})` |
+| **Position** | `clonePosition` `overlapPosition` `snapTo` `getDimensions` `cumulativeOffset` `viewportOffset` | `position({...})` |
+| **Forms** | `serializeForm` `fieldValue` `getFormElements` | `form({serialize,getElements,getValue})` |
+| **Effects** | `fade` `appear` `slideUp` `slideDown` `move` `scale` (Web Animations API) | `effects({...})` |
 | **Timers** | `timeout` `interval` `clearTimeout` `clearInterval` | `timers({...})` |
+
+Standalone utilities (plain functions, not handlers): `toArray`, `toWords`, `range`, `createClass`, `extendObject`.
 
 ## Key concepts
 

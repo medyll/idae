@@ -25,7 +25,7 @@ export type TextHandlerHandle = {
 	callback?: (element: HandlerCallbackProps) => void;
 };
 
-export class TextHandler implements CommonHandler<TextHandler> {
+export class TextHandler implements CommonHandler<TextHandler, TextHandlerHandle> {
 	private beElement: Be;
 
 	static methods = Object.values(textMethods);

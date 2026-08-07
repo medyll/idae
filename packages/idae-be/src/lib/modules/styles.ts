@@ -35,13 +35,13 @@ export class StylesHandler implements CommonHandler<StylesHandler, Partial<BeSty
 		this.beElement.eachNode(() => {
 			switch (method) {
 				case 'set':
-					this.set(args);
+					this.set(args as Record<string, string> | string);
 					break;
 				case 'get':
-					this.get(args);
+					this.get(args as string);
 					break;
 				case 'unset':
-					this.unset(args);
+					this.unset(args as string);
 					break;
 			}
 		});

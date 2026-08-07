@@ -232,7 +232,9 @@ export class WalkHandler
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
 			if (el.parentNode) {
-				const siblings = Array.from(el.parentNode.children).filter((child) => child !== el);
+				const siblings = Array.from(el.parentNode.children).filter(
+					(child) => child !== el
+				) as HTMLElement[];
 				ret.push(...siblings.filter((sibling) => !qy || sibling.matches(qy)));
 			}
 		});
@@ -342,7 +344,7 @@ export class WalkHandler
 	findAll(qy: string, callback?: HandlerCallBackFn): Be | null {
 		const ret: HTMLElement[] = [];
 		this.beElement.eachNode((el: HTMLElement) => {
-			ret.push(...Array.from(el.querySelectorAll(qy)));
+			ret.push(...(Array.from(el.querySelectorAll(qy)) as HTMLElement[]));
 		});
 		callback?.({
 			root: this.beElement,
@@ -429,7 +431,9 @@ export class WalkHandler
 		if (direction === 'siblings') {
 			const parent = element.parentElement;
 			if (!parent) return [];
-			const siblings = Array.from(parent.children).filter((child) => child !== element);
+			const siblings = Array.from(parent.children).filter(
+				(child) => child !== element
+			) as HTMLElement[];
 			return selector ? siblings.filter((sibling) => sibling.matches(selector)) : siblings;
 		}
 

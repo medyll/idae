@@ -35,16 +35,20 @@ export class DynamicHandler {
 					const cssValue = subProp.toLowerCase();
 					return () => {
 						this.beElement.eachNode((el: HTMLElement) => {
-							(el[this.attr] as any)[cssProp] = cssValue;
+							(el as unknown as Record<string, Record<string, string>>)[this.attr][cssProp] =
+								cssValue;
 						});
 					};
 				} else {
 					return (value?: string) => {
 						this.beElement.eachNode((el: HTMLElement) => {
+							const styleTarget = (el as unknown as Record<string, Record<string, string>>)[
+								this.attr
+							];
 							if (value === undefined) {
-								(el[this.attr] as any)[cssProp] = '';
+								styleTarget[cssProp] = '';
 							} else {
-								(el[this.attr] as any)[cssProp] = value;
+								styleTarget[cssProp] = value;
 							}
 						});
 					};

@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { be } from '../be.js';
 import { BeUtils } from '$lib/utils.js';
+import type { PositionSnapOptions } from '$lib/types.js';
 
 describe('Be class', () => {
 	// === TESTS FOR BE CLASS METHODS ===
@@ -80,7 +81,7 @@ describe('PositionHandler', () => {
 				bottom: 150,
 				right: 300
 			} as DOMRect;
-			const anchor = 'invalid';
+			const anchor = 'invalid' as PositionSnapOptions;
 
 			const [x, y] = BeUtils.calculateAnchorPoint(rect, anchor);
 			expect(x).toBe(100); // Default to rect.left
