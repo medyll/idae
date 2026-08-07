@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.97.1] - 2026-08-07
+**Features:**
+- implement TODO roadmap — callback contract, events delegation, forms, effects, http robustness, position metrics
+
+**Bug Fixes:**
+- resolve all outstanding TS errors; docs: update README/skill/changelog for 1.97.0
+
+**Chores:**
+- update dependencies across the workspace
+
+
+
 ## [1.97.0] - 2026-08-07
 **Features:**
 - events: delegated on/off overloads — on(event, selector, handler) fires only when the target matches a descendant selector; handler invoked with the matched element; removable via the same (event, selector, handler) triple
