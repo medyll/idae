@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.0.7] - 2026-08-07
+**Bug Fixes:**
+- drop the add-skill bin, which never had a source
+- emit the svelte adapter so the "./svelte" export resolves
+- build packages before publishing them
+
+**Chores:**
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- update dependencies across the workspace
+
+
+
 ## [0.0.6] - 2026-08-07
 **Bug Fixes:**
 - drop the add-skill bin, which never had a source
