@@ -9,16 +9,24 @@ be(selector)
        ├─ ClassesHandler   → addClass / removeClass / toggleClass / replaceClass
        ├─ AttrHandler      → setAttr / getAttr / deleteAttr
        ├─ DataHandler      → setData / getData / deleteData / getKey
-       ├─ EventsHandler    → on / off / fire
+       ├─ EventsHandler    → on / off / fire  (incl. delegated on(event, selector, handler))
        ├─ DomHandler       → update / append / prepend / insert / remove / replace / wrap / unwrap / clear
        ├─ TextHandler      → updateText / appendText / prependText / replaceText / clearText / normalizeText / wrapText
        ├─ WalkHandler      → up / next / previous / siblings / children / closest / find / findAll / firstChild / lastChild / without
-       ├─ HttpHandler      → updateHttp / insertHttp
-       ├─ PositionHandler  → clonePosition / overlapPosition / snapTo
+       ├─ HttpHandler      → updateHttp / insertHttp  (onFailure / timeout / params)
+       ├─ PositionHandler  → clonePosition / overlapPosition / snapTo / getDimensions / cumulativeOffset / viewportOffset
+       ├─ FormHandler      → serializeForm / fieldValue / getFormElements  (wired explicitly, not via attach())
+       ├─ EffectsHandler   → fade / appear / slideUp / slideDown / move / scale  (Web Animations API)
        └─ TimersHandler    → timeout / interval / clearTimeout / clearInterval
+
+Standalone exports (not handlers): toArray / toWords / range / createClass / extendObject
 ```
 
-Each handler is instantiated once per `Be` instance. Methods are attached directly on `Be` via `attach()` so they are callable as shorthands.
+Each handler is instantiated once per `Be` instance. Methods are attached directly on `Be` via `attach()` so they are callable as shorthands — except `FormHandler`, which is wired explicitly to expose unambiguous names (`serializeForm`, `fieldValue`, `getFormElements`).
+
+**Return contract:** every method returns the root `Be`. Traversal results are
+reached through the callback (`up/next/children/closest/...`) — never by
+chaining off a traversal method's return value.
 
 ---
 
@@ -163,10 +171,9 @@ import { proxyHandler } from '@medyll/idae-be';
   let container: HTMLElement;
 
   onMount(() => {
-    be(container)
-      .find('.lazy-img')
-      .setAttr('src', '/images/hero.webp')
-      .addClass('loaded');
+    be(container).find('.lazy-img', ({ be: img }) => {
+      img.setAttr('src', '/images/hero.webp').addClass('loaded');
+    });
   });
 </script>
 
