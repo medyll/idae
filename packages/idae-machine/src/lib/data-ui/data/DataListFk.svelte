@@ -46,19 +46,19 @@ Renders forward FK relations for a record as DataList sections.
 		return sourceStore.records.find((item) => String(item.id) === String(collectionId)) ?? null;
 	});
 
-	let fetchedRecord = $state<Record<string, unknown> | null>(null);
-	let lookupDone    = $state(false);
+	// Record missing from the store = collection not warmed yet. Warm it up and let
+	// sourceStore resolve the record reactively — reads never go through
+	// machine.collection (invariant 8).
+	let lookupDone = $state(false);
 	$effect(() => {
 		if (data != null || collectionId == null || storeRecord != null) {
 			lookupDone = true;
 			return;
 		}
 		lookupDone = false;
-		fetchedRecord = null;
 		let cancelled = false;
-		Promise.resolve(machine.collection(collection).get(collectionId)).then((rec) => {
+		void machine.warmup([collection]).then(() => {
 			if (cancelled) return;
-			fetchedRecord = (rec as Record<string, unknown> | undefined) ?? null;
 			lookupDone = true;
 		});
 		return () => { cancelled = true; };
@@ -67,7 +67,7 @@ Renders forward FK relations for a record as DataList sections.
 	const record = $derived.by(() => {
 		if (data) return data;
 		if (collectionId == null) return null;
-		return storeRecord ?? fetchedRecord;
+		return storeRecord;
 	});
 
 	const recordState = $derived.by(() => {

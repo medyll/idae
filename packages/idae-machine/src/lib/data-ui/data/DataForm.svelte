@@ -25,6 +25,7 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 <script lang="ts">
 	import { machine } from '$lib/main/machine.js';
 	import { SchemeFieldDefaultValues } from '$lib/main/machine/SchemeFieldDefaultValues.js';
+	import { useRecordData } from '$lib/data-ui/utils/useRecordData.svelte.js';
 	import DataRecord from './DataRecord.svelte';
 
 	let {
@@ -37,7 +38,12 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 		groupFieldBy
 	}: DataFormProps = $props();
 
-	const store = $derived(collection ? machine.collection(collection) : undefined);
+	// Record read goes through machine.store via useRecordData (invariant 8 — store is
+	// the reactive read layer; machine.collection stays imperative CRUD).
+	const recordSource = useRecordData(
+		() => collection,
+		() => ({ collectionId: mode === 'create' ? undefined : dataId })
+	);
 	const collLogic = $derived(collection ? machine.logic.collection(collection) : null);
 	const formFields = $derived(collLogic?.parse() ?? {});
 	const validator = $derived(collLogic?.validator);
@@ -57,12 +63,9 @@ Smart CRUD form — fetch, validate, submit, field iteration.
 				...data,
 				...withData
 			};
-		} else if (store && dataId) {
-			const id = isNaN(Number(dataId)) ? dataId : Number(dataId);
-			(async () => {
-				const record = await store.get(id) ?? {};
-				formData = { ...data, ...withData, ...record };
-			})();
+		} else if (collection && dataId) {
+			const record = recordSource.record ?? {};
+			formData = { ...data, ...withData, ...record };
 		}
 	});
 
