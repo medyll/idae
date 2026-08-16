@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/medyll/idae.git"
   },
-  "version": "1.97.2",
+  "version": "1.97.3",
   "description": "A modern, lightweight, and extensible DOM manipulation library built with TypeScript. Designed for precise element targeting and manipulation using a callback-based approach. Features include advanced DOM traversal, event handling, style management, attribute control, HTTP content loading, timers, and more. Ideal for developers seeking a modular and consistent API for dynamic web applications.",
   "keywords": [
     "idae",

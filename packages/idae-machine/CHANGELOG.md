@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.136.10] - 2026-08-16
+**Bug Fixes:**
+- retry cold-collection reads in the two imperative readers
+- read records through machine.store, not machine.collection
+- build packages before publishing them
+- make the published package actually usable
+- restore css-base semver range in published packages
+
+**Refactoring:**
+- enhance layout and structure of space header and main components
+
+**Chores:**
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+
+**Other:**
+- Refactor organization order in config, enhance Space.svelte layout with overview and workspace sections, and update related tests. Also, refresh component registry timestamps in slotui.
+
+
+
 ## [0.136.9] - 2026-08-07
 **Bug Fixes:**
 - build packages before publishing them
