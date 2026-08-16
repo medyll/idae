@@ -108,20 +108,33 @@ export function useMachinePrefs<T extends SlotMap>(
 		Object.assign(st.slots, defaults);
 
 		const prefix = `${String(user.id)}:${s}.`;
+		// Imperative read on purpose (invariant 8 allows machine.collection for
+		// exactly this): a reactive machine.store would re-run on every prefs write
+		// and fight the one-shot `st.loaded` guard above. What the invariant warns
+		// about — a cold collection reading empty — is handled by warming up once
+		// and reading again, so a first paint can't silently lose stored prefs.
 		untrack(() => {
-			Promise.resolve(machine.collection('appuser_prefs').getAll())
-				.then((rows: Array<{ code?: string; value?: unknown }>) => {
+			void (async () => {
+				try {
+					const read = async () =>
+						(await machine.collection('appuser_prefs').getAll()) as Array<{ code?: string; value?: unknown }>;
+					let rows = await read();
+					if (!rows.length) {
+						await machine.warmup(['appuser_prefs']);
+						rows = await read();
+					}
 					for (const r of rows) {
 						if (typeof r.code === 'string' && r.code.startsWith(prefix)) {
 							const key = r.code.slice(prefix.length);
 							if (key in st.slots) st.slots[key] = r.value ?? st.slots[key];
 						}
 					}
-				})
-				.catch((error) => {
+				} catch (error) {
 					console.warn('[useMachinePrefs] Failed to hydrate preferences:', error);
-				})
-				.finally(() => { st.hydrated = true; });
+				} finally {
+					st.hydrated = true;
+				}
+			})();
 		});
 	});
 
