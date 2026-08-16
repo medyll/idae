@@ -45,12 +45,23 @@ function matchWhere(record: Record<string, unknown>, where: Record<string, unkno
 	return true;
 }
 
+/**
+ * Imperative read on purpose. buildGraph is an async one-shot snapshot builder
+ * that runs outside any reactive frame, so `machine.store` is not an option here
+ * — it wraps useQoolieCollection, whose `$effect` would be orphaned past the
+ * first `await`. Invariant 8's actual risk (a cold collection reading empty) is
+ * handled the way the root record handles it: warm up once and read again.
+ */
 async function fetchRelated(
 	collection: string,
 	where: Record<string, unknown>
 ): Promise<Record<string, unknown>[]> {
 	try {
-		const all = (await machine.collection(collection).getAll()) as Record<string, unknown>[];
+		let all = (await machine.collection(collection).getAll()) as Record<string, unknown>[];
+		if (!all.length) {
+			await machine.warmup([collection]);
+			all = (await machine.collection(collection).getAll()) as Record<string, unknown>[];
+		}
 		return all.filter(r => matchWhere(r, where));
 	} catch {
 		return [];
