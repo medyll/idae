@@ -10,7 +10,8 @@
       "Bash(git fetch *)",
       "Bash(npm view *)",
       "Bash(grep -l 'declare function $state' node_modules/.pnpm/svelte@5.50.0/node_modules/svelte/types/index.d.ts)",
-      "Bash(grep -c 'declare function $state\\\\|$state:' node_modules/.pnpm/svelte@5.50.0/node_modules/svelte/types/index.d.ts)"
+      "Bash(grep -c 'declare function $state\\\\|$state:' node_modules/.pnpm/svelte@5.50.0/node_modules/svelte/types/index.d.ts)",
+      "Bash(git count-objects *)"
     ]
   }
 }
