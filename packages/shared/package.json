@@ -16,9 +16,9 @@
     "@medyll/skiller": "workspace:*",
     "command": "^1.1.1",
     "commander": "^15.0.0",
-    "fs-extra": "^11.4.0",
+    "fs-extra": "^11.4.1",
     "glob": "^13.0.6",
-    "svelte-check": "^4.7.4"
+    "svelte-check": "^4.7.6"
   },
   "publishConfig": {
     "access": "public",
@@ -32,10 +32,10 @@
     "config"
   ],
   "devDependencies": {
-    "@semantic-release/github": "^12.0.9",
-    "@sveltejs/vite-plugin-svelte": "^7.2.0",
+    "@semantic-release/github": "^12.0.10",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
     "@types/fs-extra": "^11.0.4",
-    "svelte": "^5.56.8",
+    "svelte": "^5.57.1",
     "typescript": "^6.0.3"
   },
   "repository": {

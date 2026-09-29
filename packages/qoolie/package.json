@@ -55,15 +55,15 @@
   },
   "devDependencies": {
     "@medyll/idae-socket": "workspace:*",
-    "@testing-library/react": "^16.3.2",
-    "@types/node": "^26.1.2",
-    "@types/react": "^19.2.18",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
     "fake-indexeddb": "^6.2.5",
-    "react": "^19.2.8",
-    "svelte": "^5.56.8",
+    "react": "^19.3.0",
+    "svelte": "^5.57.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.10",
-    "vue": "^3.5.40"
+    "vitest": "^4.1.11",
+    "vue": "^3.5.43"
   },
   "peerDependencies": {
     "@medyll/idae-socket": "workspace:*",

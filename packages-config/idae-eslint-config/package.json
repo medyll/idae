@@ -19,18 +19,18 @@
     "@types/eslint": "9.6.1",
     "command": "^1.1.1",
     "commander": "^15.0.0",
-    "svelte-check": "^4.7.4"
+    "svelte-check": "^4.7.6"
   },
   "devDependencies": {
-    "@semantic-release/github": "^12.0.9",
-    "@sveltejs/vite-plugin-svelte": "^7.2.0",
-    "@typescript-eslint/eslint-plugin": "^8.65.0",
-    "@typescript-eslint/parser": "^8.65.0",
-    "eslint": "^10.8.0",
+    "@semantic-release/github": "^12.0.10",
+    "@sveltejs/vite-plugin-svelte": "^7.3.1",
+    "@typescript-eslint/eslint-plugin": "^8.71.0",
+    "@typescript-eslint/parser": "^8.71.0",
+    "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-svelte": "^3.22.0",
-    "prettier": "^3.9.6",
-    "svelte": "^5.56.8",
+    "eslint-plugin-svelte": "^3.23.0",
+    "prettier": "^3.9.9",
+    "svelte": "^5.57.1",
     "typescript": "^5.9.3"
   }
 }
