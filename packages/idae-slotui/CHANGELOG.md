@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.181.13] - 2026-09-29
+**Features:**
+- implement TODO roadmap — callback contract, events delegation, forms, effects, http robustness, position metrics
+
+**Bug Fixes:**
+- remove unused Preview export from index
+
+**Chores:**
+- update dependencies within semver ranges
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+
+**Other:**
+- Refactor organization order in config, enhance Space.svelte layout with overview and workspace sections, and update related tests. Also, refresh component registry timestamps in slotui.
+
+
+
 ## [0.181.12] - 2026-08-16
 **Features:**
 - implement TODO roadmap — callback contract, events delegation, forms, effects, http robustness, position metrics

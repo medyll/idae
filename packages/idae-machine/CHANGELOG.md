@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.136.11] - 2026-09-29
+**Bug Fixes:**
+- align mongodb with mongoose (~7.6) to avoid duplicate driver types
+- retry cold-collection reads in the two imperative readers
+- read records through machine.store, not machine.collection
+- build packages before publishing them
+- make the published package actually usable
+- restore css-base semver range in published packages
+
+**Refactoring:**
+- enhance layout and structure of space header and main components
+
+**Chores:**
+- update dependencies within semver ranges
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+
+**Other:**
+- Refactor organization order in config, enhance Space.svelte layout with overview and workspace sections, and update related tests. Also, refresh component registry timestamps in slotui.
+
+
+
 ## [0.136.10] - 2026-08-16
 **Bug Fixes:**
 - retry cold-collection reads in the two imperative readers

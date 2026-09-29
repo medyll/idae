@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.97.4] - 2026-09-29
+**Features:**
+- implement TODO roadmap — callback contract, events delegation, forms, effects, http robustness, position metrics
+
+**Bug Fixes:**
+- resolve all outstanding TS errors; docs: update README/skill/changelog for 1.97.0
+
+**Documentation:**
+- add Form/Effects handlers, http options, return contract; fix stale find() chaining in Svelte example
+
+**Chores:**
+- update dependencies within semver ranges
+- publish packages
+- publish packages
+- publish packages
+- update dependencies across the workspace
+
+
+
 ## [1.97.3] - 2026-08-16
 **Features:**
 - implement TODO roadmap — callback contract, events delegation, forms, effects, http robustness, position metrics
