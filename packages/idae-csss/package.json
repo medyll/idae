@@ -57,14 +57,14 @@
     "@sveltejs/kit": "^2.70.3",
     "@sveltejs/package": "^2.5.8",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "postcss": "^8.5.28",
-    "publint": "^0.3.24",
-    "svelte": "^5.57.1",
-    "svelte-check": "^4.7.6",
+    "postcss": "^8.5.32",
+    "publint": "^0.3.25",
+    "svelte": "^5.57.3",
+    "svelte-check": "^4.7.7",
     "tslib": "^2.8.1",
     "typescript": "^6.0.3",
-    "vite": "^8.3.1",
-    "vitest": "^4.1.11"
+    "vite": "^8.3.5",
+    "vitest": "^4.1.12"
   },
   "dependencies": {
     "@medyll/skiller": "workspace:*",

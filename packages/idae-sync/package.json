@@ -26,10 +26,10 @@
     "@medyll/skiller": "workspace:*"
   },
   "devDependencies": {
-    "fake-indexeddb": "^6.2.5",
+    "fake-indexeddb": "^6.2.6",
     "jsdom": "^29.1.1",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
   },
   "keywords": [],
   "author": "Lebrun Meddy",

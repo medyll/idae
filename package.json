@@ -50,23 +50,23 @@
     "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^17.4.2",
-    "eslint": "^10.11.0",
+    "eslint": "^10.13.0",
     "jest": "^30.5.2",
-    "ts-jest": "^29.4.14",
+    "ts-jest": "^29.4.15",
     "tshy": "^4.1.3",
     "tsx": "^4.23.15",
     "typescript": "^6.0.3"
   },
   "dependencies": {
     "@medyll/css-base": "link:..\\css-base",
-    "@medyll/idae-pnpm-release": "^1.0.47",
+    "@medyll/idae-pnpm-release": "^1.0.48",
     "@octokit/rest": "^22.0.1",
     "chalk": "^6.0.1",
     "glob": "^13.0.6",
-    "js-yaml": "^5.4.2",
+    "js-yaml": "^5.5.0",
     "mongoose-sequence": "^6.0.1",
-    "npm": "^11.20.0",
-    "publint": "^0.3.24"
+    "npm": "^11.21.1",
+    "publint": "^0.3.25"
   },
   "peerDependencies": {
     "@sveltejs/adapter-auto": "^4.0.0",
