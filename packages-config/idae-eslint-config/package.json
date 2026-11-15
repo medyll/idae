@@ -18,18 +18,18 @@
     "@rushstack/eslint-patch": "^1.16.1",
     "@types/eslint": "9.6.1",
     "command": "^1.1.1",
-    "commander": "^15.0.0",
-    "svelte-check": "^4.7.7"
+    "commander": "^15.1.0",
+    "svelte-check": "^4.7.8"
   },
   "devDependencies": {
-    "@semantic-release/github": "^12.0.10",
+    "@semantic-release/github": "^12.0.11",
     "@sveltejs/vite-plugin-svelte": "^7.3.1",
-    "@typescript-eslint/eslint-plugin": "^8.72.1",
-    "@typescript-eslint/parser": "^8.72.1",
-    "eslint": "^10.13.0",
+    "@typescript-eslint/eslint-plugin": "^8.72.2",
+    "@typescript-eslint/parser": "^8.72.2",
+    "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-svelte": "^3.23.1",
-    "prettier": "^3.9.10",
+    "eslint-plugin-svelte": "^3.24.1",
+    "prettier": "^3.10.1",
     "svelte": "^5.57.3",
     "typescript": "^5.9.3"
   }

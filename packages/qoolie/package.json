@@ -50,7 +50,7 @@
   "dependencies": {
     "@medyll/idae-sync": "workspace:*",
     "@medyll/skiller": "workspace:*",
-    "commander": "^15.0.0",
+    "commander": "^15.1.0",
     "idb": "^8.0.4"
   },
   "devDependencies": {
@@ -58,12 +58,12 @@
     "@testing-library/react": "^16.3.3",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
-    "fake-indexeddb": "^6.2.6",
+    "fake-indexeddb": "^6.2.8",
     "react": "^19.3.1",
     "svelte": "^5.57.3",
     "typescript": "^6.0.3",
     "vitest": "^4.1.12",
-    "vue": "^3.5.44"
+    "vue": "^3.5.45"
   },
   "peerDependencies": {
     "@medyll/idae-socket": "workspace:*",
