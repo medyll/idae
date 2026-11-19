@@ -69,8 +69,8 @@
     "eslint-plugin-svelte": "^3.24.1",
     "happy-dom": "^20.14.6",
     "prettier": "^3.10.1",
-    "prettier-plugin-svelte": "^4.1.1",
-    "svelte": "^5.57.3",
+    "prettier-plugin-svelte": "^4.2.0",
+    "svelte": "^5.58.0",
     "svelte-check": "^4.7.8",
     "tslib": "^2.9.1",
     "typescript": "^6.0.3",
@@ -85,6 +85,6 @@
     "command": "^1.1.1",
     "commander": "^15.1.0",
     "inquirer": "^14.3.0",
-    "puppeteer": "^25.17.0"
+    "puppeteer": "^25.18.1"
   }
 }
