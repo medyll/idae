@@ -118,7 +118,7 @@
     "@medyll/skiller": "workspace:*",
     "@tailwindcss/postcss": "^4.3.5",
     "@tailwindcss/vite": "^4.3.5",
-    "autoprefixer": "^10.6.2",
+    "autoprefixer": "^10.7.0",
     "commander": "^15.1.0",
     "d3": "^7.9.2",
     "lerna": "^9.0.7",
@@ -128,7 +128,7 @@
     "postcss-load-config": "^6.0.1",
     "sanitize-html": "^2.18.2",
     "svelte-preprocess": "^6.0.5",
-    "tailwind-merge": "^3.7.0",
+    "tailwind-merge": "^3.7.1",
     "tailwindcss": "^4.3.5"
   }
 }
