@@ -65,7 +65,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.24.1",
     "globals": "^17.14.0",
-    "mongodb-memory-server": "^11.3.0",
+    "mongodb-memory-server": "^11.4.0",
     "pg": "^8.23.1",
     "pouchdb-adapter-memory": "^9.0.0",
     "pouchdb-find": "^9.0.0",
