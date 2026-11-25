@@ -56,8 +56,8 @@
   "devDependencies": {
     "@medyll/idae-socket": "workspace:*",
     "@testing-library/react": "^16.3.3",
-    "@types/node": "^26.6.6",
-    "@types/react": "^19.3.0",
+    "@types/node": "^26.6.10",
+    "@types/react": "^19.3.2",
     "fake-indexeddb": "^6.2.8",
     "react": "^19.3.1",
     "svelte": "^5.59.1",
