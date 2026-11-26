@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.136.12] - 2026-11-26
+**Bug Fixes:**
+- unblock install and publish through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [0.136.11] - 2026-09-29
 **Bug Fixes:**
 - align mongodb with mongoose (~7.6) to avoid duplicate driver types
