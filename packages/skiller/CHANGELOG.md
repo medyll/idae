@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.2.12] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update dependencies within semver ranges
+- update dependencies across the workspace
+
+
+
 ## [2.2.11] - 2026-07-29
 **Features:**
 - add self-editing workflow section to SKILL.md with guidelines for editing and managing skiller's own SKILL.md

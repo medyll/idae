@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.136.13] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+- unblock install and publish through npm trusted publishing
+
+**Chores:**
+- publish packages
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [0.136.12] - 2026-11-26
 **Bug Fixes:**
 - unblock install and publish through npm trusted publishing

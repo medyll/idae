@@ -1,5 +1,21 @@
 # @medyll/idae-eslint-config
 
+## [0.1.7] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update dependencies within semver ranges
+- update dependencies across the workspace
+
+
+
 ## [0.1.6] - 2026-07-29
 **Features:**
 - add mode switcher to DataList and remove redundant styles from Explorer

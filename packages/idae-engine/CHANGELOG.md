@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.185.4] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update dependencies within semver ranges
+- update dependencies across the workspace
+
+
+
 ## [1.185.3] - 2026-07-29
 **Features:**
 - add Playwright screenshot scripts and stubs for server-only packages

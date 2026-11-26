@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.187.4] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update dependencies within semver ranges
+- update dependencies across the workspace
+
+
+
 ## [0.187.3] - 2026-07-29
 **Features:**
 - refactor database handling to remove legacy defaults and enforce tenant-scoped database resolution
