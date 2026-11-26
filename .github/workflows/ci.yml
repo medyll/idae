@@ -1,0 +1,46 @@
+name: CI
+
+# Verifies pull requests (Dependabot included) before they reach main, where
+# release.yml publishes. No LLM or external service involved.
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Check local dependency specs
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: python3 .github/scripts/check-portable-specs.py . --base "$BASE"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Same build the release runs (--package), limited to the packages the
+      # pull request touches and the packages that depend on them.
+      - name: Package changed packages
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || 'origin/main' }}
+        run: pnpm --filter "...[$BASE]" --workspace-concurrency=1 run --if-present package

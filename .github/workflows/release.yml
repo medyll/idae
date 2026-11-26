@@ -35,6 +35,13 @@ jobs:
           cache: "pnpm"
           registry-url: "https://registry.npmjs.org/"
 
+      - name: Check local dependency specs
+        # Deterministic guard (.github/scripts/check-portable-specs.py): Windows
+        # link:\ paths, local paths in published packages, link: under npm.
+        env:
+          BASE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: python3 .github/scripts/check-portable-specs.py . --base "$BASE"
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
