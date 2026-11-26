@@ -3,14 +3,14 @@
 	import type { AppScheme } from '$lib/main/api/types.js';
 
 	let {
-		schemes = [] as AppScheme[],
+		schemes = [],
 		currentTable = '',
-		currentRecord = null as { id: string; name?: string } | null
-	} = $props<{
+		currentRecord = null
+	}: {
 		schemes?:       AppScheme[];
 		currentTable?:  string;
 		currentRecord?: { id: string; name?: string } | null;
-	}>();
+	} = $props();
 
 	const items = $derived(buildBreadcrumbs());
 
