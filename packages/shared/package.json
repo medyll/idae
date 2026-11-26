@@ -22,6 +22,7 @@
   },
   "publishConfig": {
     "access": "public",
+    "provenance": true,
     "directory": "."
   },
   "keywords": [

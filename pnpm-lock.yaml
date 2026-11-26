@@ -1127,6 +1127,9 @@ importers:
       marked:
         specifier: ^18.3.0
         version: 18.3.0
+      mongodb:
+        specifier: ~7.9.1
+        version: 7.9.1(@aws-sdk/credential-providers@3.968.0)(socks@2.8.11)
       mongoose:
         specifier: ^9.13.1
         version: 9.13.1(@aws-sdk/credential-providers@3.968.0)(socks@2.8.11)
