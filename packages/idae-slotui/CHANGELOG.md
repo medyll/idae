@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.181.16] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- publish packages
+- publish packages
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [0.181.15] - 2026-11-26
 **Bug Fixes:**
 - publish every package once through npm trusted publishing
