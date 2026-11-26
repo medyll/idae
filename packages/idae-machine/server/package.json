@@ -33,12 +33,12 @@
     "seed": "tsx src/bootstrap/bootstrap.ts"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.115.0",
+    "@anthropic-ai/sdk": "^0.137.0",
     "@medyll/css-base": "^0.7.15",
     "@medyll/idae-api": "workspace:*",
     "@medyll/idae-socket": "workspace:*",
     "@medyll/qoolie": "workspace:*",
-    "@modelcontextprotocol/sdk": "1.30.0",
+    "@modelcontextprotocol/sdk": "1.32.2",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",

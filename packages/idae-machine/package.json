@@ -74,7 +74,7 @@
     "fake-indexeddb": "^6.2.8",
     "globals": "^17.14.0",
     "jsdom": "^29.1.1",
-    "mongodb": "~7.6.0",
+    "mongodb": "~7.9.1",
     "prettier": "^3.10.1",
     "prettier-plugin-svelte": "^4.2.0",
     "publint": "^0.3.25",
