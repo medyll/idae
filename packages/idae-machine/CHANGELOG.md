@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.136.16] - 2026-11-26
+**Bug Fixes:**
+- type Breadcrumb props without $props generic
+- publish every package once through npm trusted publishing
+- unblock install and publish through npm trusted publishing
+
+**Chores:**
+- bump the compatible group across 1 directory with 6 updates (#136)
+- publish packages
+- publish packages
+- publish packages
+- publish packages
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [0.136.15] - 2026-11-26
 **Bug Fixes:**
 - type Breadcrumb props without $props generic

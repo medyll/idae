@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.181.17] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- bump the compatible group across 1 directory with 6 updates (#136)
+- publish packages
+- publish packages
+- publish packages
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [0.181.16] - 2026-11-26
 **Bug Fixes:**
 - publish every package once through npm trusted publishing
