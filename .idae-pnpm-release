@@ -8,6 +8,7 @@
   "generate-readme-root": false,
   "ignore-file-changes": [
     "CHANGELOG.md",
+    "package.json",
     "README.md",
     "index.ts"
   ]
