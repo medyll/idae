@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.0.10] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [0.0.9] - 2026-09-29
 **Bug Fixes:**
 - drop the add-skill bin, which never had a source

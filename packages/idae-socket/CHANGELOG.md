@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.0.6] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update dependencies within semver ranges
+- update dependencies across the workspace
+
+
+
 ## [0.0.5] - 2026-07-29
 **Features:**
 - Enhance idae-machine and idae-api with new features and improvements

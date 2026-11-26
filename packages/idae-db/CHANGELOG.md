@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.155.4] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+- align mongodb with mongoose (~7.6) to avoid duplicate driver types
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update dependencies within semver ranges
+- update dependencies across the workspace
+
+
+
 ## [0.155.3] - 2026-07-29
 **Features:**
 - enhance validation schemas and conflict resolution logic

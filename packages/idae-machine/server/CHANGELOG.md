@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.0.11] - 2026-11-26
+**Bug Fixes:**
+- publish every package once through npm trusted publishing
+- unblock install and publish through npm trusted publishing
+
+**Chores:**
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+- update compatible dependencies
+
+
+
 ## [2.0.10] - 2026-09-29
 **Bug Fixes:**
 - build packages before publishing them
